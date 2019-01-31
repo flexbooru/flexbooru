@@ -21,10 +21,12 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.PostDan
+import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.Search
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.Repository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
+import onlymash.flexbooru.ui.adapter.PostMoeAdapter
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 
 class PostFragment : Fragment() {
@@ -39,7 +41,8 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 40, tags = ""))
+//        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 40, tags = ""))
+        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 40, tags = ""))
     }
 
     private fun init() {
@@ -59,7 +62,8 @@ class PostFragment : Fragment() {
                 }
             }
         })
-        initPostDanAdapter()
+//        initPostDanAdapter()
+        initPostMoeAdapter()
     }
 
 
@@ -72,11 +76,27 @@ class PostFragment : Fragment() {
         initSwipeToRefreshDan()
     }
 
+    private fun initPostMoeAdapter() {
+        val postMoeAdapter = PostMoeAdapter(glide, requireActivity())
+        list.adapter = postMoeAdapter
+        postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
+            postMoeAdapter.submitList(posts)
+        })
+        initSwipeToRefreshMoe()
+    }
+
     private fun initSwipeToRefreshDan() {
         postViewModel.refreshStateDan.observe(this, Observer {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshMoe() {
+        postViewModel.refreshStateMoe.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+        swipe_refresh.setOnRefreshListener { postViewModel.refreshMoe() }
     }
 
     @Suppress("UNCHECKED_CAST")
