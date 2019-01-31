@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import okhttp3.OkHttpClient
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
@@ -27,6 +28,8 @@ class FlexAppGlideModule : AppGlideModule() {
         val requestOptions = RequestOptions
             .formatOf(DecodeFormat.PREFER_ARGB_8888)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .override(Target.SIZE_ORIGINAL)
+
         builder.setDefaultRequestOptions(requestOptions)
     }
 
