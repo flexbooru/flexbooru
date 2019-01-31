@@ -39,7 +39,13 @@ class PostDanViewHolder(itemView: View,
                 "q" -> R.drawable.background_rating_q
                 else -> R.drawable.background_rating_e
             }
-            lp.width = lp.height * post.image_width/post.image_height
+            if (post.image_width < post.image_height) {
+                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
+                lp.width = lp.height * post.image_width/post.image_height
+            } else {
+                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
+                lp.width = lp.height * post.image_width/post.image_height
+            }
             glide.load(FlexGlideUrl(post.preview_file_url))
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
                 .centerCrop()

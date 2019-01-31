@@ -39,7 +39,13 @@ class PostMoeViewHolder(itemView: View,
                 "q" -> R.drawable.background_rating_q
                 else -> R.drawable.background_rating_e
             }
-            lp.width = lp.height * post.width/post.height
+            if (post.width < post.height) {
+                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
+                lp.width = lp.height * post.width/post.height
+            } else {
+                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
+                lp.width = lp.height * post.width/post.height
+            }
             glide.load(FlexGlideUrl(post.preview_url))
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
                 .centerCrop()

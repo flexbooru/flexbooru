@@ -41,8 +41,9 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-//        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 30, tags = ""))
-        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 30, tags = ""))
+        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 20, tags = ""))
+//        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 20, tags = ""))
+//        postViewModel.show(Search(scheme = "https", host = "konachan.com", limit = 20, tags = ""))
     }
 
     private fun init() {
@@ -66,6 +67,7 @@ class PostFragment : Fragment() {
             alignItems = AlignItems.STRETCH
         }
         list.layoutManager = flexboxLayoutManager
+        list.itemAnimator = null
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 when (newState) {
@@ -74,8 +76,8 @@ class PostFragment : Fragment() {
                 }
             }
         })
-//        initPostDanAdapter()
-        initPostMoeAdapter()
+        initPostDanAdapter()
+//        initPostMoeAdapter()
     }
 
 

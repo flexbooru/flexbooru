@@ -4,7 +4,7 @@
         android:id="@+id/preview"
         android:transitionName="post_img"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/post_item_height"
+        android:layout_height="@dimen/post_item_height_max"
         android:layout_margin="@dimen/post_item_margin"
         android:scaleType="centerCrop"
         android:contentDescription="@null"/>
