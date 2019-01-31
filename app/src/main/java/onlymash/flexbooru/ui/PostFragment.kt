@@ -41,8 +41,8 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-//        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 40, tags = ""))
-        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 40, tags = ""))
+//        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 30, tags = ""))
+        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 30, tags = ""))
     }
 
     private fun init() {

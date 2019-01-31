@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.ui.viewholder.HeadViewHolder
 import onlymash.flexbooru.ui.viewholder.PostMoeViewHolder
 
 class PostMoeAdapter(private val glide: GlideRequests,
@@ -22,10 +24,27 @@ class PostMoeAdapter(private val glide: GlideRequests,
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        PostMoeViewHolder.create(parent, glide, activity)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            R.layout.head_item -> HeadViewHolder.create(parent)
+            R.layout.post_item -> PostMoeViewHolder.create(parent, glide, activity)
+            else -> throw IllegalArgumentException("unknown view type $viewType")
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            R.layout.head_item
+        } else {
+            R.layout.post_item
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + 1
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PostMoeViewHolder).bind(getItem(position))
+        if (position > 0) (holder as PostMoeViewHolder).bind(getItem(position - 1))
     }
 }

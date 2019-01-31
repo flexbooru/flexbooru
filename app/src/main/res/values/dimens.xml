@@ -9,4 +9,5 @@
     <dimen name="post_item_margin">1dp</dimen>
     <dimen name="swipe_refresh_layout_offset_start">60dp</dimen>
     <dimen name="swipe_refresh_layout_offset_end">110dp</dimen>
+    <dimen name="head_item_size">66dp</dimen>
 </resources>
