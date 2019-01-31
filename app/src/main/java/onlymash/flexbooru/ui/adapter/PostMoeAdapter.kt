@@ -29,20 +29,20 @@ class PostMoeAdapter(private val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.head_item -> HeadViewHolder.create(parent)
-            R.layout.post_item -> PostMoeViewHolder.create(parent, glide, activity)
-            R.layout.network_state_item -> NetworkStateViewHolder.create(parent, retryCallback)
+            R.layout.item_head -> HeadViewHolder.create(parent)
+            R.layout.item_post -> PostMoeViewHolder.create(parent, glide, activity)
+            R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type $viewType")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.head_item -> { }
-            R.layout.post_item -> {
+            R.layout.item_head -> { }
+            R.layout.item_post -> {
                 (holder as PostMoeViewHolder).bind(getItem(position - 1))
             }
-            R.layout.network_state_item -> {
+            R.layout.item_network_state -> {
                 (holder as NetworkStateViewHolder).bindTo(networkState)
             }
         }
@@ -54,11 +54,11 @@ class PostMoeAdapter(private val glide: GlideRequests,
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) {
-            R.layout.head_item
+            R.layout.item_head
         } else if (hasExtraRow() && position == itemCount - 1) {
-            R.layout.network_state_item
+            R.layout.item_network_state
         } else {
-            R.layout.post_item
+            R.layout.item_post
         }
     }
 

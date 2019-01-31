@@ -19,7 +19,7 @@ class PostDanViewHolder(itemView: View,
     companion object {
         fun create(parent: ViewGroup, glide: GlideRequests, activity: Activity): PostDanViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.post_item, parent, false)
+                .inflate(R.layout.item_post, parent, false)
             return PostDanViewHolder(view, glide, activity)
         }
     }

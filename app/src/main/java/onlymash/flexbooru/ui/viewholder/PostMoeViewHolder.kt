@@ -19,7 +19,7 @@ class PostMoeViewHolder(itemView: View,
     companion object {
         fun create(parent: ViewGroup, glide: GlideRequests, activity: Activity): PostMoeViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.post_item, parent, false)
+                .inflate(R.layout.item_post, parent, false)
             return PostMoeViewHolder(view, glide, activity)
         }
     }

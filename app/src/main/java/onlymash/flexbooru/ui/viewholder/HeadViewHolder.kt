@@ -10,7 +10,7 @@ class HeadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
         fun create(parent: ViewGroup): HeadViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.head_item, parent, false)
+                .inflate(R.layout.item_head, parent, false)
             return HeadViewHolder(view)
         }
     }
