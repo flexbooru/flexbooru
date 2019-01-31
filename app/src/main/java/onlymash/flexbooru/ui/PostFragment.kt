@@ -80,19 +80,29 @@ class PostFragment : Fragment() {
 
 
     private fun initPostDanAdapter() {
-        val postDanAdapter = PostDanAdapter(glide, requireActivity())
+        val postDanAdapter = PostDanAdapter(glide, requireActivity()) {
+            postViewModel.retryDan()
+        }
         list.adapter = postDanAdapter
         postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
             postDanAdapter.submitList(posts)
+        })
+        postViewModel.networkStateDan.observe(this, Observer { networkState ->
+            postDanAdapter.setNetworkState(networkState)
         })
         initSwipeToRefreshDan()
     }
 
     private fun initPostMoeAdapter() {
-        val postMoeAdapter = PostMoeAdapter(glide, requireActivity())
+        val postMoeAdapter = PostMoeAdapter(glide, requireActivity()) {
+            postViewModel.retryMoe()
+        }
         list.adapter = postMoeAdapter
         postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
             postMoeAdapter.submitList(posts)
+        })
+        postViewModel.networkStateMoe.observe(this, Observer { networkState ->
+            postMoeAdapter.setNetworkState(networkState)
         })
         initSwipeToRefreshMoe()
     }

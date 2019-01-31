@@ -4,4 +4,6 @@
     <string name="title_posts">Posts</string>
     <string name="title_search">Search</string>
     <string name="title_downloads">Downloads</string>
+
+    <string name="retry">Retry</string>
 </resources>

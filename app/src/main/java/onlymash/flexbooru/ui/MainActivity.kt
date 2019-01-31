@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_posts -> {
-                displayFragment(PostFragment())
+                if (supportFragmentManager.findFragmentById(R.id.fragment_container) !is PostFragment) {
+                    displayFragment(PostFragment())
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {
