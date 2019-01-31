@@ -9,6 +9,17 @@
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
 
+    <color name="blue">#FF33B5E5</color>
+    <color name="purple">#FFAA66CC</color>
+    <color name="green">#FF99CC00</color>
+    <color name="orange">#FFFFBB33</color>
+    <color name="red">#FFFF4444</color>
+    <color name="dark_blue">#FF0099CC</color>
+    <color name="dark_purple">#FF9933CC</color>
+    <color name="dark_green">#FF669900</color>
+    <color name="dark_orange">#FFFF8800</color>
+    <color name="dark_red">#FFCC0000</color>
+
     <color name="rating_e">#FFC9D7D2</color>
     <color name="rating_q">#FFCEC8C3</color>
     <color name="rating_s">#FFD7DBDF</color>

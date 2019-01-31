@@ -46,6 +46,18 @@ class PostFragment : Fragment() {
     }
 
     private fun init() {
+        val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
+        val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
+        swipe_refresh.apply {
+            setProgressViewOffset(false, start, end)
+            setColorSchemeResources(
+                R.color.blue,
+                R.color.purple,
+                R.color.green,
+                R.color.orange,
+                R.color.red
+            )
+        }
         postViewModel = getPostViewModel(app.serviceLocator.getRepository())
         glide = GlideApp.with(this)
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
