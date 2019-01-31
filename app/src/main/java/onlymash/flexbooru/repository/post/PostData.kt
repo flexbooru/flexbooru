@@ -1,4 +1,4 @@
-package onlymash.flexbooru.repository
+package onlymash.flexbooru.repository.post
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
@@ -13,16 +13,18 @@ import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.repository.Listing
+import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
-class PostRepository(
+class PostData(
     private val db: FlexbooruDatabase,
     private val danbooruApi: DanbooruApi,
     private val moebooruApi: MoebooruApi,
-    private val ioExecutor: Executor) : Repository {
+    private val ioExecutor: Executor) : PostRepository {
 
     private fun insertDanbooruResultIntoDb(search: Search, body: MutableList<PostDan>?) {
         body?.let { posts ->

@@ -5,8 +5,8 @@ import androidx.annotation.VisibleForTesting
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.repository.PostRepository
-import onlymash.flexbooru.repository.Repository
+import onlymash.flexbooru.repository.post.PostData
+import onlymash.flexbooru.repository.post.PostRepository
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -29,7 +29,7 @@ interface ServiceLocator {
         }
     }
 
-    fun getRepository(): Repository
+    fun getPostRepository(): PostRepository
 
     fun getNetworkExecutor(): Executor
 
@@ -59,8 +59,8 @@ open class DefaultServiceLocator(val app: Application) : ServiceLocator {
 
     private val moeApi by lazy { MoebooruApi.create() }
 
-    override fun getRepository(): Repository {
-        return PostRepository(
+    override fun getPostRepository(): PostRepository {
+        return PostData(
             db = db,
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),

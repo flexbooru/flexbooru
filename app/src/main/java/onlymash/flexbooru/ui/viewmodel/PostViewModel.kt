@@ -5,9 +5,9 @@ import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.model.Search
-import onlymash.flexbooru.repository.Repository
+import onlymash.flexbooru.repository.post.PostRepository
 
-class PostViewModel(private val repo: Repository): ViewModel() {
+class PostViewModel(private val repo: PostRepository): ViewModel() {
     private val searchData = MutableLiveData<Search>()
     private val danRepoResult = map(searchData) { search ->
         repo.getDanbooruPosts(search)

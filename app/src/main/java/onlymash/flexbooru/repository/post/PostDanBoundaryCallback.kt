@@ -1,4 +1,4 @@
-package onlymash.flexbooru.repository
+package onlymash.flexbooru.repository.post
 
 import androidx.annotation.MainThread
 import androidx.paging.PagedList

@@ -1,11 +1,11 @@
-package onlymash.flexbooru.repository
+package onlymash.flexbooru.repository.post
 
-import okhttp3.HttpUrl
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.repository.Listing
 
-interface Repository {
+interface PostRepository {
 
     fun getDanbooruPosts(search: Search): Listing<PostDan>
 

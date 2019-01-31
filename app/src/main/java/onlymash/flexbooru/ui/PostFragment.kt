@@ -24,7 +24,7 @@ import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.Search
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.Repository
+import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
 import onlymash.flexbooru.ui.adapter.PostMoeAdapter
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
@@ -59,7 +59,7 @@ class PostFragment : Fragment() {
                 R.color.red
             )
         }
-        postViewModel = getPostViewModel(app.serviceLocator.getRepository())
+        postViewModel = getPostViewModel(app.serviceLocator.getPostRepository())
         glide = GlideApp.with(this)
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
             flexWrap = FlexWrap.WRAP
@@ -124,7 +124,7 @@ class PostFragment : Fragment() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getPostViewModel(repo: Repository): PostViewModel {
+    private fun getPostViewModel(repo: PostRepository): PostViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PostViewModel(repo) as T
