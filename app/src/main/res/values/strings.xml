@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Flexbooru</string>
+
+    <string name="title_posts">Posts</string>
+    <string name="title_search">Search</string>
+    <string name="title_downloads">Downloads</string>
+</resources>
