@@ -149,7 +149,7 @@ class PostRepository(
                 override fun onResponse(call: Call<MutableList<PostMoe>>, response: Response<MutableList<PostMoe>>) {
                     ioExecutor.execute {
                         db.runInTransaction {
-                            db.postDanDao().deletePosts(search.host, search.tags)
+                            db.postMoeDao().deletePosts(search.host, search.tags)
                             insertMoebooruResultIntoDb(search, response.body())
                         }
                     }
