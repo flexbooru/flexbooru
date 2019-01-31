@@ -1,6 +1,7 @@
 package onlymash.flexbooru.api
 
 import okhttp3.HttpUrl
+import onlymash.flexbooru.model.Popular
 import onlymash.flexbooru.model.Search
 
 fun getDanbooruUrl(search: Search, page: Int): HttpUrl {
@@ -22,5 +23,24 @@ fun getMoebooruUrl(search: Search, page: Int): HttpUrl {
         .addQueryParameter("limit", search.limit.toString())
         .addQueryParameter("tags", search.tags)
         .addQueryParameter("page", page.toString())
+        .build()
+}
+
+fun getDanbooruPopularUrl(popular: Popular): HttpUrl {
+    return HttpUrl.Builder()
+        .scheme(popular.scheme)
+        .host(popular.host)
+        .addPathSegment("explore/posts/popular.json")
+        .addQueryParameter("date", popular.date)
+        .addQueryParameter("scale", popular.scale)
+        .build()
+}
+
+fun getMoebooruPopularUrl(popular: Popular): HttpUrl {
+    return HttpUrl.Builder()
+        .scheme(popular.scheme)
+        .host(popular.host)
+        .addPathSegment("post/popular_recent.json")
+        .addQueryParameter("period", popular.period)
         .build()
 }
