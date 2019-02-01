@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.model.Booru
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +29,19 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_posts -> {
                 if (supportFragmentManager.findFragmentById(R.id.fragment_container) !is PostFragment) {
                     displayFragment(PostFragment())
+                }
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_popular -> {
+                if (supportFragmentManager.findFragmentById(R.id.fragment_container) !is PopularFragment) {
+                    displayFragment(PopularFragment.newInstance(
+                        Booru(
+                            uid = null,
+                            name = "yande.re",
+                            scheme = "https",
+                            host = "yande.re",
+                            hash_salt = null,
+                            type = 1)))
                 }
                 return@OnNavigationItemSelectedListener true
             }

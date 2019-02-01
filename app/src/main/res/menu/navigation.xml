@@ -7,6 +7,11 @@
             android:title="@string/title_posts"/>
 
     <item
+            android:id="@+id/navigation_popular"
+            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:title="@string/title_popular"/>
+
+    <item
             android:id="@+id/navigation_search"
             android:icon="@drawable/ic_search_black_24dp"
             android:title="@string/title_search"/>
