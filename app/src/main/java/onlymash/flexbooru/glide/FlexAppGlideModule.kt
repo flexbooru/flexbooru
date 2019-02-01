@@ -11,6 +11,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.resource.bitmap.ExifInterfaceImageHeaderParser
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -37,6 +38,7 @@ class FlexAppGlideModule : AppGlideModule() {
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+        super.registerComponents(context, glide, registry)
         val interceptor = Interceptor { chain ->
             val requests =  chain.request().newBuilder()
                 .removeHeader(Constants.USER_AGENT_KEY)
@@ -51,9 +53,10 @@ class FlexAppGlideModule : AppGlideModule() {
                 .addInterceptor(interceptor)
         }
             .build()
-
         val factory = OkHttpUrlLoader.Factory(client)
         registry.replace(GlideUrl::class.java, InputStream::class.java, factory)
-        super.registerComponents(context, glide, registry)
+
+        //Hack to fix Glide outputting tons of log spam with ExifInterface errors
+        glide.registry.imageHeaderParsers.removeAll { it is ExifInterfaceImageHeaderParser }
     }
 }
