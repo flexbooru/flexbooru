@@ -29,25 +29,24 @@ class PostDanViewHolder(itemView: View,
     fun bind(post: PostDan?) {
         postDan = post
         if (post is PostDan && !post.preview_file_url.isNullOrEmpty()) {
-            val lp = preview.layoutParams
-            if (lp is FlexboxLayoutManager.LayoutParams) {
-                lp.flexGrow = 1f
-            }
             val placeholder = when (post.rating) {
                 "s" -> R.drawable.background_rating_s
                 "q" -> R.drawable.background_rating_q
                 else -> R.drawable.background_rating_e
             }
-            if (post.image_width < post.image_height) {
-                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
-                lp.width = lp.height * post.image_width/post.image_height
-            } else {
-                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
-                lp.width = lp.height * post.image_width/post.image_height
+            val lp = preview.layoutParams
+            if (lp is FlexboxLayoutManager.LayoutParams) {
+                lp.flexGrow = post.image_width.toFloat()/post.image_height.toFloat()
+                if (post.image_width < post.image_height) {
+                    lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
+                    lp.width = lp.height * post.image_width/post.image_height
+                } else {
+                    lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
+                    lp.width = lp.height * post.image_width/post.image_height
+                }
             }
             glide.load(post.preview_file_url)
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
-                .centerCrop()
                 .into(preview)
         }
     }

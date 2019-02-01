@@ -29,25 +29,25 @@ class PostMoeViewHolder(itemView: View,
     fun bind(post: PostMoe?) {
         postMoe = post
         if (post is PostMoe) {
-            val lp = preview.layoutParams
-            if (lp is FlexboxLayoutManager.LayoutParams) {
-                lp.flexGrow = 1f
-            }
             val placeholder = when (post.rating) {
                 "s" -> R.drawable.background_rating_s
                 "q" -> R.drawable.background_rating_q
                 else -> R.drawable.background_rating_e
             }
-            if (post.width < post.height) {
-                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
-                lp.width = lp.height * post.width/post.height
-            } else {
-                lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
-                lp.width = lp.height * post.width/post.height
+            val lp = preview.layoutParams
+            if (lp is FlexboxLayoutManager.LayoutParams) {
+                lp.flexGrow = post.width.toFloat()/post.height.toFloat()
+                if (post.width < post.height) {
+                    lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
+                    lp.width = lp.height * post.width/post.height
+                } else {
+                    lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
+                    lp.width = lp.height * post.width/post.height
+                }
             }
+
             glide.load(post.preview_url)
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
-                .centerCrop()
                 .into(preview)
         }
     }
