@@ -14,7 +14,10 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import onlymash.flexbooru.Constants
+import onlymash.flexbooru.util.UserAgent
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
@@ -34,11 +37,21 @@ class FlexAppGlideModule : AppGlideModule() {
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        val builder = OkHttpClient.Builder().apply {
-            connectTimeout(10, TimeUnit.SECONDS)
-            readTimeout(10, TimeUnit.SECONDS)
+        val interceptor = Interceptor { chain ->
+            val requests =  chain.request().newBuilder()
+                .removeHeader(Constants.USER_AGENT_KEY)
+                .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                .build()
+            chain.proceed(requests)
         }
-        val client = builder.build()
+        val client = OkHttpClient.Builder().apply {
+            connectTimeout(20, TimeUnit.SECONDS)
+            readTimeout(15, TimeUnit.SECONDS)
+            writeTimeout(15, TimeUnit.SECONDS)
+                .addInterceptor(interceptor)
+        }
+            .build()
+
         val factory = OkHttpUrlLoader.Factory(client)
         registry.replace(GlideUrl::class.java, InputStream::class.java, factory)
         super.registerComponents(context, glide, registry)

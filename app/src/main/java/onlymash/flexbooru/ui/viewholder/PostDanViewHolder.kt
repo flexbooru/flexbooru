@@ -46,7 +46,7 @@ class PostDanViewHolder(itemView: View,
                 lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
                 lp.width = lp.height * post.image_width/post.image_height
             }
-            glide.load(FlexGlideUrl(post.preview_file_url))
+            glide.load(post.preview_file_url)
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
                 .centerCrop()
                 .into(preview)

@@ -46,7 +46,7 @@ class PostMoeViewHolder(itemView: View,
                 lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
                 lp.width = lp.height * post.width/post.height
             }
-            glide.load(FlexGlideUrl(post.preview_url))
+            glide.load(post.preview_url)
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
                 .centerCrop()
                 .into(preview)

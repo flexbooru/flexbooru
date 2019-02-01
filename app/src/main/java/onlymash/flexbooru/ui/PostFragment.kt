@@ -41,8 +41,8 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 20, tags = ""))
-//        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 20, tags = ""))
+//        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 20, tags = ""))
+        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 20, tags = "mash_kyrielight rating:explicit"))
 //        postViewModel.show(Search(scheme = "https", host = "konachan.com", limit = 20, tags = ""))
     }
 
@@ -76,8 +76,8 @@ class PostFragment : Fragment() {
                 }
             }
         })
-        initPostDanAdapter()
-//        initPostMoeAdapter()
+//        initPostDanAdapter()
+        initPostMoeAdapter()
     }
 
 
