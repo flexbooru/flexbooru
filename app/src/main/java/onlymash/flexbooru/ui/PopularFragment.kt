@@ -114,7 +114,10 @@ class PopularFragment : Fragment() {
             flexDirection = FlexDirection.ROW
             alignItems = AlignItems.STRETCH
         }
-        list.layoutManager = flexboxLayoutManager
+        list.apply {
+            itemAnimator = null
+            layoutManager = flexboxLayoutManager
+        }
         when (type) {
             TYPE_DANBOORU -> {
                 initPostDanAdapter()

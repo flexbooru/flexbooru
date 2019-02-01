@@ -67,16 +67,18 @@ class PostFragment : Fragment() {
             flexDirection = FlexDirection.ROW
             alignItems = AlignItems.STRETCH
         }
-        list.layoutManager = flexboxLayoutManager
-//        list.itemAnimator = null
-        list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
-                    else -> glide.pauseRequests()
+        list.apply {
+            itemAnimator = null
+            layoutManager = flexboxLayoutManager
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    when (newState) {
+                        RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
+                        else -> glide.pauseRequests()
+                    }
                 }
-            }
-        })
+            })
+        }
 //        initPostDanAdapter()
         initPostMoeAdapter()
     }
