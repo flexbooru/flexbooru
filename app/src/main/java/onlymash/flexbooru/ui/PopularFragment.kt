@@ -1,9 +1,8 @@
 package onlymash.flexbooru.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -15,6 +14,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
+import kotlinx.android.synthetic.main.search_bar.*
 import onlymash.flexbooru.App.Companion.app
 
 import onlymash.flexbooru.R
@@ -35,6 +35,14 @@ private const val ARG_HOST = "host"
 private const val ARG_TYPE = "type"
 private const val TYPE_DANBOORU = "type_danbooru"
 private const val TYPE_MOEBOORU = "type_moebooru"
+
+private const val SCALE_DAY = "day"
+private const val SCALE_WEEK = "week"
+private const val SCALE_MONTH = "month"
+private const val PERIOD_DAY = "1d"
+private const val PERIOD_WEEK = "1w"
+private const val PERIOD_MONTH = "1m"
+private const val PERIOD_YEAR = "1y"
 
 /**
  * Use the [PopularFragment.newInstance] factory method to
@@ -72,6 +80,8 @@ class PopularFragment : Fragment() {
     private var host: String? = null
     private var type: String? = null
 
+    private lateinit var popular: Popular
+
     private lateinit var popularViewModel: PopularViewModel
     private lateinit var glide: GlideRequests
 
@@ -95,6 +105,37 @@ class PopularFragment : Fragment() {
     }
 
     private fun init() {
+        val inflater = requireActivity().menuInflater
+        when (type) {
+            TYPE_DANBOORU -> inflater.inflate(R.menu.menu_popular_dan, search_bar_menu_view.menu)
+            TYPE_MOEBOORU -> inflater.inflate(R.menu.menu_popular_moe, search_bar_menu_view.menu)
+        }
+        search_bar_menu_view.setOnMenuItemClickListener { menuItem ->
+            when (type) {
+                TYPE_DANBOORU -> {
+                    when (menuItem.itemId) {
+                        R.id.action_day -> popular.scale = SCALE_DAY
+                        R.id.action_week -> popular.scale = SCALE_WEEK
+                        R.id.action_month -> popular.scale = SCALE_MONTH
+                    }
+                    popularViewModel.show(popular)
+                    swipe_refresh.isRefreshing = true
+                    popularViewModel.refreshDan()
+                }
+                TYPE_MOEBOORU -> {
+                    when (menuItem.itemId) {
+                        R.id.action_day -> popular.period = PERIOD_DAY
+                        R.id.action_week -> popular.period = PERIOD_WEEK
+                        R.id.action_month -> popular.period = PERIOD_MONTH
+                        R.id.action_year -> popular.period = PERIOD_YEAR
+                    }
+                    popularViewModel.show(popular)
+                    swipe_refresh.isRefreshing = true
+                    popularViewModel.refreshMoe()
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
         swipe_refresh.apply {
@@ -121,25 +162,24 @@ class PopularFragment : Fragment() {
         when (type) {
             TYPE_DANBOORU -> {
                 initPostDanAdapter()
-                popularViewModel.show(
-                    Popular(
-                        scheme = scheme!!,
-                        host = host!!,
-                        date = null,
-                        scale = null,
-                        period = null))
+                popular = Popular(
+                    scheme = scheme!!,
+                    host = host!!,
+                    date = null,
+                    scale = null,
+                    period = null)
             }
             TYPE_MOEBOORU -> {
                 initPostMoeAdapter()
-                popularViewModel.show(
-                    Popular(
-                        scheme = scheme!!,
-                        host = host!!,
-                        date = null,
-                        scale = null,
-                        period = "1d"))
+                popular = Popular(
+                    scheme = scheme!!,
+                    host = host!!,
+                    date = null,
+                    scale = null,
+                    period = "1d")
             }
         }
+        popularViewModel.show(popular)
     }
 
     private fun initPostDanAdapter() {

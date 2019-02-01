@@ -7,4 +7,9 @@
     <string name="title_downloads">Downloads</string>
 
     <string name="retry">Retry</string>
+
+    <string name="popular_day">Day</string>
+    <string name="popular_week">Week</string>
+    <string name="popular_month">Month</string>
+    <string name="popular_year">Year</string>
 </resources>

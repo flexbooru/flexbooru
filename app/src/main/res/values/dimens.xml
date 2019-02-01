@@ -5,6 +5,7 @@
     <dimen name="search_bar_corner_radius">6dp</dimen>
     <dimen name="search_bar_icon_horizontal_margin">14dp</dimen>
     <dimen name="elevation_size">5dp</dimen>
+    <dimen name="bottom_nav_elevation_size">20dp</dimen>
     <dimen name="post_item_height_max">250dp</dimen>
     <dimen name="post_item_height_min">125dp</dimen>
     <dimen name="post_item_margin">2dp</dimen>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            android:id="@+id/action_day"
+            android:title="@string/popular_day"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_week"
+            android:title="@string/popular_week"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_month"
+            android:title="@string/popular_month"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_year"
+            android:title="@string/popular_year"
+            app:showAsAction="never"/>
+
+</menu>

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_bar_size"
         android:clipToPadding="false"
+        android:touchscreenBlocksFocus="false"
         app:cardBackgroundColor="@color/white"
         app:cardUseCompatPadding="false"
         app:cardCornerRadius="@dimen/search_bar_corner_radius"
@@ -39,6 +40,13 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
+        <androidx.appcompat.widget.ActionMenuView
+                android:id="@+id/search_bar_menu_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                style="@style/ThemeOverlay.AppCompat.Light">
+        </androidx.appcompat.widget.ActionMenuView>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
