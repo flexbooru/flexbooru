@@ -8,7 +8,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import onlymash.flexbooru.R
-import onlymash.flexbooru.glide.FlexGlideUrl
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.PostMoe
 
