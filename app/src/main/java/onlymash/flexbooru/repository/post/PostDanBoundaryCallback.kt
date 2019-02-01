@@ -23,7 +23,7 @@ class PostDanBoundaryCallback(
     val helper = PagingRequestHelper(ioExecutor)
     val networkState = helper.createStatusLiveData()
 
-    private var lastResponseSize = search.limit
+    var lastResponseSize = search.limit
 
     private fun insertItemsIntoDb(response: Response<MutableList<PostDan>>, it: PagingRequestHelper.Request.Callback) {
         ioExecutor.execute {

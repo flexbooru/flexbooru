@@ -26,6 +26,9 @@ class PostData(
     private val moebooruApi: MoebooruApi,
     private val ioExecutor: Executor) : PostRepository {
 
+    private var danBoundaryCallback: PostDanBoundaryCallback? = null
+    private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
+
     private fun insertDanbooruResultIntoDb(search: Search, body: MutableList<PostDan>?) {
         body?.let { posts ->
             val start = db.postDanDao().getNextIndex(host = search.host, keyword = search.tags)
@@ -54,7 +57,7 @@ class PostData(
 
     @MainThread
     override fun getDanbooruPosts(search: Search): Listing<PostDan> {
-        val boundaryCallback = PostDanBoundaryCallback(
+        danBoundaryCallback = PostDanBoundaryCallback(
             danbooruApi = danbooruApi,
             handleResponse = this::insertDanbooruResultIntoDb,
             ioExecutor = ioExecutor,
@@ -68,13 +71,13 @@ class PostData(
             .getPosts(search.host, search.tags)
             .toLiveData(
                 pageSize = search.limit,
-                boundaryCallback = boundaryCallback
+                boundaryCallback = danBoundaryCallback
             )
         return Listing(
             pagedList = livePagedList,
-            networkState = boundaryCallback.networkState,
+            networkState = danBoundaryCallback!!.networkState,
             retry = {
-                boundaryCallback.helper.retryAllFailed()
+                danBoundaryCallback!!.helper.retryAllFailed()
             },
             refresh = {
                 refreshTrigger.value = null
@@ -85,7 +88,7 @@ class PostData(
 
     @MainThread
     override fun getMoebooruPosts(search: Search): Listing<PostMoe> {
-        val boundaryCallback = PostMoeBoundaryCallback(
+        moeBoundaryCallback = PostMoeBoundaryCallback(
             moebooruApi = moebooruApi,
             handleResponse = this::insertMoebooruResultIntoDb,
             ioExecutor = ioExecutor,
@@ -99,13 +102,13 @@ class PostData(
             .getPosts(host = search.host, keyword = search.tags)
             .toLiveData(
                 pageSize = search.limit,
-                boundaryCallback = boundaryCallback
+                boundaryCallback = moeBoundaryCallback
             )
         return Listing(
             pagedList = livePagedList,
-            networkState = boundaryCallback.networkState,
+            networkState = moeBoundaryCallback!!.networkState,
             retry = {
-                boundaryCallback.helper.retryAllFailed()
+                moeBoundaryCallback!!.helper.retryAllFailed()
             },
             refresh = {
                 refreshTrigger.value = null
@@ -116,6 +119,7 @@ class PostData(
 
     @MainThread
     private fun refreshDanbooru(search: Search): LiveData<NetworkState> {
+        danBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
         danbooruApi.getPosts(getDanbooruUrl(search, 1)).enqueue(
@@ -140,6 +144,7 @@ class PostData(
 
     @MainThread
     private fun refreshMoebooru(search: Search): LiveData<NetworkState> {
+        moeBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
         moebooruApi.getPosts(getMoebooruUrl(search, 1)).enqueue(
