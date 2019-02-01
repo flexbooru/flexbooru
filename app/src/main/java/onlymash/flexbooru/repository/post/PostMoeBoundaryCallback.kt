@@ -23,8 +23,11 @@ class PostMoeBoundaryCallback(
     val helper = PagingRequestHelper(ioExecutor)
     val networkState = helper.createStatusLiveData()
 
+    private var lastResponseSize = search.limit
+
     private fun insertItemsIntoDb(response: Response<MutableList<PostMoe>>, it: PagingRequestHelper.Request.Callback) {
         ioExecutor.execute {
+            lastResponseSize = if (!response.body().isNullOrEmpty()) response.body()?.size!! else 0
             handleResponse(search, response.body())
             it.recordSuccess()
         }
@@ -57,9 +60,13 @@ class PostMoeBoundaryCallback(
 
     @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: PostMoe) {
-        helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            moebooruApi.getPosts(getMoebooruUrl(search, (itemAtEnd.indexInResponse + 1)/search.limit + 1))
-                .enqueue(createMoebooruCallback(it))
+        val indexInNext = itemAtEnd.indexInResponse + 1
+        val limit = search.limit
+        if (lastResponseSize == limit) {
+            helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
+                moebooruApi.getPosts(getMoebooruUrl(search, indexInNext/limit + 1))
+                    .enqueue(createMoebooruCallback(it))
+            }
         }
     }
 

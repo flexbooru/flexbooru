@@ -23,8 +23,11 @@ class PostDanBoundaryCallback(
     val helper = PagingRequestHelper(ioExecutor)
     val networkState = helper.createStatusLiveData()
 
+    private var lastResponseSize = search.limit
+
     private fun insertItemsIntoDb(response: Response<MutableList<PostDan>>, it: PagingRequestHelper.Request.Callback) {
         ioExecutor.execute {
+            lastResponseSize = if (!response.body().isNullOrEmpty()) response.body()?.size!! else 0
             handleResponse(search, response.body())
             it.recordSuccess()
         }
@@ -57,8 +60,13 @@ class PostDanBoundaryCallback(
 
     @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: PostDan) {
-        helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            danbooruApi.getPosts(getDanbooruUrl(search, (itemAtEnd.indexInResponse + 1)/search.limit + 1)).enqueue(createDanbooruCallback(it))
+        val indexInNext = itemAtEnd.indexInResponse + 1
+        val limit = search.limit
+        if (lastResponseSize == limit) {
+            helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
+                danbooruApi.getPosts(getDanbooruUrl(search, indexInNext/limit + 1))
+                    .enqueue(createDanbooruCallback(it))
+            }
         }
     }
 
