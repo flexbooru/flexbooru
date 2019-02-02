@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.ui.adapter.NavViewPagerAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,23 +30,37 @@ class MainActivity : AppCompatActivity() {
             host = "danbooru.donmai.us",
             hash_salt = Constants.EMPTY_STRING_VALUE,
             type = Constants.TYPE_DANBOORU)
-        if (savedInstanceState == null) {
-            displayFragment(PostFragment.newInstance(booru, Constants.EMPTY_STRING_VALUE))
-        }
+        pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
+        pager_container.addOnPageChangeListener(pageChangeListener)
     }
+
+    private val pageChangeListener =
+        object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> navigation.selectedItemId = R.id.navigation_posts
+                    1 -> navigation.selectedItemId = R.id.navigation_popular
+                }
+            }
+        }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_posts -> {
-                if (supportFragmentManager.findFragmentById(R.id.fragment_container) !is PostFragment) {
-                    displayFragment(PostFragment.newInstance(booru, Constants.EMPTY_STRING_VALUE))
-                }
+                pager_container.currentItem = 0
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_popular -> {
-                if (supportFragmentManager.findFragmentById(R.id.fragment_container) !is PopularFragment) {
-                    displayFragment(PopularFragment.newInstance(booru))
-                }
+                pager_container.currentItem = 1
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {
@@ -58,11 +73,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
-    }
-
-    private fun displayFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commitAllowingStateLoss()
     }
 }
