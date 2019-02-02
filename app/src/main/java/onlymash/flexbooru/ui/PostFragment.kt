@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -16,9 +17,10 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
-import onlymash.flexbooru.App.Companion.app
+import kotlinx.android.synthetic.main.search_bar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.Booru
@@ -66,6 +68,8 @@ class PostFragment : Fragment() {
     private lateinit var postViewModel: PostViewModel
     private lateinit var glide: GlideRequests
 
+    private lateinit var leftDrawable: DrawerArrowDrawable
+
     private var scheme: String = Constants.NULL_STRING_VALUE
     private var host: String = Constants.NULL_STRING_VALUE
     private var type: Int = Constants.TYPE_UNKNOWN
@@ -94,6 +98,12 @@ class PostFragment : Fragment() {
     }
 
     private fun init() {
+        leftDrawable = DrawerArrowDrawable(requireContext())
+        menu_button.setImageDrawable(leftDrawable)
+        menu_button.setOnClickListener {
+            val activity = requireActivity()
+            if (activity is MainActivity) activity.drawer.openDrawer()
+        }
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
         swipe_refresh.apply {
@@ -106,7 +116,7 @@ class PostFragment : Fragment() {
                 R.color.red
             )
         }
-        postViewModel = getPostViewModel(app.serviceLocator.getPostRepository())
+        postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
             flexWrap = FlexWrap.WRAP

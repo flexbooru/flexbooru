@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_booru_add"
+            android:icon="@drawable/ic_note_add_black_24dp"
+            android:title="@string/booru_add"
+            app:showAsAction="ifRoom">
+        <menu>
+            <item
+                    android:id="@+id/action_booru_add_qr"
+                    android:title="@string/booru_add_from_qr_code"/>
+            <item
+                    android:id="@+id/action_booru_add_clipboard"
+                    android:title="@string/booru_add_from_clipboard"/>
+            <item
+                    android:id="@+id/action_booru_add_manual"
+                    android:title="@string/booru_add_from_manual_settings"/>
+        </menu>
+    </item>
+</menu>

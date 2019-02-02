@@ -1,6 +1,5 @@
 package onlymash.flexbooru
 
-import android.app.Application
 import androidx.annotation.VisibleForTesting
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
@@ -16,10 +15,10 @@ interface ServiceLocator {
     companion object {
         private val LOCK = Any()
         private var instance: ServiceLocator? = null
-        fun instance(app: Application): ServiceLocator {
+        fun instance(): ServiceLocator {
             synchronized(LOCK) {
                 if (instance == null) {
-                    instance = DefaultServiceLocator(app = app)
+                    instance = DefaultServiceLocator()
                 }
                 return instance!!
             }
@@ -47,7 +46,7 @@ interface ServiceLocator {
 /**
  * default implementation of ServiceLocator that uses production endpoints.
  */
-open class DefaultServiceLocator(val app: Application) : ServiceLocator {
+open class DefaultServiceLocator : ServiceLocator {
 
     // thread pool used for disk access
     @Suppress("PrivatePropertyName")
@@ -57,15 +56,13 @@ open class DefaultServiceLocator(val app: Application) : ServiceLocator {
     @Suppress("PrivatePropertyName")
     private val NETWORK_IO = Executors.newFixedThreadPool(5)
 
-    private val db by lazy { FlexbooruDatabase.create(app) }
-
     private val danApi by lazy { DanbooruApi.create() }
 
     private val moeApi by lazy { MoebooruApi.create() }
 
     override fun getPostRepository(): PostRepository {
         return PostData(
-            db = db,
+            db = FlexbooruDatabase.instance,
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             ioExecutor = getDiskIOExecutor()
@@ -76,7 +73,7 @@ open class DefaultServiceLocator(val app: Application) : ServiceLocator {
         return PopularData(
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
-            db = db,
+            db = FlexbooruDatabase.instance,
             networkExecutor = getNetworkExecutor()
         )
     }

@@ -8,5 +8,5 @@
         android:elevation="@dimen/elevation_size"
         android:background="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:navigationIcon="?android:attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>

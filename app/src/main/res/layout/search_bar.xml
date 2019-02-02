@@ -23,15 +23,14 @@
             android:layout_height="match_parent">
 
         <ImageButton
+                android:id="@+id/menu_button"
                 android:layout_marginStart="@dimen/search_bar_icon_horizontal_margin"
                 android:layout_marginEnd="@dimen/search_bar_icon_horizontal_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:tint="@color/grey_60"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_menu_black_24dp"/>
+                android:contentDescription="@null"/>
         <TextView
                 android:layout_weight="1"
                 android:gravity="center_vertical"

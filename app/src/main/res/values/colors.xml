@@ -24,7 +24,8 @@
     <color name="rating_q">#FFCEC8C3</color>
     <color name="rating_s">#FFD7DBDF</color>
 
-    <color name="grey_40">#999999</color>
-    <color name="grey_60">#666666</color>
+    <color name="grey_400">#999999</color>
+    <color name="grey_600">#666666</color>
+    <color name="grey_900">#212121</color>
 
 </resources>

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,7 @@ import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.Booru
@@ -85,6 +87,8 @@ class PopularFragment : Fragment() {
     private lateinit var popularViewModel: PopularViewModel
     private lateinit var glide: GlideRequests
 
+    private lateinit var leftDrawable: DrawerArrowDrawable
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -105,6 +109,12 @@ class PopularFragment : Fragment() {
     }
 
     private fun init() {
+        leftDrawable = DrawerArrowDrawable(requireContext())
+        menu_button.setImageDrawable(leftDrawable)
+        menu_button.setOnClickListener {
+            val activity = requireActivity()
+            if (activity is MainActivity) activity.drawer.openDrawer()
+        }
         val inflater = requireActivity().menuInflater
         when (type) {
             Constants.TYPE_DANBOORU -> inflater.inflate(R.menu.menu_popular_dan, search_bar_menu_view.menu)
@@ -194,7 +204,7 @@ class PopularFragment : Fragment() {
                 R.color.red
             )
         }
-        popularViewModel = getPopularViewModel(app.serviceLocator.getPopularRepository())
+        popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
         glide = GlideApp.with(this)
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
             flexWrap = FlexWrap.WRAP

@@ -7,8 +7,6 @@ class App : Application() {
         lateinit var app: App
     }
 
-    val serviceLocator by lazy { ServiceLocator.instance(app) }
-
     override fun onCreate() {
         super.onCreate()
         app = this

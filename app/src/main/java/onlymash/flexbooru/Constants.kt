@@ -1,6 +1,8 @@
 package onlymash.flexbooru
 
 object Constants {
+    const val DB_FILE_NAME = "Flexbooru.db"
+
     const val USER_AGENT_KEY = "User-Agent"
     const val BASE_URL = "http://fiepi.me"
 
