@@ -124,28 +124,27 @@ class PopularFragment : Fragment() {
                                 timeInMillis = currentTimeMillis
                                 add(Calendar.YEAR, -20)
                             }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                DatePickerDialog(
-                                    requireContext(),
-                                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                                        val yearString = year.toString()
-                                        val realMonth = month + 1
-                                        val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
-                                        val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-                                        date = "$yearString-$monthString-$dayString"
-                                        popular.date = date
-                                        popularViewModel.show(popular)
-                                        swipe_refresh.isRefreshing = true
-                                        popularViewModel.refreshDan()
-                                    },
-                                    currentCalendar.get(Calendar.YEAR),
-                                    currentCalendar.get(Calendar.MONTH),
-                                    currentCalendar.get(Calendar.DAY_OF_MONTH)).apply {
-                                    datePicker.minDate = minCalendar.timeInMillis
-                                    datePicker.maxDate = currentTimeMillis
-                                }
-                                    .show()
+                            DatePickerDialog(
+                                requireContext(),
+                                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                                    val yearString = year.toString()
+                                    val realMonth = month + 1
+                                    val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+                                    val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                                    date = "$yearString-$monthString-$dayString"
+                                    popular.date = date
+                                    popularViewModel.show(popular)
+                                    swipe_refresh.isRefreshing = true
+                                    popularViewModel.refreshDan()
+                                },
+                                currentCalendar.get(Calendar.YEAR),
+                                currentCalendar.get(Calendar.MONTH),
+                                currentCalendar.get(Calendar.DAY_OF_MONTH)
+                            ).apply {
+                                datePicker.minDate = minCalendar.timeInMillis
+                                datePicker.maxDate = currentTimeMillis
                             }
+                                .show()
                         }
                         R.id.action_day -> {
                             popular.scale = SCALE_DAY
