@@ -52,6 +52,7 @@ class PopularMoeDataSource(
             val response = request.execute()
             val data = response.body()
             val posts = data?: mutableListOf()
+            db.postMoeDao().deletePosts(host, keyword)
             val start = db.postMoeDao().getNextIndex(host, keyword)
             val items = posts.mapIndexed { index, postMoe ->
                 postMoe.host = host

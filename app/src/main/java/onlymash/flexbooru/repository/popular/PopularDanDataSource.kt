@@ -52,6 +52,7 @@ class PopularDanDataSource(
             val response = request.execute()
             val data = response.body()
             val posts = data?: mutableListOf()
+            db.postDanDao().deletePosts(host, keyword)
             val start = db.postDanDao().getNextIndex(host = host, keyword = keyword)
             val items = posts.mapIndexed { index, postDan ->
                 postDan.host = host
