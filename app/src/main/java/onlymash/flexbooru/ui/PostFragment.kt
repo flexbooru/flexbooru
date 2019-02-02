@@ -15,12 +15,13 @@ import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.App.Companion.app
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
+import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.Search
@@ -32,8 +33,56 @@ import onlymash.flexbooru.ui.viewmodel.PostViewModel
 
 class PostFragment : Fragment() {
 
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param booru active booru
+         * @param tags keyword of search
+         * @return A new instance of fragment PostFragment.
+         */
+        @JvmStatic
+        fun newInstance(booru: Booru, tags: String) =
+            PostFragment().apply {
+                arguments = when (booru.type) {
+                    Constants.TYPE_DANBOORU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
+                        putString(Constants.TAGS_KEY, tags)
+                    }
+                    Constants.TYPE_MOEBOORU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
+                        putString(Constants.TAGS_KEY, tags)
+                    }
+                    else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
+                }
+            }
+    }
+
     private lateinit var postViewModel: PostViewModel
     private lateinit var glide: GlideRequests
+
+    private var scheme: String = Constants.NULL_STRING_VALUE
+    private var host: String = Constants.NULL_STRING_VALUE
+    private var type: Int = Constants.TYPE_UNKNOWN
+    private var tags: String = Constants.EMPTY_STRING_VALUE
+    private var limit: Int = 20
+
+    private lateinit var search: Search
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            scheme = it.getString(Constants.SCHEME_KEY, Constants.NULL_STRING_VALUE)
+            host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
+            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+            tags = it.getString(Constants.TAGS_KEY, Constants.EMPTY_STRING_VALUE)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_post, container, false)
@@ -42,9 +91,6 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-//        postViewModel.show(Search(scheme = "https", host = "danbooru.donmai.us", limit = 20, tags = ""))
-        postViewModel.show(Search(scheme = "https", host = "yande.re", limit = 20, tags = ""))
-//        postViewModel.show(Search(scheme = "https", host = "konachan.com", limit = 20, tags = ""))
     }
 
     private fun init() {
@@ -79,8 +125,19 @@ class PostFragment : Fragment() {
                 }
             })
         }
-//        initPostDanAdapter()
-        initPostMoeAdapter()
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                initPostDanAdapter()
+            }
+            Constants.TYPE_MOEBOORU -> {
+                initPostMoeAdapter()
+            }
+            else -> {
+                // unknown type
+            }
+        }
+        search = Search(scheme = scheme, host = host, limit = limit, tags = tags)
+        postViewModel.show(search)
     }
 
 

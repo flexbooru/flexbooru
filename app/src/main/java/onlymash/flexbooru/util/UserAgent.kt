@@ -2,6 +2,7 @@ package onlymash.flexbooru.util
 
 import android.os.Build
 import onlymash.flexbooru.BuildConfig
+import onlymash.flexbooru.Constants
 
 import java.util.Locale
 
@@ -9,8 +10,6 @@ import java.util.Locale
  * Constructs a User-Agent string.
  */
 object UserAgent {
-
-    private const val APP_NAME = "Flexbooru"
 
     /**
      * Constructs a User-Agent string including application name and version,
@@ -44,7 +43,7 @@ object UserAgent {
 
         builder.apply {
             append("; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 ")
-            append(APP_NAME)
+            append(BuildConfig.APPLICATION_ID)
             append("/")
             append(BuildConfig.VERSION_NAME)
             append(" Mobile Safari/537.36")

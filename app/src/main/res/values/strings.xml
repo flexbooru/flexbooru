@@ -12,4 +12,5 @@
     <string name="popular_week">Week</string>
     <string name="popular_month">Month</string>
     <string name="popular_year">Year</string>
+    <string name="popular_date">Date</string>
 </resources>

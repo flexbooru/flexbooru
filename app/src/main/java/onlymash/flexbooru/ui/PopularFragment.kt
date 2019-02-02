@@ -1,5 +1,7 @@
 package onlymash.flexbooru.ui
 
+import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -16,6 +18,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_bar.*
 import onlymash.flexbooru.App.Companion.app
+import onlymash.flexbooru.Constants
 
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideApp
@@ -29,12 +32,7 @@ import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
 import onlymash.flexbooru.ui.adapter.PostMoeAdapter
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
-
-private const val ARG_SCHEME = "scheme"
-private const val ARG_HOST = "host"
-private const val ARG_TYPE = "type"
-private const val TYPE_DANBOORU = "type_danbooru"
-private const val TYPE_MOEBOORU = "type_moebooru"
+import java.util.*
 
 private const val SCALE_DAY = "day"
 private const val SCALE_WEEK = "week"
@@ -63,22 +61,24 @@ class PopularFragment : Fragment() {
         fun newInstance(booru: Booru) =
             PopularFragment().apply {
                 arguments = when (booru.type) {
-                    0 -> Bundle().apply {
-                        putString(ARG_SCHEME, booru.scheme)
-                        putString(ARG_HOST, booru.host)
-                        putString(ARG_TYPE, TYPE_DANBOORU)
+                    Constants.TYPE_DANBOORU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
                     }
-                    else -> Bundle().apply {
-                        putString(ARG_SCHEME, booru.scheme)
-                        putString(ARG_HOST, booru.host)
-                        putString(ARG_TYPE, TYPE_MOEBOORU)
+                    Constants.TYPE_MOEBOORU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
                     }
+                    else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
     }
-    private var scheme: String? = null
-    private var host: String? = null
-    private var type: String? = null
+    private var scheme: String = Constants.NULL_STRING_VALUE
+    private var host: String = Constants.NULL_STRING_VALUE
+    private var type: Int = Constants.TYPE_UNKNOWN
+    private var date: String = Constants.EMPTY_STRING_VALUE
 
     private lateinit var popular: Popular
 
@@ -88,9 +88,9 @@ class PopularFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            scheme = it.getString(ARG_SCHEME)
-            host = it.getString(ARG_HOST)
-            type = it.getString(ARG_TYPE)
+            scheme = it.getString(Constants.SCHEME_KEY, Constants.NULL_STRING_VALUE)
+            host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
+            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
         }
     }
 
@@ -107,27 +107,74 @@ class PopularFragment : Fragment() {
     private fun init() {
         val inflater = requireActivity().menuInflater
         when (type) {
-            TYPE_DANBOORU -> inflater.inflate(R.menu.menu_popular_dan, search_bar_menu_view.menu)
-            TYPE_MOEBOORU -> inflater.inflate(R.menu.menu_popular_moe, search_bar_menu_view.menu)
+            Constants.TYPE_DANBOORU -> inflater.inflate(R.menu.menu_popular_dan, search_bar_menu_view.menu)
+            Constants.TYPE_MOEBOORU -> inflater.inflate(R.menu.menu_popular_moe, search_bar_menu_view.menu)
+            else -> throw IllegalArgumentException("unknown type $type")
         }
         search_bar_menu_view.setOnMenuItemClickListener { menuItem ->
             when (type) {
-                TYPE_DANBOORU -> {
+                Constants.TYPE_DANBOORU -> {
                     when (menuItem.itemId) {
-                        R.id.action_day -> popular.scale = SCALE_DAY
-                        R.id.action_week -> popular.scale = SCALE_WEEK
-                        R.id.action_month -> popular.scale = SCALE_MONTH
+                        R.id.action_date -> {
+                            val currentTimeMillis = System.currentTimeMillis()
+                            val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                timeInMillis = currentTimeMillis
+                            }
+                            val minCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                timeInMillis = currentTimeMillis
+                                add(Calendar.YEAR, -20)
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                DatePickerDialog(
+                                    requireContext(),
+                                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                                        val yearString = year.toString()
+                                        val realMonth = month + 1
+                                        val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+                                        val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                                        date = "$yearString-$monthString-$dayString"
+                                        popular.date = date
+                                        popularViewModel.show(popular)
+                                        swipe_refresh.isRefreshing = true
+                                        popularViewModel.refreshDan()
+                                    },
+                                    currentCalendar.get(Calendar.YEAR),
+                                    currentCalendar.get(Calendar.MONTH),
+                                    currentCalendar.get(Calendar.DAY_OF_MONTH)).apply {
+                                    datePicker.minDate = minCalendar.timeInMillis
+                                    datePicker.maxDate = currentTimeMillis
+                                }
+                                    .show()
+                            }
+                        }
+                        R.id.action_day -> {
+                            popular.scale = SCALE_DAY
+                            popularViewModel.show(popular)
+                            swipe_refresh.isRefreshing = true
+                            popularViewModel.refreshDan()
+                        }
+                        R.id.action_week -> {
+                            popular.scale = SCALE_WEEK
+                            popularViewModel.show(popular)
+                            swipe_refresh.isRefreshing = true
+                            popularViewModel.refreshDan()
+                        }
+                        R.id.action_month -> {
+                            popular.scale = SCALE_MONTH
+                            popularViewModel.show(popular)
+                            swipe_refresh.isRefreshing = true
+                            popularViewModel.refreshDan()
+                        }
+                        else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                     }
-                    popularViewModel.show(popular)
-                    swipe_refresh.isRefreshing = true
-                    popularViewModel.refreshDan()
                 }
-                TYPE_MOEBOORU -> {
+                Constants.TYPE_MOEBOORU -> {
                     when (menuItem.itemId) {
                         R.id.action_day -> popular.period = PERIOD_DAY
                         R.id.action_week -> popular.period = PERIOD_WEEK
                         R.id.action_month -> popular.period = PERIOD_MONTH
                         R.id.action_year -> popular.period = PERIOD_YEAR
+                        else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                     }
                     popularViewModel.show(popular)
                     swipe_refresh.isRefreshing = true
@@ -160,25 +207,15 @@ class PopularFragment : Fragment() {
             layoutManager = flexboxLayoutManager
         }
         when (type) {
-            TYPE_DANBOORU -> {
-                initPostDanAdapter()
-                popular = Popular(
-                    scheme = scheme!!,
-                    host = host!!,
-                    date = null,
-                    scale = null,
-                    period = null)
-            }
-            TYPE_MOEBOORU -> {
-                initPostMoeAdapter()
-                popular = Popular(
-                    scheme = scheme!!,
-                    host = host!!,
-                    date = null,
-                    scale = null,
-                    period = "1d")
-            }
+            Constants.TYPE_DANBOORU -> initPostDanAdapter()
+            Constants.TYPE_MOEBOORU -> initPostMoeAdapter()
         }
+        popular = Popular(
+            scheme = scheme,
+            host = host,
+            date = date,
+            scale = SCALE_DAY,
+            period = PERIOD_DAY)
         popularViewModel.show(popular)
     }
 

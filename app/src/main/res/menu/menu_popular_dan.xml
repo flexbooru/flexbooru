@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:id="@+id/action_date"
+            android:icon="@drawable/ic_date_range_black_24dp"
+            android:title="@string/popular_date"
+            app:showAsAction="ifRoom"/>
+
+    <item
             android:id="@+id/action_day"
             android:title="@string/popular_day"
             app:showAsAction="never"/>

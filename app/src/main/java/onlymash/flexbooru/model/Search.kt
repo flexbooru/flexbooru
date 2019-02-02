@@ -1,8 +1,8 @@
 package onlymash.flexbooru.model
 
 data class Search(
-    val scheme: String,
-    val host: String,
-    val limit: Int,
-    val tags: String
+    var scheme: String,
+    var host: String,
+    var limit: Int,
+    var tags: String
 )
