@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.getMoebooruPopularUrl
+import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.model.Popular
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.repository.NetworkState
@@ -12,6 +13,7 @@ import java.util.concurrent.Executor
 
 class PopularMoeDataSource(
     private val moebooruApi: MoebooruApi,
+    private val db: FlexbooruDatabase,
     private val popular: Popular,
     private val retryExecutor: Executor) : PageKeyedDataSource<Int, PostMoe>() {
 
@@ -42,11 +44,22 @@ class PopularMoeDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
+        val host = popular.host
+        val keyword = popular.period
+
         // triggered by a refresh, we better execute sync
         try {
             val response = request.execute()
             val data = response.body()
-            val items = data?: mutableListOf()
+            val posts = data?: mutableListOf()
+            val start = db.postMoeDao().getNextIndex(host, keyword)
+            val items = posts.mapIndexed { index, postMoe ->
+                postMoe.host = host
+                postMoe.keyword = keyword
+                postMoe.indexInResponse = start + index
+                postMoe
+            }
+            db.postMoeDao().insert(items)
             retry = null
             networkState.postValue(NetworkState.LOADED)
             initialLoad.postValue(NetworkState.LOADED)

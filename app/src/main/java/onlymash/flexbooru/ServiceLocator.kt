@@ -76,6 +76,7 @@ open class DefaultServiceLocator(val app: Application) : ServiceLocator {
         return PopularData(
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
+            db = db,
             networkExecutor = getNetworkExecutor()
         )
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.getDanbooruPopularUrl
+import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.model.Popular
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.repository.NetworkState
@@ -12,6 +13,7 @@ import java.util.concurrent.Executor
 
 class PopularDanDataSource(
     private val danbooruApi: DanbooruApi,
+    private val db: FlexbooruDatabase,
     private val popular: Popular,
     private val retryExecutor: Executor) : PageKeyedDataSource<Int, PostDan>() {
 
@@ -42,11 +44,22 @@ class PopularDanDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
+        val host = popular.host
+        val keyword = popular.scale
+
         // triggered by a refresh, we better execute sync
         try {
             val response = request.execute()
             val data = response.body()
-            val items = data?: mutableListOf()
+            val posts = data?: mutableListOf()
+            val start = db.postDanDao().getNextIndex(host = host, keyword = keyword)
+            val items = posts.mapIndexed { index, postDan ->
+                postDan.host = host
+                postDan.keyword = keyword
+                postDan.indexInResponse = start + index
+                postDan
+            }
+            db.postDanDao().insert(items)
             retry = null
             networkState.postValue(NetworkState.LOADED)
             initialLoad.postValue(NetworkState.LOADED)
