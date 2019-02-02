@@ -1,9 +1,6 @@
 package onlymash.flexbooru.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import onlymash.flexbooru.model.Booru
 
 @Dao
@@ -18,7 +15,7 @@ interface BooruDao {
     @Query("SELECT 1 FROM boorus LIMIT 1")
     fun isNotEmpty(): Boolean
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(booru: Booru): Long
 
     @Update

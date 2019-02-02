@@ -15,13 +15,15 @@ object BooruManager {
     @Throws(SQLException::class)
     fun createBooru(booru: Booru): Booru {
         booru.uid = 0
-        booru.uid = FlexbooruDatabase.booruDao.insert(booru)
+        val uid = FlexbooruDatabase.booruDao.insert(booru)
+        if (uid >= 0)
+        booru.uid = uid
         listener?.onAdd(booru)
         return booru
     }
 
     @Throws(SQLException::class)
-    fun updateBooru(booru: Booru) = check(FlexbooruDatabase.booruDao.update(booru) == 1)
+    fun updateBooru(booru: Booru): Boolean = FlexbooruDatabase.booruDao.update(booru) == 1
 
     @Throws(IOException::class)
     fun getBooru(scheme: String, host: String): Booru? = try {

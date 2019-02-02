@@ -24,6 +24,9 @@ private const val SETTINGS_DRAWER_ITEM_ID = -1L
 
 class MainActivity : BaseActivity() {
 
+    companion object {
+        private const val TAG = "MainActivity"
+    }
     private lateinit var booru: Booru
     lateinit var drawer: Drawer
     private lateinit var header: AccountHeader
@@ -62,16 +65,16 @@ class MainActivity : BaseActivity() {
         drawer.onDrawerItemClickListener = drawerItemClickListener
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         booru = Booru(
-            uid = 0,
+            uid = 1,
             name = "yande.re",
             scheme = "https",
             host = "yande.re",
             hash_salt = Constants.EMPTY_STRING_VALUE,
             type = Constants.TYPE_MOEBOORU)
+        pager_container.offscreenPageLimit = 0
         pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
         pager_container.addOnPageChangeListener(pageChangeListener)
-        booru = BooruManager.createBooru(booru)
-        Log.i("MainActivity", booru.uid.toString())
+        Log.i(TAG, "${BooruManager.createBooru(booru)}")
     }
 
     private val headerItemClickListener =
