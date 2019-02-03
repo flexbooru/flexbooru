@@ -9,6 +9,7 @@
     <dimen name="post_item_height_max">250dp</dimen>
     <dimen name="post_item_height_min">125dp</dimen>
     <dimen name="post_item_margin">2dp</dimen>
+    <dimen name="post_item_width">200dp</dimen>
     <dimen name="list_padding_horizontal">-2dp</dimen>
     <dimen name="swipe_refresh_layout_offset_start">60dp</dimen>
     <dimen name="swipe_refresh_layout_offset_end">110dp</dimen>

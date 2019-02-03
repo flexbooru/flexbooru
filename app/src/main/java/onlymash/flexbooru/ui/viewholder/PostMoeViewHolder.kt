@@ -36,18 +36,23 @@ class PostMoeViewHolder(itemView: View,
             }
             val lp = preview.layoutParams
             if (lp is FlexboxLayoutManager.LayoutParams) {
-                lp.flexGrow = post.width.toFloat()/post.height.toFloat()
+                val ratio = post.width.toFloat()/post.height.toFloat()
+                lp.flexGrow = 1f
                 if (post.width < post.height) {
                     lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
-                    lp.width = lp.height * post.width/post.height
                 } else {
                     lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
-                    lp.width = lp.height * post.width/post.height
+                }
+                when {
+                    ratio > 0.7f -> lp.width = (lp.height * 0.7f).toInt()
+                    ratio < 0.5f -> lp.width = (lp.height * 0.5f).toInt()
+                    else -> lp.width = (lp.height * post.width.toFloat()/post.height.toFloat()).toInt()
                 }
             }
 
             glide.load(post.preview_url)
                 .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
+                .centerCrop()
                 .into(preview)
         }
     }

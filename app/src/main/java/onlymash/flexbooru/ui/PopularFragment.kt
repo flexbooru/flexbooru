@@ -1,7 +1,6 @@
 package onlymash.flexbooru.ui
 
 import android.app.DatePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,13 +11,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
-import kotlinx.android.synthetic.main.search_bar.*
-import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 
 import onlymash.flexbooru.R
@@ -34,6 +33,8 @@ import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
 import onlymash.flexbooru.ui.adapter.PostMoeAdapter
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
+import onlymash.flexbooru.widget.SearchBar
+import onlymash.flexbooru.widget.SearchBarMover
 import java.util.*
 
 private const val SCALE_DAY = "day"
@@ -76,6 +77,9 @@ class PopularFragment : Fragment() {
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
+
+        private const val STATE_NORMAL = 0
+        private const val STATE_SEARCH = 1
     }
     private var scheme: String = Constants.NULL_STRING_VALUE
     private var host: String = Constants.NULL_STRING_VALUE
@@ -84,44 +88,36 @@ class PopularFragment : Fragment() {
 
     private lateinit var popular: Popular
 
+    private var state = STATE_NORMAL
+
+    private lateinit var searchBarMover: SearchBarMover
+
+    private val sbMoverHelper = object : SearchBarMover.Helper {
+        override val validRecyclerView get() = list
+
+        override fun isValidView(recyclerView: RecyclerView): Boolean {
+            return state == STATE_NORMAL && recyclerView == list
+        }
+
+        override fun forceShowSearchBar(): Boolean {
+            return state == STATE_SEARCH
+        }
+    }
+
+
     private lateinit var popularViewModel: PopularViewModel
     private lateinit var glide: GlideRequests
 
     private lateinit var leftDrawable: DrawerArrowDrawable
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            scheme = it.getString(Constants.SCHEME_KEY, Constants.NULL_STRING_VALUE)
-            host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
-            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-        }
-    }
+    private val helper = object : SearchBar.Helper {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
-    }
-
-    private fun init() {
-        leftDrawable = DrawerArrowDrawable(requireContext())
-        menu_button.setImageDrawable(leftDrawable)
-        menu_button.setOnClickListener {
+        override fun onLeftButtonClick() {
             val activity = requireActivity()
             if (activity is MainActivity) activity.drawer.openDrawer()
         }
-        val inflater = requireActivity().menuInflater
-        when (type) {
-            Constants.TYPE_DANBOORU -> inflater.inflate(R.menu.menu_popular_dan, search_bar_menu_view.menu)
-            Constants.TYPE_MOEBOORU -> inflater.inflate(R.menu.menu_popular_moe, search_bar_menu_view.menu)
-            else -> throw IllegalArgumentException("unknown type $type")
-        }
-        search_bar_menu_view.setOnMenuItemClickListener { menuItem ->
+
+        override fun onMenuItemClick(menuItem: MenuItem) {
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     when (menuItem.itemId) {
@@ -190,8 +186,38 @@ class PopularFragment : Fragment() {
                     popularViewModel.refreshMoe()
                 }
             }
-            return@setOnMenuItemClickListener true
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            scheme = it.getString(Constants.SCHEME_KEY, Constants.NULL_STRING_VALUE)
+            host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
+            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_post, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    private fun init() {
+        leftDrawable = DrawerArrowDrawable(requireContext())
+        when (type) {
+            Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.menu_popular_dan, requireActivity().menuInflater)
+            Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.menu_popular_moe, requireActivity().menuInflater)
+            else -> throw IllegalArgumentException("unknown type $type")
+        }
+        search_bar.setLeftDrawable(leftDrawable)
+        search_bar.setHelper(helper)
+        searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
         swipe_refresh.apply {

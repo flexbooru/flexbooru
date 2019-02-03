@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+    <ImageButton
+            android:id="@+id/menu_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|start"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@null"/>
+
+    <TextView
+            android:id="@+id/search_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:text="@string/app_name"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="?android:attr/textColorSecondary"
+            android:singleLine="true"
+            android:maxLines="1"/>
+
+    <androidx.appcompat.widget.ActionMenuView
+            android:id="@+id/search_bar_menu_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            style="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:background="@null"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
+
+</FrameLayout>

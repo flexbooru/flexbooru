@@ -2,6 +2,7 @@ package onlymash.flexbooru.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -12,12 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
-import kotlinx.android.synthetic.main.search_bar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
@@ -32,6 +34,9 @@ import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
 import onlymash.flexbooru.ui.adapter.PostMoeAdapter
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
+import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
+import onlymash.flexbooru.widget.SearchBar
+import onlymash.flexbooru.widget.SearchBarMover
 
 class PostFragment : Fragment() {
 
@@ -63,6 +68,8 @@ class PostFragment : Fragment() {
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
+        private const val STATE_NORMAL = 0
+        private const val STATE_SEARCH = 1
     }
 
     private lateinit var postViewModel: PostViewModel
@@ -70,13 +77,41 @@ class PostFragment : Fragment() {
 
     private lateinit var leftDrawable: DrawerArrowDrawable
 
+    private var state = STATE_NORMAL
+
     private var scheme: String = Constants.NULL_STRING_VALUE
     private var host: String = Constants.NULL_STRING_VALUE
     private var type: Int = Constants.TYPE_UNKNOWN
     private var tags: String = Constants.EMPTY_STRING_VALUE
-    private var limit: Int = 20
+    private var limit: Int = 10
 
     private lateinit var search: Search
+
+    private lateinit var searchBarMover: SearchBarMover
+
+    private val helper = object : SearchBar.Helper {
+
+        override fun onLeftButtonClick() {
+            val activity = requireActivity()
+            if (activity is MainActivity) activity.drawer.openDrawer()
+        }
+
+        override fun onMenuItemClick(menuItem: MenuItem) {
+
+        }
+    }
+
+    private val sbMoverHelper = object : SearchBarMover.Helper {
+        override val validRecyclerView get() = list
+
+        override fun isValidView(recyclerView: RecyclerView): Boolean {
+            return state == STATE_NORMAL && recyclerView == list
+        }
+
+        override fun forceShowSearchBar(): Boolean {
+            return state == STATE_SEARCH
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,11 +134,9 @@ class PostFragment : Fragment() {
 
     private fun init() {
         leftDrawable = DrawerArrowDrawable(requireContext())
-        menu_button.setImageDrawable(leftDrawable)
-        menu_button.setOnClickListener {
-            val activity = requireActivity()
-            if (activity is MainActivity) activity.drawer.openDrawer()
-        }
+        search_bar.setLeftDrawable(leftDrawable)
+        search_bar.setHelper(helper)
+        searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
         swipe_refresh.apply {
@@ -123,17 +156,21 @@ class PostFragment : Fragment() {
             flexDirection = FlexDirection.ROW
             alignItems = AlignItems.STRETCH
         }
+//        val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(0, StaggeredGridLayoutManager.VERTICAL).apply {
+//                setColumnSize(resources.getDimensionPixelSize(R.dimen.post_item_width))
+//                setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
+//            }
         list.apply {
             itemAnimator = null
             layoutManager = flexboxLayoutManager
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    when (newState) {
-                        RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
-                        else -> glide.pauseRequests()
-                    }
-                }
-            })
+//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                    when (newState) {
+//                        RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
+//                        else -> glide.pauseRequests()
+//                    }
+//                }
+//            })
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {

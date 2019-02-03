@@ -16,7 +16,7 @@ class BooruAdapter : RecyclerView.Adapter<BooruViewHolder>() {
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooruViewHolder =
         BooruViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.booru_item, parent, false))
+            .inflate(R.layout.item_booru, parent, false))
 
     override fun getItemCount(): Int = boorus.size
 
