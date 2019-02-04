@@ -2,24 +2,24 @@
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="match_parent">
 
     <ImageButton
             android:id="@+id/menu_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/search_bar_height"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|start"
-            android:padding="12dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@null"/>
 
     <TextView
             android:id="@+id/search_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
+            android:layout_marginLeft="@dimen/search_bar_height"
+            android:layout_marginRight="@dimen/search_bar_height"
             android:text="@string/app_name"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             android:textColor="?android:attr/textColorSecondary"
@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
+            android:layout_marginLeft="@dimen/search_bar_height"
+            android:layout_marginRight="@dimen/search_bar_height"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
             android:background="@null"
             android:singleLine="true"

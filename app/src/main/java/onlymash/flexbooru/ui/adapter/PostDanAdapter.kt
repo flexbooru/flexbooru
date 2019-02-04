@@ -1,20 +1,21 @@
 package onlymash.flexbooru.ui.adapter
 
-import android.app.Activity
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
+import onlymash.flexbooru.model.Placeholder
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.ui.viewholder.HeadViewHolder
+import onlymash.flexbooru.ui.viewholder.HeaderViewHolder
 import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 import onlymash.flexbooru.ui.viewholder.PostDanViewHolder
 
 class PostDanAdapter(private val glide: GlideRequests,
-                     private val activity: Activity,
+                     private val placeholder: Placeholder,
                      private val retryCallback: () -> Unit) : PagedListAdapter<PostDan, RecyclerView.ViewHolder>(POST_COMPARATOR) {
 
     companion object {
@@ -29,8 +30,8 @@ class PostDanAdapter(private val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_head -> HeadViewHolder.create(parent)
-            R.layout.item_post -> PostDanViewHolder.create(parent, glide, activity)
+            R.layout.item_header -> HeaderViewHolder.create(parent)
+            R.layout.item_post -> PostDanViewHolder.create(parent, glide, placeholder)
             R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type $viewType")
         }
@@ -38,11 +39,18 @@ class PostDanAdapter(private val glide: GlideRequests,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_head -> { }
+            R.layout.item_header -> {
+                if (holder.itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+                    (holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams).isFullSpan = true
+                }
+            }
             R.layout.item_post -> {
                 (holder as PostDanViewHolder).bind(getItem(position - 1))
             }
             R.layout.item_network_state -> {
+                if (holder.itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+                    (holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams).isFullSpan = true
+                }
                 (holder as NetworkStateViewHolder).bindTo(networkState)
             }
         }
@@ -54,7 +62,7 @@ class PostDanAdapter(private val glide: GlideRequests,
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) {
-            R.layout.item_head
+            R.layout.item_header
         } else if (hasExtraRow() && position == itemCount - 1) {
             R.layout.item_network_state
         } else {

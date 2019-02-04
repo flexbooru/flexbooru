@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 
-class HeadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
-        fun create(parent: ViewGroup): HeadViewHolder {
+        fun create(parent: ViewGroup): HeaderViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_head, parent, false)
-            return HeadViewHolder(view)
+                .inflate(R.layout.item_header, parent, false)
+            return HeaderViewHolder(view)
         }
     }
 }

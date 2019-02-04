@@ -17,4 +17,7 @@ object Constants {
 
     const val NULL_STRING_VALUE = "null"
     const val EMPTY_STRING_VALUE = ""
+
+    const val MAX_ITEM_ASPECT_RATIO = 1.3333f
+    const val MIN_ITEM_ASPECT_RATIO = 0.5625f
 }

@@ -1,18 +1,13 @@
 <resources>
-    <dimen name="search_bar_size">50dp</dimen>
-    <dimen name="search_bar_horizontal_margin">16dp</dimen>
-    <dimen name="search_bar_vertical_margin">8dp</dimen>
-    <dimen name="search_bar_corner_radius">6dp</dimen>
-    <dimen name="search_bar_icon_horizontal_margin">14dp</dimen>
-    <dimen name="elevation_size">5dp</dimen>
-    <dimen name="bottom_nav_elevation_size">20dp</dimen>
-    <dimen name="post_item_height_max">250dp</dimen>
-    <dimen name="post_item_height_min">125dp</dimen>
-    <dimen name="post_item_margin">2dp</dimen>
-    <dimen name="post_item_width">200dp</dimen>
-    <dimen name="list_padding_horizontal">-2dp</dimen>
-    <dimen name="swipe_refresh_layout_offset_start">60dp</dimen>
-    <dimen name="swipe_refresh_layout_offset_end">110dp</dimen>
-    <dimen name="head_item_size">66dp</dimen>
+    <dimen name="search_bar_horizontal_margin">8dp</dimen>
+    <dimen name="search_bar_vertical_margin">6dp</dimen>
+    <dimen name="search_bar_height">64dp</dimen>
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="elevation_size">2dp</dimen>
+    <dimen name="post_item_width">180dp</dimen>
+    <dimen name="list_padding_horizontal">4dp</dimen>
+    <dimen name="swipe_refresh_layout_offset_start">10dp</dimen>
+    <dimen name="swipe_refresh_layout_offset_end">90dp</dimen>
+    <dimen name="header_item_height">64dp</dimen>
     <dimen name="booru_padding">8dp</dimen>
 </resources>

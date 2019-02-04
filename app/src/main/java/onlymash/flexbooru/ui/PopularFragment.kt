@@ -12,10 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
@@ -24,15 +21,13 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.Popular
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.model.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
 import onlymash.flexbooru.ui.adapter.PostMoeAdapter
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
+import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
 import onlymash.flexbooru.widget.SearchBarMover
 import java.util.*
@@ -232,14 +227,13 @@ class PopularFragment : Fragment() {
         }
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
         glide = GlideApp.with(this)
-        val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            alignItems = AlignItems.STRETCH
+        val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(0, StaggeredGridLayoutManager.VERTICAL).apply {
+            setColumnSize(resources.getDimensionPixelSize(R.dimen.post_item_width))
+            setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
         }
         list.apply {
-            itemAnimator = null
-            layoutManager = flexboxLayoutManager
+            setHasFixedSize(true)
+            layoutManager = staggeredGridLayoutManager
         }
         when (type) {
             Constants.TYPE_DANBOORU -> initPostDanAdapter()
@@ -255,7 +249,9 @@ class PopularFragment : Fragment() {
     }
 
     private fun initPostDanAdapter() {
-        val postDanAdapter = PostDanAdapter(glide, requireActivity()) {
+        val postDanAdapter = PostDanAdapter(glide, Placeholder.create(
+            resources = resources,
+            theme = requireActivity().theme)) {
             popularViewModel.retryDan()
         }
         list.adapter = postDanAdapter
@@ -269,7 +265,9 @@ class PopularFragment : Fragment() {
     }
 
     private fun initPostMoeAdapter() {
-        val postMoeAdapter = PostMoeAdapter(glide, requireActivity()) {
+        val postMoeAdapter = PostMoeAdapter(glide, Placeholder.create(
+            resources = resources,
+            theme = requireActivity().theme)) {
             popularViewModel.retryMoe()
         }
         list.adapter = postMoeAdapter

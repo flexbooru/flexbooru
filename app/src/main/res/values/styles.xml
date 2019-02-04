@@ -13,4 +13,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CardViewTheme" parent="CardView.Light">
+        <item name="cardCornerRadius">@dimen/corner_radius</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardElevation">@dimen/elevation_size</item>
+        <item name="cardMaxElevation">@dimen/elevation_size</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
 </resources>

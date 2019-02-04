@@ -1,57 +1,58 @@
 package onlymash.flexbooru.ui.viewholder
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexboxLayoutManager
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
+import onlymash.flexbooru.model.Placeholder
 import onlymash.flexbooru.model.PostMoe
 
 class PostMoeViewHolder(itemView: View,
                         private val glide: GlideRequests,
-                        private val activity: Activity): RecyclerView.ViewHolder(itemView){
+                        private val placeholder: Placeholder): RecyclerView.ViewHolder(itemView){
 
     companion object {
-        fun create(parent: ViewGroup, glide: GlideRequests, activity: Activity): PostMoeViewHolder {
+        fun create(parent: ViewGroup, glide: GlideRequests, placeholder: Placeholder): PostMoeViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_post, parent, false)
-            return PostMoeViewHolder(view, glide, activity)
+            return PostMoeViewHolder(view, glide, placeholder)
         }
     }
 
     private val preview: ImageView = itemView.findViewById(R.id.preview)
+    private val previewCard: CardView = itemView.findViewById(R.id.preview_card)
     private var postMoe: PostMoe? = null
 
     fun bind(post: PostMoe?) {
         postMoe = post
         if (post is PostMoe) {
-            val placeholder = when (post.rating) {
-                "s" -> R.drawable.background_rating_s
-                "q" -> R.drawable.background_rating_q
-                else -> R.drawable.background_rating_e
+            val placeholderDrawable = when (post.rating) {
+                "s" -> placeholder.s
+                "q" -> placeholder.q
+                else -> placeholder.e
             }
-            val lp = preview.layoutParams
-            if (lp is FlexboxLayoutManager.LayoutParams) {
-                val ratio = post.width.toFloat()/post.height.toFloat()
-                lp.flexGrow = 1f
-                if (post.width < post.height) {
-                    lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_max)
-                } else {
-                    lp.height = activity.resources.getDimensionPixelSize(R.dimen.post_item_height_min)
+            val lp = previewCard.layoutParams as ConstraintLayout.LayoutParams
+            val ratio = post.width.toFloat()/post.height.toFloat()
+            when {
+                ratio > Constants.MAX_ITEM_ASPECT_RATIO -> {
+                    lp.dimensionRatio = "H, ${Constants.MAX_ITEM_ASPECT_RATIO}:1"
                 }
-                when {
-                    ratio > 0.7f -> lp.width = (lp.height * 0.7f).toInt()
-                    ratio < 0.5f -> lp.width = (lp.height * 0.5f).toInt()
-                    else -> lp.width = (lp.height * post.width.toFloat()/post.height.toFloat()).toInt()
+                ratio < Constants.MIN_ITEM_ASPECT_RATIO -> {
+                    lp.dimensionRatio = "H, ${Constants.MIN_ITEM_ASPECT_RATIO}:1"
+                }
+                else -> {
+                    lp.dimensionRatio = "H, $ratio:1"
                 }
             }
-
+            previewCard.layoutParams = lp
             glide.load(post.preview_url)
-                .placeholder(activity.resources.getDrawable(placeholder, activity.theme))
+                .placeholder(placeholderDrawable)
                 .centerCrop()
                 .into(preview)
         }

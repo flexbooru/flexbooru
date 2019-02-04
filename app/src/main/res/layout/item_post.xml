@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/preview"
-        android:transitionName="post_img"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/post_item_height_min"
-        android:layout_margin="@dimen/post_item_margin"
-        android:scaleType="centerCrop"
-        android:contentDescription="@null"/>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+            android:id="@+id/preview_card"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H, 3:4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/CardViewTheme">
+        <ImageView
+                android:id="@+id/preview"
+                android:transitionName="post_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@null"/>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

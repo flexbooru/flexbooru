@@ -1,6 +1,7 @@
 package onlymash.flexbooru.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -14,10 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
@@ -25,10 +22,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
-import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.model.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.ui.adapter.PostDanAdapter
@@ -151,26 +145,26 @@ class PostFragment : Fragment() {
         }
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
-        val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            alignItems = AlignItems.STRETCH
-        }
-//        val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(0, StaggeredGridLayoutManager.VERTICAL).apply {
-//                setColumnSize(resources.getDimensionPixelSize(R.dimen.post_item_width))
-//                setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
-//            }
+        val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(0, StaggeredGridLayoutManager.VERTICAL).apply {
+                setColumnSize(resources.getDimensionPixelSize(R.dimen.post_item_width))
+                setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
+            }
         list.apply {
-            itemAnimator = null
-            layoutManager = flexboxLayoutManager
-//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                    when (newState) {
-//                        RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
-//                        else -> glide.pauseRequests()
-//                    }
-//                }
-//            })
+            setHasFixedSize(true)
+            layoutManager = staggeredGridLayoutManager
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    Log.e("PostFragment", "newState: $newState")
+                    when (newState) {
+                        RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
+                        else -> glide.pauseRequests()
+                    }
+                }
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    Log.e("PostFragment", "onScrolled")
+                }
+            })
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
@@ -189,7 +183,9 @@ class PostFragment : Fragment() {
 
 
     private fun initPostDanAdapter() {
-        val postDanAdapter = PostDanAdapter(glide, requireActivity()) {
+        val postDanAdapter = PostDanAdapter(glide, Placeholder.create(
+            resources = resources,
+            theme = requireActivity().theme)) {
             postViewModel.retryDan()
         }
         list.adapter = postDanAdapter
@@ -203,7 +199,9 @@ class PostFragment : Fragment() {
     }
 
     private fun initPostMoeAdapter() {
-        val postMoeAdapter = PostMoeAdapter(glide, requireActivity()) {
+        val postMoeAdapter = PostMoeAdapter(glide, Placeholder.create(
+            resources = resources,
+            theme = requireActivity().theme)) {
             postViewModel.retryMoe()
         }
         list.adapter = postMoeAdapter
