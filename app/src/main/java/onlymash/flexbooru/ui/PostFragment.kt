@@ -145,8 +145,9 @@ class PostFragment : Fragment() {
         }
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
-        val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(0, StaggeredGridLayoutManager.VERTICAL).apply {
-                setColumnSize(resources.getDimensionPixelSize(R.dimen.post_item_width))
+        val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
+            columnSize = resources.getDimensionPixelSize(R.dimen.post_item_width),
+            orientation = StaggeredGridLayoutManager.VERTICAL).apply {
                 setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
             }
         list.apply {
