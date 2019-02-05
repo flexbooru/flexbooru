@@ -26,7 +26,7 @@ class BooruViewHolder(itemView: View,
     private val booruShare: AppCompatImageView = itemView.findViewById(R.id.booru_share)
     private val booruEdit: AppCompatImageView = itemView.findViewById(R.id.booru_edit)
     private val booruUrl: AutoCollapseTextView = itemView.findViewById(R.id.booru_url)
-    private val booruHashSalt: AutoCollapseTextView = itemView.findViewById(R.id.booru_hash_salt)
+    private val booruType: AutoCollapseTextView = itemView.findViewById(R.id.booru_type)
 
     init {
         booruEdit.setOnClickListener {
@@ -57,8 +57,10 @@ class BooruViewHolder(itemView: View,
         this.booru = booru
         booruName.text = booru.name
         booruUrl.text = String.format("%s://%s", booru.scheme, booru.host)
-        if (booru.type == Constants.TYPE_MOEBOORU && !booru.hash_salt.isNullOrEmpty()) {
-            booruHashSalt.text = booru.hash_salt
+        when (booru.type) {
+            Constants.TYPE_DANBOORU -> booruType.setText(R.string.booru_type_danbooru)
+            Constants.TYPE_MOEBOORU -> booruType.setText(R.string.booru_type_moebooru)
+            else -> booruType.text = String.format("%s", "Unknown Type")
         }
     }
 
