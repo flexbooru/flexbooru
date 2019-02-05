@@ -17,6 +17,12 @@
         <activity android:name=".ui.BooruConfigActivity">
         </activity>
         <activity android:name=".ui.BooruActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="booru"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".ui.MainActivity"

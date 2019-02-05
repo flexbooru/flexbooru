@@ -18,10 +18,11 @@ object BooruManager {
     fun createBooru(booru: Booru): Booru {
         booru.uid = 0
         val uid = FlexbooruDatabase.booruDao.insert(booru)
-        if (uid >= 0)
-        booru.uid = uid
-        listeners.forEach {
-            it.onAdd(booru)
+        if (uid >= 0) {
+            booru.uid = uid
+            listeners.forEach {
+                it.onAdd(booru)
+            }
         }
         return booru
     }
@@ -49,9 +50,10 @@ object BooruManager {
 
     @Throws(SQLException::class)
     fun deleteBooru(uid: Long) {
-        check(FlexbooruDatabase.booruDao.delete(uid) == 1)
-        listeners.forEach {
-            it.onDelete(uid)
+        if (FlexbooruDatabase.booruDao.delete(uid) == 1) {
+            listeners.forEach {
+                it.onDelete(uid)
+            }
         }
     }
 

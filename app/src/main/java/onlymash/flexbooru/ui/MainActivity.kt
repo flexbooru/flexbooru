@@ -77,7 +77,6 @@ class MainActivity : BaseActivity() {
         if (boorus.size > 0) booru = boorus[0]
         pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
         pager_container.addOnPageChangeListener(pageChangeListener)
-        Log.i(TAG, "${BooruManager.createBooru(booru)}")
     }
 
     private val booruListener = object : BooruManager.Listener {
@@ -105,7 +104,7 @@ class MainActivity : BaseActivity() {
 
                 }
             }
-            true
+            false
         }
 
     private val drawerItemClickListener =

@@ -1,21 +1,29 @@
 package onlymash.flexbooru.ui
 
+import android.app.AlertDialog
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 
 class BooruActivity : BaseActivity() {
 
     private val booruAdapter by lazy { BooruAdapter(this) }
+
+    val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +41,29 @@ class BooruActivity : BaseActivity() {
             adapter = booruAdapter
         }
         BooruManager.listeners.add(booruAdapter)
+        if (intent != null) {
+            handleShareIntent(intent)
+        }
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleShareIntent(intent)
+    }
+    private fun handleShareIntent(intent: Intent) {
+        val sharedStr = intent.data?.toString()
+        if (sharedStr.isNullOrEmpty()) return
+        val b = Booru.url2Booru(sharedStr)
+        if (b != null) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.booru_add_title_dialog)
+                .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                    BooruManager.createBooru(b)
+                }
+                .setNegativeButton(R.string.dialog_no, null)
+                .setMessage(b.toString())
+                .create()
+                .show()
+        }
     }
     private fun initToolbar(){
         toolbar.setTitle(R.string.title_manage_boorus)
@@ -46,7 +77,7 @@ class BooruActivity : BaseActivity() {
 
                 }
                 R.id.action_booru_add_clipboard -> {
-
+                    addConfigFromClipboard()
                 }
                 R.id.action_booru_add_manual -> {
                     addConfig()
@@ -62,6 +93,20 @@ class BooruActivity : BaseActivity() {
     private fun addConfig() {
         BooruConfigFragment.reset()
         startActivity(Intent(this, BooruConfigActivity::class.java))
+    }
+
+    private fun addConfigFromClipboard() {
+        val text = clipboard.primaryClip?.getItemAt(0)?.text
+        if (text != null) {
+            val booru = Booru.url2Booru(text.toString())
+            if (booru != null) {
+                BooruManager.createBooru(booru)
+            } else {
+                Snackbar.make(toolbar, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
+            }
+        } else {
+            Snackbar.make(toolbar, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

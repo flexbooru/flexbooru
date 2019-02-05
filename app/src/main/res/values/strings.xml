@@ -17,10 +17,15 @@
     <string name="popular_year">Year</string>
     <string name="popular_date">Date</string>
 
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+
     <string name="booru_add">Add booru</string>
     <string name="booru_add_from_qr_code">Scan QR code</string>
     <string name="booru_add_from_clipboard">Import from Clipboard</string>
     <string name="booru_add_from_manual_settings">Manual settings</string>
+    <string name="booru_add_error">ERROR: Invalid data</string>
+    <string name="booru_add_title_dialog">Add this booru?</string>
     <string name="booru_name">Booru name</string>
     <string name="booru_share">Booru share</string>
     <string name="booru_share_by_qr_code">QR code</string>
@@ -29,7 +34,8 @@
 
     <string name="booru_config_delete">Delete</string>
     <string name="booru_config_apply">Apply</string>
-    <string name="booru_config_name">Booru name</string>
+    <string name="booru_config_name">Name</string>
+    <string name="booru_config_info">Booru info</string>
     <string name="booru_config_scheme">Scheme</string>
     <string name="booru_config_scheme_http" translatable="false">http</string>
     <string name="booru_config_scheme_https" translatable="false">https</string>

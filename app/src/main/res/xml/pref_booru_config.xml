@@ -10,7 +10,7 @@
             app:iconSpaceReserved="true"/>
 
     <PreferenceCategory
-            android:title="Booru Settings"
+            android:title="@string/booru_config_info"
             app:iconSpaceReserved="true">
         <!--suppress AndroidElementNotAllowed -->
         <SimpleMenuPreference

@@ -1,6 +1,7 @@
 package onlymash.flexbooru.ui.viewholder
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
 import android.view.View
 import android.widget.PopupMenu
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
 import onlymash.flexbooru.ui.BooruConfigFragment
 import onlymash.flexbooru.widget.AutoCollapseTextView
@@ -41,7 +43,7 @@ class BooruViewHolder(itemView: View,
                         }
 
                         R.id.action_booru_share_clipboard -> {
-
+                            (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
                         }
                     }
                     true
