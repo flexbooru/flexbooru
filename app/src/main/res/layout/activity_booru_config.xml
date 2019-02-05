@@ -4,16 +4,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.BooruActivity">
+        tools:context=".ui.BooruConfigActivity">
 
     <include layout="@layout/toolbar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/booru_list"
-            android:scrollbars="vertical"
+    <fragment
             android:layout_below="@+id/toolbar"
+            android:id="@+id/fragment_booru_config"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            class="onlymash.flexbooru.ui.BooruConfigFragment"
             tools:ignore="UnknownIdInLayout"/>
 
 </RelativeLayout>

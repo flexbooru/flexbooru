@@ -28,6 +28,7 @@ class MainActivity : BaseActivity() {
         private const val TAG = "MainActivity"
     }
     private lateinit var booru: Booru
+    private lateinit var boorus: MutableList<Booru>
     lateinit var drawer: Drawer
     private lateinit var header: AccountHeader
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
@@ -35,6 +36,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        boorus = BooruManager.getAllBoorus() ?: mutableListOf()
+        BooruManager.listeners.add(booruListener)
         profileSettingDrawerItem = ProfileSettingDrawerItem()
             .withName(R.string.title_manage_boorus)
             .withIdentifier(BOORU_MANAGE_PROFILE_ID)
@@ -71,10 +74,25 @@ class MainActivity : BaseActivity() {
             host = "yande.re",
             hash_salt = Constants.EMPTY_STRING_VALUE,
             type = Constants.TYPE_MOEBOORU)
-        pager_container.offscreenPageLimit = 0
+        if (boorus.size > 0) booru = boorus[0]
         pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
         pager_container.addOnPageChangeListener(pageChangeListener)
         Log.i(TAG, "${BooruManager.createBooru(booru)}")
+    }
+
+    private val booruListener = object : BooruManager.Listener {
+        override fun onAdd(booru: Booru) {
+
+        }
+
+        override fun onDelete(booruUid: Long) {
+
+        }
+
+        override fun onUpdate(booru: Booru) {
+
+        }
+
     }
 
     private val headerItemClickListener =
@@ -148,5 +166,10 @@ class MainActivity : BaseActivity() {
         if (drawer.isDrawerOpen) {
             drawer.closeDrawer()
         } else super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        BooruManager.listeners.remove(booruListener)
+        super.onDestroy()
     }
 }

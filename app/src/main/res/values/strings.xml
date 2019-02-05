@@ -7,6 +7,7 @@
     <string name="title_downloads">Downloads</string>
     <string name="title_manage_boorus">Manage boorus</string>
     <string name="title_settings">Settings</string>
+    <string name="title_booru_config">Booru config</string>
 
     <string name="retry">Retry</string>
 
@@ -22,5 +23,22 @@
     <string name="booru_add_from_manual_settings">Manual settings</string>
     <string name="booru_name">Booru name</string>
     <string name="booru_share">Booru share</string>
+    <string name="booru_share_by_qr_code">QR code</string>
+    <string name="booru_share_by_clipboard">Export to clipboard</string>
     <string name="booru_edit">Booru edit</string>
+
+    <string name="booru_config_delete">Delete</string>
+    <string name="booru_config_apply">Apply</string>
+    <string name="booru_config_name">Booru name</string>
+    <string name="booru_config_scheme">Scheme</string>
+    <string name="booru_config_scheme_http" translatable="false">http</string>
+    <string name="booru_config_scheme_https" translatable="false">https</string>
+    <string name="booru_config_host">Host</string>
+    <string name="booru_config_type">Type</string>
+    <string name="booru_config_type_danbooru" translatable="false">Danbooru</string>
+    <string name="booru_config_type_moebooru" translatable="false">Moebooru</string>
+    <string name="booru_config_hash_salt">Hash salt</string>
+    <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
+    <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
+    <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
 </resources>

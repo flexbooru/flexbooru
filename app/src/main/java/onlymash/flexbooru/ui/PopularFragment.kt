@@ -2,7 +2,6 @@ package onlymash.flexbooru.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.fragment.app.Fragment
@@ -206,8 +205,8 @@ class PopularFragment : Fragment() {
     private fun init() {
         leftDrawable = DrawerArrowDrawable(requireContext())
         when (type) {
-            Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.menu_popular_dan, requireActivity().menuInflater)
-            Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.menu_popular_moe, requireActivity().menuInflater)
+            Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
+            Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
             else -> throw IllegalArgumentException("unknown type $type")
         }
         search_bar.setLeftDrawable(leftDrawable)

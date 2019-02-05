@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="booru_type_entries">
+        <item>@string/booru_config_type_danbooru</item>
+        <item>@string/booru_config_type_moebooru</item>
+    </string-array>
+    <string-array name="booru_type_entries_values">
+        <item>danbooru</item>
+        <item>moebooru</item>
+    </string-array>
+    <string-array name="booru_scheme_entries">
+        <item>@string/booru_config_scheme_http</item>
+        <item>@string/booru_config_scheme_https</item>
+    </string-array>
+    <string-array name="booru_scheme_entries_values">
+        <item>http</item>
+        <item>https</item>
+    </string-array>
+</resources>

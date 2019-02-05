@@ -9,7 +9,7 @@ interface BooruDao {
     @Query("SELECT * FROM boorus WHERE scheme = :scheme AND host = :host")
     operator fun get(scheme: String, host: String): Booru?
 
-    @Query("SELECT * FROM boorus ORDER BY uid DESC")
+    @Query("SELECT * FROM boorus ORDER BY uid ASC")
     fun getAll(): MutableList<Booru>?
 
     @Query("SELECT 1 FROM boorus LIMIT 1")

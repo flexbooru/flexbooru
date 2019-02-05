@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_booru_share_qr_code"
+          android:title="@string/booru_share_by_qr_code"/>
+    <item android:id="@+id/action_booru_share_clipboard"
+          android:title="@string/booru_share_by_clipboard"/>
+</menu>

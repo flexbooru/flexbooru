@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+            android:key="booru_config_name"
+            android:title="@string/booru_config_name"
+            android:singleLine="true"
+            android:summary="%s"
+            app:iconSpaceReserved="true"/>
+
+    <PreferenceCategory
+            android:title="Booru Settings"
+            app:iconSpaceReserved="true">
+        <!--suppress AndroidElementNotAllowed -->
+        <SimpleMenuPreference
+                android:key="booru_config_type"
+                android:title="@string/booru_config_type"
+                android:summary="%s"
+                android:icon="@drawable/ic_class_24dp"
+                android:entries="@array/booru_type_entries"
+                android:entryValues="@array/booru_type_entries_values"
+                android:defaultValue="danbooru"
+                app:iconSpaceReserved="true"/>
+
+        <!--suppress AndroidElementNotAllowed -->
+        <SimpleMenuPreference
+                android:key="booru_config_scheme"
+                android:title="@string/booru_config_scheme"
+                android:summary="%s"
+                android:icon="@drawable/ic_https_24dp"
+                android:entries="@array/booru_scheme_entries"
+                android:entryValues="@array/booru_scheme_entries_values"
+                android:defaultValue="https"
+                app:iconSpaceReserved="true"/>
+
+        <EditTextPreference
+                android:key="booru_config_host"
+                android:title="@string/booru_config_host"
+                android:singleLine="true"
+                android:summary="%s"
+                android:icon="@drawable/ic_domain_24dp"
+                app:iconSpaceReserved="true"/>
+
+        <EditTextPreference
+                android:key="booru_config_hash_salt"
+                android:title="@string/booru_config_hash_salt"
+                android:singleLine="true"
+                android:summary="%s"
+                android:icon="@drawable/ic_enhanced_encryption_24dp"
+                app:iconSpaceReserved="true"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -8,9 +8,11 @@ import java.sql.SQLException
 object BooruManager {
     interface Listener {
         fun onAdd(booru: Booru)
-        fun onRemove(booruUid: Long)
+        fun onDelete(booruUid: Long)
+        fun onUpdate(booru: Booru)
     }
-    var listener: Listener? = null
+
+    var listeners: MutableList<Listener> = mutableListOf()
 
     @Throws(SQLException::class)
     fun createBooru(booru: Booru): Booru {
@@ -18,12 +20,22 @@ object BooruManager {
         val uid = FlexbooruDatabase.booruDao.insert(booru)
         if (uid >= 0)
         booru.uid = uid
-        listener?.onAdd(booru)
+        listeners.forEach {
+            it.onAdd(booru)
+        }
         return booru
     }
 
     @Throws(SQLException::class)
-    fun updateBooru(booru: Booru): Boolean = FlexbooruDatabase.booruDao.update(booru) == 1
+    fun updateBooru(booru: Booru): Boolean {
+        val result = FlexbooruDatabase.booruDao.update(booru) == 1
+        if (result) {
+            listeners.forEach {
+                it.onUpdate(booru)
+            }
+        }
+        return result
+    }
 
     @Throws(IOException::class)
     fun getBooru(scheme: String, host: String): Booru? = try {
@@ -38,7 +50,9 @@ object BooruManager {
     @Throws(SQLException::class)
     fun deleteBooru(uid: Long) {
         check(FlexbooruDatabase.booruDao.delete(uid) == 1)
-        listener?.onRemove(uid)
+        listeners.forEach {
+            it.onDelete(uid)
+        }
     }
 
     @Throws(SQLException::class)

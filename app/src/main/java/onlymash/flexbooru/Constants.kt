@@ -20,4 +20,23 @@ object Constants {
 
     const val MAX_ITEM_ASPECT_RATIO = 1.3333f
     const val MIN_ITEM_ASPECT_RATIO = 0.5625f
+
+    const val EXTRA_BOORU_UID = "booru_uid"
+
+    const val BOORU_CONFIG_NAME_KEY = "booru_config_name"
+    const val BOORU_CONFIG_TYPE_KEY = "booru_config_type"
+    const val BOORU_CONFIG_TYPE_DANBOORU = "danbooru"
+    const val BOORU_CONFIG_TYPE_MOEBOORU = "moebooru"
+    const val BOORU_CONFIG_SCHEME_KEY = "booru_config_scheme"
+    const val BOORU_CONFIG_SCHEME_HTTP = "http"
+    const val BOORU_CONFIG_SCHEME_HTTPS = "https"
+    const val BOORU_CONFIG_HOST_KEY = "booru_config_host"
+    const val BOORU_CONFIG_HASH_SALT_KEY = "booru_config_hash_salt"
+
+    const val REQUEST_EDIT_CODE = 0
+    const val REQUEST_ADD_CODE = 1
+    const val EXTRA_RESULT_KEY = "activity_result"
+    const val RESULT_DELETE = "delete_booru"
+    const val RESULT_ADD = "add_booru"
+    const val RESULT_UPDATE = "update_booru"
 }

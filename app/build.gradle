@@ -38,6 +38,10 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.mikepenz:materialdrawer:7.0.0-alpha2'
 
+    implementation 'moe.shizuku.preference:preference:3.0.0'
+    implementation 'moe.shizuku.preference:preference-dialog-android:3.0.0'
+    implementation 'moe.shizuku.preference:preference-simplemenu:3.0.0'
+
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"

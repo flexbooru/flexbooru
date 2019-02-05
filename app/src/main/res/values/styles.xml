@@ -5,6 +5,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -21,6 +22,10 @@
         <item name="cardPreventCornerOverlap">true</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="simpleMenuPreferenceStyle">@style/Preference.SimpleMenuPreference</item>
     </style>
 
 </resources>

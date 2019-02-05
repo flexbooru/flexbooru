@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FixedImageView">
+        <attr name="widthWeight" format="integer"/>
+        <attr name="heightWeight" format="integer"/>
+    </declare-styleable>
+</resources>

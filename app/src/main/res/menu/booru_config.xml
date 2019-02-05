@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_booru_config_delete"
+          android:title="@string/booru_config_delete"
+          android:icon="@drawable/ic_delete_black_24dp"
+          android:alphabeticShortcut="d"
+          app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_booru_config_apply"
+          android:title="@string/booru_config_apply"
+          android:icon="@drawable/ic_done_black_24dp"
+          android:alphabeticShortcut="s"
+          app:showAsAction="ifRoom"/>
+</menu>
