@@ -49,4 +49,10 @@
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
     <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
+
+    <string name="scaner_scan_qr_code">Scan QR code</string>
+    <string name="scaner_import_from_file">Import QR code from file</string>
+    <string name="scaner_add_booru_permission_required">Camera permission is required for scanning QR code.</string>
+    <string name="scaner_import_success">Successfully import!</string>
+    <string name="scaner_import_failed">Failed to import.</string>
 </resources>

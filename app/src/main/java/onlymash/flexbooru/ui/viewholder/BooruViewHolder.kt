@@ -15,6 +15,7 @@ import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
 import onlymash.flexbooru.ui.BooruConfigFragment
+import onlymash.flexbooru.ui.QRCodeDialog
 import onlymash.flexbooru.widget.AutoCollapseTextView
 
 class BooruViewHolder(itemView: View,
@@ -39,14 +40,18 @@ class BooruViewHolder(itemView: View,
                 setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.action_booru_share_qr_code -> {
-
+                            (activity as BooruActivity).supportFragmentManager
+                                .beginTransaction()
+                                .add(QRCodeDialog(booru.toString()), "")
+                                .commitAllowingStateLoss()
+                            true
                         }
-
                         R.id.action_booru_share_clipboard -> {
                             (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
+                            true
                         }
+                        else -> false
                     }
-                    true
                 }
             }
                 .show()

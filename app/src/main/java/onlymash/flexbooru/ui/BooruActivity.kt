@@ -74,7 +74,7 @@ class BooruActivity : BaseActivity() {
                 R.id.action_booru_add -> {
                 }
                 R.id.action_booru_add_qr -> {
-
+                    addConfigFromQRCode()
                 }
                 R.id.action_booru_add_clipboard -> {
                     addConfigFromClipboard()
@@ -93,6 +93,10 @@ class BooruActivity : BaseActivity() {
     private fun addConfig() {
         BooruConfigFragment.reset()
         startActivity(Intent(this, BooruConfigActivity::class.java))
+    }
+
+    private fun addConfigFromQRCode() {
+        startActivity(Intent(this, ScannerActivity::class.java))
     }
 
     private fun addConfigFromClipboard() {

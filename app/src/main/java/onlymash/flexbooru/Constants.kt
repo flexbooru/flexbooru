@@ -36,7 +36,9 @@ object Constants {
     const val REQUEST_EDIT_CODE = 0
     const val REQUEST_ADD_CODE = 1
     const val EXTRA_RESULT_KEY = "activity_result"
-    const val RESULT_DELETE = "delete_booru"
-    const val RESULT_ADD = "add_booru"
-    const val RESULT_UPDATE = "update_booru"
+    const val RESULT_DELETE = "booru_delete"
+    const val RESULT_ADD = "booru_add"
+    const val RESULT_UPDATE = "booru_update"
+
+    const val URL_KEY = "url"
 }
