@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.ui.adapter.BooruAdapter
+import onlymash.flexbooru.util.launchUrl
 
 class BooruActivity : BaseActivity() {
 
@@ -71,7 +71,8 @@ class BooruActivity : BaseActivity() {
         toolbar.inflateMenu(R.menu.booru)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_booru_add -> {
+                R.id.action_booru_help -> {
+                    this@BooruActivity.launchUrl(Constants.BOORU_HELP_URL)
                 }
                 R.id.action_booru_add_qr -> {
                     addConfigFromQRCode()

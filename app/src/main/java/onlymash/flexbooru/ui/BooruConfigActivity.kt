@@ -2,6 +2,7 @@ package onlymash.flexbooru.ui
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
@@ -26,12 +27,19 @@ class BooruConfigActivity : BaseActivity() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_booru_config_delete -> {
-                    BooruManager.deleteBooru(BooruConfigFragment.booruUid)
-                    val intent = Intent().apply {
-                        putExtra(Constants.EXTRA_RESULT_KEY, Constants.RESULT_DELETE)
-                    }
-                    setResult(Constants.REQUEST_EDIT_CODE, intent)
-                    finish()
+                    AlertDialog.Builder(this@BooruConfigActivity)
+                        .setTitle(R.string.booru_config_dialog_title_delete)
+                        .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                            BooruManager.deleteBooru(BooruConfigFragment.booruUid)
+                            val intent = Intent().apply {
+                                putExtra(Constants.EXTRA_RESULT_KEY, Constants.RESULT_DELETE)
+                            }
+                            setResult(Constants.REQUEST_EDIT_CODE, intent)
+                            finish()
+                        }
+                        .setNegativeButton(R.string.dialog_no, null)
+                        .create()
+                        .show()
                 }
                 R.id.action_booru_config_apply -> {
                     val booru = BooruConfigFragment.get()

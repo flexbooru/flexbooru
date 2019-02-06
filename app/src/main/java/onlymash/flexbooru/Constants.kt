@@ -41,4 +41,6 @@ object Constants {
     const val RESULT_UPDATE = "booru_update"
 
     const val URL_KEY = "url"
+
+    const val BOORU_HELP_URL = "https://github.com/flexbooru/flexbooru/wiki/Import-booru"
 }

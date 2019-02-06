@@ -26,6 +26,7 @@
     <string name="booru_add_from_manual_settings">Manual settings</string>
     <string name="booru_add_error">ERROR: Invalid data</string>
     <string name="booru_add_title_dialog">Add this booru?</string>
+    <string name="booru_add_help">Help</string>
     <string name="booru_name">Booru name</string>
     <string name="booru_share">Booru share</string>
     <string name="booru_share_by_qr_code">QR code</string>
@@ -49,6 +50,7 @@
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
     <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
+    <string name="booru_config_dialog_title_delete">Are you sure you want to remove this booru?</string>
 
     <string name="scaner_scan_qr_code">Scan QR code</string>
     <string name="scaner_import_from_file">Import QR code from file</string>
