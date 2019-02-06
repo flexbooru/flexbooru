@@ -124,6 +124,11 @@ class MainActivity : BaseActivity() {
                     .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                     .withIdentifier(booru.uid), boorus.size - 1)
             header.addProfile(profileSettingDrawerItem, boorus.size)
+            if (boorus.size == 1) {
+                activeBooruUid = booru.uid
+                header.setActiveProfile(activeBooruUid)
+                pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
+            }
         }
 
         override fun onDelete(booruUid: Long) {
