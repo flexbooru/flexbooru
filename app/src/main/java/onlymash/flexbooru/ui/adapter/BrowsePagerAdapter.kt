@@ -52,7 +52,10 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
     @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(container.context).inflate(R.layout.item_post_pager, null)
-        val photoView = view.findViewById<PhotoView>(R.id.photo_view)
+        val photoView: PhotoView = view.findViewById(R.id.photo_view)
+        photoView.setOnViewTapListener { _, _, _ ->
+            photoViewListener?.onClickPhotoView()
+        }
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         val url = when (type) {
@@ -73,7 +76,6 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                         progressBar.visibility = View.GONE
                         return false
                     }
-
                     override fun onResourceReady(
                         resource: Drawable?,
                         model: Any?,
@@ -94,5 +96,15 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
+    }
+
+    private var photoViewListener: PhotoViewListener? = null
+
+    fun setPhotoViewListener(listener: PhotoViewListener) {
+        photoViewListener = listener
+    }
+
+    interface PhotoViewListener {
+        fun onClickPhotoView()
     }
 }

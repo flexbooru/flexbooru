@@ -19,7 +19,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.ui.adapter.NavViewPagerAdapter
+import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 
 class MainActivity : BaseActivity() {
 
@@ -87,7 +87,7 @@ class MainActivity : BaseActivity() {
             uid < 0L && size > 0 -> {
                 activeBooruUid = boorus[0].uid
                 header.setActiveProfile(activeBooruUid)
-                pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, boorus[0])
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0])
             }
             uid >= 0L && size > 0 -> {
                 var i = -1
@@ -99,11 +99,11 @@ class MainActivity : BaseActivity() {
                 }
                 if (i >= 0) {
                     header.setActiveProfile(uid)
-                    pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, boorus[i])
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i])
                 } else {
                     activeBooruUid = boorus[0].uid
                     header.setActiveProfile(activeBooruUid)
-                    pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, boorus[0])
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0])
                 }
             }
             else -> {
@@ -129,7 +129,7 @@ class MainActivity : BaseActivity() {
             if (boorus.size == 1) {
                 activeBooruUid = booru.uid
                 header.setActiveProfile(activeBooruUid)
-                pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
             }
         }
 
@@ -161,7 +161,7 @@ class MainActivity : BaseActivity() {
                     it.hash_salt = booru.hash_salt
                     it.type = booru.type
                     if (activeBooruUid == booru.uid) {
-                        pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
+                        pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
                     }
                     return@forEach
                 }
@@ -181,7 +181,7 @@ class MainActivity : BaseActivity() {
                     boorus.forEach { booru ->
                         if (booru.uid == uid) {
                             navigation.selectedItemId = R.id.navigation_posts
-                            pager_container.adapter = NavViewPagerAdapter(supportFragmentManager, booru)
+                            pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
                             return@forEach
                         }
                     }

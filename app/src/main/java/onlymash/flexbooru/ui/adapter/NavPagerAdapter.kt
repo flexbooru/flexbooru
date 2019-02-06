@@ -8,8 +8,8 @@ import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.ui.PopularFragment
 import onlymash.flexbooru.ui.PostFragment
 
-class NavViewPagerAdapter(fragmentManager: FragmentManager,
-                          private val booru: Booru) : FragmentStatePagerAdapter(fragmentManager) {
+class NavPagerAdapter(fragmentManager: FragmentManager,
+                      private val booru: Booru) : FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {
         return when (position) {

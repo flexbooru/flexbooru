@@ -3,6 +3,8 @@ package onlymash.flexbooru.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -61,7 +63,7 @@ class BrowseActivity : AppCompatActivity() {
 
     private val pagerChangeListener = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) {
-
+            resetBg()
         }
 
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -79,17 +81,33 @@ class BrowseActivity : AppCompatActivity() {
 
     }
 
+    private val photoViewListener = object : BrowsePagerAdapter.PhotoViewListener {
+        override fun onClickPhotoView() {
+            setBg()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
         toolbar.setTitle(R.string.browse_toolbar_title)
         toolbar.setBackgroundColor(resources.getColor(R.color.transparent, theme))
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
+            toolbar_container.minimumHeight = toolbar.height + insets.systemWindowInsetTop
+            toolbar_container.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+            bottom_bar_container.minimumHeight = resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + insets.systemWindowInsetBottom
+            bottom_bar_container.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            insets
+        }
         val host = intent.getStringExtra(Constants.HOST_KEY)
         val type = intent.getIntExtra(Constants.TYPE_KEY, -1)
         val tags = intent.getStringExtra(Constants.TAGS_KEY)
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
-        Log.e(TAG, "id: $startId")
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
+        pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.adapter = pagerAdapter
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         val loader = ServiceLocator.instance().getPostLoader()
@@ -102,5 +120,40 @@ class BrowseActivity : AppCompatActivity() {
                 loader.loadMoePosts(host = host, keyword = tags)
             }
         }
+    }
+
+    private fun setBg() {
+        when (toolbar.visibility) {
+            View.VISIBLE -> {
+                hideBar()
+                toolbar.visibility = View.GONE
+                bottom_bar_container.visibility = View.GONE
+            }
+            else -> {
+                showBar()
+                toolbar.visibility = View.VISIBLE
+                bottom_bar_container.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun resetBg() {
+        if (toolbar.visibility == View.GONE) {
+            showBar()
+            toolbar.visibility = View.VISIBLE
+            bottom_bar_container.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showBar() {
+        val uiFlags = View.SYSTEM_UI_FLAG_VISIBLE
+        window.decorView.systemUiVisibility = uiFlags
+    }
+
+    private fun hideBar() {
+        val uiFlags = View.SYSTEM_UI_FLAG_IMMERSIVE or
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        window.decorView.systemUiVisibility = uiFlags
     }
 }

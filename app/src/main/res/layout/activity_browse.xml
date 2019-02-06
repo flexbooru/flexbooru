@@ -6,20 +6,29 @@
         android:layout_height="match_parent"
         tools:context=".ui.BrowseActivity">
 
-    <androidx.viewpager.widget.ViewPager
+    <onlymash.flexbooru.widget.HackyViewPager
             android:id="@+id/pager_browse"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <include
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            layout="@layout/toolbar"/>
+    <FrameLayout
+            android:id="@+id/toolbar_container"
+            android:layout_gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:attr/actionBarSize">
+        <include
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                layout="@layout/toolbar"/>
+    </FrameLayout>
 
     <LinearLayout
+            android:id="@+id/bottom_bar_container"
             android:layout_gravity="bottom"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/browse_bottom_bar_height">
 
         <ImageView
                 android:id="@+id/post_share"
@@ -29,6 +38,18 @@
                 android:layout_weight="1"
                 android:src="@drawable/ic_share_black_24dp"
                 android:tint="@color/white"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"/>
+
+        <ImageView
+                android:id="@+id/post_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/ic_bookmark_border_black_24dp"
+                android:tint="@color/white"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@null"/>
 
         <ImageView
@@ -39,6 +60,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/ic_info_outline_black_24dp"
                 android:tint="@color/white"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@null"/>
 
     </LinearLayout>
