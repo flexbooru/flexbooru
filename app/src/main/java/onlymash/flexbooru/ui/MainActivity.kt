@@ -33,6 +33,8 @@ class MainActivity : BaseActivity() {
     private lateinit var header: AccountHeader
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
+    private var currentNavItem = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -215,8 +217,16 @@ class MainActivity : BaseActivity() {
 
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> navigation.selectedItemId = R.id.navigation_posts
-                    1 -> navigation.selectedItemId = R.id.navigation_popular
+                    0 -> {
+                        if (navigation.selectedItemId != R.id.navigation_posts) {
+                            navigation.selectedItemId = R.id.navigation_posts
+                        }
+                    }
+                    1 -> {
+                        if (navigation.selectedItemId != R.id.navigation_popular) {
+                            navigation.selectedItemId = R.id.navigation_popular
+                        }
+                    }
                 }
             }
         }
@@ -225,11 +235,25 @@ class MainActivity : BaseActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_posts -> {
-                    pager_container.currentItem = 0
+                    if (pager_container.currentItem != 0) {
+                        pager_container.currentItem = 0
+                    } else if (currentNavItem == 0){
+                        navigationListeners.forEach {
+                            it.onClickPosition(0)
+                        }
+                    }
+                    currentNavItem = 0
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_popular -> {
-                    pager_container.currentItem = 1
+                    if (pager_container.currentItem != 1) {
+                        pager_container.currentItem = 1
+                    } else if (currentNavItem == 1){
+                        navigationListeners.forEach {
+                            it.onClickPosition(1)
+                        }
+                    }
+                    currentNavItem = 1
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_search -> {
@@ -240,6 +264,20 @@ class MainActivity : BaseActivity() {
                 }
             }
             false
+    }
+
+    private var navigationListeners: MutableList<NavigationListener> = mutableListOf()
+
+    fun addNavigationListener(listener: NavigationListener) {
+        navigationListeners.add(listener)
+    }
+
+    fun removeNavigationListener(listener: NavigationListener) {
+        navigationListeners.remove(listener)
+    }
+
+    interface NavigationListener {
+        fun onClickPosition(position: Int)
     }
 
     override fun onBackPressed() {

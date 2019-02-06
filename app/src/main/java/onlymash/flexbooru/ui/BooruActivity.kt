@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -102,7 +103,7 @@ class BooruActivity : BaseActivity() {
 
     private fun addConfigFromClipboard() {
         val text = clipboard.primaryClip?.getItemAt(0)?.text
-        if (text != null) {
+        if (text != null || Uri.parse(text.toString()).scheme != "booru") {
             val booru = Booru.url2Booru(text.toString())
             if (booru != null) {
                 BooruManager.createBooru(booru)

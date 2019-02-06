@@ -1,5 +1,6 @@
 package onlymash.flexbooru.ui.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         return if (type == Constants.TYPE_DANBOORU) postsDan.size else postsMoe.size
     }
 
+    @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(container.context).inflate(R.layout.item_post_pager, null)
         val photoView = view.findViewById<PhotoView>(R.id.photo_view)

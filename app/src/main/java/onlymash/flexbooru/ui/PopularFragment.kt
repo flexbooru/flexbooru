@@ -209,6 +209,14 @@ class PopularFragment : Fragment() {
         }
     }
 
+    private val navigationListener = object : MainActivity.NavigationListener {
+        override fun onClickPosition(position: Int) {
+            if (position == 1) {
+                list.smoothScrollToPosition(0)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -303,6 +311,7 @@ class PopularFragment : Fragment() {
             scale = SCALE_DAY,
             period = PERIOD_DAY)
         popularViewModel.show(popular)
+        (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
 
     private fun initSwipeToRefreshDan() {
@@ -330,5 +339,10 @@ class PopularFragment : Fragment() {
                 return PopularViewModel(repo) as T
             }
         })[PopularViewModel::class.java]
+    }
+
+    override fun onDestroy() {
+        (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
+        super.onDestroy()
     }
 }

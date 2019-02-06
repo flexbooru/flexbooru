@@ -13,7 +13,7 @@ object UserAgent {
 
     /**
      * Constructs a User-Agent string including application name and version,
-     * system build version, model and Id, and Cronet version.
+     * system build version, model and Id
      * @return User-Agent string.
      */
     fun get(): String {

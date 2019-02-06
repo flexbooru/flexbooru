@@ -6,7 +6,6 @@
         android:id="@+id/booru_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:focusable="true"
         android:nextFocusRight="@+id/booru_edit"
         android:orientation="vertical">

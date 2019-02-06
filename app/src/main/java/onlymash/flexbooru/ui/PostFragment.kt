@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.squareup.haha.perflib.Main
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
@@ -65,6 +66,7 @@ class PostFragment : Fragment() {
             }
         private const val STATE_NORMAL = 0
         private const val STATE_SEARCH = 1
+        private const val TAG = "PostFragment"
     }
 
     private lateinit var postViewModel: PostViewModel
@@ -133,6 +135,8 @@ class PostFragment : Fragment() {
         }
 
     }
+
+    private var navigationListener: MainActivity.NavigationListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -220,6 +224,7 @@ class PostFragment : Fragment() {
             }
             Constants.TYPE_MOEBOORU -> {
                 postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
+                    Log.e(TAG, String.format("%s%s", "initialLoadSizeHint: ", posts.config.initialLoadSizeHint))
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
                 })
@@ -231,6 +236,15 @@ class PostFragment : Fragment() {
         }
         search = Search(scheme = scheme, host = host, limit = limit, tags = tags)
         postViewModel.show(search)
+        val activity = requireActivity()
+        if (activity is MainActivity) {
+            navigationListener = object : MainActivity.NavigationListener {
+                override fun onClickPosition(position: Int) {
+                    if (position == 0) list.smoothScrollToPosition(0)
+                }
+            }
+            activity.addNavigationListener(navigationListener!!)
+        }
     }
 
     private fun initSwipeToRefreshDan() {
@@ -254,5 +268,11 @@ class PostFragment : Fragment() {
                 return PostViewModel(repo) as T
             }
         })[PostViewModel::class.java]
+    }
+
+    override fun onDestroy() {
+        if (navigationListener != null)
+            (requireActivity() as MainActivity).removeNavigationListener(navigationListener!!)
+        super.onDestroy()
     }
 }
