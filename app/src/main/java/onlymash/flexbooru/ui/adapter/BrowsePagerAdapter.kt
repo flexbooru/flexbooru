@@ -1,12 +1,19 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -47,6 +54,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         val view = LayoutInflater.from(container.context).inflate(R.layout.item_post_pager, null)
         val photoView = view.findViewById<PhotoView>(R.id.photo_view)
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
+        progressBar.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         val url = when (type) {
             Constants.TYPE_DANBOORU -> postsDan[position].large_file_url
             Constants.TYPE_MOEBOORU -> postsMoe[position].sample_url
@@ -55,6 +63,29 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         if (!url.isNullOrEmpty()) {
             glideRequests.load(url)
                 .fitCenter()
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        progressBar.visibility = View.GONE
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        progressBar.visibility = View.GONE
+                        return false
+                    }
+
+                })
                 .into(photoView)
         }
         container.addView(view)
