@@ -10,6 +10,7 @@ object Constants {
     const val HOST_KEY = "host"
     const val TYPE_KEY = "type"
     const val TAGS_KEY = "tags"
+    const val ID_KEY = "id"
 
     const val TYPE_DANBOORU = 0
     const val TYPE_MOEBOORU = 1

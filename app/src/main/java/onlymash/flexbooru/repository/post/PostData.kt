@@ -4,6 +4,7 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.paging.Config
 import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
@@ -70,9 +71,12 @@ class PostData(
         val livePagedList = db.postDanDao()
             .getPosts(search.host, search.tags)
             .toLiveData(
-                pageSize = search.limit,
-                boundaryCallback = danBoundaryCallback
-            )
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 100
+                ),
+                boundaryCallback = danBoundaryCallback)
         return Listing(
             pagedList = livePagedList,
             networkState = danBoundaryCallback!!.networkState,
@@ -101,7 +105,11 @@ class PostData(
         val livePagedList = db.postMoeDao()
             .getPosts(host = search.host, keyword = search.tags)
             .toLiveData(
-                pageSize = search.limit,
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 100
+                ),
                 boundaryCallback = moeBoundaryCallback
             )
         return Listing(

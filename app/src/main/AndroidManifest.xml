@@ -4,12 +4,18 @@
           package="onlymash.flexbooru">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature
+            android:name="android.hardware.camera"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.touchscreen"
+            android:required="false"/>
 
     <application
             android:name=".App"
@@ -20,9 +26,14 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.ScannerActivity"
-                  android:excludeFromRecents="true"
-                  android:parentActivityName=".ui.BooruActivity">
+        <activity
+                android:name=".ui.BrowseActivity"
+                android:theme="@style/BrowseTheme">
+        </activity>
+        <activity
+                android:name=".ui.ScannerActivity"
+                android:excludeFromRecents="true"
+                android:parentActivityName=".ui.BooruActivity">
         </activity>
         <activity android:name=".ui.BooruConfigActivity">
         </activity>

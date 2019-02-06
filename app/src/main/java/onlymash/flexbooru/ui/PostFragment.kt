@@ -1,5 +1,6 @@
 package onlymash.flexbooru.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,8 +26,8 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
-import onlymash.flexbooru.ui.adapter.PostDanAdapter
-import onlymash.flexbooru.ui.adapter.PostMoeAdapter
+import onlymash.flexbooru.ui.adapter.PostAdapter
+import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
@@ -71,6 +72,8 @@ class PostFragment : Fragment() {
 
     private lateinit var leftDrawable: DrawerArrowDrawable
 
+    private lateinit var postAdapter: PostAdapter
+
     private var state = STATE_NORMAL
 
     private var scheme: String = Constants.NULL_STRING_VALUE
@@ -105,6 +108,30 @@ class PostFragment : Fragment() {
         override fun forceShowSearchBar(): Boolean {
             return state == STATE_SEARCH
         }
+    }
+
+    private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
+        override fun onClickDanItem(post: PostDan) {
+            val intent = Intent(requireContext(), BrowseActivity::class.java)
+                .apply {
+                    putExtra(Constants.ID_KEY, post.id)
+                    putExtra(Constants.HOST_KEY, post.host)
+                    putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
+                    putExtra(Constants.TAGS_KEY, post.keyword)
+                }
+            startActivity(intent)
+        }
+        override fun onClickMoeItem(post: PostMoe) {
+            val intent = Intent(requireContext(), BrowseActivity::class.java)
+                .apply {
+                    putExtra(Constants.ID_KEY, post.id)
+                    putExtra(Constants.HOST_KEY, post.host)
+                    putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
+                    putExtra(Constants.TAGS_KEY, post.keyword)
+                }
+            startActivity(intent)
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,9 +177,22 @@ class PostFragment : Fragment() {
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
                 setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
             }
+        postAdapter = PostAdapter(
+            glide = glide,
+            placeholder = Placeholder.create(
+                resources = resources,
+                theme = requireActivity().theme),
+            listener = itemListener,
+            retryCallback = {
+                when (type) {
+                    Constants.TYPE_DANBOORU -> postViewModel.retryDan()
+                    Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
+                }
+            })
         list.apply {
             setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
+            adapter = postAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     Log.e("PostFragment", "newState: $newState")
@@ -169,50 +209,28 @@ class PostFragment : Fragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                initPostDanAdapter()
+                postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<Any>)
+                })
+                postViewModel.networkStateDan.observe(this, Observer { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                initPostMoeAdapter()
-            }
-            else -> {
-                // unknown type
+                postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<Any>)
+                })
+                postViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshMoe()
             }
         }
         search = Search(scheme = scheme, host = host, limit = limit, tags = tags)
         postViewModel.show(search)
-    }
-
-
-    private fun initPostDanAdapter() {
-        val postDanAdapter = PostDanAdapter(glide, Placeholder.create(
-            resources = resources,
-            theme = requireActivity().theme)) {
-            postViewModel.retryDan()
-        }
-        list.adapter = postDanAdapter
-        postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
-            postDanAdapter.submitList(posts)
-        })
-        postViewModel.networkStateDan.observe(this, Observer { networkState ->
-            postDanAdapter.setNetworkState(networkState)
-        })
-        initSwipeToRefreshDan()
-    }
-
-    private fun initPostMoeAdapter() {
-        val postMoeAdapter = PostMoeAdapter(glide, Placeholder.create(
-            resources = resources,
-            theme = requireActivity().theme)) {
-            postViewModel.retryMoe()
-        }
-        list.adapter = postMoeAdapter
-        postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
-            postMoeAdapter.submitList(posts)
-        })
-        postViewModel.networkStateMoe.observe(this, Observer { networkState ->
-            postMoeAdapter.setNetworkState(networkState)
-        })
-        initSwipeToRefreshMoe()
     }
 
     private fun initSwipeToRefreshDan() {

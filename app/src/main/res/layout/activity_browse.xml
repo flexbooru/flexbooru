@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.BrowseActivity">
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager_browse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <include
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            layout="@layout/toolbar"/>
+
+    <LinearLayout
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        <ImageView
+                android:id="@+id/post_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/ic_share_black_24dp"
+                android:tint="@color/white"
+                android:contentDescription="@null"/>
+
+        <ImageView
+                android:id="@+id/post_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/ic_info_outline_black_24dp"
+                android:tint="@color/white"
+                android:contentDescription="@null"/>
+
+    </LinearLayout>
+
+</FrameLayout>

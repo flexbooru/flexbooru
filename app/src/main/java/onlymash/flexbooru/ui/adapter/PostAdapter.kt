@@ -8,22 +8,27 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.Placeholder
+import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.ui.viewholder.HeaderViewHolder
 import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
-import onlymash.flexbooru.ui.viewholder.PostMoeViewHolder
+import onlymash.flexbooru.ui.viewholder.PostViewHolder
 
-class PostMoeAdapter(private val glide: GlideRequests,
-                     private val placeholder: Placeholder,
-                     private val retryCallback: () -> Unit) : PagedListAdapter<PostMoe, RecyclerView.ViewHolder>(POST_COMPARATOR) {
+class PostAdapter(private val glide: GlideRequests,
+                  private val placeholder: Placeholder,
+                  private val listener: PostViewHolder.ItemListener,
+                  private val retryCallback: () -> Unit) : PagedListAdapter<Any, RecyclerView.ViewHolder>(POST_COMPARATOR) {
 
     companion object {
-        val POST_COMPARATOR = object : DiffUtil.ItemCallback<PostMoe>() {
-            override fun areContentsTheSame(oldItem: PostMoe, newItem: PostMoe): Boolean =
-                oldItem == newItem
-            override fun areItemsTheSame(oldItem: PostMoe, newItem: PostMoe): Boolean {
-                return oldItem.id == newItem.id
+        val POST_COMPARATOR = object : DiffUtil.ItemCallback<Any>() {
+            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
+            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    oldItem is PostDan && newItem is PostDan -> oldItem.id == newItem.id
+                    oldItem is PostMoe && newItem is PostMoe -> oldItem.id == newItem.id
+                    else -> false
+                }
             }
         }
     }
@@ -31,7 +36,7 @@ class PostMoeAdapter(private val glide: GlideRequests,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             R.layout.item_header -> HeaderViewHolder.create(parent)
-            R.layout.item_post -> PostMoeViewHolder.create(parent, glide, placeholder)
+            R.layout.item_post -> PostViewHolder.create(parent, glide, placeholder)
             R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type $viewType")
         }
@@ -45,7 +50,8 @@ class PostMoeAdapter(private val glide: GlideRequests,
                 }
             }
             R.layout.item_post -> {
-                (holder as PostMoeViewHolder).bind(getItem(position - 1))
+                (holder as PostViewHolder).bind(getItem(position - 1))
+                holder.setItemListener(listener)
             }
             R.layout.item_network_state -> {
                 if (holder.itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams) {

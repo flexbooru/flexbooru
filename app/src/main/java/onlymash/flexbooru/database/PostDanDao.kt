@@ -16,6 +16,9 @@ interface PostDanDao {
     @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPosts(host: String, keyword: String) : DataSource.Factory<Int, PostDan>
 
+    @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
+    fun getPostsRaw(host: String, keyword: String) : MutableList<PostDan>
+
     @Query("DELETE FROM posts_danbooru WHERE host = :host AND keyword = :keyword")
     fun deletePosts(host: String, keyword: String)
 

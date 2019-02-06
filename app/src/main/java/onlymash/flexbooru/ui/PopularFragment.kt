@@ -1,6 +1,7 @@
 package onlymash.flexbooru.ui
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -23,8 +24,8 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.popular.PopularRepository
-import onlymash.flexbooru.ui.adapter.PostDanAdapter
-import onlymash.flexbooru.ui.adapter.PostMoeAdapter
+import onlymash.flexbooru.ui.adapter.PostAdapter
+import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
@@ -98,11 +99,36 @@ class PopularFragment : Fragment() {
         }
     }
 
+    private val itemListener = object : PostViewHolder.ItemListener {
+        override fun onClickMoeItem(post: PostMoe) {
+            val intent = Intent(requireContext(), BrowseActivity::class.java)
+                .apply {
+                    putExtra(Constants.ID_KEY, post.id)
+                    putExtra(Constants.HOST_KEY, post.host)
+                    putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
+                    putExtra(Constants.TAGS_KEY, post.keyword)
+                }
+            startActivity(intent)
+        }
+
+        override fun onClickDanItem(post: PostDan) {
+            val intent = Intent(requireContext(), BrowseActivity::class.java)
+                .apply {
+                    putExtra(Constants.ID_KEY, post.id)
+                    putExtra(Constants.HOST_KEY, post.host)
+                    putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
+                    putExtra(Constants.TAGS_KEY, post.keyword)
+                }
+            startActivity(intent)
+        }
+    }
 
     private lateinit var popularViewModel: PopularViewModel
     private lateinit var glide: GlideRequests
 
     private lateinit var leftDrawable: DrawerArrowDrawable
+
+    private lateinit var postAdapter: PostAdapter
 
     private val helper = object : SearchBar.Helper {
 
@@ -231,13 +257,44 @@ class PopularFragment : Fragment() {
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
             setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
         }
+        postAdapter = PostAdapter(
+            glide = glide,
+            placeholder = Placeholder.create(
+                resources = resources,
+                theme = requireActivity().theme),
+            listener = itemListener,
+            retryCallback = {
+                when (type) {
+                    Constants.TYPE_DANBOORU -> popularViewModel.retryDan()
+                    Constants.TYPE_MOEBOORU -> popularViewModel.retryMoe()
+                }
+            })
         list.apply {
             setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
+            adapter = postAdapter
         }
         when (type) {
-            Constants.TYPE_DANBOORU -> initPostDanAdapter()
-            Constants.TYPE_MOEBOORU -> initPostMoeAdapter()
+            Constants.TYPE_DANBOORU -> {
+                popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<Any>)
+                })
+                popularViewModel.networkStateDan.observe(this, Observer { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDan()
+            }
+            Constants.TYPE_MOEBOORU -> {
+                popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<Any>)
+                })
+                popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshMoe()
+            }
         }
         popular = Popular(
             scheme = scheme,
@@ -246,38 +303,6 @@ class PopularFragment : Fragment() {
             scale = SCALE_DAY,
             period = PERIOD_DAY)
         popularViewModel.show(popular)
-    }
-
-    private fun initPostDanAdapter() {
-        val postDanAdapter = PostDanAdapter(glide, Placeholder.create(
-            resources = resources,
-            theme = requireActivity().theme)) {
-            popularViewModel.retryDan()
-        }
-        list.adapter = postDanAdapter
-        popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
-            postDanAdapter.submitList(posts)
-        })
-        popularViewModel.networkStateDan.observe(this, Observer { networkState ->
-            postDanAdapter.setNetworkState(networkState)
-        })
-        initSwipeToRefreshDan()
-    }
-
-    private fun initPostMoeAdapter() {
-        val postMoeAdapter = PostMoeAdapter(glide, Placeholder.create(
-            resources = resources,
-            theme = requireActivity().theme)) {
-            popularViewModel.retryMoe()
-        }
-        list.adapter = postMoeAdapter
-        popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
-            postMoeAdapter.submitList(posts)
-        })
-        popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
-            postMoeAdapter.setNetworkState(networkState)
-        })
-        initSwipeToRefreshMoe()
     }
 
     private fun initSwipeToRefreshDan() {
