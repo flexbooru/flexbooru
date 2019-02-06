@@ -43,18 +43,16 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruV
     }
 
     override fun onUpdate(booru: Booru) {
-        var index = 0
-        boorus.forEach {
-            if (it.uid == booru.uid) {
-                it.name = booru.name
-                it.scheme = booru.scheme
-                it.host = booru.host
-                it.hash_salt = booru.hash_salt
-                it.type = booru.type
-                return@forEach
+        boorus.forEachIndexed { i, b ->
+            if (b.uid == booru.uid) {
+                b.name = booru.name
+                b.scheme = booru.scheme
+                b.host = booru.host
+                b.hash_salt = booru.hash_salt
+                b.type = booru.type
+                notifyItemChanged(i)
+                return@forEachIndexed
             }
-            index += 1
         }
-        notifyItemChanged(index)
     }
 }

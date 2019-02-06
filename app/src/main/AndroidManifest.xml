@@ -35,7 +35,9 @@
                 android:excludeFromRecents="true"
                 android:parentActivityName=".ui.BooruActivity">
         </activity>
-        <activity android:name=".ui.BooruConfigActivity">
+        <activity
+                android:name=".ui.BooruConfigActivity"
+                android:parentActivityName=".ui.BooruActivity">
         </activity>
         <activity android:name=".ui.BooruActivity">
             <intent-filter>
