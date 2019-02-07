@@ -11,6 +11,8 @@
 
     <string name="retry">Retry</string>
 
+    <string name="post_transition_name" translatable="false">post_img_%d</string>
+
     <string name="popular_day">Day</string>
     <string name="popular_week">Week</string>
     <string name="popular_month">Month</string>
@@ -59,5 +61,5 @@
     <string name="scaner_import_failed">Failed to import.</string>
 
     <string name="browse_toolbar_title">Post</string>
-    <string name="browse_toolbar_title_and_id">Post %d</string>
+    <string name="browse_toolbar_title_and_id" translatable="false">Post %d</string>
 </resources>

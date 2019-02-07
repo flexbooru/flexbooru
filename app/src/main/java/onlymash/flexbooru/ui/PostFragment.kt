@@ -1,6 +1,9 @@
 package onlymash.flexbooru.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +11,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -16,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.github.chrisbanes.photoview.PhotoView
 import com.squareup.haha.perflib.Main
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
@@ -113,7 +119,8 @@ class PostFragment : Fragment() {
     }
 
     private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
-        override fun onClickDanItem(post: PostDan) {
+        override fun onClickDanItem(post: PostDan, view: View) {
+            currentPostId = post.id
             val intent = Intent(requireContext(), BrowseActivity::class.java)
                 .apply {
                     putExtra(Constants.ID_KEY, post.id)
@@ -121,9 +128,12 @@ class PostFragment : Fragment() {
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
                     putExtra(Constants.TAGS_KEY, post.keyword)
                 }
-            startActivity(intent)
+            val options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
+            startActivity(intent, options.toBundle())
         }
-        override fun onClickMoeItem(post: PostMoe) {
+        override fun onClickMoeItem(post: PostMoe, view: View) {
+            currentPostId = post.id
             val intent = Intent(requireContext(), BrowseActivity::class.java)
                 .apply {
                     putExtra(Constants.ID_KEY, post.id)
@@ -131,12 +141,42 @@ class PostFragment : Fragment() {
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
                     putExtra(Constants.TAGS_KEY, post.keyword)
                 }
-            startActivity(intent)
+            val options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
+            startActivity(intent, options.toBundle())
         }
-
     }
 
     private var navigationListener: MainActivity.NavigationListener? = null
+
+    private var currentPostId = 0
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent == null) return
+            val bundle= intent.extras ?: return
+            val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
+            val keyword = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
+            if (pos >= 0 && tags == keyword) {
+                currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
+                list.smoothScrollToPosition(pos + 1)
+            }
+        }
+    }
+
+    private val sharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
+            if (currentPostId > 0) {
+                val view = list.findViewWithTag<View>(currentPostId) ?: return
+                val newSharedElement = view.findViewById<View>(R.id.preview) ?: return
+                val newTransitionName = newSharedElement.transitionName ?: return
+                names.clear()
+                names.add(newTransitionName)
+                sharedElements.clear()
+                sharedElements[newTransitionName] = newSharedElement
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +186,13 @@ class PostFragment : Fragment() {
             type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
             tags = it.getString(Constants.TAGS_KEY, Constants.EMPTY_STRING_VALUE)
         }
+        val activity = requireActivity()
+        if (activity is MainActivity) {
+            activity.setPostExitSharedElementCallback(sharedElementCallback)
+        } else {
+            activity.setExitSharedElementCallback(sharedElementCallback)
+        }
+        requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -155,6 +202,11 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().setExitSharedElementCallback(sharedElementCallback)
     }
 
     private fun init() {
@@ -268,6 +320,7 @@ class PostFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        requireActivity().unregisterReceiver(broadcastReceiver)
         if (navigationListener != null)
             (requireActivity() as MainActivity).removeNavigationListener(navigationListener!!)
         super.onDestroy()

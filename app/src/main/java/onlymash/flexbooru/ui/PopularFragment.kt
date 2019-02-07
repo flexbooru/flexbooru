@@ -1,10 +1,15 @@
 package onlymash.flexbooru.ui
 
 import android.app.DatePickerDialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -100,7 +105,7 @@ class PopularFragment : Fragment() {
     }
 
     private val itemListener = object : PostViewHolder.ItemListener {
-        override fun onClickMoeItem(post: PostMoe) {
+        override fun onClickMoeItem(post: PostMoe, view: View) {
             val intent = Intent(requireContext(), BrowseActivity::class.java)
                 .apply {
                     putExtra(Constants.ID_KEY, post.id)
@@ -108,10 +113,12 @@ class PopularFragment : Fragment() {
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
                     putExtra(Constants.TAGS_KEY, post.keyword)
                 }
-            startActivity(intent)
+            val options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
+            startActivity(intent, options.toBundle())
         }
 
-        override fun onClickDanItem(post: PostDan) {
+        override fun onClickDanItem(post: PostDan, view: View) {
             val intent = Intent(requireContext(), BrowseActivity::class.java)
                 .apply {
                     putExtra(Constants.ID_KEY, post.id)
@@ -119,7 +126,9 @@ class PopularFragment : Fragment() {
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
                     putExtra(Constants.TAGS_KEY, post.keyword)
                 }
-            startActivity(intent)
+            val options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
+            startActivity(intent, options.toBundle())
         }
     }
 
@@ -129,6 +138,8 @@ class PopularFragment : Fragment() {
     private lateinit var leftDrawable: DrawerArrowDrawable
 
     private lateinit var postAdapter: PostAdapter
+
+    private var tags = "null"
 
     private val helper = object : SearchBar.Helper {
 
@@ -192,6 +203,7 @@ class PopularFragment : Fragment() {
                         }
                         else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                     }
+                    tags = popular.scale
                 }
                 Constants.TYPE_MOEBOORU -> {
                     when (menuItem.itemId) {
@@ -201,6 +213,7 @@ class PopularFragment : Fragment() {
                         R.id.action_year -> popular.period = PERIOD_YEAR
                         else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                     }
+                    tags = popular.period
                     popularViewModel.show(popular)
                     swipe_refresh.isRefreshing = true
                     popularViewModel.refreshMoe()
@@ -217,6 +230,35 @@ class PopularFragment : Fragment() {
         }
     }
 
+    private var currentPostId = 0
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent == null) return
+            val bundle= intent.extras ?: return
+            val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
+            val keyword = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
+            if (pos >= 0 && tags == keyword) {
+                currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
+                list.smoothScrollToPosition(pos + 1)
+            }
+        }
+    }
+
+    private val sharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
+            if (currentPostId > 0) {
+                val view = list.findViewWithTag<View>(currentPostId) ?: return
+                val newSharedElement = view.findViewById<View>(R.id.preview) ?: return
+                val newTransitionName = newSharedElement.transitionName ?: return
+                names.clear()
+                names.add(newTransitionName)
+                sharedElements.clear()
+                sharedElements[newTransitionName] = newSharedElement
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -224,6 +266,9 @@ class PopularFragment : Fragment() {
             host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
             type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
         }
+        val activity = requireActivity() as MainActivity
+        activity.setPopularExitSharedElementCallback(sharedElementCallback)
+        activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -284,6 +329,7 @@ class PopularFragment : Fragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
+                tags = SCALE_DAY
                 popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
@@ -294,6 +340,7 @@ class PopularFragment : Fragment() {
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
+                tags = PERIOD_DAY
                 popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
@@ -342,6 +389,7 @@ class PopularFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        requireActivity().unregisterReceiver(broadcastReceiver)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
         super.onDestroy()
     }

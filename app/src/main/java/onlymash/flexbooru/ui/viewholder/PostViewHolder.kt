@@ -3,10 +3,10 @@ package onlymash.flexbooru.ui.viewholder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.github.chrisbanes.photoview.PhotoView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
@@ -26,17 +26,17 @@ class PostViewHolder(itemView: View,
         }
     }
 
-    private val preview: ImageView = itemView.findViewById(R.id.preview)
+    private val preview: PhotoView = itemView.findViewById(R.id.preview)
     private val previewCard: CardView = itemView.findViewById(R.id.preview_card)
     private var post: Any? = null
 
     private var itemListener: ItemListener? = null
 
     init {
-        preview.setOnClickListener {
+        preview.setOnViewTapListener { _, _, _ ->
             when (post) {
-                is PostDan -> itemListener?.onClickDanItem(post as PostDan)
-                is PostMoe -> itemListener?.onClickMoeItem(post as PostMoe)
+                is PostDan -> itemListener?.onClickDanItem(post as PostDan, preview)
+                is PostMoe -> itemListener?.onClickMoeItem(post as PostMoe, preview)
             }
         }
     }
@@ -45,6 +45,8 @@ class PostViewHolder(itemView: View,
         when (post) {
             is PostDan -> {
                 this.post = post
+                preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
+                previewCard.tag = post.id
                 val placeholderDrawable = when (post.rating) {
                     "s" -> placeholder.s
                     "q" -> placeholder.q
@@ -72,6 +74,8 @@ class PostViewHolder(itemView: View,
             }
             is PostMoe -> {
                 this.post = post
+                preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
+                previewCard.tag = post.id
                 val placeholderDrawable = when (post.rating) {
                     "s" -> placeholder.s
                     "q" -> placeholder.q
@@ -104,7 +108,7 @@ class PostViewHolder(itemView: View,
     }
 
     interface ItemListener {
-        fun onClickDanItem(post: PostDan)
-        fun onClickMoeItem(post: PostMoe)
+        fun onClickDanItem(post: PostDan, view: View)
+        fun onClickMoeItem(post: PostMoe, view: View)
     }
 }

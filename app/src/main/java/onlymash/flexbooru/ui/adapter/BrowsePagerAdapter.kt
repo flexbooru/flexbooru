@@ -32,11 +32,9 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         this.type = type
         if (type == Constants.TYPE_DANBOORU) {
             postsDan = posts as MutableList<PostDan>
-            Log.e("BrowsePagerAdapter", "Dan: ${postsDan.size}")
             postsMoe = mutableListOf()
         } else {
             postsMoe = posts as MutableList<PostMoe>
-            Log.e("BrowsePagerAdapter", "Moe: ${postsMoe.size}")
             postsDan = mutableListOf()
         }
         notifyDataSetChanged()
@@ -52,6 +50,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
     @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(container.context).inflate(R.layout.item_post_pager, null)
+        view.tag = position
         val photoView: PhotoView = view.findViewById(R.id.photo_view)
         photoView.setOnViewTapListener { _, _, _ ->
             photoViewListener?.onClickPhotoView()
@@ -59,8 +58,14 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         val url = when (type) {
-            Constants.TYPE_DANBOORU -> postsDan[position].large_file_url
-            Constants.TYPE_MOEBOORU -> postsMoe[position].sample_url
+            Constants.TYPE_DANBOORU -> {
+                photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsDan[position].id)
+                postsDan[position].large_file_url
+            }
+            Constants.TYPE_MOEBOORU -> {
+                photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsMoe[position].id)
+                postsMoe[position].sample_url
+            }
             else -> null
         }
         if (!url.isNullOrEmpty()) {

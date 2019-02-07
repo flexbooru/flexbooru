@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.SharedElementCallback
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
@@ -223,11 +225,13 @@ class MainActivity : BaseActivity() {
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
+                        setExitSharedElementCallback(postExitSharedElementCallback)
                         if (navigation.selectedItemId != R.id.navigation_posts) {
                             navigation.selectedItemId = R.id.navigation_posts
                         }
                     }
                     1 -> {
+                        setExitSharedElementCallback(popularExitSharedElementCallback)
                         if (navigation.selectedItemId != R.id.navigation_popular) {
                             navigation.selectedItemId = R.id.navigation_popular
                         }
@@ -235,6 +239,19 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
+
+    private var postExitSharedElementCallback: SharedElementCallback? = null
+
+    fun setPostExitSharedElementCallback(callback: SharedElementCallback?) {
+        postExitSharedElementCallback = callback
+        setExitSharedElementCallback(postExitSharedElementCallback)
+    }
+
+    private var popularExitSharedElementCallback: SharedElementCallback? = null
+
+    fun setPopularExitSharedElementCallback(callback: SharedElementCallback?) {
+        popularExitSharedElementCallback = callback
+    }
 
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->

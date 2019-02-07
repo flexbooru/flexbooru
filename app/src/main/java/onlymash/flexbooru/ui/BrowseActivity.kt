@@ -1,12 +1,16 @@
 package onlymash.flexbooru.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.app.SharedElementCallback
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
+import com.github.chrisbanes.photoview.PhotoView
 import kotlinx.android.synthetic.main.activity_browse.*
+import kotlinx.android.synthetic.main.item_post_pager.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -21,10 +25,15 @@ class BrowseActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "BrowseActivity"
+        const val ACTION = "current_browse_id"
+        const val EXT_POST_ID_KEY = "post_id"
+        const val EXT_POST_POSITION_KEY = "post_position"
+        const val EXT_POST_KEYWORD_KEY = "post_keyword"
     }
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
+    private var keyword = ""
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
             postsDan = posts
@@ -40,6 +49,7 @@ class BrowseActivity : AppCompatActivity() {
             pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU)
             toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
             pager_browse.currentItem = position
+            startPostponedEnterTransition()
         }
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
@@ -56,6 +66,7 @@ class BrowseActivity : AppCompatActivity() {
             pagerAdapter.updateData(posts, Constants.TYPE_MOEBOORU)
             toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
             pager_browse.currentItem = position
+            startPostponedEnterTransition()
         }
     }
 
@@ -67,18 +78,23 @@ class BrowseActivity : AppCompatActivity() {
         }
 
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+        }
+
+        override fun onPageSelected(position: Int) {
             val id = when {
                 postsDan != null -> postsDan!![position].id
                 postsMoe != null -> postsMoe!![position].id
                 else -> -1
             }
             if (id > 0) toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), id)
+            val intent = Intent(ACTION).apply {
+                putExtra(EXT_POST_ID_KEY, id)
+                putExtra(EXT_POST_POSITION_KEY, position)
+                putExtra(EXT_POST_KEYWORD_KEY, keyword)
+            }
+            this@BrowseActivity.sendBroadcast(intent)
         }
-
-        override fun onPageSelected(position: Int) {
-
-        }
-
     }
 
     private val photoViewListener = object : BrowsePagerAdapter.PhotoViewListener {
@@ -87,13 +103,27 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
+    private val sharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
+            val pos = pager_browse.currentItem
+            val sharedElement = pager_browse.findViewWithTag<View>(pos).findViewById<View>(R.id.photo_view)
+            val name = sharedElement.transitionName
+            names.clear()
+            names.add(name)
+            sharedElements.clear()
+            sharedElements[name] = sharedElement
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
+        postponeEnterTransition()
+        setEnterSharedElementCallback(sharedElementCallback)
         toolbar.setTitle(R.string.browse_toolbar_title)
         toolbar.setBackgroundColor(resources.getColor(R.color.transparent, theme))
         toolbar.setNavigationOnClickListener {
-            finish()
+            onBackPressed()
         }
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
             toolbar_container.minimumHeight = toolbar.height + insets.systemWindowInsetTop
@@ -104,7 +134,7 @@ class BrowseActivity : AppCompatActivity() {
         }
         val host = intent.getStringExtra(Constants.HOST_KEY)
         val type = intent.getIntExtra(Constants.TYPE_KEY, -1)
-        val tags = intent.getStringExtra(Constants.TAGS_KEY)
+        keyword = intent.getStringExtra(Constants.TAGS_KEY)
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
         pagerAdapter.setPhotoViewListener(photoViewListener)
@@ -114,10 +144,10 @@ class BrowseActivity : AppCompatActivity() {
         loader.setPostLoadedListener(postLoadedListener)
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                loader.loadDanPosts(host = host, keyword = tags)
+                loader.loadDanPosts(host = host, keyword = keyword)
             }
             Constants.TYPE_MOEBOORU -> {
-                loader.loadMoePosts(host = host, keyword = tags)
+                loader.loadMoePosts(host = host, keyword = keyword)
             }
         }
     }
@@ -155,5 +185,9 @@ class BrowseActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         window.decorView.systemUiVisibility = uiFlags
+    }
+
+    override fun onBackPressed() {
+        finishAfterTransition()
     }
 }

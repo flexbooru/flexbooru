@@ -13,7 +13,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/CardViewTheme">
-        <ImageView
+        <com.github.chrisbanes.photoview.PhotoView
                 android:id="@+id/preview"
                 android:transitionName="post_img"
                 android:layout_width="match_parent"
