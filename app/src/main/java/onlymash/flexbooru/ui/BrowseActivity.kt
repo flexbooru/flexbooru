@@ -46,8 +46,9 @@ class BrowseActivity : AppCompatActivity() {
                     }
                 }
             }
-            pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU)
             toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
+            pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU)
+            pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
         }
@@ -63,8 +64,9 @@ class BrowseActivity : AppCompatActivity() {
                     }
                 }
             }
-            pagerAdapter.updateData(posts, Constants.TYPE_MOEBOORU)
             toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
+            pagerAdapter.updateData(posts, Constants.TYPE_MOEBOORU)
+            pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
         }
@@ -138,7 +140,6 @@ class BrowseActivity : AppCompatActivity() {
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
         pagerAdapter.setPhotoViewListener(photoViewListener)
-        pager_browse.adapter = pagerAdapter
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         val loader = ServiceLocator.instance().getPostLoader()
         loader.setPostLoadedListener(postLoadedListener)

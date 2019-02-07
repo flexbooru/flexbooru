@@ -51,7 +51,13 @@ class PopularDanDataSource(
         try {
             val response = request.execute()
             val data = response.body()
-            val posts = data?: mutableListOf()
+            val postsDan = data?: mutableListOf()
+            val posts: MutableList<PostDan> = mutableListOf()
+            postsDan.forEach { postDan ->
+                if (!postDan.preview_file_url.isNullOrBlank()) {
+                    posts.add(postDan)
+                }
+            }
             db.postDanDao().deletePosts(host, keyword)
             val start = db.postDanDao().getNextIndex(host = host, keyword = keyword)
             val items = posts.mapIndexed { index, postDan ->

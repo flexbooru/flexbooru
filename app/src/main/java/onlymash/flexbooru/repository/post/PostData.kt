@@ -31,7 +31,13 @@ class PostData(
     private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
 
     private fun insertDanbooruResultIntoDb(search: Search, body: MutableList<PostDan>?) {
-        body?.let { posts ->
+        body?.let { postsDan ->
+            val posts = mutableListOf<PostDan>()
+            postsDan.forEach { postDan ->
+                if (!postDan.preview_file_url.isNullOrBlank()) {
+                    posts.add(postDan)
+                }
+            }
             val start = db.postDanDao().getNextIndex(host = search.host, keyword = search.tags)
             val items = posts.mapIndexed { index, post ->
                 post.host = search.host

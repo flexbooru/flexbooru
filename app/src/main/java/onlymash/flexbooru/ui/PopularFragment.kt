@@ -92,6 +92,10 @@ class PopularFragment : Fragment() {
 
     private lateinit var searchBarMover: SearchBarMover
 
+    private var currentYear = -1
+    private var currentMonth = -1
+    private var currentDay = -1
+
     private val sbMoverHelper = object : SearchBarMover.Helper {
         override val validRecyclerView get() = list
 
@@ -164,6 +168,9 @@ class PopularFragment : Fragment() {
                             DatePickerDialog(
                                 requireContext(),
                                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                                    currentYear = year
+                                    currentMonth = month
+                                    currentDay = dayOfMonth
                                     val yearString = year.toString()
                                     val realMonth = month + 1
                                     val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
@@ -174,9 +181,9 @@ class PopularFragment : Fragment() {
                                     swipe_refresh.isRefreshing = true
                                     popularViewModel.refreshDan()
                                 },
-                                currentCalendar.get(Calendar.YEAR),
-                                currentCalendar.get(Calendar.MONTH),
-                                currentCalendar.get(Calendar.DAY_OF_MONTH)
+                                if (currentYear < 0) currentCalendar.get(Calendar.YEAR) else currentYear,
+                                if (currentMonth < 0) currentCalendar.get(Calendar.MONTH) else currentMonth,
+                                if (currentDay < 0) currentCalendar.get(Calendar.DAY_OF_MONTH) else currentDay
                             ).apply {
                                 datePicker.minDate = minCalendar.timeInMillis
                                 datePicker.maxDate = currentTimeMillis
