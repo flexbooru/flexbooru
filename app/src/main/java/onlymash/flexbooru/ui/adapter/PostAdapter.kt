@@ -1,10 +1,10 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
+import androidx.paging.AsyncPagedListDiffer
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.Placeholder
@@ -33,6 +33,41 @@ class PostAdapter(private val glide: GlideRequests,
         }
     }
 
+    private val adapterCallback = AdapterListUpdateCallback(this)
+
+    private val listUpdateCallback = object : ListUpdateCallback {
+        override fun onChanged(position: Int, count: Int, payload: Any?) {
+            adapterCallback.onChanged(position + 1, count, payload)
+        }
+
+        override fun onMoved(fromPosition: Int, toPosition: Int) {
+            adapterCallback.onMoved(fromPosition + 1, toPosition + 1)
+        }
+
+        override fun onInserted(position: Int, count: Int) {
+            adapterCallback.onInserted(position + 1, count)
+        }
+
+        override fun onRemoved(position: Int, count: Int) {
+            adapterCallback.onRemoved(position + 1, count)
+        }
+    }
+
+    private val differ = AsyncPagedListDiffer<Any>(listUpdateCallback,
+        AsyncDifferConfig.Builder<Any>(POST_COMPARATOR).build())
+
+    override fun getItem(position: Int): Any? {
+        return differ.getItem(position - 1)
+    }
+
+    override fun submitList(pagedList: PagedList<Any>?) {
+        differ.submitList(pagedList)
+    }
+
+    override fun getCurrentList(): PagedList<Any>? {
+        return differ.currentList
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             R.layout.item_header -> HeaderViewHolder.create(parent)
@@ -50,7 +85,7 @@ class PostAdapter(private val glide: GlideRequests,
                 }
             }
             R.layout.item_post -> {
-                (holder as PostViewHolder).bind(getItem(position - 1))
+                (holder as PostViewHolder).bind(getItem(position))
                 holder.setItemListener(listener)
             }
             R.layout.item_network_state -> {
@@ -77,7 +112,7 @@ class PostAdapter(private val glide: GlideRequests,
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + if (hasExtraRow()) 2 else 1
+        return differ.itemCount + if (hasExtraRow()) 2 else 1
     }
 
     fun setNetworkState(newNetworkState: NetworkState?) {
@@ -87,9 +122,9 @@ class PostAdapter(private val glide: GlideRequests,
         val hasExtraRow = hasExtraRow()
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
-                notifyItemRemoved(super.getItemCount() + 1)
+                notifyItemRemoved(differ.itemCount + 1)
             } else {
-                notifyItemInserted(super.getItemCount() + 1)
+                notifyItemInserted(differ.itemCount + 1)
             }
         } else if (hasExtraRow && previousState != newNetworkState) {
             notifyItemChanged(itemCount - 1)

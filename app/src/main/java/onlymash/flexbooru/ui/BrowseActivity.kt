@@ -63,7 +63,7 @@ class BrowseActivity : AppCompatActivity() {
 
     private val pagerChangeListener = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) {
-            resetBg()
+//            resetBg()
         }
 
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {

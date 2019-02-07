@@ -199,7 +199,6 @@ class PostFragment : Fragment() {
             adapter = postAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    Log.e("PostFragment", "newState: $newState")
                     when (newState) {
                         RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
                         else -> glide.pauseRequests()
@@ -207,7 +206,6 @@ class PostFragment : Fragment() {
                 }
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    Log.e("PostFragment", "onScrolled")
                 }
             })
         }
@@ -224,7 +222,6 @@ class PostFragment : Fragment() {
             }
             Constants.TYPE_MOEBOORU -> {
                 postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
-                    Log.e(TAG, String.format("%s%s", "initialLoadSizeHint: ", posts.config.initialLoadSizeHint))
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
                 })
