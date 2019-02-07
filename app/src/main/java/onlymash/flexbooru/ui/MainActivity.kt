@@ -166,6 +166,11 @@ class MainActivity : BaseActivity() {
                     return@forEach
                 }
             }
+            header.updateProfile(
+                ProfileDrawerItem()
+                    .withName(booru.name)
+                    .withEmail(String.format("%s://%s", booru.scheme, booru.host))
+                    .withIdentifier(booru.uid))
         }
     }
 
