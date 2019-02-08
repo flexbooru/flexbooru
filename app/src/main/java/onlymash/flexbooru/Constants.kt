@@ -47,5 +47,5 @@ object Constants {
 
     const val ACTIVE_BOORU_UID_KEY = "active_booru_uid"
 
-    const val HASH_SALT_CONTAINED = "--you-password--"
+    const val HASH_SALT_CONTAINED = "--your-password--"
 }

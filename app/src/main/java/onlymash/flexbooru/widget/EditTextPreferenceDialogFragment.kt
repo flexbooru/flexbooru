@@ -86,7 +86,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
     override fun onDialogClosed(positiveResult: Boolean) {
         if (positiveResult) {
             val value = editText!!.text.toString()
-            if (key == Constants.BOORU_CONFIG_HASH_SALT_KEY && !value.contains(Constants.HASH_SALT_CONTAINED)) {
+            if (key == Constants.BOORU_CONFIG_HASH_SALT_KEY && !value.contains(Constants.HASH_SALT_CONTAINED, false)) {
                 Toast.makeText(this.requireContext(), R.string.booru_config_hash_salt_must_contain_yp, Toast.LENGTH_LONG).show()
             } else {
                 if (editTextPreference.callChangeListener(value)) {
