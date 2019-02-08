@@ -34,7 +34,8 @@
                 android:defaultValue="https"
                 app:iconSpaceReserved="true"/>
 
-        <EditTextPreference
+        <!--suppress AndroidElementNotAllowed -->
+        <onlymash.flexbooru.widget.EditTextPreference
                 android:key="booru_config_host"
                 android:title="@string/booru_config_host"
                 android:singleLine="true"
@@ -42,7 +43,8 @@
                 android:icon="@drawable/ic_domain_24dp"
                 app:iconSpaceReserved="true"/>
 
-        <EditTextPreference
+        <!--suppress AndroidElementNotAllowed -->
+        <onlymash.flexbooru.widget.EditTextPreference
                 android:key="booru_config_hash_salt"
                 android:title="@string/booru_config_hash_salt"
                 android:singleLine="true"

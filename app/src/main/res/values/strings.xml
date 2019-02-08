@@ -53,6 +53,7 @@
     <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
     <string name="booru_config_dialog_title_delete">Are you sure you want to remove this booru?</string>
+    <string name="booru_config_hash_salt_must_contain_yp">Hash salt must contain \'&#8211;&#8211;you&#8211;password&#8211;&#8211;\'</string>
 
     <string name="scaner_scan_qr_code">Scan QR code</string>
     <string name="scaner_import_from_file">Import QR code from file</string>
