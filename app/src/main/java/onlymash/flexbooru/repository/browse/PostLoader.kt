@@ -1,5 +1,6 @@
 package onlymash.flexbooru.repository.browse
 
+import android.os.Handler
 import onlymash.flexbooru.database.FlexbooruDatabase
 import java.util.concurrent.Executor
 
@@ -12,17 +13,27 @@ class PostLoader(private val db: FlexbooruDatabase,
         postLoadedListener = listener
     }
 
+    private var uiHandler: Handler? = null
+
+    fun setUIHandler(handler: Handler) {
+        uiHandler = handler
+    }
+
     fun loadDanPosts(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postDanDao().getPostsRaw(host, keyword)
-            postLoadedListener?.onDanItemsLoaded(posts)
+            uiHandler?.post {
+                postLoadedListener?.onDanItemsLoaded(posts)
+            }
         }
     }
 
     fun loadMoePosts(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postMoeDao().getPostsRaw(host, keyword)
-            postLoadedListener?.onMoeItemsLoaded(posts)
+            uiHandler?.post {
+                postLoadedListener?.onMoeItemsLoaded(posts)
+            }
         }
     }
 }

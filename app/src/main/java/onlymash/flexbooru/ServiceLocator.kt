@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
+import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.repository.browse.PostLoader
 import onlymash.flexbooru.repository.popular.PopularData
 import onlymash.flexbooru.repository.popular.PopularRepository
@@ -44,6 +45,8 @@ interface ServiceLocator {
     fun getMoebooruApi(): MoebooruApi
 
     fun getPostLoader(): PostLoader
+
+    fun getUserFinder(): UserFinder
 }
 
 /**
@@ -93,6 +96,14 @@ open class DefaultServiceLocator : ServiceLocator {
         return PostLoader(
             db = FlexbooruDatabase.instance,
             ioExecutor = getDiskIOExecutor()
+        )
+    }
+
+    override fun getUserFinder(): UserFinder {
+        return UserFinder(
+            danbooruApi = getDanbooruApi(),
+            moebooruApi = getMoebooruApi(),
+            ioExecutor = DISK_IO
         )
     }
 }

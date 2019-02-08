@@ -50,6 +50,16 @@ object BooruManager {
         null
     }
 
+    @Throws(IOException::class)
+    fun getBooruByUid(uid: Long): Booru? = try {
+        FlexbooruDatabase.booruDao.getBooruByUid(uid)
+    } catch (ex: SQLiteCantOpenDatabaseException) {
+        throw IOException(ex)
+    } catch (ex: SQLException) {
+        ex.printStackTrace()
+        null
+    }
+
     @Throws(SQLException::class)
     fun deleteBooru(uid: Long) {
         if (FlexbooruDatabase.booruDao.delete(uid) == 1) {

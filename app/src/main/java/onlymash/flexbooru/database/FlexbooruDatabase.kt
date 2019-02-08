@@ -8,8 +8,10 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.model.User
 
-@Database(entities = [(PostMoe::class), (PostDan::class), (Booru::class)], version = 2, exportSchema = false)
+@Database(entities = [(PostMoe::class), (PostDan::class), (Booru::class), (User::class)],
+    version = 3, exportSchema = false)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
     companion object {
@@ -20,6 +22,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 .build()
         }
         val booruDao get() = instance.booruDao()
+        val userDao get() = instance.userDao()
     }
 
     abstract fun postDanDao(): PostDanDao
@@ -27,4 +30,6 @@ abstract class FlexbooruDatabase : RoomDatabase() {
     abstract fun postMoeDao(): PostMoeDao
 
     abstract fun booruDao(): BooruDao
+
+    abstract fun userDao(): UserDao
 }

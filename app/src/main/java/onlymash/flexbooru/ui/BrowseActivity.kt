@@ -3,14 +3,13 @@ package onlymash.flexbooru.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
-import com.github.chrisbanes.photoview.PhotoView
 import kotlinx.android.synthetic.main.activity_browse.*
-import kotlinx.android.synthetic.main.item_post_pager.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -141,8 +140,10 @@ class BrowseActivity : AppCompatActivity() {
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
-        val loader = ServiceLocator.instance().getPostLoader()
-        loader.setPostLoadedListener(postLoadedListener)
+        val loader = ServiceLocator.instance().getPostLoader().apply {
+            setPostLoadedListener(postLoadedListener)
+            setUIHandler(Handler())
+        }
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 loader.loadDanPosts(host = host, keyword = keyword)

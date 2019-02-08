@@ -1,8 +1,10 @@
 package onlymash.flexbooru.api
 
 import okhttp3.HttpUrl
+import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.model.Popular
 import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.model.User
 
 fun getDanbooruUrl(search: Search, page: Int): HttpUrl {
     return HttpUrl.Builder()
@@ -45,5 +47,23 @@ fun getMoebooruPopularUrl(popular: Popular): HttpUrl {
         .addPathSegment("post")
         .addPathSegment("popular_recent.json")
         .addQueryParameter("period", popular.period)
+        .build()
+}
+
+fun getDanbooruUserUrl(username: String, booru: Booru): HttpUrl {
+    return HttpUrl.Builder()
+        .scheme(booru.scheme)
+        .host(booru.host)
+        .addPathSegment("users.json")
+        .addQueryParameter("search[name]", username)
+        .build()
+}
+
+fun getMoebooruUserUrl(username: String, booru: Booru): HttpUrl {
+    return HttpUrl.Builder()
+        .scheme(booru.scheme)
+        .host(booru.host)
+        .addPathSegment("user.json")
+        .addQueryParameter("name", username)
         .build()
 }

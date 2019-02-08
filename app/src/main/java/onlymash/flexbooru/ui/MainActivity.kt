@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
@@ -29,6 +30,7 @@ class MainActivity : BaseActivity() {
         private const val TAG = "MainActivity"
         private const val BOORU_MANAGE_PROFILE_ID = -2L
         private const val SETTINGS_DRAWER_ITEM_ID = -1L
+        private const val ACCOUNT_DRAWER_ITEM_ID = 1L
     }
     private lateinit var boorus: MutableList<Booru>
     lateinit var drawer: Drawer
@@ -56,6 +58,13 @@ class MainActivity : BaseActivity() {
             .withTranslucentStatusBar(false)
             .withSliderBackgroundColor(getColor(R.color.white))
             .withAccountHeader(header, false)
+            .addDrawerItems(
+                PrimaryDrawerItem()
+                    .withIdentifier(ACCOUNT_DRAWER_ITEM_ID)
+                    .withName(R.string.title_account)
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_account_circle_black_24dp))
+                    .withIconTintingEnabled(true)
+            )
             .addStickyDrawerItems(
                 PrimaryDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_black_24dp))
@@ -67,6 +76,7 @@ class MainActivity : BaseActivity() {
             .withStickyFooterShadow(false)
             .withSavedInstance(savedInstanceState)
             .build()
+        drawer.setSelection(-3L)
         drawer.onDrawerItemClickListener = drawerItemClickListener
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
@@ -84,11 +94,11 @@ class MainActivity : BaseActivity() {
             }
             header.addProfile(profileSettingDrawerItem, boorus.size)
         }
-        val uid = activeBooruUid
+        val uid = Settings.instance().activeBooruUid
         when {
             uid < 0L && size > 0 -> {
-                activeBooruUid = boorus[0].uid
-                header.setActiveProfile(activeBooruUid)
+                Settings.instance().activeBooruUid = boorus[0].uid
+                header.setActiveProfile(Settings.instance().activeBooruUid)
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0])
             }
             uid >= 0L && size > 0 -> {
@@ -103,8 +113,8 @@ class MainActivity : BaseActivity() {
                     header.setActiveProfile(uid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i])
                 } else {
-                    activeBooruUid = boorus[0].uid
-                    header.setActiveProfile(activeBooruUid)
+                    Settings.instance().activeBooruUid = boorus[0].uid
+                    header.setActiveProfile(Settings.instance().activeBooruUid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0])
                 }
             }
@@ -113,10 +123,6 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-
-    private var activeBooruUid: Long
-        get() = app.sp.getLong(Constants.ACTIVE_BOORU_UID_KEY, -1)
-        set(value) = app.sp.edit().putLong(Constants.ACTIVE_BOORU_UID_KEY, value).apply()
 
     private val booruListener = object : BooruManager.Listener {
         override fun onAdd(booru: Booru) {
@@ -129,8 +135,8 @@ class MainActivity : BaseActivity() {
                     .withIdentifier(booru.uid), boorus.size - 1)
             header.addProfile(profileSettingDrawerItem, boorus.size)
             if (boorus.size == 1) {
-                activeBooruUid = booru.uid
-                header.setActiveProfile(activeBooruUid)
+                Settings.instance().activeBooruUid = booru.uid
+                header.setActiveProfile(Settings.instance().activeBooruUid)
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
             }
         }
@@ -144,12 +150,12 @@ class MainActivity : BaseActivity() {
             }
             header.removeProfileByIdentifier(booruUid)
             if (boorus.size > 0) {
-                if (activeBooruUid == booruUid) {
-                    activeBooruUid = 0
-                    header.setActiveProfile(activeBooruUid)
+                if (Settings.instance().activeBooruUid == booruUid) {
+                    Settings.instance().activeBooruUid = 0
+                    header.setActiveProfile(Settings.instance().activeBooruUid)
                 }
             } else {
-                activeBooruUid = -1
+                Settings.instance().activeBooruUid = -1
                 pager_container.adapter = null
             }
         }
@@ -162,7 +168,7 @@ class MainActivity : BaseActivity() {
                     it.host = booru.host
                     it.hash_salt = booru.hash_salt
                     it.type = booru.type
-                    if (activeBooruUid == booru.uid) {
+                    if (Settings.instance().activeBooruUid == booru.uid) {
                         pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
                     }
                     return@forEach
@@ -184,7 +190,7 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, BooruActivity::class.java))
                 }
                 else -> {
-                    activeBooruUid = uid
+                    Settings.instance().activeBooruUid = uid
                     boorus.forEach { booru ->
                         if (booru.uid == uid) {
                             navigation.selectedItemId = R.id.navigation_posts
@@ -199,10 +205,13 @@ class MainActivity : BaseActivity() {
 
     private val drawerItemClickListener =
         Drawer.OnDrawerItemClickListener { _, position, drawerItem ->
-            Log.i("MainActivity", "id: ${drawerItem.identifier}; position: $position")
             when (drawerItem.identifier) {
                 SETTINGS_DRAWER_ITEM_ID -> {
 
+                }
+                ACCOUNT_DRAWER_ITEM_ID -> {
+                    drawer.setSelection(-3L)
+                    startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
                 }
                 else -> {
 

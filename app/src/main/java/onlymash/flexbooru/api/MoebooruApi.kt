@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.model.User
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -54,5 +55,8 @@ interface MoebooruApi {
 
     @GET
     fun getPosts(@Url httpUrl: HttpUrl): Call<MutableList<PostMoe>>
+
+    @GET
+    fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
 
 }

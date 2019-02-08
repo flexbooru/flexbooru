@@ -8,6 +8,7 @@
     <string name="title_manage_boorus">Manage boorus</string>
     <string name="title_settings">Settings</string>
     <string name="title_booru_config">Booru config</string>
+    <string name="title_account">Account</string>
 
     <string name="retry">Retry</string>
 
@@ -53,7 +54,7 @@
     <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
     <string name="booru_config_dialog_title_delete">Are you sure you want to remove this booru?</string>
-    <string name="booru_config_hash_salt_must_contain_yp">Hash salt must contain \'&#8211;&#8211;your&#8211;password&#8211;&#8211;\'</string>
+    <string name="booru_config_hash_salt_must_contain_yp">Hash salt must contain text: your-password</string>
 
     <string name="scaner_scan_qr_code">Scan QR code</string>
     <string name="scaner_import_from_file">Import QR code from file</string>
@@ -63,4 +64,13 @@
 
     <string name="browse_toolbar_title">Post</string>
     <string name="browse_toolbar_title_and_id" translatable="false">Post %d</string>
+
+    <string name="title_account_config">Account Config</string>
+    <string name="title_account_config_and_booru">Account Config - %s</string>
+    <string name="account_username">Username</string>
+    <string name="account_password">Password</string>
+    <string name="account_api_key">Api Key</string>
+    <string name="account_forgot_password">Forgot password?</string>
+    <string name="account_set">Set account</string>
+
 </resources>
