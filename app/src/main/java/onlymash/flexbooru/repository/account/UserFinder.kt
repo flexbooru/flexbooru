@@ -50,7 +50,9 @@ class UserFinder(private val danbooruApi: DanbooruApi,
                     }
                 }
                 if (user != null) {
-                    findUserListener?.onSuccess(user!!)
+                    uiHandler?.post {
+                        findUserListener?.onSuccess(user!!)
+                    }
                 } else {
                     msg = "User not found!"
                 }
@@ -58,7 +60,9 @@ class UserFinder(private val danbooruApi: DanbooruApi,
                 msg = ioException.message ?: "unknown error"
             } finally {
                 if (msg.isNotEmpty()) {
-                    findUserListener?.onFailed(msg)
+                    uiHandler?.post {
+                        findUserListener?.onFailed(msg)
+                    }
                 }
             }
         }
