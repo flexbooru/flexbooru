@@ -21,11 +21,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
         findUserListener = listener
     }
 
-    private var uiHandler: Handler? = null
-
-    fun setUIHandler(handler: Handler) {
-        uiHandler = handler
-    }
+    private val uiHandler = Handler()
 
     fun findUser(username: String, booru: Booru) {
         when (booru.type) {
@@ -50,7 +46,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
                     }
                 }
                 if (user != null) {
-                    uiHandler?.post {
+                    uiHandler.post {
                         findUserListener?.onSuccess(user!!)
                     }
                 } else {
@@ -60,7 +56,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
                 msg = ioException.message ?: "unknown error"
             } finally {
                 if (msg.isNotEmpty()) {
-                    uiHandler?.post {
+                    uiHandler.post {
                         findUserListener?.onFailed(msg)
                     }
                 }
@@ -84,7 +80,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
                     }
                 }
                 if (user != null) {
-                    uiHandler?.post {
+                    uiHandler.post {
                         findUserListener?.onSuccess(user!!)
                     }
                 } else {
@@ -94,7 +90,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
                 msg = ioException.message ?: "unknown error"
             } finally {
                 if (msg.isNotEmpty()) {
-                    uiHandler?.post {
+                    uiHandler.post {
                         findUserListener?.onFailed(msg)
                     }
                 }

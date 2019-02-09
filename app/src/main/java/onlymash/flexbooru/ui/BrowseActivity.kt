@@ -3,7 +3,6 @@ package onlymash.flexbooru.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.core.app.SharedElementCallback
@@ -142,7 +141,6 @@ class BrowseActivity : AppCompatActivity() {
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         val loader = ServiceLocator.instance().getPostLoader().apply {
             setPostLoadedListener(postLoadedListener)
-            setUIHandler(Handler())
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {

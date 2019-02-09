@@ -25,7 +25,7 @@ data class Booru(
         return Uri.Builder()
             .scheme("booru")
             .encodedAuthority(String.format(Locale.ENGLISH, "%s",
-                Base64.encodeToString("$name@$scheme@$host@$type@${hash_salt ?: ""}".toByteArray(),
+                Base64.encodeToString("$name@@@$scheme@@@$host@@@$type@@@${hash_salt ?: ""}".toByteArray(),
                     Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)))
             .build()
     }
@@ -35,7 +35,7 @@ data class Booru(
             return try {
                 val dataByte = Base64.decode(str.toUri().authority,
                     Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)
-                val dataList = String(dataByte).split("@")
+                val dataList = String(dataByte).split("@@@")
                 if (dataList.size == 5) {
                     Booru(uid = -1, name = dataList[0], scheme = dataList[1],
                         host = dataList[2], type = dataList[3].toInt(), hash_salt = dataList[4])

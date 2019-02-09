@@ -1,7 +1,6 @@
 package onlymash.flexbooru.ui
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -72,7 +71,6 @@ class AccountConfigActivity : BaseActivity() {
         }
         account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru!!.name)
         userFinder = ServiceLocator.instance().getUserFinder().apply {
-            setUIHandler(Handler())
             setFindUserListener(findUserListener)
         }
         set_account.setOnClickListener {
