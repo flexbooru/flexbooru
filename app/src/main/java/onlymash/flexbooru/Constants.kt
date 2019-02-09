@@ -43,7 +43,7 @@ object Constants {
 
     const val URL_KEY = "url"
 
-    const val BOORU_HELP_URL = "https://github.com/flexbooru/flexbooru/wiki/Import-booru"
+    const val BOORU_HELP_URL = "https://github.com/flexbooru/flexbooru/wiki/import-booru"
 
     const val ACTIVE_BOORU_UID_KEY = "active_booru_uid"
 
