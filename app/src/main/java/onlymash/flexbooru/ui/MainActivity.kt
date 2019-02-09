@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.materialdrawer.AccountHeader
@@ -16,11 +15,10 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import kotlinx.android.synthetic.main.activity_main.*
-import onlymash.flexbooru.App.Companion.app
-import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 
@@ -211,7 +209,13 @@ class MainActivity : BaseActivity() {
                 }
                 ACCOUNT_DRAWER_ITEM_ID -> {
                     drawer.setSelection(-3L)
-                    startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
+                    val user = UserManager.getUser(Settings.instance().activeBooruUid)
+                    val booru = getCurrentBooru()
+                    if (user != null && booru != null) {
+                        AccountActivity.startActivity(context = this@MainActivity, user = user, booru = booru)
+                    } else {
+                        startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
+                    }
                 }
                 else -> {
 
@@ -320,5 +324,17 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         BooruManager.listeners.remove(booruListener)
         super.onDestroy()
+    }
+
+    private fun getCurrentBooru(): Booru? {
+        var booru: Booru? = null
+        val uid = Settings.instance().activeBooruUid
+        boorus.forEach {
+            if (it.uid == uid) {
+                booru = it
+                return@forEach
+            }
+        }
+        return booru
     }
 }

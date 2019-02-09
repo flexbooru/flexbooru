@@ -2,7 +2,6 @@ package onlymash.flexbooru
 
 import android.app.Application
 import android.content.SharedPreferences
-import com.squareup.leakcanary.LeakCanary
 import moe.shizuku.preference.PreferenceManager
 
 class App : Application() {
@@ -13,8 +12,5 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
-//        if (!LeakCanary.isInAnalyzerProcess(this)) {
-//            LeakCanary.install(this)
-//        }
     }
 }

@@ -42,6 +42,10 @@ class AccountConfigActivity : BaseActivity() {
                     UserManager.createUser(user)
                 }
             }
+            AccountActivity.startActivity(
+                context = this@AccountConfigActivity,
+                user = user,
+                booru = booru!!)
             finish()
         }
         override fun onFailed(msg: String) {

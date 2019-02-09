@@ -9,6 +9,7 @@
     <string name="title_settings">Settings</string>
     <string name="title_booru_config">Booru config</string>
     <string name="title_account">Account</string>
+    <string name="title_account_and_booru">Account - %s</string>
 
     <string name="retry">Retry</string>
 
@@ -72,5 +73,6 @@
     <string name="account_api_key">Api Key</string>
     <string name="account_forgot_password">Forgot password?</string>
     <string name="account_set">Set account</string>
-
+    <string name="account_user_id">ID: %d</string>
+    <string name="account_user_avatars" translatable="false">%s://%s/data/avatars/%d.jpg</string>
 </resources>

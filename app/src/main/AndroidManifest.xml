@@ -27,6 +27,10 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
+                android:name=".ui.AccountActivity"
+                android:parentActivityName=".ui.MainActivity">
+        </activity>
+        <activity
                 android:name=".ui.AccountConfigActivity"
                 android:label="@string/title_account_config">
         </activity>

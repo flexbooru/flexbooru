@@ -21,8 +21,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.github.chrisbanes.photoview.PhotoView
-import com.squareup.haha.perflib.Main
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants

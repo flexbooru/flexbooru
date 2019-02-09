@@ -66,7 +66,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
         }
 
         if (editTextPreference.isCommitOnEnter) {
-            editText!!.setOnEditorActionListener(TextView.OnEditorActionListener { v, keyCode, event ->
+            editText!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
                     onClick(dialog, DialogInterface.BUTTON_POSITIVE)
                     dismiss()
