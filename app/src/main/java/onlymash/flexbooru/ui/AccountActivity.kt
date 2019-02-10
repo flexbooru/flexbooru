@@ -70,7 +70,8 @@ class AccountActivity : BaseActivity() {
                 AlertDialog.Builder(this@AccountActivity)
                     .setTitle(R.string.account_user_dialog_title_remove)
                     .setPositiveButton(R.string.dialog_yes) {_, _ ->
-                        UserManager.deleteUser(userUid)
+                        val user = UserManager.getUserByUserUid(userUid) ?:return@setPositiveButton
+                        UserManager.deleteUser(user)
                         finish()
                     }
                     .setNegativeButton(R.string.dialog_no, null)

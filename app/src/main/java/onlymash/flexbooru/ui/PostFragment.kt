@@ -1,9 +1,6 @@
 package onlymash.flexbooru.ui
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +23,7 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
@@ -98,7 +96,6 @@ class PostFragment : Fragment() {
     private var state = STATE_NORMAL
 
     private var type = -1
-    private var limit = 10
     private var search: Search? = null
 
     private lateinit var searchBarMover: SearchBarMover
@@ -192,7 +189,8 @@ class PostFragment : Fragment() {
         override fun onAdd(user: User) {
             updateUserInfoAndRefresh(user)
         }
-        override fun onDelete(uid: Long) {
+        override fun onDelete(user: User) {
+            if (user.booru_uid != Settings.instance().activeBooruUid) return
             search!!.username = ""
             search!!.auth_key = ""
             when (type) {
@@ -246,7 +244,7 @@ class PostFragment : Fragment() {
                 keyword = it.getString(Constants.KEYWORD_KEY, ""),
                 username = it.getString(Constants.USERNAME_KEY, ""),
                 auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = limit)
+                limit = Settings.instance().postLimit)
         }
         val activity = requireActivity()
         if (activity is MainActivity) {
@@ -264,6 +262,9 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (search == null) return
+        if (Settings.instance().safeMode) {
+            search!!.keyword = "rating:safe ${search!!.keyword}"
+        }
         init()
         UserManager.listeners.add(userListener)
     }

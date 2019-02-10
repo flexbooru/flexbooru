@@ -9,7 +9,7 @@ object UserManager {
 
     interface Listener {
         fun onAdd(user: User)
-        fun onDelete(uid: Long)
+        fun onDelete(user: User)
         fun onUpdate(user: User)
     }
 
@@ -39,8 +39,18 @@ object UserManager {
     }
 
     @Throws(IOException::class)
-    fun getUser(booruUid: Long): User? = try {
-        FlexbooruDatabase.userDao.getUser(booruUid)
+    fun getUserByBooruUid(booruUid: Long): User? = try {
+        FlexbooruDatabase.userDao.getUserByBooruUid(booruUid)
+    } catch (ex: SQLiteCantOpenDatabaseException) {
+        throw IOException(ex)
+    } catch (ex: SQLException) {
+        ex.printStackTrace()
+        null
+    }
+
+    @Throws(IOException::class)
+    fun getUserByUserUid(uid: Long): User? = try {
+        FlexbooruDatabase.userDao.getUserByUserUid(uid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -49,10 +59,10 @@ object UserManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteUser(uid: Long) {
-        if (FlexbooruDatabase.userDao.delete(uid) == 1) {
+    fun deleteUser(user: User) {
+        if (FlexbooruDatabase.userDao.delete(user.uid) == 1) {
             listeners.forEach {
-                it.onDelete(uid)
+                it.onDelete(user)
             }
         }
     }

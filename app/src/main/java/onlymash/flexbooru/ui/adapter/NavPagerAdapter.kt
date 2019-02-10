@@ -13,7 +13,7 @@ class NavPagerAdapter(fragmentManager: FragmentManager,
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> PostFragment.newInstance(booru = booru, user = user, keyword = "rating:safe")
+            0 -> PostFragment.newInstance(booru = booru, user = user, keyword = "")
             else -> PopularFragment.newInstance(booru = booru, user = user)
         }
     }

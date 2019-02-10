@@ -50,11 +50,19 @@ class PopularMoeDataSource(
         // triggered by a refresh, we better execute sync
         try {
             val response = request.execute()
-            val data = response.body()
-            val posts = data?: mutableListOf()
+            var data = response.body()?: mutableListOf()
+            if (popular.safe_mode) {
+                val tmp: MutableList<PostMoe> = mutableListOf()
+                data.forEach {
+                    if (it.rating == "s") {
+                        tmp.add(it)
+                    }
+                }
+                data = tmp
+            }
             db.postMoeDao().deletePosts(host, keyword)
             val start = db.postMoeDao().getNextIndex(host, keyword)
-            val items = posts.mapIndexed { index, postMoe ->
+            val items = data.mapIndexed { index, postMoe ->
                 postMoe.host = host
                 postMoe.keyword = keyword
                 postMoe.indexInResponse = start + index

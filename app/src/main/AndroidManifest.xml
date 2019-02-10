@@ -25,7 +25,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:fullBackupContent="@xml/backup_descriptor"
+            android:fullBackupOnly="true"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.SettingsActivity">
+        </activity>
         <activity
                 android:name=".ui.AccountActivity"
                 android:parentActivityName=".ui.MainActivity">
@@ -67,6 +71,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data
+                android:name="com.google.android.backup.api_key"
+                android:value="AEdPqrEAAAAIEVVDnlCpmat2ve_BztQymxs9OueO1yKAy5c4Yw" />
     </application>
 
 </manifest>

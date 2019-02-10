@@ -50,13 +50,21 @@ class PopularDanDataSource(
         // triggered by a refresh, we better execute sync
         try {
             val response = request.execute()
-            val data = response.body()
-            val postsDan = data?: mutableListOf()
-            val posts: MutableList<PostDan> = mutableListOf()
-            postsDan.forEach { postDan ->
-                if (!postDan.preview_file_url.isNullOrBlank()) {
-                    posts.add(postDan)
+            val data = response.body()?: mutableListOf()
+            var posts: MutableList<PostDan> = mutableListOf()
+            data.forEach { post ->
+                if (!post.preview_file_url.isNullOrBlank()) {
+                    posts.add(post)
                 }
+            }
+            if (popular.safe_mode) {
+                val tmp: MutableList<PostDan> = mutableListOf()
+                posts.forEach {
+                    if (it.rating == "s") {
+                        tmp.add(it)
+                    }
+                }
+                posts = tmp
             }
             db.postDanDao().deletePosts(host, keyword)
             val start = db.postDanDao().getNextIndex(host = host, keyword = keyword)

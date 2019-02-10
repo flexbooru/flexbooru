@@ -24,6 +24,7 @@ import onlymash.flexbooru.Constants
 
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
@@ -285,7 +286,8 @@ class PopularFragment : Fragment() {
             updateUserInfoAndRefresh(user)
         }
 
-        override fun onDelete(uid: Long) {
+        override fun onDelete(user: User) {
+            if (user.booru_uid != Settings.instance().activeBooruUid) return
             popular!!.username = ""
             popular!!.auth_key = ""
             when (type) {
@@ -341,9 +343,7 @@ class PopularFragment : Fragment() {
                 host = it.getString(Constants.HOST_KEY, ""),
                 username = it.getString(Constants.USERNAME_KEY, ""),
                 auth_key = it.getString(Constants.AUTH_KEY, ""),
-                date = date,
-                scale = SCALE_DAY,
-                period = PERIOD_DAY
+                safe_mode = Settings.instance().safeMode
             )
         }
         val activity = requireActivity() as MainActivity

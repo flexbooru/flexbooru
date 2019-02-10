@@ -11,7 +11,7 @@ import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.User
 
 @Database(entities = [(PostMoe::class), (PostDan::class), (Booru::class), (User::class)],
-    version = 3, exportSchema = false)
+    version = 4, exportSchema = false)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
     companion object {

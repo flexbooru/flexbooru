@@ -7,7 +7,10 @@ import onlymash.flexbooru.model.User
 interface UserDao {
 
     @Query("SELECT * FROM users WHERE booru_uid = :booruUid")
-    fun getUser(booruUid: Long): User?
+    fun getUserByBooruUid(booruUid: Long): User?
+
+    @Query("SELECT * FROM users WHERE uid = :uid")
+    fun getUserByUserUid(uid: Long): User?
 
     @Query("SELECT * FROM users ORDER BY uid ASC")
     fun getAll(): MutableList<User>?

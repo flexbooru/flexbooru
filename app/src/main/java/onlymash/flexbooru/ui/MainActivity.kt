@@ -1,6 +1,8 @@
 package onlymash.flexbooru.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -15,15 +17,17 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import kotlinx.android.synthetic.main.activity_main.*
+import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
+import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.model.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -42,6 +46,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        app.sp.registerOnSharedPreferenceChangeListener(this)
         profileSettingDrawerItem = ProfileSettingDrawerItem()
             .withName(R.string.title_manage_boorus)
             .withIdentifier(BOORU_MANAGE_PROFILE_ID)
@@ -62,6 +67,7 @@ class MainActivity : BaseActivity() {
                 PrimaryDrawerItem()
                     .withIdentifier(ACCOUNT_DRAWER_ITEM_ID)
                     .withName(R.string.title_account)
+                    .withSelectable(false)
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_account_circle_black_24dp))
                     .withIconTintingEnabled(true)
             )
@@ -69,6 +75,7 @@ class MainActivity : BaseActivity() {
                 PrimaryDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_black_24dp))
                     .withName(R.string.title_settings)
+                    .withSelectable(false)
                     .withIconTintingEnabled(true)
                     .withIdentifier(SETTINGS_DRAWER_ITEM_ID)
             )
@@ -91,6 +98,7 @@ class MainActivity : BaseActivity() {
                 header.addProfile(
                     ProfileDrawerItem()
                         .withName(booru.name)
+                        .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, booru.host)))
                         .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                         .withIdentifier(booru.uid), index)
             }
@@ -133,6 +141,7 @@ class MainActivity : BaseActivity() {
             header.addProfile(
                 ProfileDrawerItem()
                     .withName(booru.name)
+                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, booru.host)))
                     .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                     .withIdentifier(booru.uid), boorus.size - 1)
             header.addProfile(profileSettingDrawerItem, boorus.size)
@@ -179,6 +188,7 @@ class MainActivity : BaseActivity() {
             header.updateProfile(
                 ProfileDrawerItem()
                     .withName(booru.name)
+                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, booru.host)))
                     .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                     .withIdentifier(booru.uid))
         }
@@ -189,10 +199,10 @@ class MainActivity : BaseActivity() {
             users.add(user)
         }
 
-        override fun onDelete(uid: Long) {
-            users.forEachIndexed { index, user ->
-                if (user.uid == uid) {
-                    users.removeAt(index)
+        override fun onDelete(user: User) {
+            users.forEachIndexed { i, u ->
+                if (user.uid == u.uid) {
+                    users.removeAt(i)
                     return@forEachIndexed
                 }
             }
@@ -237,10 +247,9 @@ class MainActivity : BaseActivity() {
         Drawer.OnDrawerItemClickListener { _, _, drawerItem ->
             when (drawerItem.identifier) {
                 SETTINGS_DRAWER_ITEM_ID -> {
-
+                    startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 }
                 ACCOUNT_DRAWER_ITEM_ID -> {
-                    drawer.setSelection(-3L)
                     val user = getCurrentUser()
                     val booru = getCurrentBooru()
                     if (user != null && booru != null) {
@@ -354,6 +363,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        app.sp.unregisterOnSharedPreferenceChangeListener(this)
         BooruManager.listeners.remove(booruListener)
         UserManager.listeners.remove(userListener)
         super.onDestroy()
@@ -381,5 +391,14 @@ class MainActivity : BaseActivity() {
             }
         }
         return user
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            Settings.SAFE_MODE_KEY, Settings.POST_LIMIT_KEY -> {
+                val booru = getCurrentBooru() ?: return
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+            }
+        }
     }
 }

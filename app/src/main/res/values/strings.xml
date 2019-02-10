@@ -77,4 +77,14 @@
     <string name="account_user_avatars" translatable="false">%s://%s/data/avatars/%d.jpg</string>
     <string name="account_user_remove">Remove account</string>
     <string name="account_user_dialog_title_remove">Are you sure you want to remove this account?</string>
+
+    <string name="settings_safe_mode">Safe mode</string>
+    <string name="settings_post_limit">Post limit</string>
+    <string name="settings_browse_size">Browse size</string>
+    <string name="settings_browse_size_sample">Sample</string>
+    <string name="settings_browse_size_larger">Larger</string>
+    <string name="settings_browse_size_origin">Origin</string>
+
+    <string name="switch_on">On</string>
+    <string name="switch_off">Off</string>
 </resources>

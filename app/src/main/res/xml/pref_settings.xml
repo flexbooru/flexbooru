@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+            android:key="settings_safe_mode"
+            android:title="@string/settings_safe_mode"
+            android:defaultValue="true"
+            android:summaryOn="@string/switch_on"
+            android:summaryOff="@string/switch_off"
+            app:iconSpaceReserved="true"/>
+
+    <!--suppress AndroidElementNotAllowed -->
+    <SimpleMenuPreference
+            android:key="settings_post_limit"
+            android:entries="@array/settings_post_limit_entries"
+            android:entryValues="@array/settings_post_limit_entries_values"
+            android:defaultValue="10"
+            android:summary="%s"
+            android:title="@string/settings_post_limit"
+            app:iconSpaceReserved="true" />
+</PreferenceScreen>

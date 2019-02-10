@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 
 android {
     signingConfigs {
@@ -39,6 +40,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
     implementation 'androidx.core:core-ktx:1.1.0-alpha04'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'

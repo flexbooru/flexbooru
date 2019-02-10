@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include domain="sharedpref" path="onlymash.flexbooru_preferences.xml"/>
+    <include domain="database" path="Flexbooru.db"/>
+</full-backup-content>
