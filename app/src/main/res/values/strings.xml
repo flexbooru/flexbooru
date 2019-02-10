@@ -10,6 +10,9 @@
     <string name="title_booru_config">Booru config</string>
     <string name="title_account">Account</string>
     <string name="title_account_and_booru">Account - %s</string>
+    <string name="title_artists">Artists</string>
+    <string name="title_pools">Pools</string>
+    <string name="title_tags">Tags</string>
 
     <string name="retry">Retry</string>
 

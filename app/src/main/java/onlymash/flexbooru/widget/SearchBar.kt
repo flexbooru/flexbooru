@@ -44,6 +44,13 @@ class SearchBar @JvmOverloads constructor(
         menuInflater.inflate(menuId,search_bar_menu_view.menu)
     }
 
+    fun setTitle(title: String) {
+        search_title.text = title
+    }
+
+    fun setTitle(resId: Int) {
+        search_title.setText(resId)
+    }
 
     override fun onClick(v: View) {
 

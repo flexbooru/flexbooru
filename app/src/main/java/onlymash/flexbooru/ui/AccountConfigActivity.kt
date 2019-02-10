@@ -1,5 +1,6 @@
 package onlymash.flexbooru.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -42,10 +43,7 @@ class AccountConfigActivity : BaseActivity() {
                     UserManager.createUser(user)
                 }
             }
-            AccountActivity.startActivity(
-                context = this@AccountConfigActivity,
-                user = user,
-                booru = booru!!)
+            startActivity(Intent(this@AccountConfigActivity, AccountActivity::class.java))
             finish()
         }
         override fun onFailed(msg: String) {

@@ -8,8 +8,8 @@ import androidx.paging.Config
 import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.getDanbooruUrl
-import onlymash.flexbooru.api.getMoebooruUrl
+import onlymash.flexbooru.api.getDanUrl
+import onlymash.flexbooru.api.getMoeUrl
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
@@ -136,7 +136,7 @@ class PostData(
         danBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        danbooruApi.getPosts(getDanbooruUrl(search, 1)).enqueue(
+        danbooruApi.getPosts(getDanUrl(search, 1)).enqueue(
             object : Callback<MutableList<PostDan>> {
                 override fun onFailure(call: Call<MutableList<PostDan>>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)
@@ -161,7 +161,7 @@ class PostData(
         moeBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        moebooruApi.getPosts(getMoebooruUrl(search, 1)).enqueue(
+        moebooruApi.getPosts(getMoeUrl(search, 1)).enqueue(
             object : Callback<MutableList<PostMoe>> {
                 override fun onFailure(call: Call<MutableList<PostMoe>>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)

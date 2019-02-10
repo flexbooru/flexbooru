@@ -4,7 +4,7 @@ import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.getMoebooruUrl
+import onlymash.flexbooru.api.getMoeUrl
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.model.Search
 import onlymash.flexbooru.util.createStatusLiveData
@@ -54,7 +54,7 @@ class PostMoeBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            moebooruApi.getPosts(getMoebooruUrl(search, 1)).enqueue(createMoebooruCallback(it))
+            moebooruApi.getPosts(getMoeUrl(search, 1)).enqueue(createMoebooruCallback(it))
         }
     }
 
@@ -64,7 +64,7 @@ class PostMoeBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                moebooruApi.getPosts(getMoebooruUrl(search, indexInNext/limit + 1))
+                moebooruApi.getPosts(getMoeUrl(search, indexInNext/limit + 1))
                     .enqueue(createMoebooruCallback(it))
             }
         }

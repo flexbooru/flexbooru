@@ -104,7 +104,11 @@ class PostFragment : Fragment() {
 
         override fun onLeftButtonClick() {
             val activity = requireActivity()
-            if (activity is MainActivity) activity.drawer.openDrawer()
+            if (activity is MainActivity) {
+                activity.drawer.openDrawer()
+            } else {
+                activity.onBackPressed()
+            }
         }
 
         override fun onMenuItemClick(menuItem: MenuItem) {
@@ -249,7 +253,9 @@ class PostFragment : Fragment() {
         val activity = requireActivity()
         if (activity is MainActivity) {
             activity.setPostExitSharedElementCallback(sharedElementCallback)
-        } else {
+        } else if (activity is SearchActivity){
+            type = activity.type
+            search = activity.search
             activity.setExitSharedElementCallback(sharedElementCallback)
         }
         requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
@@ -276,6 +282,10 @@ class PostFragment : Fragment() {
 
     private fun init() {
         leftDrawable = DrawerArrowDrawable(requireContext())
+        if (requireActivity() !is MainActivity) {
+            leftDrawable.progress = 1f
+            search_bar.setTitle(search!!.keyword)
+        }
         search_bar.setLeftDrawable(leftDrawable)
         search_bar.setHelper(helper)
         searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)

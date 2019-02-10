@@ -3,7 +3,7 @@ package onlymash.flexbooru.repository.popular
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.getDanbooruPopularUrl
+import onlymash.flexbooru.api.getDanPopularUrl
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.model.Popular
 import onlymash.flexbooru.model.PostDan
@@ -40,7 +40,7 @@ class PopularDanDataSource(
 
     override fun loadInitial(params: LoadInitialParams<Int>,
                              callback: LoadInitialCallback<Int, PostDan>) {
-        val request = danbooruApi.getPosts(getDanbooruPopularUrl(popular))
+        val request = danbooruApi.getPosts(getDanPopularUrl(popular))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 

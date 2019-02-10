@@ -8,12 +8,12 @@ object Constants {
 
     const val SCHEME_KEY = "scheme"
     const val HOST_KEY = "host"
-    const val TYPE_KEY = "type"
     const val KEYWORD_KEY = "tags"
     const val ID_KEY = "id"
     const val AUTH_KEY = "auth_key"
     const val USERNAME_KEY = "username"
 
+    const val TYPE_KEY = "type"
     const val TYPE_DANBOORU = 0
     const val TYPE_MOEBOORU = 1
     const val TYPE_UNKNOWN = -1

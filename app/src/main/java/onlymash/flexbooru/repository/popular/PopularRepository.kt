@@ -7,7 +7,7 @@ import onlymash.flexbooru.repository.Listing
 
 interface PopularRepository {
 
-    fun getDanbooruPopular(popular: Popular): Listing<PostDan>
+    fun getDanPopular(popular: Popular): Listing<PostDan>
 
-    fun getMoebooruPopular(popular: Popular): Listing<PostMoe>
+    fun getMoePopular(popular: Popular): Listing<PostMoe>
 }

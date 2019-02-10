@@ -372,6 +372,7 @@ class PopularFragment : Fragment() {
         }
         search_bar.setLeftDrawable(leftDrawable)
         search_bar.setHelper(helper)
+        search_bar.setTitle(R.string.title_popular)
         searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)

@@ -4,9 +4,8 @@ import okhttp3.HttpUrl
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.model.Popular
 import onlymash.flexbooru.model.Search
-import onlymash.flexbooru.model.User
 
-fun getDanbooruUrl(search: Search, page: Int): HttpUrl {
+fun getDanUrl(search: Search, page: Int): HttpUrl {
     return HttpUrl.Builder()
         .scheme(search.scheme)
         .host(search.host)
@@ -19,7 +18,7 @@ fun getDanbooruUrl(search: Search, page: Int): HttpUrl {
         .build()
 }
 
-fun getMoebooruUrl(search: Search, page: Int): HttpUrl {
+fun getMoeUrl(search: Search, page: Int): HttpUrl {
     return HttpUrl.Builder()
         .scheme(search.scheme)
         .host(search.host)
@@ -32,7 +31,7 @@ fun getMoebooruUrl(search: Search, page: Int): HttpUrl {
         .build()
 }
 
-fun getDanbooruPopularUrl(popular: Popular): HttpUrl {
+fun getDanPopularUrl(popular: Popular): HttpUrl {
     return HttpUrl.Builder()
         .scheme(popular.scheme)
         .host(popular.host)
@@ -46,7 +45,7 @@ fun getDanbooruPopularUrl(popular: Popular): HttpUrl {
         .build()
 }
 
-fun getMoebooruPopularUrl(popular: Popular): HttpUrl {
+fun getMoePopularUrl(popular: Popular): HttpUrl {
     return HttpUrl.Builder()
         .scheme(popular.scheme)
         .host(popular.host)
@@ -58,7 +57,7 @@ fun getMoebooruPopularUrl(popular: Popular): HttpUrl {
         .build()
 }
 
-fun getDanbooruUserUrl(username: String, booru: Booru): HttpUrl {
+fun getDanUserUrl(username: String, booru: Booru): HttpUrl {
     return HttpUrl.Builder()
         .scheme(booru.scheme)
         .host(booru.host)
@@ -67,7 +66,7 @@ fun getDanbooruUserUrl(username: String, booru: Booru): HttpUrl {
         .build()
 }
 
-fun getMoebooruUserUrl(username: String, booru: Booru): HttpUrl {
+fun getMoeUserUrl(username: String, booru: Booru): HttpUrl {
     return HttpUrl.Builder()
         .scheme(booru.scheme)
         .host(booru.host)

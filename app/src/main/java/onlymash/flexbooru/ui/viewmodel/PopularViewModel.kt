@@ -10,10 +10,10 @@ import onlymash.flexbooru.repository.popular.PopularRepository
 class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     private val popularData = MutableLiveData<Popular>()
     private val danRepoResult = map(popularData) { popular ->
-        repo.getDanbooruPopular(popular)
+        repo.getDanPopular(popular)
     }
     private val moeRepoResult = map(popularData) { popular ->
-        repo.getMoebooruPopular(popular)
+        repo.getMoePopular(popular)
     }
     val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!

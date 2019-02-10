@@ -4,7 +4,7 @@ import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.getDanbooruUrl
+import onlymash.flexbooru.api.getDanUrl
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.Search
 import onlymash.flexbooru.util.createStatusLiveData
@@ -54,7 +54,7 @@ class PostDanBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            danbooruApi.getPosts(getDanbooruUrl(search, 1)).enqueue(createDanbooruCallback(it))
+            danbooruApi.getPosts(getDanUrl(search, 1)).enqueue(createDanbooruCallback(it))
         }
     }
 
@@ -64,7 +64,7 @@ class PostDanBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                danbooruApi.getPosts(getDanbooruUrl(search, indexInNext/limit + 1))
+                danbooruApi.getPosts(getDanUrl(search, indexInNext/limit + 1))
                     .enqueue(createDanbooruCallback(it))
             }
         }

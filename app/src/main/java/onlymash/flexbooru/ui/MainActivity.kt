@@ -253,7 +253,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     val user = getCurrentUser()
                     val booru = getCurrentBooru()
                     if (user != null && booru != null) {
-                        AccountActivity.startActivity(context = this@MainActivity, user = user, booru = booru)
+                        startActivity(Intent(this, AccountActivity::class.java))
                     } else {
                         startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
                     }
@@ -332,10 +332,13 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     currentNavItem = 1
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.navigation_search -> {
+                R.id.navigation_pools -> {
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.navigation_downloads -> {
+                R.id.navigation_tags -> {
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_artists -> {
                     return@OnNavigationItemSelectedListener true
                 }
             }

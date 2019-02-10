@@ -21,7 +21,7 @@ class PopularData(
 
 
     @MainThread
-    override fun getDanbooruPopular(popular: Popular): Listing<PostDan> {
+    override fun getDanPopular(popular: Popular): Listing<PostDan> {
         val sourceFactory = PopularDanDataSourceFactory(danbooruApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
@@ -48,7 +48,7 @@ class PopularData(
     }
 
     @MainThread
-    override fun getMoebooruPopular(popular: Popular): Listing<PostMoe> {
+    override fun getMoePopular(popular: Popular): Listing<PostMoe> {
         val sourceFactory = PopularMoeDataSourceFactory(moebooruApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
