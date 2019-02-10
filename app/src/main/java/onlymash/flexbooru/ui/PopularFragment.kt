@@ -24,6 +24,7 @@ import onlymash.flexbooru.Constants
 
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.*
@@ -279,6 +280,58 @@ class PopularFragment : Fragment() {
         }
     }
 
+    private val userListener = object : UserManager.Listener {
+        override fun onAdd(user: User) {
+            updateUserInfoAndRefresh(user)
+        }
+
+        override fun onDelete(uid: Long) {
+            popular!!.username = ""
+            popular!!.auth_key = ""
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    popularViewModel.apply {
+                        show(popular!!)
+                        refreshDan()
+                    }
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    popularViewModel.apply {
+                        show(popular!!)
+                        refreshMoe()
+                    }
+                }
+            }
+        }
+
+        override fun onUpdate(user: User) {
+            updateUserInfoAndRefresh(user)
+        }
+
+    }
+
+    private fun updateUserInfoAndRefresh(user: User) {
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                popular!!.username = user.name
+                popular!!.auth_key = user.api_key ?: ""
+                popularViewModel.apply {
+                    show(popular!!)
+                    refreshDan()
+                }
+            }
+            Constants.TYPE_MOEBOORU -> {
+                popular!!.username = user.name
+                popular!!.auth_key = user.password_hash ?: ""
+                popularViewModel.apply {
+                    show(popular!!)
+                    refreshMoe()
+                }
+            }
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -307,6 +360,7 @@ class PopularFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (popular == null) return
         init()
+        UserManager.listeners.add(userListener)
     }
 
     private fun init() {
@@ -411,6 +465,7 @@ class PopularFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        UserManager.listeners.remove(userListener)
         requireActivity().unregisterReceiver(broadcastReceiver)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
         super.onDestroy()

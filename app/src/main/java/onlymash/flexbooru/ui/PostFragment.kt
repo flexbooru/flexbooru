@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.*
@@ -187,6 +188,54 @@ class PostFragment : Fragment() {
         }
     }
 
+    private val userListener = object : UserManager.Listener {
+        override fun onAdd(user: User) {
+            updateUserInfoAndRefresh(user)
+        }
+        override fun onDelete(uid: Long) {
+            search!!.username = ""
+            search!!.auth_key = ""
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    postViewModel.apply {
+                        show(search!!)
+                        refreshDan()
+                    }
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    postViewModel.apply {
+                        show(search!!)
+                        refreshMoe()
+                    }
+                }
+            }
+        }
+        override fun onUpdate(user: User) {
+            updateUserInfoAndRefresh(user)
+        }
+    }
+
+    private fun updateUserInfoAndRefresh(user: User) {
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                search!!.username = user.name
+                search!!.auth_key = user.api_key ?: ""
+                postViewModel.apply {
+                    show(search!!)
+                    refreshDan()
+                }
+            }
+            Constants.TYPE_MOEBOORU -> {
+                search!!.username = user.name
+                search!!.auth_key = user.password_hash ?: ""
+                postViewModel.apply {
+                    show(search!!)
+                    refreshMoe()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -216,6 +265,7 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (search == null) return
         init()
+        UserManager.listeners.add(userListener)
     }
 
     override fun onResume() {
@@ -330,6 +380,7 @@ class PostFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        UserManager.listeners.remove(userListener)
         requireActivity().unregisterReceiver(broadcastReceiver)
         if (navigationListener != null)
             (requireActivity() as MainActivity).removeNavigationListener(navigationListener!!)

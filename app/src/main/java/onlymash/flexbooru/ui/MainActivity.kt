@@ -82,6 +82,7 @@ class MainActivity : BaseActivity() {
         pager_container.addOnPageChangeListener(pageChangeListener)
         boorus = BooruManager.getAllBoorus() ?: mutableListOf()
         users = UserManager.getAllUsers() ?: mutableListOf()
+        UserManager.listeners.add(userListener)
         BooruManager.listeners.add(booruListener)
         val size = boorus.size
         if (size > 0) {
@@ -183,6 +184,34 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private val userListener =  object : UserManager.Listener {
+        override fun onAdd(user: User) {
+            users.add(user)
+        }
+
+        override fun onDelete(uid: Long) {
+            users.forEachIndexed { index, user ->
+                if (user.uid == uid) {
+                    users.removeAt(index)
+                    return@forEachIndexed
+                }
+            }
+        }
+
+        override fun onUpdate(user: User) {
+            users.forEach {
+                if (it.uid == user.uid) {
+                    it.name = user.name
+                    it.id = user.id
+                    it.booru_uid
+                    it.password_hash = user.password_hash
+                    it.api_key = user.api_key
+                    return@forEach
+                }
+            }
+        }
+    }
+
     private val headerItemClickListener =
         AccountHeader.OnAccountHeaderListener { _, profile, _ ->
             val uid = profile.identifier
@@ -224,7 +253,7 @@ class MainActivity : BaseActivity() {
 
                 }
             }
-            return@OnDrawerItemClickListener true
+            return@OnDrawerItemClickListener false
         }
 
     private val pageChangeListener =
@@ -326,6 +355,7 @@ class MainActivity : BaseActivity() {
 
     override fun onDestroy() {
         BooruManager.listeners.remove(booruListener)
+        UserManager.listeners.remove(userListener)
         super.onDestroy()
     }
 

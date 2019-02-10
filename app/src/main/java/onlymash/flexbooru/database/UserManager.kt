@@ -19,11 +19,24 @@ object UserManager {
     fun createUser(user: User): User {
         user.uid = 0
         user.uid = FlexbooruDatabase.userDao.insert(user)
+        if (user.uid >= 0) {
+            listeners.forEach {
+                it.onAdd(user)
+            }
+        }
         return user
     }
 
     @Throws(SQLException::class)
-    fun updateUser(user: User): Boolean = FlexbooruDatabase.userDao.update(user) == 1
+    fun updateUser(user: User): Boolean {
+        val result = FlexbooruDatabase.userDao.update(user) == 1
+        if (result) {
+            listeners.forEach {
+                it.onUpdate(user)
+            }
+        }
+        return result
+    }
 
     @Throws(IOException::class)
     fun getUser(booruUid: Long): User? = try {
@@ -36,7 +49,13 @@ object UserManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteUser(uid: Long) = FlexbooruDatabase.userDao.delete(uid)
+    fun deleteUser(uid: Long) {
+        if (FlexbooruDatabase.userDao.delete(uid) == 1) {
+            listeners.forEach {
+                it.onDelete(uid)
+            }
+        }
+    }
 
     @Throws(SQLException::class)
     fun deleteAll() = FlexbooruDatabase.userDao.deleteAll()

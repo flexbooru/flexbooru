@@ -8,18 +8,15 @@
         android:scrollbars="none"
         android:background="@color/grey_5"
         tools:context=".ui.AccountConfigActivity">
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/spacing_smlarge">
-
         <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_xlarge" />
-
         <TextView
                 android:id="@+id/account_config_title"
                 android:layout_width="wrap_content"
@@ -28,20 +25,17 @@
                 android:layout_marginStart="@dimen/spacing_medium"
                 android:text="@string/title_account_config"
                 android:textColor="?attr/colorPrimary"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold" />
-
         <View
                 android:layout_width="60dp"
                 android:layout_height="4dp"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/spacing_medium"
                 android:background="?attr/colorPrimary"/>
-
         <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_mxlarge" />
-
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,25 +43,21 @@
                 android:visibility="visible"
                 app:cardCornerRadius="2dp"
                 app:cardElevation="1dp">
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/spacing_mlarge">
-
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_xlarge" />
-
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/account_username"
                         android:textAlignment="center"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
-
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username_edit"
                         android:layout_width="match_parent"
@@ -79,22 +69,19 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textColor="?attr/colorPrimary"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textStyle="bold"/>
-
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_mlarge" />
-
                 <TextView
                         android:id="@+id/password_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/account_password"
                         android:textAlignment="center"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
-
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password_edit"
                         android:layout_width="match_parent"
@@ -106,13 +93,11 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textColor="?attr/colorPrimary"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textStyle="bold"/>
-
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_middle" />
-
                 <TextView
                         android:id="@+id/forgot_password"
                         android:layout_width="wrap_content"
@@ -123,17 +108,14 @@
                         android:focusable="true"
                         android:text="@string/account_forgot_password"
                         android:textAlignment="center"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/grey_20"
                         android:textStyle="bold"/>
-
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
         <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_large" />
-
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,7 +138,6 @@
                     android:visibility="invisible"
                     style="@style/Widget.AppCompat.ProgressBar"/>
         </FrameLayout>
-
         <TextView
                 android:paddingTop="15dp"
                 android:paddingStart="40dp"
@@ -165,7 +146,5 @@
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>

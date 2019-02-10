@@ -32,7 +32,8 @@
         </activity>
         <activity
                 android:name=".ui.AccountConfigActivity"
-                android:label="@string/title_account_config">
+                android:label="@string/title_account_config"
+                android:parentActivityName=".ui.MainActivity">
         </activity>
         <activity
                 android:name=".ui.BrowseActivity"
