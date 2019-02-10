@@ -7,6 +7,14 @@ import java.sql.SQLException
 
 object UserManager {
 
+    interface Listener {
+        fun onAdd(user: User)
+        fun onDelete(uid: Long)
+        fun onUpdate(user: User)
+    }
+
+    var listeners: MutableList<Listener> = mutableListOf()
+
     @Throws(SQLException::class)
     fun createUser(user: User): User {
         user.uid = 0
@@ -32,4 +40,14 @@ object UserManager {
 
     @Throws(SQLException::class)
     fun deleteAll() = FlexbooruDatabase.userDao.deleteAll()
+
+    @Throws(IOException::class)
+    fun getAllUsers(): MutableList<User>? = try {
+        FlexbooruDatabase.userDao.getAll()
+    } catch (ex: SQLiteCantOpenDatabaseException) {
+        throw IOException(ex)
+    } catch (ex: SQLException) {
+        ex.printStackTrace()
+        null
+    }
 }

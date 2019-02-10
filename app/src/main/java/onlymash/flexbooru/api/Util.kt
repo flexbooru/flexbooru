@@ -12,8 +12,10 @@ fun getDanbooruUrl(search: Search, page: Int): HttpUrl {
         .host(search.host)
         .addPathSegment("posts.json")
         .addQueryParameter("limit", search.limit.toString())
-        .addQueryParameter("tags", search.tags)
+        .addQueryParameter("tags", search.keyword)
         .addQueryParameter("page", page.toString())
+        .addQueryParameter("login", search.username)
+        .addQueryParameter("api_key", search.auth_key)
         .build()
 }
 
@@ -23,8 +25,10 @@ fun getMoebooruUrl(search: Search, page: Int): HttpUrl {
         .host(search.host)
         .addPathSegment("post.json")
         .addQueryParameter("limit", search.limit.toString())
-        .addQueryParameter("tags", search.tags)
+        .addQueryParameter("tags", search.keyword)
         .addQueryParameter("page", page.toString())
+        .addQueryParameter("login", search.username)
+        .addQueryParameter("password_hash", search.auth_key)
         .build()
 }
 
@@ -37,6 +41,8 @@ fun getDanbooruPopularUrl(popular: Popular): HttpUrl {
         .addPathSegment("popular.json")
         .addQueryParameter("date", popular.date)
         .addQueryParameter("scale", popular.scale)
+        .addQueryParameter("login", popular.username)
+        .addQueryParameter("api_key", popular.auth_key)
         .build()
 }
 
@@ -47,6 +53,8 @@ fun getMoebooruPopularUrl(popular: Popular): HttpUrl {
         .addPathSegment("post")
         .addPathSegment("popular_recent.json")
         .addQueryParameter("period", popular.period)
+        .addQueryParameter("login", popular.username)
+        .addQueryParameter("password_hash", popular.auth_key)
         .build()
 }
 

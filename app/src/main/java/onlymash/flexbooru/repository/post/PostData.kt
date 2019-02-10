@@ -38,10 +38,10 @@ class PostData(
                     posts.add(postDan)
                 }
             }
-            val start = db.postDanDao().getNextIndex(host = search.host, keyword = search.tags)
+            val start = db.postDanDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = posts.mapIndexed { index, post ->
                 post.host = search.host
-                post.keyword = search.tags
+                post.keyword = search.keyword
                 post.indexInResponse = start + index
                 post
             }
@@ -51,10 +51,10 @@ class PostData(
 
     private fun insertMoebooruResultIntoDb(search: Search, body: MutableList<PostMoe>?) {
         body?.let { posts ->
-            val start = db.postMoeDao().getNextIndex(host = search.host, keyword = search.tags)
+            val start = db.postMoeDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = posts.mapIndexed { index, post ->
                 post.host = search.host
-                post.keyword = search.tags
+                post.keyword = search.keyword
                 post.indexInResponse = start + index
                 post
             }
@@ -75,7 +75,7 @@ class PostData(
             refreshDanbooru(search)
         }
         val livePagedList = db.postDanDao()
-            .getPosts(search.host, search.tags)
+            .getPosts(search.host, search.keyword)
             .toLiveData(
                 config = Config(
                     pageSize = search.limit,
@@ -109,7 +109,7 @@ class PostData(
             refreshMoebooru(search)
         }
         val livePagedList = db.postMoeDao()
-            .getPosts(host = search.host, keyword = search.tags)
+            .getPosts(host = search.host, keyword = search.keyword)
             .toLiveData(
                 config = Config(
                     pageSize = search.limit,
@@ -145,7 +145,7 @@ class PostData(
                 override fun onResponse(call: Call<MutableList<PostDan>>, response: Response<MutableList<PostDan>>) {
                     ioExecutor.execute {
                         db.runInTransaction {
-                            db.postDanDao().deletePosts(host = search.host, keyword = search.tags)
+                            db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
                             insertDanbooruResultIntoDb(search, response.body())
                         }
                     }
@@ -170,7 +170,7 @@ class PostData(
                 override fun onResponse(call: Call<MutableList<PostMoe>>, response: Response<MutableList<PostMoe>>) {
                     ioExecutor.execute {
                         db.runInTransaction {
-                            db.postMoeDao().deletePosts(search.host, search.tags)
+                            db.postMoeDao().deletePosts(search.host, search.keyword)
                             insertMoebooruResultIntoDb(search, response.body())
                         }
                     }

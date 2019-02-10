@@ -50,20 +50,34 @@ class PostFragment : Fragment() {
          * @return A new instance of fragment PostFragment.
          */
         @JvmStatic
-        fun newInstance(booru: Booru, tags: String) =
+        fun newInstance(keyword: String, booru: Booru, user: User?) =
             PostFragment().apply {
                 arguments = when (booru.type) {
                     Constants.TYPE_DANBOORU -> Bundle().apply {
                         putString(Constants.SCHEME_KEY, booru.scheme)
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                        putString(Constants.TAGS_KEY, tags)
+                        putString(Constants.KEYWORD_KEY, keyword)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.api_key)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
                     }
                     Constants.TYPE_MOEBOORU -> Bundle().apply {
                         putString(Constants.SCHEME_KEY, booru.scheme)
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                        putString(Constants.TAGS_KEY, tags)
+                        putString(Constants.KEYWORD_KEY, keyword)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
                     }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
@@ -82,13 +96,9 @@ class PostFragment : Fragment() {
 
     private var state = STATE_NORMAL
 
-    private var scheme: String = Constants.NULL_STRING_VALUE
-    private var host: String = Constants.NULL_STRING_VALUE
-    private var type: Int = Constants.TYPE_UNKNOWN
-    private var tags: String = Constants.EMPTY_STRING_VALUE
-    private var limit: Int = 10
-
-    private lateinit var search: Search
+    private var type = -1
+    private var limit = 10
+    private var search: Search? = null
 
     private lateinit var searchBarMover: SearchBarMover
 
@@ -124,7 +134,7 @@ class PostFragment : Fragment() {
                     putExtra(Constants.ID_KEY, post.id)
                     putExtra(Constants.HOST_KEY, post.host)
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                    putExtra(Constants.TAGS_KEY, post.keyword)
+                    putExtra(Constants.KEYWORD_KEY, post.keyword)
                 }
             val options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
@@ -137,7 +147,7 @@ class PostFragment : Fragment() {
                     putExtra(Constants.ID_KEY, post.id)
                     putExtra(Constants.HOST_KEY, post.host)
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                    putExtra(Constants.TAGS_KEY, post.keyword)
+                    putExtra(Constants.KEYWORD_KEY, post.keyword)
                 }
             val options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
@@ -152,10 +162,11 @@ class PostFragment : Fragment() {
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
+            if (search == null) return
             val bundle= intent.extras ?: return
             val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
-            val keyword = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
-            if (pos >= 0 && tags == keyword) {
+            val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
+            if (pos >= 0 && search!!.keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
                 list.smoothScrollToPosition(pos + 1)
             }
@@ -179,10 +190,14 @@ class PostFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            scheme = it.getString(Constants.SCHEME_KEY, Constants.NULL_STRING_VALUE)
-            host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
             type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            tags = it.getString(Constants.TAGS_KEY, Constants.EMPTY_STRING_VALUE)
+            search = Search(
+                scheme = it.getString(Constants.SCHEME_KEY, ""),
+                host = it.getString(Constants.HOST_KEY, ""),
+                keyword = it.getString(Constants.KEYWORD_KEY, ""),
+                username = it.getString(Constants.USERNAME_KEY, ""),
+                auth_key = it.getString(Constants.AUTH_KEY, ""),
+                limit = limit)
         }
         val activity = requireActivity()
         if (activity is MainActivity) {
@@ -199,6 +214,7 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (search == null) return
         init()
     }
 
@@ -254,9 +270,6 @@ class PostFragment : Fragment() {
                         else -> glide.pauseRequests()
                     }
                 }
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                }
             })
         }
         when (type) {
@@ -281,8 +294,7 @@ class PostFragment : Fragment() {
                 initSwipeToRefreshMoe()
             }
         }
-        search = Search(scheme = scheme, host = host, limit = limit, tags = tags)
-        postViewModel.show(search)
+        postViewModel.show(search!!)
         val activity = requireActivity()
         if (activity is MainActivity) {
             navigationListener = object : MainActivity.NavigationListener {

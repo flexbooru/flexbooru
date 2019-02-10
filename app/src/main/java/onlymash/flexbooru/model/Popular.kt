@@ -9,5 +9,8 @@ data class Popular(
     // Danbooru: day week month
     var scale: String,
     // Moebooru: 1d 1w 1m 1y
-    var period: String
+    var period: String,
+
+    var username: String,
+    var auth_key: String
 )

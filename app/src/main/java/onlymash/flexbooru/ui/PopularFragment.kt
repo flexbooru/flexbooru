@@ -37,13 +37,6 @@ import onlymash.flexbooru.widget.SearchBar
 import onlymash.flexbooru.widget.SearchBarMover
 import java.util.*
 
-private const val SCALE_DAY = "day"
-private const val SCALE_WEEK = "week"
-private const val SCALE_MONTH = "month"
-private const val PERIOD_DAY = "1d"
-private const val PERIOD_WEEK = "1w"
-private const val PERIOD_MONTH = "1m"
-private const val PERIOD_YEAR = "1y"
 
 /**
  * Use the [PopularFragment.newInstance] factory method to
@@ -61,32 +54,51 @@ class PopularFragment : Fragment() {
          * @return A new instance of fragment PopularFragment.
          */
         @JvmStatic
-        fun newInstance(booru: Booru) =
+        fun newInstance(booru: Booru, user: User?) =
             PopularFragment().apply {
                 arguments = when (booru.type) {
                     Constants.TYPE_DANBOORU -> Bundle().apply {
                         putString(Constants.SCHEME_KEY, booru.scheme)
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.api_key)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
                     }
                     Constants.TYPE_MOEBOORU -> Bundle().apply {
                         putString(Constants.SCHEME_KEY, booru.scheme)
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
                     }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
 
+        private const val SCALE_DAY = "day"
+        private const val SCALE_WEEK = "week"
+        private const val SCALE_MONTH = "month"
+        private const val PERIOD_DAY = "1d"
+        private const val PERIOD_WEEK = "1w"
+        private const val PERIOD_MONTH = "1m"
+        private const val PERIOD_YEAR = "1y"
+
         private const val STATE_NORMAL = 0
         private const val STATE_SEARCH = 1
     }
-    private var scheme: String = Constants.NULL_STRING_VALUE
-    private var host: String = Constants.NULL_STRING_VALUE
-    private var type: Int = Constants.TYPE_UNKNOWN
-    private var date: String = Constants.EMPTY_STRING_VALUE
+    private var type: Int = -1
 
-    private lateinit var popular: Popular
+    private var popular: Popular? = null
 
     private var state = STATE_NORMAL
 
@@ -115,7 +127,7 @@ class PopularFragment : Fragment() {
                     putExtra(Constants.ID_KEY, post.id)
                     putExtra(Constants.HOST_KEY, post.host)
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                    putExtra(Constants.TAGS_KEY, post.keyword)
+                    putExtra(Constants.KEYWORD_KEY, post.keyword)
                 }
             val options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
@@ -128,7 +140,7 @@ class PopularFragment : Fragment() {
                     putExtra(Constants.ID_KEY, post.id)
                     putExtra(Constants.HOST_KEY, post.host)
                     putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                    putExtra(Constants.TAGS_KEY, post.keyword)
+                    putExtra(Constants.KEYWORD_KEY, post.keyword)
                 }
             val options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
@@ -143,7 +155,8 @@ class PopularFragment : Fragment() {
 
     private lateinit var postAdapter: PostAdapter
 
-    private var tags = "null"
+    private var keyword = ""
+    private var date = ""
 
     private val helper = object : SearchBar.Helper {
 
@@ -176,8 +189,8 @@ class PopularFragment : Fragment() {
                                     val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
                                     val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
                                     date = "$yearString-$monthString-$dayString"
-                                    popular.date = date
-                                    popularViewModel.show(popular)
+                                    popular!!.date = date
+                                    popularViewModel.show(popular!!)
                                     swipe_refresh.isRefreshing = true
                                     popularViewModel.refreshDan()
                                 },
@@ -191,37 +204,37 @@ class PopularFragment : Fragment() {
                                 .show()
                         }
                         R.id.action_day -> {
-                            popular.scale = SCALE_DAY
-                            popularViewModel.show(popular)
+                            popular!!.scale = SCALE_DAY
+                            popularViewModel.show(popular!!)
                             swipe_refresh.isRefreshing = true
                             popularViewModel.refreshDan()
                         }
                         R.id.action_week -> {
-                            popular.scale = SCALE_WEEK
-                            popularViewModel.show(popular)
+                            popular!!.scale = SCALE_WEEK
+                            popularViewModel.show(popular!!)
                             swipe_refresh.isRefreshing = true
                             popularViewModel.refreshDan()
                         }
                         R.id.action_month -> {
-                            popular.scale = SCALE_MONTH
-                            popularViewModel.show(popular)
+                            popular!!.scale = SCALE_MONTH
+                            popularViewModel.show(popular!!)
                             swipe_refresh.isRefreshing = true
                             popularViewModel.refreshDan()
                         }
                         else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                     }
-                    tags = popular.scale
+                    keyword = popular!!.scale
                 }
                 Constants.TYPE_MOEBOORU -> {
                     when (menuItem.itemId) {
-                        R.id.action_day -> popular.period = PERIOD_DAY
-                        R.id.action_week -> popular.period = PERIOD_WEEK
-                        R.id.action_month -> popular.period = PERIOD_MONTH
-                        R.id.action_year -> popular.period = PERIOD_YEAR
+                        R.id.action_day -> popular!!.period = PERIOD_DAY
+                        R.id.action_week -> popular!!.period = PERIOD_WEEK
+                        R.id.action_month -> popular!!.period = PERIOD_MONTH
+                        R.id.action_year -> popular!!.period = PERIOD_YEAR
                         else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                     }
-                    tags = popular.period
-                    popularViewModel.show(popular)
+                    keyword = popular!!.period
+                    popularViewModel.show(popular!!)
                     swipe_refresh.isRefreshing = true
                     popularViewModel.refreshMoe()
                 }
@@ -244,8 +257,8 @@ class PopularFragment : Fragment() {
             if (intent == null) return
             val bundle= intent.extras ?: return
             val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
-            val keyword = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
-            if (pos >= 0 && tags == keyword) {
+            val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
+            if (pos >= 0 && keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
                 list.smoothScrollToPosition(pos + 1)
             }
@@ -269,9 +282,16 @@ class PopularFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            scheme = it.getString(Constants.SCHEME_KEY, Constants.NULL_STRING_VALUE)
-            host = it.getString(Constants.HOST_KEY, Constants.NULL_STRING_VALUE)
-            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+            type = it.getInt(Constants.TYPE_KEY, -1)
+            popular = Popular(
+                scheme = it.getString(Constants.SCHEME_KEY, "") ,
+                host = it.getString(Constants.HOST_KEY, ""),
+                username = it.getString(Constants.USERNAME_KEY, ""),
+                auth_key = it.getString(Constants.AUTH_KEY, ""),
+                date = date,
+                scale = SCALE_DAY,
+                period = PERIOD_DAY
+            )
         }
         val activity = requireActivity() as MainActivity
         activity.setPopularExitSharedElementCallback(sharedElementCallback)
@@ -285,6 +305,7 @@ class PopularFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (popular == null) return
         init()
     }
 
@@ -336,7 +357,7 @@ class PopularFragment : Fragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                tags = SCALE_DAY
+                keyword = SCALE_DAY
                 popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
@@ -347,7 +368,7 @@ class PopularFragment : Fragment() {
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                tags = PERIOD_DAY
+                keyword = PERIOD_DAY
                 popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
@@ -358,13 +379,7 @@ class PopularFragment : Fragment() {
                 initSwipeToRefreshMoe()
             }
         }
-        popular = Popular(
-            scheme = scheme,
-            host = host,
-            date = date,
-            scale = SCALE_DAY,
-            period = PERIOD_DAY)
-        popularViewModel.show(popular)
+        popularViewModel.show(popular!!)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
 

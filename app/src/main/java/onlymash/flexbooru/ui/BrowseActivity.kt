@@ -134,7 +134,7 @@ class BrowseActivity : AppCompatActivity() {
         }
         val host = intent.getStringExtra(Constants.HOST_KEY)
         val type = intent.getIntExtra(Constants.TYPE_KEY, -1)
-        keyword = intent.getStringExtra(Constants.TAGS_KEY)
+        keyword = intent.getStringExtra(Constants.KEYWORD_KEY)
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
         pagerAdapter.setPhotoViewListener(photoViewListener)

@@ -20,6 +20,7 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.model.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 
 class MainActivity : BaseActivity() {
@@ -31,6 +32,7 @@ class MainActivity : BaseActivity() {
         private const val ACCOUNT_DRAWER_ITEM_ID = 1L
     }
     private lateinit var boorus: MutableList<Booru>
+    private lateinit var users: MutableList<User>
     lateinit var drawer: Drawer
     private lateinit var header: AccountHeader
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
@@ -79,6 +81,7 @@ class MainActivity : BaseActivity() {
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
         boorus = BooruManager.getAllBoorus() ?: mutableListOf()
+        users = UserManager.getAllUsers() ?: mutableListOf()
         BooruManager.listeners.add(booruListener)
         val size = boorus.size
         if (size > 0) {
@@ -97,7 +100,7 @@ class MainActivity : BaseActivity() {
             uid < 0L && size > 0 -> {
                 Settings.instance().activeBooruUid = boorus[0].uid
                 header.setActiveProfile(Settings.instance().activeBooruUid)
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0])
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
             }
             uid >= 0L && size > 0 -> {
                 var i = -1
@@ -109,11 +112,11 @@ class MainActivity : BaseActivity() {
                 }
                 if (i >= 0) {
                     header.setActiveProfile(uid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i])
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i], getCurrentUser())
                 } else {
                     Settings.instance().activeBooruUid = boorus[0].uid
                     header.setActiveProfile(Settings.instance().activeBooruUid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0])
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
                 }
             }
             else -> {
@@ -135,7 +138,7 @@ class MainActivity : BaseActivity() {
             if (boorus.size == 1) {
                 Settings.instance().activeBooruUid = booru.uid
                 header.setActiveProfile(Settings.instance().activeBooruUid)
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
             }
         }
 
@@ -167,7 +170,7 @@ class MainActivity : BaseActivity() {
                     it.hash_salt = booru.hash_salt
                     it.type = booru.type
                     if (Settings.instance().activeBooruUid == booru.uid) {
-                        pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
+                        pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                     }
                     return@forEach
                 }
@@ -192,7 +195,7 @@ class MainActivity : BaseActivity() {
                     boorus.forEach { booru ->
                         if (booru.uid == uid) {
                             navigation.selectedItemId = R.id.navigation_posts
-                            pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru)
+                            pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                             return@forEach
                         }
                     }
@@ -202,14 +205,14 @@ class MainActivity : BaseActivity() {
         }
 
     private val drawerItemClickListener =
-        Drawer.OnDrawerItemClickListener { _, position, drawerItem ->
+        Drawer.OnDrawerItemClickListener { _, _, drawerItem ->
             when (drawerItem.identifier) {
                 SETTINGS_DRAWER_ITEM_ID -> {
 
                 }
                 ACCOUNT_DRAWER_ITEM_ID -> {
                     drawer.setSelection(-3L)
-                    val user = UserManager.getUser(Settings.instance().activeBooruUid)
+                    val user = getCurrentUser()
                     val booru = getCurrentBooru()
                     if (user != null && booru != null) {
                         AccountActivity.startActivity(context = this@MainActivity, user = user, booru = booru)
@@ -336,5 +339,17 @@ class MainActivity : BaseActivity() {
             }
         }
         return booru
+    }
+
+    private fun getCurrentUser(): User? {
+        var user: User? = null
+        val booruUid = Settings.instance().activeBooruUid
+        users.forEach {
+            if (it.booru_uid == booruUid) {
+                user = it
+                return@forEach
+            }
+        }
+        return user
     }
 }

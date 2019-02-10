@@ -9,6 +9,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE booru_uid = :booruUid")
     fun getUser(booruUid: Long): User?
 
+    @Query("SELECT * FROM users ORDER BY uid ASC")
+    fun getAll(): MutableList<User>?
+
     @Query("SELECT 1 FROM boorus LIMIT 1")
     fun isNotEmpty(): Boolean
 

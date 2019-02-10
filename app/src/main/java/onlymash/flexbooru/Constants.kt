@@ -9,15 +9,14 @@ object Constants {
     const val SCHEME_KEY = "scheme"
     const val HOST_KEY = "host"
     const val TYPE_KEY = "type"
-    const val TAGS_KEY = "tags"
+    const val KEYWORD_KEY = "tags"
     const val ID_KEY = "id"
+    const val AUTH_KEY = "auth_key"
+    const val USERNAME_KEY = "username"
 
     const val TYPE_DANBOORU = 0
     const val TYPE_MOEBOORU = 1
     const val TYPE_UNKNOWN = -1
-
-    const val NULL_STRING_VALUE = "null"
-    const val EMPTY_STRING_VALUE = ""
 
     const val MAX_ITEM_ASPECT_RATIO = 1.3333f
     const val MIN_ITEM_ASPECT_RATIO = 0.5625f
