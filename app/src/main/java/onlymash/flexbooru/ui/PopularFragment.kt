@@ -7,18 +7,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import kotlinx.android.synthetic.main.fragment_post.*
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 
@@ -36,7 +33,6 @@ import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
-import onlymash.flexbooru.widget.SearchBarMover
 import java.util.*
 
 
@@ -45,7 +41,7 @@ import java.util.*
  * create an instance of this fragment.
  *
  */
-class PopularFragment : Fragment() {
+class PopularFragment : ListFragment() {
 
     companion object {
         /**
@@ -94,33 +90,14 @@ class PopularFragment : Fragment() {
         private const val PERIOD_WEEK = "1w"
         private const val PERIOD_MONTH = "1m"
         private const val PERIOD_YEAR = "1y"
-
-        private const val STATE_NORMAL = 0
-        private const val STATE_SEARCH = 1
     }
     private var type: Int = -1
 
     private var popular: Popular? = null
 
-    private var state = STATE_NORMAL
-
-    private lateinit var searchBarMover: SearchBarMover
-
     private var currentYear = -1
     private var currentMonth = -1
     private var currentDay = -1
-
-    private val sbMoverHelper = object : SearchBarMover.Helper {
-        override val validRecyclerView get() = list
-
-        override fun isValidView(recyclerView: RecyclerView): Boolean {
-            return state == STATE_NORMAL && recyclerView == list
-        }
-
-        override fun forceShowSearchBar(): Boolean {
-            return state == STATE_SEARCH
-        }
-    }
 
     private val itemListener = object : PostViewHolder.ItemListener {
         override fun onClickMoeItem(post: PostMoe, view: View) {
@@ -153,14 +130,12 @@ class PopularFragment : Fragment() {
     private lateinit var popularViewModel: PopularViewModel
     private lateinit var glide: GlideRequests
 
-    private lateinit var leftDrawable: DrawerArrowDrawable
-
     private lateinit var postAdapter: PostAdapter
 
     private var keyword = ""
     private var date = ""
 
-    private val helper = object : SearchBar.Helper {
+    override val helper = object : SearchBar.Helper {
 
         override fun onLeftButtonClick() {
             val activity = requireActivity()
@@ -351,11 +326,6 @@ class PopularFragment : Fragment() {
         activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (popular == null) return
@@ -364,16 +334,12 @@ class PopularFragment : Fragment() {
     }
 
     private fun init() {
-        leftDrawable = DrawerArrowDrawable(requireContext())
+        search_bar.setTitle(R.string.title_popular)
         when (type) {
             Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
             else -> throw IllegalArgumentException("unknown type $type")
         }
-        search_bar.setLeftDrawable(leftDrawable)
-        search_bar.setHelper(helper)
-        search_bar.setTitle(R.string.title_popular)
-        searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
         swipe_refresh.apply {
@@ -395,9 +361,6 @@ class PopularFragment : Fragment() {
         }
         postAdapter = PostAdapter(
             glide = glide,
-            placeholder = Placeholder.create(
-                resources = resources,
-                theme = requireActivity().theme),
             listener = itemListener,
             retryCallback = {
                 when (type) {

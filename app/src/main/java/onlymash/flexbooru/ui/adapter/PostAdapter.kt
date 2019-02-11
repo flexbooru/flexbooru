@@ -7,7 +7,6 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.Placeholder
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.repository.NetworkState
@@ -16,7 +15,6 @@ import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 
 class PostAdapter(private val glide: GlideRequests,
-                  private val placeholder: Placeholder,
                   private val listener: PostViewHolder.ItemListener,
                   private val retryCallback: () -> Unit) : PagedListAdapter<Any, RecyclerView.ViewHolder>(POST_COMPARATOR) {
 
@@ -71,7 +69,7 @@ class PostAdapter(private val glide: GlideRequests,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             R.layout.item_header -> HeaderViewHolder.create(parent)
-            R.layout.item_post -> PostViewHolder.create(parent, glide, placeholder)
+            R.layout.item_post -> PostViewHolder.create(parent, glide)
             R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type $viewType")
         }

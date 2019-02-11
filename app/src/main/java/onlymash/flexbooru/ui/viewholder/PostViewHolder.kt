@@ -10,19 +10,16 @@ import com.github.chrisbanes.photoview.PhotoView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.Placeholder
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 
-class PostViewHolder(itemView: View,
-                     private val glide: GlideRequests,
-                     private val placeholder: Placeholder): RecyclerView.ViewHolder(itemView){
+class PostViewHolder(itemView: View, private val glide: GlideRequests): RecyclerView.ViewHolder(itemView){
 
     companion object {
-        fun create(parent: ViewGroup, glide: GlideRequests, placeholder: Placeholder): PostViewHolder {
+        fun create(parent: ViewGroup, glide: GlideRequests): PostViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_post, parent, false)
-            return PostViewHolder(view, glide, placeholder)
+            return PostViewHolder(view, glide)
         }
     }
 
@@ -33,7 +30,8 @@ class PostViewHolder(itemView: View,
     private var itemListener: ItemListener? = null
 
     init {
-        preview.setOnViewTapListener { _, _, _ ->
+        preview.isEnabled = false
+        itemView.setOnClickListener {
             when (post) {
                 is PostDan -> itemListener?.onClickDanItem(post as PostDan, preview)
                 is PostMoe -> itemListener?.onClickMoeItem(post as PostMoe, preview)
@@ -48,9 +46,9 @@ class PostViewHolder(itemView: View,
                 preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
                 previewCard.tag = post.id
                 val placeholderDrawable = when (post.rating) {
-                    "s" -> placeholder.s
-                    "q" -> placeholder.q
-                    else -> placeholder.e
+                    "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
+                    "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
+                    else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
                 }
                 val lp = previewCard.layoutParams as ConstraintLayout.LayoutParams
                 val ratio = post.image_width.toFloat()/post.image_height.toFloat()
@@ -77,9 +75,9 @@ class PostViewHolder(itemView: View,
                 preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
                 previewCard.tag = post.id
                 val placeholderDrawable = when (post.rating) {
-                    "s" -> placeholder.s
-                    "q" -> placeholder.q
-                    else -> placeholder.e
+                    "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
+                    "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
+                    else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
                 }
                 val lp = previewCard.layoutParams as ConstraintLayout.LayoutParams
                 val ratio = post.width.toFloat()/post.height.toFloat()

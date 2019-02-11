@@ -5,8 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import onlymash.flexbooru.model.Booru
 import onlymash.flexbooru.model.User
-import onlymash.flexbooru.ui.PopularFragment
-import onlymash.flexbooru.ui.PostFragment
+import onlymash.flexbooru.ui.*
 
 class NavPagerAdapter(fragmentManager: FragmentManager,
                       private val booru: Booru, private val user: User?) : FragmentStatePagerAdapter(fragmentManager) {
@@ -14,10 +13,13 @@ class NavPagerAdapter(fragmentManager: FragmentManager,
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> PostFragment.newInstance(booru = booru, user = user, keyword = "")
-            else -> PopularFragment.newInstance(booru = booru, user = user)
+            1 -> PopularFragment.newInstance(booru = booru, user = user)
+            2 -> PoolFragment()
+            3 -> TagFragment()
+            else -> ArtistFragment()
         }
     }
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = 5
 
 }

@@ -2,15 +2,10 @@ package onlymash.flexbooru.ui
 
 import android.content.*
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import kotlinx.android.synthetic.main.fragment_post.*
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -35,9 +30,8 @@ import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
-import onlymash.flexbooru.widget.SearchBarMover
 
-class PostFragment : Fragment() {
+class PostFragment : ListFragment() {
 
     companion object {
         /**
@@ -81,26 +75,18 @@ class PostFragment : Fragment() {
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
-        private const val STATE_NORMAL = 0
-        private const val STATE_SEARCH = 1
         private const val TAG = "PostFragment"
     }
 
     private lateinit var postViewModel: PostViewModel
     private lateinit var glide: GlideRequests
 
-    private lateinit var leftDrawable: DrawerArrowDrawable
-
     private lateinit var postAdapter: PostAdapter
-
-    private var state = STATE_NORMAL
 
     private var type = -1
     private var search: Search? = null
 
-    private lateinit var searchBarMover: SearchBarMover
-
-    private val helper = object : SearchBar.Helper {
+    override val helper = object : SearchBar.Helper {
 
         override fun onLeftButtonClick() {
             val activity = requireActivity()
@@ -113,18 +99,6 @@ class PostFragment : Fragment() {
 
         override fun onMenuItemClick(menuItem: MenuItem) {
 
-        }
-    }
-
-    private val sbMoverHelper = object : SearchBarMover.Helper {
-        override val validRecyclerView get() = list
-
-        override fun isValidView(recyclerView: RecyclerView): Boolean {
-            return state == STATE_NORMAL && recyclerView == list
-        }
-
-        override fun forceShowSearchBar(): Boolean {
-            return state == STATE_SEARCH
         }
     }
 
@@ -261,10 +235,6 @@ class PostFragment : Fragment() {
         requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_post, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (search == null) return
@@ -281,14 +251,10 @@ class PostFragment : Fragment() {
     }
 
     private fun init() {
-        leftDrawable = DrawerArrowDrawable(requireContext())
         if (requireActivity() !is MainActivity) {
             leftDrawable.progress = 1f
             search_bar.setTitle(search!!.keyword)
         }
-        search_bar.setLeftDrawable(leftDrawable)
-        search_bar.setHelper(helper)
-        searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
         swipe_refresh.apply {
@@ -310,9 +276,6 @@ class PostFragment : Fragment() {
             }
         postAdapter = PostAdapter(
             glide = glide,
-            placeholder = Placeholder.create(
-                resources = resources,
-                theme = requireActivity().theme),
             listener = itemListener,
             retryCallback = {
                 when (type) {

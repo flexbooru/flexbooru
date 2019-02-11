@@ -290,6 +290,21 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                             navigation.selectedItemId = R.id.navigation_popular
                         }
                     }
+                    2 -> {
+                        if (navigation.selectedItemId != R.id.navigation_pools) {
+                            navigation.selectedItemId = R.id.navigation_pools
+                        }
+                    }
+                    3 -> {
+                        if (navigation.selectedItemId != R.id.navigation_tags) {
+                            navigation.selectedItemId = R.id.navigation_tags
+                        }
+                    }
+                    else -> {
+                        if (navigation.selectedItemId != R.id.navigation_artists) {
+                            navigation.selectedItemId = R.id.navigation_artists
+                        }
+                    }
                 }
             }
         }
