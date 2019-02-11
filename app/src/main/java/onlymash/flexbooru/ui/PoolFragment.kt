@@ -10,10 +10,6 @@ import onlymash.flexbooru.widget.SearchBar
 class PoolFragment : ListFragment() {
     override val helper: SearchBar.Helper
         get() = object : SearchBar.Helper {
-            override fun onLeftButtonClick() {
-
-            }
-
             override fun onMenuItemClick(menuItem: MenuItem) {
 
             }

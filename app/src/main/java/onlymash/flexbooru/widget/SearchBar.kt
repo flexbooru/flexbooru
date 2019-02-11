@@ -25,6 +25,7 @@ class SearchBar @JvmOverloads constructor(
         const val STATE_SEARCH_LIST = 2
     }
     private var helper: Helper? = null
+    private var leftButtonListener: LeftButtonListener? = null
     init {
         LayoutInflater.from(context).inflate(R.layout.widget_search_bar, this)
         search_bar_menu_view.setOnMenuItemClickListener { menuItem ->
@@ -32,7 +33,7 @@ class SearchBar @JvmOverloads constructor(
             true
         }
         menu_button.setOnClickListener {
-            helper?.onLeftButtonClick()
+            leftButtonListener?.onLeftButtonClick()
         }
     }
 
@@ -77,7 +78,12 @@ class SearchBar @JvmOverloads constructor(
     }
 
     interface Helper {
-        fun onLeftButtonClick()
         fun onMenuItemClick(menuItem: MenuItem)
+    }
+    fun setLeftButtonListener(listener: LeftButtonListener) {
+        leftButtonListener = listener
+    }
+    interface LeftButtonListener {
+        fun onLeftButtonClick()
     }
 }

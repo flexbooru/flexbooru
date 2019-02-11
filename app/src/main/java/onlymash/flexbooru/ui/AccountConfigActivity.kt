@@ -18,6 +18,7 @@ import onlymash.flexbooru.model.User
 import onlymash.flexbooru.repository.account.FindUserListener
 import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.util.HashUtil
+import onlymash.flexbooru.util.launchUrl
 
 class AccountConfigActivity : BaseActivity() {
 
@@ -68,10 +69,21 @@ class AccountConfigActivity : BaseActivity() {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
             finish()
         }
+        account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru!!.name)
         if (booru!!.type == Constants.TYPE_DANBOORU) {
             password_title.setText(R.string.account_api_key)
+            forgot_auth.setText(R.string.account_forgot_api_key)
         }
-        account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru!!.name)
+        forgot_auth.setOnClickListener {
+            when (booru!!.type) {
+                Constants.TYPE_DANBOORU -> {
+                    launchUrl(String.format("%s://%s/session/new", booru!!.scheme, booru!!.host))
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    launchUrl(String.format("%s://%s/user/reset_password", booru!!.scheme, booru!!.host))
+                }
+            }
+        }
         userFinder = ServiceLocator.instance().getUserFinder().apply {
             setFindUserListener(findUserListener)
         }

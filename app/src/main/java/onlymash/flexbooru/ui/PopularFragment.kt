@@ -137,11 +137,6 @@ class PopularFragment : ListFragment() {
 
     override val helper = object : SearchBar.Helper {
 
-        override fun onLeftButtonClick() {
-            val activity = requireActivity()
-            if (activity is MainActivity) activity.drawer.openDrawer()
-        }
-
         override fun onMenuItemClick(menuItem: MenuItem) {
             when (type) {
                 Constants.TYPE_DANBOORU -> {

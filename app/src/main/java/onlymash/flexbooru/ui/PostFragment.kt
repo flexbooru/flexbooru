@@ -88,15 +88,6 @@ class PostFragment : ListFragment() {
 
     override val helper = object : SearchBar.Helper {
 
-        override fun onLeftButtonClick() {
-            val activity = requireActivity()
-            if (activity is MainActivity) {
-                activity.drawer.openDrawer()
-            } else {
-                activity.onBackPressed()
-            }
-        }
-
         override fun onMenuItemClick(menuItem: MenuItem) {
 
         }

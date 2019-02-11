@@ -8,12 +8,9 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.widget.SearchBar
 
 class ArtistFragment : ListFragment() {
+
     override val helper: SearchBar.Helper
         get() = object : SearchBar.Helper {
-            override fun onLeftButtonClick() {
-
-            }
-
             override fun onMenuItemClick(menuItem: MenuItem) {
 
             }

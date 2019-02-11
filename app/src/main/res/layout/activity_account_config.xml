@@ -99,13 +99,14 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_middle" />
                 <TextView
-                        android:id="@+id/forgot_password"
+                        android:id="@+id/forgot_auth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginTop="@dimen/spacing_medium"
                         android:clickable="true"
                         android:focusable="true"
+                        android:background="?attr/selectableItemBackground"
                         android:text="@string/account_forgot_password"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"

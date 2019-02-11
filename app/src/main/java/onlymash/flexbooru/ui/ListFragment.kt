@@ -46,9 +46,23 @@ abstract class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initSearchBar()
+    }
+
+    private fun initSearchBar() {
         leftDrawable = DrawerArrowDrawable(requireContext())
         search_bar.setLeftDrawable(leftDrawable)
         search_bar.setHelper(helper)
+        search_bar.setLeftButtonListener(object : SearchBar.LeftButtonListener {
+            override fun onLeftButtonClick() {
+                val activity = requireActivity()
+                if (activity is MainActivity) {
+                    activity.drawer.openDrawer()
+                } else {
+                    activity.onBackPressed()
+                }
+            }
+        })
         searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
     }
 }
