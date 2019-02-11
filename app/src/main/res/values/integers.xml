@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="exoplayer_show_control_timeout_ms">5000</integer>
+    <integer name="exoplayer_playback_fastforward_increment_ms">10000</integer>
+    <integer name="exoplayer_playback_rewind_increment_ms">10000</integer>
+</resources>

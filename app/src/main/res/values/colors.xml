@@ -37,4 +37,7 @@
     <color name="grey_80">#37474F</color>
     <color name="grey_90">#263238</color>
 
+    <color name="playTint">#cc63c866</color>
+    <color name="pauseTint">#ccc76185</color>
+    <color name="playerControlText">#cca2a2a2</color>
 </resources>

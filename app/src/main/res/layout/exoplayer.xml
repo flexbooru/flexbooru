@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Get a list of all the attributes here - https://goo.gl/PFuCxi -->
+<com.google.android.exoplayer2.ui.PlayerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:show_timeout="@integer/exoplayer_show_control_timeout_ms"
+        app:fastforward_increment="@integer/exoplayer_playback_fastforward_increment_ms"
+        app:rewind_increment="@integer/exoplayer_playback_rewind_increment_ms"
+        app:controller_layout_id="@layout/exoplayer_playback_control" />

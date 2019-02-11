@@ -14,12 +14,13 @@ android {
         }
     }
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "onlymash.flexbooru"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
-        versionName "0.0.1a"
+        versionName "0.0.1b"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
@@ -34,11 +35,14 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
@@ -57,27 +61,23 @@ dependencies {
     implementation 'com.mikepenz:materialdrawer:7.0.0-alpha2'
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
-
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
-
     implementation 'moe.shizuku.preference:preference:3.0.0'
     implementation 'moe.shizuku.preference:preference-dialog-android:3.0.0'
     implementation 'moe.shizuku.preference:preference-simplemenu:3.0.0'
-
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor"
-
     implementation "androidx.room:room-runtime:$room"
     implementation "com.github.bumptech.glide:glide:$glide"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide"
-
     implementation 'androidx.annotation:annotation:1.1.0-alpha01'
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
-
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,13 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
+import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.util.UrlUtil
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter() {
 
@@ -68,32 +69,42 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
             }
             else -> null
         }
-        if (!url.isNullOrEmpty()) {
-            glideRequests.load(url)
-                .fitCenter()
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        progressBar.visibility = View.GONE
-                        return false
-                    }
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        progressBar.visibility = View.GONE
-                        return false
-                    }
+        if (!url.isNullOrBlank()) {
+            when (UrlUtil.isMP4(url)) {
+                false -> {
+                    progressBar.visibility = View.VISIBLE
+                    glideRequests.load(url)
+                        .fitCenter()
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                progressBar.visibility = View.GONE
+                                return false
+                            }
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                progressBar.visibility = View.GONE
+                                return false
+                            }
 
-                })
-                .into(photoView)
+                        })
+                        .into(photoView)
+                }
+                true -> {
+                    val playerView: PlayerView = view.findViewById(R.id.player_view)
+                    playerView.visibility = View.VISIBLE
+                    playerView.tag = String.format("player_%d", position)
+                }
+            }
         }
         container.addView(view)
         return view

@@ -1,6 +1,7 @@
 package onlymash.flexbooru.ui
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,16 +9,20 @@ import android.view.View
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
+import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.exoplayer.PlayerHolder
+import onlymash.flexbooru.exoplayer.PlayerState
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
+import onlymash.flexbooru.util.UrlUtil
 
 class BrowseActivity : AppCompatActivity() {
 
@@ -35,11 +40,13 @@ class BrowseActivity : AppCompatActivity() {
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
             postsDan = posts
+            var url: String? = null
             var position = 0
             if (startId >= 0) {
                 posts.forEachIndexed { index, postDan ->
                     if (postDan.id == startId) {
                         position = index
+                        url = postDan.large_file_url
                         return@forEachIndexed
                     }
                 }
@@ -49,15 +56,24 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
+            if (!url.isNullOrBlank() && UrlUtil.isMP4(url!!)) {
+                val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                if (playerView is PlayerView) {
+                    playerHolder = PlayerHolder(this@BrowseActivity, playerState, playerView)
+                    playerHolder!!.start(uri = Uri.parse(url))
+                }
+            }
         }
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
             postsMoe = posts
+            var url: String? = null
             var position = 0
             if (startId >= 0) {
                 posts.forEachIndexed { index, postMoe ->
                     if (postMoe.id == startId) {
                         position = index
+                        url = postMoe.sample_url
                         return@forEachIndexed
                     }
                 }
@@ -67,8 +83,18 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
+            if (!url.isNullOrBlank() && UrlUtil.isMP4(url!!)) {
+                val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                if (playerView is PlayerView) {
+                    playerHolder = PlayerHolder(this@BrowseActivity, playerState, playerView)
+                    playerHolder!!.start(uri = Uri.parse(url))
+                }
+            }
         }
     }
+
+    private var playerHolder: PlayerHolder? = null
+    private val playerState = PlayerState()
 
     private lateinit var pagerAdapter: BrowsePagerAdapter
 
@@ -82,9 +108,16 @@ class BrowseActivity : AppCompatActivity() {
         }
 
         override fun onPageSelected(position: Int) {
+            var url: String? = null
             val id = when {
-                postsDan != null -> postsDan!![position].id
-                postsMoe != null -> postsMoe!![position].id
+                postsDan != null -> {
+                    url = postsDan!![position].large_file_url
+                    postsDan!![position].id
+                }
+                postsMoe != null -> {
+                    url = postsMoe!![position].sample_url
+                    postsMoe!![position].id
+                }
                 else -> -1
             }
             if (id > 0) toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), id)
@@ -94,6 +127,20 @@ class BrowseActivity : AppCompatActivity() {
                 putExtra(EXT_POST_KEYWORD_KEY, keyword)
             }
             this@BrowseActivity.sendBroadcast(intent)
+            if (!url.isNullOrBlank() && UrlUtil.isMP4(url)) {
+                if (playerHolder != null) {
+                    playerHolder!!.release()
+                    playerHolder = null
+                }
+                val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                if (playerView is PlayerView) {
+                    playerHolder = PlayerHolder(this@BrowseActivity, playerState, playerView)
+                    playerHolder!!.start(uri = Uri.parse(url))
+                }
+            } else {
+                playerHolder?.release()
+                playerHolder = null
+            }
         }
     }
 
@@ -189,5 +236,10 @@ class BrowseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finishAfterTransition()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        playerHolder?.release()
     }
 }
