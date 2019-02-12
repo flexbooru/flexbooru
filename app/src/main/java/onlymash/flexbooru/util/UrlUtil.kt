@@ -29,4 +29,14 @@ object UrlUtil {
         val suffix = parseSuffix(url)
         return suffix == "mp4" || suffix == "MP4"
     }
+
+    fun isImage(url: String): Boolean {
+        val suffix = parseSuffix(url)
+        return suffix == "jpg" ||
+                suffix == "JPG" ||
+                suffix == "png" ||
+                suffix == "PNG" ||
+                suffix == "jpeg" ||
+                suffix == "JPEG"
+    }
 }

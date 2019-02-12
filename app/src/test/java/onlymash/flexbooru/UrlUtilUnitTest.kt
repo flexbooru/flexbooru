@@ -6,11 +6,12 @@ import org.junit.Test
 
 class UrlUtilUnitTest {
 
-    private val url = "https://sakugabooru.com/data/9b06e769b6e33bcf379d0c0c3586853a.mp4"
+    private val url = "https://fiepi.me/ooxx.mp4"
+    private val url2 = "https://fiepi.me/ooxx.jpg"
+
     @Test
     fun verifySuffix() {
-        Assert.assertEquals("mp4",
-            UrlUtil.parseSuffix(url))
+        Assert.assertEquals("mp4", UrlUtil.parseSuffix(url))
     }
 
     @Test
@@ -18,4 +19,9 @@ class UrlUtilUnitTest {
         Assert.assertTrue(UrlUtil.isMP4(url))
     }
 
+    @Test
+    fun verifyImage() {
+        Assert.assertFalse(UrlUtil.isImage(url))
+        Assert.assertTrue(UrlUtil.isImage(url2))
+    }
 }

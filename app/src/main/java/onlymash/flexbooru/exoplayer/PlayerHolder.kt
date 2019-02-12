@@ -18,9 +18,7 @@ import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.util.UserAgent
 import java.io.File
 
-class PlayerHolder(private val context: Context,
-                   private val playerState: PlayerState,
-                   private val playerView: PlayerView) {
+class PlayerHolder(private val context: Context) {
 
     companion object {
         private var cache: SimpleCache? = null
@@ -32,16 +30,14 @@ class PlayerHolder(private val context: Context,
             return cache!!
         }
     }
+    private var currentPlayerState: PlayerState? = null
+    private val playerStates: MutableList<PlayerState> = mutableListOf()
     // Create the player instance.
     val exoPlayer: ExoPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
         .apply {
             playWhenReady = true
             repeatMode = Player.REPEAT_MODE_ALL
         }
-        .also { simpleExoPlayer ->
-        playerView.player = simpleExoPlayer
-    }
-
 
     private fun createExtractorMediaSource(uri: Uri): MediaSource {
         val sourceFactory = DefaultDataSourceFactory(context, UserAgent.get())
@@ -49,13 +45,24 @@ class PlayerHolder(private val context: Context,
         return ExtractorMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
     }
 
-    fun start(uri: Uri) {
+    fun start(uri: Uri, playerView: PlayerView) {
         val mediaSource = createExtractorMediaSource(uri)
         val loopingSource = LoopingMediaSource(mediaSource)
+        playerView.player = exoPlayer
+        currentPlayerState = null
+        playerStates.forEach {
+            if (it.uri == uri) {
+                currentPlayerState = it
+            }
+        }
+        if (currentPlayerState == null) {
+            currentPlayerState = PlayerState(uri = uri)
+            playerStates.add(currentPlayerState!!)
+        }
         // Load media.
         exoPlayer.prepare(loopingSource)
         // Restore state (after onResume()/onStart())
-        with(playerState) {
+        with(currentPlayerState!!) {
             // Start playback when media has buffered enough
             exoPlayer.seekTo(window, position)
         }
@@ -63,11 +70,13 @@ class PlayerHolder(private val context: Context,
     // Stop playback and release resources, but re-use the player instance.
     fun stop() {
         with(exoPlayer) {
-            // Save state
-            with(playerState) {
-                position = currentPosition
-                window = currentWindowIndex
-                whenReady = playWhenReady
+            if (currentPlayerState != null) {
+                // Save state
+                with(currentPlayerState!!) {
+                    position = currentPosition
+                    window = currentWindowIndex
+                    whenReady = playWhenReady
+                }
             }
             // Stop the player (and release it's resources). The player instance can be reused.
             stop(true)
@@ -76,6 +85,7 @@ class PlayerHolder(private val context: Context,
 
     // Destroy the player instance.
     fun release() {
+        playerStates.clear()
         exoPlayer.release() // player instance can't be used again.
     }
 }

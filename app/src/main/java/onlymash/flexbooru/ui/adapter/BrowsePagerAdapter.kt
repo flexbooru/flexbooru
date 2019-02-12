@@ -58,20 +58,23 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         }
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
+        var ext = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsDan[position].id)
+                ext = postsDan[position].file_ext ?: ""
                 postsDan[position].large_file_url
             }
             Constants.TYPE_MOEBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsMoe[position].id)
+                ext = postsMoe[position].file_ext ?: ""
                 postsMoe[position].sample_url
             }
             else -> null
         }
         if (!url.isNullOrBlank()) {
-            when (UrlUtil.isMP4(url)) {
-                false -> {
+            when (ext == "jpg" || ext == "png" || ext.isBlank()) {
+                true -> {
                     progressBar.visibility = View.VISIBLE
                     glideRequests.load(url)
                         .fitCenter()
@@ -99,7 +102,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                         })
                         .into(photoView)
                 }
-                true -> {
+                false -> {
                     val playerView: PlayerView = view.findViewById(R.id.player_view)
                     playerView.visibility = View.VISIBLE
                     playerView.tag = String.format("player_%d", position)

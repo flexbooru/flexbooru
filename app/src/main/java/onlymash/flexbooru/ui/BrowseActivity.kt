@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.core.app.SharedElementCallback
@@ -16,7 +17,6 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.exoplayer.PlayerHolder
-import onlymash.flexbooru.exoplayer.PlayerState
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.model.PostDan
 import onlymash.flexbooru.model.PostMoe
@@ -42,11 +42,13 @@ class BrowseActivity : AppCompatActivity() {
             postsDan = posts
             var url: String? = null
             var position = 0
+            var ext = ""
             if (startId >= 0) {
                 posts.forEachIndexed { index, postDan ->
                     if (postDan.id == startId) {
                         position = index
                         url = postDan.large_file_url
+                        ext = postDan.file_ext ?: ""
                         return@forEachIndexed
                     }
                 }
@@ -56,12 +58,13 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && UrlUtil.isMP4(url!!)) {
-                val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
-                if (playerView is PlayerView) {
-                    playerHolder = PlayerHolder(this@BrowseActivity, playerState, playerView)
-                    playerHolder!!.start(uri = Uri.parse(url))
-                }
+            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png") {
+                Handler().postDelayed({
+                    val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                    if (playerView is PlayerView) {
+                        playerHolder.start(uri = Uri.parse(url), playerView = playerView)
+                    }
+                }, 500)
             }
         }
 
@@ -69,11 +72,13 @@ class BrowseActivity : AppCompatActivity() {
             postsMoe = posts
             var url: String? = null
             var position = 0
+            var ext = ""
             if (startId >= 0) {
                 posts.forEachIndexed { index, postMoe ->
                     if (postMoe.id == startId) {
                         position = index
                         url = postMoe.sample_url
+                        ext = postMoe.file_ext ?: ""
                         return@forEachIndexed
                     }
                 }
@@ -83,18 +88,18 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && UrlUtil.isMP4(url!!)) {
-                val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
-                if (playerView is PlayerView) {
-                    playerHolder = PlayerHolder(this@BrowseActivity, playerState, playerView)
-                    playerHolder!!.start(uri = Uri.parse(url))
-                }
+            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png") {
+                Handler().postDelayed({
+                    val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                    if (playerView is PlayerView) {
+                        playerHolder.start(uri = Uri.parse(url), playerView = playerView)
+                    }
+                }, 500)
             }
         }
     }
 
-    private var playerHolder: PlayerHolder? = null
-    private val playerState = PlayerState()
+    private val playerHolder: PlayerHolder by lazy { PlayerHolder(this) }
 
     private lateinit var pagerAdapter: BrowsePagerAdapter
 
@@ -109,13 +114,16 @@ class BrowseActivity : AppCompatActivity() {
 
         override fun onPageSelected(position: Int) {
             var url: String? = null
+            var ext = ""
             val id = when {
                 postsDan != null -> {
                     url = postsDan!![position].large_file_url
+                    ext = postsDan!![position].file_ext ?: ""
                     postsDan!![position].id
                 }
                 postsMoe != null -> {
                     url = postsMoe!![position].sample_url
+                    ext = postsMoe!![position].file_ext ?: ""
                     postsMoe!![position].id
                 }
                 else -> -1
@@ -127,19 +135,12 @@ class BrowseActivity : AppCompatActivity() {
                 putExtra(EXT_POST_KEYWORD_KEY, keyword)
             }
             this@BrowseActivity.sendBroadcast(intent)
-            if (!url.isNullOrBlank() && UrlUtil.isMP4(url)) {
-                if (playerHolder != null) {
-                    playerHolder!!.release()
-                    playerHolder = null
-                }
+            playerHolder.stop()
+            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png") {
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
-                    playerHolder = PlayerHolder(this@BrowseActivity, playerState, playerView)
-                    playerHolder!!.start(uri = Uri.parse(url))
+                    playerHolder.start(uri = Uri.parse(url), playerView = playerView)
                 }
-            } else {
-                playerHolder?.release()
-                playerHolder = null
             }
         }
     }
@@ -238,8 +239,13 @@ class BrowseActivity : AppCompatActivity() {
         finishAfterTransition()
     }
 
+    override fun onStop() {
+        super.onStop()
+        playerHolder.stop()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        playerHolder?.release()
+        playerHolder.release()
     }
 }

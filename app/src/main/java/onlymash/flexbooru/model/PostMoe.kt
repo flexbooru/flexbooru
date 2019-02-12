@@ -27,6 +27,7 @@ data class PostMoe(
     val md5: String,
     val file_size: Int = 0,
     val file_url: String?,
+    val file_ext: String?,
     val is_shown_in_index: Boolean,
     val preview_url: String,
     val preview_width: Int,
