@@ -12,7 +12,7 @@ import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
-import onlymash.flexbooru.entity.SearchPost
+import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
 import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call
@@ -29,7 +29,7 @@ class PostData(
     private var danBoundaryCallback: PostDanBoundaryCallback? = null
     private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
 
-    private fun insertDanbooruResultIntoDb(search: SearchPost, body: MutableList<PostDan>?) {
+    private fun insertDanbooruResultIntoDb(search: Search, body: MutableList<PostDan>?) {
         body?.let { postsDan ->
             val posts = mutableListOf<PostDan>()
             postsDan.forEach { postDan ->
@@ -48,7 +48,7 @@ class PostData(
         }
     }
 
-    private fun insertMoebooruResultIntoDb(search: SearchPost, body: MutableList<PostMoe>?) {
+    private fun insertMoebooruResultIntoDb(search: Search, body: MutableList<PostMoe>?) {
         body?.let { posts ->
             val start = db.postMoeDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = posts.mapIndexed { index, post ->
@@ -62,7 +62,7 @@ class PostData(
     }
 
     @MainThread
-    override fun getDanPosts(search: SearchPost): Listing<PostDan> {
+    override fun getDanPosts(search: Search): Listing<PostDan> {
         danBoundaryCallback = PostDanBoundaryCallback(
             danbooruApi = danbooruApi,
             handleResponse = this::insertDanbooruResultIntoDb,
@@ -96,7 +96,7 @@ class PostData(
     }
 
     @MainThread
-    override fun getMoePosts(search: SearchPost): Listing<PostMoe> {
+    override fun getMoePosts(search: Search): Listing<PostMoe> {
         moeBoundaryCallback = PostMoeBoundaryCallback(
             moebooruApi = moebooruApi,
             handleResponse = this::insertMoebooruResultIntoDb,
@@ -131,7 +131,7 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshDanbooru(search: SearchPost): LiveData<NetworkState> {
+    private fun refreshDanbooru(search: Search): LiveData<NetworkState> {
         danBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
@@ -156,7 +156,7 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshMoebooru(search: SearchPost): LiveData<NetworkState> {
+    private fun refreshMoebooru(search: Search): LiveData<NetworkState> {
         moeBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING

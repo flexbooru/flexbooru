@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.entity.SearchPost
+import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.post.PostRepository
 
 class PostViewModel(private val repo: PostRepository): ViewModel() {
-    private val searchData = MutableLiveData<SearchPost>()
+    private val searchData = MutableLiveData<Search>()
     private val danRepoResult = map(searchData) { search ->
         repo.getDanPosts(search)
     }
@@ -23,7 +23,7 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
     val networkStateMoe = switchMap(moeRepoResult) { it.networkState }
     val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }
 
-    fun show(search: SearchPost): Boolean {
+    fun show(search: Search): Boolean {
         if (searchData.value == search) {
             return false
         }

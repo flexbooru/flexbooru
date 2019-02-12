@@ -85,7 +85,7 @@ class PostFragment : ListFragment() {
     private lateinit var postAdapter: PostAdapter
 
     private var type = -1
-    private var search: SearchPost? = null
+    private var search: Search? = null
 
     override val helper = object : SearchBar.Helper {
 
@@ -208,7 +208,7 @@ class PostFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = SearchPost(
+            search = Search(
                 scheme = it.getString(Constants.SCHEME_KEY, ""),
                 host = it.getString(Constants.HOST_KEY, ""),
                 keyword = it.getString(Constants.KEYWORD_KEY, ""),

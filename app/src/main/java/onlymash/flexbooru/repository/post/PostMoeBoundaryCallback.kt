@@ -6,7 +6,7 @@ import androidx.paging.PagingRequestHelper
 import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.PostMoe
-import onlymash.flexbooru.entity.SearchPost
+import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,9 +15,9 @@ import java.util.concurrent.Executor
 
 class PostMoeBoundaryCallback(
     private val moebooruApi: MoebooruApi,
-    private val handleResponse: (SearchPost, MutableList<PostMoe>?) -> Unit,
+    private val handleResponse: (Search, MutableList<PostMoe>?) -> Unit,
     private val ioExecutor: Executor,
-    private val search: SearchPost
+    private val search: Search
 ) : PagedList.BoundaryCallback<PostMoe>() {
 
     val helper = PagingRequestHelper(ioExecutor)

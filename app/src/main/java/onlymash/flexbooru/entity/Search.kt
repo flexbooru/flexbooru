@@ -4,7 +4,7 @@ import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SearchPost(
+data class Search(
     var scheme: String,
     var host: String,
     var limit: Int,

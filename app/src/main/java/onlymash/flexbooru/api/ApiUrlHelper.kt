@@ -3,10 +3,10 @@ package onlymash.flexbooru.api
 import okhttp3.HttpUrl
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.SearchPopular
-import onlymash.flexbooru.entity.SearchPost
+import onlymash.flexbooru.entity.Search
 
 object ApiUrlHelper {
-    fun getDanUrl(search: SearchPost, page: Int): HttpUrl {
+    fun getDanUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
             .host(search.host)
@@ -19,7 +19,7 @@ object ApiUrlHelper {
             .build()
     }
 
-    fun getMoeUrl(search: SearchPost, page: Int): HttpUrl {
+    fun getMoeUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
             .host(search.host)
@@ -73,6 +73,31 @@ object ApiUrlHelper {
             .host(booru.host)
             .addPathSegment("user.json")
             .addQueryParameter("name", username)
+            .build()
+    }
+
+    fun getDanPoolUrl(search: Search, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(search.scheme)
+            .host(search.host)
+            .addPathSegment("pools.json")
+            .addQueryParameter("limit", search.limit.toString())
+            .addQueryParameter("search[name_matches]", search.keyword)
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("login", search.username)
+            .addQueryParameter("api_key", search.auth_key)
+            .build()
+    }
+
+    fun getMoePoolUrl(search: Search, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(search.scheme)
+            .host(search.host)
+            .addPathSegment("pool.json")
+            .addQueryParameter("query", search.keyword)
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("login", search.username)
+            .addQueryParameter("api_key", search.auth_key)
             .build()
     }
 }

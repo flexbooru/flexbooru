@@ -12,9 +12,9 @@ class NavPagerAdapter(fragmentManager: FragmentManager,
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> PostFragment.newInstance(booru = booru, user = user, keyword = "")
+            0 -> PostFragment.newInstance(keyword = "", booru = booru, user = user)
             1 -> PopularFragment.newInstance(booru = booru, user = user)
-            2 -> PoolFragment()
+            2 -> PoolFragment.newInstance(keyword = "", booru = booru, user = user)
             3 -> TagFragment()
             else -> ArtistFragment()
         }
