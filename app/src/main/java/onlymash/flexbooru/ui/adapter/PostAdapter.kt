@@ -7,8 +7,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.ui.viewholder.HeaderViewHolder
 import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder

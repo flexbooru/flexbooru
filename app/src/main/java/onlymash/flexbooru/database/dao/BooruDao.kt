@@ -1,7 +1,7 @@
-package onlymash.flexbooru.database
+package onlymash.flexbooru.database.dao
 
 import androidx.room.*
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 
 @Dao
 interface BooruDao {

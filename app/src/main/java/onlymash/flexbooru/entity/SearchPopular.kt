@@ -1,10 +1,10 @@
-package onlymash.flexbooru.model
+package onlymash.flexbooru.entity
 
 import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Popular(
+data class SearchPopular(
     var scheme: String,
     var host: String,
 

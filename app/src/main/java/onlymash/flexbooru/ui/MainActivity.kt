@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
@@ -22,9 +21,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 
 class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {

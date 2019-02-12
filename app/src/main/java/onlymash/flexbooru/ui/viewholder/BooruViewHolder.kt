@@ -11,7 +11,7 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
 import onlymash.flexbooru.ui.BooruConfigFragment

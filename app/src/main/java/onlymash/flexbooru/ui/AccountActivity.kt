@@ -10,8 +10,8 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
 
 class AccountActivity : BaseActivity() {
 

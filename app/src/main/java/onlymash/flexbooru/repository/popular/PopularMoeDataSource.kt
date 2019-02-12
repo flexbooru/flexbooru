@@ -2,11 +2,11 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.getMoePopularUrl
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.model.Popular
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.SearchPopular
+import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.NetworkState
 import java.io.IOException
 import java.util.concurrent.Executor
@@ -14,7 +14,7 @@ import java.util.concurrent.Executor
 class PopularMoeDataSource(
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,
-    private val popular: Popular,
+    private val popular: SearchPopular,
     private val retryExecutor: Executor) : PageKeyedDataSource<Int, PostMoe>() {
 
     // keep a function reference for the retry event
@@ -40,7 +40,7 @@ class PopularMoeDataSource(
 
     override fun loadInitial(params: LoadInitialParams<Int>,
                              callback: LoadInitialCallback<Int, PostMoe>) {
-        val request = moebooruApi.getPosts(getMoePopularUrl(popular))
+        val request = moebooruApi.getPosts(ApiUrlHelper.getMoePopularUrl(popular))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 

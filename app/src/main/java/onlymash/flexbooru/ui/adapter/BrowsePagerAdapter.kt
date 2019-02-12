@@ -18,9 +18,8 @@ import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
-import onlymash.flexbooru.util.UrlUtil
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter() {
 

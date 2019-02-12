@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.ViewCompat
@@ -18,11 +17,10 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
-import onlymash.flexbooru.util.UrlUtil
 
 class BrowseActivity : AppCompatActivity() {
 

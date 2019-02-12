@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <color android:color="?android:attr/colorPrimary"/>
+    </item>
+
+    <item>
+        <inset android:drawable="@drawable/ic_person"
+               android:inset="15%"/>
+    </item>
+</layer-list>

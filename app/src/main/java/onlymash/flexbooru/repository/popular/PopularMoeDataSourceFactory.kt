@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.model.Popular
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.SearchPopular
+import onlymash.flexbooru.entity.PostMoe
 import java.util.concurrent.Executor
 
 class PopularMoeDataSourceFactory(
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,
-    private val popular: Popular,
+    private val popular: SearchPopular,
     private val retryExecutor: Executor) : DataSource.Factory<Int, PostMoe>(){
 
     val sourceLiveData = MutableLiveData<PopularMoeDataSource>()

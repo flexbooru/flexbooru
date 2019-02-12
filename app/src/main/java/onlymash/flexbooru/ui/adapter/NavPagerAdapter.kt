@@ -3,8 +3,8 @@ package onlymash.flexbooru.ui.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.*
 
 class NavPagerAdapter(fragmentManager: FragmentManager,

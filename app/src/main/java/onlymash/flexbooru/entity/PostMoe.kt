@@ -1,4 +1,4 @@
-package onlymash.flexbooru.model
+package onlymash.flexbooru.entity
 
 import androidx.room.Entity
 import androidx.room.Index
@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 data class PostMoe(
     @Optional
     @PrimaryKey(autoGenerate = true)
-    val uid: Long = -1,
+    val uid: Long = -1L,
     @Optional
     var host: String = "",
     @Optional

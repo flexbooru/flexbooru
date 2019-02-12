@@ -25,7 +25,7 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.*
+import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.adapter.PostAdapter
@@ -93,7 +93,7 @@ class PopularFragment : ListFragment() {
     }
     private var type: Int = -1
 
-    private var popular: Popular? = null
+    private var popular: SearchPopular? = null
 
     private var currentYear = -1
     private var currentMonth = -1
@@ -308,7 +308,7 @@ class PopularFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             type = it.getInt(Constants.TYPE_KEY, -1)
-            popular = Popular(
+            popular = SearchPopular(
                 scheme = it.getString(Constants.SCHEME_KEY, "") ,
                 host = it.getString(Constants.HOST_KEY, ""),
                 username = it.getString(Constants.USERNAME_KEY, ""),

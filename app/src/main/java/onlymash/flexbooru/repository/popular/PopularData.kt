@@ -7,9 +7,9 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.model.Popular
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.SearchPopular
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
@@ -21,7 +21,7 @@ class PopularData(
 
 
     @MainThread
-    override fun getDanPopular(popular: Popular): Listing<PostDan> {
+    override fun getDanPopular(popular: SearchPopular): Listing<PostDan> {
         val sourceFactory = PopularDanDataSourceFactory(danbooruApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
@@ -48,7 +48,7 @@ class PopularData(
     }
 
     @MainThread
-    override fun getMoePopular(popular: Popular): Listing<PostMoe> {
+    override fun getMoePopular(popular: SearchPopular): Listing<PostMoe> {
         val sourceFactory = PopularMoeDataSourceFactory(moebooruApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(

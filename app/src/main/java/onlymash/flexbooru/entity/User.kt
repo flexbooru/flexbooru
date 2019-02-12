@@ -1,4 +1,4 @@
-package onlymash.flexbooru.model
+package onlymash.flexbooru.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -13,8 +13,8 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE))])
 data class User(
     @PrimaryKey(autoGenerate = true)
-    var uid: Long,
-    var booru_uid: Long?,
+    var uid: Long = -1L,
+    var booru_uid: Long = -1L,
     var name: String,
     var id: Int,
     var password_hash: String?,

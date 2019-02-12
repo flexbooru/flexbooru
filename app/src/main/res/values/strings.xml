@@ -81,6 +81,9 @@
     <string name="account_user_avatars" translatable="false">%s://%s/data/avatars/%d.jpg</string>
     <string name="account_user_remove">Remove account</string>
     <string name="account_user_dialog_title_remove">Are you sure you want to remove this account?</string>
+    <string name="account_favorites">Favorites</string>
+    <string name="account_posts">Posts</string>
+    <string name="account_comments">Comments</string>
 
     <string name="settings_safe_mode">Safe mode</string>
     <string name="settings_post_limit">Post limit</string>

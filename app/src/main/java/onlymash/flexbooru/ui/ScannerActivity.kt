@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt#L111
 class ScannerActivity : BaseActivity(), BarcodeRetriever {

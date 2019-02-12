@@ -2,11 +2,11 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.getDanPopularUrl
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.model.Popular
-import onlymash.flexbooru.model.PostDan
+import onlymash.flexbooru.entity.SearchPopular
+import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.repository.NetworkState
 import java.io.IOException
 import java.util.concurrent.Executor
@@ -14,7 +14,7 @@ import java.util.concurrent.Executor
 class PopularDanDataSource(
     private val danbooruApi: DanbooruApi,
     private val db: FlexbooruDatabase,
-    private val popular: Popular,
+    private val popular: SearchPopular,
     private val retryExecutor: Executor) : PageKeyedDataSource<Int, PostDan>() {
 
     // keep a function reference for the retry event
@@ -40,7 +40,7 @@ class PopularDanDataSource(
 
     override fun loadInitial(params: LoadInitialParams<Int>,
                              callback: LoadInitialCallback<Int, PostDan>) {
-        val request = danbooruApi.getPosts(getDanPopularUrl(popular))
+        val request = danbooruApi.getPosts(ApiUrlHelper.getDanPopularUrl(popular))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 

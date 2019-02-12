@@ -1,11 +1,11 @@
-package onlymash.flexbooru.database
+package onlymash.flexbooru.database.dao
 
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.PostMoe
 
 @Dao
 interface PostMoeDao {

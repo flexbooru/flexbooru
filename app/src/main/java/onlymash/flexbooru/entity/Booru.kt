@@ -1,4 +1,4 @@
-package onlymash.flexbooru.model
+package onlymash.flexbooru.entity
 
 import android.net.Uri
 import android.util.Base64
@@ -15,7 +15,7 @@ data class Booru(
     var name: String,
     var scheme: String,
     var host: String,
-    var hash_salt: String?,
+    var hash_salt: String = "",
     // 0: danbooru 1: moebooru
     var type: Int
 ) {
@@ -25,7 +25,7 @@ data class Booru(
         return Uri.Builder()
             .scheme("booru")
             .encodedAuthority(String.format(Locale.ENGLISH, "%s",
-                Base64.encodeToString("$name@@@$scheme@@@$host@@@$type@@@${hash_salt ?: ""}".toByteArray(),
+                Base64.encodeToString("$name@@@$scheme@@@$host@@@$type@@@$hash_salt".toByteArray(),
                     Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)))
             .build()
     }

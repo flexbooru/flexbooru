@@ -1,7 +1,8 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
-import onlymash.flexbooru.model.User
+import android.util.Log
+import onlymash.flexbooru.entity.User
 import java.io.IOException
 import java.sql.SQLException
 
@@ -24,6 +25,7 @@ object UserManager {
                 it.onAdd(user)
             }
         }
+        Log.e("UserManager", user.toString())
         return user
     }
 

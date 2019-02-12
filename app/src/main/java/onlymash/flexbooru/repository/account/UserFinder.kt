@@ -2,12 +2,11 @@ package onlymash.flexbooru.repository.account
 
 import android.os.Handler
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.getDanUserUrl
-import onlymash.flexbooru.api.getMoeUserUrl
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
 import java.io.IOException
 import java.util.concurrent.Executor
 
@@ -33,7 +32,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
     private fun findMoeUser(username: String, booru: Booru) {
         ioExecutor.execute {
             var msg = ""
-            val request = moebooruApi.getUsers(getMoeUserUrl(username, booru))
+            val request = moebooruApi.getUsers(ApiUrlHelper.getMoeUserUrl(username, booru))
             try {
                 val response = request.execute()
                 val data = response.body()
@@ -67,7 +66,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
     private fun findDanUser(username: String, booru: Booru) {
         ioExecutor.execute {
             var msg = ""
-            val request = danbooruApi.getUsers(getDanUserUrl(username, booru))
+            val request = danbooruApi.getUsers(ApiUrlHelper.getDanUserUrl(username, booru))
             try {
                 val response = request.execute()
                 val data = response.body()

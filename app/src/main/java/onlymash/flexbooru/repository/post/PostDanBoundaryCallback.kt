@@ -3,10 +3,10 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.getDanUrl
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.SearchPost
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,9 +15,9 @@ import java.util.concurrent.Executor
 
 class PostDanBoundaryCallback(
     private val danbooruApi: DanbooruApi,
-    private val handleResponse: (Search, MutableList<PostDan>?) -> Unit,
+    private val handleResponse: (SearchPost, MutableList<PostDan>?) -> Unit,
     private val ioExecutor: Executor,
-    private val search: Search
+    private val search: SearchPost
 ) : PagedList.BoundaryCallback<PostDan>() {
 
     val helper = PagingRequestHelper(ioExecutor)
@@ -54,7 +54,7 @@ class PostDanBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            danbooruApi.getPosts(getDanUrl(search, 1)).enqueue(createDanbooruCallback(it))
+            danbooruApi.getPosts(ApiUrlHelper.getDanUrl(search, 1)).enqueue(createDanbooruCallback(it))
         }
     }
 
@@ -64,7 +64,7 @@ class PostDanBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                danbooruApi.getPosts(getDanUrl(search, indexInNext/limit + 1))
+                danbooruApi.getPosts(ApiUrlHelper.getDanUrl(search, indexInNext/limit + 1))
                     .enqueue(createDanbooruCallback(it))
             }
         }

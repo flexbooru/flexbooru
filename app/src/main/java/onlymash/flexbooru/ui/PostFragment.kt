@@ -22,7 +22,7 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.*
+import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.ui.adapter.PostAdapter
@@ -39,7 +39,8 @@ class PostFragment : ListFragment() {
          * this fragment using the provided parameters.
          *
          * @param booru active booru
-         * @param tags keyword of search
+         * @param keyword keyword of search
+         * @param user account info
          * @return A new instance of fragment PostFragment.
          */
         @JvmStatic
@@ -84,7 +85,7 @@ class PostFragment : ListFragment() {
     private lateinit var postAdapter: PostAdapter
 
     private var type = -1
-    private var search: Search? = null
+    private var search: SearchPost? = null
 
     override val helper = object : SearchBar.Helper {
 
@@ -207,7 +208,7 @@ class PostFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = Search(
+            search = SearchPost(
                 scheme = it.getString(Constants.SCHEME_KEY, ""),
                 host = it.getString(Constants.HOST_KEY, ""),
                 keyword = it.getString(Constants.KEYWORD_KEY, ""),
@@ -293,7 +294,7 @@ class PostFragment : ListFragment() {
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
                 })
-                postViewModel.networkStateDan.observe(this, Observer { networkState ->
+                postViewModel.networkStateDan.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDan()
@@ -303,7 +304,7 @@ class PostFragment : ListFragment() {
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<Any>)
                 })
-                postViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                postViewModel.networkStateMoe.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshMoe()
@@ -322,14 +323,14 @@ class PostFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDan() {
-        postViewModel.refreshStateDan.observe(this, Observer {
+        postViewModel.refreshStateDan.observe(this, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshDan() }
     }
 
     private fun initSwipeToRefreshMoe() {
-        postViewModel.refreshStateMoe.observe(this, Observer {
+        postViewModel.refreshStateMoe.observe(this, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshMoe() }

@@ -10,8 +10,8 @@ import com.github.chrisbanes.photoview.PhotoView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
 
 class PostViewHolder(itemView: View, private val glide: GlideRequests): RecyclerView.ViewHolder(itemView){
 

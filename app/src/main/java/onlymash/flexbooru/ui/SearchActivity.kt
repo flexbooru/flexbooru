@@ -6,9 +6,9 @@ import android.os.Bundle
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.Search
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.SearchPost
+import onlymash.flexbooru.entity.User
 
 class SearchActivity : BaseActivity() {
 
@@ -49,13 +49,13 @@ class SearchActivity : BaseActivity() {
     }
 
     internal var type = -1
-    internal var search: Search? = null
+    internal var search: SearchPost? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         intent?.extras?.getBundle(BUNDLE_KEY)?.apply {
             type = getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = Search(
+            search = SearchPost(
                 scheme = getString(Constants.SCHEME_KEY, ""),
                 host = getString(Constants.HOST_KEY, ""),
                 keyword = getString(Constants.KEYWORD_KEY, ""),

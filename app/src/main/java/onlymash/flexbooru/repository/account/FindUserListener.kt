@@ -1,6 +1,6 @@
 package onlymash.flexbooru.repository.account
 
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.User
 
 interface FindUserListener {
     fun onSuccess(user: User)

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.viewholder.BooruViewHolder
 
 class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruViewHolder>(), BooruManager.Listener {

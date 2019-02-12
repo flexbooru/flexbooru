@@ -1,10 +1,10 @@
-package onlymash.flexbooru.model
+package onlymash.flexbooru.entity
 
 import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Search(
+data class SearchPost(
     var scheme: String,
     var host: String,
     var limit: Int,

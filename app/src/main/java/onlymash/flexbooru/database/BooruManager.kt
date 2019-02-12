@@ -1,8 +1,7 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
-import android.util.Log
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 import java.io.IOException
 import java.sql.SQLException
 

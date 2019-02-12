@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.model.Popular
+import onlymash.flexbooru.entity.SearchPopular
 import onlymash.flexbooru.repository.popular.PopularRepository
 
 class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
-    private val popularData = MutableLiveData<Popular>()
+    private val popularData = MutableLiveData<SearchPopular>()
     private val danRepoResult = map(popularData) { popular ->
         repo.getDanPopular(popular)
     }
@@ -23,7 +23,7 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }!!
     val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }!!
 
-    fun show(popular: Popular): Boolean {
+    fun show(popular: SearchPopular): Boolean {
         if (popularData.value == popular) {
             return false
         }

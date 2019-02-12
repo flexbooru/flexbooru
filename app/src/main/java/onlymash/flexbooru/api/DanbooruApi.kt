@@ -7,8 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Constants.BASE_URL
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -59,4 +58,13 @@ interface DanbooruApi {
 
     @GET
     fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
+
+    @GET
+    fun getPools(@Url httpUrl: HttpUrl): Call<MutableList<PoolDan>>
+
+    @GET
+    fun getTags(@Url httpUrl: HttpUrl): Call<MutableList<TagDan>>
+
+    @GET
+    fun getArtists(@Url httpUrl: HttpUrl): Call<MutableList<ArtistDan>>
 }

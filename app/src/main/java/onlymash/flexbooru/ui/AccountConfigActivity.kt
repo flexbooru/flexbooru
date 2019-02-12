@@ -13,8 +13,8 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.model.Booru
-import onlymash.flexbooru.model.User
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
 import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.util.HashUtil
@@ -101,7 +101,7 @@ class AccountConfigActivity : BaseActivity() {
             return
         }
         val hashSalt = booru!!.hash_salt
-        if (booru!!.type == Constants.TYPE_MOEBOORU && !hashSalt.isNullOrBlank()) {
+        if (booru!!.type == Constants.TYPE_MOEBOORU && hashSalt.isNotBlank()) {
             pass = HashUtil.sha1(hashSalt.replace(Constants.HASH_SALT_CONTAINED, pass))
         }
         set_account.visibility = View.INVISIBLE

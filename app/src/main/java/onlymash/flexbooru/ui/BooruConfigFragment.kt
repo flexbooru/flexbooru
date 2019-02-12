@@ -7,7 +7,7 @@ import moe.shizuku.preference.PreferenceFragment
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 
 class BooruConfigFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -28,8 +28,8 @@ class BooruConfigFragment : PreferenceFragment(), SharedPreferences.OnSharedPref
             val type = when (booru.type) {
                 Constants.TYPE_DANBOORU -> Constants.BOORU_CONFIG_TYPE_DANBOORU
                 Constants.TYPE_MOEBOORU -> {
-                    if (!booru.hash_salt.isNullOrEmpty()) {
-                        hashSalt = booru.hash_salt!!
+                    if (booru.hash_salt.isNotBlank()) {
+                        hashSalt = booru.hash_salt
                     }
                     Constants.BOORU_CONFIG_TYPE_MOEBOORU
                 }

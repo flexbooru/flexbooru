@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.model.Booru
+import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.util.launchUrl
 

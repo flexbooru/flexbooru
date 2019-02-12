@@ -1,14 +1,14 @@
 package onlymash.flexbooru.repository.post
 
-import onlymash.flexbooru.model.PostDan
-import onlymash.flexbooru.model.PostMoe
-import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.entity.SearchPost
 import onlymash.flexbooru.repository.Listing
 
 interface PostRepository {
 
-    fun getDanbooruPosts(search: Search): Listing<PostDan>
+    fun getDanPosts(search: SearchPost): Listing<PostDan>
 
-    fun getMoebooruPosts(search: Search): Listing<PostMoe>
+    fun getMoePosts(search: SearchPost): Listing<PostMoe>
 
 }

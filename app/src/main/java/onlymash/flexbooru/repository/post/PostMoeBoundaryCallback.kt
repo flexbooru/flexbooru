@@ -3,10 +3,10 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.getMoeUrl
-import onlymash.flexbooru.model.PostMoe
-import onlymash.flexbooru.model.Search
+import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.entity.SearchPost
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,9 +15,9 @@ import java.util.concurrent.Executor
 
 class PostMoeBoundaryCallback(
     private val moebooruApi: MoebooruApi,
-    private val handleResponse: (Search, MutableList<PostMoe>?) -> Unit,
+    private val handleResponse: (SearchPost, MutableList<PostMoe>?) -> Unit,
     private val ioExecutor: Executor,
-    private val search: Search
+    private val search: SearchPost
 ) : PagedList.BoundaryCallback<PostMoe>() {
 
     val helper = PagingRequestHelper(ioExecutor)
@@ -54,7 +54,7 @@ class PostMoeBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            moebooruApi.getPosts(getMoeUrl(search, 1)).enqueue(createMoebooruCallback(it))
+            moebooruApi.getPosts(ApiUrlHelper.getMoeUrl(search, 1)).enqueue(createMoebooruCallback(it))
         }
     }
 
@@ -64,7 +64,7 @@ class PostMoeBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                moebooruApi.getPosts(getMoeUrl(search, indexInNext/limit + 1))
+                moebooruApi.getPosts(ApiUrlHelper.getMoeUrl(search, indexInNext/limit + 1))
                     .enqueue(createMoebooruCallback(it))
             }
         }
