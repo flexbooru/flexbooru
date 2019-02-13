@@ -1,4 +1,4 @@
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
@@ -16,7 +21,13 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepository
+import onlymash.flexbooru.ui.MainActivity
+import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.adapter.PoolAdapter
+import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
 import onlymash.flexbooru.widget.SearchBar
 
@@ -71,6 +82,18 @@ class PoolFragment : ListFragment() {
         }
 
     private lateinit var poolViewModel: PoolViewModel
+    private lateinit var poolAdapter: PoolAdapter
+
+    private val itemListener = object : PoolViewHolder.ItemListener {
+        override fun onClickItem(keyword: String) {
+            val activity = requireActivity() as MainActivity
+            SearchActivity.startActivity(
+                requireContext(),
+                keyword,
+                activity.getCurrentBooru()!!,
+                activity.getCurrentUser())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,19 +114,63 @@ class PoolFragment : ListFragment() {
         search_bar.setTitle(R.string.title_pools)
         poolViewModel = getPoolViewModel(ServiceLocator.instance().getPoolRepository())
         if (search == null) return
+        val glide = GlideApp.with(this)
+        poolAdapter = PoolAdapter(
+            glide = glide,
+            listener = itemListener,
+            retryCallback = {
+                when (type) {
+                    Constants.TYPE_DANBOORU -> poolViewModel.retryDan()
+                    Constants.TYPE_MOEBOORU -> poolViewModel.retryMoe()
+                }
+            }
+        )
+        list.apply {
+            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            adapter = poolAdapter
+        }
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                poolViewModel.poolsDan.observe(this, Observer {
-                    Log.e(TAG, "Danbooru pools: ${it.loadedCount}")
+                poolViewModel.poolsDan.observe(this, Observer { pools ->
+                    @Suppress("UNCHECKED_CAST")
+                    poolAdapter.submitList(pools as PagedList<Any>)
                 })
+                poolViewModel.networkStateDan.observe(this, Observer { networkState ->
+                    poolAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                poolViewModel.poolsMoe.observe(this, Observer {
-                    Log.e(TAG, "Moebooru pools: ${it.loadedCount}")
+                poolViewModel.poolsMoe.observe(this, Observer { pools ->
+                    @Suppress("UNCHECKED_CAST")
+                    poolAdapter.submitList(pools as PagedList<Any>)
                 })
+                poolViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                    poolAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshMoe()
             }
         }
         poolViewModel.show(search = search!!)
+    }
+
+    private fun initSwipeToRefreshDan() {
+        poolViewModel.refreshStateDan.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { poolViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshMoe() {
+        poolViewModel.refreshStateMoe.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { poolViewModel.refreshMoe() }
     }
 
     @Suppress("UNCHECKED_CAST")

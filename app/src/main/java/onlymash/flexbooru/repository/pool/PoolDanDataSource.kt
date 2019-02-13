@@ -42,11 +42,17 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
         val request = danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = 1))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
+        val scheme = search.scheme
         val host = search.host
         val keyword = search.keyword
         try {
             val response =  request.execute()
             val data = response.body() ?: mutableListOf()
+            data.forEach {
+                it.scheme = scheme
+                it.host = host
+                it.keyword = keyword
+            }
             retry = null
             networkState.postValue(NetworkState.LOADED)
             initialLoad.postValue(NetworkState.LOADED)
@@ -75,6 +81,14 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                 override fun onResponse(call: Call<MutableList<PoolDan>>, response: Response<MutableList<PoolDan>>) {
                     if (response.isSuccessful) {
                         val data = response.body() ?: mutableListOf()
+                        val scheme = search.scheme
+                        val host = search.host
+                        val keyword = search.keyword
+                        data.forEach {
+                            it.scheme = scheme
+                            it.host = host
+                            it.keyword = keyword
+                        }
                         retry = null
                         callback.onResult(data, page + 1)
                     } else {

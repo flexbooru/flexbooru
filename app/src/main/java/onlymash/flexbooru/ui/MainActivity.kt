@@ -320,38 +320,38 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         popularExitSharedElementCallback = callback
     }
 
+    private fun onNavPosition(position: Int) {
+        if (pager_container.currentItem != position) {
+            pager_container.currentItem = position
+        } else if (currentNavItem == position){
+            navigationListeners.forEach {
+                it.onClickPosition(position)
+            }
+        }
+        currentNavItem = position
+    }
+
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_posts -> {
-                    if (pager_container.currentItem != 0) {
-                        pager_container.currentItem = 0
-                    } else if (currentNavItem == 0){
-                        navigationListeners.forEach {
-                            it.onClickPosition(0)
-                        }
-                    }
-                    currentNavItem = 0
+                    onNavPosition(0)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_popular -> {
-                    if (pager_container.currentItem != 1) {
-                        pager_container.currentItem = 1
-                    } else if (currentNavItem == 1){
-                        navigationListeners.forEach {
-                            it.onClickPosition(1)
-                        }
-                    }
-                    currentNavItem = 1
+                    onNavPosition(1)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_pools -> {
+                    onNavPosition(2)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_tags -> {
+                    onNavPosition(3)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_artists -> {
+                    onNavPosition(4)
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -385,7 +385,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         super.onDestroy()
     }
 
-    private fun getCurrentBooru(): Booru? {
+    internal fun getCurrentBooru(): Booru? {
         var booru: Booru? = null
         val uid = Settings.instance().activeBooruUid
         boorus.forEach {
@@ -397,7 +397,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         return booru
     }
 
-    private fun getCurrentUser(): User? {
+    internal fun getCurrentUser(): User? {
         var user: User? = null
         val booruUid = Settings.instance().activeBooruUid
         users.forEach {

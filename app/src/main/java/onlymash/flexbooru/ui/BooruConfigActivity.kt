@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 
 class BooruConfigActivity : BaseActivity() {
 

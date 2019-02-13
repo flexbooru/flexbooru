@@ -1,4 +1,4 @@
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.widget.SearchBar
 import onlymash.flexbooru.widget.SearchBarMover
 
@@ -46,9 +47,24 @@ abstract class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initSwipeRefresh()
         initSearchBar()
     }
 
+    private fun initSwipeRefresh() {
+        val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
+        val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
+        swipe_refresh.apply {
+            setProgressViewOffset(false, start, end)
+            setColorSchemeResources(
+                R.color.blue,
+                R.color.purple,
+                R.color.green,
+                R.color.orange,
+                R.color.red
+            )
+        }
+    }
     private fun initSearchBar() {
         leftDrawable = DrawerArrowDrawable(requireContext())
         search_bar.setLeftDrawable(leftDrawable)

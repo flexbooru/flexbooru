@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.ui.*
+import onlymash.flexbooru.ui.fragment.*
 
 class NavPagerAdapter(fragmentManager: FragmentManager,
                       private val booru: Booru, private val user: User?) : FragmentStatePagerAdapter(fragmentManager) {

@@ -1,4 +1,4 @@
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.fragment
 
 import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
@@ -28,6 +28,8 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.popular.PopularRepository
+import onlymash.flexbooru.ui.BrowseActivity
+import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
@@ -334,18 +336,6 @@ class PopularFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
             else -> throw IllegalArgumentException("unknown type $type")
-        }
-        val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
-        val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
-        swipe_refresh.apply {
-            setProgressViewOffset(false, start, end)
-            setColorSchemeResources(
-                R.color.blue,
-                R.color.purple,
-                R.color.green,
-                R.color.orange,
-                R.color.red
-            )
         }
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
         glide = GlideApp.with(this)

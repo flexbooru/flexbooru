@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class PoolDan(
     @PrimaryKey(autoGenerate = true)
     var uid: Long = -1L,
+    var scheme: String = "",
     var host: String = "",
     var keyword: String = "",
     val id: Int,

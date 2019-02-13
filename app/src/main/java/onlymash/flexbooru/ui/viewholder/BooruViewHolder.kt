@@ -14,8 +14,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
-import onlymash.flexbooru.ui.BooruConfigFragment
-import onlymash.flexbooru.ui.QRCodeDialog
+import onlymash.flexbooru.ui.fragment.BooruConfigFragment
+import onlymash.flexbooru.ui.fragment.QRCodeDialog
 import onlymash.flexbooru.widget.AutoCollapseTextView
 
 class BooruViewHolder(itemView: View,

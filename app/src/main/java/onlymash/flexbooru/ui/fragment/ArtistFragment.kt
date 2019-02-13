@@ -1,4 +1,4 @@
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.fragment
 
 import android.os.Bundle
 import android.view.MenuItem

@@ -1,4 +1,4 @@
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.fragment
 
 import android.content.*
 import android.os.Bundle
@@ -25,6 +25,9 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
+import onlymash.flexbooru.ui.BrowseActivity
+import onlymash.flexbooru.ui.MainActivity
+import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
@@ -246,18 +249,6 @@ class PostFragment : ListFragment() {
         if (requireActivity() !is MainActivity) {
             leftDrawable.progress = 1f
             search_bar.setTitle(search!!.keyword)
-        }
-        val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
-        val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
-        swipe_refresh.apply {
-            setProgressViewOffset(false, start, end)
-            setColorSchemeResources(
-                R.color.blue,
-                R.color.purple,
-                R.color.green,
-                R.color.orange,
-                R.color.red
-            )
         }
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)

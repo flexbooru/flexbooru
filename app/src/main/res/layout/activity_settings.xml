@@ -10,7 +10,7 @@
     <include layout="@layout/toolbar"/>
 
     <fragment
-            android:name="onlymash.flexbooru.ui.SettingsFragment"
+            android:name="onlymash.flexbooru.ui.fragment.SettingsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/fragment_settings"/>

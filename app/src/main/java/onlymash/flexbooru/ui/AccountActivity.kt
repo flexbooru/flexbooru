@@ -53,6 +53,7 @@ class AccountActivity : BaseActivity() {
             Constants.TYPE_MOEBOORU -> {
                 GlideApp.with(this)
                     .load(String.format(getString(R.string.account_user_avatars), booru!!.scheme, booru!!.host, user!!.id))
+                    .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                     .into(user_avatar)
             }
             Constants.TYPE_DANBOORU -> {
