@@ -11,7 +11,7 @@ import android.widget.TextView
 
 class LinkTransformationMethod : TransformationMethod {
 
-    override fun getTransformation(source: CharSequence, view: View): CharSequence {
+    override fun getTransformation(source: CharSequence?, view: View?): CharSequence? {
         if (view is TextView) {
             Linkify.addLinks(view, Linkify.WEB_URLS)
             if (view.text == null || view.text !is Spannable) {
@@ -33,11 +33,11 @@ class LinkTransformationMethod : TransformationMethod {
     }
 
     override fun onFocusChanged(
-        view: View,
-        sourceText: CharSequence,
+        view: View?,
+        sourceText: CharSequence?,
         focused: Boolean,
         direction: Int,
-        previouslyFocusedRect: Rect
+        previouslyFocusedRect: Rect?
     ) {
 
     }

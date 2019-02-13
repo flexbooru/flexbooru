@@ -94,4 +94,8 @@
 
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
+
+    <string name="pool_description_is_empty">Description is empty.</string>
+
+    <string name="bottom_nav_view_with_snackbar_behavior" translatable="false">onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior</string>
 </resources>

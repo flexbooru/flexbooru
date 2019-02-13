@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.PoolDan
 import onlymash.flexbooru.entity.PoolMoe
@@ -15,6 +16,7 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.formatDate
 import onlymash.flexbooru.util.toggleArrow
+import onlymash.flexbooru.widget.AutoCollapseTextView
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 import java.text.SimpleDateFormat
@@ -33,7 +35,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     private val userAvatar: CircularImageView = itemView.findViewById(R.id.user_avatar)
     private val poolName: TextView = itemView.findViewById(R.id.pool_name)
     private val poolId: TextView = itemView.findViewById(R.id.pool_id)
-    private val poolDescription: TextView = itemView.findViewById(R.id.pool_description)
+    private val poolDescription: AutoCollapseTextView = itemView.findViewById(R.id.pool_description)
     private val postCount: TextView = itemView.findViewById(R.id.post_count)
     private val date: TextView = itemView.findViewById(R.id.date)
     private val expand: ImageButton = itemView.findViewById(R.id.bt_expand)
@@ -65,7 +67,12 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
             }
         }
         expand.setOnClickListener {
-            isShow = toggleLayoutExpand(!isShow, expand, expandContainer)
+            if (!poolDescription.text.isNullOrBlank()) {
+                isShow = toggleLayoutExpand(!isShow, expand, expandContainer)
+            } else {
+                Snackbar.make(parent, parent.context.getString(R.string.pool_description_is_empty),
+                    Snackbar.LENGTH_SHORT).show()
+            }
         }
         poolDescription.apply {
             transformationMethod = LinkTransformationMethod()
