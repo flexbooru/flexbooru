@@ -81,7 +81,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                 poolId.text = data.id.toString()
                 poolDescription.text = data.description
                 postCount.text = data.post_count.toString()
-                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'+08:00'", Locale.CHINA)
+                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH)
                 date.text = formatDate(sdf.parse(data.updated_at).time)
             }
             is PoolMoe -> {
