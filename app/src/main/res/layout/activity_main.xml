@@ -24,6 +24,7 @@
             app:itemBackground="@color/transparent"
             app:menu="@menu/navigation"
             app:layout_anchorGravity="bottom"
+            app:labelVisibilityMode="labeled"
             app:layout_behavior="@string/bottom_nav_view_with_snackbar_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
