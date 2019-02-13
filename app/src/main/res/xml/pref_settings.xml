@@ -13,11 +13,11 @@
 
     <!--suppress AndroidElementNotAllowed -->
     <SimpleMenuPreference
-            android:key="settings_post_limit"
-            android:entries="@array/settings_post_limit_entries"
-            android:entryValues="@array/settings_post_limit_entries_values"
+            android:key="settings_page_size"
+            android:entries="@array/settings_page_size_entries"
+            android:entryValues="@array/settings_page_size_entries_values"
             android:defaultValue="10"
             android:summary="%s"
-            android:title="@string/settings_post_limit"
+            android:title="@string/settings_page_size"
             app:iconSpaceReserved="true" />
 </PreferenceScreen>

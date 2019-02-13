@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "tags_danbooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
+@Entity(tableName = "tags_danbooru", indices = [(Index(value = ["host", "id"], unique = true))])
 data class TagDan(
     @PrimaryKey(autoGenerate = true)
     var uid: Long = -1L,
+    var scheme: String = "",
     var host: String = "",
-    var keyword: String = "",
     val id: Int,
     val name: String,
     val post_count: Int,

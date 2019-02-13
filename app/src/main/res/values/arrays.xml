@@ -16,14 +16,14 @@
         <item>http</item>
         <item>https</item>
     </string-array>
-    <string-array name="settings_post_limit_entries">
+    <string-array name="settings_page_size_entries">
         <item>10</item>
         <item>15</item>
         <item>20</item>
         <item>25</item>
         <item>30</item>
     </string-array>
-    <string-array name="settings_post_limit_entries_values">
+    <string-array name="settings_page_size_entries_values">
         <item>10</item>
         <item>15</item>
         <item>20</item>

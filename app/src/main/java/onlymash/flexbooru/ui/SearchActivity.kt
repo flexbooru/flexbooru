@@ -61,7 +61,7 @@ class SearchActivity : BaseActivity() {
                 keyword = getString(Constants.KEYWORD_KEY, ""),
                 username = getString(Constants.USERNAME_KEY, ""),
                 auth_key = getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().postLimit
+                limit = Settings.instance().pageSize
             )
         }
         setContentView(R.layout.activity_search)

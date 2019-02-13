@@ -231,8 +231,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     Settings.instance().activeBooruUid = uid
                     boorus.forEach { booru ->
                         if (booru.uid == uid) {
-                            navigation.selectedItemId = R.id.navigation_posts
                             pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+                            pager_container.currentItem = currentNavItem
                             return@forEach
                         }
                     }
@@ -411,9 +411,10 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            Settings.SAFE_MODE_KEY, Settings.POST_LIMIT_KEY -> {
+            Settings.SAFE_MODE_KEY, Settings.PAGE_SIZE_KEY -> {
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+                pager_container.currentItem = currentNavItem
             }
         }
     }

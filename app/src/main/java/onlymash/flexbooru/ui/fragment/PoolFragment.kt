@@ -18,6 +18,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.User
@@ -95,6 +96,63 @@ class PoolFragment : ListFragment() {
         }
     }
 
+    private val userListener = object : UserManager.Listener {
+        override fun onAdd(user: User) {
+            updateUserInfoAndRefresh(user)
+        }
+        override fun onDelete(user: User) {
+            if (user.booru_uid != Settings.instance().activeBooruUid) return
+            search!!.username = ""
+            search!!.auth_key = ""
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    poolViewModel.apply {
+                        show(search!!)
+                        refreshDan()
+                    }
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    poolViewModel.apply {
+                        show(search!!)
+                        refreshMoe()
+                    }
+                }
+            }
+        }
+        override fun onUpdate(user: User) {
+            updateUserInfoAndRefresh(user)
+        }
+    }
+
+    private fun updateUserInfoAndRefresh(user: User) {
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                search!!.username = user.name
+                search!!.auth_key = user.api_key ?: ""
+                poolViewModel.apply {
+                    show(search!!)
+                    refreshDan()
+                }
+            }
+            Constants.TYPE_MOEBOORU -> {
+                search!!.username = user.name
+                search!!.auth_key = user.password_hash ?: ""
+                poolViewModel.apply {
+                    show(search!!)
+                    refreshMoe()
+                }
+            }
+        }
+    }
+
+    private val navigationListener = object : MainActivity.NavigationListener {
+        override fun onClickPosition(position: Int) {
+            if (position == 2) {
+                list.smoothScrollToPosition(0)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -105,7 +163,7 @@ class PoolFragment : ListFragment() {
                 keyword = it.getString(Constants.KEYWORD_KEY, ""),
                 username = it.getString(Constants.USERNAME_KEY, ""),
                 auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().postLimit)
+                limit = Settings.instance().pageSize)
         }
     }
 
@@ -153,6 +211,8 @@ class PoolFragment : ListFragment() {
             }
         }
         poolViewModel.show(search = search!!)
+        UserManager.listeners.add(userListener)
+        (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
 
     private fun initSwipeToRefreshDan() {
@@ -180,5 +240,11 @@ class PoolFragment : ListFragment() {
                 return PoolViewModel(repo) as T
             }
         })[PoolViewModel::class.java]
+    }
+
+    override fun onDestroy() {
+        UserManager.listeners.remove(userListener)
+        (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
+        super.onDestroy()
     }
 }

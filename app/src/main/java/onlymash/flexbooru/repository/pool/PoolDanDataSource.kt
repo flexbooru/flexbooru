@@ -37,6 +37,7 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
         }
     }
 
+    private var lastResponseSize = search.limit
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PoolDan>) {
         val request = danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = 1))
@@ -53,6 +54,7 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                 it.host = host
                 it.keyword = keyword
             }
+            lastResponseSize = data.size
             retry = null
             networkState.postValue(NetworkState.LOADED)
             initialLoad.postValue(NetworkState.LOADED)
@@ -68,6 +70,7 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PoolDan>) {
+        if (lastResponseSize < search.limit) return
         networkState.postValue(NetworkState.LOADING)
         val page = params.key
         danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = page))
@@ -89,6 +92,7 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                             it.host = host
                             it.keyword = keyword
                         }
+                        lastResponseSize = data.size
                         retry = null
                         callback.onResult(data, page + 1)
                     } else {

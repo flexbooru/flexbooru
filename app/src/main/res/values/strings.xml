@@ -86,7 +86,7 @@
     <string name="account_comments">Comments</string>
 
     <string name="settings_safe_mode">Safe mode</string>
-    <string name="settings_post_limit">Post limit</string>
+    <string name="settings_page_size">Page size</string>
     <string name="settings_browse_size">Browse size</string>
     <string name="settings_browse_size_sample">Sample</string>
     <string name="settings_browse_size_larger">Larger</string>

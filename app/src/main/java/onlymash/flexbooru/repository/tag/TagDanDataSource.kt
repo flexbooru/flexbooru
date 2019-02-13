@@ -1,20 +1,20 @@
-package onlymash.flexbooru.repository.pool
+package onlymash.flexbooru.repository.tag
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.ApiUrlHelper
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.PoolMoe
-import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.entity.TagDan
+import onlymash.flexbooru.entity.SearchTag
 import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call
 import retrofit2.Response
 import java.io.IOException
 import java.util.concurrent.Executor
 
-class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
-                        private val search: Search,
-                        private val retryExecutor: Executor) : PageKeyedDataSource<Int, PoolMoe>() {
+class TagDanDataSource(private val danbooruApi: DanbooruApi,
+                        private val search: SearchTag,
+                        private val retryExecutor: Executor) : PageKeyedDataSource<Int, TagDan>() {
 
     // keep a function reference for the retry event
     private var retry: (() -> Any)? = null
@@ -37,24 +37,19 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
         }
     }
 
-    private var lastResponseSize = 20
-
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PoolMoe>) {
-        val request = moebooruApi.getPools(ApiUrlHelper.getMoePoolUrl(search = search, page = 1))
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagDan>) {
+        val request = danbooruApi.getTags(ApiUrlHelper.getDanTagUrl(search = search, page = 1))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
         val scheme = search.scheme
         val host = search.host
-        val keyword = search.keyword
         try {
             val response =  request.execute()
             val data = response.body() ?: mutableListOf()
             data.forEach {
                 it.scheme = scheme
                 it.host = host
-                it.keyword = keyword
             }
-            lastResponseSize = data.size
             retry = null
             networkState.postValue(NetworkState.LOADED)
             initialLoad.postValue(NetworkState.LOADED)
@@ -69,30 +64,26 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
         }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PoolMoe>) {
-        if (lastResponseSize < 20) return
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, TagDan>) {
         networkState.postValue(NetworkState.LOADING)
         val page = params.key
-        moebooruApi.getPools(ApiUrlHelper.getMoePoolUrl(search = search, page = page))
-            .enqueue(object : retrofit2.Callback<MutableList<PoolMoe>> {
-                override fun onFailure(call: Call<MutableList<PoolMoe>>, t: Throwable) {
+        danbooruApi.getTags(ApiUrlHelper.getDanTagUrl(search = search, page = page))
+            .enqueue(object : retrofit2.Callback<MutableList<TagDan>> {
+                override fun onFailure(call: Call<MutableList<TagDan>>, t: Throwable) {
                     retry = {
                         loadAfter(params, callback)
                     }
                     networkState.postValue(NetworkState.error(t.message ?: "unknown err"))
                 }
-                override fun onResponse(call: Call<MutableList<PoolMoe>>, response: Response<MutableList<PoolMoe>>) {
+                override fun onResponse(call: Call<MutableList<TagDan>>, response: Response<MutableList<TagDan>>) {
                     if (response.isSuccessful) {
                         val data = response.body() ?: mutableListOf()
                         val scheme = search.scheme
                         val host = search.host
-                        val keyword = search.keyword
                         data.forEach {
                             it.scheme = scheme
                             it.host = host
-                            it.keyword = keyword
                         }
-                        lastResponseSize = data.size
                         retry = null
                         callback.onResult(data, page + 1)
                     } else {
@@ -105,7 +96,7 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
             })
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, PoolMoe>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, TagDan>) {
 
     }
 }

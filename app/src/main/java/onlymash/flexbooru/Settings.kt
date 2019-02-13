@@ -13,7 +13,7 @@ class Settings(private val sp: SharedPreferences) {
             return instance!!
         }
         const val SAFE_MODE_KEY = "settings_safe_mode"
-        const val POST_LIMIT_KEY = "settings_post_limit"
+        const val PAGE_SIZE_KEY = "settings_page_size"
     }
 
     var activeBooruUid: Long
@@ -24,7 +24,7 @@ class Settings(private val sp: SharedPreferences) {
         get() = sp.getBoolean(SAFE_MODE_KEY, true)
         set(value) = sp.edit().putBoolean(SAFE_MODE_KEY, value).apply()
 
-    var postLimit: Int
-        get() = sp.getString(POST_LIMIT_KEY, "10")!!.toInt()
-        set(value) = sp.edit().putString(POST_LIMIT_KEY, value.toString()).apply()
+    var pageSize: Int
+        get() = sp.getString(PAGE_SIZE_KEY, "10")!!.toInt()
+        set(value) = sp.edit().putString(PAGE_SIZE_KEY, value.toString()).apply()
 }

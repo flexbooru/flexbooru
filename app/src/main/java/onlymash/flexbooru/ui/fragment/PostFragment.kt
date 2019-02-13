@@ -217,7 +217,7 @@ class PostFragment : ListFragment() {
                 keyword = it.getString(Constants.KEYWORD_KEY, ""),
                 username = it.getString(Constants.USERNAME_KEY, ""),
                 auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().postLimit)
+                limit = Settings.instance().pageSize)
         }
         val activity = requireActivity()
         if (activity is MainActivity) {
