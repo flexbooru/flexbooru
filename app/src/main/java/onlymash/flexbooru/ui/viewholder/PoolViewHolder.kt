@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
@@ -31,15 +32,14 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
             return PoolViewHolder(view, glide)
         }
     }
-    private val parent: LinearLayout = itemView.findViewById(R.id.container)
+    private val container: ConstraintLayout = itemView.findViewById(R.id.container)
     private val userAvatar: CircularImageView = itemView.findViewById(R.id.user_avatar)
     private val poolName: TextView = itemView.findViewById(R.id.pool_name)
-    private val poolId: TextView = itemView.findViewById(R.id.pool_id)
+    private val poolIdCount: TextView = itemView.findViewById(R.id.pool_id_and_count)
     private val poolDescription: AutoCollapseTextView = itemView.findViewById(R.id.pool_description)
-    private val postCount: TextView = itemView.findViewById(R.id.post_count)
-    private val date: TextView = itemView.findViewById(R.id.date)
-    private val expand: ImageButton = itemView.findViewById(R.id.bt_expand)
-    private val expandContainer: LinearLayout = itemView.findViewById(R.id.expand_container)
+    private val poolDate: TextView = itemView.findViewById(R.id.pool_date)
+    private val expandBottom: ImageButton = itemView.findViewById(R.id.bt_expand)
+    private val descriptionContainer: LinearLayout = itemView.findViewById(R.id.description_container)
     private var pool: Any? = null
     private var isShow = false
 
@@ -54,7 +54,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     }
 
     init {
-        parent.setOnClickListener {
+        container.setOnClickListener {
             when (pool) {
                 is PoolDan -> {
                     val keyword = String.format("pool:%d", (pool as PoolDan).id)
@@ -66,11 +66,11 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                 }
             }
         }
-        expand.setOnClickListener {
+        expandBottom.setOnClickListener {
             if (!poolDescription.text.isNullOrBlank()) {
-                isShow = toggleLayoutExpand(!isShow, expand, expandContainer)
+                isShow = toggleLayoutExpand(!isShow, expandBottom, descriptionContainer)
             } else {
-                Snackbar.make(parent, parent.context.getString(R.string.pool_description_is_empty),
+                Snackbar.make(container, container.context.getString(R.string.pool_description_is_empty),
                     Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -82,25 +82,23 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
 
     fun bind(data: Any?) {
         pool = data
+        val res = container.context.resources
         when (data) {
             is PoolDan -> {
                 poolName.text = data.name
-                poolId.text = data.id.toString()
+                poolIdCount.text = String.format(res.getString(R.string.pool_info_id_and_count), data.id, data.post_count)
                 poolDescription.text = data.description
-                postCount.text = data.post_count.toString()
                 val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH)
-                date.text = formatDate(sdf.parse(data.updated_at).time)
+                poolDate.text = formatDate(sdf.parse(data.updated_at).time)
             }
             is PoolMoe -> {
                 poolName.text = data.name
-                poolId.text = data.id.toString()
+                poolIdCount.text = String.format(res.getString(R.string.pool_info_id_and_count), data.id, data.post_count)
                 poolDescription.text = data.description
-                postCount.text = data.post_count.toString()
                 val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH)
-                date.text = formatDate(sdf.parse(data.updated_at).time)
-                val res = userAvatar.context.resources
+                poolDate.text = formatDate(sdf.parse(data.updated_at).time)
                 glide.load(String.format(res.getString(R.string.account_user_avatars), data.scheme, data.host, data.user_id))
-                    .placeholder(res.getDrawable(R.drawable.avatar_account, userAvatar.context.theme))
+                    .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
                     .into(userAvatar)
             }
         }

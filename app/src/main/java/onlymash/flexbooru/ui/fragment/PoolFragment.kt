@@ -184,7 +184,6 @@ class PoolFragment : ListFragment() {
             }
         )
         list.apply {
-            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = poolAdapter
         }

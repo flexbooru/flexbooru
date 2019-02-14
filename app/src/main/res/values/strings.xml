@@ -96,6 +96,22 @@
     <string name="switch_off">Off</string>
 
     <string name="pool_description_is_empty">Description is empty.</string>
+    <string name="pool_info_id_and_count">#%d | %d</string>
 
     <string name="bottom_nav_view_with_snackbar_behavior" translatable="false">onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior</string>
+
+    <string name="tag_type">Type</string>
+    <string name="tag_type_all">All type</string>
+    <string name="tag_type_general">General</string>
+    <string name="tag_type_artist">Artist</string>
+    <string name="tag_type_copyright">Copyright</string>
+    <string name="tag_type_character">Character</string>
+    <string name="tag_type_circle">Circle</string>
+    <string name="tag_type_faults">Faults</string>
+    <string name="tag_type_meta">Meta</string>
+
+    <string name="type_order">Order</string>
+    <string name="type_order_date">Date</string>
+    <string name="type_order_name">Name</string>
+
 </resources>
