@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -22,7 +21,6 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.SearchTag
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.tag.TagRepository
 import onlymash.flexbooru.ui.MainActivity
@@ -89,9 +87,69 @@ class TagFragment : ListFragment() {
     override val helper: SearchBar.Helper
         get() = object : SearchBar.Helper {
             override fun onMenuItemClick(menuItem: MenuItem) {
-
+                when (menuItem.itemId) {
+                    R.id.action_tag_order_date -> {
+                        search!!.order = ORDER_DATE
+                        refresh()
+                    }
+                    R.id.action_tag_order_name -> {
+                        search!!.order = ORDER_NAME
+                        refresh()
+                    }
+                    R.id.action_tag_order_count -> {
+                        search!!.order = ORDER_COUNT
+                        refresh()
+                    }
+                    R.id.action_tag_type_all -> {
+                        search!!.type = TYPE_ALL
+                        refresh()
+                    }
+                    R.id.action_tag_type_general -> {
+                        search!!.type = TYPE_GENERAL
+                        refresh()
+                    }
+                    R.id.action_tag_type_artist -> {
+                        search!!.type = TYPE_ARTIST
+                        refresh()
+                    }
+                    R.id.action_tag_type_copyright -> {
+                        search!!.type = TYPE_COPYRIGHT
+                        refresh()
+                    }
+                    R.id.action_tag_type_character -> {
+                        search!!.type = TYPE_CHARACTER
+                        refresh()
+                    }
+                    R.id.action_tag_type_circle -> {
+                        search!!.type = TYPE_CIRCLE
+                        refresh()
+                    }
+                    R.id.action_tag_type_faults -> {
+                        search!!.type = TYPE_FAULTS
+                        refresh()
+                    }
+                    R.id.action_tag_type_meta -> {
+                        search!!.type = TYPE_META
+                        refresh()
+                    }
+                }
             }
         }
+
+    private fun refresh() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                swipe_refresh.isRefreshing = true
+                tagViewModel.show(search!!)
+                tagViewModel.refreshDan()
+            }
+            Constants.TYPE_MOEBOORU -> {
+                swipe_refresh.isRefreshing = true
+                tagViewModel.show(search!!)
+                tagViewModel.refreshMoe()
+            }
+        }
+    }
 
     private lateinit var tagViewModel: TagViewModel
     private lateinit var tagAdapter: TagAdapter
@@ -181,7 +239,6 @@ class TagFragment : ListFragment() {
         search_bar.setTitle(R.string.title_tags)
         tagViewModel = getTagViewModel(ServiceLocator.instance().getTagRepository())
         if (search == null) return
-        val glide = GlideApp.with(this)
         tagAdapter = TagAdapter(
             listener = itemListener,
             retryCallback = {
@@ -192,12 +249,12 @@ class TagFragment : ListFragment() {
             }
         )
         list.apply {
-//            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = tagAdapter
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
+                search_bar.setMenu(R.menu.tag_dan, requireActivity().menuInflater)
                 tagViewModel.tagsDan.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<Any>)
@@ -208,6 +265,7 @@ class TagFragment : ListFragment() {
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
+                search_bar.setMenu(R.menu.tag_moe, requireActivity().menuInflater)
                 tagViewModel.tagsMoe.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<Any>)

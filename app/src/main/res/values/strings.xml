@@ -111,8 +111,9 @@
     <string name="tag_type_meta">Meta</string>
     <string name="tag_type_unknown">Unknown</string>
 
-    <string name="type_order">Order</string>
-    <string name="type_order_date">Date</string>
-    <string name="type_order_name">Name</string>
+    <string name="tag_order">Order</string>
+    <string name="tag_order_date">Date</string>
+    <string name="tag_order_name">Name</string>
+    <string name="tag_order_count">Count</string>
 
 </resources>
