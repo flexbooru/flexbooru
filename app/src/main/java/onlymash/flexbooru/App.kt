@@ -1,6 +1,8 @@
 package onlymash.flexbooru
 
 import android.app.Application
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -30,4 +32,6 @@ class App : Application() {
             Glide.with(imageView.context).clear(imageView)
         }
     }
+
+    val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 }

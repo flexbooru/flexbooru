@@ -39,14 +39,13 @@ class PoolFragment : ListFragment() {
         private const val TAG = "PoolFragment"
 
         @JvmStatic
-        fun newInstance(keyword: String, booru: Booru, user: User?) =
+        fun newInstance(booru: Booru, user: User?) =
             PoolFragment().apply {
                 arguments = when (booru.type) {
                     Constants.TYPE_DANBOORU -> Bundle().apply {
                         putString(Constants.SCHEME_KEY, booru.scheme)
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                        putString(Constants.KEYWORD_KEY, keyword)
                         if (user != null) {
                             putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.api_key)
@@ -59,7 +58,6 @@ class PoolFragment : ListFragment() {
                         putString(Constants.SCHEME_KEY, booru.scheme)
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                        putString(Constants.KEYWORD_KEY, keyword)
                         if (user != null) {
                             putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.password_hash)
@@ -163,7 +161,7 @@ class PoolFragment : ListFragment() {
             search = Search(
                 scheme = it.getString(Constants.SCHEME_KEY, ""),
                 host = it.getString(Constants.HOST_KEY, ""),
-                keyword = it.getString(Constants.KEYWORD_KEY, ""),
+                keyword = "",
                 username = it.getString(Constants.USERNAME_KEY, ""),
                 auth_key = it.getString(Constants.AUTH_KEY, ""),
                 limit = Settings.instance().pageSize)

@@ -14,8 +14,8 @@ class NavPagerAdapter(fragmentManager: FragmentManager,
         return when (position) {
             0 -> PostFragment.newInstance(keyword = "", booru = booru, user = user)
             1 -> PopularFragment.newInstance(booru = booru, user = user)
-            2 -> PoolFragment.newInstance(keyword = "", booru = booru, user = user)
-            3 -> TagFragment()
+            2 -> PoolFragment.newInstance(booru = booru, user = user)
+            3 -> TagFragment.newInstance(booru = booru, user = user)
             else -> ArtistFragment()
         }
     }

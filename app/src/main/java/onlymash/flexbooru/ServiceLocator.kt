@@ -12,6 +12,8 @@ import onlymash.flexbooru.repository.popular.PopularData
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.repository.post.PostData
 import onlymash.flexbooru.repository.post.PostRepository
+import onlymash.flexbooru.repository.tag.TagData
+import onlymash.flexbooru.repository.tag.TagRepository
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -39,6 +41,8 @@ interface ServiceLocator {
     fun getPopularRepository(): PopularRepository
 
     fun getPoolRepository(): PoolRepository
+
+    fun getTagRepository(): TagRepository
 
     fun getNetworkExecutor(): Executor
 
@@ -90,6 +94,14 @@ open class DefaultServiceLocator : ServiceLocator {
 
     override fun getPoolRepository(): PoolRepository {
         return PoolData(
+            danbooruApi = getDanbooruApi(),
+            moebooruApi = getMoebooruApi(),
+            networkExecutor = getNetworkExecutor()
+        )
+    }
+
+    override fun getTagRepository(): TagRepository {
+        return TagData(
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = getNetworkExecutor()

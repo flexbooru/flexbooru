@@ -109,6 +109,7 @@
     <string name="tag_type_circle">Circle</string>
     <string name="tag_type_faults">Faults</string>
     <string name="tag_type_meta">Meta</string>
+    <string name="tag_type_unknown">Unknown</string>
 
     <string name="type_order">Order</string>
     <string name="type_order_date">Date</string>
