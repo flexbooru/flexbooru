@@ -1,5 +1,6 @@
 package onlymash.flexbooru.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -9,7 +10,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -25,6 +25,7 @@ import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepository
+import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
@@ -86,13 +87,15 @@ class PoolFragment : ListFragment() {
     private lateinit var poolAdapter: PoolAdapter
 
     private val itemListener = object : PoolViewHolder.ItemListener {
+        override fun onClickUserAvatar(id: Int, name: String?) {
+            startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
+                putExtra(AccountActivity.USER_ID_KEY, id)
+                putExtra(AccountActivity.USER_NAME_KEY, name)
+            })
+        }
+
         override fun onClickItem(keyword: String) {
-            val activity = requireActivity() as MainActivity
-            SearchActivity.startActivity(
-                requireContext(),
-                keyword,
-                activity.getCurrentBooru()!!,
-                activity.getCurrentUser())
+            SearchActivity.startActivity(requireContext(), keyword)
         }
     }
 

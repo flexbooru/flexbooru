@@ -51,6 +51,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
 
     interface ItemListener {
         fun onClickItem(keyword: String)
+        fun onClickUserAvatar(id: Int, name: String?)
     }
 
     init {
@@ -77,6 +78,16 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
         poolDescription.apply {
             transformationMethod = LinkTransformationMethod()
             movementMethod = LinkMovementMethod.getInstance()
+        }
+        userAvatar.setOnClickListener {
+            when (pool) {
+                is PoolDan -> {
+                    itemListener?.onClickUserAvatar((pool as PoolDan).creator_id, (pool as PoolDan).creator_name)
+                }
+                is PoolMoe -> {
+                    itemListener?.onClickUserAvatar((pool as PoolMoe).user_id, null)
+                }
+            }
         }
     }
 

@@ -96,4 +96,30 @@ class UserFinder(private val danbooruApi: DanbooruApi,
             }
         }
     }
+
+    fun findMoeUserById(id: Int, booru: Booru) {
+        ioExecutor.execute {
+            var msg = ""
+            val request = moebooruApi.getUsers(ApiUrlHelper.getMoeUserUrlById(id, booru))
+            try {
+                val response = request.execute()
+                val users = response.body()
+                if (users != null && users.size == 1) {
+                    uiHandler.post {
+                        findUserListener?.onSuccess(users[0])
+                    }
+                } else {
+                    msg = "User not found!"
+                }
+            } catch (ioException: IOException) {
+                msg = ioException.message ?: "unknown error"
+            } finally {
+                if (msg.isNotEmpty()) {
+                    uiHandler.post {
+                        findUserListener?.onFailed(msg)
+                    }
+                }
+            }
+        }
+    }
 }

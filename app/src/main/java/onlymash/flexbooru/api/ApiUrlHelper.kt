@@ -77,6 +77,15 @@ object ApiUrlHelper {
             .build()
     }
 
+    fun getMoeUserUrlById(id: Int, booru: Booru): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegment("user.json")
+            .addQueryParameter("id", id.toString())
+            .build()
+    }
+
     fun getDanPoolUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)

@@ -19,6 +19,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
@@ -209,25 +210,43 @@ class PostFragment : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = Search(
-                scheme = it.getString(Constants.SCHEME_KEY, ""),
-                host = it.getString(Constants.HOST_KEY, ""),
-                keyword = it.getString(Constants.KEYWORD_KEY, ""),
-                username = it.getString(Constants.USERNAME_KEY, ""),
-                auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().pageSize)
-        }
         val activity = requireActivity()
         if (activity is MainActivity) {
+            arguments?.let {
+                type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+                search = Search(
+                    scheme = it.getString(Constants.SCHEME_KEY, ""),
+                    host = it.getString(Constants.HOST_KEY, ""),
+                    keyword = it.getString(Constants.KEYWORD_KEY, ""),
+                    username = it.getString(Constants.USERNAME_KEY, ""),
+                    auth_key = it.getString(Constants.AUTH_KEY, ""),
+                    limit = Settings.instance().pageSize)
+            }
             activity.setPostExitSharedElementCallback(sharedElementCallback)
         } else if (activity is SearchActivity){
-            type = activity.type
-            search = activity.search
+            val uid = Settings.instance().activeBooruUid
+            val booru = BooruManager.getBooruByUid(uid)
+            val user = UserManager.getUserByBooruUid(uid)
+            if (booru != null) {
+                type = booru.type
+                search = Search(
+                    scheme = booru.scheme,
+                    host = booru.host,
+                    keyword = activity.keyword,
+                    username = user?.name ?: "",
+                    auth_key = when (type) {
+                        Constants.TYPE_DANBOORU -> user?.api_key ?: ""
+                        Constants.TYPE_MOEBOORU -> user?.password_hash ?: ""
+                        else -> ""
+                    },
+                    limit = Settings.instance().pageSize
+                )
+            } else {
+                activity.finish()
+            }
             activity.setExitSharedElementCallback(sharedElementCallback)
         }
-        requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
+        activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

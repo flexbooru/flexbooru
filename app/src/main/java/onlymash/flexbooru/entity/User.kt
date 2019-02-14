@@ -17,6 +17,6 @@ data class User(
     var booru_uid: Long = -1L,
     var name: String,
     var id: Int,
-    var password_hash: String?,
-    var api_key: String?
+    var password_hash: String? = null,
+    var api_key: String? = null
 )
