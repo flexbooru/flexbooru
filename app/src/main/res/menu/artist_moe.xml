@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_artist_order"
+            android:title="@string/artist_order"
+            app:showAsAction="never">
+        <menu>
+            <item
+                    android:id="@+id/action_artist_order_date"
+                    android:title="@string/artist_order_date"/>
+            <item
+                    android:id="@+id/action_artist_order_name"
+                    android:title="@string/artist_order_name"/>
+        </menu>
+    </item>
+</menu>

@@ -116,4 +116,11 @@
     <string name="tag_order_name">Name</string>
     <string name="tag_order_count">Count</string>
 
+    <string name="artist_urls_is_empty">Urls is empty.</string>
+
+    <string name="artist_order">Order</string>
+    <string name="artist_order_date">Date</string>
+    <string name="artist_order_name">Name</string>
+    <string name="artist_order_count">Count</string>
+    <string name="artist_order_default">Default</string>
 </resources>

@@ -15,7 +15,7 @@ import onlymash.flexbooru.entity.*
     (PoolDan::class), (PoolMoe::class),
     (TagDan::class), (TagMoe::class),
     (ArtistDan::class), (ArtistMoe::class)],
-    version = 5, exportSchema = false)
+    version = 6, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 

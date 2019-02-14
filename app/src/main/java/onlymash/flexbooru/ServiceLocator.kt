@@ -5,6 +5,8 @@ import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.repository.account.UserFinder
+import onlymash.flexbooru.repository.artist.ArtistData
+import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.repository.browse.PostLoader
 import onlymash.flexbooru.repository.pool.PoolData
 import onlymash.flexbooru.repository.pool.PoolRepository
@@ -43,6 +45,8 @@ interface ServiceLocator {
     fun getPoolRepository(): PoolRepository
 
     fun getTagRepository(): TagRepository
+
+    fun getArtistRepository(): ArtistRepository
 
     fun getNetworkExecutor(): Executor
 
@@ -102,6 +106,14 @@ open class DefaultServiceLocator : ServiceLocator {
 
     override fun getTagRepository(): TagRepository {
         return TagData(
+            danbooruApi = getDanbooruApi(),
+            moebooruApi = getMoebooruApi(),
+            networkExecutor = getNetworkExecutor()
+        )
+    }
+
+    override fun getArtistRepository(): ArtistRepository {
+        return ArtistData(
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = getNetworkExecutor()

@@ -7,8 +7,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="?attr/selectableItemBackground"
-        android:orientation="vertical">
+        android:background="?attr/selectableItemBackground">
 
     <FrameLayout
             android:id="@+id/user_avatar_container"

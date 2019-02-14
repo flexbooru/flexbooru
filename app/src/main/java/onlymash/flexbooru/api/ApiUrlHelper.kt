@@ -1,10 +1,7 @@
 package onlymash.flexbooru.api
 
 import okhttp3.HttpUrl
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.SearchPopular
-import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.entity.SearchTag
+import onlymash.flexbooru.entity.*
 
 object ApiUrlHelper {
     fun getDanUrl(search: Search, page: Int): HttpUrl {
@@ -116,7 +113,7 @@ object ApiUrlHelper {
             .scheme(search.scheme)
             .host(search.host)
             .addPathSegment("tags.json")
-            .addQueryParameter("search[name_matches] ", search.name)
+            .addQueryParameter("search[name_matches]", search.name)
             .addQueryParameter("search[order]", search.order)
             .addQueryParameter("search[category]", search.type)
             .addQueryParameter("search[hide_empty]", "yes")
@@ -137,6 +134,35 @@ object ApiUrlHelper {
             .addQueryParameter("order", search.order)
             .addQueryParameter("type", search.type)
             .addQueryParameter("limit", search.limit.toString())
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("login", search.username)
+            .addQueryParameter("password_hash", search.auth_key)
+            .addQueryParameter("commit", "Search")
+            .build()
+    }
+
+    fun getDanArtistUrl(search: SearchArtist, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(search.scheme)
+            .host(search.host)
+            .addPathSegment("artists.json")
+            .addQueryParameter("search[any_name_matches]", search.name)
+            .addQueryParameter("search[order]", search.order)
+            .addQueryParameter("limit", search.limit.toString())
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("login", search.username)
+            .addQueryParameter("api_key", search.auth_key)
+            .addQueryParameter("commit", "Search")
+            .build()
+    }
+
+    fun getMoeArtistUrl(search: SearchArtist, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(search.scheme)
+            .host(search.host)
+            .addPathSegment("artist.json")
+            .addQueryParameter("name", search.name)
+            .addQueryParameter("order", search.order)
             .addQueryParameter("page", page.toString())
             .addQueryParameter("login", search.username)
             .addQueryParameter("password_hash", search.auth_key)

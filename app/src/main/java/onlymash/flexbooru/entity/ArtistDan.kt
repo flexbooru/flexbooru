@@ -8,8 +8,9 @@ import androidx.room.PrimaryKey
 data class ArtistDan(
     @PrimaryKey(autoGenerate = true)
     var uid: Long = -1,
+    var scheme: String = "",
     var host: String = "",
-    var keyword: String = "",
+    var keyword: String? = "",
     val id: Int,
     val name: String,
     val created_at: String,

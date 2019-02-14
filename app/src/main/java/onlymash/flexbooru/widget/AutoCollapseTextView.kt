@@ -30,4 +30,12 @@ class AutoCollapseTextView @JvmOverloads constructor(context: Context, attrs: At
         e.printStackTrace()
         false
     }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        // Bug workaround for losing text selection ability, see:
+        // https://code.google.com/p/android/issues/detail?id=208169
+        isEnabled = false
+        isEnabled = true
+    }
 }
