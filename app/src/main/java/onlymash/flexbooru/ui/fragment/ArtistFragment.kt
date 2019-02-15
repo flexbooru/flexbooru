@@ -179,7 +179,7 @@ class ArtistFragment : ListFragment() {
 
     private val navigationListener = object : MainActivity.NavigationListener {
         override fun onClickPosition(position: Int) {
-            if (position == 3) {
+            if (position == 4) {
                 list.smoothScrollToPosition(0)
             }
         }
