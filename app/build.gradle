@@ -19,8 +19,8 @@ android {
         applicationId "onlymash.flexbooru"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "0.0.1h"
+        versionCode 2
+        versionName "0.0.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release

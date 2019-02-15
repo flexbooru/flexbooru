@@ -72,7 +72,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
             else -> null
         }
         if (!url.isNullOrBlank()) {
-            when (ext == "jpg" || ext == "png" || ext.isBlank()) {
+            when (ext == "jpg" || ext == "png" || ext == "gif" || ext.isBlank()) {
                 true -> {
                     progressBar.visibility = View.VISIBLE
                     glideRequests.load(url)

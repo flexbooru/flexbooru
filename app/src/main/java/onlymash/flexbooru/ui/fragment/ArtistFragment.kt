@@ -77,8 +77,8 @@ class ArtistFragment : ListFragment() {
     private var type = -1
     private var search: SearchArtist? = null
 
-    override val helper: SearchBar.Helper
-        get() = object : SearchBar.Helper {
+    override val searchBarHelper: SearchBarHelper
+        get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (menuItem.itemId) {
                     R.id.action_artist_order_default -> {
@@ -101,6 +101,11 @@ class ArtistFragment : ListFragment() {
                         refresh()
                     }
                 }
+            }
+
+            override fun onApplySearch(query: String) {
+                search!!.name = query
+                refresh()
             }
         }
 
@@ -204,6 +209,7 @@ class ArtistFragment : ListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_bar.setTitle(R.string.title_artists)
+        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
         artistViewModel = getArtistViewModel(ServiceLocator.instance().getArtistRepository())
         if (search == null) return
         artistAdapter = ArtistAdapter(

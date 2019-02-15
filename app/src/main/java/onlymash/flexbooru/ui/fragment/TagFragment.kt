@@ -84,8 +84,8 @@ class TagFragment : ListFragment() {
     private var type = -1
     private var search: SearchTag? = null
 
-    override val helper: SearchBar.Helper
-        get() = object : SearchBar.Helper {
+    override val searchBarHelper: SearchBarHelper
+        get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (menuItem.itemId) {
                     R.id.action_tag_order_date -> {
@@ -133,6 +133,11 @@ class TagFragment : ListFragment() {
                         refresh()
                     }
                 }
+            }
+
+            override fun onApplySearch(query: String) {
+                search!!.name = query
+                refresh()
             }
         }
 
@@ -237,6 +242,7 @@ class TagFragment : ListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_bar.setTitle(R.string.title_tags)
+        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_tags))
         tagViewModel = getTagViewModel(ServiceLocator.instance().getTagRepository())
         if (search == null) return
         tagAdapter = TagAdapter(

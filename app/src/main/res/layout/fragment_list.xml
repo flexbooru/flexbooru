@@ -8,19 +8,16 @@
 
     <include layout="@layout/refreshable_list"/>
 
-    <FrameLayout
+    <onlymash.flexbooru.widget.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_marginTop="@dimen/search_bar_vertical_margin"
+            android:layout_marginBottom="@dimen/search_bar_vertical_margin"
+            android:layout_marginStart="@dimen/search_bar_horizontal_margin"
+            android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_bar_height">
-        <onlymash.flexbooru.widget.SearchBar
-                android:id="@+id/search_bar"
-                android:layout_marginTop="@dimen/search_bar_vertical_margin"
-                android:layout_marginBottom="@dimen/search_bar_vertical_margin"
-                android:layout_marginStart="@dimen/search_bar_horizontal_margin"
-                android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:touchscreenBlocksFocus="false"
-                app:cardUseCompatPadding="false"
-                style="@style/CardViewTheme"/>
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:touchscreenBlocksFocus="false"
+            app:cardUseCompatPadding="false"
+            style="@style/CardViewTheme"/>
+
 </FrameLayout>

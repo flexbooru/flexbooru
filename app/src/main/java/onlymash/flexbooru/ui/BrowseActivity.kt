@@ -56,7 +56,7 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png") {
+            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
@@ -86,7 +86,7 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = position
             startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png") {
+            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
@@ -134,7 +134,7 @@ class BrowseActivity : AppCompatActivity() {
             }
             this@BrowseActivity.sendBroadcast(intent)
             playerHolder.stop()
-            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png") {
+            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
                     playerHolder.start(uri = Uri.parse(url), playerView = playerView)

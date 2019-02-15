@@ -1,7 +1,7 @@
 <resources>
     <dimen name="search_bar_horizontal_margin">8dp</dimen>
     <dimen name="search_bar_vertical_margin">6dp</dimen>
-    <dimen name="search_bar_height">64dp</dimen>
+    <dimen name="search_bar_height">54dp</dimen>
     <dimen name="corner_radius">4dp</dimen>
     <dimen name="elevation_size">2dp</dimen>
     <dimen name="post_item_width">180dp</dimen>

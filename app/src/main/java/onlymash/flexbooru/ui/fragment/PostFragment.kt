@@ -91,12 +91,17 @@ class PostFragment : ListFragment() {
     private var type = -1
     private var search: Search? = null
 
-    override val helper = object : SearchBar.Helper {
+    override val searchBarHelper: SearchBarHelper
+        get() = object : ListFragment.SearchBarHelper {
+            override fun onMenuItemClick(menuItem: MenuItem) {
 
-        override fun onMenuItemClick(menuItem: MenuItem) {
+            }
 
+            override fun onApplySearch(query: String) {
+                if (query != search!!.keyword)
+                    SearchActivity.startActivity(requireContext(), query)
+            }
         }
-    }
 
     private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
         override fun onClickDanItem(post: PostDan, view: View) {
@@ -267,8 +272,11 @@ class PostFragment : ListFragment() {
     private fun init() {
         if (requireActivity() !is MainActivity) {
             leftDrawable.progress = 1f
-            search_bar.setTitle(search!!.keyword)
+            val keyword = search!!.keyword
+            search_bar.setTitle(keyword)
+            search_bar.setText(keyword)
         }
+        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(

@@ -74,10 +74,20 @@ class PoolFragment : ListFragment() {
     private var type = -1
     private var search: Search? = null
 
-    override val helper: SearchBar.Helper
-        get() = object : SearchBar.Helper {
+    override val searchBarHelper: SearchBarHelper
+        get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
 
+            }
+
+            override fun onApplySearch(query: String) {
+                search!!.keyword = query
+                poolViewModel.show(search!!)
+                swipe_refresh.isRefreshing = true
+                when (type) {
+                    Constants.TYPE_DANBOORU -> poolViewModel.refreshDan()
+                    Constants.TYPE_MOEBOORU -> poolViewModel.refreshMoe()
+                }
             }
         }
 
@@ -171,6 +181,7 @@ class PoolFragment : ListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_bar.setTitle(R.string.title_pools)
+        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
         poolViewModel = getPoolViewModel(ServiceLocator.instance().getPoolRepository())
         if (search == null) return
         val glide = GlideApp.with(this)

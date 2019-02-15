@@ -123,4 +123,9 @@
     <string name="artist_order_name">Name</string>
     <string name="artist_order_count">Count</string>
     <string name="artist_order_default">Default</string>
+
+    <string name="search_bar_hint_search_posts">Search posts</string>
+    <string name="search_bar_hint_search_pools">Search pools</string>
+    <string name="search_bar_hint_search_tags">Search tags</string>
+    <string name="search_bar_hint_search_artists">Search artists</string>
 </resources>

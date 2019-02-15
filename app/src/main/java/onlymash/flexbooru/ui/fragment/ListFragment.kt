@@ -1,9 +1,13 @@
 package onlymash.flexbooru.ui.fragment
 
+import android.animation.ValueAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -16,17 +20,65 @@ import onlymash.flexbooru.widget.SearchBarMover
 
 abstract class ListFragment : Fragment() {
 
-    companion object {
-        internal const val STATE_NORMAL = 0
-        internal const val STATE_SEARCH = 1
-    }
-
-    internal var state = STATE_NORMAL
-
     internal lateinit var leftDrawable: DrawerArrowDrawable
     private lateinit var searchBarMover: SearchBarMover
 
-    abstract val helper: SearchBar.Helper
+    interface SearchBarHelper {
+        fun onMenuItemClick(menuItem: MenuItem)
+        fun onApplySearch(query: String)
+    }
+
+    abstract val searchBarHelper: SearchBarHelper
+
+    private val helper = object : SearchBar.Helper {
+
+        override fun onLeftButtonClick() {
+            val activity = requireActivity()
+            if (leftDrawable.progress > 0f && activity is MainActivity) {
+                toggleArrow(leftDrawable)
+            } else if (activity is MainActivity) {
+                activity.drawer.openDrawer()
+            } else {
+                activity.onBackPressed()
+            }
+        }
+
+        override fun onMenuItemClick(menuItem: MenuItem) {
+            searchBarHelper.onMenuItemClick(menuItem)
+        }
+
+        override fun onClickTitle() {
+            if (requireActivity() is MainActivity) toggleArrow(leftDrawable)
+        }
+
+        override fun onSearchEditTextClick() {
+
+        }
+
+        override fun onApplySearch(query: String) {
+            searchBarHelper.onApplySearch(query)
+            Log.i("ListFragment", query)
+        }
+
+        override fun onSearchEditTextBackPressed() {
+            if (requireActivity() is MainActivity) toggleArrow(leftDrawable)
+        }
+    }
+
+    private fun toggleArrow(drawerArrow: DrawerArrowDrawable) {
+         if (drawerArrow.progress == 0f) {
+            ValueAnimator.ofFloat(0f, 1f)
+        } else {
+            ValueAnimator.ofFloat(1f, 0f)
+        }.apply {
+             addUpdateListener { animation ->
+                 drawerArrow.progress = animation.animatedValue as Float
+             }
+             interpolator = DecelerateInterpolator()
+             duration = 300
+             start()
+        }
+    }
 
     private val sbMoverHelper: SearchBarMover.Helper
         get() = object : SearchBarMover.Helper {
@@ -34,11 +86,11 @@ abstract class ListFragment : Fragment() {
                 get() = list
 
             override fun isValidView(recyclerView: RecyclerView): Boolean {
-                return state == STATE_NORMAL && recyclerView == list
+                return search_bar.getState() == SearchBar.STATE_NORMAL && recyclerView == list
             }
 
             override fun forceShowSearchBar(): Boolean {
-                return state == STATE_SEARCH
+                return search_bar.getState() == SearchBar.STATE_SEARCH
             }
         }
 
@@ -67,18 +119,10 @@ abstract class ListFragment : Fragment() {
     }
     private fun initSearchBar() {
         leftDrawable = DrawerArrowDrawable(requireContext())
-        search_bar.setLeftDrawable(leftDrawable)
-        search_bar.setHelper(helper)
-        search_bar.setLeftButtonListener(object : SearchBar.LeftButtonListener {
-            override fun onLeftButtonClick() {
-                val activity = requireActivity()
-                if (activity is MainActivity) {
-                    activity.drawer.openDrawer()
-                } else {
-                    activity.onBackPressed()
-                }
-            }
-        })
+        search_bar.apply {
+            setLeftDrawable(leftDrawable)
+            setHelper(helper)
+        }
         searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
     }
 }

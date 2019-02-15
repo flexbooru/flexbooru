@@ -30,11 +30,11 @@ import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.BrowseActivity
 import onlymash.flexbooru.ui.MainActivity
+import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
-import onlymash.flexbooru.widget.SearchBar
 import java.util.*
 
 
@@ -137,84 +137,88 @@ class PopularFragment : ListFragment() {
     private var keyword = ""
     private var date = ""
 
-    override val helper = object : SearchBar.Helper {
-
-        override fun onMenuItemClick(menuItem: MenuItem) {
-            when (type) {
-                Constants.TYPE_DANBOORU -> {
-                    when (menuItem.itemId) {
-                        R.id.action_date -> {
-                            val currentTimeMillis = System.currentTimeMillis()
-                            val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
-                                timeInMillis = currentTimeMillis
+    override val searchBarHelper: SearchBarHelper
+        get() = object : ListFragment.SearchBarHelper {
+            override fun onMenuItemClick(menuItem: MenuItem) {
+                when (type) {
+                    Constants.TYPE_DANBOORU -> {
+                        when (menuItem.itemId) {
+                            R.id.action_date -> {
+                                val currentTimeMillis = System.currentTimeMillis()
+                                val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                    timeInMillis = currentTimeMillis
+                                }
+                                val minCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                    timeInMillis = currentTimeMillis
+                                    add(Calendar.YEAR, -20)
+                                }
+                                DatePickerDialog(
+                                    requireContext(),
+                                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                                        currentYear = year
+                                        currentMonth = month
+                                        currentDay = dayOfMonth
+                                        val yearString = year.toString()
+                                        val realMonth = month + 1
+                                        val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+                                        val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                                        date = "$yearString-$monthString-$dayString"
+                                        popular!!.date = date
+                                        popularViewModel.show(popular!!)
+                                        swipe_refresh.isRefreshing = true
+                                        popularViewModel.refreshDan()
+                                    },
+                                    if (currentYear < 0) currentCalendar.get(Calendar.YEAR) else currentYear,
+                                    if (currentMonth < 0) currentCalendar.get(Calendar.MONTH) else currentMonth,
+                                    if (currentDay < 0) currentCalendar.get(Calendar.DAY_OF_MONTH) else currentDay
+                                ).apply {
+                                    datePicker.minDate = minCalendar.timeInMillis
+                                    datePicker.maxDate = currentTimeMillis
+                                }
+                                    .show()
                             }
-                            val minCalendar = Calendar.getInstance(Locale.getDefault()).apply {
-                                timeInMillis = currentTimeMillis
-                                add(Calendar.YEAR, -20)
+                            R.id.action_day -> {
+                                popular!!.scale = SCALE_DAY
+                                popularViewModel.show(popular!!)
+                                swipe_refresh.isRefreshing = true
+                                popularViewModel.refreshDan()
                             }
-                            DatePickerDialog(
-                                requireContext(),
-                                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                                    currentYear = year
-                                    currentMonth = month
-                                    currentDay = dayOfMonth
-                                    val yearString = year.toString()
-                                    val realMonth = month + 1
-                                    val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
-                                    val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-                                    date = "$yearString-$monthString-$dayString"
-                                    popular!!.date = date
-                                    popularViewModel.show(popular!!)
-                                    swipe_refresh.isRefreshing = true
-                                    popularViewModel.refreshDan()
-                                },
-                                if (currentYear < 0) currentCalendar.get(Calendar.YEAR) else currentYear,
-                                if (currentMonth < 0) currentCalendar.get(Calendar.MONTH) else currentMonth,
-                                if (currentDay < 0) currentCalendar.get(Calendar.DAY_OF_MONTH) else currentDay
-                            ).apply {
-                                datePicker.minDate = minCalendar.timeInMillis
-                                datePicker.maxDate = currentTimeMillis
+                            R.id.action_week -> {
+                                popular!!.scale = SCALE_WEEK
+                                popularViewModel.show(popular!!)
+                                swipe_refresh.isRefreshing = true
+                                popularViewModel.refreshDan()
                             }
-                                .show()
+                            R.id.action_month -> {
+                                popular!!.scale = SCALE_MONTH
+                                popularViewModel.show(popular!!)
+                                swipe_refresh.isRefreshing = true
+                                popularViewModel.refreshDan()
+                            }
+                            else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                         }
-                        R.id.action_day -> {
-                            popular!!.scale = SCALE_DAY
-                            popularViewModel.show(popular!!)
-                            swipe_refresh.isRefreshing = true
-                            popularViewModel.refreshDan()
-                        }
-                        R.id.action_week -> {
-                            popular!!.scale = SCALE_WEEK
-                            popularViewModel.show(popular!!)
-                            swipe_refresh.isRefreshing = true
-                            popularViewModel.refreshDan()
-                        }
-                        R.id.action_month -> {
-                            popular!!.scale = SCALE_MONTH
-                            popularViewModel.show(popular!!)
-                            swipe_refresh.isRefreshing = true
-                            popularViewModel.refreshDan()
-                        }
-                        else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
+                        keyword = popular!!.scale
                     }
-                    keyword = popular!!.scale
-                }
-                Constants.TYPE_MOEBOORU -> {
-                    when (menuItem.itemId) {
-                        R.id.action_day -> popular!!.period = PERIOD_DAY
-                        R.id.action_week -> popular!!.period = PERIOD_WEEK
-                        R.id.action_month -> popular!!.period = PERIOD_MONTH
-                        R.id.action_year -> popular!!.period = PERIOD_YEAR
-                        else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
+                    Constants.TYPE_MOEBOORU -> {
+                        when (menuItem.itemId) {
+                            R.id.action_day -> popular!!.period = PERIOD_DAY
+                            R.id.action_week -> popular!!.period = PERIOD_WEEK
+                            R.id.action_month -> popular!!.period = PERIOD_MONTH
+                            R.id.action_year -> popular!!.period = PERIOD_YEAR
+                            else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
+                        }
+                        keyword = popular!!.period
+                        popularViewModel.show(popular!!)
+                        swipe_refresh.isRefreshing = true
+                        popularViewModel.refreshMoe()
                     }
-                    keyword = popular!!.period
-                    popularViewModel.show(popular!!)
-                    swipe_refresh.isRefreshing = true
-                    popularViewModel.refreshMoe()
                 }
             }
+
+            override fun onApplySearch(query: String) {
+                SearchActivity.startActivity(requireContext(), query)
+            }
         }
-    }
 
     private val navigationListener = object : MainActivity.NavigationListener {
         override fun onClickPosition(position: Int) {
@@ -332,6 +336,7 @@ class PopularFragment : ListFragment() {
 
     private fun init() {
         search_bar.setTitle(R.string.title_popular)
+        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         when (type) {
             Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
