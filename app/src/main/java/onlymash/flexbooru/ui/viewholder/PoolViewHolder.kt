@@ -75,10 +75,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                     Snackbar.LENGTH_SHORT).show()
             }
         }
-        poolDescription.apply {
-            transformationMethod = LinkTransformationMethod()
-            movementMethod = LinkMovementMethod.getInstance()
-        }
+        poolDescription.transformationMethod = LinkTransformationMethod()
         userAvatar.setOnClickListener {
             when (pool) {
                 is PoolDan -> {

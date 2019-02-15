@@ -1,7 +1,6 @@
 package onlymash.flexbooru.ui.viewholder
 
 import android.content.ClipData
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,10 +56,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     Snackbar.LENGTH_SHORT).show()
             }
         }
-        artistUrls.apply {
-            transformationMethod = LinkTransformationMethod()
-            movementMethod = LinkMovementMethod.getInstance()
-        }
+        artistUrls.transformationMethod = LinkTransformationMethod()
     }
 
     private var itemListener: ItemListener? = null
