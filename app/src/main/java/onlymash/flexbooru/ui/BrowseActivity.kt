@@ -15,13 +15,21 @@
 
 package onlymash.flexbooru.ui
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.exoplayer2.ui.PlayerView
@@ -30,12 +38,16 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
+import onlymash.flexbooru.util.UserAgent
+import java.io.File
+import java.net.URLDecoder
 
 class BrowseActivity : AppCompatActivity() {
 
@@ -45,13 +57,16 @@ class BrowseActivity : AppCompatActivity() {
         const val EXT_POST_ID_KEY = "post_id"
         const val EXT_POST_POSITION_KEY = "post_position"
         const val EXT_POST_KEYWORD_KEY = "post_keyword"
+        private const val REQUEST_CODE_STORAGE = 10
     }
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
     private var keyword = ""
+    private var type = -1
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
+            type = Constants.TYPE_DANBOORU
             postsDan = posts
             var url: String? = null
             var position = 0
@@ -82,6 +97,7 @@ class BrowseActivity : AppCompatActivity() {
         }
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
+            type = Constants.TYPE_MOEBOORU
             postsMoe = posts
             var url: String? = null
             var position = 0
@@ -186,6 +202,18 @@ class BrowseActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+        toolbar.inflateMenu(R.menu.browse)
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_browse_vote -> {
+
+                }
+                R.id.action_browse_download -> {
+                    checkStoragePermissionAndDownload()
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
             toolbar_container.minimumHeight = toolbar.height + insets.systemWindowInsetTop
             toolbar_container.setPadding(0, insets.systemWindowInsetTop, 0, 0)
@@ -210,6 +238,76 @@ class BrowseActivity : AppCompatActivity() {
             Constants.TYPE_MOEBOORU -> {
                 loader.loadMoePosts(host = host, keyword = keyword)
             }
+        }
+    }
+
+    private fun download() {
+        val position = pager_browse.currentItem
+        var url = ""
+        var host = "Flexbooru"
+        var id = -1
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                postsDan?.let {
+                    host = it[position].host
+                    id = it[position].id
+                    url = when (Settings.instance().downloadSize) {
+                        Settings.DOWNLOAD_SIZE_ORIGIN -> {
+                            it[position].file_url ?: it[position].large_file_url ?: ""
+                        }
+                        else -> it[position].large_file_url ?: ""
+                    }
+                }
+            }
+            Constants.TYPE_MOEBOORU -> {
+                postsMoe?.let {
+                    host = it[position].host
+                    id = it[position].id
+                    url = when (Settings.instance().downloadSize) {
+                        Settings.DOWNLOAD_SIZE_SAMPLE -> getMoeSampleUrl(it[position])
+                        Settings.DOWNLOAD_SIZE_LARGER -> getMoeLargerUrl(it[position])
+                        else -> getMoeOriginUrl(it[position])
+                    }
+                }
+            }
+        }
+        if (url.isNotBlank()) {
+            val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+            val path = File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES),
+                String.format("%s/%s/%s", getString(R.string.app_name), host, fileName))
+            val request = DownloadManager.Request(Uri.parse(url)).apply {
+                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                setTitle(String.format("%s - %d", host, id))
+                setDescription(fileName)
+                setDestinationUri(Uri.fromFile(path))
+                addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+            }
+            val downloadId = (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+        }
+    }
+
+    private fun getMoeSampleUrl(post: PostMoe): String = post.sample_url
+
+    private fun getMoeLargerUrl(post: PostMoe): String {
+        val url = post.jpeg_url
+        return if (url.isNullOrBlank()) getMoeSampleUrl(post) else url
+    }
+
+    private fun getMoeOriginUrl(post: PostMoe): String {
+        val url = post.file_url
+        return if (url.isNullOrBlank()) getMoeLargerUrl(post) else url
+    }
+
+    private fun checkStoragePermissionAndDownload() {
+        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this,  arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE)
+            }
+        } else {
+            download()
         }
     }
 
@@ -260,5 +358,15 @@ class BrowseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         playerHolder.release()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_STORAGE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    download()
+                }
+            }
+        }
     }
 }

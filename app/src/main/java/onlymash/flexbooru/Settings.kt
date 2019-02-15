@@ -29,6 +29,10 @@ class Settings(private val sp: SharedPreferences) {
         }
         const val SAFE_MODE_KEY = "settings_safe_mode"
         const val PAGE_SIZE_KEY = "settings_page_size"
+        const val DOWNLOAD_SIZE_KEY = "settings_download_size"
+        const val DOWNLOAD_SIZE_SAMPLE = "sample"
+        const val DOWNLOAD_SIZE_LARGER = "larger"
+        const val DOWNLOAD_SIZE_ORIGIN = "origin"
     }
 
     var activeBooruUid: Long
@@ -42,4 +46,8 @@ class Settings(private val sp: SharedPreferences) {
     var pageSize: Int
         get() = sp.getString(PAGE_SIZE_KEY, "10")!!.toInt()
         set(value) = sp.edit().putString(PAGE_SIZE_KEY, value.toString()).apply()
+
+    var downloadSize: String
+        get() = sp.getString(DOWNLOAD_SIZE_KEY, DOWNLOAD_SIZE_SAMPLE) ?: DOWNLOAD_SIZE_SAMPLE
+        set(value) = sp.edit().putString(DOWNLOAD_SIZE_KEY, value).apply()
 }

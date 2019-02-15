@@ -45,4 +45,14 @@
         <item>25</item>
         <item>30</item>
     </string-array>
+    <string-array name="settings_download_size_entries">
+        <item>@string/settings_download_size_sample</item>
+        <item>@string/settings_download_size_larger</item>
+        <item>@string/settings_download_size_origin</item>
+    </string-array>
+    <string-array name="settings_download_size_entries_values">
+        <item>sample</item>
+        <item>larger</item>
+        <item>origin</item>
+    </string-array>
 </resources>

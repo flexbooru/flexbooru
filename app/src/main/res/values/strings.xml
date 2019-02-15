@@ -83,6 +83,8 @@
 
     <string name="browse_toolbar_title">Post</string>
     <string name="browse_toolbar_title_and_id" translatable="false">Post %d</string>
+    <string name="browse_vote">Vote</string>
+    <string name="browse_download">Download</string>
 
     <string name="title_account_config">Account Config</string>
     <string name="title_account_config_and_booru">Account Config - %s</string>
@@ -106,6 +108,10 @@
     <string name="settings_browse_size_sample">Sample</string>
     <string name="settings_browse_size_larger">Larger</string>
     <string name="settings_browse_size_origin">Origin</string>
+    <string name="settings_download_size">Download size</string>
+    <string name="settings_download_size_sample">Sample</string>
+    <string name="settings_download_size_larger">Larger</string>
+    <string name="settings_download_size_origin">Origin</string>
 
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
