@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
@@ -25,7 +26,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 
-class BooruConfigActivity : BaseActivity() {
+class BooruConfigActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

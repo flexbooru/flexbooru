@@ -18,13 +18,12 @@ package onlymash.flexbooru.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import moe.shizuku.preference.Preference
-import moe.shizuku.preference.PreferenceFragment
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.Booru
 
-class BooruConfigFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class BooruConfigFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         var booruUid = -1L

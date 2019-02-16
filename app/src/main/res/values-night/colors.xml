@@ -14,13 +14,11 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="@dimen/elevation_size"
-        android:theme="@style/Toolbar"
-        app:navigationIcon="?android:attr/homeAsUpIndicator"
-        app:popupTheme="@style/PopupTheme"/>
+<resources>
+    <color name="background">@color/background_dark</color>
+    <color name="background_card">@color/background_card_dark</color>
+    <color name="background_text_info">@color/background_card_dark</color>
+    <color name="rating_e">#FF424242</color>
+    <color name="rating_q">#FF616161</color>
+    <color name="rating_s">#FF757575</color>
+</resources>

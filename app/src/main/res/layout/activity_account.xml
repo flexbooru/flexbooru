@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/grey_5"
+        android:background="@color/background"
         tools:context="onlymash.flexbooru.ui.AccountActivity">
 
     <include layout="@layout/toolbar"/>
@@ -58,14 +58,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_middle"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textColor="@color/grey_90" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
             <TextView
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/grey_40" />
+                    android:textColor="?android:attr/textColorSecondary"/>
             <View
                     android:layout_width="0dp"
                     android:layout_height="@dimen/spacing_large" />
@@ -89,8 +88,8 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:focusable="true"
-                            android:tint="@color/grey_80"
-                            app:backgroundTint="@color/white"
+                            android:tint="?android:attr/textColorSecondary"
+                            app:backgroundTint="@color/background_card"
                             app:elevation="1dp"
                             app:fabSize="normal"
                             app:rippleColor="?attr/colorPrimary"
@@ -117,8 +116,8 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:focusable="true"
-                            android:tint="@color/grey_80"
-                            app:backgroundTint="@color/white"
+                            android:tint="?android:attr/textColorSecondary"
+                            app:backgroundTint="@color/background_card"
                             app:elevation="1dp"
                             app:fabSize="normal"
                             app:rippleColor="?attr/colorPrimary"
@@ -145,8 +144,8 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:focusable="true"
-                            android:tint="@color/grey_80"
-                            app:backgroundTint="@color/white"
+                            android:tint="?android:attr/textColorSecondary"
+                            app:backgroundTint="@color/background_card"
                             app:elevation="1dp"
                             app:fabSize="normal"
                             app:rippleColor="?attr/colorPrimary"

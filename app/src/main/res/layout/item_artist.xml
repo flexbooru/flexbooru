@@ -65,7 +65,7 @@
             android:id="@+id/urls_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/grey_3"
+            android:background="@color/background_text_info"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/bt_expand"
@@ -87,7 +87,7 @@
             android:id="@+id/dividing_line"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/grey_10"
+            android:background="@color/grey_20"
             app:layout_constraintTop_toBottomOf="@+id/urls_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

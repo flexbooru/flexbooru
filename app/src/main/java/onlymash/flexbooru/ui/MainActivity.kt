@@ -19,6 +19,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
@@ -40,7 +41,7 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 
-class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -67,14 +68,12 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             .withIconTinted(true)
         header = AccountHeaderBuilder()
             .withActivity(this)
-            .withHeaderBackground(R.color.white)
             .withOnAccountHeaderListener(headerItemClickListener)
             .build()
         header.addProfile(profileSettingDrawerItem, header.profiles.size)
         drawer = DrawerBuilder()
             .withActivity(this)
             .withTranslucentStatusBar(false)
-            .withSliderBackgroundColor(getColor(R.color.white))
             .withAccountHeader(header, false)
             .addDrawerItems(
                 PrimaryDrawerItem()

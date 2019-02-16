@@ -24,6 +24,14 @@
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
 
+    <color name="background">@color/background_light</color>
+    <color name="background_light">@color/white</color>
+    <color name="background_dark">@color/black</color>
+    <color name="background_card">@color/background_card_light</color>
+    <color name="background_card_light">@color/white</color>
+    <color name="background_card_dark">@color/md_grey_900</color>
+    <color name="background_text_info">@color/grey_5</color>
+
     <color name="blue">#FF33B5E5</color>
     <color name="purple">#FFAA66CC</color>
     <color name="green">#FF99CC00</color>

@@ -95,7 +95,7 @@
             android:id="@+id/description_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/grey_3"
+            android:background="@color/background_text_info"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/user_avatar_container"
@@ -117,7 +117,7 @@
             android:id="@+id/dividing_line"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/grey_10"
+            android:background="@color/grey_20"
             app:layout_constraintTop_toBottomOf="@+id/description_container"
             app:layout_constraintStart_toEndOf="@id/user_avatar_container"
             app:layout_constraintEnd_toEndOf="parent"/>

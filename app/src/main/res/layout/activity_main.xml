@@ -21,6 +21,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         tools:context=".ui.MainActivity">
 
     <androidx.viewpager.widget.ViewPager
@@ -35,7 +36,7 @@
             android:layout_height="58dp"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@color/background"
             app:itemBackground="@color/transparent"
             app:menu="@menu/navigation"
             app:layout_anchorGravity="bottom"

@@ -14,11 +14,17 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<fragment
+<merge
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/post_fragment"
-        android:name="onlymash.flexbooru.ui.fragment.PostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="onlymash.flexbooru.ui.SearchActivity"/>
+        xmlns:tools="http://schemas.android.com/tools">
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"/>
+    <fragment
+            android:id="@+id/post_fragment"
+            android:name="onlymash.flexbooru.ui.fragment.PostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="onlymash.flexbooru.ui.SearchActivity"/>
+</merge>

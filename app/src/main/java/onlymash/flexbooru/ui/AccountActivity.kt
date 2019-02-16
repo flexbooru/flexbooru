@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -31,7 +32,7 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
 
-class AccountActivity : BaseActivity() {
+class AccountActivity : AppCompatActivity() {
 
     companion object {
         const val USER_ID_KEY = "user_id"

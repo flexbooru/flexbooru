@@ -16,10 +16,11 @@
 package onlymash.flexbooru.ui
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,10 +18,11 @@ package onlymash.flexbooru.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 
-class SearchActivity : BaseActivity() {
+class SearchActivity : AppCompatActivity() {
 
     companion object {
         fun startActivity(context: Context, keyword: String) {

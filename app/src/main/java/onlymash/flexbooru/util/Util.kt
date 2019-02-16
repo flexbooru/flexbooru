@@ -32,7 +32,7 @@ fun formatDate(time: Long): CharSequence {
 
 private fun getCustomTabsIntent(context: Context): CustomTabsIntent {
     return CustomTabsIntent.Builder()
-        .setToolbarColor(ContextCompat.getColor(context, R.color.white))
+        .setToolbarColor(ContextCompat.getColor(context, R.color.background))
         .build()
 }
 
