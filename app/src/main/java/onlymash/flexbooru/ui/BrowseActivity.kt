@@ -58,12 +58,14 @@ class BrowseActivity : AppCompatActivity() {
         const val EXT_POST_POSITION_KEY = "post_position"
         const val EXT_POST_KEYWORD_KEY = "post_keyword"
         private const val REQUEST_CODE_STORAGE = 10
+        private const val PAGER_CURRENT_POSITION_KEY = "current_position"
     }
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
     private var keyword = ""
     private var type = -1
+    private var currentPosition = -1
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
             type = Constants.TYPE_DANBOORU
@@ -84,7 +86,7 @@ class BrowseActivity : AppCompatActivity() {
             toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
             pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU)
             pager_browse.adapter = pagerAdapter
-            pager_browse.currentItem = position
+            pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             startPostponedEnterTransition()
             if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
                 Handler().postDelayed({
@@ -115,7 +117,7 @@ class BrowseActivity : AppCompatActivity() {
             toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
             pagerAdapter.updateData(posts, Constants.TYPE_MOEBOORU)
             pager_browse.adapter = pagerAdapter
-            pager_browse.currentItem = position
+            pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             startPostponedEnterTransition()
             if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
                 Handler().postDelayed({
@@ -239,6 +241,17 @@ class BrowseActivity : AppCompatActivity() {
                 loader.loadMoePosts(host = host, keyword = keyword)
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(PAGER_CURRENT_POSITION_KEY, pager_browse.currentItem)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        currentPosition = savedInstanceState?.getInt(PAGER_CURRENT_POSITION_KEY) ?: -1
+        super.onRestoreInstanceState(savedInstanceState)
+        if (currentPosition >= 0) pager_browse.currentItem = currentPosition
     }
 
     private fun download() {
