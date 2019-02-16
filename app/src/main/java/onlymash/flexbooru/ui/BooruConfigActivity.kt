@@ -35,7 +35,7 @@ class BooruConfigActivity : BaseActivity() {
 
     private fun initToolbar() {
         toolbar.setTitle(R.string.title_booru_config)
-        toolbar.setNavigationIcon(R.drawable.ic_close_black_24dp)
+        toolbar.setNavigationIcon(R.drawable.ic_close_24dp)
         toolbar.inflateMenu(R.menu.booru_config)
         toolbar.setNavigationOnClickListener {
             finish()

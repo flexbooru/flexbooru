@@ -18,27 +18,27 @@
 
     <item
             android:id="@+id/navigation_posts"
-            android:icon="@drawable/ic_photo_black_24dp"
+            android:icon="@drawable/ic_state_photo"
             android:title="@string/title_posts"/>
 
     <item
             android:id="@+id/navigation_popular"
-            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:icon="@drawable/ic_state_whatshot"
             android:title="@string/title_popular"/>
 
     <item
             android:id="@+id/navigation_pools"
-            android:icon="@drawable/ic_photo_album_black_24dp"
+            android:icon="@drawable/ic_state_photo_album"
             android:title="@string/title_pools"/>
 
     <item
             android:id="@+id/navigation_tags"
-            android:icon="@drawable/ic_bookmark_border_black_24dp"
+            android:icon="@drawable/ic_state_bookmark"
             android:title="@string/title_tags"/>
 
     <item
             android:id="@+id/navigation_artists"
-            android:icon="@drawable/ic_people_outline_black_24dp"
+            android:icon="@drawable/ic_state_people"
             android:title="@string/title_artists"/>
 
 </menu>

@@ -18,7 +18,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/action_browse_vote"
-            android:icon="@drawable/ic_star_border_black_24dp"
+            android:icon="@drawable/ic_star_border_24dp"
             android:title="@string/browse_vote"
             app:showAsAction="ifRoom"/>
 

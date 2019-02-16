@@ -57,7 +57,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/grey_60"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_expand_more_black_24dp"
+            app:srcCompat="@drawable/ic_expand_more_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
