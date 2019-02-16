@@ -87,7 +87,7 @@
             android:id="@+id/dividing_line"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/grey_20"
+            android:background="@color/item_line"
             app:layout_constraintTop_toBottomOf="@+id/urls_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

@@ -24,6 +24,11 @@
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
 
+    <color name="primary_text">@color/black</color>
+    <color name="primary_icon">@color/black</color>
+
+    <color name="item_line">@color/grey_10</color>
+
     <color name="background">@color/background_light</color>
     <color name="background_light">@color/white</color>
     <color name="background_dark">@color/black</color>
