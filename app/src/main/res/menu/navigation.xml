@@ -38,7 +38,7 @@
 
     <item
             android:id="@+id/navigation_artists"
-            android:icon="@drawable/ic_state_supervisor_account"
+            android:icon="@drawable/ic_state_people"
             android:title="@string/title_artists"/>
 
 </menu>

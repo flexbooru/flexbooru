@@ -42,6 +42,9 @@
             app:labelVisibilityMode="labeled"
             app:itemHorizontalTranslationEnabled="false"
             app:backgroundTint="@color/background"
+            app:itemTextAppearanceActive="?android:attr/textAppearance"
+            app:itemTextAppearanceInactive="?android:attr/textAppearance"
+            app:itemTextColor="@color/navbar_text_color"
             app:layout_behavior="@string/bottom_nav_view_with_snackbar_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
