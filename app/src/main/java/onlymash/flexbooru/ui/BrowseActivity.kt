@@ -45,6 +45,7 @@ import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
+import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.util.UserAgent
 import java.io.File
 import java.net.URLDecoder
@@ -240,6 +241,18 @@ class BrowseActivity : AppCompatActivity() {
             Constants.TYPE_MOEBOORU -> {
                 loader.loadMoePosts(host = host, keyword = keyword)
             }
+        }
+        post_tags.setOnClickListener {
+            val bottomSheetFragment = TagBottomSheetDialog()
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    bottomSheetFragment.setTags(postsDan!![pager_browse.currentItem])
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    bottomSheetFragment.setTags(postsMoe!![pager_browse.currentItem])
+                }
+            }
+            bottomSheetFragment.show(supportFragmentManager, "tags")
         }
     }
 

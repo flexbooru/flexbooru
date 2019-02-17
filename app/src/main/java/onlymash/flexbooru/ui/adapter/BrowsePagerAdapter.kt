@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -34,7 +35,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
-import onlymash.flexbooru.widget.SaveStateProgressBar
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter() {
 
@@ -70,7 +70,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         photoView.setOnViewTapListener { _, _, _ ->
             photoViewListener?.onClickPhotoView()
         }
-        val progressBar: SaveStateProgressBar = view.findViewById(R.id.progress_bar)
+        val progressBar: ProgressBar = view.findViewById(R.id.progress_bar)
         progressBar.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         var ext = ""
         val url = when (type) {
@@ -122,6 +122,8 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                     playerView.tag = String.format("player_%d", position)
                 }
             }
+        } else {
+            progressBar.visibility = View.GONE
         }
         container.addView(view)
         return view

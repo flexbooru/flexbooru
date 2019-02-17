@@ -64,4 +64,10 @@
     </style>
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar"/>
     <style name="PopupTheme" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="TransparentBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
+    </style>
+    <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/transparent</item>
+    </style>
 </resources>

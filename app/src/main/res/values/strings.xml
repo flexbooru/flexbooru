@@ -87,6 +87,8 @@
     <string name="browse_toolbar_title_and_id" translatable="false">Post %d</string>
     <string name="browse_vote">Vote</string>
     <string name="browse_download">Download</string>
+    <string name="browse_tag_exclude">Exclude</string>
+    <string name="browse_tag_include">Include</string>
 
     <string name="title_account_config">Account Config</string>
     <string name="title_account_config_and_booru">Account Config - %s</string>

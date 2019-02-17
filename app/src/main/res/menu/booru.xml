@@ -18,7 +18,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/action_booru_add"
-            android:icon="@drawable/ic_note_add_24dp"
+            android:icon="@drawable/ic_note_add_outline_24dp"
             android:title="@string/booru_add"
             app:showAsAction="ifRoom">
         <menu>
@@ -35,7 +35,7 @@
     </item>
     <item
         android:id="@+id/action_booru_help"
-        android:icon="@drawable/ic_help_24dp"
+        android:icon="@drawable/ic_help_outline_24dp"
         android:title="@string/booru_add_help"
         app:showAsAction="ifRoom"/>
 </menu>

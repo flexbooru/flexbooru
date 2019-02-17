@@ -33,13 +33,13 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .inflate(R.layout.item_tag, parent, false)
             return TagViewHolder(view)
         }
-        private const val GENERAL = 0
-        private const val ARTIST = 1
-        private const val COPYRIGHT = 3
-        private const val CHARACTER = 4
-        private const val CIRCLE = 5
-        private const val FAULTS = 6
-        private const val META = 5
+        const val GENERAL = 0
+        const val ARTIST = 1
+        const val COPYRIGHT = 3
+        const val CHARACTER = 4
+        const val CIRCLE = 5
+        const val FAULTS = 6
+        const val META = 5
     }
 
     private val tagName: TextView = itemView.findViewById(R.id.tag_name)

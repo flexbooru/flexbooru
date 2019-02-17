@@ -24,10 +24,12 @@
     <color name="white">@android:color/white</color>
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
+    <color name="translucent">#66000000</color>
 
     <color name="primary_text">@color/black</color>
     <color name="primary_icon">@color/black</color>
     <color name="menu_icon">@color/grey_600</color>
+    <color name="toolbar_menu_icon">@color/black</color>
 
     <color name="item_line">@color/grey_10</color>
 

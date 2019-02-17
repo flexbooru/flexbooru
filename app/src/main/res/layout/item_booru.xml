@@ -55,7 +55,7 @@
                 android:focusable="true"
                 android:nextFocusLeft="@+id/container"
                 android:padding="12dp"
-                app:srcCompat="@drawable/ic_share_24dp"/>
+                app:srcCompat="@drawable/ic_share_outline_24dp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/booru_edit"
@@ -66,7 +66,7 @@
                 android:contentDescription="@string/booru_edit"
                 android:focusable="true"
                 android:padding="12dp"
-                app:srcCompat="@drawable/ic_edit_24dp"/>
+                app:srcCompat="@drawable/ic_edit_outline_24dp"/>
     </LinearLayout>
 
     <RelativeLayout
