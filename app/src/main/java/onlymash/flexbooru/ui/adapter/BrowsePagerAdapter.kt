@@ -89,7 +89,6 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         if (!url.isNullOrBlank()) {
             when (ext == "jpg" || ext == "png" || ext == "gif" || ext.isBlank()) {
                 true -> {
-                    progressBar.visibility = View.VISIBLE
                     glideRequests.load(url)
                         .fitCenter()
                         .listener(object : RequestListener<Drawable> {
@@ -117,6 +116,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                         .into(photoView)
                 }
                 false -> {
+                    progressBar.visibility = View.GONE
                     val playerView: PlayerView = view.findViewById(R.id.player_view)
                     playerView.visibility = View.VISIBLE
                     playerView.tag = String.format("player_%d", position)
