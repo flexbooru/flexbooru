@@ -17,7 +17,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath 'com.google.gms:google-services:4.2.0'
     }
 }
@@ -27,7 +26,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url "https://kotlin.bintray.com/kotlinx" }
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {

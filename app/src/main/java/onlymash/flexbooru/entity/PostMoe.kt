@@ -18,18 +18,12 @@ package onlymash.flexbooru.entity
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Optional
-import kotlinx.serialization.Serializable
 
-@Serializable
 @Entity(tableName = "posts_moebooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostMoe(
-    @Optional
     @PrimaryKey(autoGenerate = true)
     val uid: Long = -1L,
-    @Optional
     var host: String = "",
-    @Optional
     var keyword: String = "",
     val id: Int,
     val tags: String?,
