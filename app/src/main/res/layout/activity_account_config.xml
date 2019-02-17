@@ -55,8 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_small"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="1dp">
+                app:cardUseCompatPadding="false"
+                style="@style/CardViewTheme">
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,50 +65,43 @@
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_xlarge" />
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/account_username"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/grey_40" />
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/username_edit"
+                <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="-4dp"
-                        android:layout_marginRight="-4dp"
-                        android:inputType="text"
-                        android:maxLength="50"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textColor="?attr/colorPrimary"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textStyle="bold"/>
+                        android:hint="@string/account_username"
+                        app:counterEnabled="true">
+
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/username_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text|textPersonName|textAutoComplete"
+                            android:maxLength="50"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
+                </com.google.android.material.textfield.TextInputLayout>
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_mlarge" />
-                <TextView
-                        android:id="@+id/password_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/account_password"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/grey_40" />
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password_edit"
+                <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="-4dp"
-                        android:layout_marginRight="-4dp"
-                        android:inputType="textPassword"
-                        android:maxLength="50"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textColor="?attr/colorPrimary"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textStyle="bold"/>
+                        android:hint="@string/account_password"
+                        android:id="@+id/password_edit_container"
+                        app:counterEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeActionId="6"
+                            android:imeActionLabel="@string/account_set"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPassword"
+                            android:maxLength="50"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_middle" />
@@ -124,7 +117,7 @@
                         android:text="@string/account_forgot_password"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/grey_20"
+                        android:textColor="?android:attr/textColorSecondary"
                         android:textStyle="bold"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -143,7 +136,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account_set"
-                    android:background="?attr/colorPrimary"
+                    android:textColor="@color/white"
+                    android:background="@drawable/background_button"
                     style="@style/Widget.AppCompat.Button.Colored"/>
             <ProgressBar
                     android:layout_gravity="center_horizontal"

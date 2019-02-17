@@ -37,11 +37,11 @@
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
             android:background="@color/background"
-            app:itemBackground="@color/transparent"
             app:menu="@menu/navigation"
             app:layout_anchorGravity="bottom"
             app:labelVisibilityMode="labeled"
             app:itemHorizontalTranslationEnabled="false"
+            app:backgroundTint="@color/background"
             app:layout_behavior="@string/bottom_nav_view_with_snackbar_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

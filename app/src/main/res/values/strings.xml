@@ -28,6 +28,8 @@
     <string name="title_artists">Artists</string>
     <string name="title_pools">Pools</string>
     <string name="title_tags">Tags</string>
+    <string name="title_comments">Comments</string>
+    <string name="title_muzei">Muzei</string>
 
     <string name="retry">Retry</string>
 
@@ -90,9 +92,9 @@
     <string name="title_account_config_and_booru">Account Config - %s</string>
     <string name="account_username">Username</string>
     <string name="account_password">Password</string>
-    <string name="account_api_key">Api Key</string>
+    <string name="account_api_key">Api key</string>
     <string name="account_forgot_password">Forgot password?</string>
-    <string name="account_forgot_api_key">What is my Api Key?</string>
+    <string name="account_forgot_api_key">What is my Api key?</string>
     <string name="account_set">Set account</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_avatars" translatable="false">%s://%s/data/avatars/%d.jpg</string>

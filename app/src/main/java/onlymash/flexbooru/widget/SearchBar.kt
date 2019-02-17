@@ -141,7 +141,7 @@ class SearchBar @JvmOverloads constructor(
     fun getEditTextTextSize(): Float = search_edit_text.textSize
 
     fun setEditTextHint(hint: CharSequence) {
-        search_edit_text.setHint(hint)
+        search_edit_text.hint = hint
     }
 
     fun setText(text: String) {

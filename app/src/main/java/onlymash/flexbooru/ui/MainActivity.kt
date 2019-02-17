@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         private const val BOORU_MANAGE_PROFILE_ID = -2L
         private const val SETTINGS_DRAWER_ITEM_ID = -1L
         private const val ACCOUNT_DRAWER_ITEM_ID = 1L
+        private const val COMMENTS_DRAWER_ITEM_ID = 2L
+        private const val MUZEI_DRAWER_ITEM_ID = 3L
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -66,7 +68,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         profileSettingDrawerItem = ProfileSettingDrawerItem()
             .withName(R.string.title_manage_boorus)
             .withIdentifier(BOORU_MANAGE_PROFILE_ID)
-            .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_24dp))
+            .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_outline_24dp))
             .withIconTinted(true)
         header = AccountHeaderBuilder()
             .withActivity(this)
@@ -82,12 +84,24 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     .withIdentifier(ACCOUNT_DRAWER_ITEM_ID)
                     .withName(R.string.title_account)
                     .withSelectable(false)
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_account_circle_24dp))
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_account_circle_outline_24dp))
+                    .withIconTintingEnabled(true),
+                PrimaryDrawerItem()
+                    .withIdentifier(COMMENTS_DRAWER_ITEM_ID)
+                    .withName(R.string.title_comments)
+                    .withSelectable(false)
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_comment_outline_24dp))
+                    .withIconTintingEnabled(true),
+                PrimaryDrawerItem()
+                    .withIdentifier(MUZEI_DRAWER_ITEM_ID)
+                    .withName(R.string.title_muzei)
+                    .withSelectable(false)
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_muzei_24dp))
                     .withIconTintingEnabled(true)
             )
             .addStickyDrawerItems(
                 PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_24dp))
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_outline_24dp))
                     .withName(R.string.title_settings)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)

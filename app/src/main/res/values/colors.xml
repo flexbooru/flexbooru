@@ -16,7 +16,8 @@
 
 <resources>
 
-    <color name="colorPrimary">#448AFF</color>
+    <!--blue 448AFF-->
+    <color name="colorPrimary">#FF623AB2</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorAccent">#F06292</color>
 
@@ -26,6 +27,7 @@
 
     <color name="primary_text">@color/black</color>
     <color name="primary_icon">@color/black</color>
+    <color name="menu_icon">@color/grey_600</color>
 
     <color name="item_line">@color/grey_10</color>
 
@@ -36,6 +38,8 @@
     <color name="background_card_light">@color/white</color>
     <color name="background_card_dark">@color/grey_900</color>
     <color name="background_text_info">@color/grey_5</color>
+    <color name="background_button">@color/colorPrimary</color>
+    <color name="background_button_pressed">@color/purple</color>
 
     <color name="blue">#FF33B5E5</color>
     <color name="purple">#FFAA66CC</color>

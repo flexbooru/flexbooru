@@ -87,7 +87,7 @@ class AccountConfigActivity : AppCompatActivity() {
         }
         account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru!!.name)
         if (booru!!.type == Constants.TYPE_DANBOORU) {
-            password_title.setText(R.string.account_api_key)
+            password_edit_container.hint = getString(R.string.account_api_key)
             forgot_auth.setText(R.string.account_forgot_api_key)
         }
         forgot_auth.setOnClickListener {
@@ -113,7 +113,7 @@ class AccountConfigActivity : AppCompatActivity() {
         username = username_edit.text.toString()
         pass = password_edit.text.toString()
         if (username.isBlank() || pass.isBlank()) {
-            Snackbar.make(password_title, "Username or Password/Api Key cannot be empty.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(account_config_title, "Username or Password/Api Key cannot be empty.", Snackbar.LENGTH_LONG).show()
             return
         }
         val hashSalt = booru!!.hash_salt
