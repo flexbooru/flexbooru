@@ -24,7 +24,7 @@
     <color name="white">@android:color/white</color>
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="translucent">#66000000</color>
+    <color name="translucent">#55000000</color>
 
     <color name="primary_text">@color/black</color>
     <color name="primary_icon">@color/black</color>

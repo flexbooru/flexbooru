@@ -68,6 +68,6 @@
         <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
     </style>
     <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/translucent</item>
     </style>
 </resources>
