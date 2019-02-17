@@ -18,13 +18,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file(".gradle/keystore.properties").newDataInputStream())
+
 android {
     signingConfigs {
         release {
             storeFile file(".keystore_onlymash.jks")
-            storePassword System.getenv("KEYSTORE_PASS")
-            keyAlias System.getenv("ALIAS_NAME")
-            keyPassword System.getenv("ALIAS_PASS")
+            keyAlias properties.getProperty("KEY_ALIAS")
+            keyPassword properties.getProperty("KEY_PASS")
+            storePassword properties.getProperty("STORE_PASS")
         }
     }
     compileSdkVersion 28
@@ -37,11 +40,11 @@ android {
         versionName "0.0.2d"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
     }
     setProperty("archivesBaseName", "flexbooru-" + defaultConfig.versionName)
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
