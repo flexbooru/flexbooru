@@ -34,7 +34,7 @@
     <color name="background_dark">@color/black</color>
     <color name="background_card">@color/background_card_light</color>
     <color name="background_card_light">@color/white</color>
-    <color name="background_card_dark">@color/md_grey_900</color>
+    <color name="background_card_dark">@color/grey_900</color>
     <color name="background_text_info">@color/grey_5</color>
 
     <color name="blue">#FF33B5E5</color>
@@ -52,8 +52,15 @@
     <color name="rating_q">#FFCEC8C3</color>
     <color name="rating_s">#FFD7DBDF</color>
 
-    <color name="grey_400">#999999</color>
-    <color name="grey_600">#666666</color>
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
     <color name="grey_900">#212121</color>
 
     <color name="grey_3">#f7f7f7</color>

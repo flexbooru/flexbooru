@@ -16,6 +16,7 @@
 package onlymash.flexbooru
 
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import onlymash.flexbooru.App.Companion.app
 
 class Settings(private val sp: SharedPreferences) {
@@ -33,6 +34,11 @@ class Settings(private val sp: SharedPreferences) {
         const val DOWNLOAD_SIZE_SAMPLE = "sample"
         const val DOWNLOAD_SIZE_LARGER = "larger"
         const val DOWNLOAD_SIZE_ORIGIN = "origin"
+        const val THEME_MODE_KEY = "settings_theme_mode"
+        const val THEME_MODE_SYSTEM = "system"
+        const val THEME_MODE_AUTO = "auto"
+        const val THEME_MODE_DAY = "day"
+        const val THEME_MODE_NIGHT = "night"
     }
 
     var activeBooruUid: Long
@@ -50,4 +56,17 @@ class Settings(private val sp: SharedPreferences) {
     var downloadSize: String
         get() = sp.getString(DOWNLOAD_SIZE_KEY, DOWNLOAD_SIZE_SAMPLE) ?: DOWNLOAD_SIZE_SAMPLE
         set(value) = sp.edit().putString(DOWNLOAD_SIZE_KEY, value).apply()
+
+    private var themeModeString: String
+        get() = sp.getString(THEME_MODE_KEY, THEME_MODE_SYSTEM) ?: THEME_MODE_SYSTEM
+        set(value) = sp.edit().putString(THEME_MODE_KEY, value).apply()
+
+    @AppCompatDelegate.NightMode
+    val themeMode: Int
+        get() = when (themeModeString) {
+            THEME_MODE_AUTO -> AppCompatDelegate.MODE_NIGHT_AUTO
+            THEME_MODE_DAY -> AppCompatDelegate.MODE_NIGHT_NO
+            THEME_MODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
 }

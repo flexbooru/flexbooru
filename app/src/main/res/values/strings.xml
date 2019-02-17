@@ -112,6 +112,11 @@
     <string name="settings_download_size_sample">Sample</string>
     <string name="settings_download_size_larger">Larger</string>
     <string name="settings_download_size_origin">Origin</string>
+    <string name="settings_theme_mode">Theme mode</string>
+    <string name="settings_theme_mode_system">Follow system</string>
+    <string name="settings_theme_mode_auto">Auto</string>
+    <string name="settings_theme_mode_day">Day</string>
+    <string name="settings_theme_mode_night">Night</string>
 
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>

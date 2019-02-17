@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
@@ -37,6 +38,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
+        AppCompatDelegate.setDefaultNightMode(Settings.instance().themeMode)
         DrawerImageLoader.init(drawerImageLoader)
     }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {

@@ -45,4 +45,14 @@
             android:summary="%s"
             android:title="@string/settings_download_size"
             app:iconSpaceReserved="true" />
+
+    <!--suppress AndroidElementNotAllowed -->
+    <SimpleMenuPreference
+            android:key="settings_theme_mode"
+            android:entries="@array/settings_theme_mode_entries"
+            android:entryValues="@array/settings_theme_mode_entries_values"
+            android:defaultValue="system"
+            android:summary="%s"
+            android:title="@string/settings_theme_mode"
+            app:iconSpaceReserved="true" />
 </PreferenceScreen>

@@ -19,7 +19,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
@@ -429,6 +431,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 pager_container.currentItem = currentNavItem
+            }
+            Settings.THEME_MODE_KEY -> {
+                val mode = Settings.instance().themeMode
+                AppCompatDelegate.setDefaultNightMode(mode)
+                if (mode != AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+                    recreate()
+                }
             }
         }
     }

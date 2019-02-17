@@ -22,5 +22,6 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="@dimen/elevation_size"
         android:theme="@style/Toolbar"
+        android:background="@color/background"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
         app:popupTheme="@style/PopupTheme"/>
