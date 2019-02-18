@@ -23,7 +23,7 @@
     <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/photo_view"
             android:transitionName="post_img"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

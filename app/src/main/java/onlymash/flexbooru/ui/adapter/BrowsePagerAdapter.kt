@@ -89,8 +89,8 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                         placeholder.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
                         placeholder.start()
                     }
-                    glideRequests.load(url)
-                        .fitCenter()
+                    glideRequests
+                        .load(url)
                         .placeholder(placeholder)
                         .into(photoView)
                 }
