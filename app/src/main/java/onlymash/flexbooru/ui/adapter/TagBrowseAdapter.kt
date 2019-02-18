@@ -20,13 +20,17 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.TagBrowse
 import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
 
-class TagBrowseAdapter(private val tags: MutableList<TagBrowse>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TagBrowseAdapter(private val tags: MutableList<TagBrowse>,
+                       private val itemListener: TagBrowseViewHolder.ItemListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         TagBrowseViewHolder.create(parent)
 
     override fun getItemCount(): Int = tags.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as TagBrowseViewHolder).bind(tags[position])
+        (holder as TagBrowseViewHolder).apply {
+            bind(tags[position])
+            setItemListener(itemListener)
+        }
     }
 }

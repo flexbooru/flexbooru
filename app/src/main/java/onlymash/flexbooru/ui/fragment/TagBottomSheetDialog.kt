@@ -22,28 +22,31 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.entity.TagBrowse
+import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagBrowseAdapter
+import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 
-class TagBottomSheetDialog : BottomSheetDialogFragment() {
+class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private var tags: MutableList<TagBrowse> = mutableListOf()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.TransparentBottomSheetDialogTheme)
+    private val itemListener = object : TagBrowseViewHolder.ItemListener {
+        override fun onClickItem(keyword: String) {
+            SearchActivity.startActivity(requireContext(), keyword)
+            dismissAllowingStateLoss()
+        }
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         val view = View.inflate(requireContext(), R.layout.fragment_bottom_sheet_tag, null)
         view.findViewById<RecyclerView>(R.id.tags_list).apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            adapter = TagBrowseAdapter(tags)
+            adapter = TagBrowseAdapter(tags, itemListener)
         }
         view.findViewById<Toolbar>(R.id.toolbar).apply {
             setTitle(R.string.title_tags)

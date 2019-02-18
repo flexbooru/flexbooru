@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.TagBrowse
-import onlymash.flexbooru.ui.SearchActivity
 
 class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
@@ -42,11 +41,21 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val tagExclude: AppCompatImageView = itemView.findViewById(R.id.tag_exclude)
     private val tagInclude: AppCompatImageView = itemView.findViewById(R.id.tag_include)
 
+    private var itemListener: ItemListener? = null
+
+    fun setItemListener(listener: ItemListener) {
+        itemListener = listener
+    }
+
+    interface ItemListener {
+        fun onClickItem(keyword: String)
+    }
+
     init {
         TooltipCompat.setTooltipText(tagExclude, tagExclude.contentDescription)
         TooltipCompat.setTooltipText(tagInclude, tagInclude.contentDescription)
         itemView.setOnClickListener {
-            SearchActivity.startActivity(itemView.context, tagName.text.toString())
+            itemListener?.onClickItem(tagName.text.toString())
         }
         itemView.setOnLongClickListener {
             App.app.clipboard.primaryClip = ClipData.newPlainText("Tag", tagName.text)
