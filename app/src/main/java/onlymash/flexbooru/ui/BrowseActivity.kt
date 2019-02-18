@@ -34,6 +34,7 @@ import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.android.synthetic.main.activity_browse.*
+import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -220,8 +221,9 @@ class BrowseActivity : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
             toolbar_container.minimumHeight = toolbar.height + insets.systemWindowInsetTop
             toolbar_container.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-            bottom_bar_container.minimumHeight = resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + insets.systemWindowInsetBottom
-            bottom_bar_container.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            val bottomPadding = (insets.systemWindowInsetBottom * 1.5f).toInt()
+            bottom_bar_container.minimumHeight = resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + bottomPadding
+            bottom_bar_container.setPadding(0, 0, 0, bottomPadding)
             insets
         }
         val host = intent.getStringExtra(Constants.HOST_KEY)

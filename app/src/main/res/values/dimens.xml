@@ -26,7 +26,7 @@
     <dimen name="header_item_height">64dp</dimen>
     <dimen name="booru_padding">8dp</dimen>
     <dimen name="qr_code_size">300dp</dimen>
-    <dimen name="browse_bottom_bar_height">60dp</dimen>
+    <dimen name="browse_bottom_bar_height">56dp</dimen>
 
     <dimen name="spacing_xsmall">2dp</dimen>
     <dimen name="spacing_small">3dp</dimen>
