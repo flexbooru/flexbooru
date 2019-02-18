@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.PostDan
@@ -33,12 +34,95 @@ import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 
 class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
+    companion object {
+        private const val POST_TYPE = "post_type"
+        private const val TAG_ALL_KEY = "all"
+        private const val TAG_GENERAL_KEY = "general"
+        private const val TAG_ARTIST_KEY = "artist"
+        private const val TAG_COPYRIGHT_KEY = "copyright"
+        private const val TAG_CHARACTER_KEY = "character"
+        private const val TAG_CIRCLE_KEY = "circle"
+        private const val TAG_FAULTS_KEY = "faults"
+        private const val TAG_META_KEY = "meta"
+        fun create(post: Any?): TagBottomSheetDialog {
+            return TagBottomSheetDialog().apply {
+                arguments = when (post) {
+                    is PostDan -> {
+                        Bundle().apply {
+                            putInt(POST_TYPE, Constants.TYPE_DANBOORU)
+                            putString(TAG_GENERAL_KEY, post.tag_string_general)
+                            putString(TAG_ARTIST_KEY, post.tag_string_artist)
+                            putString(TAG_COPYRIGHT_KEY, post.tag_string_copyright)
+                            putString(TAG_CHARACTER_KEY, post.tag_string_character)
+                            putString(TAG_META_KEY, post.tag_string_meta)
+                        }
+                    }
+                    is PostMoe -> {
+                        Bundle().apply {
+                            putInt(POST_TYPE, Constants.TYPE_MOEBOORU)
+                            putString(TAG_ALL_KEY, post.tags)
+                        }
+                    }
+                    else -> throw IllegalStateException("unknown post type or post is null")
+                }
+            }
+        }
+    }
     private lateinit var behavior: BottomSheetBehavior<View>
     private var tags: MutableList<TagBrowse> = mutableListOf()
     private val itemListener = object : TagBrowseViewHolder.ItemListener {
         override fun onClickItem(keyword: String) {
             SearchActivity.startActivity(requireContext(), keyword)
             dismissAllowingStateLoss()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val booruUid = Settings.instance().activeBooruUid
+        arguments?.let { bundle ->
+            when (bundle.getInt(POST_TYPE)) {
+                Constants.TYPE_DANBOORU -> {
+                    bundle.getString(TAG_GENERAL_KEY)?.split(" ")?.forEach { tag ->
+                        tags.add(TagBrowse(
+                            booru_uid = booruUid,
+                            name = tag,
+                            type = TagViewHolder.GENERAL))
+                    }
+                    bundle.getString(TAG_ARTIST_KEY)?.split(" ")?.forEach { tag ->
+                        tags.add(TagBrowse(
+                            booru_uid = booruUid,
+                            name = tag,
+                            type = TagViewHolder.ARTIST))
+                    }
+                    bundle.getString(TAG_COPYRIGHT_KEY)?.split(" ")?.forEach { tag ->
+                        tags.add(TagBrowse(
+                            booru_uid = booruUid,
+                            name = tag,
+                            type = TagViewHolder.COPYRIGHT))
+                    }
+                    bundle.getString(TAG_CHARACTER_KEY)?.split(" ")?.forEach { tag ->
+                        tags.add(TagBrowse(
+                            booru_uid = booruUid,
+                            name = tag,
+                            type = TagViewHolder.CHARACTER))
+                    }
+                    bundle.getString(TAG_META_KEY)?.split(" ")?.forEach { tag ->
+                        tags.add(TagBrowse(
+                            booru_uid = booruUid,
+                            name = tag,
+                            type = TagViewHolder.META))
+                    }
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    bundle.getString(TAG_ALL_KEY)?.split(" ")?.forEach {  tag ->
+                        tags.add(TagBrowse(booru_uid = booruUid, name = tag))
+                    }
+                }
+                else -> {
+
+                }
+            }
         }
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -70,49 +154,6 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
 
         })
         return dialog
-    }
-
-    fun setTags(post: Any?) {
-        val booruUid = Settings.instance().activeBooruUid
-        when (post) {
-            is PostMoe -> {
-                post.tags?.split(" ")?.forEach { tag ->
-                    tags.add(TagBrowse(booru_uid = booruUid, name = tag))
-                }
-            }
-            is PostDan -> {
-                post.tag_string_general.split(" ").forEach { tag ->
-                    tags.add(TagBrowse(
-                        booru_uid = booruUid,
-                        name = tag,
-                        type = TagViewHolder.GENERAL))
-                }
-                post.tag_string_artist.split(" ").forEach { tag ->
-                    tags.add(TagBrowse(
-                        booru_uid = booruUid,
-                        name = tag,
-                        type = TagViewHolder.ARTIST))
-                }
-                post.tag_string_copyright.split(" ").forEach { tag ->
-                    tags.add(TagBrowse(
-                        booru_uid = booruUid,
-                        name = tag,
-                        type = TagViewHolder.COPYRIGHT))
-                }
-                post.tag_string_character.split(" ").forEach { tag ->
-                    tags.add(TagBrowse(
-                        booru_uid = booruUid,
-                        name = tag,
-                        type = TagViewHolder.CHARACTER))
-                }
-                post.tag_string_meta.split(" ").forEach { tag ->
-                    tags.add(TagBrowse(
-                        booru_uid = booruUid,
-                        name = tag,
-                        type = TagViewHolder.META))
-                }
-            }
-        }
     }
 
     override fun onStart() {

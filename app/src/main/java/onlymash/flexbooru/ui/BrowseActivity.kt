@@ -245,16 +245,12 @@ class BrowseActivity : AppCompatActivity() {
             }
         }
         post_tags.setOnClickListener {
-            val bottomSheetFragment = TagBottomSheetDialog()
             when (type) {
-                Constants.TYPE_DANBOORU -> {
-                    bottomSheetFragment.setTags(postsDan!![pager_browse.currentItem])
-                }
-                Constants.TYPE_MOEBOORU -> {
-                    bottomSheetFragment.setTags(postsMoe!![pager_browse.currentItem])
-                }
+                Constants.TYPE_DANBOORU -> TagBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
+                else -> TagBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
+            }.apply {
+                show(supportFragmentManager, "tags")
             }
-            bottomSheetFragment.show(supportFragmentManager, "tags")
         }
     }
 
