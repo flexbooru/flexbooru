@@ -35,6 +35,7 @@ import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.widget.LinkTransformationMethod
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -122,7 +123,10 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         view.findViewById<TextView>(R.id.user_name).text = name
         view.findViewById<TextView>(R.id.user_id).text = userId.toString()
         view.findViewById<TextView>(R.id.created_date).text = date
-        view.findViewById<TextView>(R.id.source).text = source
+        view.findViewById<TextView>(R.id.source).apply {
+            text = source
+            transformationMethod = LinkTransformationMethod()
+        }
         view.findViewById<TextView>(R.id.rating).text =
             when (rating) {
                 "s" -> getString(R.string.browse_info_rating_safe)
@@ -133,7 +137,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         if (parent > 0) {
             view.findViewById<TextView>(R.id.parent).text = parent.toString()
         } else {
-            view.findViewById<LinearLayout>(R.id.source_container).visibility = View.GONE
+            view.findViewById<LinearLayout>(R.id.parent_container).visibility = View.GONE
         }
         if (type == Constants.TYPE_MOEBOORU  && userId > 0) {
             BooruManager.getBooruByUid(Settings.instance().activeBooruUid)?.let { booru ->
