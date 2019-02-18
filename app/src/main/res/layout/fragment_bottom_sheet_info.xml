@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 by onlymash <im@fiepi.me>, All rights reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free Software
+  ~ Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with
+  ~ this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="400dp">
+    <include layout="@layout/toolbar_bottom_sheet_dialog"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:id="@+id/user_container"
+            android:background="?android:attr/selectableItemBackground">
+
+        <onlymash.flexbooru.widget.CircularImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:src="@drawable/avatar_account"
+                app:civ_border="true"
+                app:civ_border_color="@color/grey_10"
+                app:civ_border_width="2dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+                android:id="@+id/user_name"
+                android:gravity="center_vertical|start"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="15dp"
+                android:textAppearance="?android:attr/textAppearanceListItem"
+                android:textColor="?android:attr/textColorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/user_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/user_id"/>
+
+        <TextView
+                android:id="@+id/user_id"
+                android:gravity="center_vertical|start"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="15dp"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                app:layout_constraintTop_toBottomOf="@+id/user_name"
+                app:layout_constraintStart_toEndOf="@id/user_avatar"
+                app:layout_constraintEnd_toStartOf="@id/created_date"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+                android:id="@+id/created_date"
+                android:gravity="center_vertical|end"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                app:layout_constraintTop_toTopOf="@+id/user_id"
+                app:layout_constraintStart_toEndOf="@id/user_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+            android:id="@+id/source_container"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        <TextView
+                android:text="@string/browse_info_source"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/source"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:gravity="center_vertical|end"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:autoLink="web"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/rating_container"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        <TextView
+                android:text="@string/browse_info_rating"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/rating"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:gravity="center_vertical|end"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/score_container"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        <TextView
+                android:text="@string/browse_info_score"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/score"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:gravity="center_vertical|end"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/parent_container"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        <TextView
+                android:text="@string/browse_info_parent"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:gravity="center_vertical|end"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
+</LinearLayout>

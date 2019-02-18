@@ -43,7 +43,6 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagAdapter
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 import onlymash.flexbooru.ui.viewmodel.TagViewModel
-import onlymash.flexbooru.widget.SearchBar
 
 class TagFragment : ListFragment() {
 

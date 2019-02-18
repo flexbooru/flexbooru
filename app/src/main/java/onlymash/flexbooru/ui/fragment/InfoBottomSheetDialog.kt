@@ -1,0 +1,179 @@
+/*
+ * Copyright (C) 2019 by onlymash <im@fiepi.me>, All rights reserved
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package onlymash.flexbooru.ui.fragment
+
+import android.app.Dialog
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import onlymash.flexbooru.Constants
+import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.AccountActivity
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
+
+class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
+
+    companion object {
+        private const val POST_TYPE_KEY = "post_type"
+        private const val USER_NAME_KEY = "name"
+        private const val USER_ID_KEY = "id"
+        private const val DATE_KEY = "date"
+        private const val SOURCE_KEY = "source"
+        private const val RATING_KEY = "rating"
+        private const val SCORE_KEY = "score"
+        private const val PARENT_KEY = "parent"
+        fun create(post: Any?): InfoBottomSheetDialog {
+            return InfoBottomSheetDialog().apply {
+                arguments = when (post) {
+                    is PostDan -> Bundle().apply {
+                        putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU)
+                        putString(USER_NAME_KEY, post.uploader_name)
+                        putInt(USER_ID_KEY, post.uploader_id)
+                        putString(DATE_KEY, post.created_at)
+                        putString(SOURCE_KEY, post.source)
+                        putString(RATING_KEY, post.rating)
+                        putInt(SCORE_KEY, post.score)
+                        putInt(PARENT_KEY, post.parent_id ?: -1)
+                    }
+                    is PostMoe -> Bundle().apply {
+                        putInt(POST_TYPE_KEY, Constants.TYPE_MOEBOORU)
+                        putString(USER_NAME_KEY, post.author)
+                        putInt(USER_ID_KEY, post.creator_id)
+                        putInt(DATE_KEY, post.created_at)
+                        putString(SOURCE_KEY, post.source)
+                        putString(RATING_KEY, post.rating)
+                        putInt(SCORE_KEY, post.score)
+                        putInt(PARENT_KEY, post.parent_id ?: -1)
+                    }
+                    else -> throw IllegalStateException("unknown post type")
+                }
+            }
+        }
+    }
+
+    private var type = -1
+    private var name = ""
+    private var userId = -1
+    private var date = ""
+    private var source = ""
+    private var rating = ""
+    private var score = -1
+    private var parent = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            bundle.apply {
+                type = getInt(POST_TYPE_KEY)
+                when (type) {
+                    Constants.TYPE_DANBOORU -> {
+                        name = getString(USER_NAME_KEY) ?: ""
+                        userId = getInt(USER_ID_KEY, -1)
+                        date = formatDate(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(getString(DATE_KEY)).time).toString()
+                        source = getString(SOURCE_KEY) ?: ""
+                        rating = getString(RATING_KEY) ?: ""
+                        score = getInt(SCORE_KEY, -1)
+                        parent = getInt(PARENT_KEY, -1)
+                    }
+                    Constants.TYPE_MOEBOORU -> {
+                        name = getString(USER_NAME_KEY) ?: ""
+                        userId = getInt(USER_ID_KEY, -1)
+                        date = formatDate(getInt(DATE_KEY) * 1000L).toString()
+                        source = getString(SOURCE_KEY) ?: ""
+                        rating = getString(RATING_KEY) ?: ""
+                        score = getInt(SCORE_KEY, -1)
+                        parent = getInt(PARENT_KEY, -1)
+                    }
+                }
+            }
+        }
+    }
+    private lateinit var behavior: BottomSheetBehavior<View>
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        val view = View.inflate(requireContext(), R.layout.fragment_bottom_sheet_info, null)
+        view.findViewById<TextView>(R.id.user_name).text = name
+        view.findViewById<TextView>(R.id.user_id).text = userId.toString()
+        view.findViewById<TextView>(R.id.created_date).text = date
+        view.findViewById<TextView>(R.id.source).text = source
+        view.findViewById<TextView>(R.id.rating).text =
+            when (rating) {
+                "s" -> getString(R.string.browse_info_rating_safe)
+                "q" -> getString(R.string.browse_info_rating_questionable)
+                else -> getString(R.string.browse_info_rating_explicit)
+            }
+        view.findViewById<TextView>(R.id.score).text = score.toString()
+        if (parent > 0) {
+            view.findViewById<TextView>(R.id.parent).text = parent.toString()
+        } else {
+            view.findViewById<LinearLayout>(R.id.source_container).visibility = View.GONE
+        }
+        if (type == Constants.TYPE_MOEBOORU  && userId > 0) {
+            BooruManager.getBooruByUid(Settings.instance().activeBooruUid)?.let { booru ->
+                GlideApp.with(this)
+                    .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, userId))
+                    .placeholder(resources.getDrawable(R.drawable.avatar_account, requireContext().theme))
+                    .into(view.findViewById(R.id.user_avatar))
+            }
+        }
+        view.findViewById<Toolbar>(R.id.toolbar).apply {
+            setTitle(R.string.browse_info_title)
+            setNavigationOnClickListener {
+                dismiss()
+            }
+        }
+        view.findViewById<ConstraintLayout>(R.id.user_container).setOnClickListener {
+            startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
+                putExtra(AccountActivity.USER_ID_KEY, userId)
+                putExtra(AccountActivity.USER_NAME_KEY, name)
+            })
+            dismiss()
+        }
+        dialog.setContentView(view)
+        behavior = BottomSheetBehavior.from(view.parent as View)
+        behavior.peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
+        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    dismiss()
+                }
+            }
+
+        })
+        return dialog
+    }
+    override fun onStart() {
+        super.onStart()
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+}

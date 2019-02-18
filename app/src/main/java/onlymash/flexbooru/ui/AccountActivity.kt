@@ -72,11 +72,14 @@ class AccountActivity : AppCompatActivity() {
             }
             type == Constants.TYPE_MOEBOORU && extras != null -> {
                 val id = extras.getInt(USER_ID_KEY, -1)
+                val name = extras.getString(USER_NAME_KEY) ?: ""
                 if (id > 0) {
-                    user = User(id = id, name = "")
-                    ServiceLocator.instance().getUserFinder().apply {
-                        setFindUserListener(findUserListener)
-                        findMoeUserById(id, booru!!)
+                    user = User(id = id, name = name)
+                    if (name.isBlank()) {
+                        ServiceLocator.instance().getUserFinder().apply {
+                            setFindUserListener(findUserListener)
+                            findMoeUserById(id, booru!!)
+                        }
                     }
                 }
             }

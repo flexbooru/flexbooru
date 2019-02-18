@@ -46,6 +46,7 @@ import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
+import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.util.UserAgent
 import java.io.File
@@ -250,6 +251,14 @@ class BrowseActivity : AppCompatActivity() {
                 else -> TagBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
             }.apply {
                 show(supportFragmentManager, "tags")
+            }
+        }
+        post_info.setOnClickListener {
+            when (type) {
+                Constants.TYPE_DANBOORU -> InfoBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
+                else -> InfoBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
+            }.apply {
+                show(supportFragmentManager, "info")
             }
         }
     }

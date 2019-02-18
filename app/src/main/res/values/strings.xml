@@ -89,6 +89,14 @@
     <string name="browse_download">Download</string>
     <string name="browse_tag_exclude">Exclude</string>
     <string name="browse_tag_include">Include</string>
+    <string name="browse_info_source">Source</string>
+    <string name="browse_info_rating">Rating</string>
+    <string name="browse_info_rating_safe">Safe</string>
+    <string name="browse_info_rating_questionable">Questionable</string>
+    <string name="browse_info_rating_explicit">Explicit</string>
+    <string name="browse_info_score">Score</string>
+    <string name="browse_info_parent">Parent</string>
+    <string name="browse_info_title">Information</string>
 
     <string name="title_account_config">Account Config</string>
     <string name="title_account_config_and_booru">Account Config - %s</string>
