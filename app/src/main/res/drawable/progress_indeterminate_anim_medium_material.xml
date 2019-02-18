@@ -14,20 +14,12 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/photo_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/photo_view"
-            android:transitionName="post_img"
-            android:scaleType="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    <include
-            android:visibility="gone"
-            layout="@layout/exoplayer"/>
-</FrameLayout>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:drawable="@drawable/vector_drawable_progress_bar_medium" >
+    <target
+            android:name="progressBar"
+            android:animation="@animator/progress_indeterminate_material" />
+    <target
+            android:name="root"
+            android:animation="@animator/progress_indeterminate_rotation_material" />
+</animated-vector>

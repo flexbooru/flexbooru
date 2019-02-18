@@ -18,16 +18,12 @@ package onlymash.flexbooru.ui.adapter
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
+import android.graphics.drawable.Animatable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
@@ -70,8 +66,6 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         photoView.setOnViewTapListener { _, _, _ ->
             photoViewListener?.onClickPhotoView()
         }
-        val progressBar: ProgressBar = view.findViewById(R.id.progress_bar)
-        progressBar.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         var ext = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
@@ -89,41 +83,23 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         if (!url.isNullOrBlank()) {
             when (ext == "jpg" || ext == "png" || ext == "gif" || ext.isBlank()) {
                 true -> {
+                    val placeholder = ContextCompat.getDrawable(container.context,
+                        R.drawable.progress_indeterminate_anim_medium_material)
+                    if (placeholder is Animatable) {
+                        placeholder.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
+                        placeholder.start()
+                    }
                     glideRequests.load(url)
                         .fitCenter()
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                progressBar.visibility = View.GONE
-                                return false
-                            }
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                progressBar.visibility = View.GONE
-                                return false
-                            }
-
-                        })
+                        .placeholder(placeholder)
                         .into(photoView)
                 }
                 false -> {
-                    progressBar.visibility = View.GONE
                     val playerView: PlayerView = view.findViewById(R.id.player_view)
                     playerView.visibility = View.VISIBLE
                     playerView.tag = String.format("player_%d", position)
                 }
             }
-        } else {
-            progressBar.visibility = View.GONE
         }
         container.addView(view)
         return view
