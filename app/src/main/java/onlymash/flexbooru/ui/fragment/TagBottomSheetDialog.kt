@@ -83,40 +83,42 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         arguments?.let { bundle ->
             when (bundle.getInt(POST_TYPE)) {
                 Constants.TYPE_DANBOORU -> {
-                    bundle.getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isEmpty()) return@forEach
-                        tags.add(TagFilter(
-                            booru_uid = booruUid,
-                            name = tag,
-                            type = TagViewHolder.GENERAL))
-                    }
-                    bundle.getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isEmpty()) return@forEach
-                        tags.add(TagFilter(
-                            booru_uid = booruUid,
-                            name = tag,
-                            type = TagViewHolder.ARTIST))
-                    }
-                    bundle.getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isEmpty()) return@forEach
-                        tags.add(TagFilter(
-                            booru_uid = booruUid,
-                            name = tag,
-                            type = TagViewHolder.COPYRIGHT))
-                    }
-                    bundle.getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isEmpty()) return@forEach
-                        tags.add(TagFilter(
-                            booru_uid = booruUid,
-                            name = tag,
-                            type = TagViewHolder.CHARACTER))
-                    }
-                    bundle.getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isEmpty()) return@forEach
-                        tags.add(TagFilter(
-                            booru_uid = booruUid,
-                            name = tag,
-                            type = TagViewHolder.META))
+                    bundle.apply {
+                        getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                            if (tag.isEmpty()) return@forEach
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.GENERAL))
+                        }
+                        getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                            if (tag.isEmpty()) return@forEach
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.ARTIST))
+                        }
+                        getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                            if (tag.isEmpty()) return@forEach
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.COPYRIGHT))
+                        }
+                        getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                            if (tag.isEmpty()) return@forEach
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.CHARACTER))
+                        }
+                        getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                            if (tag.isEmpty()) return@forEach
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.META))
+                        }
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
