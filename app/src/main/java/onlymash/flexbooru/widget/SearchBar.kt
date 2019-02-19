@@ -213,6 +213,10 @@ class SearchBar @JvmOverloads constructor(
         setState(STATE_SEARCH)
     }
 
+    fun disableSearchState() {
+        setState(STATE_NORMAL)
+    }
+
     private fun setState(state: Int, animation: Boolean, showIME: Boolean) {
         if (this.state == state) return
         val oldState = this.state

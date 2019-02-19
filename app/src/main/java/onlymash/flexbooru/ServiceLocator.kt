@@ -31,6 +31,7 @@ import onlymash.flexbooru.repository.post.PostData
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.repository.tag.TagData
 import onlymash.flexbooru.repository.tag.TagRepository
+import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -74,6 +75,8 @@ interface ServiceLocator {
     fun getPostLoader(): PostLoader
 
     fun getUserFinder(): UserFinder
+
+    fun getTagFilterDataSource(): TagFilterDataSource
 }
 
 /**
@@ -134,6 +137,9 @@ open class DefaultServiceLocator : ServiceLocator {
             networkExecutor = getNetworkExecutor()
         )
     }
+
+    override fun getTagFilterDataSource(): TagFilterDataSource =
+        TagFilterDataSource(FlexbooruDatabase.tagFilterDao)
 
     override fun getNetworkExecutor(): Executor = NETWORK_IO
 

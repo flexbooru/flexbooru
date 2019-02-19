@@ -21,18 +21,19 @@ import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.ui.viewholder.TagFilterViewHolder
 
 class TagFilterAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var tags: MutableList<TagFilter> = mutableListOf(
-        TagFilter(name = "Tag 1"),
-        TagFilter(name = "Tag 2"),
-        TagFilter(name = "Tag 3"),
-        TagFilter(name = "Long tag ..........."),
-        TagFilter(name = "Tag 5"),
-        TagFilter(name = "Long tag ......"),
-        TagFilter(name = "Long tag ......"),
-        TagFilter(name = "Long tag .........."))
+    private var tags: MutableList<TagFilter> = mutableListOf()
     fun updateData(tags: MutableList<TagFilter>) {
         this.tags = tags
         notifyDataSetChanged()
+    }
+    fun getSelectedTagsString(): String {
+        var str = ""
+        tags.forEach {
+            if (it.checked) {
+                str = String.format("%s %s", it.name, str)
+            }
+        }
+        return str.trim()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         TagFilterViewHolder.create(parent)

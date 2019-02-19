@@ -45,6 +45,7 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
+import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.ui.BrowseActivity
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -52,6 +53,7 @@ import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
+import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
 import onlymash.flexbooru.util.rotate
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
@@ -133,14 +135,8 @@ class PostFragment : ListFragment() {
             }
         }
 
-    private val tagFilterAdapter: TagFilterAdapter by lazy { TagFilterAdapter() }
-    private val flexboxLayoutManager: FlexboxLayoutManager by lazy {
-        FlexboxLayoutManager(requireContext()).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            alignItems = AlignItems.STRETCH
-        }
-    }
+    private lateinit var tagFilterAdapter: TagFilterAdapter
+    private lateinit var tagFilterViewModel: TagFilterViewModel
 
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
@@ -150,12 +146,6 @@ class PostFragment : ListFragment() {
                         !search_bar.isSearchState() && search_layout.visibility == View.GONE -> {
                             search_bar.enableSearchState(showIME = false)
                             viewTransition.showView(1, true)
-                            tags_filter_list.apply {
-                                layoutManager = flexboxLayoutManager
-                                if (adapter == null) {
-                                    adapter = tagFilterAdapter
-                                }
-                            }
                         }
                         else -> search_bar.setText("")
                     }
@@ -371,6 +361,27 @@ class PostFragment : ListFragment() {
                 }
             })
         }
+        tagFilterAdapter = TagFilterAdapter()
+        tags_filter_list.apply {
+            layoutManager = FlexboxLayoutManager(requireContext()).apply {
+                flexWrap = FlexWrap.WRAP
+                flexDirection = FlexDirection.ROW
+                alignItems = AlignItems.STRETCH
+            }
+            adapter = tagFilterAdapter
+        }
+        tagFilterViewModel = getTagFilterViewModel(ServiceLocator.instance().getTagFilterDataSource())
+        tagFilterViewModel.tagsFilter.observe(this, Observer {
+            tagFilterAdapter.updateData(it)
+        })
+        tagFilterViewModel.loadTags(Settings.instance().activeBooruUid)
+        action_search.setOnClickListener {
+            val tagString = tagFilterAdapter.getSelectedTagsString()
+            if (!tagString.isBlank()) {
+                search_bar.disableSearchState()
+                SearchActivity.startActivity(requireContext(), tagString)
+            }
+        }
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
@@ -426,6 +437,15 @@ class PostFragment : ListFragment() {
                 return PostViewModel(repo) as T
             }
         })[PostViewModel::class.java]
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getTagFilterViewModel(repo: TagFilterRepository): TagFilterViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TagFilterViewModel(repo) as T
+            }
+        })[TagFilterViewModel::class.java]
     }
 
     override fun onDestroy() {

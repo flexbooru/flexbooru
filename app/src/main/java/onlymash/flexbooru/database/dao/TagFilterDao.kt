@@ -15,13 +15,14 @@
 
 package onlymash.flexbooru.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import onlymash.flexbooru.entity.TagFilter
 
 @Dao
 interface TagFilterDao {
     @Query("SELECT * FROM tags_filter WHERE booru_uid = :booruUid")
-    fun getTagByBooruUid(booruUid: Long): TagFilter?
+    fun getTagByBooruUid(booruUid: Long): MutableList<TagFilter>?
 
     @Query("SELECT * FROM tags_filter WHERE uid = :uid")
     fun getTagByTagUid(uid: Long): TagFilter?
@@ -43,4 +44,7 @@ interface TagFilterDao {
 
     @Query("DELETE FROM tags_filter")
     fun deleteAll(): Int
+
+    @Query("SELECT * FROM tags_filter WHERE booru_uid = :booruUid")
+    fun getTagByBooruUidLiveData(booruUid: Long): LiveData<MutableList<TagFilter>>
 }

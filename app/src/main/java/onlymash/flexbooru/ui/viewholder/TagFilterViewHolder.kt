@@ -19,9 +19,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.widget.TagFilterView
 
@@ -39,8 +41,22 @@ class TagFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     init {
         tagFilterView.setOnClickListener {
             tagFilterView.animateCheckedAndInvoke(!tagFilterView.isChecked) {
-                tag?.checked = tagFilterView.isChecked
+                if (tag != null){
+                    tag!!.checked = tagFilterView.isChecked
+                    TagFilterManager.updateTagFilter(tag!!)
+                }
             }
+        }
+        tagFilterView.setOnLongClickListener {
+            AlertDialog.Builder(itemView.context)
+                .setTitle(String.format(itemView.context.getString(R.string.tag_delete_title), tag!!.name))
+                .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                    TagFilterManager.deleteTagFilter(tag!!)
+                }
+                .setNegativeButton(R.string.dialog_no, null)
+                .create()
+                .show()
+            true
         }
     }
     fun bind(tag: TagFilter) {

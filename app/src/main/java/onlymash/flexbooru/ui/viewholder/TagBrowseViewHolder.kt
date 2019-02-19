@@ -25,6 +25,8 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.entity.TagFilter
 
 class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,6 +41,8 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val tagType: TextView = itemView.findViewById(R.id.tag_type)
     private val tagExclude: AppCompatImageView = itemView.findViewById(R.id.tag_exclude)
     private val tagInclude: AppCompatImageView = itemView.findViewById(R.id.tag_include)
+
+    private var type = -1
 
     private var itemListener: ItemListener? = null
 
@@ -61,15 +65,20 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             true
         }
         tagExclude.setOnClickListener {
-
+            val name = tagName.text?:return@setOnClickListener
+            val booruUid = Settings.instance().activeBooruUid
+            TagFilterManager.createTagFilter(TagFilter(booru_uid = booruUid, name = "-$name", type = type))
         }
         tagInclude.setOnClickListener {
-
+            val name = tagName.text?:return@setOnClickListener
+            val booruUid = Settings.instance().activeBooruUid
+            TagFilterManager.createTagFilter(TagFilter(booru_uid = booruUid, name = name.toString(), type = type))
         }
     }
 
     fun bind(tag: TagFilter) {
         tagName.text = tag.name
+        type = tag.type
         when (tag.type) {
             TagViewHolder.GENERAL -> {
                 setType(itemView.context.getString(R.string.tag_type_general))
