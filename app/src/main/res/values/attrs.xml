@@ -35,4 +35,18 @@
             <flag name="end" value="5" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="TagFilterView">
+        <attr name="android:checked" />
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:color" />
+        <attr name="android:padding" />
+        <attr name="android:strokeColor" />
+        <attr name="outlineWidth" format="dimension" />
+        <attr name="actionIcon" format="reference" />
+        <attr name="foreground" format="reference" />
+        <attr name="showIcon" format="boolean" />
+    </declare-styleable>
+    <attr name="tagFilterViewStyle" format="reference" />
 </resources>

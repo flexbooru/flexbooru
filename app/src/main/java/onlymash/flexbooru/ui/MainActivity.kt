@@ -19,13 +19,16 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -402,12 +405,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         fun onClickPosition(position: Int)
     }
 
-    override fun onBackPressed() {
-        if (drawer.isDrawerOpen) {
-            drawer.closeDrawer()
-        } else super.onBackPressed()
-    }
-
     override fun onDestroy() {
         app.sp.unregisterOnSharedPreferenceChangeListener(this)
         BooruManager.listeners.remove(booruListener)
@@ -454,5 +451,24 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
             }
         }
+    }
+
+    private var isExit = false
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawer.isDrawerOpen) {
+                drawer.closeDrawer()
+            } else if (!isExit) {
+                isExit = true
+                Snackbar.make(navigation, getString(R.string.msg_press_twice_to_exit), Snackbar.LENGTH_LONG).show()
+                Handler().postDelayed({
+                    isExit = false
+                }, 2000L)
+            } else {
+                finish()
+            }
+            return false
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

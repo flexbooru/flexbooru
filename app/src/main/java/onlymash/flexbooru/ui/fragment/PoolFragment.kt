@@ -89,11 +89,15 @@ class PoolFragment : ListFragment() {
     private var type = -1
     private var search: Search? = null
 
+    override val stateChangeListener: SearchBar.StateChangeListener
+        get() = object : SearchBar.StateChangeListener {
+            override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
+                toggleArrowLeftDrawable()
+            }
+        }
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
-            override fun onMenuItemClick(menuItem: MenuItem) {
-
-            }
+            override fun onMenuItemClick(menuItem: MenuItem) {}
 
             override fun onApplySearch(query: String) {
                 search!!.keyword = query

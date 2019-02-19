@@ -153,8 +153,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getUserFinder(): UserFinder {
         return UserFinder(
             danbooruApi = getDanbooruApi(),
-            moebooruApi = getMoebooruApi(),
-            ioExecutor = DISK_IO
+            moebooruApi = getMoebooruApi()
         )
     }
 }

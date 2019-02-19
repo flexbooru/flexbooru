@@ -26,10 +26,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.*
+import kotlinx.android.synthetic.main.fragment_bottom_sheet_tag.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
+import kotlinx.android.synthetic.main.search_layout.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
@@ -45,8 +49,11 @@ import onlymash.flexbooru.ui.BrowseActivity
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
+import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
+import onlymash.flexbooru.util.ViewTransition
+import onlymash.flexbooru.util.rotate
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
 
@@ -103,18 +110,59 @@ class PostFragment : ListFragment() {
 
     private lateinit var postAdapter: PostAdapter
 
+    private lateinit var viewTransition: ViewTransition
+
     private var type = -1
     private var search: Search? = null
+
+    override val stateChangeListener: SearchBar.StateChangeListener
+        get() = object : SearchBar.StateChangeListener {
+            override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
+                search_bar.findViewById<View>(R.id.action_expand_tag_filter).rotate(135f)
+                if (requireActivity() is MainActivity) toggleArrowLeftDrawable()
+                when (newState) {
+                    SearchBar.STATE_NORMAL -> {
+                        if (search_layout.visibility != View.GONE) {
+                            viewTransition.showView(0, true)
+                        }
+                    }
+                    SearchBar.STATE_SEARCH -> {
+
+                    }
+                }
+            }
+        }
+
+    private val tagFilterAdapter: TagFilterAdapter by lazy { TagFilterAdapter() }
+    private val flexboxLayoutManager: FlexboxLayoutManager by lazy {
+        FlexboxLayoutManager(requireContext()).apply {
+            flexWrap = FlexWrap.WRAP
+            flexDirection = FlexDirection.ROW
+            alignItems = AlignItems.STRETCH
+        }
+    }
 
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
-
+                if (menuItem.itemId == R.id.action_expand_tag_filter) {
+                    when {
+                        !search_bar.isSearchState() && search_layout.visibility == View.GONE -> {
+                            search_bar.enableSearchState(showIME = false)
+                            viewTransition.showView(1, true)
+                            tags_filter_list.apply {
+                                layoutManager = flexboxLayoutManager
+                                if (adapter == null) {
+                                    adapter = tagFilterAdapter
+                                }
+                            }
+                        }
+                        else -> search_bar.setText("")
+                    }
+                }
             }
-
             override fun onApplySearch(query: String) {
-                if (query != search!!.keyword)
-                    SearchActivity.startActivity(requireContext(), query)
+                if (query != search!!.keyword) SearchActivity.startActivity(requireContext(), query)
             }
         }
 
@@ -285,6 +333,7 @@ class PostFragment : ListFragment() {
     }
 
     private fun init() {
+        viewTransition = ViewTransition(swipe_refresh, search_layout)
         if (requireActivity() !is MainActivity) {
             leftDrawable.progress = 1f
             val keyword = search!!.keyword
@@ -292,6 +341,7 @@ class PostFragment : ListFragment() {
             search_bar.setText(keyword)
         }
         search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
+        search_bar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(

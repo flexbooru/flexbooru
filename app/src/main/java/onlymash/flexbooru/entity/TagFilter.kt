@@ -15,9 +15,22 @@
 
 package onlymash.flexbooru.entity
 
-data class TagBrowse(
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "tags_filter", indices = [(Index(value = ["booru_uid", "name"], unique = true))],
+    foreignKeys = [(ForeignKey(
+        entity = Booru::class,
+        parentColumns = ["uid"],
+        childColumns = ["booru_uid"],
+        onDelete = ForeignKey.CASCADE))])
+data class TagFilter(
+    @PrimaryKey(autoGenerate = true)
     var uid: Long = -1L,
     var booru_uid: Long = -1L,
     var name: String,
-    var type: Int = -1
+    var type: Int = -1,
+    var checked: Boolean = false
 )

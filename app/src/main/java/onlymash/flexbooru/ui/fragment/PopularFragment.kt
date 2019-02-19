@@ -50,6 +50,7 @@ import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
+import onlymash.flexbooru.widget.SearchBar
 import java.util.*
 
 
@@ -152,6 +153,12 @@ class PopularFragment : ListFragment() {
     private var keyword = ""
     private var date = ""
 
+    override val stateChangeListener: SearchBar.StateChangeListener
+        get() = object : SearchBar.StateChangeListener {
+            override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
+                toggleArrowLeftDrawable()
+            }
+        }
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {

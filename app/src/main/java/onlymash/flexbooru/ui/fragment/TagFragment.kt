@@ -43,6 +43,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagAdapter
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 import onlymash.flexbooru.ui.viewmodel.TagViewModel
+import onlymash.flexbooru.widget.SearchBar
 
 class TagFragment : ListFragment() {
 
@@ -98,6 +99,12 @@ class TagFragment : ListFragment() {
     private var type = -1
     private var search: SearchTag? = null
 
+    override val stateChangeListener: SearchBar.StateChangeListener
+        get() = object : SearchBar.StateChangeListener {
+            override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
+                toggleArrowLeftDrawable()
+            }
+        }
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {

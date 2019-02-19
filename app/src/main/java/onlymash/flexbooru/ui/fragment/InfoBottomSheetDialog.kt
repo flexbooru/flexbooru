@@ -23,6 +23,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.Constants
@@ -35,6 +36,7 @@ import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 import java.text.SimpleDateFormat
 import java.util.*
@@ -143,8 +145,8 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             BooruManager.getBooruByUid(Settings.instance().activeBooruUid)?.let { booru ->
                 GlideApp.with(this)
                     .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, userId))
-                    .placeholder(resources.getDrawable(R.drawable.avatar_account, requireContext().theme))
-                    .into(view.findViewById(R.id.user_avatar))
+                    .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+                    .into(view.findViewById<CircularImageView>(R.id.user_avatar))
             }
         }
         view.findViewById<Toolbar>(R.id.toolbar).apply {

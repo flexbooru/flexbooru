@@ -27,7 +27,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
-import onlymash.flexbooru.entity.TagBrowse
+import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagBrowseAdapter
 import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
@@ -69,7 +69,7 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         }
     }
     private lateinit var behavior: BottomSheetBehavior<View>
-    private var tags: MutableList<TagBrowse> = mutableListOf()
+    private var tags: MutableList<TagFilter> = mutableListOf()
     private val itemListener = object : TagBrowseViewHolder.ItemListener {
         override fun onClickItem(keyword: String) {
             SearchActivity.startActivity(requireContext(), keyword)
@@ -84,31 +84,31 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             when (bundle.getInt(POST_TYPE)) {
                 Constants.TYPE_DANBOORU -> {
                     bundle.getString(TAG_GENERAL_KEY)?.split(" ")?.forEach { tag ->
-                        tags.add(TagBrowse(
+                        tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.GENERAL))
                     }
                     bundle.getString(TAG_ARTIST_KEY)?.split(" ")?.forEach { tag ->
-                        tags.add(TagBrowse(
+                        tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.ARTIST))
                     }
                     bundle.getString(TAG_COPYRIGHT_KEY)?.split(" ")?.forEach { tag ->
-                        tags.add(TagBrowse(
+                        tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.COPYRIGHT))
                     }
                     bundle.getString(TAG_CHARACTER_KEY)?.split(" ")?.forEach { tag ->
-                        tags.add(TagBrowse(
+                        tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.CHARACTER))
                     }
                     bundle.getString(TAG_META_KEY)?.split(" ")?.forEach { tag ->
-                        tags.add(TagBrowse(
+                        tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.META))
@@ -116,7 +116,7 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 }
                 Constants.TYPE_MOEBOORU -> {
                     bundle.getString(TAG_ALL_KEY)?.split(" ")?.forEach {  tag ->
-                        tags.add(TagBrowse(booru_uid = booruUid, name = tag))
+                        tags.add(TagFilter(booru_uid = booruUid, name = tag))
                     }
                 }
                 else -> {

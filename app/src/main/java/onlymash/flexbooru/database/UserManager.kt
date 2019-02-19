@@ -40,7 +40,6 @@ object UserManager {
                 it.onAdd(user)
             }
         }
-        Log.e("UserManager", user.toString())
         return user
     }
 

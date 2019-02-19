@@ -84,4 +84,14 @@
     <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@color/translucent</item>
     </style>
+    <style name="TagFilters">
+        <item name="android:padding">@dimen/spacing_normal</item>
+        <item name="android:strokeColor">?android:textColorTertiary</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="outlineWidth">1dp</item>
+        <item name="foreground">?selectableItemBackground</item>
+        <item name="actionIcon">@drawable/tag_dot</item>
+        <item name="showIcon">true</item>
+    </style>
 </resources>

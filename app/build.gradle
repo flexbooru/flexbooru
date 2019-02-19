@@ -58,6 +58,9 @@ android {
     }
     kapt {
         useBuildCache = true
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
     }
 }
 

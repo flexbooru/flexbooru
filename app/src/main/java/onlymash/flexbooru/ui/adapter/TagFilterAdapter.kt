@@ -18,19 +18,28 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.TagFilter
-import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
+import onlymash.flexbooru.ui.viewholder.TagFilterViewHolder
 
-class TagBrowseAdapter(private val tags: MutableList<TagFilter>,
-                       private val itemListener: TagBrowseViewHolder.ItemListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TagFilterAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var tags: MutableList<TagFilter> = mutableListOf(
+        TagFilter(name = "Tag 1"),
+        TagFilter(name = "Tag 2"),
+        TagFilter(name = "Tag 3"),
+        TagFilter(name = "Long tag ..........."),
+        TagFilter(name = "Tag 5"),
+        TagFilter(name = "Long tag ......"),
+        TagFilter(name = "Long tag ......"),
+        TagFilter(name = "Long tag .........."))
+    fun updateData(tags: MutableList<TagFilter>) {
+        this.tags = tags
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        TagBrowseViewHolder.create(parent)
+        TagFilterViewHolder.create(parent)
 
     override fun getItemCount(): Int = tags.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as TagBrowseViewHolder).apply {
-            bind(tags[position])
-            setItemListener(itemListener)
-        }
+        (holder as TagFilterViewHolder).bind(tags[position])
     }
 }

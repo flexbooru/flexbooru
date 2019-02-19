@@ -45,15 +45,14 @@ abstract class ListFragment : Fragment() {
 
     abstract val searchBarHelper: SearchBarHelper
 
-    private val helper = object : SearchBar.Helper {
+    abstract val stateChangeListener: SearchBar.StateChangeListener
 
+    private val helper = object : SearchBar.Helper {
         override fun onLeftButtonClick() {
             val activity = requireActivity()
-            if (leftDrawable.progress > 0f && activity is MainActivity) {
-                toggleArrow(leftDrawable)
-            } else if (activity is MainActivity) {
+            if (activity is MainActivity) {
                 activity.drawer.openDrawer()
-            } else {
+            } else if (activity !is MainActivity) {
                 activity.onBackPressed()
             }
         }
@@ -63,7 +62,7 @@ abstract class ListFragment : Fragment() {
         }
 
         override fun onClickTitle() {
-            if (requireActivity() is MainActivity) toggleArrow(leftDrawable)
+
         }
 
         override fun onSearchEditTextClick() {
@@ -72,12 +71,15 @@ abstract class ListFragment : Fragment() {
 
         override fun onApplySearch(query: String) {
             searchBarHelper.onApplySearch(query)
-            Log.i("ListFragment", query)
         }
 
         override fun onSearchEditTextBackPressed() {
-            if (requireActivity() is MainActivity) toggleArrow(leftDrawable)
+
         }
+    }
+
+    internal fun toggleArrowLeftDrawable() {
+        toggleArrow(leftDrawable)
     }
 
     private fun toggleArrow(drawerArrow: DrawerArrowDrawable) {
@@ -137,6 +139,7 @@ abstract class ListFragment : Fragment() {
         search_bar.apply {
             setLeftDrawable(leftDrawable)
             setHelper(helper)
+            setStateChangeListener(stateChangeListener)
         }
         searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
     }

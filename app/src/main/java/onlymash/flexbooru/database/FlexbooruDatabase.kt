@@ -29,8 +29,9 @@ import onlymash.flexbooru.entity.*
     (Booru::class), (User::class),
     (PoolDan::class), (PoolMoe::class),
     (TagDan::class), (TagMoe::class),
-    (ArtistDan::class), (ArtistMoe::class)],
-    version = 6, exportSchema = false)
+    (ArtistDan::class), (ArtistMoe::class),
+    (TagFilter::class)],
+    version = 6, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -43,6 +44,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
         }
         val booruDao get() = instance.booruDao()
         val userDao get() = instance.userDao()
+        val tagFilterDao get() = instance.tagFilterDao()
     }
 
     abstract fun postDanDao(): PostDanDao
@@ -64,4 +66,6 @@ abstract class FlexbooruDatabase : RoomDatabase() {
     abstract fun artistDanDao(): ArtistDanDao
 
     abstract fun artistMoeDao(): ArtistMoeDao
+
+    abstract fun tagFilterDao(): TagFilterDao
 }

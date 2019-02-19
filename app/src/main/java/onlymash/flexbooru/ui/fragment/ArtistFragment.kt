@@ -92,6 +92,13 @@ class ArtistFragment : ListFragment() {
     private var type = -1
     private var search: SearchArtist? = null
 
+    override val stateChangeListener: SearchBar.StateChangeListener
+        get() = object : SearchBar.StateChangeListener {
+            override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
+                toggleArrowLeftDrawable()
+            }
+        }
+
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {

@@ -55,3 +55,21 @@ fun View.toggleArrow(show: Boolean, delay: Boolean): Boolean =
             false
         }
     }
+
+fun View.rotate(degree: Float): Boolean =
+    when (rotation) {
+        0f -> {
+            animate().apply {
+                duration = 300
+                rotation(degree)
+            }
+            true
+        }
+        else -> {
+            animate().apply {
+                duration = 300
+                rotation(0f)
+            }
+            false
+        }
+    }

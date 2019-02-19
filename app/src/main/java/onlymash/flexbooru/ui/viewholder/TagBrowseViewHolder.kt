@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.viewholder
 
 import android.content.ClipData
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,7 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.TagBrowse
+import onlymash.flexbooru.entity.TagFilter
 
 class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
@@ -69,7 +68,7 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    fun bind(tag: TagBrowse) {
+    fun bind(tag: TagFilter) {
         tagName.text = tag.name
         when (tag.type) {
             TagViewHolder.GENERAL -> {

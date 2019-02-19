@@ -44,7 +44,6 @@ class SearchBar @JvmOverloads constructor(
 
         const val STATE_NORMAL = 0
         const val STATE_SEARCH = 1
-        const val STATE_SEARCH_LIST = 2
     }
     private var state = STATE_NORMAL
 
@@ -60,7 +59,6 @@ class SearchBar @JvmOverloads constructor(
         }
 
         override fun onBackPressed() {
-            hideIME()
             if (state == STATE_SEARCH) {
                 setState(STATE_NORMAL)
             }
@@ -116,8 +114,9 @@ class SearchBar @JvmOverloads constructor(
             if (state == STATE_SEARCH) {
                 hideIME()
                 setState(STATE_NORMAL)
+            } else {
+                helper?.onLeftButtonClick()
             }
-            helper?.onLeftButtonClick()
         }
         search_title.setOnClickListener(this)
         search_edit_text.apply {
@@ -128,6 +127,8 @@ class SearchBar @JvmOverloads constructor(
         viewTransition = ViewTransition(search_title, search_edit_text)
     }
 
+    fun isSearchState(): Boolean = state == STATE_SEARCH
+
     fun applySearch() {
         val text = search_edit_text.text
         if (!text.isNullOrBlank()) {
@@ -136,6 +137,7 @@ class SearchBar @JvmOverloads constructor(
                 helper?.onApplySearch(query)
             }
         }
+        setState(STATE_NORMAL)
     }
 
     fun getEditTextTextSize(): Float = search_edit_text.textSize
@@ -188,7 +190,7 @@ class SearchBar @JvmOverloads constructor(
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is Bundle) {
             super.onRestoreInstanceState(state.getParcelable(STATE_KEY_SUPER))
-            setState(state.getInt(STATE_KEY_STATE), false)
+            setState(state = state.getInt(STATE_KEY_STATE), animation = false, showIME = false)
         }
     }
 
@@ -196,10 +198,22 @@ class SearchBar @JvmOverloads constructor(
     fun getState(): Int = state
 
     fun setState(state: Int) {
-        setState(state, true)
+        setState(state = state, animation = true, showIME = true)
     }
 
-    private fun setState(state: Int, animation: Boolean) {
+    fun setState(state: Int, showIME: Boolean) {
+        setState(state = state, animation = true, showIME = showIME)
+    }
+
+    fun enableSearchState(showIME: Boolean) {
+        setState(STATE_SEARCH, showIME)
+    }
+
+    fun enableSearchState() {
+        setState(STATE_SEARCH)
+    }
+
+    private fun setState(state: Int, animation: Boolean, showIME: Boolean) {
         if (this.state == state) return
         val oldState = this.state
         this.state = state
@@ -207,16 +221,12 @@ class SearchBar @JvmOverloads constructor(
             STATE_NORMAL -> {
                 viewTransition.showView(1, animation)
                 search_edit_text.requestFocus()
-                showIME()
+                if (showIME) showIME()
                 stateChangeListener?.onStateChange(state, oldState, animation)
             }
             STATE_SEARCH -> {
-                when (state) {
-                    STATE_NORMAL -> viewTransition.showView(0, animation)
-                    else -> {
-
-                    }
-                }
+                hideIME()
+                viewTransition.showView(0, animation)
                 stateChangeListener?.onStateChange(state, oldState, animation)
             }
         }
