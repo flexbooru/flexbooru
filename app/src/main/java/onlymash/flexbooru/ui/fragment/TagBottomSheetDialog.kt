@@ -83,31 +83,36 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         arguments?.let { bundle ->
             when (bundle.getInt(POST_TYPE)) {
                 Constants.TYPE_DANBOORU -> {
-                    bundle.getString(TAG_GENERAL_KEY)?.split(" ")?.forEach { tag ->
+                    bundle.getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isEmpty()) return@forEach
                         tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.GENERAL))
                     }
-                    bundle.getString(TAG_ARTIST_KEY)?.split(" ")?.forEach { tag ->
+                    bundle.getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isEmpty()) return@forEach
                         tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.ARTIST))
                     }
-                    bundle.getString(TAG_COPYRIGHT_KEY)?.split(" ")?.forEach { tag ->
+                    bundle.getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isEmpty()) return@forEach
                         tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.COPYRIGHT))
                     }
-                    bundle.getString(TAG_CHARACTER_KEY)?.split(" ")?.forEach { tag ->
+                    bundle.getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isEmpty()) return@forEach
                         tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
                             type = TagViewHolder.CHARACTER))
                     }
-                    bundle.getString(TAG_META_KEY)?.split(" ")?.forEach { tag ->
+                    bundle.getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isEmpty()) return@forEach
                         tags.add(TagFilter(
                             booru_uid = booruUid,
                             name = tag,
@@ -115,7 +120,8 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
-                    bundle.getString(TAG_ALL_KEY)?.split(" ")?.forEach {  tag ->
+                    bundle.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
+                        if (tag.isEmpty()) return@forEach
                         tags.add(TagFilter(booru_uid = booruUid, name = tag))
                     }
                 }
