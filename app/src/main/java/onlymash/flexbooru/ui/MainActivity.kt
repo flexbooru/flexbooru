@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,6 +37,8 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.R
@@ -77,7 +80,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             .withActivity(this)
             .withOnAccountHeaderListener(headerItemClickListener)
             .build()
-        header.addProfile(profileSettingDrawerItem, header.profiles.size)
+        header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
         drawer = DrawerBuilder()
             .withActivity(this)
             .withTranslucentStatusBar(false)
@@ -253,12 +256,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
-    private val headerItemClickListener =
-        AccountHeader.OnAccountHeaderListener { _, profile, _ ->
+    private val headerItemClickListener = object : AccountHeader.OnAccountHeaderListener {
+        override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
             val uid = profile.identifier
             when (uid) {
                 BOORU_MANAGE_PROFILE_ID -> {
-                    startActivity(Intent(this, BooruActivity::class.java))
+                    startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                 }
                 else -> {
                     Settings.instance().activeBooruUid = uid
@@ -271,11 +274,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     }
                 }
             }
-            false
+            return false
         }
+    }
 
-    private val drawerItemClickListener =
-        Drawer.OnDrawerItemClickListener { _, _, drawerItem ->
+    private val drawerItemClickListener = object : Drawer.OnDrawerItemClickListener {
+        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
             when (drawerItem.identifier) {
                 SETTINGS_DRAWER_ITEM_ID -> {
                     startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
@@ -284,7 +288,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     val user = getCurrentUser()
                     val booru = getCurrentBooru()
                     if (user != null && booru != null) {
-                        startActivity(Intent(this, AccountActivity::class.java))
+                        startActivity(Intent(this@MainActivity, AccountActivity::class.java))
                     } else {
                         startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
                     }
@@ -293,8 +297,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
                 }
             }
-            return@OnDrawerItemClickListener false
+            return false
         }
+    }
 
     private val pageChangeListener =
         object : ViewPager.OnPageChangeListener {
