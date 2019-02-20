@@ -55,3 +55,14 @@ object UrlUtil {
                 suffix == "JPEG"
     }
 }
+
+fun String.isImage(): Boolean {
+    val ext = substring(lastIndexOf(".") + 1)
+    return ext == "jpg" || ext == "png" || ext == "gif" ||
+            ext == "webp"
+}
+fun String.isImageNotWebp(): Boolean {
+    val ext = substring(lastIndexOf(".") + 1)
+    return ext == "jpg" || ext == "png" || ext == "gif"
+}
+fun String.isWebp(): Boolean = substring(lastIndexOf(".") + 1) == "webp"

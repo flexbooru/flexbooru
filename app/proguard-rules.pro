@@ -19,13 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.SerializationKt
--keep,includedescriptorclasses class class onlymash.flexbooru.**$$serializer { *; }
--keepclassmembers class onlymash.flexbooru.** {
-    *** Companion;
-}
--keepclasseswithmembers class class onlymash.flexbooru.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}

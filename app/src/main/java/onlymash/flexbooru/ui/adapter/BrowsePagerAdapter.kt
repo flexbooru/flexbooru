@@ -33,6 +33,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.util.isImage
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter() {
 
@@ -70,26 +71,23 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         photoView.setOnViewTapListener { _, _, _ ->
             photoViewListener?.onClickPhotoView()
         }
-        var ext = ""
         var previewUrl = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsDan[position].id)
-                ext = postsDan[position].file_ext ?: ""
                 previewUrl = postsDan[position].preview_file_url!!
                 postsDan[position].large_file_url
             }
             Constants.TYPE_MOEBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsMoe[position].id)
-                ext = postsMoe[position].file_ext ?: ""
                 previewUrl = postsMoe[position].preview_url
                 postsMoe[position].sample_url
             }
-            else -> null
+            else -> ""
         }
         if (!url.isNullOrBlank()) {
-            when (ext == "jpg" || ext == "png" || ext == "gif" || ext.isBlank()) {
-                true -> {
+            when {
+                url.isImage() -> {
                     glideRequests
                         .load(previewUrl)
                         .listener(object : RequestListener<Drawable> {
@@ -126,7 +124,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                         })
                         .into(photoView)
                 }
-                false -> {
+                else -> {
                     val playerView: PlayerView = view.findViewById(R.id.player_view)
                     playerView.visibility = View.VISIBLE
                     playerView.tag = String.format("player_%d", position)

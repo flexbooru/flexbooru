@@ -49,6 +49,7 @@ import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.util.isImage
 import java.io.File
 import java.net.URLDecoder
 
@@ -75,13 +76,11 @@ class BrowseActivity : AppCompatActivity() {
             postsDan = posts
             var url: String? = null
             var position = 0
-            var ext = ""
             if (startId >= 0) {
                 posts.forEachIndexed { index, postDan ->
                     if (postDan.id == startId) {
                         position = index
                         url = postDan.large_file_url
-                        ext = postDan.file_ext ?: ""
                         return@forEachIndexed
                     }
                 }
@@ -91,7 +90,7 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
+            if (!url.isNullOrBlank() && !url!!.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
@@ -106,13 +105,11 @@ class BrowseActivity : AppCompatActivity() {
             postsMoe = posts
             var url: String? = null
             var position = 0
-            var ext = ""
             if (startId >= 0) {
                 posts.forEachIndexed { index, postMoe ->
                     if (postMoe.id == startId) {
                         position = index
                         url = postMoe.sample_url
-                        ext = postMoe.file_ext ?: ""
                         return@forEachIndexed
                     }
                 }
@@ -122,7 +119,7 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
+            if (!url.isNullOrEmpty() && !url!!.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
@@ -148,16 +145,13 @@ class BrowseActivity : AppCompatActivity() {
 
         override fun onPageSelected(position: Int) {
             var url: String? = null
-            var ext = ""
             val id = when {
                 postsDan != null -> {
                     url = postsDan!![position].large_file_url
-                    ext = postsDan!![position].file_ext ?: ""
                     postsDan!![position].id
                 }
                 postsMoe != null -> {
                     url = postsMoe!![position].sample_url
-                    ext = postsMoe!![position].file_ext ?: ""
                     postsMoe!![position].id
                 }
                 else -> -1
@@ -170,7 +164,7 @@ class BrowseActivity : AppCompatActivity() {
             }
             this@BrowseActivity.sendBroadcast(intent)
             playerHolder.stop()
-            if (!url.isNullOrBlank() && ext.isNotBlank() && ext != "jpg" && ext != "png" && ext != "gif") {
+            if (!url.isNullOrBlank() && !url.isImage()) {
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
                     playerHolder.start(uri = Uri.parse(url), playerView = playerView)
