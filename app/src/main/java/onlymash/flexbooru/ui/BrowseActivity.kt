@@ -128,7 +128,7 @@ class BrowseActivity : AppCompatActivity() {
                     if (playerView is PlayerView) {
                         playerHolder.start(uri = Uri.parse(url), playerView = playerView)
                     }
-                }, 500)
+                }, 300)
             }
         }
     }

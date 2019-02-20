@@ -16,14 +16,16 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
@@ -37,6 +39,8 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
     private var type = -1
     private var postsDan: MutableList<PostDan> = mutableListOf()
     private var postsMoe: MutableList<PostMoe> = mutableListOf()
+
+    private val uiHandler = Handler()
 
     @Suppress("UNCHECKED_CAST")
     fun updateData(posts: Any, type: Int) {
@@ -67,15 +71,18 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
             photoViewListener?.onClickPhotoView()
         }
         var ext = ""
+        var previewUrl = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsDan[position].id)
                 ext = postsDan[position].file_ext ?: ""
+                previewUrl = postsDan[position].preview_file_url!!
                 postsDan[position].large_file_url
             }
             Constants.TYPE_MOEBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsMoe[position].id)
                 ext = postsMoe[position].file_ext ?: ""
+                previewUrl = postsMoe[position].preview_url
                 postsMoe[position].sample_url
             }
             else -> null
@@ -83,15 +90,40 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         if (!url.isNullOrBlank()) {
             when (ext == "jpg" || ext == "png" || ext == "gif" || ext.isBlank()) {
                 true -> {
-                    val placeholder = ContextCompat.getDrawable(container.context,
-                        R.drawable.progress_indeterminate_anim_medium_material)
-                    if (placeholder is Animatable) {
-                        placeholder.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
-                        placeholder.start()
-                    }
                     glideRequests
-                        .load(url)
-                        .placeholder(placeholder)
+                        .load(previewUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                uiHandler.post {
+                                    glideRequests
+                                        .load(url)
+                                        .into(photoView)
+                                }
+                                return true
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                uiHandler.post {
+                                    glideRequests
+                                        .load(url)
+                                        .placeholder(resource)
+                                        .into(photoView)
+                                }
+                                return true
+                            }
+
+                        })
                         .into(photoView)
                 }
                 false -> {
