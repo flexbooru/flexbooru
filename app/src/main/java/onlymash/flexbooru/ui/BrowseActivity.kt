@@ -310,7 +310,7 @@ class BrowseActivity : AppCompatActivity() {
                 setDestinationUri(Uri.fromFile(path))
                 addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
             }
-            val downloadId = (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+            (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
         }
     }
 

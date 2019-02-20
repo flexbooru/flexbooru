@@ -35,6 +35,7 @@ import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
+import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.util.formatDate
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
@@ -138,6 +139,9 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         view.findViewById<TextView>(R.id.score).text = score.toString()
         if (parent > 0) {
             view.findViewById<TextView>(R.id.parent).text = parent.toString()
+            view.findViewById<LinearLayout>(R.id.parent_container).setOnClickListener {
+                SearchActivity.startActivity(requireContext(), "parent:$parent")
+            }
         } else {
             view.findViewById<LinearLayout>(R.id.parent_container).visibility = View.GONE
         }
