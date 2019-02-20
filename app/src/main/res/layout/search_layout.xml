@@ -46,11 +46,14 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_search"
                 android:layout_gravity="bottom|end"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/margin_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tint="@color/white"
-                android:src="@drawable/ic_search_24dp"/>
+                app:backgroundTint="?attr/colorPrimary"
+                app:elevation="1dp"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_search_24dp"/>
 
     </androidx.cardview.widget.CardView>
 </LinearLayout>

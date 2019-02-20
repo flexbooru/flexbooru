@@ -14,53 +14,44 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/bottom_bar_container"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/browse_bottom_bar_height"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:minHeight="@dimen/browse_bottom_bar_height">
 
-    <ImageView
+    <ImageButton
             android:id="@+id/post_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/browse_bottom_bar_height"
             android:src="@drawable/ic_share_outline_24dp"
             android:tint="@color/white"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@null"
-            android:layout_marginEnd="@dimen/browse_bottom_bar_height"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/post_tags"/>
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@null"/>
 
-
-    <ImageView
+    <ImageButton
             android:id="@+id/post_tags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/browse_bottom_bar_height"
             android:src="@drawable/ic_bookmark_border_24dp"
             android:tint="@color/white"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@null"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@null"/>
 
-
-    <ImageView
+    <ImageButton
             android:id="@+id/post_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/browse_bottom_bar_height"
             android:src="@drawable/ic_info_outline_24dp"
             android:tint="@color/white"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@null"
-            android:layout_marginStart="@dimen/browse_bottom_bar_height"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/post_tags"/>
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@null"/>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
