@@ -42,34 +42,34 @@ class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : Stagge
         }
     }
 
-    private var mColumnSize = -1
-    private var mColumnSizeChanged = true
-    private var mStrategy: Int = 0
+    private var columnSize = -1
+    private var columnSizeChanged = true
+    private var strategy: Int = 0
 
-    private var mListeners: MutableList<OnUpdateSpanCountListener>? = null
+    private var listeners: MutableList<OnUpdateSpanCountListener>? = null
 
     init {
         setColumnSize(columnSize)
     }
 
     fun setColumnSize(columnSize: Int) {
-        if (columnSize == mColumnSize) {
+        if (this.columnSize == columnSize) {
             return
         }
-        mColumnSize = columnSize
-        mColumnSizeChanged = true
+        this.columnSize = columnSize
+        columnSizeChanged = true
     }
 
     fun setStrategy(strategy: Int) {
-        if (strategy == mStrategy) {
+        if (this.strategy == strategy) {
             return
         }
-        mStrategy = strategy
-        mColumnSizeChanged = true
+        this.strategy = strategy
+        columnSizeChanged = true
     }
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
-        if (mColumnSizeChanged && mColumnSize > 0) {
+        if (columnSizeChanged && columnSize > 0) {
             val totalSpace: Int = if (orientation == StaggeredGridLayoutManager.VERTICAL) {
                 if (View.MeasureSpec.EXACTLY != View.MeasureSpec.getMode(widthSpec)) {
                     throw IllegalStateException("RecyclerView need a fixed width for AutoStaggeredGridLayoutManager")
@@ -82,19 +82,19 @@ class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : Stagge
                 View.MeasureSpec.getSize(heightSpec) - paddingTop - paddingBottom
             }
 
-            val spanCount: Int = when (mStrategy) {
-                STRATEGY_MIN_SIZE -> getSpanCountForMinSize(totalSpace, mColumnSize)
-                STRATEGY_SUITABLE_SIZE -> getSpanCountForSuitableSize(totalSpace, mColumnSize)
-                else -> getSpanCountForMinSize(totalSpace, mColumnSize)
+            val spanCount: Int = when (strategy) {
+                STRATEGY_MIN_SIZE -> getSpanCountForMinSize(totalSpace, columnSize)
+                STRATEGY_SUITABLE_SIZE -> getSpanCountForSuitableSize(totalSpace, columnSize)
+                else -> getSpanCountForMinSize(totalSpace, columnSize)
             }
             setSpanCount(spanCount)
-            mColumnSizeChanged = false
+            columnSizeChanged = false
 
-            if (null != mListeners) {
+            if (null != listeners) {
                 var i = 0
-                val n = mListeners!!.size
+                val n = listeners!!.size
                 while (i < n) {
-                    mListeners!![i].onUpdateSpanCount(spanCount)
+                    listeners!![i].onUpdateSpanCount(spanCount)
                     i++
                 }
             }
@@ -103,15 +103,15 @@ class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : Stagge
     }
 
     fun addOnUpdateSpanCountListener(listener: OnUpdateSpanCountListener) {
-        if (null == mListeners) {
-            mListeners = mutableListOf()
+        if (null == listeners) {
+            listeners = mutableListOf()
         }
-        mListeners!!.add(listener)
+        listeners!!.add(listener)
     }
 
     fun removeOnUpdateSpanCountListener(listener: OnUpdateSpanCountListener) {
-        if (null != mListeners) {
-            mListeners!!.remove(listener)
+        if (null != listeners) {
+            listeners!!.remove(listener)
         }
     }
 

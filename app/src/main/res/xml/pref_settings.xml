@@ -55,4 +55,14 @@
             android:summary="%s"
             android:title="@string/settings_theme_mode"
             app:iconSpaceReserved="true" />
+
+    <!--suppress AndroidElementNotAllowed -->
+    <SimpleMenuPreference
+            android:key="settings_grid_width"
+            android:entries="@array/settings_grid_width_entries"
+            android:entryValues="@array/settings_grid_width_entries_values"
+            android:defaultValue="normal"
+            android:summary="%s"
+            android:title="@string/settings_grid_width"
+            app:iconSpaceReserved="true" />
 </PreferenceScreen>

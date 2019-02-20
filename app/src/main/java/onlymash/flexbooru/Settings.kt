@@ -39,6 +39,10 @@ class Settings(private val sp: SharedPreferences) {
         const val THEME_MODE_AUTO = "auto"
         const val THEME_MODE_DAY = "day"
         const val THEME_MODE_NIGHT = "night"
+        const val GRID_WIDTH = "settings_grid_width"
+        const val GRID_WIDTH_SMALL = "small"
+        const val GRID_WIDTH_NORMAL = "normal"
+        const val GRID_WIDTH_LARGE = "large"
     }
 
     var activeBooruUid: Long
@@ -69,4 +73,8 @@ class Settings(private val sp: SharedPreferences) {
             THEME_MODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
+
+    var gridWidth: String
+        get() = sp.getString(GRID_WIDTH, GRID_WIDTH_NORMAL) ?: GRID_WIDTH_NORMAL
+        set(value) = sp.edit().putString(GRID_WIDTH, value).apply()
 }

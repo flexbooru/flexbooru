@@ -443,7 +443,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            Settings.SAFE_MODE_KEY, Settings.PAGE_SIZE_KEY -> {
+            Settings.SAFE_MODE_KEY, Settings.PAGE_SIZE_KEY, Settings.GRID_WIDTH -> {
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 pager_container.currentItem = currentNavItem

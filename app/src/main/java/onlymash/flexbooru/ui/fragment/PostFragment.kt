@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.*
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
@@ -26,18 +27,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.*
-import kotlinx.android.synthetic.main.fragment_bottom_sheet_tag.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
-import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
@@ -55,6 +52,7 @@ import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
+import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.util.rotate
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
@@ -335,10 +333,11 @@ class PostFragment : ListFragment() {
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
-            columnSize = resources.getDimensionPixelSize(R.dimen.post_item_width),
+            columnSize = resources.gridWidth(),
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
                 setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
             }
+
         postAdapter = PostAdapter(
             glide = glide,
             listener = itemListener,

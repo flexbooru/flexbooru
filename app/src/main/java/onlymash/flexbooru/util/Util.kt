@@ -17,11 +17,13 @@ package onlymash.flexbooru.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.res.Resources
 import android.net.Uri
 import android.text.format.DateFormat
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
 import java.util.*
 
 fun formatDate(time: Long): CharSequence {
@@ -41,3 +43,9 @@ fun Context.launchUrl(uri: Uri) = try {
 } catch (e: ActivityNotFoundException) { e.printStackTrace() }
 
 fun Context.launchUrl(url: String) = this.launchUrl(Uri.parse(url))
+
+fun Resources.gridWidth() = when (Settings.instance().gridWidth) {
+        Settings.GRID_WIDTH_SMALL -> getDimensionPixelSize(R.dimen.post_item_width_small)
+        Settings.GRID_WIDTH_NORMAL -> getDimensionPixelSize(R.dimen.post_item_width_normal)
+        else -> getDimensionPixelSize(R.dimen.post_item_width_large)
+    }

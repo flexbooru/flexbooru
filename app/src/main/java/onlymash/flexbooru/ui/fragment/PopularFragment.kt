@@ -49,6 +49,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
+import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.SearchBar
 import java.util.*
@@ -367,7 +368,7 @@ class PopularFragment : ListFragment() {
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
-            columnSize = resources.getDimensionPixelSize(R.dimen.post_item_width),
+            columnSize = resources.gridWidth(),
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
             setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
         }
