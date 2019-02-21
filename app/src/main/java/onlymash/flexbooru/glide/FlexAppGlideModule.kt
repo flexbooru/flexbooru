@@ -47,7 +47,6 @@ class FlexAppGlideModule : AppGlideModule() {
         val requestOptions = RequestOptions
             .formatOf(DecodeFormat.PREFER_ARGB_8888)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .override(Target.SIZE_ORIGINAL)
 
         builder.setDefaultRequestOptions(requestOptions)
     }

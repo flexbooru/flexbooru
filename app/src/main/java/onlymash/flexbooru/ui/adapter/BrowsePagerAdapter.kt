@@ -22,10 +22,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
@@ -76,7 +74,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         var previewUrl = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
-                photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsDan[position].id)
+                photoView.transitionName = container.context.getString(R.string.post_transition_name, postsDan[position].id)
                 previewUrl = postsDan[position].preview_file_url!!
                 when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsDan[position].getSampleUrl()
@@ -85,7 +83,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsMoe[position].id)
+                photoView.transitionName = container.context.getString(R.string.post_transition_name, postsMoe[position].id)
                 previewUrl = postsMoe[position].preview_url
                 when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsMoe[position].getSampleUrl()
@@ -98,41 +96,17 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
         if (!url.isEmpty()) {
             when {
                 url.isImage() -> {
-                    glideRequests
-                        .load(previewUrl)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                uiHandler.post {
-                                    glideRequests
-                                        .load(url)
-                                        .into(photoView)
-                                }
-                                return true
+                    glideRequests.load(previewUrl)
+                        .into(object : CustomTarget<Drawable>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {
                             }
-
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                uiHandler.post {
-                                    glideRequests
-                                        .load(url)
-                                        .placeholder(resource)
-                                        .into(photoView)
-                                }
-                                return true
+                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                                glideRequests
+                                    .load(url)
+                                    .placeholder(resource)
+                                    .into(photoView)
                             }
-
                         })
-                        .into(photoView)
                 }
                 else -> {
                     val playerView: PlayerView = view.findViewById(R.id.player_view)

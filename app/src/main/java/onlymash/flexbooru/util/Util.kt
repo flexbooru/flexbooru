@@ -16,6 +16,7 @@
 package onlymash.flexbooru.util
 
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
 import android.net.Uri
@@ -50,6 +51,14 @@ fun Resources.gridWidth() = when (Settings.instance().gridWidth) {
         Settings.GRID_WIDTH_NORMAL -> getDimensionPixelSize(R.dimen.post_item_width_normal)
         else -> getDimensionPixelSize(R.dimen.post_item_width_large)
     }
+
+fun Resources.getUri(resId: Int): Uri =
+        Uri.Builder()
+            .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+            .authority(getResourcePackageName(resId))
+            .appendPath(getResourceTypeName(resId))
+            .appendPath(getResourceEntryName(resId))
+            .build()
 
 /* Checks if external storage is available for read and write */
 fun isExternalStorageWritable(): Boolean {
