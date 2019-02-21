@@ -32,7 +32,17 @@
             android:src="@drawable/ic_share_outline_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@null"/>
+            android:contentDescription="@string/action_share"/>
+
+    <ImageButton
+            android:id="@+id/post_save"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/browse_bottom_bar_height"
+            android:src="@drawable/ic_save_outline_24dp"
+            android:tint="@color/white"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/action_save"/>
 
     <ImageButton
             android:id="@+id/post_tags"
@@ -42,7 +52,7 @@
             android:src="@drawable/ic_bookmark_border_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@null"/>
+            android:contentDescription="@string/action_tags"/>
 
     <ImageButton
             android:id="@+id/post_info"
@@ -52,6 +62,6 @@
             android:src="@drawable/ic_info_outline_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@null"/>
+            android:contentDescription="@string/action_info"/>
 
 </LinearLayout>

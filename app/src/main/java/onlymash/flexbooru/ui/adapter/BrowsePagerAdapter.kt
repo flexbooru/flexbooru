@@ -30,6 +30,7 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
@@ -38,6 +39,7 @@ import onlymash.flexbooru.util.isImage
 class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter() {
 
     private var type = -1
+    private val size = Settings.instance().browseSize
     private var postsDan: MutableList<PostDan> = mutableListOf()
     private var postsMoe: MutableList<PostMoe> = mutableListOf()
 
@@ -76,16 +78,24 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
             Constants.TYPE_DANBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsDan[position].id)
                 previewUrl = postsDan[position].preview_file_url!!
-                postsDan[position].large_file_url
+                when (size) {
+                    Settings.POST_SIZE_SAMPLE -> postsDan[position].getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsDan[position].getLargerUrl()
+                    else -> postsDan[position].getOriginUrl()
+                }
             }
             Constants.TYPE_MOEBOORU -> {
                 photoView.transitionName = String.format(container.context.getString(R.string.post_transition_name), postsMoe[position].id)
                 previewUrl = postsMoe[position].preview_url
-                postsMoe[position].sample_url
+                when (size) {
+                    Settings.POST_SIZE_SAMPLE -> postsMoe[position].getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsMoe[position].getLargerUrl()
+                    else -> postsMoe[position].getOriginUrl()
+                }
             }
             else -> ""
         }
-        if (!url.isNullOrBlank()) {
+        if (!url.isEmpty()) {
             when {
                 url.isImage() -> {
                     glideRequests

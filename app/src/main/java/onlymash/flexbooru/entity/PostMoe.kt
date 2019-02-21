@@ -60,4 +60,10 @@ data class PostMoe(
     val is_held: Boolean
 ) {
     var indexInResponse: Int = -1
+
+    fun getSampleUrl(): String = sample_url
+
+    fun getLargerUrl(): String = if (jpeg_url.isNullOrBlank()) getSampleUrl() else jpeg_url
+
+    fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else file_url
 }

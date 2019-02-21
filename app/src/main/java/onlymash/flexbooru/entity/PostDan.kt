@@ -79,4 +79,10 @@ data class PostDan(
     val preview_file_url: String?
 ) {
     var indexInResponse: Int = -1
+
+    fun getSampleUrl(): String = large_file_url ?: ""
+
+    fun getLargerUrl(): String = getSampleUrl()
+
+    fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else file_url
 }

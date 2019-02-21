@@ -22,18 +22,22 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
@@ -51,6 +55,7 @@ import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
+import onlymash.flexbooru.util.FileUtil
 import onlymash.flexbooru.util.UserAgent
 import onlymash.flexbooru.util.isImage
 import java.io.File
@@ -64,8 +69,9 @@ class BrowseActivity : AppCompatActivity() {
         const val EXT_POST_ID_KEY = "post_id"
         const val EXT_POST_POSITION_KEY = "post_position"
         const val EXT_POST_KEYWORD_KEY = "post_keyword"
-        private const val REQUEST_CODE_STORAGE = 10
         private const val PAGER_CURRENT_POSITION_KEY = "current_position"
+        private const val ACTION_DOWNLOAD = 0
+        private const val ACTION_SAVE = 1
         fun startActivity(activity: Activity, view: View, postId: Int, keyword: String) {
             val intent = Intent(activity, BrowseActivity::class.java)
                 .apply {
@@ -223,7 +229,7 @@ class BrowseActivity : AppCompatActivity() {
 
                 }
                 R.id.action_browse_download -> {
-                    checkStoragePermissionAndDownload()
+                    checkStoragePermissionAndAction(ACTION_DOWNLOAD)
                 }
             }
             return@setOnMenuItemClickListener true
@@ -299,6 +305,9 @@ class BrowseActivity : AppCompatActivity() {
                 show(supportFragmentManager, "info")
             }
         }
+        post_save.setOnClickListener {
+            checkStoragePermissionAndAction(ACTION_SAVE)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -312,6 +321,53 @@ class BrowseActivity : AppCompatActivity() {
         if (currentPosition >= 0) pager_browse.currentItem = currentPosition
     }
 
+    private fun save() {
+        val position = pager_browse.currentItem
+        val url = when (type) {
+            Constants.TYPE_DANBOORU -> {
+                when (Settings.instance().browseSize) {
+                    Settings.POST_SIZE_SAMPLE -> postsDan!![position].getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsDan!![position].getLargerUrl()
+                    else -> postsDan!![position].getOriginUrl()
+                }
+            }
+            else -> {
+                when (Settings.instance().browseSize) {
+                    Settings.POST_SIZE_SAMPLE -> postsMoe!![position].getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsMoe!![position].getLargerUrl()
+                    else -> postsMoe!![position].getOriginUrl()
+                }
+            }
+        }
+        GlideApp.with(this)
+            .downloadOnly()
+            .load(url)
+            .into(object : CustomTarget<File>() {
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                    val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        String.format("%s/%s",
+                            getString(R.string.app_name),
+                            "save"))
+                    if (!path.exists()) {
+                        path.mkdirs()
+                    } else if (path.isFile) {
+                        path.delete()
+                        path.mkdirs()
+                    }
+                    val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+                    val file = File(path, fileName)
+                    if (file.exists()) file.delete()
+                    FileUtil.copy(resource, file)
+                    Toast.makeText(this@BrowseActivity,
+                        getString(R.string.msg_file_save_success, file.absolutePath),
+                        Toast.LENGTH_LONG).show()
+                }
+            })
+    }
+
     private fun download() {
         val position = pager_browse.currentItem
         var url = ""
@@ -323,10 +379,8 @@ class BrowseActivity : AppCompatActivity() {
                     host = it[position].host
                     id = it[position].id
                     url = when (Settings.instance().downloadSize) {
-                        Settings.DOWNLOAD_SIZE_ORIGIN -> {
-                            it[position].file_url ?: it[position].large_file_url ?: ""
-                        }
-                        else -> it[position].large_file_url ?: ""
+                        Settings.POST_SIZE_ORIGIN -> it[position].getOriginUrl()
+                        else -> it[position].getLargerUrl()
                     }
                 }
             }
@@ -335,9 +389,9 @@ class BrowseActivity : AppCompatActivity() {
                     host = it[position].host
                     id = it[position].id
                     url = when (Settings.instance().downloadSize) {
-                        Settings.DOWNLOAD_SIZE_SAMPLE -> getMoeSampleUrl(it[position])
-                        Settings.DOWNLOAD_SIZE_LARGER -> getMoeLargerUrl(it[position])
-                        else -> getMoeOriginUrl(it[position])
+                        Settings.POST_SIZE_SAMPLE -> it[position].getSampleUrl()
+                        Settings.POST_SIZE_LARGER -> it[position].getLargerUrl()
+                        else -> it[position].getOriginUrl()
                     }
                 }
             }
@@ -358,27 +412,18 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMoeSampleUrl(post: PostMoe): String = post.sample_url
-
-    private fun getMoeLargerUrl(post: PostMoe): String {
-        val url = post.jpeg_url
-        return if (url.isNullOrBlank()) getMoeSampleUrl(post) else url
-    }
-
-    private fun getMoeOriginUrl(post: PostMoe): String {
-        val url = post.file_url
-        return if (url.isNullOrBlank()) getMoeLargerUrl(post) else url
-    }
-
-    private fun checkStoragePermissionAndDownload() {
+    private fun checkStoragePermissionAndAction(action: Int) {
         if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)) {
 
             } else {
-                ActivityCompat.requestPermissions(this,  arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE)
+                ActivityCompat.requestPermissions(this,  arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), action)
             }
         } else {
-            download()
+            when (action) {
+                ACTION_DOWNLOAD -> download()
+                ACTION_SAVE -> save()
+            }
         }
     }
 
@@ -436,9 +481,14 @@ class BrowseActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
-            REQUEST_CODE_STORAGE -> {
+            ACTION_DOWNLOAD -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     download()
+                }
+            }
+            ACTION_SAVE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    save()
                 }
             }
         }

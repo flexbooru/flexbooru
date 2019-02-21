@@ -30,10 +30,11 @@ class Settings(private val sp: SharedPreferences) {
         }
         const val SAFE_MODE_KEY = "settings_safe_mode"
         const val PAGE_SIZE_KEY = "settings_page_size"
+        const val BROWSE_SIZE_KEY = "settings_browse_size"
         const val DOWNLOAD_SIZE_KEY = "settings_download_size"
-        const val DOWNLOAD_SIZE_SAMPLE = "sample"
-        const val DOWNLOAD_SIZE_LARGER = "larger"
-        const val DOWNLOAD_SIZE_ORIGIN = "origin"
+        const val POST_SIZE_SAMPLE = "sample"
+        const val POST_SIZE_LARGER = "larger"
+        const val POST_SIZE_ORIGIN = "origin"
         const val THEME_MODE_KEY = "settings_theme_mode"
         const val THEME_MODE_SYSTEM = "system"
         const val THEME_MODE_AUTO = "auto"
@@ -57,8 +58,12 @@ class Settings(private val sp: SharedPreferences) {
         get() = sp.getString(PAGE_SIZE_KEY, "10")!!.toInt()
         set(value) = sp.edit().putString(PAGE_SIZE_KEY, value.toString()).apply()
 
+    var browseSize: String
+        get() = sp.getString(BROWSE_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_SAMPLE
+        set(value) = sp.edit().putString(BROWSE_SIZE_KEY, value).apply()
+
     var downloadSize: String
-        get() = sp.getString(DOWNLOAD_SIZE_KEY, DOWNLOAD_SIZE_SAMPLE) ?: DOWNLOAD_SIZE_SAMPLE
+        get() = sp.getString(DOWNLOAD_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_SAMPLE
         set(value) = sp.edit().putString(DOWNLOAD_SIZE_KEY, value).apply()
 
     private var themeModeString: String

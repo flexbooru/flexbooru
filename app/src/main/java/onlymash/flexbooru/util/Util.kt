@@ -19,6 +19,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Environment
 import android.text.format.DateFormat
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -49,3 +50,14 @@ fun Resources.gridWidth() = when (Settings.instance().gridWidth) {
         Settings.GRID_WIDTH_NORMAL -> getDimensionPixelSize(R.dimen.post_item_width_normal)
         else -> getDimensionPixelSize(R.dimen.post_item_width_large)
     }
+
+/* Checks if external storage is available for read and write */
+fun isExternalStorageWritable(): Boolean {
+    return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+}
+
+/* Checks if external storage is available to at least read */
+fun isExternalStorageReadable(): Boolean {
+    return Environment.getExternalStorageState() in
+            setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
+}
