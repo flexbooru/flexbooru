@@ -126,7 +126,7 @@
     <string name="settings_download_size_sample">Sample</string>
     <string name="settings_download_size_larger">Larger</string>
     <string name="settings_download_size_origin">Origin</string>
-    <string name="settings_theme_mode">Theme mode</string>
+    <string name="settings_theme_mode">Theme</string>
     <string name="settings_theme_mode_system">Follow system</string>
     <string name="settings_theme_mode_auto">Auto</string>
     <string name="settings_theme_mode_day">Day</string>
@@ -174,6 +174,8 @@
     <string name="search_bar_hint_search_pools">Search pools</string>
     <string name="search_bar_hint_search_tags">Search tags</string>
     <string name="search_bar_hint_search_artists">Search artists</string>
+
+    <string name="share_via">Via</string>
 
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
     <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>

@@ -22,7 +22,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.*
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -120,29 +119,11 @@ class PopularFragment : ListFragment() {
 
     private val itemListener = object : PostViewHolder.ItemListener {
         override fun onClickMoeItem(post: PostMoe, view: View) {
-            val intent = Intent(requireContext(), BrowseActivity::class.java)
-                .apply {
-                    putExtra(Constants.ID_KEY, post.id)
-                    putExtra(Constants.HOST_KEY, post.host)
-                    putExtra(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                    putExtra(Constants.KEYWORD_KEY, post.keyword)
-                }
-            val options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
-            startActivity(intent, options.toBundle())
+            BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
         }
 
         override fun onClickDanItem(post: PostDan, view: View) {
-            val intent = Intent(requireContext(), BrowseActivity::class.java)
-                .apply {
-                    putExtra(Constants.ID_KEY, post.id)
-                    putExtra(Constants.HOST_KEY, post.host)
-                    putExtra(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                    putExtra(Constants.KEYWORD_KEY, post.keyword)
-                }
-            val options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(requireActivity(), view, String.format(getString(R.string.post_transition_name), post.id))
-            startActivity(intent, options.toBundle())
+            BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
         }
     }
 

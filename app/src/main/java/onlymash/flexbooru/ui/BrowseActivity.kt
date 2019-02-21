@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,7 @@ import android.os.Environment
 import android.os.Handler
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -40,6 +42,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.PostDan
@@ -63,12 +66,24 @@ class BrowseActivity : AppCompatActivity() {
         const val EXT_POST_KEYWORD_KEY = "post_keyword"
         private const val REQUEST_CODE_STORAGE = 10
         private const val PAGER_CURRENT_POSITION_KEY = "current_position"
+        fun startActivity(activity: Activity, view: View, postId: Int, keyword: String) {
+            val intent = Intent(activity, BrowseActivity::class.java)
+                .apply {
+                    putExtra(Constants.ID_KEY, postId)
+                    putExtra(Constants.KEYWORD_KEY, keyword)
+                }
+            val options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(activity, view, String.format(activity.getString(R.string.post_transition_name), postId))
+            activity.startActivity(intent, options.toBundle())
+        }
     }
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
     private var keyword = ""
     private var type = -1
+    private var host = ""
+    private var scheme = ""
     private var currentPosition = -1
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
@@ -222,10 +237,12 @@ class BrowseActivity : AppCompatActivity() {
             shadow.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, insets.systemWindowInsetBottom)
             insets
         }
-        val host = intent.getStringExtra(Constants.HOST_KEY)
-        val type = intent.getIntExtra(Constants.TYPE_KEY, -1)
         keyword = intent.getStringExtra(Constants.KEYWORD_KEY)
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
+        val booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid) ?: return
+        type = booru.type
+        scheme = booru.scheme
+        host = booru.host
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
@@ -238,6 +255,32 @@ class BrowseActivity : AppCompatActivity() {
             }
             Constants.TYPE_MOEBOORU -> {
                 loader.loadMoePosts(host = host, keyword = keyword)
+            }
+        }
+        post_share.setOnClickListener {
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    val url = String.format("%s://%s/posts/%d", scheme, host, postsDan!![pager_browse.currentItem].id)
+                    startActivity(Intent.createChooser(
+                        Intent().apply {
+                            action = Intent.ACTION_SEND
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, url)
+                        },
+                        getString(R.string.share_via)
+                    ))
+                }
+                else -> {
+                    val url = String.format("%s://%s/post/show/%d", scheme, host, postsMoe!![pager_browse.currentItem].id)
+                    startActivity(Intent.createChooser(
+                        Intent().apply {
+                            action = Intent.ACTION_SEND
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, url)
+                        },
+                        getString(R.string.share_via)
+                    ))
+                }
             }
         }
         post_tags.setOnClickListener {
