@@ -360,10 +360,15 @@ class BrowseActivity : AppCompatActivity() {
                     val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
                     val file = File(path, fileName)
                     if (file.exists()) file.delete()
-                    FileUtil.copy(resource, file)
-                    Toast.makeText(this@BrowseActivity,
-                        getString(R.string.msg_file_save_success, file.absolutePath),
-                        Toast.LENGTH_LONG).show()
+                    val handler = Handler()
+                    Thread {
+                        FileUtil.copy(resource, file)
+                        handler.post {
+                            Toast.makeText(this@BrowseActivity,
+                                getString(R.string.msg_file_save_success, file.absolutePath),
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }.start()
                 }
             })
     }
