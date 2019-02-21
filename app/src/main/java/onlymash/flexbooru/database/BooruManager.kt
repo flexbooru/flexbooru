@@ -16,6 +16,7 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
+import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.entity.Booru
 import java.io.IOException
 import java.sql.SQLException
@@ -60,7 +61,7 @@ object BooruManager {
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
-        ex.printStackTrace()
+        Crashlytics.logException(ex)
         null
     }
 
@@ -70,7 +71,7 @@ object BooruManager {
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
-        ex.printStackTrace()
+        Crashlytics.logException(ex)
         null
     }
 
@@ -93,7 +94,7 @@ object BooruManager {
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
-        ex.printStackTrace()
+        Crashlytics.logException(ex)
         false
     }
 
@@ -101,9 +102,10 @@ object BooruManager {
     fun getAllBoorus(): MutableList<Booru>? = try {
         FlexbooruDatabase.booruDao.getAll()
     } catch (ex: SQLiteCantOpenDatabaseException) {
+        Crashlytics.logException(ex)
         throw IOException(ex)
     } catch (ex: SQLException) {
-        ex.printStackTrace()
+        Crashlytics.logException(ex)
         null
     }
 }

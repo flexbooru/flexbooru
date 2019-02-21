@@ -23,6 +23,16 @@
             app:showAsAction="ifRoom"/>
 
     <item
+            android:id="@+id/action_browse_set_as"
+            android:title="@string/browse_set_as"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_browse_send"
+            android:title="@string/browse_send"
+            app:showAsAction="never"/>
+
+    <item
             android:id="@+id/action_browse_download"
             android:title="@string/browse_download"
             app:showAsAction="never"/>

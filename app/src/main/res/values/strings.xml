@@ -90,6 +90,8 @@
     <string name="browse_toolbar_title_and_id" translatable="false">Post %d</string>
     <string name="browse_vote">Vote</string>
     <string name="browse_download">Download</string>
+    <string name="browse_set_as">Set as</string>
+    <string name="browse_send">Send</string>
     <string name="browse_tag_exclude">Exclude</string>
     <string name="browse_tag_include">Include</string>
     <string name="browse_info_source">Source</string>

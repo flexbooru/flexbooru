@@ -46,6 +46,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
@@ -72,6 +73,8 @@ class BrowseActivity : AppCompatActivity() {
         private const val PAGER_CURRENT_POSITION_KEY = "current_position"
         private const val ACTION_DOWNLOAD = 0
         private const val ACTION_SAVE = 1
+        private const val ACTION_SAVE_SET_AS = 2
+        private const val ACTION_SAVE_SEND = 3
         fun startActivity(activity: Activity, view: View, postId: Int, keyword: String) {
             val intent = Intent(activity, BrowseActivity::class.java)
                 .apply {
@@ -231,6 +234,12 @@ class BrowseActivity : AppCompatActivity() {
                 R.id.action_browse_download -> {
                     checkStoragePermissionAndAction(ACTION_DOWNLOAD)
                 }
+                R.id.action_browse_set_as -> {
+                    checkStoragePermissionAndAction(ACTION_SAVE_SET_AS)
+                }
+                R.id.action_browse_send -> {
+                    checkStoragePermissionAndAction(ACTION_SAVE_SEND)
+                }
             }
             return@setOnMenuItemClickListener true
         }
@@ -321,7 +330,7 @@ class BrowseActivity : AppCompatActivity() {
         if (currentPosition >= 0) pager_browse.currentItem = currentPosition
     }
 
-    private fun save() {
+    private fun saveAndAction(action: Int) {
         val position = pager_browse.currentItem
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
@@ -364,9 +373,31 @@ class BrowseActivity : AppCompatActivity() {
                     Thread {
                         FileUtil.copy(resource, file)
                         handler.post {
-                            Toast.makeText(this@BrowseActivity,
-                                getString(R.string.msg_file_save_success, file.absolutePath),
-                                Toast.LENGTH_LONG).show()
+                            when (action) {
+                                ACTION_SAVE -> Toast.makeText(this@BrowseActivity,
+                                    getString(R.string.msg_file_save_success, file.absolutePath),
+                                    Toast.LENGTH_LONG).show()
+                                ACTION_SAVE_SET_AS -> {
+                                    this@BrowseActivity.startActivity(Intent.createChooser(
+                                        Intent(Intent.ACTION_ATTACH_DATA).apply {
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            putExtra(Intent.EXTRA_MIME_TYPES, "image/*")
+                                            data = FlexProvider.getUriFromFile(this@BrowseActivity, file)
+                                        },
+                                        getString(R.string.share_via)
+                                    ))
+                                }
+                                ACTION_SAVE_SEND -> {
+                                    this@BrowseActivity.startActivity(Intent.createChooser(
+                                        Intent(Intent.ACTION_SEND).apply {
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            type = "image/*"
+                                            putExtra(Intent.EXTRA_STREAM, FlexProvider.getUriFromFile(this@BrowseActivity, file))
+                                        },
+                                        getString(R.string.share_via)
+                                    ))
+                                }
+                            }
                         }
                     }.start()
                 }
@@ -427,7 +458,7 @@ class BrowseActivity : AppCompatActivity() {
         } else {
             when (action) {
                 ACTION_DOWNLOAD -> download()
-                ACTION_SAVE -> save()
+                else -> saveAndAction(action)
             }
         }
     }
@@ -491,9 +522,9 @@ class BrowseActivity : AppCompatActivity() {
                     download()
                 }
             }
-            ACTION_SAVE -> {
+            ACTION_SAVE, ACTION_SAVE_SET_AS, ACTION_SAVE_SEND -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    save()
+                    saveAndAction(requestCode)
                 }
             }
         }

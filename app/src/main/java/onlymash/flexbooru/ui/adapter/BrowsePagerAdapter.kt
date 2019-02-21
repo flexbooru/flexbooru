@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,8 +39,6 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
     private val size = Settings.instance().browseSize
     private var postsDan: MutableList<PostDan> = mutableListOf()
     private var postsMoe: MutableList<PostMoe> = mutableListOf()
-
-    private val uiHandler = Handler()
 
     @Suppress("UNCHECKED_CAST")
     fun updateData(posts: Any, type: Int) {
