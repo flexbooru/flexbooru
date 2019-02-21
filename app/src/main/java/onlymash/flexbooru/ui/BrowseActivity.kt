@@ -215,10 +215,11 @@ class BrowseActivity : AppCompatActivity() {
         }
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
             toolbar_container.minimumHeight = toolbar.height + insets.systemWindowInsetTop
-            toolbar_container.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+            toolbar_container.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, 0)
             val bottomPadding = (insets.systemWindowInsetBottom * 1.5f).toInt()
             bottom_bar_container.minimumHeight = resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + bottomPadding
-            bottom_bar_container.setPadding(0, 0, 0, bottomPadding)
+            bottom_bar_container.setPadding(insets.systemWindowInsetLeft, 0, insets.systemWindowInsetRight, bottomPadding)
+            shadow.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, insets.systemWindowInsetBottom)
             insets
         }
         val host = intent.getStringExtra(Constants.HOST_KEY)
@@ -344,11 +345,13 @@ class BrowseActivity : AppCompatActivity() {
                 hideBar()
                 toolbar.visibility = View.GONE
                 bottom_bar_container.visibility = View.GONE
+                shadow.visibility = View.GONE
             }
             else -> {
                 showBar()
                 toolbar.visibility = View.VISIBLE
                 bottom_bar_container.visibility = View.VISIBLE
+                shadow.visibility = View.VISIBLE
             }
         }
     }
@@ -358,6 +361,7 @@ class BrowseActivity : AppCompatActivity() {
             showBar()
             toolbar.visibility = View.VISIBLE
             bottom_bar_container.visibility = View.VISIBLE
+            shadow.visibility = View.VISIBLE
         }
     }
 
