@@ -184,4 +184,21 @@ object ApiUrlHelper {
             .addQueryParameter("commit", "Search")
             .build()
     }
+
+    fun getDanAddFavUrl(vote: Vote): String =
+        String.format("%s://%s/favorites.json", vote.scheme, vote.host)
+
+    fun getDanRemoveFavUrl(vote: Vote): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(vote.scheme)
+            .host(vote.host)
+            .addPathSegment("favorites")
+            .addPathSegment("${vote.post_id}.json")
+            .addQueryParameter("login", vote.username)
+            .addQueryParameter("api_key", vote.auth_key)
+            .build()
+    }
+
+    fun getMoeVoteUrl(vote: Vote): String =
+        String.format("%s://%s/post/vote.json", vote.scheme, vote.host)
 }

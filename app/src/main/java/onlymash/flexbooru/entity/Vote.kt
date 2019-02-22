@@ -13,20 +13,13 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.viewmodel
+package onlymash.flexbooru.entity
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.entity.TagFilter
-import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
-
-class TagFilterViewModel(private val repo: TagFilterRepository) : ViewModel() {
-
-    var tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
-
-    fun loadTags(booruUid: Long) {
-        tagsFilter.addSource(repo.loadTagsFilter(booruUid)) {
-            tagsFilter.postValue(it)
-        }
-    }
-}
+data class Vote(
+    var scheme: String,
+    var host: String,
+    var username: String = "",
+    var auth_key: String = "",
+    var post_id: Int,
+    var score: Int = 3
+)

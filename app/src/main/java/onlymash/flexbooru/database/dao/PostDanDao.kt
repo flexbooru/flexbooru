@@ -15,11 +15,9 @@
 
 package onlymash.flexbooru.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import onlymash.flexbooru.entity.PostDan
 
 @Dao
@@ -28,15 +26,30 @@ interface PostDanDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(posts: List<PostDan>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(post: PostDan)
+
     @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPosts(host: String, keyword: String) : DataSource.Factory<Int, PostDan>
 
     @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPostsRaw(host: String, keyword: String) : MutableList<PostDan>
 
+    @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
+    fun getPostsLiveData(host: String, keyword: String) : LiveData<MutableList<PostDan>>
+
     @Query("DELETE FROM posts_danbooru WHERE host = :host AND keyword = :keyword")
     fun deletePosts(host: String, keyword: String)
 
     @Query("SELECT MAX(indexInResponse) + 1 FROM posts_danbooru WHERE host = :host AND keyword = :keyword")
     fun getNextIndex(host: String, keyword: String): Int
+
+    @Delete
+    fun deletePost(post: PostDan)
+
+    @Update
+    fun updatePost(post: PostDan)
+
+    @Query("DELETE FROM posts_danbooru WHERE host = :host AND keyword = :keyword AND id = :id")
+    fun deletePost(host: String, keyword: String, id: Int)
 }

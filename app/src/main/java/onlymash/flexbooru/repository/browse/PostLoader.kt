@@ -28,6 +28,12 @@ class PostLoader(private val db: FlexbooruDatabase,
         postLoadedListener = listener
     }
 
+    private var postLoadedLiveDataListener: PostLoadedLiveDataListener? = null
+
+    fun setPostLoadedLiveDataListener(listener: PostLoadedLiveDataListener?) {
+        postLoadedLiveDataListener = listener
+    }
+
     private val uiHandler = Handler()
 
     fun loadDanPosts(host: String, keyword: String) {
@@ -44,6 +50,24 @@ class PostLoader(private val db: FlexbooruDatabase,
             val posts = db.postMoeDao().getPostsRaw(host, keyword)
             uiHandler.post {
                 postLoadedListener?.onMoeItemsLoaded(posts)
+            }
+        }
+    }
+
+    fun loadDanPostsLiveData(host: String, keyword: String) {
+        ioExecutor.execute {
+            val posts = db.postDanDao().getPostsLiveData(host, keyword)
+            uiHandler.post {
+                postLoadedLiveDataListener?.onDanItemsLoaded(posts)
+            }
+        }
+    }
+
+    fun loadMoePostsLiveData(host: String, keyword: String) {
+        ioExecutor.execute {
+            val posts = db.postMoeDao().getPostsLiveData(host, keyword)
+            uiHandler.post {
+                postLoadedLiveDataListener?.onMoeItemsLoaded(posts)
             }
         }
     }

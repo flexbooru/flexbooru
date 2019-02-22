@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
@@ -31,11 +32,16 @@ import android.os.Environment
 import android.os.Handler
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -49,14 +55,17 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.database.UserManager
+import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.entity.PostDan
-import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedListener
+import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.favorite.VoteRepository
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
+import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
 import onlymash.flexbooru.util.FileUtil
 import onlymash.flexbooru.util.UserAgent
 import onlymash.flexbooru.util.isImage
@@ -77,6 +86,7 @@ class BrowseActivity : AppCompatActivity() {
         private const val ACTION_SAVE = 1
         private const val ACTION_SAVE_SET_AS = 2
         private const val ACTION_SAVE_SEND = 3
+        private const val ALPHA_MAX = 0xFF
         fun startActivity(activity: Activity, view: View, postId: Int, keyword: String) {
             val intent = Intent(activity, BrowseActivity::class.java)
                 .apply {
@@ -91,14 +101,15 @@ class BrowseActivity : AppCompatActivity() {
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
+    private var postsDanFav: MutableList<PostDan>? = null
+    private var postsMoeFav: MutableList<PostMoe>? = null
     private var keyword = ""
-    private var type = -1
-    private var host = ""
-    private var scheme = ""
+    private lateinit var booru: Booru
+    private var user: User? = null
     private var currentPosition = -1
+    private val postLoader by lazy { ServiceLocator.instance().getPostLoader() }
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
-            type = Constants.TYPE_DANBOORU
             postsDan = posts
             var url: String? = null
             var position = 0
@@ -124,10 +135,12 @@ class BrowseActivity : AppCompatActivity() {
                     }
                 }, 500)
             }
+            user?.let {
+                favPostViewModel.loadDanFav(booru.host, it.name)
+            }
         }
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
-            type = Constants.TYPE_MOEBOORU
             postsMoe = posts
             var url: String? = null
             var position = 0
@@ -152,6 +165,9 @@ class BrowseActivity : AppCompatActivity() {
                         playerHolder.start(uri = Uri.parse(url), playerView = playerView)
                     }
                 }, 300)
+            }
+            user?.let {
+                favPostViewModel.loadMoeFav(booru.host, it.name)
             }
         }
     }
@@ -196,6 +212,7 @@ class BrowseActivity : AppCompatActivity() {
                     playerHolder.start(uri = Uri.parse(url), playerView = playerView)
                 }
             }
+            setCurrentVoteItemIcon()
         }
     }
 
@@ -217,7 +234,6 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
-    private val ALPHA_MAX = 0xFF
     private lateinit var colorDrawable: ColorDrawable
 
     private val onDismissListener = object : DismissFrameLayout.OnDismissListener {
@@ -234,6 +250,37 @@ class BrowseActivity : AppCompatActivity() {
         }
 
     }
+
+    private lateinit var voteRepository: VoteRepository
+    private lateinit var favPostViewModel: FavPostViewModel
+    private lateinit var voteItemView: ActionMenuItemView
+
+    private fun getCurrentPostFav(): Any? {
+        val position = pager_browse.currentItem
+        var post: Any? = null
+        when (booru.type) {
+            Constants.TYPE_DANBOORU -> {
+                val id = postsDan!![position].id
+                postsDanFav?.forEach {
+                    if (it.id == id) {
+                        post = it
+                        return@forEach
+                    }
+                }
+            }
+            Constants.TYPE_MOEBOORU -> {
+                val id = postsMoe!![position].id
+                postsMoeFav?.forEach {
+                    if (it.id == id) {
+                        post = it
+                        return@forEach
+                    }
+                }
+            }
+        }
+        return post
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
@@ -247,10 +294,53 @@ class BrowseActivity : AppCompatActivity() {
             onBackPressed()
         }
         toolbar.inflateMenu(R.menu.browse)
+        voteItemView = toolbar.findViewById(R.id.action_browse_vote)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_browse_vote -> {
-
+                    if (user == null) {
+                        startActivity(Intent(this, AccountConfigActivity::class.java))
+                    } else {
+                        when (booru.type) {
+                            Constants.TYPE_DANBOORU -> {
+                                val vote = Vote(
+                                    scheme = booru.scheme,
+                                    host = booru.host,
+                                    post_id = postsDan!![pager_browse.currentItem].id,
+                                    username = user!!.name,
+                                    auth_key = user!!.api_key!!)
+                                val post = getCurrentPostFav()
+                                if (post is PostDan) {
+                                    voteRepository.removeDanFav(vote, post)
+                                } else {
+                                    voteRepository.addDanFav(vote, postsDan!![pager_browse.currentItem])
+                                }
+                            }
+                            Constants.TYPE_MOEBOORU -> {
+                                val vote = when (getCurrentPostFav()) {
+                                    is PostMoe -> {
+                                        Vote(
+                                            scheme = booru.scheme,
+                                            host = booru.host,
+                                            score = 0,
+                                            post_id = postsMoe!![pager_browse.currentItem].id,
+                                            username = user!!.name,
+                                            auth_key = user!!.password_hash!!)
+                                    }
+                                    else -> {
+                                        Vote(
+                                            scheme = booru.scheme,
+                                            host = booru.host,
+                                            score = 3,
+                                            post_id = postsMoe!![pager_browse.currentItem].id,
+                                            username = user!!.name,
+                                            auth_key = user!!.password_hash!!)
+                                    }
+                                }
+                                voteRepository.voteMoePost(vote)
+                            }
+                        }
+                    }
                 }
                 R.id.action_browse_download -> {
                     checkStoragePermissionAndAction(ACTION_DOWNLOAD)
@@ -275,28 +365,28 @@ class BrowseActivity : AppCompatActivity() {
         }
         keyword = intent.getStringExtra(Constants.KEYWORD_KEY)
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
-        val booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid) ?: return
-        type = booru.type
-        scheme = booru.scheme
-        host = booru.host
+        booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid) ?: return
+        user = UserManager.getUserByBooruUid(booruUid = booru.uid)
+        user?.let {
+            initFavViewModel()
+        }
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
-        val loader = ServiceLocator.instance().getPostLoader().apply {
-            setPostLoadedListener(postLoadedListener)
-        }
-        when (type) {
+        postLoader.setPostLoadedListener(postLoadedListener)
+        voteRepository = ServiceLocator.instance().getVoteRepository()
+        when (booru.type) {
             Constants.TYPE_DANBOORU -> {
-                loader.loadDanPosts(host = host, keyword = keyword)
+                postLoader.loadDanPosts(host = booru.host, keyword = keyword)
             }
             Constants.TYPE_MOEBOORU -> {
-                loader.loadMoePosts(host = host, keyword = keyword)
+                postLoader.loadMoePosts(host = booru.host, keyword = keyword)
             }
         }
         post_share.setOnClickListener {
-            when (type) {
+            when (booru.type) {
                 Constants.TYPE_DANBOORU -> {
-                    val url = String.format("%s://%s/posts/%d", scheme, host, postsDan!![pager_browse.currentItem].id)
+                    val url = String.format("%s://%s/posts/%d", booru!!.scheme, booru!!.host, postsDan!![pager_browse.currentItem].id)
                     startActivity(Intent.createChooser(
                         Intent().apply {
                             action = Intent.ACTION_SEND
@@ -307,7 +397,7 @@ class BrowseActivity : AppCompatActivity() {
                     ))
                 }
                 else -> {
-                    val url = String.format("%s://%s/post/show/%d", scheme, host, postsMoe!![pager_browse.currentItem].id)
+                    val url = String.format("%s://%s/post/show/%d", booru!!.scheme, booru!!.host, postsMoe!![pager_browse.currentItem].id)
                     startActivity(Intent.createChooser(
                         Intent().apply {
                             action = Intent.ACTION_SEND
@@ -320,7 +410,7 @@ class BrowseActivity : AppCompatActivity() {
             }
         }
         post_tags.setOnClickListener {
-            when (type) {
+            when (booru.type) {
                 Constants.TYPE_DANBOORU -> TagBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
                 else -> TagBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
             }.apply {
@@ -328,7 +418,7 @@ class BrowseActivity : AppCompatActivity() {
             }
         }
         post_info.setOnClickListener {
-            when (type) {
+            when (booru.type) {
                 Constants.TYPE_DANBOORU -> InfoBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
                 else -> InfoBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
             }.apply {
@@ -337,6 +427,70 @@ class BrowseActivity : AppCompatActivity() {
         }
         post_save.setOnClickListener {
             checkStoragePermissionAndAction(ACTION_SAVE)
+        }
+    }
+
+    private fun initFavViewModel() {
+        favPostViewModel = getFavPostViewModel(postLoader)
+        when (booru.type) {
+            Constants.TYPE_DANBOORU -> {
+                favPostViewModel.postsDan.observe(this, Observer { posts ->
+                    postsDanFav = posts
+                    setCurrentVoteItemIcon()
+                })
+            }
+            Constants.TYPE_MOEBOORU -> {
+                favPostViewModel.postsMoe.observe(this, Observer { posts ->
+                    postsMoeFav = posts
+                    setCurrentVoteItemIcon()
+                })
+            }
+        }
+    }
+
+    private fun setCurrentVoteItemIcon() {
+        when (booru.type) {
+            Constants.TYPE_DANBOORU -> {
+                if (postsDan != null && postsDanFav != null) {
+                    var exist = false
+                    val id = postsDan!![pager_browse.currentItem].id
+                    postsDanFav!!.forEach { post ->
+                        if (post.id == id) {
+                            setVoteItemIcon(true)
+                            exist = true
+                            return@forEach
+                        }
+                    }
+                    if (!exist) {
+                        setVoteItemIcon(false)
+                    }
+                }
+            }
+            Constants.TYPE_MOEBOORU -> {
+                if (postsMoe != null && postsMoeFav != null) {
+                    val id = postsMoe!![pager_browse.currentItem].id
+                    var exist = false
+                    postsMoeFav!!.forEach { post ->
+                        if (post.id == id) {
+                            setVoteItemIcon(true)
+                            exist = true
+                            return@forEach
+                        }
+                    }
+                    if (!exist) {
+                        setVoteItemIcon(false)
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun setVoteItemIcon(checked: Boolean) {
+        if (checked) {
+            voteItemView.setIcon(getDrawable(R.drawable.ic_star_24dp))
+        } else {
+            voteItemView.setIcon(getDrawable(R.drawable.ic_star_border_24dp))
         }
     }
 
@@ -353,7 +507,7 @@ class BrowseActivity : AppCompatActivity() {
 
     private fun saveAndAction(action: Int) {
         val position = pager_browse.currentItem
-        val url = when (type) {
+        val url = when (booru.type) {
             Constants.TYPE_DANBOORU -> {
                 when (Settings.instance().browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsDan!![position].getSampleUrl()
@@ -430,7 +584,7 @@ class BrowseActivity : AppCompatActivity() {
         var url = ""
         var host = "Flexbooru"
         var id = -1
-        when (type) {
+        when (booru.type) {
             Constants.TYPE_DANBOORU -> {
                 postsDan?.let {
                     host = it[position].host
@@ -549,5 +703,14 @@ class BrowseActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getFavPostViewModel(loader: PostLoader): FavPostViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return FavPostViewModel(loader) as T
+            }
+        })[FavPostViewModel::class.java]
     }
 }

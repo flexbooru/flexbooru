@@ -23,6 +23,8 @@ import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.repository.artist.ArtistData
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.favorite.VoteData
+import onlymash.flexbooru.repository.favorite.VoteRepository
 import onlymash.flexbooru.repository.pool.PoolData
 import onlymash.flexbooru.repository.pool.PoolRepository
 import onlymash.flexbooru.repository.popular.PopularData
@@ -77,6 +79,8 @@ interface ServiceLocator {
     fun getUserFinder(): UserFinder
 
     fun getTagFilterDataSource(): TagFilterDataSource
+
+    fun getVoteRepository(): VoteRepository
 }
 
 /**
@@ -135,6 +139,15 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = getNetworkExecutor()
+        )
+    }
+
+    override fun getVoteRepository(): VoteRepository {
+        return VoteData(
+            danbooruApi = getDanbooruApi(),
+            moebooruApi = getMoebooruApi(),
+            db = FlexbooruDatabase.instance,
+            ioExecutor = getDiskIOExecutor()
         )
     }
 

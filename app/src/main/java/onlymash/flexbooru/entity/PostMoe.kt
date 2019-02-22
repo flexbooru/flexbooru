@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "posts_moebooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostMoe(
     @PrimaryKey(autoGenerate = true)
-    val uid: Long = -1L,
+    var uid: Long = -1L,
     var host: String = "",
     var keyword: String = "",
     val id: Int,

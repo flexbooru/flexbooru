@@ -26,8 +26,7 @@ import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 interface MoebooruApi {
@@ -81,4 +80,12 @@ interface MoebooruApi {
 
     @GET
     fun getArtists(@Url httpUrl: HttpUrl): Call<MutableList<ArtistMoe>>
+
+    @FormUrlEncoded
+    @POST
+    fun votePost(@Url url: String,
+                 @Field("id") id: Int,
+                 @Field("score") score: Int = 3, //0-3
+                 @Field("login") username: String,
+                 @Field("password_hash") passwordHash: String): Call<VoteMoe>
 }

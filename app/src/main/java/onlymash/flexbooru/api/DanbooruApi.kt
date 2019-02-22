@@ -16,6 +16,7 @@
 package onlymash.flexbooru.api
 
 import android.util.Log
+import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -27,8 +28,7 @@ import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 interface DanbooruApi {
@@ -82,4 +82,14 @@ interface DanbooruApi {
 
     @GET
     fun getArtists(@Url httpUrl: HttpUrl): Call<MutableList<ArtistDan>>
+
+    @FormUrlEncoded
+    @POST
+    fun favPost(@Url url: String,
+                @Field("post_id") id: Int,
+                @Field("login") username: String,
+                @Field("api_key") apiKey: String): Call<VoteDan>
+
+    @DELETE
+    fun removeFavPost(@Url httpUrl: HttpUrl): Call<VoteDan>
 }
