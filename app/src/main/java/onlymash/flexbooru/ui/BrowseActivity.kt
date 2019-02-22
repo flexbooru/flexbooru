@@ -22,6 +22,7 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -59,6 +60,7 @@ import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.util.FileUtil
 import onlymash.flexbooru.util.UserAgent
 import onlymash.flexbooru.util.isImage
+import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.net.URLDecoder
 
@@ -215,9 +217,28 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
+    private val ALPHA_MAX = 0xFF
+    private lateinit var colorDrawable: ColorDrawable
+
+    private val onDismissListener = object : DismissFrameLayout.OnDismissListener {
+        override fun onScaleProgress(scale: Float) {
+            colorDrawable.alpha = Math.min(ALPHA_MAX, colorDrawable.alpha - (scale * ALPHA_MAX).toInt())
+        }
+
+        override fun onDismiss() {
+            finishAfterTransition()
+        }
+
+        override fun onCancel() {
+            colorDrawable.alpha = ALPHA_MAX
+        }
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
+        colorDrawable = ColorDrawable(resources.getColor(R.color.black, theme))
+        pager_browse.background = colorDrawable
         postponeEnterTransition()
         setEnterSharedElementCallback(sharedElementCallback)
         toolbar.setTitle(R.string.browse_toolbar_title)
@@ -258,7 +279,7 @@ class BrowseActivity : AppCompatActivity() {
         type = booru.type
         scheme = booru.scheme
         host = booru.host
-        pagerAdapter = BrowsePagerAdapter(GlideApp.with(this))
+        pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         val loader = ServiceLocator.instance().getPostLoader().apply {

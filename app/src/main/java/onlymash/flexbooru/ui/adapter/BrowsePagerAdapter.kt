@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
@@ -32,8 +33,10 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.util.isImage
+import onlymash.flexbooru.widget.DismissFrameLayout
 
-class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter() {
+class BrowsePagerAdapter(private val glideRequests: GlideRequests,
+                         private val onDismissListener: DismissFrameLayout.OnDismissListener): PagerAdapter() {
 
     private var type = -1
     private val size = Settings.instance().browseSize
@@ -112,8 +115,13 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests): PagerAdapter
                 }
             }
         }
-        container.addView(view)
-        return view
+        val layout = DismissFrameLayout(container.context).apply {
+            setDismissListener(onDismissListener)
+            layoutParams = ViewPager.LayoutParams()
+            addView(view)
+        }
+        container.addView(layout)
+        return layout
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
