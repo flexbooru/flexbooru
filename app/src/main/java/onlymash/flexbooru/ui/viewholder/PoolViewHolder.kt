@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.ui.viewholder
 
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +23,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.PoolDan
@@ -118,11 +118,19 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                 poolName.text = data.name
                 poolIdCount.text = String.format(res.getString(R.string.pool_info_id_and_count), data.id, data.post_count)
                 poolDescription.text = data.description
-                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH)
-                poolDate.text = formatDate(sdf.parse(data.updated_at).time)
                 glide.load(String.format(res.getString(R.string.account_user_avatars), data.scheme, data.host, data.user_id))
                     .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
                     .into(userAvatar)
+                val date = data.updated_at
+                val sdf =  when {
+                    date.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH)
+                    date.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+                    else -> {
+                        Crashlytics.log("Unknown date format: $date. Host: ${data.host}")
+                        throw IllegalStateException("Unknown date format: $date")
+                    }
+                }
+                poolDate.text = formatDate(sdf.parse(date).time)
             }
         }
     }
