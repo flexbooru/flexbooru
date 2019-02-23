@@ -24,6 +24,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -88,4 +89,31 @@ interface MoebooruApi {
                  @Field("score") score: Int = 3, //0-3
                  @Field("login") username: String,
                  @Field("password_hash") passwordHash: String): Call<VoteMoe>
+
+    /* comment/create.json
+     */
+    @POST
+    @FormUrlEncoded
+    fun createComment(@Url url: String,
+                      @Field("comment[post_id]") postId: Int,
+                      @Field("comment[body]") body: String,
+                      @Field("comment[anonymous]") anonymous: Int,
+                      @Field("login") username: String,
+                      @Field("password_hash") passwordHash: String): Call<CommentResponse>
+
+
+    /* comment/search.json?query=user:username
+     * comment.json?post_id=post_id
+     */
+    @GET
+    fun getComments(@Url url: HttpUrl): Call<MutableList<CommentMoe>>
+
+    /* comment/destroy.json
+     */
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", hasBody = true)
+    fun destroyComment(@Url url: String,
+                       @Field("id") commentId: Int,
+                       @Field("login") username: String,
+                       @Field("password_hash") passwordHash: String): Callback<CommentResponse>
 }
