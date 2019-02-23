@@ -18,10 +18,10 @@ package onlymash.flexbooru.ui.viewholder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.github.chrisbanes.photoview.PhotoView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
@@ -38,7 +38,7 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
         }
     }
 
-    private val preview: PhotoView = itemView.findViewById(R.id.preview)
+    private val preview: ImageView = itemView.findViewById(R.id.preview)
     private val previewCard: CardView = itemView.findViewById(R.id.preview_card)
     private var post: Any? = null
 
@@ -79,9 +79,9 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                     }
                 }
                 previewCard.layoutParams = lp
+                preview.layout(0,0,0,0)
                 glide.load(post.preview_file_url)
                     .placeholder(placeholderDrawable)
-                    .centerCrop()
                     .into(preview)
 
             }
@@ -108,9 +108,9 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                     }
                 }
                 previewCard.layoutParams = lp
+                preview.layout(0,0,0,0)
                 glide.load(post.preview_url)
                     .placeholder(placeholderDrawable)
-                    .centerCrop()
                     .into(preview)
             }
         }
