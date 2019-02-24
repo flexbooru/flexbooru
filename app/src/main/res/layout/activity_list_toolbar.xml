@@ -14,22 +14,22 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/background"
         tools:context=".ui.BooruActivity">
 
     <include layout="@layout/toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/booru_list"
+            android:id="@+id/list"
             android:scrollbars="vertical"
-            android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:ignore="UnknownIdInLayout"/>
 
-</RelativeLayout>
+</LinearLayout>

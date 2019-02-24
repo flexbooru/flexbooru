@@ -102,8 +102,9 @@ interface MoebooruApi {
                       @Field("password_hash") passwordHash: String): Call<CommentResponse>
 
 
-    /* comment/search.json?query=user:username
-     * comment.json?post_id=post_id
+    /* user comment/search.json?query=user:username&page=page
+     * post comment.json?post_id=post_id
+     * all comment/search.json?query=&page=page
      */
     @GET
     fun getComments(@Url url: HttpUrl): Call<MutableList<CommentMoe>>

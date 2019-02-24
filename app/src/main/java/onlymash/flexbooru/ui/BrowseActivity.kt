@@ -386,7 +386,7 @@ class BrowseActivity : AppCompatActivity() {
         post_share.setOnClickListener {
             when (booru.type) {
                 Constants.TYPE_DANBOORU -> {
-                    val url = String.format("%s://%s/posts/%d", booru!!.scheme, booru!!.host, postsDan!![pager_browse.currentItem].id)
+                    val url = String.format("%s://%s/posts/%d", booru.scheme, booru.host, postsDan!![pager_browse.currentItem].id)
                     startActivity(Intent.createChooser(
                         Intent().apply {
                             action = Intent.ACTION_SEND
@@ -397,7 +397,7 @@ class BrowseActivity : AppCompatActivity() {
                     ))
                 }
                 else -> {
-                    val url = String.format("%s://%s/post/show/%d", booru!!.scheme, booru!!.host, postsMoe!![pager_browse.currentItem].id)
+                    val url = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postsMoe!![pager_browse.currentItem].id)
                     startActivity(Intent.createChooser(
                         Intent().apply {
                             action = Intent.ACTION_SEND

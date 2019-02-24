@@ -201,4 +201,34 @@ object ApiUrlHelper {
 
     fun getMoeVoteUrl(vote: Vote): String =
         String.format("%s://%s/post/vote.json", vote.scheme, vote.host)
+
+    fun getMoePostCommentUrl(commentAction: CommentAction): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(commentAction.scheme)
+            .host(commentAction.host)
+            .addPathSegment("comment.json")
+            .addQueryParameter("post_id", commentAction.post_id.toString())
+            .addQueryParameter("login", commentAction.username)
+            .addQueryParameter("password_hash", commentAction.auth_key)
+            .build()
+    }
+
+    fun getMoePostsCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(commentAction.scheme)
+            .host(commentAction.host)
+            .addPathSegment("comment")
+            .addPathSegment("search.json")
+            .addQueryParameter("query", commentAction.query)
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("login", commentAction.username)
+            .addQueryParameter("password_hash", commentAction.auth_key)
+            .build()
+    }
+
+    fun getMoeCreateCommentUrl(commentAction: CommentAction): String =
+        String.format("%s://%s/comment/create.json", commentAction.scheme, commentAction.host)
+
+    fun getMoeDestroyCommentUrl(commentAction: CommentAction): String =
+        String.format("%s://%s/comment/destroy.json", commentAction.scheme, commentAction.host)
 }

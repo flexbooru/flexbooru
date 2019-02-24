@@ -44,6 +44,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning" >
+        <activity android:name=".ui.CommentActivity"/>
         <activity
                 android:name=".ui.SearchActivity"
                 android:theme="@style/AppTheme.Search">
