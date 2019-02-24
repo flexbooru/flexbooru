@@ -220,7 +220,7 @@ class PopularFragment : ListFragment() {
             }
 
             override fun onApplySearch(query: String) {
-                SearchActivity.startActivity(requireContext(), query)
+                if (!query.isEmpty()) SearchActivity.startActivity(requireContext(), query)
             }
         }
 

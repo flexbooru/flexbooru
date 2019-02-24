@@ -92,4 +92,19 @@ interface DanbooruApi {
 
     @DELETE
     fun removeFavPost(@Url httpUrl: HttpUrl): Call<VoteDan>
+
+    @GET
+    fun getComments(@Url httpUrl: HttpUrl): Call<CommentDan>
+
+    @FormUrlEncoded
+    @POST
+    fun createComment(@Url url: String,
+                      @Field("comment[post_id]") postId: String,
+                      @Field("comment[body]") body: String,
+                      @Field("comment[do_not_bump_post]") notBump: Int,
+                      @Field("login") username: String,
+                      @Field("api_key") apiKey: String): Call<CommentResponse>
+
+    @DELETE
+    fun deleteComment(@Url httpUrl: HttpUrl): Call<CommentResponse>
 }

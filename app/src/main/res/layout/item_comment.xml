@@ -17,6 +17,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginTop="@dimen/spacing_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="68dp">
@@ -26,7 +27,8 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
+            android:layout_marginTop="@dimen/spacing_middle"
+            android:layout_marginStart="@dimen/spacing_middle"
             app:srcCompat="@drawable/avatar_account"
             app:civ_border="true"
             app:civ_border_color="@color/grey_10"
@@ -38,8 +40,8 @@
             android:id="@+id/user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:layout_marginStart="@dimen/spacing_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:layout_marginStart="@dimen/spacing_middle"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -47,7 +49,7 @@
             android:id="@+id/post_id"
             android:layout_width="0dp"
             android:layout_height="19dp"
-            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginStart="@dimen/spacing_middle"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
@@ -57,20 +59,26 @@
             android:id="@+id/comment_date"
             android:layout_width="0dp"
             android:layout_height="19dp"
-            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginEnd="@dimen/spacing_middle"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
             app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
-            android:id="@+id/comment_body"
+
+    <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginStart="@dimen/spacing_middle"
             android:background="@color/background_text_info"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
             app:layout_constraintTop_toBottomOf="@+id/comment_date"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+                android:id="@+id/comment_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="?android:attr/textColorSecondary"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

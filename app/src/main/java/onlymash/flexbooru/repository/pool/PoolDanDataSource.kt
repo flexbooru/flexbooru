@@ -15,86 +15,45 @@
 
 package onlymash.flexbooru.repository.pool
 
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.entity.PoolDan
 import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import retrofit2.Call
 import retrofit2.Response
-import java.io.IOException
 import java.util.concurrent.Executor
 
 class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                         private val search: Search,
-                        private val retryExecutor: Executor) : PageKeyedDataSource<Int, PoolDan>() {
+                        retryExecutor: Executor) : BasePageKeyedDataSource<Int, PoolDan>(retryExecutor) {
 
-    // keep a function reference for the retry event
-    private var retry: (() -> Any)? = null
-
-    /**
-     * There is no sync on the state because paging will always call loadInitial first then wait
-     * for it to return some success value before calling loadAfter.
-     */
-    val networkState = MutableLiveData<NetworkState>()
-
-    val initialLoad = MutableLiveData<NetworkState>()
-
-    fun retryAllFailed() {
-        val prevRetry = retry
-        retry = null
-        prevRetry?.let {
-            retryExecutor.execute {
-                it.invoke()
-            }
-        }
-    }
-
-    private var lastResponseSize = search.limit
-
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PoolDan>) {
+    override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PoolDan>) {
         val request = danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = 1))
-        networkState.postValue(NetworkState.LOADING)
-        initialLoad.postValue(NetworkState.LOADING)
         val scheme = search.scheme
         val host = search.host
         val keyword = search.keyword
-        try {
-            val response =  request.execute()
-            val data = response.body() ?: mutableListOf()
-            data.forEach {
-                it.scheme = scheme
-                it.host = host
-                it.keyword = keyword
-            }
-            lastResponseSize = data.size
-            retry = null
-            networkState.postValue(NetworkState.LOADED)
-            initialLoad.postValue(NetworkState.LOADED)
+        val response =  request.execute()
+        val data = response.body() ?: mutableListOf()
+        data.forEach {
+            it.scheme = scheme
+            it.host = host
+            it.keyword = keyword
+        }
+        if (data.size < search.limit) {
+            callback.onResult(data, null, null)
+            onEnd()
+        } else {
             callback.onResult(data, null, 2)
-        } catch (ioException: IOException) {
-            retry = {
-                loadInitial(params, callback)
-            }
-            val error = NetworkState.error(ioException.message ?: "unknown error")
-            networkState.postValue(error)
-            initialLoad.postValue(error)
         }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PoolDan>) {
-        if (lastResponseSize < search.limit) return
-        networkState.postValue(NetworkState.LOADING)
+    override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, PoolDan>) {
         val page = params.key
         danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<PoolDan>> {
                 override fun onFailure(call: Call<MutableList<PoolDan>>, t: Throwable) {
-                    retry = {
-                        loadAfter(params, callback)
-                    }
-                    networkState.postValue(NetworkState.error(t.message ?: "unknown err"))
+                    loadAfterOnFailed(t.message ?: "unknown err", params, callback)
                 }
                 override fun onResponse(call: Call<MutableList<PoolDan>>, response: Response<MutableList<PoolDan>>) {
                     if (response.isSuccessful) {
@@ -107,20 +66,17 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                             it.host = host
                             it.keyword = keyword
                         }
-                        lastResponseSize = data.size
-                        retry = null
-                        callback.onResult(data, page + 1)
-                    } else {
-                        retry = {
-                            loadAfter(params, callback)
+                        loadAfterOnSuccess()
+                        if (data.size < search.limit) {
+                            callback.onResult(data, null)
+                            onEnd()
+                        } else {
+                            callback.onResult(data, page + 1)
                         }
-                        networkState.postValue(NetworkState.error("error code: ${response.code()}"))
+                    } else {
+                        loadAfterOnFailed("error code: ${response.code()}", params, callback)
                     }
                 }
             })
-    }
-
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, PoolDan>) {
-
     }
 }

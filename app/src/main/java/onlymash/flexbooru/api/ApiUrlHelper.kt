@@ -231,4 +231,45 @@ object ApiUrlHelper {
 
     fun getMoeDestroyCommentUrl(commentAction: CommentAction): String =
         String.format("%s://%s/comment/destroy.json", commentAction.scheme, commentAction.host)
+
+    fun getDanPostCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(commentAction.scheme)
+            .host(commentAction.host)
+            .addPathSegment("comments.json")
+            .addQueryParameter("group_by", "comment")
+            .addQueryParameter("search[post_id]", commentAction.post_id.toString())
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("limit", commentAction.limit.toString())
+            .addQueryParameter("login", commentAction.username)
+            .addQueryParameter("api_key", commentAction.auth_key)
+            .build()
+    }
+
+    fun getDanPostsCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(commentAction.scheme)
+            .host(commentAction.host)
+            .addPathSegment("comments.json")
+            .addQueryParameter("group_by", "comment")
+            .addQueryParameter("search[creator_name]", commentAction.query)
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("limit", commentAction.limit.toString())
+            .addQueryParameter("login", commentAction.username)
+            .addQueryParameter("api_key", commentAction.auth_key)
+            .build()
+    }
+
+    fun getDanDeleteCommentUrl(commentAction: CommentAction): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(commentAction.scheme)
+            .host(commentAction.host)
+            .addPathSegment("comments/${commentAction.comment_id}.json")
+            .addQueryParameter("login", commentAction.username)
+            .addQueryParameter("api_key", commentAction.auth_key)
+            .build()
+    }
+
+    fun getDanCreateCommentUrl(commentAction: CommentAction): String =
+            String.format("%s://%s/comments.json", commentAction.scheme, commentAction.host)
 }

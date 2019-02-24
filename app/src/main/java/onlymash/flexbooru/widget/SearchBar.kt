@@ -130,13 +130,8 @@ class SearchBar @JvmOverloads constructor(
     fun isSearchState(): Boolean = state == STATE_SEARCH
 
     fun applySearch() {
-        val text = search_edit_text.text
-        if (!text.isNullOrBlank()) {
-            val query = text.toString().trim()
-            if (query.isNotBlank()) {
-                helper?.onApplySearch(query)
-            }
-        }
+        val query = (search_edit_text.text ?: "").toString().trim()
+        helper?.onApplySearch(query)
         setState(STATE_NORMAL)
     }
 
@@ -190,7 +185,7 @@ class SearchBar @JvmOverloads constructor(
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is Bundle) {
             super.onRestoreInstanceState(state.getParcelable(STATE_KEY_SUPER))
-            setState(state = state.getInt(STATE_KEY_STATE), animation = false, showIME = false)
+            setState(state = state.getInt(STATE_KEY_STATE, STATE_NORMAL), animation = false, showIME = false)
         }
     }
 

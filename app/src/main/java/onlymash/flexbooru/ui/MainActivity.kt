@@ -289,12 +289,18 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     val booru = getCurrentBooru()
                     if (user != null && booru != null) {
                         startActivity(Intent(this@MainActivity, AccountActivity::class.java))
+                    } else if (booru == null){
+                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     } else {
                         startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
                     }
                 }
-                else -> {
-
+                COMMENTS_DRAWER_ITEM_ID -> {
+                    if (getCurrentBooru() != null) {
+                        startActivity(Intent(this@MainActivity, CommentActivity::class.java))
+                    } else {
+                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                    }
                 }
             }
             return false

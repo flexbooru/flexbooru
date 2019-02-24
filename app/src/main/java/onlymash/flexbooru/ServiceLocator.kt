@@ -23,6 +23,8 @@ import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.repository.artist.ArtistData
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.comment.CommentData
+import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.favorite.VoteData
 import onlymash.flexbooru.repository.favorite.VoteRepository
 import onlymash.flexbooru.repository.pool.PoolData
@@ -81,6 +83,8 @@ interface ServiceLocator {
     fun getTagFilterDataSource(): TagFilterDataSource
 
     fun getVoteRepository(): VoteRepository
+
+    fun getCommentRepository(): CommentRepository
 }
 
 /**
@@ -148,6 +152,14 @@ open class DefaultServiceLocator : ServiceLocator {
             moebooruApi = getMoebooruApi(),
             db = FlexbooruDatabase.instance,
             ioExecutor = getDiskIOExecutor()
+        )
+    }
+
+    override fun getCommentRepository(): CommentRepository {
+        return CommentData(
+            danbooruApi = getDanbooruApi(),
+            moebooruApi = getMoebooruApi(),
+            networkExecutor = NETWORK_IO
         )
     }
 

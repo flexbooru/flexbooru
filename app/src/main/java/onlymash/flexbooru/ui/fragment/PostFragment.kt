@@ -149,7 +149,7 @@ class PostFragment : ListFragment() {
                 }
             }
             override fun onApplySearch(query: String) {
-                if (query != search!!.keyword) SearchActivity.startActivity(requireContext(), query)
+                if (!query.isEmpty() && query != search!!.keyword) SearchActivity.startActivity(requireContext(), query)
             }
         }
 

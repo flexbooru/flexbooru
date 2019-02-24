@@ -15,18 +15,21 @@
 
 package onlymash.flexbooru.entity
 
-data class CommentAction(
+data class CommentDan(
+    var uid: Int = -1,
     var scheme: String = "",
     var host: String = "",
-    var limit: Int = 10,
-    var body: String = "",
-    var comment_id: Int = -1,
-    var post_id: Int = -1,
-    var query: String = "",
-    //moebooru
-    var anonymous: Boolean = false,
-    //Danbooru: Set to 1 if you do not want the post to be bumped to the top of the comment listing
-    var do_not_bump_post: Int = 0,
-    var username: String = "",
-    var auth_key: String = ""
+    val id: Int,
+    val created_at: String,
+    val post_id: Int,
+    val creator_id: Int,
+    val body: String,
+    val score: Int,
+    val updated_at: String,
+    val updater_id: Int,
+    val do_not_bump_post: Boolean,
+    val is_deleted: Boolean,
+    val is_sticky: Boolean,
+    val creator_name: String,
+    val updater_name: String
 )

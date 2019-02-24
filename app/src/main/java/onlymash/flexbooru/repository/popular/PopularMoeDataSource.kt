@@ -87,7 +87,7 @@ class PopularMoeDataSource(
             retry = null
             networkState.postValue(NetworkState.LOADED)
             initialLoad.postValue(NetworkState.LOADED)
-            callback.onResult(items, 1, 2)
+            callback.onResult(items, null, null)
         } catch (ioException: IOException) {
             retry = {
                 loadInitial(params, callback)
