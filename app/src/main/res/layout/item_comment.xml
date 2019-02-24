@@ -20,7 +20,8 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="68dp">
+        android:minHeight="68dp"
+        android:background="?android:attr/selectableItemBackground">
 
     <onlymash.flexbooru.widget.CircularImageView
             android:id="@+id/user_avatar"
@@ -39,46 +40,57 @@
     <TextView
             android:id="@+id/user_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:layout_height="0dp"
+            android:gravity="bottom"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
             android:layout_marginStart="@dimen/spacing_middle"
+            android:layout_marginEnd="@dimen/spacing_middle"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/post_id"/>
     <TextView
             android:id="@+id/post_id"
             android:layout_width="0dp"
-            android:layout_height="19dp"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/spacing_middle"
+            android:gravity="bottom"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
-            app:layout_constraintEnd_toStartOf="@id/comment_date"/>
+            app:layout_constraintEnd_toStartOf="@id/comment_date"
+            app:layout_constraintBottom_toBottomOf="@id/user_avatar"/>
     <TextView
             android:id="@+id/comment_date"
             android:layout_width="0dp"
-            android:layout_height="19dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="@dimen/spacing_middle"
+            android:gravity="bottom|end"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/post_id"
+            app:layout_constraintBottom_toBottomOf="@id/user_avatar"/>
 
-    <FrameLayout
+    <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_middle"
+            android:layout_margin="@dimen/spacing_middle"
+            android:orientation="vertical"
             android:background="@color/background_text_info"
-            app:layout_constraintStart_toEndOf="@id/user_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/comment_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_avatar"
             app:layout_constraintEnd_toEndOf="parent">
         <TextView
                 android:id="@+id/comment_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
+                android:autoLink="web"
+                android:textIsSelectable="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="?android:attr/textColorSecondary"/>
-    </FrameLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

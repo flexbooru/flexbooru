@@ -15,21 +15,27 @@
 
 package onlymash.flexbooru.ui.viewholder
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.R
+import onlymash.flexbooru.entity.CommentDan
 import onlymash.flexbooru.entity.CommentMoe
 import onlymash.flexbooru.glide.GlideRequests
+import onlymash.flexbooru.ui.AccountActivity
+import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.util.formatDate
 import onlymash.flexbooru.widget.CircularImageView
+import onlymash.flexbooru.widget.LinkTransformationMethod
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CommentViewHolder(itemView: View, glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+class CommentViewHolder(itemView: View, private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
     companion object {
         fun create(parent: ViewGroup, glide: GlideRequests): CommentViewHolder {
             val view = LayoutInflater.from(parent.context)
@@ -45,6 +51,36 @@ class CommentViewHolder(itemView: View, glide: GlideRequests) : RecyclerView.Vie
     private val commentBody: TextView = itemView.findViewById(R.id.comment_body)
 
     private var comment: Any? = null
+
+    init {
+        commentBody.transformationMethod = LinkTransformationMethod()
+        avatar.setOnClickListener {
+            when (comment) {
+                is CommentDan -> {
+
+                }
+                is CommentMoe -> {
+                    val context = itemView.context
+                    val id = (comment as CommentMoe).creator_id
+                    val name = (comment as CommentMoe).creator
+                    context.startActivity(Intent(context, AccountActivity::class.java).apply {
+                        putExtra(AccountActivity.USER_ID_KEY, id)
+                        putExtra(AccountActivity.USER_NAME_KEY, name)
+                    })
+                }
+            }
+        }
+        itemView.setOnClickListener {
+            when (comment) {
+                is CommentDan -> {
+
+                }
+                is CommentMoe -> {
+                    SearchActivity.startActivity(itemView.context, "id:${(comment as CommentMoe).post_id}")
+                }
+            }
+        }
+    }
 
     fun bind(data: Any?) {
         comment = data
@@ -62,6 +98,9 @@ class CommentViewHolder(itemView: View, glide: GlideRequests) : RecyclerView.Vie
             }
             commentDate.text = formatDate(sdf.parse(date).time)
             commentBody.text = data.body
+            glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
+                .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
+                .into(avatar)
         }
     }
 }
