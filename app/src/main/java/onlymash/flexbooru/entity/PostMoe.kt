@@ -43,7 +43,7 @@ data class PostMoe(
     val preview_height: Int,
     val actual_preview_width: Int,
     val actual_preview_height: Int,
-    val sample_url: String,
+    val sample_url: String?,
     val sample_width: Int,
     val sample_height: Int,
     val sample_file_size: Int,
@@ -61,7 +61,7 @@ data class PostMoe(
 ) {
     var indexInResponse: Int = -1
 
-    fun getSampleUrl(): String = sample_url
+    fun getSampleUrl(): String = sample_url ?: ""
 
     fun getLargerUrl(): String = if (jpeg_url.isNullOrBlank()) getSampleUrl() else jpeg_url
 
