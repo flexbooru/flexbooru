@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.view.menu.ActionMenuItemView
@@ -281,6 +282,27 @@ class BrowseActivity : AppCompatActivity() {
         return post
     }
 
+    private fun getCurrentPost(): Any? {
+        return when (booru.type) {
+            Constants.TYPE_DANBOORU -> {
+                postsDan!![pager_browse.currentItem]
+            }
+            Constants.TYPE_MOEBOORU -> {
+                postsMoe!![pager_browse.currentItem]
+            }
+            else -> null
+        }
+    }
+
+    private fun getCurrentPostId(): Int {
+        val post = getCurrentPost()
+        return when (post) {
+            is PostDan -> post.id
+            is PostMoe -> post.id
+            else -> -1
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
@@ -351,6 +373,9 @@ class BrowseActivity : AppCompatActivity() {
                 R.id.action_browse_send -> {
                     checkStoragePermissionAndAction(ACTION_SAVE_SEND)
                 }
+                R.id.action_browse_share -> {
+                    shareLink()
+                }
             }
             return@setOnMenuItemClickListener true
         }
@@ -383,32 +408,10 @@ class BrowseActivity : AppCompatActivity() {
                 postLoader.loadMoePosts(host = booru.host, keyword = keyword)
             }
         }
-        post_share.setOnClickListener {
-            when (booru.type) {
-                Constants.TYPE_DANBOORU -> {
-                    val url = String.format("%s://%s/posts/%d", booru.scheme, booru.host, postsDan!![pager_browse.currentItem].id)
-                    startActivity(Intent.createChooser(
-                        Intent().apply {
-                            action = Intent.ACTION_SEND
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, url)
-                        },
-                        getString(R.string.share_via)
-                    ))
-                }
-                else -> {
-                    val url = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postsMoe!![pager_browse.currentItem].id)
-                    startActivity(Intent.createChooser(
-                        Intent().apply {
-                            action = Intent.ACTION_SEND
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, url)
-                        },
-                        getString(R.string.share_via)
-                    ))
-                }
-            }
-        }
+        initBottomBar()
+    }
+
+    private fun initBottomBar() {
         post_tags.setOnClickListener {
             when (booru.type) {
                 Constants.TYPE_DANBOORU -> TagBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
@@ -425,8 +428,39 @@ class BrowseActivity : AppCompatActivity() {
                 show(supportFragmentManager, "info")
             }
         }
+        post_comment.setOnClickListener {
+            val id = getCurrentPostId()
+            if (id > 0) CommentActivity.startActivity(context = this, postId = id)
+        }
         post_save.setOnClickListener {
             checkStoragePermissionAndAction(ACTION_SAVE)
+        }
+    }
+
+    private fun shareLink() {
+        when (booru.type) {
+            Constants.TYPE_DANBOORU -> {
+                val url = String.format("%s://%s/posts/%d", booru.scheme, booru.host, postsDan!![pager_browse.currentItem].id)
+                startActivity(Intent.createChooser(
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, url)
+                    },
+                    getString(R.string.share_via)
+                ))
+            }
+            else -> {
+                val url = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postsMoe!![pager_browse.currentItem].id)
+                startActivity(Intent.createChooser(
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, url)
+                    },
+                    getString(R.string.share_via)
+                ))
+            }
         }
     }
 

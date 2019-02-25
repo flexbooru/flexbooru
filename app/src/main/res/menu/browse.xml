@@ -28,6 +28,11 @@
             app:showAsAction="never"/>
 
     <item
+            android:id="@+id/action_browse_share"
+            android:title="@string/action_share"
+            app:showAsAction="never"/>
+
+    <item
             android:id="@+id/action_browse_send"
             android:title="@string/browse_send"
             app:showAsAction="never"/>

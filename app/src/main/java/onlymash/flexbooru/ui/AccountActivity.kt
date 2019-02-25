@@ -136,5 +136,8 @@ class AccountActivity : AppCompatActivity() {
             val keyword = String.format("user:%s", user!!.name)
             SearchActivity.startActivity(this, keyword)
         }
+        comments_action_button.setOnClickListener {
+            CommentActivity.startActivity(this, username = user!!.name)
+        }
     }
 }

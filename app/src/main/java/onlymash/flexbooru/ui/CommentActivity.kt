@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
@@ -24,7 +25,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
@@ -43,6 +43,20 @@ import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 
 class CommentActivity : AppCompatActivity() {
+
+    companion object {
+        private const val POST_ID_KEY = "post_id"
+        private const val USER_NAME_KEY = "user_name"
+        fun startActivity(context: Context, postId: Int = -1, username: String = "") {
+            context.startActivity(Intent(context, CommentActivity::class.java).apply {
+                if (postId > 0) {
+                    putExtra(POST_ID_KEY, postId)
+                } else if (!username.isEmpty()) {
+                    putExtra(USER_NAME_KEY, username)
+                }
+            })
+        }
+    }
 
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var commentViewModel: CommentViewModel
@@ -63,10 +77,31 @@ class CommentActivity : AppCompatActivity() {
             return
         }
         type = booru.type
+        var query = ""
+        var postId = -1
+        var name = ""
+        intent?.extras?.let {
+            postId = it.getInt(POST_ID_KEY, -1)
+            name = it.getString(USER_NAME_KEY, "")
+        }
+        if (postId > 0) {
+            toolbar.subtitle = "Post $postId"
+        } else if (!name.isEmpty()) {
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    query = name
+                }
+                Constants.TYPE_MOEBOORU -> {
+                    query = "user:$name"
+                }
+            }
+            toolbar.subtitle = query
+        }
         commentAction = CommentAction(
             scheme = booru.scheme,
             host = booru.host,
-            query = "",
+            query = query,
+            post_id = postId,
             limit = Settings.instance().pageSize
         )
         UserManager.getUserByBooruUid(uid)?.let {

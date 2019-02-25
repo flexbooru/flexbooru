@@ -297,7 +297,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
                 COMMENTS_DRAWER_ITEM_ID -> {
                     if (getCurrentBooru() != null) {
-                        startActivity(Intent(this@MainActivity, CommentActivity::class.java))
+                        CommentActivity.startActivity(this@MainActivity)
                     } else {
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
