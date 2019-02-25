@@ -25,6 +25,7 @@ properties.load(project.rootProject.file(".gradle/keystore.properties").newDataI
 
 Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
 String verNameSuffix = 'git rev-parse --short HEAD'.execute().text.trim()
+String verName = "0.0.4" + "." + verNameSuffix
 
 android {
     signingConfigs {
@@ -42,11 +43,15 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode verCode
-        versionName "0.0.4" + ".r" + verNameSuffix
+        versionName verName
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    setProperty("archivesBaseName", "flexbooru-" + defaultConfig.versionName)
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "flexbooru_${defaultConfig.versionName}.apk"
+        }
+    }
     buildTypes {
         release {
             signingConfig signingConfigs.release
