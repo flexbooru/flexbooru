@@ -16,7 +16,6 @@
 package onlymash.flexbooru.api
 
 import android.util.Log
-import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -99,9 +98,9 @@ interface DanbooruApi {
     @FormUrlEncoded
     @POST
     fun createComment(@Url url: String,
-                      @Field("comment[post_id]") postId: String,
+                      @Field("comment[post_id]") postId: Int,
                       @Field("comment[body]") body: String,
-                      @Field("comment[do_not_bump_post]") notBump: Int,
+                      @Field("comment[do_not_bump_post]") anonymous: Int,
                       @Field("login") username: String,
                       @Field("api_key") apiKey: String): Call<CommentResponse>
 

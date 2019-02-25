@@ -20,12 +20,16 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.entity.CommentDan
 import onlymash.flexbooru.entity.CommentMoe
+import onlymash.flexbooru.entity.CommentResponse
 import onlymash.flexbooru.repository.Listing
+import retrofit2.Call
+import retrofit2.Response
 import java.util.concurrent.Executor
 
 class CommentData(private val danbooruApi: DanbooruApi,
@@ -36,6 +40,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
         private const val TAG = "CommentData"
     }
 
+    @MainThread
     override fun getDanComments(commentAction: CommentAction): Listing<CommentDan> {
         val sourceFactory = CommentDanDataSourceFactory(
             danbooruApi = danbooruApi,
@@ -59,12 +64,43 @@ class CommentData(private val danbooruApi: DanbooruApi,
         )
     }
 
+    @MainThread
     override fun createDanComment(commentAction: CommentAction) {
-
+        danbooruApi.createComment(
+            url = ApiUrlHelper.getDanCreateCommentUrl(commentAction),
+            body = commentAction.body,
+            anonymous = commentAction.anonymous,
+            username = commentAction.username,
+            apiKey = commentAction.auth_key,
+            postId = commentAction.post_id).enqueue(object : retrofit2.Callback<CommentResponse> {
+            override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                onFailed(t.message ?: "unknown error")
+            }
+            override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onFailed("error code: ${response.code()}")
+                }
+            }
+        })
     }
 
+    @MainThread
     override fun destroyDanComment(commentAction: CommentAction) {
-
+        danbooruApi.deleteComment(ApiUrlHelper.getDanDeleteCommentUrl(commentAction))
+            .enqueue(object : retrofit2.Callback<CommentResponse> {
+                override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                    onFailed(t.message ?: "unknown error")
+                }
+                override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                    if (response.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onFailed("error code: ${response.code()}")
+                    }
+                }
+            })
     }
 
     @MainThread
@@ -92,12 +128,45 @@ class CommentData(private val danbooruApi: DanbooruApi,
 
     @MainThread
     override fun createMoeComment(commentAction: CommentAction) {
-
+        moebooruApi.createComment(
+            url = ApiUrlHelper.getMoeCreateCommentUrl(commentAction),
+            postId = commentAction.post_id,
+            body = commentAction.body,
+            anonymous = commentAction.anonymous,
+            username = commentAction.username,
+            passwordHash = commentAction.auth_key
+        ).enqueue(object : retrofit2.Callback<CommentResponse> {
+            override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                onFailed(t.message ?: "unknown error")
+            }
+            override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onFailed("error code: ${response.code()}")
+                }
+            }
+        })
     }
 
     @MainThread
     override fun destroyMoeComment(commentAction: CommentAction) {
-
+        moebooruApi.destroyComment(
+            url = ApiUrlHelper.getMoeDestroyCommentUrl(commentAction),
+            commentId = commentAction.comment_id,
+            username = commentAction.username,
+            passwordHash = commentAction.auth_key).enqueue(object : retrofit2.Callback<CommentResponse> {
+            override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                onFailed(t.message ?: "unknown error")
+            }
+            override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onFailed("error code: ${response.code()}")
+                }
+            }
+        })
     }
 
     override fun onSuccess() {
@@ -105,6 +174,6 @@ class CommentData(private val danbooruApi: DanbooruApi,
     }
 
     override fun onFailed(msg: String) {
-        Log.e(TAG, "onFailed. $msg")
+        Log.e(TAG, msg)
     }
 }

@@ -61,4 +61,20 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     fun retryDan() {
         danRepoResult?.value?.retry?.invoke()
     }
+
+    fun createMoeComment(commentAction: CommentAction) {
+        repo.createMoeComment(commentAction)
+    }
+
+    fun deleteMoeComment(commentAction: CommentAction) {
+        repo.destroyMoeComment(commentAction)
+    }
+
+    fun createDanComment(commentAction: CommentAction) {
+        repo.createDanComment(commentAction)
+    }
+
+    fun deleteDanComment(commentAction: CommentAction) {
+        repo.destroyDanComment(commentAction)
+    }
 }

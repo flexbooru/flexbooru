@@ -116,5 +116,5 @@ interface MoebooruApi {
     fun destroyComment(@Url url: String,
                        @Field("id") commentId: Int,
                        @Field("login") username: String,
-                       @Field("password_hash") passwordHash: String): Callback<CommentResponse>
+                       @Field("password_hash") passwordHash: String): Call<CommentResponse>
 }

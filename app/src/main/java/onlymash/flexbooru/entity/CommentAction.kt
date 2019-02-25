@@ -23,10 +23,8 @@ data class CommentAction(
     var comment_id: Int = -1,
     var post_id: Int = -1,
     var query: String = "",
-    //moebooru
-    var anonymous: Boolean = false,
-    //Danbooru: Set to 1 if you do not want the post to be bumped to the top of the comment listing
-    var do_not_bump_post: Int = 0,
+    //moebooru danbooru: do_not_bump_post Set to 1 if you do not want the post to be bumped to the top of the comment listing
+    var anonymous: Int = 0,
     var username: String = "",
     var auth_key: String = ""
 )
