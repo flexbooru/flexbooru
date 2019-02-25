@@ -22,6 +22,10 @@ apply plugin: 'io.fabric'
 Properties properties = new Properties()
 properties.load(project.rootProject.file(".gradle/keystore.properties").newDataInputStream())
 
+
+Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
+String verNameSuffix = 'git rev-parse --short HEAD'.execute().text.trim()
+
 android {
     signingConfigs {
         release {
@@ -37,8 +41,8 @@ android {
         applicationId "onlymash.flexbooru"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.0.3k"
+        versionCode verCode
+        versionName "0.0.4" + ".r" + verNameSuffix
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
