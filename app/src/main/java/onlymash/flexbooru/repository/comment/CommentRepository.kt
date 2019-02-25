@@ -16,14 +16,18 @@
 package onlymash.flexbooru.repository.comment
 
 import onlymash.flexbooru.entity.CommentAction
+import onlymash.flexbooru.entity.CommentDan
 import onlymash.flexbooru.entity.CommentMoe
 import onlymash.flexbooru.repository.Listing
 
 interface CommentRepository {
-    fun getMoePostComment(commentAction: CommentAction)
-    fun getMoePostsComment(commentAction: CommentAction): Listing<CommentMoe>
+    fun getMoeComments(commentAction: CommentAction): Listing<CommentMoe>
     fun createMoeComment(commentAction: CommentAction)
     fun destroyMoeComment(commentAction: CommentAction)
+
+    fun getDanComments(commentAction: CommentAction): Listing<CommentDan>
+    fun createDanComment(commentAction: CommentAction)
+    fun destroyDanComment(commentAction: CommentAction)
 
     fun onSuccess()
     fun onFailed(msg: String)

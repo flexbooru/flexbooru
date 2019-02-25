@@ -15,27 +15,71 @@
 
 package onlymash.flexbooru.repository.comment
 
-import androidx.paging.PageKeyedDataSource
+import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.entity.CommentDan
+import onlymash.flexbooru.repository.BasePageKeyedDataSource
+import retrofit2.Call
+import retrofit2.Response
 import java.util.concurrent.Executor
 
 class CommentDanDataSource(private val danbooruApi: DanbooruApi,
                            private val commentAction: CommentAction,
-                           private val retryExecutor: Executor
-) : PageKeyedDataSource<Int, CommentDan>(){
+                           retryExecutor: Executor
+) : BasePageKeyedDataSource<Int, CommentDan>(retryExecutor){
 
-
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentDan>) {
-
+    override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentDan>) {
+        val scheme = commentAction.scheme
+        val host = commentAction.host
+        val url = if (commentAction.post_id > 0) {
+            ApiUrlHelper.getDanPostCommentUrl(commentAction, 1)
+        } else {
+            ApiUrlHelper.getDanPostsCommentUrl(commentAction, 1)
+        }
+        val response = danbooruApi.getComments(url).execute()
+        val data = response.body() ?: mutableListOf()
+        data.forEach {
+            it.scheme = scheme
+            it.host = host
+        }
+        if (data.size < commentAction.limit) {
+            callback.onResult(data, null, null)
+        } else {
+            callback.onResult(data, null, 2)
+        }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, CommentDan>) {
-
-    }
-
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, CommentDan>) {
-
+    override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, CommentDan>) {
+        val page = params.key
+        val url = if (commentAction.post_id > 0) {
+            ApiUrlHelper.getDanPostCommentUrl(commentAction, page)
+        } else {
+            ApiUrlHelper.getDanPostsCommentUrl(commentAction, page)
+        }
+        danbooruApi.getComments(url).enqueue(object : retrofit2.Callback<MutableList<CommentDan>> {
+            override fun onFailure(call: Call<MutableList<CommentDan>>, t: Throwable) {
+                loadAfterOnFailed(t.message ?: "unknown err", params, callback)
+            }
+            override fun onResponse(call: Call<MutableList<CommentDan>>, response: Response<MutableList<CommentDan>>) {
+                if (response.isSuccessful) {
+                    val data = response.body() ?: mutableListOf()
+                    val scheme = commentAction.scheme
+                    val host = commentAction.host
+                    data.forEach {
+                        it.scheme = scheme
+                        it.host = host
+                    }
+                    loadAfterOnSuccess()
+                    if (data.size < commentAction.limit) {
+                        callback.onResult(data, null)
+                    } else {
+                        callback.onResult(data, page + 1)
+                    }
+                } else {
+                    loadAfterOnFailed("error code: ${response.code()}", params, callback)
+                }
+            }
+        })
     }
 }

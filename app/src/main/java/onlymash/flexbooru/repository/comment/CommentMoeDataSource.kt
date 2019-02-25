@@ -32,10 +32,12 @@ class CommentMoeDataSource(private val moebooruApi: MoebooruApi,
     private val pageSize = 30
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentMoe>) {
-        val request = moebooruApi.getComments(
-            url = ApiUrlHelper.getMoePostsCommentUrl(
-                commentAction = commentAction,
-                page = 1))
+        val url = if (commentAction.post_id > 0) {
+            ApiUrlHelper.getMoePostCommentUrl(commentAction = commentAction, page = 1)
+        } else {
+            ApiUrlHelper.getMoePostsCommentUrl(commentAction = commentAction, page = 1)
+        }
+        val request = moebooruApi.getComments(url)
         val scheme = commentAction.scheme
         val host = commentAction.host
         val response = request.execute()
@@ -53,7 +55,12 @@ class CommentMoeDataSource(private val moebooruApi: MoebooruApi,
 
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, CommentMoe>) {
         val page = params.key
-        moebooruApi.getComments(ApiUrlHelper.getMoePostsCommentUrl(commentAction, page))
+        val url = if (commentAction.post_id > 0) {
+            ApiUrlHelper.getMoePostCommentUrl(commentAction = commentAction, page = page)
+        } else {
+            ApiUrlHelper.getMoePostsCommentUrl(commentAction = commentAction, page = page)
+        }
+        moebooruApi.getComments(url)
             .enqueue(object : retrofit2.Callback<MutableList<CommentMoe>> {
                 override fun onFailure(call: Call<MutableList<CommentMoe>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

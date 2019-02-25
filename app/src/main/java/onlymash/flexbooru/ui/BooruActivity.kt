@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_list_toolbar.*
+import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -45,7 +45,7 @@ class BooruActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_toolbar)
+        setContentView(R.layout.activity_booru)
         initToolbar()
         BooruManager.isNotEmpty()
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)

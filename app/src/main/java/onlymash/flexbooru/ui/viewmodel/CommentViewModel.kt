@@ -25,11 +25,18 @@ import onlymash.flexbooru.repository.comment.CommentRepository
 class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     private val commentAction = MutableLiveData<CommentAction>()
     private val moeRepoResult = map(commentAction) {
-        repo.getMoePostsComment(it)
+        repo.getMoeComments(it)
     }
     val commentsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }!!
     val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }!!
     val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }!!
+
+    private val danRepoResult = map(commentAction) {
+        repo.getDanComments(it)
+    }
+    val commentsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
+    val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
+    val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
 
     fun show(action: CommentAction): Boolean {
         if (commentAction.value == action) {
@@ -45,5 +52,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
 
     fun retryMoe() {
         moeRepoResult?.value?.retry?.invoke()
+    }
+
+    fun refreshDan() {
+        danRepoResult.value?.refresh?.invoke()
+    }
+
+    fun retryDan() {
+        danRepoResult?.value?.retry?.invoke()
     }
 }

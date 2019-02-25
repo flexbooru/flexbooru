@@ -20,45 +20,55 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.CommentAction
+import onlymash.flexbooru.entity.CommentDan
 import onlymash.flexbooru.entity.CommentMoe
 import onlymash.flexbooru.repository.Listing
-import retrofit2.Call
-import retrofit2.Response
 import java.util.concurrent.Executor
 
 class CommentData(private val danbooruApi: DanbooruApi,
                   private val moebooruApi: MoebooruApi,
                   private val networkExecutor: Executor
 ) : CommentRepository {
-
     companion object {
         private const val TAG = "CommentData"
     }
 
-    @MainThread
-    override fun getMoePostComment(commentAction: CommentAction) {
-        moebooruApi.getComments(ApiUrlHelper.getMoePostCommentUrl(commentAction))
-            .enqueue(object : retrofit2.Callback<MutableList<CommentMoe>> {
-                override fun onFailure(call: Call<MutableList<CommentMoe>>, t: Throwable) {
-                    onFailed(t.message.toString())
-                }
+    override fun getDanComments(commentAction: CommentAction): Listing<CommentDan> {
+        val sourceFactory = CommentDanDataSourceFactory(
+            danbooruApi = danbooruApi,
+            commentAction = commentAction,
+            retryExecutor = networkExecutor
+        )
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = commentAction.limit,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState =
+            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
 
-                override fun onResponse(
-                    call: Call<MutableList<CommentMoe>>,
-                    response: Response<MutableList<CommentMoe>>
-                ) {
-                    onSuccess()
-                }
+    override fun createDanComment(commentAction: CommentAction) {
 
-            })
+    }
+
+    override fun destroyDanComment(commentAction: CommentAction) {
+
     }
 
     @MainThread
-    override fun getMoePostsComment(commentAction: CommentAction): Listing<CommentMoe> {
+    override fun getMoeComments(commentAction: CommentAction): Listing<CommentMoe> {
         val sourceFactory = CommentMoeDataSourceFactory(
             moebooruApi = moebooruApi,
             commentAction = commentAction,

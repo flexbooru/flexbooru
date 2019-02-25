@@ -202,12 +202,13 @@ object ApiUrlHelper {
     fun getMoeVoteUrl(vote: Vote): String =
         String.format("%s://%s/post/vote.json", vote.scheme, vote.host)
 
-    fun getMoePostCommentUrl(commentAction: CommentAction): HttpUrl {
+    fun getMoePostCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(commentAction.scheme)
             .host(commentAction.host)
             .addPathSegment("comment.json")
             .addQueryParameter("post_id", commentAction.post_id.toString())
+            .addQueryParameter("page", page.toString())
             .addQueryParameter("login", commentAction.username)
             .addQueryParameter("password_hash", commentAction.auth_key)
             .build()

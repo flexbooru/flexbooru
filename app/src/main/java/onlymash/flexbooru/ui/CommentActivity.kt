@@ -27,7 +27,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_list_toolbar.*
+import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -37,6 +37,7 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
@@ -49,7 +50,7 @@ class CommentActivity : AppCompatActivity() {
     private var type = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_toolbar)
+        setContentView(R.layout.activity_comment)
         toolbar.setTitle(R.string.title_comments)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
@@ -65,7 +66,8 @@ class CommentActivity : AppCompatActivity() {
         commentAction = CommentAction(
             scheme = booru.scheme,
             host = booru.host,
-            query = ""
+            query = "",
+            limit = Settings.instance().pageSize
         )
         UserManager.getUserByBooruUid(uid)?.let {
             with(commentAction) {
@@ -76,20 +78,65 @@ class CommentActivity : AppCompatActivity() {
                 }
             }
         }
+        commentViewModel = getCommentViewModel(ServiceLocator.instance().getCommentRepository())
         commentAdapter = CommentAdapter(GlideApp.with(this)) {
-
+            when (type) {
+                Constants.TYPE_DANBOORU -> commentViewModel.retryDan()
+                Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
+            }
         }
         list.apply {
-            addItemDecoration(DividerItemDecoration(this@CommentActivity, RecyclerView.VERTICAL))
             layoutManager = LinearLayoutManager(this@CommentActivity, RecyclerView.VERTICAL, false)
             adapter = commentAdapter
         }
-        commentViewModel = getCommentViewModel(ServiceLocator.instance().getCommentRepository())
-        commentViewModel.commentsMoe.observe(this, Observer {
-            @Suppress("UNCHECKED_CAST")
-            commentAdapter.submitList(it as PagedList<Any>)
-        })
+        swipe_refresh.setColorSchemeResources(
+            R.color.blue,
+            R.color.purple,
+            R.color.green,
+            R.color.orange,
+            R.color.red
+        )
+        when (type) {
+            Constants.TYPE_DANBOORU -> {
+                commentViewModel.commentsDan.observe(this, Observer {
+                    @Suppress("UNCHECKED_CAST")
+                    commentAdapter.submitList(it as PagedList<Any>)
+                })
+                commentViewModel.networkStateDan.observe(this, Observer {
+                    commentAdapter.setNetworkState(it)
+                })
+                initSwipeToRefreshDan()
+            }
+            Constants.TYPE_MOEBOORU -> {
+                commentViewModel.commentsMoe.observe(this, Observer {
+                    @Suppress("UNCHECKED_CAST")
+                    commentAdapter.submitList(it as PagedList<Any>)
+                })
+                commentViewModel.networkStateMoe.observe(this, Observer {
+                    commentAdapter.setNetworkState(it)
+                })
+                initSwipeToRefreshMoe()
+            }
+        }
         commentViewModel.show(commentAction)
+    }
+
+    private fun initSwipeToRefreshDan() {
+        commentViewModel.refreshStateDan.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { commentViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshMoe() {
+        commentViewModel.refreshStateMoe.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { commentViewModel.refreshMoe() }
     }
 
     @Suppress("UNCHECKED_CAST")

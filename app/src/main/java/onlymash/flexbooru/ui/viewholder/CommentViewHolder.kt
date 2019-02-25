@@ -57,7 +57,13 @@ class CommentViewHolder(itemView: View, private val glide: GlideRequests) : Recy
         avatar.setOnClickListener {
             when (comment) {
                 is CommentDan -> {
-
+                    val context = itemView.context
+                    val id = (comment as CommentDan).creator_id
+                    val name = (comment as CommentDan).creator_name
+                    context.startActivity(Intent(context, AccountActivity::class.java).apply {
+                        putExtra(AccountActivity.USER_ID_KEY, id)
+                        putExtra(AccountActivity.USER_NAME_KEY, name)
+                    })
                 }
                 is CommentMoe -> {
                     val context = itemView.context
@@ -73,7 +79,7 @@ class CommentViewHolder(itemView: View, private val glide: GlideRequests) : Recy
         itemView.setOnClickListener {
             when (comment) {
                 is CommentDan -> {
-
+                    SearchActivity.startActivity(itemView.context, "id:${(comment as CommentDan).post_id}")
                 }
                 is CommentMoe -> {
                     SearchActivity.startActivity(itemView.context, "id:${(comment as CommentMoe).post_id}")
@@ -84,23 +90,32 @@ class CommentViewHolder(itemView: View, private val glide: GlideRequests) : Recy
 
     fun bind(data: Any?) {
         comment = data
-        if (data is CommentMoe) {
-            userName.text = data.creator
-            postId.text = String.format("Post %d", data.post_id)
-            val date = data.created_at
-            val sdf =  when {
-                date.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH)
-                date.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
-                else -> {
-                    Crashlytics.log("Unknown date format: $date. Host: ${data.host}")
-                    throw IllegalStateException("Unknown date format: $date")
-                }
+        when (data) {
+            is CommentDan -> {
+                userName.text = data.creator_name
+                postId.text = String.format("Post %d", data.post_id)
+                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH)
+                commentDate.text = formatDate(sdf.parse(data.updated_at).time)
+                commentBody.text = data.body
             }
-            commentDate.text = formatDate(sdf.parse(date).time)
-            commentBody.text = data.body
-            glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
-                .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
-                .into(avatar)
+            is CommentMoe -> {
+                userName.text = data.creator
+                postId.text = String.format("Post %d", data.post_id)
+                val date = data.created_at
+                val sdf =  when {
+                    date.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH)
+                    date.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+                    else -> {
+                        Crashlytics.log("Unknown date format: $date. Host: ${data.host}")
+                        throw IllegalStateException("Unknown date format: $date")
+                    }
+                }
+                commentDate.text = formatDate(sdf.parse(date).time)
+                commentBody.text = data.body
+                glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
+                    .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
+                    .into(avatar)
+            }
         }
     }
 }

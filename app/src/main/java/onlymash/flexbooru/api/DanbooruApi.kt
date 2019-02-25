@@ -94,7 +94,7 @@ interface DanbooruApi {
     fun removeFavPost(@Url httpUrl: HttpUrl): Call<VoteDan>
 
     @GET
-    fun getComments(@Url httpUrl: HttpUrl): Call<CommentDan>
+    fun getComments(@Url httpUrl: HttpUrl): Call<MutableList<CommentDan>>
 
     @FormUrlEncoded
     @POST
