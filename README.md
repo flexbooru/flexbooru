@@ -8,6 +8,4 @@ A booru client for Android, support [Danbooru](https://github.com/r888888888/dan
 [![Telegram](https://img.shields.io/badge/chat-Telegram-blue.svg)](https://t.me/flexbooru)
 
 ## Screenshot
-<img src="art/screenshot_01.png" height="300" hspace="20">
-<img src="art/screenshot_02.png" height="300" hspace="20">
-<img src="art/screenshot_03.png" height="300" hspace="20">
+<img src="art/screenshot_01.png" height="300" hspace="20"> <img src="art/screenshot_02.png" height="300" hspace="20"> <img src="art/screenshot_03.png" height="300" hspace="20">
