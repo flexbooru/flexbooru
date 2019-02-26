@@ -187,11 +187,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
 
         override fun onDelete(booruUid: Long) {
-            boorus.forEach { booru ->
+            var position = -1
+            boorus.forEachIndexed { index, booru ->
                 if (booru.uid == booruUid) {
-                    boorus.remove(booru)
-                    return@forEach
+                    position = index
+                    return@forEachIndexed
                 }
+            }
+            if (position >= 0) {
+                boorus.removeAt(position)
             }
             header.removeProfileByIdentifier(booruUid)
             if (boorus.size > 0) {
