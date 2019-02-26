@@ -15,6 +15,7 @@
 
 <resources>
     <string name="app_name">Flexbooru</string>
+    <string name="app_description">A booru client for Android, support Danbooru and Moebooru.</string>
 
     <string name="title_posts">Posts</string>
     <string name="title_popular">Popular</string>
@@ -199,4 +200,7 @@
     <string name="muzei_search">Search</string>
     <string name="muzei_add">Add muzei</string>
     <string name="muzei_input_cant_be_empty">Input can not be empty.</string>
+    <string name="muzei_action_view_profile">View %s\'s profile</string>
+    <string name="muzei_action_visit_flexbooru">Visit Flexbooru</string>
+    <string name="muzei_attribution">Photo on Flexbooru</string>
 </resources>
