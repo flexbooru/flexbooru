@@ -26,7 +26,7 @@ import java.util.*
 @Entity(tableName = "boorus", indices = [(Index(value = ["scheme", "host"], unique = true))])
 data class Booru(
     @PrimaryKey(autoGenerate = true)
-    var uid: Long,
+    var uid: Long = 0L,
     var name: String,
     var scheme: String,
     var host: String,

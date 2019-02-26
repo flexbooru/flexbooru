@@ -13,25 +13,16 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.ui.viewmodel
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.lifecycle.ViewModel
+import onlymash.flexbooru.repository.muzei.MuzeiRepository
 
-@Entity(tableName = "users", indices = [(Index(value = ["booru_uid"], unique = true))],
-    foreignKeys = [(ForeignKey(
-            entity = Booru::class,
-            parentColumns = ["uid"],
-            childColumns = ["booru_uid"],
-            onDelete = ForeignKey.CASCADE))])
-data class User(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
-    var booru_uid: Long = -1L,
-    var name: String,
-    var id: Int,
-    var password_hash: String? = null,
-    var api_key: String? = null
-)
+class MuzeiViewModel(private val repo: MuzeiRepository) : ViewModel() {
+
+    val muzeiOutcome by lazy { repo.muzeiOutcome }
+
+    fun loadMuzei(booruUid: Long) {
+        repo.loadMuzei(booruUid)
+    }
+}

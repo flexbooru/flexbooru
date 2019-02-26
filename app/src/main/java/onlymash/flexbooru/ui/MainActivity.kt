@@ -238,11 +238,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
 
         override fun onDelete(user: User) {
+            var position = -1
             users.forEachIndexed { i, u ->
                 if (user.uid == u.uid) {
-                    users.removeAt(i)
+                    position = i
                     return@forEachIndexed
                 }
+            }
+            if (position >= 0) {
+                users.removeAt(position)
             }
         }
 

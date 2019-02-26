@@ -13,22 +13,12 @@
   ~ You should have received a copy of the GNU General Public License along with
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/background"
-        tools:context=".ui.BooruActivity">
 
-    <include layout="@layout/toolbar"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/muzei_list"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"/>
-
-</LinearLayout>
+    <item android:id="@+id/action_muzei_add"
+          android:title="@string/muzei_add"
+          android:icon="@drawable/ic_add_24dp"
+          app:showAsAction="ifRoom"/>
+</menu>

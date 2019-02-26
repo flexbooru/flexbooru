@@ -28,7 +28,7 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE))])
 data class TagFilter(
     @PrimaryKey(autoGenerate = true)
-    var uid: Long = -1L,
+    var uid: Long = 0L,
     var booru_uid: Long = -1L,
     var name: String,
     var type: Int = -1,

@@ -33,7 +33,7 @@ import onlymash.flexbooru.entity.*
     (TagDan::class), (TagMoe::class),
     (ArtistDan::class), (ArtistMoe::class),
     (TagFilter::class), (Muzei::class)],
-    version = 10, exportSchema = true)
+    version = 11, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -55,19 +55,30 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_10_11 by lazy {
+            object : Migration(10, 11) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("DROP TABLE `muzei`")
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `muzei` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `keyword` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                    database.execSQL("CREATE UNIQUE INDEX `index_muzei_booru_uid_keyword` ON `muzei` (`booru_uid`, `keyword`)")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .addMigrations(
                     MIGRATION_8_9,
-                    MIGRATION_9_10
+                    MIGRATION_9_10,
+                    MIGRATION_10_11
                 )
                 .build()
         }
         val booruDao get() = instance.booruDao()
         val userDao get() = instance.userDao()
         val tagFilterDao get() = instance.tagFilterDao()
+        val muzeiDao get() = instance.muzeiDao()
     }
 
     abstract fun postDanDao(): PostDanDao

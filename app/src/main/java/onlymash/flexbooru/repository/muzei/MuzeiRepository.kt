@@ -13,25 +13,12 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.repository.muzei
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.lifecycle.LiveData
+import onlymash.flexbooru.entity.Muzei
 
-@Entity(tableName = "users", indices = [(Index(value = ["booru_uid"], unique = true))],
-    foreignKeys = [(ForeignKey(
-            entity = Booru::class,
-            parentColumns = ["uid"],
-            childColumns = ["booru_uid"],
-            onDelete = ForeignKey.CASCADE))])
-data class User(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
-    var booru_uid: Long = -1L,
-    var name: String,
-    var id: Int,
-    var password_hash: String? = null,
-    var api_key: String? = null
-)
+interface MuzeiRepository {
+    val muzeiOutcome: LiveData<MutableList<Muzei>>
+    fun loadMuzei(booruUid: Long)
+}

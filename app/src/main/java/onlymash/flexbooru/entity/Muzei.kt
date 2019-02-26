@@ -28,7 +28,7 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE))])
 data class Muzei(
     @PrimaryKey(autoGenerate = true)
-    var uid: Long = -1L,
+    var uid: Long = 0L,
     val booru_uid: Long,
-    var keyword: String? = ""
+    var keyword: String
 )

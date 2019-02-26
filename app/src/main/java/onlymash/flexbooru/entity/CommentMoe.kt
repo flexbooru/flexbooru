@@ -19,7 +19,7 @@ package onlymash.flexbooru.entity
  * Moebooru response data class
  * */
 data class CommentMoe(
-    var uid: Int = -1,
+    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     val id: Int,

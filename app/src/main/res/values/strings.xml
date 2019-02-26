@@ -194,4 +194,9 @@
             translation_description="Alternative text when an event filter is not applies">%1s filter not applied
     </string>
 
+    <string name="muzei_copy">Copy</string>
+    <string name="muzei_delete">Delete</string>
+    <string name="muzei_search">Search</string>
+    <string name="muzei_add">Add muzei</string>
+    <string name="muzei_input_cant_be_empty">Input can not be empty.</string>
 </resources>

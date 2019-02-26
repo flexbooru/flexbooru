@@ -73,6 +73,9 @@ class BooruViewHolder(itemView: View,
         }
         TooltipCompat.setTooltipText(booruShare, booruShare.contentDescription)
     }
+    /**
+     * Bind [Booru] data
+     * */
     fun bind(booru: Booru) {
         this.booru = booru
         booruName.text = booru.name

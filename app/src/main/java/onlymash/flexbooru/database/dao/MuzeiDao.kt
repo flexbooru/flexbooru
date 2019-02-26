@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import onlymash.flexbooru.entity.Muzei
 
@@ -24,8 +25,11 @@ interface MuzeiDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(muzei: Muzei): Long
 
-    @Query("SELECT * FROM muzei WHERE booru_uid = :booruUid")
+    @Query("SELECT * FROM muzei WHERE booru_uid = :booruUid ORDER BY uid ASC")
     fun getMuzeiByBooruUid(booruUid: Long): MutableList<Muzei>?
+
+    @Query("SELECT * FROM muzei WHERE booru_uid = :booruUid ORDER BY uid ASC")
+    fun getMuzeiByBooruUidLiveData(booruUid: Long): LiveData<MutableList<Muzei>>
 
     @Delete
     fun delete(muzei: Muzei): Int

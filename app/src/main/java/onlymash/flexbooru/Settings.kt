@@ -47,6 +47,7 @@ class Settings(private val sp: SharedPreferences) {
         const val GRID_WIDTH_SMALL = "small"
         const val GRID_WIDTH_NORMAL = "normal"
         const val GRID_WIDTH_LARGE = "large"
+        private const val ACTIVE_MUZEI_UID_KEY = "settings_muzei_uid"
     }
 
     var activeBooruUid: Long
@@ -85,4 +86,8 @@ class Settings(private val sp: SharedPreferences) {
     var gridWidth: String
         get() = sp.getString(GRID_WIDTH, GRID_WIDTH_NORMAL) ?: GRID_WIDTH_NORMAL
         set(value) = sp.edit().putString(GRID_WIDTH, value).apply()
+
+    var activeMuzeiUid: Long
+        get() = sp.getLong(ACTIVE_MUZEI_UID_KEY, 0L)
+        set(value) = sp.edit().putLong(ACTIVE_MUZEI_UID_KEY, value).apply()
 }
