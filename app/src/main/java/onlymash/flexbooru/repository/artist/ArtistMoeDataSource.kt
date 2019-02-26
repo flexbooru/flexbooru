@@ -24,6 +24,9 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+/**
+ *Moebooru artists data source
+ * */
 class ArtistMoeDataSource(private val moebooruApi: MoebooruApi,
                           private val search: SearchArtist,
                           retryExecutor: Executor) : BasePageKeyedDataSource<Int, ArtistMoe>(retryExecutor) {

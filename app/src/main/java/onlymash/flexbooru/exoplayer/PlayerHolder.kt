@@ -33,10 +33,16 @@ import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.util.UserAgent
 import java.io.File
 
+/**
+ * [ExoPlayer] holder
+ * */
 class PlayerHolder(private val context: Context) {
 
     companion object {
         private var cache: SimpleCache? = null
+        /**
+         * return player network cache [SimpleCache]
+         * */
         fun cache(): SimpleCache {
             if (cache == null) {
                 cache = SimpleCache(File(app.cacheDir, "video"),
@@ -60,6 +66,7 @@ class PlayerHolder(private val context: Context) {
         return ExtractorMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
     }
 
+    //start play
     fun start(uri: Uri, playerView: PlayerView) {
         val mediaSource = createExtractorMediaSource(uri)
         val loopingSource = LoopingMediaSource(mediaSource)

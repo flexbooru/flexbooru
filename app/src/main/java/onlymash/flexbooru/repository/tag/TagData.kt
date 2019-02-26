@@ -27,6 +27,7 @@ import onlymash.flexbooru.entity.SearchTag
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
+//tags repo
 class TagData(private val danbooruApi: DanbooruApi,
                private val moebooruApi: MoebooruApi,
                private val networkExecutor: Executor

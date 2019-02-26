@@ -22,10 +22,14 @@ import onlymash.flexbooru.entity.SearchArtist
 import onlymash.flexbooru.entity.ArtistMoe
 import java.util.concurrent.Executor
 
+/**
+ *Moebooru artists data source factory
+ * */
 class ArtistMoeDataSourceFactory(
     private val moebooruApi: MoebooruApi,
     private val search: SearchArtist,
     private val retryExecutor: Executor) : DataSource.Factory<Int, ArtistMoe>() {
+    //source livedata
     val sourceLiveData = MutableLiveData<ArtistMoeDataSource>()
     override fun create(): DataSource<Int, ArtistMoe> {
         val source = ArtistMoeDataSource(moebooruApi, search, retryExecutor)

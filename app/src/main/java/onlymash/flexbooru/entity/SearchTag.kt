@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Search request tags param
+ * */
 data class SearchTag(
     var scheme: String,
     var host: String,

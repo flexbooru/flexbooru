@@ -28,6 +28,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+/**
+ * Danbooru posts data callback
+ * This boundary callback gets notified when user reaches to the edges of the list such that the
+ * database cannot provide any more data.
+ * <p>
+ * The boundary callback might be called multiple times for the same direction so it does its own
+ * rate limiting using the PagingRequestHelper class.
+ */
 class PostDanBoundaryCallback(
     private val danbooruApi: DanbooruApi,
     private val handleResponse: (Search, MutableList<PostDan>?) -> Unit,
@@ -35,9 +43,12 @@ class PostDanBoundaryCallback(
     private val search: Search
 ) : PagedList.BoundaryCallback<PostDan>() {
 
+    //PagingRequestHelper
     val helper = PagingRequestHelper(ioExecutor)
+    //network state
     val networkState = helper.createStatusLiveData()
 
+    //last response posts size
     var lastResponseSize = search.limit
 
     private fun insertItemsIntoDb(response: Response<MutableList<PostDan>>, it: PagingRequestHelper.Request.Callback) {
@@ -66,6 +77,9 @@ class PostDanBoundaryCallback(
         }
     }
 
+    /**
+     * Database returned 0 items. We should query the backend for more items.
+     */
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
@@ -73,6 +87,9 @@ class PostDanBoundaryCallback(
         }
     }
 
+    /**
+     * User reached to the end of the list.
+     */
     @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: PostDan) {
         val indexInNext = itemAtEnd.indexInResponse + 1

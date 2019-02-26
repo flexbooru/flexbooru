@@ -38,5 +38,6 @@ data class PoolDan(
     val creator_name: String,
     val post_count: Int
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 }

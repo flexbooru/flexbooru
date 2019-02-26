@@ -35,6 +35,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+//posts repo
 class PostData(
     private val db: FlexbooruDatabase,
     private val danbooruApi: DanbooruApi,

@@ -15,6 +15,10 @@
 
 package onlymash.flexbooru.entity
 
+
+/**
+ * Search request param
+ * */
 data class Search(
     var scheme: String,
     var host: String,

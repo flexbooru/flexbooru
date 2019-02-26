@@ -27,6 +27,7 @@ import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
+//pools data source
 class PoolData(private val danbooruApi: DanbooruApi,
                private val moebooruApi: MoebooruApi,
                private val networkExecutor: Executor

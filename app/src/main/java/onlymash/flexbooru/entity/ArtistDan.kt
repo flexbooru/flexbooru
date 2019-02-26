@@ -37,6 +37,7 @@ data class ArtistDan(
     val other_names: MutableList<String>?,
     val urls: MutableList<ArtistUrlDan>?
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 }
 

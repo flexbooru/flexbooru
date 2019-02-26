@@ -19,6 +19,9 @@ import okhttp3.HttpUrl
 import onlymash.flexbooru.entity.*
 
 object ApiUrlHelper {
+    /**
+     * return danbooru posts request url [HttpUrl]
+     * */
     fun getDanUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -32,6 +35,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru posts request url [HttpUrl]
+     * */
     fun getMoeUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -45,6 +51,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru popular posts request url [HttpUrl]
+     * */
     fun getDanPopularUrl(popular: SearchPopular): HttpUrl {
         return HttpUrl.Builder()
             .scheme(popular.scheme)
@@ -59,6 +68,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru popular posts request url [HttpUrl]
+     * */
     fun getMoePopularUrl(popular: SearchPopular): HttpUrl {
         return HttpUrl.Builder()
             .scheme(popular.scheme)
@@ -71,6 +83,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru user search request url [HttpUrl]
+     * */
     fun getDanUserUrl(username: String, booru: Booru): HttpUrl {
         return HttpUrl.Builder()
             .scheme(booru.scheme)
@@ -80,6 +95,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru user search request url [HttpUrl]
+     * */
     fun getMoeUserUrl(username: String, booru: Booru): HttpUrl {
         return HttpUrl.Builder()
             .scheme(booru.scheme)
@@ -89,6 +107,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru user search by id request url [HttpUrl]
+     * */
     fun getMoeUserUrlById(id: Int, booru: Booru): HttpUrl {
         return HttpUrl.Builder()
             .scheme(booru.scheme)
@@ -98,6 +119,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru pools request url [HttpUrl]
+     * */
     fun getDanPoolUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -111,6 +135,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru pools request url [HttpUrl]
+     * */
     fun getMoePoolUrl(search: Search, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -123,6 +150,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru tags request url [HttpUrl]
+     * */
     fun getDanTagUrl(search: SearchTag, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -140,6 +170,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru tags request url [HttpUrl]
+     * */
     fun getMoeTagUrl(search: SearchTag, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -156,6 +189,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru artists request url [HttpUrl]
+     * */
     fun getDanArtistUrl(search: SearchArtist, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -171,6 +207,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru artists request url [HttpUrl]
+     * */
     fun getMoeArtistUrl(search: SearchArtist, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
@@ -185,9 +224,15 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru add fav post request url [String]
+     * */
     fun getDanAddFavUrl(vote: Vote): String =
         String.format("%s://%s/favorites.json", vote.scheme, vote.host)
 
+    /**
+     * return danbooru remove fav post request url [HttpUrl]
+     * */
     fun getDanRemoveFavUrl(vote: Vote): HttpUrl {
         return HttpUrl.Builder()
             .scheme(vote.scheme)
@@ -199,9 +244,15 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru vote post request url [String]
+     * */
     fun getMoeVoteUrl(vote: Vote): String =
         String.format("%s://%s/post/vote.json", vote.scheme, vote.host)
 
+    /**
+     * return moebooru get post comments url [HttpUrl]
+     * */
     fun getMoePostCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(commentAction.scheme)
@@ -214,6 +265,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru get posts comments request url [HttpUrl]
+     * */
     fun getMoePostsCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(commentAction.scheme)
@@ -227,12 +281,21 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return moebooru create comment request url [String]
+     * */
     fun getMoeCreateCommentUrl(commentAction: CommentAction): String =
         String.format("%s://%s/comment/create.json", commentAction.scheme, commentAction.host)
 
+    /**
+     * return moebooru delete comment request url [String]
+     * */
     fun getMoeDestroyCommentUrl(commentAction: CommentAction): String =
         String.format("%s://%s/comment/destroy.json", commentAction.scheme, commentAction.host)
 
+    /**
+     * return danbooru get post comment request url [HttpUrl]
+     * */
     fun getDanPostCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(commentAction.scheme)
@@ -247,6 +310,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru get posts comment request url [HttpUrl]
+     * */
     fun getDanPostsCommentUrl(commentAction: CommentAction, page: Int): HttpUrl {
         return HttpUrl.Builder()
             .scheme(commentAction.scheme)
@@ -261,6 +327,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru delete comment request url [HttpUrl]
+     * */
     fun getDanDeleteCommentUrl(commentAction: CommentAction): HttpUrl {
         return HttpUrl.Builder()
             .scheme(commentAction.scheme)
@@ -271,6 +340,9 @@ object ApiUrlHelper {
             .build()
     }
 
+    /**
+     * return danbooru create comment request url [String]
+     * */
     fun getDanCreateCommentUrl(commentAction: CommentAction): String =
             String.format("%s://%s/comments.json", commentAction.scheme, commentAction.host)
 }

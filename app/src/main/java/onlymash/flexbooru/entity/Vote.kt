@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Vote request param
+ * */
 data class Vote(
     var scheme: String,
     var host: String,

@@ -24,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+//moebooru pools data source
 class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
                         private val search: Search,
                         retryExecutor: Executor) : BasePageKeyedDataSource<Int, PoolMoe>(retryExecutor) {

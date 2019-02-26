@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Danbooru response data class
+ * */
 data class CommentDan(
     var uid: Int = -1,
     var scheme: String = "",

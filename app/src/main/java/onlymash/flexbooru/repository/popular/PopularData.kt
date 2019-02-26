@@ -28,6 +28,7 @@ import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
+//popular posts data source
 class PopularData(
     private val danbooruApi: DanbooruApi,
     private val moebooruApi: MoebooruApi,

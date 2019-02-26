@@ -24,6 +24,9 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+/**
+ *Danbooru artists data source
+ * */
 class ArtistDanDataSource(private val danbooruApi: DanbooruApi,
                           private val search: SearchArtist,
                           retryExecutor: Executor) : BasePageKeyedDataSource<Int, ArtistDan>(retryExecutor) {

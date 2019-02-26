@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Vote Moebooru post response
+ * */
 data class VoteMoe(
     val success: Boolean,
     var posts: MutableList<PostMoe> = mutableListOf()

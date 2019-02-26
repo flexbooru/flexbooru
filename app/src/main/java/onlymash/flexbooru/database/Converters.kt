@@ -19,25 +19,31 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import onlymash.flexbooru.entity.ArtistUrlDan
-
+/**
+ * room database TypeConverter
+ * */
 class Converters {
 
+    // string to list
     @TypeConverter
     fun fromStringToStringList(value: String): MutableList<String>? {
         val listType = object : TypeToken<MutableList<String>>(){}.type
         return Gson().fromJson<MutableList<String>>(value, listType)
     }
 
+    //list to json string
     @TypeConverter
     fun fromStringListToString(list: MutableList<String>): String =
         Gson().toJson(list)
 
+    //string to danbooru artist url list
     @TypeConverter
     fun fromStringToUrlDanList(value: String): MutableList<ArtistUrlDan>? {
         val listType = object : TypeToken<MutableList<ArtistUrlDan>>(){}.type
         return Gson().fromJson<MutableList<ArtistUrlDan>>(value, listType)
     }
 
+    //danbooru artist url list to string
     @TypeConverter
     fun fromUrlDanListToString(list: MutableList<ArtistUrlDan>): String =
             Gson().toJson(list)

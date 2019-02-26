@@ -31,5 +31,6 @@ data class TagMoe(
     val type: Int,
     val ambiguous: Boolean
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 }

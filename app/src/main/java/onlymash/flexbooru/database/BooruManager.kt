@@ -29,6 +29,7 @@ object BooruManager {
         fun onUpdate(booru: Booru)
     }
 
+    // booru change callback
     var listeners: MutableList<Listener> = mutableListOf()
 
     @Throws(SQLException::class)
@@ -88,6 +89,9 @@ object BooruManager {
     fun deleteAll() = FlexbooruDatabase.booruDao.deleteAll()
 
 
+    /**
+     * return [Boolean]
+     * */
     @Throws(IOException::class)
     fun isNotEmpty(): Boolean = try {
         FlexbooruDatabase.booruDao.isNotEmpty()
@@ -98,6 +102,9 @@ object BooruManager {
         false
     }
 
+    /**
+     * return [Booru] list
+     * */
     @Throws(IOException::class)
     fun getAllBoorus(): MutableList<Booru>? = try {
         FlexbooruDatabase.booruDao.getAll()

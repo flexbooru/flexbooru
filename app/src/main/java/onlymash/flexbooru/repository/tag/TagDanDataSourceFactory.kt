@@ -22,10 +22,16 @@ import onlymash.flexbooru.entity.TagDan
 import onlymash.flexbooru.entity.SearchTag
 import java.util.concurrent.Executor
 
+/**
+ * Danbooru tags data source factory which also provides a way to observe the last created data source.
+ * This allows us to channel its network request status etc back to the UI. See the Listing creation
+ * in the Repository class.
+ */
 class TagDanDataSourceFactory(
     private val danbooruApi: DanbooruApi,
     private val search: SearchTag,
     private val retryExecutor: Executor) : DataSource.Factory<Int, TagDan>() {
+    //source livedata
     val sourceLiveData = MutableLiveData<TagDanDataSource>()
     override fun create(): DataSource<Int, TagDan> {
         val source = TagDanDataSource(danbooruApi, search, retryExecutor)

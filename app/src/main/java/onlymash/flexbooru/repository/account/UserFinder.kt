@@ -24,15 +24,24 @@ import onlymash.flexbooru.entity.User
 import retrofit2.Call
 import retrofit2.Response
 
+/**
+ *user repo
+ * */
 class UserFinder(private val danbooruApi: DanbooruApi,
                  private val moebooruApi: MoebooruApi) {
 
     private var findUserListener: FindUserListener? = null
 
+    /**
+     * set user search callback
+     * */
     fun setFindUserListener(listener: FindUserListener) {
         findUserListener = listener
     }
 
+    /**
+     *search user
+     * */
     fun findUser(username: String, booru: Booru) {
         when (booru.type) {
             Constants.TYPE_DANBOORU -> findDanUser(username, booru)
@@ -97,6 +106,9 @@ class UserFinder(private val danbooruApi: DanbooruApi,
         })
     }
 
+    /**
+     *search moebooru user by id
+     * */
     fun findMoeUserById(id: Int, booru: Booru) {
         moebooruApi.getUsers(ApiUrlHelper.getMoeUserUrlById(id, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
             override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {

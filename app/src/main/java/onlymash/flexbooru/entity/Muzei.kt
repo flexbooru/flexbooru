@@ -15,7 +15,20 @@
 
 package onlymash.flexbooru.entity
 
-/**
- * Comment response
- * */
-data class CommentResponse(val success: Boolean)
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
+    foreignKeys = [(ForeignKey(
+        entity = Booru::class,
+        parentColumns = ["uid"],
+        childColumns = ["booru_uid"],
+        onDelete = ForeignKey.CASCADE))])
+data class Muzei(
+    @PrimaryKey(autoGenerate = true)
+    var uid: Long = -1L,
+    val booru_uid: Long,
+    val host: String,
+    var keyword: String = "")

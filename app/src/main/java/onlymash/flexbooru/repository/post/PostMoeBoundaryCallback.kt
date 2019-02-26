@@ -28,6 +28,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+/**
+ * Moebooru posts data callback
+ * This boundary callback gets notified when user reaches to the edges of the list such that the
+ * database cannot provide any more data.
+ * <p>
+ * The boundary callback might be called multiple times for the same direction so it does its own
+ * rate limiting using the PagingRequestHelper class.
+ */
 class PostMoeBoundaryCallback(
     private val moebooruApi: MoebooruApi,
     private val handleResponse: (Search, MutableList<PostMoe>?) -> Unit,
@@ -35,9 +43,12 @@ class PostMoeBoundaryCallback(
     private val search: Search
 ) : PagedList.BoundaryCallback<PostMoe>() {
 
+    //paging request helper
     val helper = PagingRequestHelper(ioExecutor)
+    // network state
     val networkState = helper.createStatusLiveData()
 
+    //last response posts size
     var lastResponseSize = search.limit
 
     private fun insertItemsIntoDb(response: Response<MutableList<PostMoe>>, it: PagingRequestHelper.Request.Callback) {
@@ -66,6 +77,9 @@ class PostMoeBoundaryCallback(
         }
     }
 
+    /**
+     * Database returned 0 items. We should query the backend for more items.
+     */
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {

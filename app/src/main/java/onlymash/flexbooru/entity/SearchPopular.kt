@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Search popular posts param
+ * */
 data class SearchPopular(
     var scheme: String,
     var host: String,

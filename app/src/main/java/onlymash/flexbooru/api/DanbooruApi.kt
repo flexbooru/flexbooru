@@ -33,6 +33,9 @@ import java.util.concurrent.TimeUnit
 interface DanbooruApi {
 
     companion object {
+        /**
+         * return [DanbooruApi]
+         * */
         fun create(): DanbooruApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->

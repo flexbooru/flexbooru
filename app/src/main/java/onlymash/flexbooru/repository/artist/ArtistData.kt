@@ -27,6 +27,9 @@ import onlymash.flexbooru.entity.SearchArtist
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
+/**
+ *Artists data repository
+ * */
 class ArtistData(private val danbooruApi: DanbooruApi,
                private val moebooruApi: MoebooruApi,
                private val networkExecutor: Executor

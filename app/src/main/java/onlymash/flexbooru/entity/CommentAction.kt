@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Comment request param
+ * */
 data class CommentAction(
     var scheme: String = "",
     var host: String = "",

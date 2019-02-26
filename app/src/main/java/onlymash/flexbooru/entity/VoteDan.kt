@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Vote Danbooru post response
+ * */
 data class VoteDan(
     var success: Boolean = true,
     var message: String = "",

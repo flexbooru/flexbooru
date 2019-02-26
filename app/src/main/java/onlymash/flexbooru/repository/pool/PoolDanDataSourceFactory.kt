@@ -22,10 +22,12 @@ import onlymash.flexbooru.entity.PoolDan
 import onlymash.flexbooru.entity.Search
 import java.util.concurrent.Executor
 
+//danbooru pools data source factory
 class PoolDanDataSourceFactory(
     private val danbooruApi: DanbooruApi,
     private val search: Search,
     private val retryExecutor: Executor) : DataSource.Factory<Int, PoolDan>() {
+    //source livedata
     val sourceLiveData = MutableLiveData<PoolDanDataSource>()
     override fun create(): DataSource<Int, PoolDan> {
         val source = PoolDanDataSource(danbooruApi, search, retryExecutor)

@@ -22,10 +22,16 @@ import onlymash.flexbooru.entity.SearchTag
 import onlymash.flexbooru.entity.TagMoe
 import java.util.concurrent.Executor
 
+/**
+ * Moe booru tags data source factory which also provides a way to observe the last created data source.
+ * This allows us to channel its network request status etc back to the UI. See the Listing creation
+ * in the Repository class.
+ */
 class TagMoeDataSourceFactory(
     private val moebooruApi: MoebooruApi,
     private val search: SearchTag,
     private val retryExecutor: Executor) : DataSource.Factory<Int, TagMoe>() {
+    //source livedata
     val sourceLiveData = MutableLiveData<TagMoeDataSource>()
     override fun create(): DataSource<Int, TagMoe> {
         val source = TagMoeDataSource(moebooruApi, search, retryExecutor)

@@ -26,6 +26,7 @@ import onlymash.flexbooru.repository.NetworkState
 import java.io.IOException
 import java.util.concurrent.Executor
 
+//moebooru popular posts data source
 class PopularMoeDataSource(
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,

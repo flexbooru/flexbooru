@@ -46,6 +46,9 @@ data class Booru(
     }
 
     companion object {
+        /**
+         * String to Booru
+         * */
         fun url2Booru(str: String): Booru? {
             return try {
                 val dataByte = Base64.decode(str.toUri().authority,

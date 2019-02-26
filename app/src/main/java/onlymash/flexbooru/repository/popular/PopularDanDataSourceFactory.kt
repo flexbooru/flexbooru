@@ -23,14 +23,18 @@ import onlymash.flexbooru.entity.SearchPopular
 import onlymash.flexbooru.entity.PostDan
 import java.util.concurrent.Executor
 
+/**
+ * Danbooru popular posts data source factory which also provides a way to observe the last created data source.
+ * This allows us to channel its network request status etc back to the UI. See the Listing creation
+ * in the Repository class.
+ */
 class PopularDanDataSourceFactory(
     private val danbooruApi: DanbooruApi,
     private val db: FlexbooruDatabase,
     private val popular: SearchPopular,
     private val retryExecutor: Executor) : DataSource.Factory<Int, PostDan>(){
-
+    //source livedata
     val sourceLiveData = MutableLiveData<PopularDanDataSource>()
-
     override fun create(): DataSource<Int, PostDan> {
         val source = PopularDanDataSource(danbooruApi, db, popular, retryExecutor)
         sourceLiveData.postValue(source)

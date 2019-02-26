@@ -35,5 +35,6 @@ data class PoolMoe(
     val post_count: Int,
     val description: String
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 }

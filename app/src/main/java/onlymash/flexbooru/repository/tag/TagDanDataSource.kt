@@ -24,6 +24,9 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+/**
+ * Danbooru tags data source that uses the before/after keys returned in page requests.
+ */
 class TagDanDataSource(private val danbooruApi: DanbooruApi,
                        private val search: SearchTag,
                        retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagDan>(retryExecutor) {

@@ -32,5 +32,6 @@ data class ArtistMoe(
     val group_id: Int?,
     val urls: MutableList<String>?
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 }

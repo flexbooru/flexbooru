@@ -22,10 +22,12 @@ import onlymash.flexbooru.entity.PoolMoe
 import onlymash.flexbooru.entity.Search
 import java.util.concurrent.Executor
 
+//moebooru pools data source factory
 class PoolMoeDataSourceFactory(
     private val moebooruApi: MoebooruApi,
     private val search: Search,
     private val retryExecutor: Executor) : DataSource.Factory<Int, PoolMoe>() {
+    //source livedata
     val sourceLiveData = MutableLiveData<PoolMoeDataSource>()
     override fun create(): DataSource<Int, PoolMoe> {
         val source = PoolMoeDataSource(moebooruApi, search, retryExecutor)

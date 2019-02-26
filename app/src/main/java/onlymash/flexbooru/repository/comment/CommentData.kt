@@ -32,6 +32,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+//Comment data repository
 class CommentData(private val danbooruApi: DanbooruApi,
                   private val moebooruApi: MoebooruApi,
                   private val networkExecutor: Executor

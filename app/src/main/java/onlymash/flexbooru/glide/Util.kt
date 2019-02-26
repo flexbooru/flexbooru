@@ -20,6 +20,7 @@ import com.bumptech.glide.load.model.LazyHeaders
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.util.UserAgent
 
+//Glide url header
 val glideHeader: Headers
     get() = LazyHeaders.Builder()
         .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())

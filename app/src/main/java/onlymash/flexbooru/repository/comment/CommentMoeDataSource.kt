@@ -24,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+//Moebooru comment data source
 class CommentMoeDataSource(private val moebooruApi: MoebooruApi,
                            private val commentAction: CommentAction,
                            retryExecutor: Executor

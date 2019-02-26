@@ -25,6 +25,9 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+/**
+ * Moebooru tags data source that uses the before/after keys returned in page requests.
+ */
 class TagMoeDataSource(private val moebooruApi: MoebooruApi,
                        private val search: SearchTag,
                        retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagMoe>(retryExecutor) {

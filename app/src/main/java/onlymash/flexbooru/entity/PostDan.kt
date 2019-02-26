@@ -78,11 +78,21 @@ data class PostDan(
     val large_file_url: String?,
     val preview_file_url: String?
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 
+    /**
+     * return Sample url [String]
+     * */
     fun getSampleUrl(): String = large_file_url ?: ""
 
+    /**
+     * return Larger url [String]
+     * */
     fun getLargerUrl(): String = getSampleUrl()
 
+    /**
+     * return Origin url [String]
+     * */
     fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else file_url
 }

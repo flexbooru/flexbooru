@@ -33,8 +33,10 @@ abstract class BasePageKeyedDataSource<Key, Value>(
      */
     val networkState = MutableLiveData<NetworkState>()
 
+    //initload nsetwork state
     val initialLoad = MutableLiveData<NetworkState>()
 
+    //retry failed request
     fun retryAllFailed() {
         val prevRetry = retry
         retry = null
@@ -45,10 +47,12 @@ abstract class BasePageKeyedDataSource<Key, Value>(
         }
     }
 
+    //not more data
     fun onEnd() {
         networkState.postValue(NetworkState.LOADED)
     }
 
+    //init request
     abstract fun loadInitialRequest(params: LoadInitialParams<Key>, callback: LoadInitialCallback<Key, Value>)
 
     override fun loadInitial(params: LoadInitialParams<Key>, callback: LoadInitialCallback<Key, Value>) {
@@ -69,6 +73,7 @@ abstract class BasePageKeyedDataSource<Key, Value>(
         }
     }
 
+    //after request
     abstract fun loadAfterRequest(params: LoadParams<Key>, callback: LoadCallback<Key, Value>)
 
     override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<Key, Value>) {

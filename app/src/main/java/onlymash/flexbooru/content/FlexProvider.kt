@@ -21,9 +21,18 @@ import android.os.Build
 import androidx.core.content.FileProvider
 import java.io.File
 
+/**
+ * Image provider
+ * */
 class FlexProvider : FileProvider() {
     companion object {
+        /**
+         * return image uri [Uri] from file path
+         * */
         fun getUriFromFilePath(context: Context, filePath: String): Uri = getUriFromFile(context, File(filePath))
+        /**
+         * return image uri [Uri] from file
+         * */
         fun getUriFromFile(context: Context, file: File): Uri =
             when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> FileProvider.getUriForFile(

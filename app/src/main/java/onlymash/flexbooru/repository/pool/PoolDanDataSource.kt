@@ -24,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+// danbooru pools data source
 class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                         private val search: Search,
                         retryExecutor: Executor) : BasePageKeyedDataSource<Int, PoolDan>(retryExecutor) {

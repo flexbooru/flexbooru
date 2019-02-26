@@ -22,11 +22,13 @@ import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.entity.CommentMoe
 import java.util.concurrent.Executor
 
+//Moebooru comment data source factory
 class CommentMoeDataSourceFactory(
     private val moebooruApi: MoebooruApi,
     private val commentAction: CommentAction,
     private val retryExecutor: Executor
 ) : DataSource.Factory<Int, CommentMoe>() {
+    //source livedata
     val sourceLiveData = MutableLiveData<CommentMoeDataSource>()
     override fun create(): DataSource<Int, CommentMoe> {
         val source = CommentMoeDataSource(moebooruApi, commentAction, retryExecutor)

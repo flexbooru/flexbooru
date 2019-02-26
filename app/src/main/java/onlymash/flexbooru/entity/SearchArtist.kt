@@ -15,6 +15,9 @@
 
 package onlymash.flexbooru.entity
 
+/**
+ * Search artist param
+ * */
 data class SearchArtist(
     var scheme: String,
     var host: String,

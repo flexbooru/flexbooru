@@ -59,11 +59,21 @@ data class PostMoe(
     val height: Int,
     val is_held: Boolean
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 
+    /**
+     * return Sample url [String]
+     * */
     fun getSampleUrl(): String = sample_url ?: ""
 
+    /**
+     * return Larger url [String]
+     * */
     fun getLargerUrl(): String = if (jpeg_url.isNullOrBlank()) getSampleUrl() else jpeg_url
 
+    /**
+     * return Origin url [String]
+     * */
     fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else file_url
 }

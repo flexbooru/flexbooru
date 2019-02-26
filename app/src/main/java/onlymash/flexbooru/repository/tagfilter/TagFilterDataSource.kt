@@ -19,6 +19,7 @@ import androidx.lifecycle.LiveData
 import onlymash.flexbooru.database.dao.TagFilterDao
 import onlymash.flexbooru.entity.TagFilter
 
+//tags filter data source
 class TagFilterDataSource(private val dao: TagFilterDao) : TagFilterRepository {
 
     override fun loadTagsFilter(booruUid: Long): LiveData<MutableList<TagFilter>> {

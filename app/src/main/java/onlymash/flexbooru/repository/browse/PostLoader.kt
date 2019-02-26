@@ -19,23 +19,31 @@ import android.os.Handler
 import onlymash.flexbooru.database.FlexbooruDatabase
 import java.util.concurrent.Executor
 
+/**
+ *Load posts from database
+ */
 class PostLoader(private val db: FlexbooruDatabase,
                  private val ioExecutor: Executor) {
 
     private var postLoadedListener: PostLoadedListener? = null
 
+    //set post loader callback
     fun setPostLoadedListener(listener: PostLoadedListener?) {
         postLoadedListener = listener
     }
 
     private var postLoadedLiveDataListener: PostLoadedLiveDataListener? = null
 
+    //set post loader(livedata) callback
     fun setPostLoadedLiveDataListener(listener: PostLoadedLiveDataListener?) {
         postLoadedLiveDataListener = listener
     }
 
     private val uiHandler = Handler()
 
+    /**
+     *Load danbooru posts from database
+     */
     fun loadDanPosts(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postDanDao().getPostsRaw(host, keyword)
@@ -45,6 +53,9 @@ class PostLoader(private val db: FlexbooruDatabase,
         }
     }
 
+    /**
+     *Load moebooru posts from database
+     */
     fun loadMoePosts(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postMoeDao().getPostsRaw(host, keyword)
@@ -54,6 +65,9 @@ class PostLoader(private val db: FlexbooruDatabase,
         }
     }
 
+    /**
+     *Load danbooru posts(livedata) from database
+     */
     fun loadDanPostsLiveData(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postDanDao().getPostsLiveData(host, keyword)
@@ -63,6 +77,9 @@ class PostLoader(private val db: FlexbooruDatabase,
         }
     }
 
+    /**
+     *Load moebooru posts(livedata) from database
+     */
     fun loadMoePostsLiveData(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postMoeDao().getPostsLiveData(host, keyword)

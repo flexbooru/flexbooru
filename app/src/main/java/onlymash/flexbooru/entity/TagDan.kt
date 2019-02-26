@@ -35,5 +35,6 @@ data class TagDan(
     val updated_at: String,
     val is_locked: Boolean
 ) {
+    // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 }

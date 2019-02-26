@@ -23,14 +23,18 @@ import onlymash.flexbooru.entity.SearchPopular
 import onlymash.flexbooru.entity.PostMoe
 import java.util.concurrent.Executor
 
+/**
+ * Moebooru popular posts data source factory which also provides a way to observe the last created data source.
+ * This allows us to channel its network request status etc back to the UI. See the Listing creation
+ * in the Repository class.
+ */
 class PopularMoeDataSourceFactory(
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,
     private val popular: SearchPopular,
     private val retryExecutor: Executor) : DataSource.Factory<Int, PostMoe>(){
-
+    //source livedata
     val sourceLiveData = MutableLiveData<PopularMoeDataSource>()
-
     override fun create(): DataSource<Int, PostMoe> {
         val source = PopularMoeDataSource(moebooruApi, db, popular, retryExecutor)
         sourceLiveData.postValue(source)

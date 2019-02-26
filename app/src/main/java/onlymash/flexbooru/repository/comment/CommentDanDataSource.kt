@@ -24,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.Executor
 
+//Danbooru comment data source
 class CommentDanDataSource(private val danbooruApi: DanbooruApi,
                            private val commentAction: CommentAction,
                            retryExecutor: Executor
