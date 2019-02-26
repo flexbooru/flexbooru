@@ -44,6 +44,7 @@ class PopularMoeDataSource(
 
     val initialLoad = MutableLiveData<NetworkState>()
 
+    //retry failed request
     fun retryAllFailed() {
         val prevRetry = retry
         retry = null

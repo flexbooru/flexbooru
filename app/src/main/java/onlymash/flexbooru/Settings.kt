@@ -22,6 +22,9 @@ import onlymash.flexbooru.App.Companion.app
 class Settings(private val sp: SharedPreferences) {
     companion object {
         private var instance: Settings? = null
+        /**
+         * return [Settings] instance
+         * */
         fun instance(): Settings {
             if (instance == null) {
                 instance = Settings(app.sp)

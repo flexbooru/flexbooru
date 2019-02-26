@@ -43,7 +43,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning" >
+            tools:ignore="GoogleAppIndexingWarning,UnusedAttribute" >
         <activity android:name=".ui.CommentActivity"/>
         <activity
                 android:name=".ui.SearchActivity"

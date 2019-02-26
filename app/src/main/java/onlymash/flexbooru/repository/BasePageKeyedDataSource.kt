@@ -20,6 +20,9 @@ import androidx.paging.PageKeyedDataSource
 import java.io.IOException
 import java.util.concurrent.Executor
 
+/**
+ * Base [PageKeyedDataSource] add [NetworkState] and retry [Executor]
+ * */
 abstract class BasePageKeyedDataSource<Key, Value>(
     private val retryExecutor: Executor
 ) : PageKeyedDataSource<Key, Value>() {
@@ -33,7 +36,7 @@ abstract class BasePageKeyedDataSource<Key, Value>(
      */
     val networkState = MutableLiveData<NetworkState>()
 
-    //initload nsetwork state
+    //initload network state
     val initialLoad = MutableLiveData<NetworkState>()
 
     //retry failed request

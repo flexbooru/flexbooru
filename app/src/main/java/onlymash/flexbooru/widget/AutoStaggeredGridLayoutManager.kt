@@ -52,7 +52,7 @@ class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : Stagge
         setColumnSize(columnSize)
     }
 
-    fun setColumnSize(columnSize: Int) {
+    private fun setColumnSize(columnSize: Int) {
         if (this.columnSize == columnSize) {
             return
         }

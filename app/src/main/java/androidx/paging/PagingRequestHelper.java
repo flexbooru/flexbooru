@@ -263,12 +263,7 @@ public class PagingRequestHelper {
             mRequest.run(new Request.Callback(this, mHelper));
         }
         void retry(Executor service) {
-            service.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mHelper.runIfNotRunning(mType, mRequest);
-                }
-            });
+            service.execute(() -> mHelper.runIfNotRunning(mType, mRequest));
         }
     }
     /**

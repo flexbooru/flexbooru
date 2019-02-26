@@ -54,7 +54,7 @@ class PlayerHolder(private val context: Context) {
     private var currentPlayerState: PlayerState? = null
     private val playerStates: MutableList<PlayerState> = mutableListOf()
     // Create the player instance.
-    val exoPlayer: ExoPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
+    private val exoPlayer: ExoPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
         .apply {
             playWhenReady = true
             repeatMode = Player.REPEAT_MODE_ALL

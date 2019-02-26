@@ -23,7 +23,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/background"
-        tools:context="onlymash.flexbooru.ui.AccountActivity">
+        tools:context="onlymash.flexbooru.ui.AccountActivity"
+        tools:ignore="Overdraw">
 
     <include layout="@layout/toolbar"/>
 

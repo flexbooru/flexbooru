@@ -39,6 +39,10 @@ import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
+/**
+ * Service locator implementation to allow us to replace default implementations
+ *
+ */
 interface ServiceLocator {
     companion object {
         private val LOCK = Any()

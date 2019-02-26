@@ -24,7 +24,6 @@ abstract class BaseHeaderPagedListAdapter<T, VH : RecyclerView.ViewHolder>(
     diffCallback: DiffUtil.ItemCallback<T>) : PagedListAdapter<T, VH>(diffCallback) {
 
     private val adapterCallback = AdapterListUpdateCallback(this)
-
     private val listUpdateCallback = object : ListUpdateCallback {
 
         override fun onChanged(position: Int, count: Int, payload: Any?) {

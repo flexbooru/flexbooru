@@ -27,16 +27,16 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
     private val danRepoResult = map(searchData) { search ->
         repo.getDanPosts(search)
     }
-    val postsDan = switchMap(danRepoResult) { it.pagedList }
-    val networkStateDan = switchMap(danRepoResult) { it.networkState }
-    val refreshStateDan = switchMap(danRepoResult) { it.refreshState }
+    val postsDan = switchMap(danRepoResult) { it.pagedList }!!
+    val networkStateDan = switchMap(danRepoResult) { it.networkState }!!
+    val refreshStateDan = switchMap(danRepoResult) { it.refreshState }!!
 
     private val moeRepoResult = map(searchData) { search ->
         repo.getMoePosts(search)
     }
-    val postsMoe = switchMap(moeRepoResult) { it.pagedList }
-    val networkStateMoe = switchMap(moeRepoResult) { it.networkState }
-    val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }
+    val postsMoe = switchMap(moeRepoResult) { it.pagedList }!!
+    val networkStateMoe = switchMap(moeRepoResult) { it.networkState }!!
+    val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }!!
 
     fun show(search: Search): Boolean {
         if (searchData.value == search) {
