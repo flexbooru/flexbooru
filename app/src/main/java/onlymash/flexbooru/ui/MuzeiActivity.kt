@@ -13,22 +13,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.ui
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import kotlinx.android.synthetic.main.toolbar.*
+import onlymash.flexbooru.R
 
-@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
-    foreignKeys = [(ForeignKey(
-        entity = Booru::class,
-        parentColumns = ["uid"],
-        childColumns = ["booru_uid"],
-        onDelete = ForeignKey.CASCADE))])
-data class Muzei(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = -1L,
-    val booru_uid: Long,
-    var keyword: String? = ""
-)
+class MuzeiActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_muzei)
+        toolbar.setTitle(R.string.title_muzei)
+    }
+}

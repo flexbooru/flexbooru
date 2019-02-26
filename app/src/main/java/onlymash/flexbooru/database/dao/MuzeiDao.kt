@@ -13,22 +13,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.database.dao
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
+import onlymash.flexbooru.entity.Muzei
 
-@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
-    foreignKeys = [(ForeignKey(
-        entity = Booru::class,
-        parentColumns = ["uid"],
-        childColumns = ["booru_uid"],
-        onDelete = ForeignKey.CASCADE))])
-data class Muzei(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = -1L,
-    val booru_uid: Long,
-    var keyword: String? = ""
-)
+@Dao
+interface MuzeiDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(muzei: Muzei): Long
+
+    @Query("SELECT * FROM muzei WHERE booru_uid = :booruUid")
+    fun getMuzeiByBooruUid(booruUid: Long): MutableList<Muzei>?
+
+    @Delete
+    fun delete(muzei: Muzei): Int
+}

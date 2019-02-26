@@ -306,6 +306,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
                 }
+                MUZEI_DRAWER_ITEM_ID -> {
+                    if (getCurrentBooru() != null) {
+                        startActivity(Intent(this@MainActivity, MuzeiActivity::class.java))
+                    } else {
+                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                    }
+                }
             }
             return false
         }

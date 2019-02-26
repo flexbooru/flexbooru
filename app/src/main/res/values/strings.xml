@@ -145,7 +145,9 @@
     <string name="pool_description_is_empty">Description is empty.</string>
     <string name="pool_info_id_and_count">#%01$d | %02$d</string>
 
-    <string name="bottom_nav_view_with_snackbar_behavior" translatable="false">onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior</string>
+    <string name="bottom_nav_view_with_snackbar_behavior" translatable="false">
+        onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior
+    </string>
 
     <string name="tag_type">Type</string>
     <string name="tag_type_all">All type</string>
@@ -185,7 +187,11 @@
     <string name="action_save">Save</string>
     <string name="action_comment">Comment</string>
 
-    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
-    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
+    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s
+        filter applied
+    </string>
+    <string name="a11y_filter_not_applied"
+            translation_description="Alternative text when an event filter is not applies">%1s filter not applied
+    </string>
 
 </resources>
