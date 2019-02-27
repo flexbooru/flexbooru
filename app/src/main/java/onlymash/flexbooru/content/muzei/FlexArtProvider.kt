@@ -16,22 +16,20 @@
 package onlymash.flexbooru.content.muzei
 
 import android.content.Intent
-import android.util.Log
-import androidx.core.net.toUri
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.api.DownloadUtil
+import onlymash.flexbooru.ui.SearchActivity
 import java.io.IOException
 import java.io.InputStream
-import java.net.URL
 
 class FlexArtProvider : MuzeiArtProvider() {
     companion object {
         private const val TAG = "FlexArtProvider"
-        private const val COMMAND_ID_VIEW_PROFILE = 1
-        private const val COMMAND_ID_VISIT_APP = 2
+        private const val COMMAND_ID_VIEW_POST = 1
+        private const val COMMAND_ID_SEARCH_POSTS = 2
     }
     override fun onLoadRequested(initial: Boolean) {
         FlexArtWorker.enqueueLoad()
@@ -40,30 +38,33 @@ class FlexArtProvider : MuzeiArtProvider() {
     override fun getCommands(artwork: Artwork): MutableList<UserCommand> =
         context?.run {
             listOf(
-                UserCommand(
-                    COMMAND_ID_VIEW_PROFILE,
-                    getString(R.string.muzei_action_view_profile, artwork.byline)),
-                UserCommand(
-                    COMMAND_ID_VISIT_APP,
-                    getString(R.string.muzei_action_visit_flexbooru)))
+                UserCommand(COMMAND_ID_VIEW_POST, getString(R.string.muzei_action_view_post)),
+                UserCommand(COMMAND_ID_SEARCH_POSTS, getString(R.string.muzei_action_search_posts)))
         } as MutableList<UserCommand>? ?: super.getCommands(artwork)
 
     override fun onCommand(artwork: Artwork, id: Int) {
         val context = context ?: return
         when (id) {
-            COMMAND_ID_VIEW_PROFILE -> {
-                val profileUri = artwork.metadata?.toUri() ?: return
-                context.startActivity(Intent(Intent.ACTION_VIEW, profileUri))
+            COMMAND_ID_VIEW_POST -> {
+                val keyword = artwork.token ?: return
+                context.startActivity(
+                    Intent(context, SearchActivity::class.java)
+                        .putExtra(Constants.KEYWORD_KEY, keyword)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
-            COMMAND_ID_VISIT_APP -> {
-
+            COMMAND_ID_SEARCH_POSTS -> {
+                val keyword = artwork.byline ?: return
+                context.startActivity(
+                    Intent(context, SearchActivity::class.java)
+                        .putExtra(Constants.KEYWORD_KEY, keyword)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
         }
     }
 
     @Throws(IOException::class)
     override fun openFile(artwork: Artwork): InputStream {
-        artwork.webUri?.takeIf {
+        artwork.persistentUri?.takeIf {
             it.scheme == "http" || it.scheme == "https"
         }?.run {
             val response = DownloadUtil.create().trackDownload(toString()).execute()

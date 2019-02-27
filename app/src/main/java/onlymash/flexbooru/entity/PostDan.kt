@@ -84,7 +84,7 @@ data class PostDan(
     /**
      * return Sample url [String]
      * */
-    fun getSampleUrl(): String = large_file_url ?: ""
+    fun getSampleUrl(): String = large_file_url ?: preview_file_url ?: ""
 
     /**
      * return Larger url [String]

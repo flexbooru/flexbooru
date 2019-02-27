@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.api
+package onlymash.flexbooru.content.muzei
 
 import android.util.Log
 import okhttp3.Interceptor

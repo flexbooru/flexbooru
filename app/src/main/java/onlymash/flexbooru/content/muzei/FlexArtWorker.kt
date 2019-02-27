@@ -91,12 +91,12 @@ class FlexArtWorker(
                 val attributionString = applicationContext.getString(R.string.muzei_attribution)
                 providerClient.setArtwork(posts.map { post ->
                     Artwork().apply {
-                        token = "${booru.host}_${post.id}"
+                        token = "id:${post.id}"
                         title = "Post ${post.id}"
-                        byline = post.uploader_name
+                        byline = keyword
                         attribution = attributionString
                         persistentUri = post.getOriginUrl().toUri()
-                        webUri = post.getOriginUrl().toUri()
+                        webUri = String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
             }
@@ -123,12 +123,12 @@ class FlexArtWorker(
                 val attributionString = applicationContext.getString(R.string.muzei_attribution)
                 providerClient.setArtwork(posts.map { post ->
                     Artwork().apply {
-                        token = "${booru.host}_${post.id}"
+                        token = "id:${post.id}"
                         title = "Post ${post.id}"
-                        byline = post.creator_id.toString()
+                        byline = keyword
                         attribution = attributionString
                         persistentUri = post.getLargerUrl().toUri()
-                        webUri = post.getLargerUrl().toUri()
+                        webUri = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
             }

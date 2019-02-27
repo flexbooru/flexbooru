@@ -65,7 +65,7 @@ data class PostMoe(
     /**
      * return Sample url [String]
      * */
-    fun getSampleUrl(): String = sample_url ?: ""
+    fun getSampleUrl(): String = sample_url ?: preview_url
 
     /**
      * return Larger url [String]
