@@ -15,48 +15,19 @@
 
 package onlymash.flexbooru.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.SpannableStringBuilder
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.URLSpan
-import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
-import androidx.core.text.HtmlCompat
-import androidx.core.text.parseAsHtml
-import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
-import onlymash.flexbooru.util.launchUrl
 
 class AboutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
-        toolbar.title = getString(R.string.title_about_with_version, BuildConfig.VERSION_NAME)
-        about.apply {
-            text = SpannableStringBuilder(resources.openRawResource(R.raw.about).bufferedReader().readText()
-                .parseAsHtml(HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)).apply {
-                for (span in getSpans(0, length, URLSpan::class.java)) {
-                    setSpan(object : ClickableSpan() {
-                        override fun onClick(view: View) {
-                            if (span.url.startsWith("mailto:")) {
-                                startActivity(Intent.createChooser(Intent().apply {
-                                    action = Intent.ACTION_SENDTO
-                                    data = span.url.toUri()
-                                }, getString(R.string.share_via)))
-                            } else this@AboutActivity.launchUrl(span.url)
-                        }
-                    }, getSpanStart(span), getSpanEnd(span), getSpanFlags(span))
-                    removeSpan(span)
-                }
-            }
-            movementMethod = LinkMovementMethod.getInstance()
+        toolbar.setTitle(R.string.title_about)
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
     }
 }

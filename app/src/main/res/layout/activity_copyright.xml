@@ -20,9 +20,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <include layout="@layout/toolbar"/>
-    <fragment
-            android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fragment_about"/>
+            android:scrollbars="vertical">
+        <onlymash.flexbooru.widget.AutoCollapseTextView
+                android:id="@+id/copyright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_large"
+                android:textIsSelectable="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+    </ScrollView>
 </LinearLayout>

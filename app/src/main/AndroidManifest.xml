@@ -34,6 +34,8 @@
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity android:name=".ui.AboutActivity">
         </activity>
+        <activity android:name=".ui.CopyrightActivity">
+        </activity>
         <activity android:name=".ui.MuzeiActivity">
         </activity>
         <activity android:name=".ui.CommentActivity"/>

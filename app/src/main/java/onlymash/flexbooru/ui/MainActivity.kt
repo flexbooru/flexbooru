@@ -20,7 +20,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -53,12 +52,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val BOORU_MANAGE_PROFILE_ID = -3L
-        private const val SETTINGS_DRAWER_ITEM_ID = -1L
-        private const val ABOUT_DRAWER_ITEM_ID = -2L
-        private const val ACCOUNT_DRAWER_ITEM_ID = 1L
-        private const val COMMENTS_DRAWER_ITEM_ID = 2L
-        private const val MUZEI_DRAWER_ITEM_ID = 3L
+        private const val HEADER_ITEM_ID_BOORU_MANAGE = -11L
+        private const val DRAWER_ITEM_ID_ABOUT = -1L
+        private const val DRAWER_ITEM_ID_COPYRIGHT = -2L
+        private const val DRAWER_ITEM_ID_ACCOUNT = 1L
+        private const val DRAWER_ITEM_ID_COMMENTS = 2L
+        private const val DRAWER_ITEM_ID_MUZEI = 3L
+        private const val DRAWER_ITEM_ID_SETTINGS = 4L
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         app.sp.registerOnSharedPreferenceChangeListener(this)
         profileSettingDrawerItem = ProfileSettingDrawerItem()
             .withName(R.string.title_manage_boorus)
-            .withIdentifier(BOORU_MANAGE_PROFILE_ID)
+            .withIdentifier(HEADER_ITEM_ID_BOORU_MANAGE)
             .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_outline_24dp))
             .withIconTinted(true)
         header = AccountHeaderBuilder()
@@ -88,37 +88,43 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             .withAccountHeader(header, false)
             .addDrawerItems(
                 PrimaryDrawerItem()
-                    .withIdentifier(ACCOUNT_DRAWER_ITEM_ID)
+                    .withIdentifier(DRAWER_ITEM_ID_ACCOUNT)
                     .withName(R.string.title_account)
                     .withSelectable(false)
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_account_circle_outline_24dp))
                     .withIconTintingEnabled(true),
                 PrimaryDrawerItem()
-                    .withIdentifier(COMMENTS_DRAWER_ITEM_ID)
+                    .withIdentifier(DRAWER_ITEM_ID_COMMENTS)
                     .withName(R.string.title_comments)
                     .withSelectable(false)
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_comment_outline_24dp))
                     .withIconTintingEnabled(true),
                 PrimaryDrawerItem()
-                    .withIdentifier(MUZEI_DRAWER_ITEM_ID)
+                    .withIdentifier(DRAWER_ITEM_ID_MUZEI)
                     .withName(R.string.title_muzei)
                     .withSelectable(false)
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_muzei_24dp))
-                    .withIconTintingEnabled(true)
-            )
-            .addStickyDrawerItems(
+                    .withIconTintingEnabled(true),
                 PrimaryDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_outline_24dp))
                     .withName(R.string.title_settings)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(SETTINGS_DRAWER_ITEM_ID),
+                    .withIdentifier(DRAWER_ITEM_ID_SETTINGS)
+            )
+            .addStickyDrawerItems(
                 PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_copyright_24dp))
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_info_outline_24dp))
                     .withName(R.string.title_about)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(ABOUT_DRAWER_ITEM_ID)
+                    .withIdentifier(DRAWER_ITEM_ID_ABOUT),
+                PrimaryDrawerItem()
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_copyright_24dp))
+                    .withName(R.string.title_copyright)
+                    .withSelectable(false)
+                    .withIconTintingEnabled(true)
+                    .withIdentifier(DRAWER_ITEM_ID_COPYRIGHT)
             )
             .withStickyFooterDivider(true)
             .withStickyFooterShadow(false)
@@ -275,7 +281,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
             val uid = profile.identifier
             when (uid) {
-                BOORU_MANAGE_PROFILE_ID -> {
+                HEADER_ITEM_ID_BOORU_MANAGE -> {
                     startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                 }
                 else -> {
@@ -296,10 +302,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private val drawerItemClickListener = object : Drawer.OnDrawerItemClickListener {
         override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
             when (drawerItem.identifier) {
-                SETTINGS_DRAWER_ITEM_ID -> {
-                    startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                }
-                ACCOUNT_DRAWER_ITEM_ID -> {
+                DRAWER_ITEM_ID_ACCOUNT -> {
                     val user = getCurrentUser()
                     val booru = getCurrentBooru()
                     if (user != null && booru != null) {
@@ -310,22 +313,28 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                         startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
                     }
                 }
-                COMMENTS_DRAWER_ITEM_ID -> {
+                DRAWER_ITEM_ID_COMMENTS -> {
                     if (getCurrentBooru() != null) {
                         CommentActivity.startActivity(this@MainActivity)
                     } else {
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
                 }
-                MUZEI_DRAWER_ITEM_ID -> {
+                DRAWER_ITEM_ID_MUZEI -> {
                     if (getCurrentBooru() != null) {
                         startActivity(Intent(this@MainActivity, MuzeiActivity::class.java))
                     } else {
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
                 }
-                ABOUT_DRAWER_ITEM_ID -> {
+                DRAWER_ITEM_ID_SETTINGS -> {
+                    startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                }
+                DRAWER_ITEM_ID_ABOUT -> {
                     startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+                }
+                DRAWER_ITEM_ID_COPYRIGHT -> {
+                    startActivity(Intent(this@MainActivity, CopyrightActivity::class.java))
                 }
             }
             return false
