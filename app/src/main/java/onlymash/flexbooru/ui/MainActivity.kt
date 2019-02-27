@@ -53,8 +53,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val BOORU_MANAGE_PROFILE_ID = -2L
+        private const val BOORU_MANAGE_PROFILE_ID = -3L
         private const val SETTINGS_DRAWER_ITEM_ID = -1L
+        private const val ABOUT_DRAWER_ITEM_ID = -2L
         private const val ACCOUNT_DRAWER_ITEM_ID = 1L
         private const val COMMENTS_DRAWER_ITEM_ID = 2L
         private const val MUZEI_DRAWER_ITEM_ID = 3L
@@ -111,7 +112,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     .withName(R.string.title_settings)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(SETTINGS_DRAWER_ITEM_ID)
+                    .withIdentifier(SETTINGS_DRAWER_ITEM_ID),
+                PrimaryDrawerItem()
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_copyright_24dp))
+                    .withName(R.string.title_about)
+                    .withSelectable(false)
+                    .withIconTintingEnabled(true)
+                    .withIdentifier(ABOUT_DRAWER_ITEM_ID)
             )
             .withStickyFooterDivider(true)
             .withStickyFooterShadow(false)
@@ -316,6 +323,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     } else {
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
+                }
+                ABOUT_DRAWER_ITEM_ID -> {
+                    startActivity(Intent(this@MainActivity, AboutActivity::class.java))
                 }
             }
             return false

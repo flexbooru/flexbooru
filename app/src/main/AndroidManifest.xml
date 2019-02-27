@@ -8,9 +8,8 @@
     <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-    <!-- Required by RemoteMuzeiArtSource -->
+    <uses-permission
+            android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- Required by RemoteMuzeiArtSource -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
@@ -33,6 +32,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".ui.AboutActivity">
+        </activity>
         <activity android:name=".ui.MuzeiActivity">
         </activity>
         <activity android:name=".ui.CommentActivity"/>
@@ -95,13 +96,12 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/file_paths"/>
         </provider>
-
         <provider
-                android:authorities="${applicationId}.muzei"
                 android:name=".content.muzei.FlexArtProvider"
-                android:label="@string/app_name"
+                android:authorities="${applicationId}.muzei"
                 android:description="@string/app_description"
                 android:exported="true"
+                android:label="@string/app_name"
                 android:permission="com.google.android.apps.muzei.api.ACCESS_PROVIDER">
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtProvider"/>

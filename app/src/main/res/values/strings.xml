@@ -31,6 +31,8 @@
     <string name="title_tags">Tags</string>
     <string name="title_comments">Comments</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_about">Flexbooru</string>
+    <string name="title_about_with_version">Flexbooru %s</string>
 
     <string name="retry">Retry</string>
     <string name="msg_press_twice_to_exit">Press twice to exit.</string>
