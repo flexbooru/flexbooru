@@ -29,12 +29,14 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import onlymash.flexbooru.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
@@ -112,7 +114,7 @@ class PostFragment : ListFragment() {
     private lateinit var viewTransition: ViewTransition
 
     private var type = -1
-    private var search: Search? = null
+    private lateinit var search: Search
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -149,7 +151,7 @@ class PostFragment : ListFragment() {
                 }
             }
             override fun onApplySearch(query: String) {
-                if (!query.isEmpty() && query != search!!.keyword) SearchActivity.startActivity(requireContext(), query)
+                if (!query.isEmpty() && query != search.keyword) SearchActivity.startActivity(requireContext(), query)
             }
         }
 
@@ -164,18 +166,23 @@ class PostFragment : ListFragment() {
         }
     }
 
-    private var navigationListener: MainActivity.NavigationListener? = null
+    private val navigationListener by lazy {
+        object : MainActivity.NavigationListener {
+            override fun onClickPosition(position: Int) {
+                if (position == 0) list.smoothScrollToPosition(0)
+            }
+        }
+    }
 
     private var currentPostId = 0
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
-            if (search == null) return
             val bundle= intent.extras ?: return
             val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
             val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
-            if (pos >= 0 && search!!.keyword == key) {
+            if (pos >= 0 && search.keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
                 list.smoothScrollToPosition(pos + 1)
             }
@@ -202,18 +209,18 @@ class PostFragment : ListFragment() {
         }
         override fun onDelete(user: User) {
             if (user.booru_uid != Settings.instance().activeBooruUid) return
-            search!!.username = ""
-            search!!.auth_key = ""
+            search.username = ""
+            search.auth_key = ""
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     postViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     postViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshMoe()
                     }
                 }
@@ -227,18 +234,18 @@ class PostFragment : ListFragment() {
     private fun updateUserInfoAndRefresh(user: User) {
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.api_key ?: ""
+                search.username = user.name
+                search.auth_key = user.api_key ?: ""
                 postViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshDan()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.password_hash ?: ""
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
                 postViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshMoe()
                 }
             }
@@ -248,49 +255,52 @@ class PostFragment : ListFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val activity = requireActivity()
-        if (activity is MainActivity) {
-            arguments?.let {
-                type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-                search = Search(
-                    scheme = it.getString(Constants.SCHEME_KEY, ""),
-                    host = it.getString(Constants.HOST_KEY, ""),
-                    keyword = it.getString(Constants.KEYWORD_KEY, ""),
-                    username = it.getString(Constants.USERNAME_KEY, ""),
-                    auth_key = it.getString(Constants.AUTH_KEY, ""),
-                    limit = Settings.instance().pageSize)
+        when (activity) {
+            is MainActivity -> {
+                arguments?.let {
+                    type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+                    search = Search(
+                        scheme = it.getString(Constants.SCHEME_KEY, ""),
+                        host = it.getString(Constants.HOST_KEY, ""),
+                        keyword = it.getString(Constants.KEYWORD_KEY, ""),
+                        username = it.getString(Constants.USERNAME_KEY, ""),
+                        auth_key = it.getString(Constants.AUTH_KEY, ""),
+                        limit = Settings.instance().pageSize)
+                }
+                activity.setPostExitSharedElementCallback(sharedElementCallback)
             }
-            activity.setPostExitSharedElementCallback(sharedElementCallback)
-        } else if (activity is SearchActivity){
-            val uid = Settings.instance().activeBooruUid
-            val booru = BooruManager.getBooruByUid(uid)
-            val user = UserManager.getUserByBooruUid(uid)
-            if (booru != null) {
-                type = booru.type
-                search = Search(
-                    scheme = booru.scheme,
-                    host = booru.host,
-                    keyword = activity.keyword,
-                    username = user?.name ?: "",
-                    auth_key = when (type) {
-                        Constants.TYPE_DANBOORU -> user?.api_key ?: ""
-                        Constants.TYPE_MOEBOORU -> user?.password_hash ?: ""
-                        else -> ""
-                    },
-                    limit = Settings.instance().pageSize
-                )
-            } else {
-                activity.finish()
+            is SearchActivity -> {
+                val uid = Settings.instance().activeBooruUid
+                val booru = BooruManager.getBooruByUid(uid)
+                val user = UserManager.getUserByBooruUid(uid)
+                if (booru != null) {
+                    type = booru.type
+                    search = Search(
+                        scheme = booru.scheme,
+                        host = booru.host,
+                        keyword = activity.keyword,
+                        username = user?.name ?: "",
+                        auth_key = when (type) {
+                            Constants.TYPE_DANBOORU -> user?.api_key ?: ""
+                            Constants.TYPE_MOEBOORU -> user?.password_hash ?: ""
+                            else -> ""
+                        },
+                        limit = Settings.instance().pageSize
+                    )
+                } else {
+                    activity.finish()
+                }
+                activity.setExitSharedElementCallback(sharedElementCallback)
             }
-            activity.setExitSharedElementCallback(sharedElementCallback)
+            else -> activity.finish()
         }
         activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (search == null) return
         if (Settings.instance().safeMode) {
-            search!!.keyword = "rating:safe ${search!!.keyword}"
+            search.keyword = "rating:safe ${search.keyword}"
         }
         init()
         UserManager.listeners.add(userListener)
@@ -305,7 +315,7 @@ class PostFragment : ListFragment() {
         viewTransition = ViewTransition(swipe_refresh, search_layout)
         if (requireActivity() !is MainActivity) {
             leftDrawable.progress = 1f
-            val keyword = search!!.keyword
+            val keyword = search.keyword
             search_bar.setTitle(keyword)
             search_bar.setText(keyword)
         }
@@ -384,15 +394,15 @@ class PostFragment : ListFragment() {
                 initSwipeToRefreshMoe()
             }
         }
-        postViewModel.show(search!!)
+        postViewModel.show(search)
         val activity = requireActivity()
         if (activity is MainActivity) {
-            navigationListener = object : MainActivity.NavigationListener {
-                override fun onClickPosition(position: Int) {
-                    if (position == 0) list.smoothScrollToPosition(0)
-                }
+            activity.addNavigationListener(navigationListener)
+        } else {
+            search_bar.setTitleOnLongClickCallback {
+                MuzeiManager.createMuzei(Muzei(booru_uid = Settings.instance().activeBooruUid, keyword = search.keyword))
+                Snackbar.make(search_bar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
             }
-            activity.addNavigationListener(navigationListener!!)
         }
     }
 
@@ -429,10 +439,12 @@ class PostFragment : ListFragment() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        val activity = requireActivity()
+        if (activity is MainActivity) {
+            activity.removeNavigationListener(navigationListener)
+        }
         UserManager.listeners.remove(userListener)
         requireActivity().unregisterReceiver(broadcastReceiver)
-        if (navigationListener != null)
-            (requireActivity() as MainActivity).removeNavigationListener(navigationListener!!)
-        super.onDestroy()
     }
 }

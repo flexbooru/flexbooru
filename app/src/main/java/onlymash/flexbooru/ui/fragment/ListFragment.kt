@@ -103,11 +103,11 @@ abstract class ListFragment : Fragment() {
                 get() = list
 
             override fun isValidView(recyclerView: RecyclerView): Boolean {
-                return search_bar.getState() == SearchBar.STATE_NORMAL && recyclerView == list
+                return search_bar?.getState() == SearchBar.STATE_NORMAL && recyclerView == list
             }
 
             override fun forceShowSearchBar(): Boolean {
-                return search_bar.getState() == SearchBar.STATE_SEARCH
+                return search_bar?.getState() == SearchBar.STATE_SEARCH
             }
         }
 

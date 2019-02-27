@@ -39,6 +39,8 @@
     <string name="post_transition_name" translatable="false">post_img_%d</string>
     <string name="post_expand_tag_filter">Expand tag filter</string>
 
+    <string name="post_add_search_to_muzei">` %s ` have been saved to Muzei.</string>
+
     <string name="popular_day">Day</string>
     <string name="popular_week">Week</string>
     <string name="popular_month">Month</string>

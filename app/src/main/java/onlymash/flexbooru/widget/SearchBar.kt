@@ -165,6 +165,13 @@ class SearchBar @JvmOverloads constructor(
         search_title.setText(resId)
     }
 
+    fun setTitleOnLongClickCallback(titleOnLongClick: () -> Unit) {
+        search_title.setOnLongClickListener {
+            titleOnLongClick()
+            true
+        }
+    }
+
     override fun onClick(v: View) {
         when (v) {
             search_title -> {
@@ -244,9 +251,15 @@ class SearchBar @JvmOverloads constructor(
         fun onSearchEditTextBackPressed()
     }
 
+    /**
+     * Set search bar state change callback
+     * */
     fun setStateChangeListener(listener: StateChangeListener) {
         stateChangeListener = listener
     }
+    /**
+     * Search bar state change listener
+     * */
     interface StateChangeListener {
         fun onStateChange(newState: Int, oldState: Int, animation: Boolean)
     }
