@@ -28,6 +28,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 
+/**
+ * App update api
+ * */
 interface AppUpdaterApi {
 
     companion object {
@@ -64,6 +67,9 @@ interface AppUpdaterApi {
                 .build()
                 .create(AppUpdaterApi::class.java)
         }
+        /**
+         * callback [Unit] return [UpdateInfo]
+         * */
         fun checkUpdate(updateCallback : (UpdateInfo?) -> Unit) {
             create().checkUpdate().enqueue(object : retrofit2.Callback<UpdateInfo> {
                 override fun onFailure(call: Call<UpdateInfo>, t: Throwable) {
@@ -80,10 +86,16 @@ interface AppUpdaterApi {
         }
     }
 
+    /**
+     * check app new version
+     * */
     @GET("/flexbooru/flexbooru/master/app/update.json")
     fun checkUpdate(): Call<UpdateInfo>
 }
 
+/**
+ * data class for app/update.json
+ * */
 data class UpdateInfo(
     val version_code: Long,
     val version_name: String,
