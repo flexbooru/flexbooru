@@ -22,6 +22,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -31,7 +32,7 @@ interface AppUpdaterApi {
 
     companion object {
         private const val BASE_URL = "https://raw.githubusercontent.com"
-        fun create(): AppUpdaterApi {
+        private fun create(): AppUpdaterApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("AppUpdaterApi", log)
@@ -62,6 +63,20 @@ interface AppUpdaterApi {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AppUpdaterApi::class.java)
+        }
+        fun checkUpdate(updateCallback : (UpdateInfo?) -> Unit) {
+            create().checkUpdate().enqueue(object : retrofit2.Callback<UpdateInfo> {
+                override fun onFailure(call: Call<UpdateInfo>, t: Throwable) {
+                    updateCallback(null)
+                }
+                override fun onResponse(call: Call<UpdateInfo>, response: Response<UpdateInfo>) {
+                    if (response.isSuccessful) {
+                        updateCallback(response.body())
+                    } else {
+                        updateCallback(null)
+                    }
+                }
+            })
         }
     }
 

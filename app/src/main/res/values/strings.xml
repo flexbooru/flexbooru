@@ -69,6 +69,8 @@
 
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="update_found_an_update">Found an update</string>
+    <string name="update_version">Version: %s</string>
 
     <string name="booru_add">Add booru</string>
     <string name="booru_add_from_qr_code">Scan QR code</string>

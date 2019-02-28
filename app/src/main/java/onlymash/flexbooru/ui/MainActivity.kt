@@ -20,8 +20,10 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,13 +42,16 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
 import onlymash.flexbooru.App.Companion.app
+import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.AppUpdaterApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
+import onlymash.flexbooru.util.launchUrl
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -177,6 +182,25 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
             else -> {
                 startActivity(Intent(this, BooruActivity::class.java))
+            }
+        }
+        if(boorus.size > 0) {
+            checkForUpdate()
+        }
+    }
+
+    private fun checkForUpdate() {
+        AppUpdaterApi.checkUpdate {
+            if (it != null && it.version_code > BuildConfig.VERSION_CODE) {
+               AlertDialog.Builder(this)
+                   .setTitle(R.string.update_found_an_update)
+                   .setMessage(getString(R.string.update_version, it.version_name))
+                   .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                       this@MainActivity.launchUrl(it.url)
+                   }
+                   .setNegativeButton(R.string.dialog_no, null)
+                   .create()
+                   .show()
             }
         }
     }
