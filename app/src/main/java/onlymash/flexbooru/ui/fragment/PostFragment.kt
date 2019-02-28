@@ -104,6 +104,7 @@ class PostFragment : ListFragment() {
                 }
             }
         private const val TAG = "PostFragment"
+        private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
     }
 
     private lateinit var postViewModel: PostViewModel
@@ -448,5 +449,17 @@ class PostFragment : ListFragment() {
         }
         UserManager.listeners.remove(userListener)
         requireActivity().unregisterReceiver(broadcastReceiver)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(SHOW_SEARCH_LAYOUT_KEY, search_layout.visibility == View.VISIBLE)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.getBoolean(SHOW_SEARCH_LAYOUT_KEY, false)?.let {
+            if (it) viewTransition.showView(1, true)
+        }
     }
 }
