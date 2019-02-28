@@ -322,6 +322,7 @@ class BrowseActivity : AppCompatActivity() {
                 R.id.action_browse_vote -> {
                     if (user == null) {
                         startActivity(Intent(this, AccountConfigActivity::class.java))
+                        finish()
                     } else {
                         when (booru.type) {
                             Constants.TYPE_DANBOORU -> {
