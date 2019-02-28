@@ -23,6 +23,10 @@
                 android:title="@string/about_app_version"
                 android:summary="%s"
                 app:iconSpaceReserved="true"/>
+        <Preference
+                android:key="about_app_rate"
+                android:title="@string/about_app_rate"
+                app:iconSpaceReserved="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/about_author"
                         app:iconSpaceReserved="true">
@@ -72,13 +76,6 @@
                 android:key="about_donation_btc"
                 android:title="@string/about_donation_btc"
                 android:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
-                app:iconSpaceReserved="true"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/about_rate"
-                        app:iconSpaceReserved="true">
-        <Preference
-                android:key="about_rate_app"
-                android:title="@string/about_rate_app"
                 app:iconSpaceReserved="true"/>
     </PreferenceCategory>
 </PreferenceScreen>

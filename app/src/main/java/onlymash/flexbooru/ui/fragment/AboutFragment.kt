@@ -15,8 +15,10 @@
 
 package onlymash.flexbooru.ui.fragment
 
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -79,8 +81,12 @@ class AboutFragment : PreferenceFragment() {
                 App.app.clipboard.primaryClip = ClipData.newPlainText("btc", text)
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
-            "about_rate_app" -> {
-                requireContext().launchUrl("https://play.google.com/store/apps/details?id=onlymash.flexbooru")
+            "about_app_rate" -> {
+                try {
+                    requireContext().startActivity(Intent.createChooser(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=onlymash.flexbooru")),
+                        getString(R.string.share_via)))
+                } catch (_: ActivityNotFoundException) { }
             }
         }
         return super.onPreferenceTreeClick(preference)
