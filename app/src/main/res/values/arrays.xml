@@ -82,4 +82,24 @@
         <item>normal</item>
         <item>large</item>
     </string-array>
+    <string-array name="filter_order">
+        <item>id</item>
+        <item>id_desc</item>
+        <item>fav</item>
+        <item>wide</item>
+        <item>nonwide</item>
+        <item>score</item>
+        <item>score_asc</item>
+        <item>mpixels</item>
+        <item>mpixels_asc</item>
+        <item>landscape</item>
+        <item>portrait</item>
+        <item>vote</item>
+        <item>favcount</item>
+    </string-array>
+    <string-array name="filter_rating">
+        <item>safe</item>
+        <item>questionable</item>
+        <item>explicit</item>
+    </string-array>
 </resources>

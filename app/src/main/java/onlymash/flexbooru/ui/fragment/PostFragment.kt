@@ -351,7 +351,9 @@ class PostFragment : ListFragment() {
                 }
             })
         }
-        tagFilterAdapter = TagFilterAdapter()
+        val orders = resources.getStringArray(R.array.filter_order)
+        val ratings = resources.getStringArray(R.array.filter_rating)
+        tagFilterAdapter = TagFilterAdapter(orders, ratings, tags_filter_list)
         tags_filter_list.apply {
             layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexWrap = FlexWrap.WRAP

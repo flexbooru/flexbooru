@@ -219,6 +219,9 @@
             translation_description="Alternative text when an event filter is not applies">%1s filter not applied
     </string>
 
+    <string name="order">Order</string>
+    <string name="rating">Rating</string>
+
     <string name="muzei_copy">Copy</string>
     <string name="muzei_delete">Delete</string>
     <string name="muzei_search">Search</string>
