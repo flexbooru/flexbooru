@@ -80,7 +80,7 @@ class AboutFragment : PreferenceFragment() {
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_rate_app" -> {
-                requireContext().launchUrl("https://play.google.com/store/apps/onlymash.flexbooru")
+                requireContext().launchUrl("https://play.google.com/store/apps/details?id=onlymash.flexbooru")
             }
         }
         return super.onPreferenceTreeClick(preference)
