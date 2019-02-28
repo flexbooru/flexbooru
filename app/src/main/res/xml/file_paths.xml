@@ -15,7 +15,6 @@
   -->
 
 <paths>
-
     <external-path name="flexbooru" path="."/>
-
+    <cache-path name="flexbooru-cache" path="."/>
 </paths>
