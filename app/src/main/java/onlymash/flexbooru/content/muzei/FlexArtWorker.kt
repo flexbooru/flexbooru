@@ -99,6 +99,7 @@ class FlexArtWorker(
                         webUri = String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
+                val srt = providerClient.contentUri
             }
             else -> {
                 val search = Search(

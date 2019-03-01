@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.content.muzei.FlexArtWorker
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.entity.Muzei
 import onlymash.flexbooru.repository.muzei.MuzeiRepository
@@ -83,6 +84,8 @@ class MuzeiActivity : AppCompatActivity() {
                         .setNegativeButton(R.string.dialog_no, null)
                         .create()
                         .show()
+                } else if (it.itemId == R.id.action_muzei_fetch) {
+                    FlexArtWorker.enqueueLoad()
                 }
                 true
             }

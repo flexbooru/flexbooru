@@ -32,11 +32,16 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".ui.MuzeiSetupActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:exported="true">
+        </activity>
         <activity android:name=".ui.AboutActivity">
         </activity>
         <activity android:name=".ui.CopyrightActivity">
         </activity>
-        <activity android:name=".ui.MuzeiActivity">
+        <activity android:name=".ui.MuzeiActivity"
+                  android:exported="true">
         </activity>
         <activity android:name=".ui.CommentActivity"/>
         <activity
@@ -108,6 +113,12 @@
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtProvider"/>
             </intent-filter>
+            <meta-data
+                    android:name="settingsActivity"
+                    android:value="onlymash.flexbooru.ui.MuzeiActivity"/>
+            <meta-data
+                    android:name="setupActivity"
+                    android:value="onlymash.flexbooru.ui.MuzeiSetupActivity"/>
         </provider>
 
         <meta-data
