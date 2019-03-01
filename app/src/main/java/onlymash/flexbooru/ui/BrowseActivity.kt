@@ -108,6 +108,7 @@ class BrowseActivity : AppCompatActivity() {
     private lateinit var booru: Booru
     private var user: User? = null
     private var currentPosition = -1
+    private var canTransition = true
     private val postLoader by lazy { ServiceLocator.instance().getPostLoader() }
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
@@ -127,7 +128,7 @@ class BrowseActivity : AppCompatActivity() {
             pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU)
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
-            startPostponedEnterTransition()
+            if (canTransition) startPostponedEnterTransition()
             if (!url.isNullOrBlank() && !url!!.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
@@ -158,7 +159,7 @@ class BrowseActivity : AppCompatActivity() {
             pagerAdapter.updateData(posts, Constants.TYPE_MOEBOORU)
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
-            startPostponedEnterTransition()
+            if (canTransition) startPostponedEnterTransition()
             if (!url.isNullOrEmpty() && !url!!.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
@@ -226,7 +227,11 @@ class BrowseActivity : AppCompatActivity() {
     private val sharedElementCallback = object : SharedElementCallback() {
         override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
             val pos = pager_browse.currentItem
-            val sharedElement = pager_browse.findViewWithTag<View>(pos).findViewById<View>(R.id.photo_view)
+            val sharedElement = pager_browse.findViewWithTag<View>(pos)?.findViewById<View>(R.id.photo_view)
+            if (sharedElement == null) {
+                canTransition = false
+                return
+            } else canTransition = true
             val name = sharedElement.transitionName
             names.clear()
             names.add(name)
