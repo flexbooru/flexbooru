@@ -31,19 +31,10 @@ class TagFilterRatingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
             return TagFilterRatingViewHolder(view)
         }
     }
-    private val tagFilterView: TagFilterView = itemView.findViewById(R.id.tag_filter_label)
     init {
-        tagFilterView.apply {
+        (itemView as TagFilterView).apply {
             color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
             selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
-        }
-    }
-    fun bind(name: String, onClick: (Boolean) -> Unit) {
-        tagFilterView.text = name
-        tagFilterView.setOnClickListener {
-            val checked = !tagFilterView.isChecked
-            onClick(checked)
-            tagFilterView.animateCheckedAndInvoke(checked) {}
         }
     }
 }

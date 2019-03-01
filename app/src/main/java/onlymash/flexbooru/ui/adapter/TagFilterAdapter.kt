@@ -94,30 +94,40 @@ class TagFilterAdapter(private val orders: Array<String>,
             }
             is TagFilterOrderViewHolder -> {
                 val order = orders[position - tags.size - 1]
-                holder.itemView.tag = order
-                holder.bind(order) {
-                    orderSelected = if (it) {
-                        if (!orderSelected.isBlank()) {
-                            list.findViewWithTag<TagFilterView>(orderSelected).apply {
-                                animateCheckedAndInvoke(false) {}
+                (holder.itemView as TagFilterView).apply {
+                    text = order
+                    tag = order
+                    isChecked = order == orderSelected
+                    setOnClickListener {
+                        val checked = !isChecked
+                        animateCheckedAndInvoke(checked) {}
+                        orderSelected = if (checked) {
+                            if (!orderSelected.isBlank()) {
+                                list.findViewWithTag<TagFilterView>(orderSelected)
+                                    .animateCheckedAndInvoke(false) {}
                             }
-                        }
-                        order
-                    } else ""
+                            order
+                        } else ""
+                    }
                 }
             }
             is TagFilterRatingViewHolder -> {
                 val rating = ratings[position - tags.size - orders.size - 2]
-                holder.itemView.tag = rating
-                holder.bind(rating) {
-                    ratingSelected = if (it) {
-                        if (!ratingSelected.isBlank()) {
-                            list.findViewWithTag<TagFilterView>(ratingSelected).apply {
-                                animateCheckedAndInvoke(false) {}
+                (holder.itemView as TagFilterView).apply {
+                    text = rating
+                    tag = rating
+                    isChecked = rating == ratingSelected
+                    setOnClickListener {
+                        val checked = !isChecked
+                        animateCheckedAndInvoke(checked) {}
+                        ratingSelected = if (checked) {
+                            if (!ratingSelected.isBlank()) {
+                                list.findViewWithTag<TagFilterView>(ratingSelected).
+                                    animateCheckedAndInvoke(false) {}
                             }
-                        }
-                        rating
-                    } else ""
+                            rating
+                        } else ""
+                    }
                 }
             }
         }
