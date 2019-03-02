@@ -18,6 +18,11 @@ package onlymash.flexbooru.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.FrameLayout
+import androidx.appcompat.app.AlertDialog
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -85,7 +90,40 @@ class CommentActivity : AppCompatActivity() {
             name = it.getString(USER_NAME_KEY, "")
         }
         if (postId > 0) {
-            toolbar.subtitle = "Post $postId"
+            toolbar.apply {
+                subtitle = "Post $postId"
+                inflateMenu(R.menu.comment)
+                setOnMenuItemClickListener {
+                    if (it.itemId == R.id.action_comment_reply) {
+                        val padding = resources.getDimensionPixelSize(R.dimen.spacing_middle)
+                        val layout = FrameLayout(this@CommentActivity).apply {
+                            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                            setPadding(padding, padding, padding, padding)
+                        }
+                        val editText = EditText(this@CommentActivity).apply {
+                            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                                gravity = Gravity.TOP
+                            }
+                            minLines = 6
+                            maxLines = 10
+                        }
+                        layout.addView(editText)
+                        AlertDialog.Builder(this@CommentActivity)
+                            .setTitle("Post $postId")
+                            .setPositiveButton(R.string.comment_send) { _, _ ->
+                                val str = (editText.text ?: "").toString().trim()
+                                if (!str.isEmpty()) {
+
+                                }
+                            }
+                            .setNegativeButton(R.string.comment_cancel, null)
+                            .setView(layout)
+                            .create()
+                            .show()
+                    }
+                    true
+                }
+            }
         } else if (!name.isEmpty()) {
             when (type) {
                 Constants.TYPE_DANBOORU -> {

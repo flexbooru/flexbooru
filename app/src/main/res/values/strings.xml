@@ -231,4 +231,8 @@
     <string name="muzei_action_view_post">View post on Flexbooru</string>
     <string name="muzei_action_search_posts">Search posts on Flexbooru</string>
     <string name="muzei_attribution">Post from Flexbooru</string>
+
+    <string name="comment_reply">Reply</string>
+    <string name="comment_send">Send</string>
+    <string name="comment_cancel">Cancel</string>
 </resources>
