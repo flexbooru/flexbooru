@@ -27,7 +27,7 @@ properties.load(project.rootProject.file(".gradle/keystore.properties").newDataI
 
 Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
 String verNameSuffix = 'git rev-parse --short HEAD'.execute().text.trim()
-String verName = "0.1.3" + "." + verNameSuffix
+String verName = "0.1.4" + "." + verNameSuffix
 
 File jsonFile = file('update.json')
 def builder = new JsonBuilder(new JsonSlurper().parseText(jsonFile.text))
