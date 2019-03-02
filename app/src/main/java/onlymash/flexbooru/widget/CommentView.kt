@@ -39,11 +39,11 @@ class CommentView @JvmOverloads constructor(
         val comments: MutableList<Comment> = mutableListOf()
         body.split("[/quote]").forEach {
             if (!it.contains("[quote]") && !it.isEmpty()) {
-                comments.add(Comment(text = it.replace("\r\n\r\n", "\r\n"), type = 0))
+                comments.add(Comment(text = it, type = 0))
             } else {
                 it.split("[quote]").forEachIndexed { index, s ->
                     if (index == 0 && !s.isEmpty()) {
-                        comments.add(Comment(text = s.replace("\r\n\r\n", "\r\n"), type = 0))
+                        comments.add(Comment(text = s, type = 0))
                     } else if(index == 1 && !s.isEmpty()) {
                         comments.add(Comment(text = s, type = 1))
                     }
