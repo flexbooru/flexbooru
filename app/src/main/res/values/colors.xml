@@ -42,6 +42,8 @@
     <color name="background_text_info">@color/grey_5</color>
     <color name="background_button">@color/colorPrimary</color>
     <color name="background_button_pressed">@color/purple</color>
+    <color name="background_quote">@color/grey_300</color>
+    <color name="background_comment">@color/grey_200</color>
 
     <color name="blue">#FF33B5E5</color>
     <color name="purple">#FFAA66CC</color>

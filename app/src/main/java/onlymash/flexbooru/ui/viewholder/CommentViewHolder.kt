@@ -31,7 +31,7 @@ import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.util.formatDate
 import onlymash.flexbooru.widget.CircularImageView
-import onlymash.flexbooru.widget.LinkTransformationMethod
+import onlymash.flexbooru.widget.CommentView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,12 +48,11 @@ class CommentViewHolder(itemView: View, private val glide: GlideRequests) : Recy
     private val userName: TextView = itemView.findViewById(R.id.user_name)
     private val postId: TextView = itemView.findViewById(R.id.post_id)
     private val commentDate: TextView = itemView.findViewById(R.id.comment_date)
-    private val commentBody: TextView = itemView.findViewById(R.id.comment_body)
+    private val commentView: CommentView = itemView.findViewById(R.id.comment_view)
 
     private var comment: Any? = null
 
     init {
-        commentBody.transformationMethod = LinkTransformationMethod()
         avatar.setOnClickListener {
             when (comment) {
                 is CommentDan -> {
@@ -96,7 +95,7 @@ class CommentViewHolder(itemView: View, private val glide: GlideRequests) : Recy
                 postId.text = String.format("Post %d", data.post_id)
                 val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH)
                 commentDate.text = formatDate(sdf.parse(data.updated_at).time)
-                commentBody.text = data.body
+                commentView.setComment(data.body)
             }
             is CommentMoe -> {
                 userName.text = data.creator
@@ -111,7 +110,7 @@ class CommentViewHolder(itemView: View, private val glide: GlideRequests) : Recy
                     }
                 }
                 commentDate.text = formatDate(sdf.parse(date).time)
-                commentBody.text = data.body
+                commentView.setComment(data.body)
                 glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
                     .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                     .into(avatar)

@@ -74,26 +74,16 @@
             app:layout_constraintStart_toEndOf="@id/post_id"
             app:layout_constraintBottom_toBottomOf="@id/user_avatar"/>
 
-    <LinearLayout
-            android:id="@+id/comment_body_container"
+    <onlymash.flexbooru.widget.CommentView
+            android:id="@+id/comment_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_middle"
             android:orientation="vertical"
-            android:background="@color/background_text_info"
+            android:background="@color/background_comment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_avatar"
-            app:layout_constraintEnd_toEndOf="parent">
-        <TextView
-                android:id="@+id/comment_body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:autoLink="web"
-                android:textIsSelectable="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="?android:attr/textColorSecondary"/>
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
             android:id="@+id/dividing_line"
@@ -102,7 +92,7 @@
             android:background="@color/item_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/comment_body_container"
+            app:layout_constraintTop_toBottomOf="@+id/comment_view"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,8 @@
     <color name="background">@color/background_dark</color>
     <color name="background_card">@color/background_card_dark</color>
     <color name="background_text_info">@color/background_card_dark</color>
+    <color name="background_quote">@color/grey_900</color>
+    <color name="background_comment">@color/grey_800</color>
     <color name="item_line">@color/grey_60</color>
     <color name="rating_e">#FF424242</color>
     <color name="rating_q">#FF616161</color>
