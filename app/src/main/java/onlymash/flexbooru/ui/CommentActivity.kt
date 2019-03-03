@@ -154,7 +154,6 @@ class CommentActivity : AppCompatActivity() {
             return
         }
         type = booru.type
-        var query = ""
         var postId = -1
         var name = ""
         intent?.extras?.let {
@@ -164,7 +163,6 @@ class CommentActivity : AppCompatActivity() {
         commentAction = CommentAction(
             scheme = booru.scheme,
             host = booru.host,
-            query = query,
             post_id = postId,
             limit = Settings.instance().pageSize
         )
@@ -198,13 +196,13 @@ class CommentActivity : AppCompatActivity() {
         } else if (!name.isEmpty()) {
             when (type) {
                 Constants.TYPE_DANBOORU -> {
-                    query = name
+                    commentAction.query = name
                 }
                 Constants.TYPE_MOEBOORU -> {
-                    query = "user:$name"
+                    commentAction.query = "user:$name"
                 }
             }
-            toolbar.subtitle = query
+            toolbar.subtitle = commentAction.query
         }
         commentViewModel = getCommentViewModel(ServiceLocator.instance().getCommentRepository())
         commentAdapter = CommentAdapter(GlideApp.with(this), user, commentListener) {
