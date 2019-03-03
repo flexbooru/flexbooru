@@ -17,6 +17,7 @@ package onlymash.flexbooru.repository.comment
 
 import android.util.Log
 import androidx.annotation.MainThread
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
@@ -40,6 +41,8 @@ class CommentData(private val danbooruApi: DanbooruApi,
     companion object {
         private const val TAG = "CommentData"
     }
+
+    override val commentState: MutableLiveData<CommentState> = MutableLiveData()
 
     @MainThread
     override fun getDanComments(commentAction: CommentAction): Listing<CommentDan> {
@@ -75,13 +78,13 @@ class CommentData(private val danbooruApi: DanbooruApi,
             apiKey = commentAction.auth_key,
             postId = commentAction.post_id).enqueue(object : retrofit2.Callback<CommentResponse> {
             override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
-                onFailed(t.message ?: "unknown error")
+                commentState.postValue(CommentState.error(t.message ?: "unknown error"))
             }
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                 if (response.isSuccessful) {
-                    onSuccess()
+                    commentState.postValue(CommentState.SUCCESS)
                 } else {
-                    onFailed("error code: ${response.code()}")
+                    commentState.postValue(CommentState.error("error code: ${response.code()}"))
                 }
             }
         })
@@ -89,16 +92,20 @@ class CommentData(private val danbooruApi: DanbooruApi,
 
     @MainThread
     override fun destroyDanComment(commentAction: CommentAction) {
-        danbooruApi.deleteComment(ApiUrlHelper.getDanDeleteCommentUrl(commentAction))
+        danbooruApi.deleteComment(
+            url = ApiUrlHelper.getDanDeleteCommentUrl(commentAction),
+            username = commentAction.username,
+            apiKey = commentAction.auth_key
+        )
             .enqueue(object : retrofit2.Callback<CommentResponse> {
                 override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
-                    onFailed(t.message ?: "unknown error")
+                    commentState.postValue(CommentState.error(t.message ?: "unknown error"))
                 }
                 override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                     if (response.isSuccessful) {
-                        onSuccess()
+                        commentState.postValue(CommentState.SUCCESS)
                     } else {
-                        onFailed("error code: ${response.code()}")
+                        commentState.postValue(CommentState.error("error code: ${response.code()}"))
                     }
                 }
             })
@@ -138,13 +145,13 @@ class CommentData(private val danbooruApi: DanbooruApi,
             passwordHash = commentAction.auth_key
         ).enqueue(object : retrofit2.Callback<CommentResponse> {
             override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
-                onFailed(t.message ?: "unknown error")
+                commentState.postValue(CommentState.error(t.message ?: "unknown error"))
             }
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                 if (response.isSuccessful) {
-                    onSuccess()
+                    commentState.postValue(CommentState.SUCCESS)
                 } else {
-                    onFailed("error code: ${response.code()}")
+                    commentState.postValue(CommentState.error("error code: ${response.code()}"))
                 }
             }
         })
@@ -158,23 +165,15 @@ class CommentData(private val danbooruApi: DanbooruApi,
             username = commentAction.username,
             passwordHash = commentAction.auth_key).enqueue(object : retrofit2.Callback<CommentResponse> {
             override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
-                onFailed(t.message ?: "unknown error")
+                commentState.postValue(CommentState.error(t.message ?: "unknown error"))
             }
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                 if (response.isSuccessful) {
-                    onSuccess()
+                    commentState.postValue(CommentState.SUCCESS)
                 } else {
-                    onFailed("error code: ${response.code()}")
+                    commentState.postValue(CommentState.error("error code: ${response.code()}"))
                 }
             }
         })
-    }
-
-    override fun onSuccess() {
-        Log.i(TAG, "onSuccess")
-    }
-
-    override fun onFailed(msg: String) {
-        Log.e(TAG, msg)
     }
 }

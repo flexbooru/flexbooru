@@ -21,12 +21,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.CommentMoe
+import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.ui.viewholder.CommentViewHolder
 import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 
 class CommentAdapter(private val glide: GlideRequests,
+                     private val user: User?,
+                     private val listener: CommentViewHolder.Listener,
                      private val retryCallback: () -> Unit) : PagedListAdapter<Any, RecyclerView.ViewHolder>(COMMENT_COMPARATOR) {
 
 
@@ -47,7 +50,7 @@ class CommentAdapter(private val glide: GlideRequests,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
-            else -> CommentViewHolder.create(parent, glide)
+            else -> CommentViewHolder.create(parent, glide, user, listener)
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -15,20 +15,18 @@
 
 package onlymash.flexbooru.repository.comment
 
-import androidx.lifecycle.MutableLiveData
-import onlymash.flexbooru.entity.CommentAction
-import onlymash.flexbooru.entity.CommentDan
-import onlymash.flexbooru.entity.CommentMoe
-import onlymash.flexbooru.repository.Listing
+enum class Status {
+    SUCCESS,
+    FAILED
+}
 
-interface CommentRepository {
-    fun getMoeComments(commentAction: CommentAction): Listing<CommentMoe>
-    fun createMoeComment(commentAction: CommentAction)
-    fun destroyMoeComment(commentAction: CommentAction)
-
-    fun getDanComments(commentAction: CommentAction): Listing<CommentDan>
-    fun createDanComment(commentAction: CommentAction)
-    fun destroyDanComment(commentAction: CommentAction)
-
-    val commentState: MutableLiveData<CommentState>
+@Suppress("DataClassPrivateConstructor")
+data class CommentState private constructor(
+    val status: Status,
+    val msg: String? = null
+) {
+    companion object {
+        val SUCCESS = CommentState(Status.SUCCESS)
+        fun error(msg: String?) = CommentState(Status.FAILED, msg)
+    }
 }

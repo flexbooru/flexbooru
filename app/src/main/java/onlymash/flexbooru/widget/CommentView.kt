@@ -53,9 +53,17 @@ class CommentView @JvmOverloads constructor(
         return comments
     }
 
+    private var lastCommentText = ""
+
+    internal fun getLastCommentText(): String = lastCommentText
+
     internal fun setComment(body: String) {
         if(childCount > 0) removeAllViews()
-        getComments(body).forEach {
+        val comments = getComments(body)
+        val size = comments.size
+        if (size < 1) return
+        lastCommentText = comments[size - 1].text
+        comments.forEach {
             if (it.type == 0) {
                 addComment(it.text)
             } else {

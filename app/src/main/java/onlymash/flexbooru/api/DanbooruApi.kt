@@ -107,6 +107,9 @@ interface DanbooruApi {
                       @Field("login") username: String,
                       @Field("api_key") apiKey: String): Call<CommentResponse>
 
-    @DELETE
-    fun deleteComment(@Url httpUrl: HttpUrl): Call<CommentResponse>
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", hasBody = true)
+    fun deleteComment(@Url url: String,
+                      @Field("login") username: String,
+                      @Field("api_key") apiKey: String): Call<CommentResponse>
 }

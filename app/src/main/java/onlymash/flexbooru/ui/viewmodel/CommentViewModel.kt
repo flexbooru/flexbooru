@@ -15,12 +15,14 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.repository.comment.CommentRepository
+import onlymash.flexbooru.repository.comment.CommentState
 
 class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     private val commentAction = MutableLiveData<CommentAction>()
@@ -37,6 +39,12 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     val commentsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
+
+    val commentState = MediatorLiveData<CommentState>().apply {
+        addSource(repo.commentState) {
+            postValue(it)
+        }
+    }
 
     fun show(action: CommentAction): Boolean {
         if (commentAction.value == action) {

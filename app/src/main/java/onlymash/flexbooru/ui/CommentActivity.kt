@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.EditText
@@ -32,6 +33,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
@@ -44,7 +46,9 @@ import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.comment.CommentRepository
+import onlymash.flexbooru.repository.comment.CommentState
 import onlymash.flexbooru.ui.adapter.CommentAdapter
+import onlymash.flexbooru.ui.viewholder.CommentViewHolder
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 
 class CommentActivity : AppCompatActivity() {
@@ -67,6 +71,74 @@ class CommentActivity : AppCompatActivity() {
     private lateinit var commentViewModel: CommentViewModel
     private lateinit var commentAction: CommentAction
     private var type = -1
+
+    private val commentListener = object : CommentViewHolder.Listener {
+        override fun onReply(postId: Int) {
+            val action = commentAction
+            action.post_id = postId
+            action.body = ""
+            replay(action)
+        }
+
+        override fun onQuote(postId: Int, quote: String) {
+            val action = commentAction
+            action.post_id = postId
+            action.body = quote
+            replay(action)
+        }
+
+        override fun onDelete(commentId: Int) {
+            val action = commentAction
+            action.comment_id = commentId
+            delete(action)
+        }
+
+    }
+
+    private fun replay(action: CommentAction) {
+        val padding = resources.getDimensionPixelSize(R.dimen.spacing_middle)
+        val layout = FrameLayout(this).apply {
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setPadding(padding, padding, padding, padding)
+        }
+        val editText = EditText(this).apply {
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                gravity = Gravity.TOP
+            }
+            minLines = 6
+            maxLines = 10
+            hint = getString(R.string.comment_hint)
+            if (!action.body.isEmpty()) {
+                setText(action.body)
+            }
+        }
+        layout.addView(editText)
+        AlertDialog.Builder(this)
+            .setTitle("Post ${action.post_id}")
+            .setPositiveButton(R.string.comment_send) { _, _ ->
+                val str = (editText.text ?: "").toString().trim()
+                if (!str.isEmpty()) {
+                    action.body = str
+                    if (type == Constants.TYPE_MOEBOORU) {
+                        commentViewModel.createMoeComment(action)
+                    } else {
+                        commentViewModel.createDanComment(action)
+                    }
+                }
+            }
+            .setNegativeButton(R.string.comment_cancel, null)
+            .setView(layout)
+            .create()
+            .show()
+    }
+
+    private fun delete(action: CommentAction) {
+        when (type) {
+            Constants.TYPE_DANBOORU -> commentViewModel.deleteDanComment(action)
+            Constants.TYPE_MOEBOORU -> commentViewModel.deleteMoeComment(action)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
@@ -89,38 +161,36 @@ class CommentActivity : AppCompatActivity() {
             postId = it.getInt(POST_ID_KEY, -1)
             name = it.getString(USER_NAME_KEY, "")
         }
+        commentAction = CommentAction(
+            scheme = booru.scheme,
+            host = booru.host,
+            query = query,
+            post_id = postId,
+            limit = Settings.instance().pageSize
+        )
+        val user = UserManager.getUserByBooruUid(uid)
+        user?.let {
+            with(commentAction) {
+                username = it.name
+                auth_key = when (type) {
+                    Constants.TYPE_DANBOORU -> it.api_key ?: ""
+                    else -> it.password_hash ?: ""
+                }
+            }
+        }
         if (postId > 0) {
             toolbar.apply {
                 subtitle = "Post $postId"
                 inflateMenu(R.menu.comment)
                 setOnMenuItemClickListener {
                     if (it.itemId == R.id.action_comment_reply) {
-                        val padding = resources.getDimensionPixelSize(R.dimen.spacing_middle)
-                        val layout = FrameLayout(this@CommentActivity).apply {
-                            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                            setPadding(padding, padding, padding, padding)
+                        if (commentAction.username.isEmpty() || commentAction.auth_key.isEmpty()) {
+                            startActivity(Intent(this@CommentActivity, AccountConfigActivity::class.java))
+                            finish()
+                            return@setOnMenuItemClickListener true
                         }
-                        val editText = EditText(this@CommentActivity).apply {
-                            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-                                gravity = Gravity.TOP
-                            }
-                            minLines = 6
-                            maxLines = 10
-                            hint = getString(R.string.comment_hint)
-                        }
-                        layout.addView(editText)
-                        AlertDialog.Builder(this@CommentActivity)
-                            .setTitle("Post $postId")
-                            .setPositiveButton(R.string.comment_send) { _, _ ->
-                                val str = (editText.text ?: "").toString().trim()
-                                if (!str.isEmpty()) {
-
-                                }
-                            }
-                            .setNegativeButton(R.string.comment_cancel, null)
-                            .setView(layout)
-                            .create()
-                            .show()
+                        commentAction.body = ""
+                        replay(commentAction)
                     }
                     true
                 }
@@ -136,24 +206,8 @@ class CommentActivity : AppCompatActivity() {
             }
             toolbar.subtitle = query
         }
-        commentAction = CommentAction(
-            scheme = booru.scheme,
-            host = booru.host,
-            query = query,
-            post_id = postId,
-            limit = Settings.instance().pageSize
-        )
-        UserManager.getUserByBooruUid(uid)?.let {
-            with(commentAction) {
-                username = it.name
-                auth_key = when (type) {
-                    Constants.TYPE_DANBOORU -> it.api_key ?: ""
-                    else -> it.password_hash ?: ""
-                }
-            }
-        }
         commentViewModel = getCommentViewModel(ServiceLocator.instance().getCommentRepository())
-        commentAdapter = CommentAdapter(GlideApp.with(this)) {
+        commentAdapter = CommentAdapter(GlideApp.with(this), user, commentListener) {
             when (type) {
                 Constants.TYPE_DANBOORU -> commentViewModel.retryDan()
                 Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
@@ -192,6 +246,16 @@ class CommentActivity : AppCompatActivity() {
                 initSwipeToRefreshMoe()
             }
         }
+        commentViewModel.commentState.observe(this, Observer {
+            if (it == CommentState.SUCCESS) {
+                when (type) {
+                    Constants.TYPE_DANBOORU -> commentViewModel.refreshDan()
+                    Constants.TYPE_MOEBOORU -> commentViewModel.refreshMoe()
+                }
+            } else {
+                Snackbar.make(toolbar, it.msg.toString(), Snackbar.LENGTH_LONG).show()
+            }
+        })
         commentViewModel.show(commentAction)
     }
 

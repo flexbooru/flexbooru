@@ -40,14 +40,18 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
         }
         val response = danbooruApi.getComments(url).execute()
         val data = response.body() ?: mutableListOf()
+        val comments: MutableList<CommentDan> = mutableListOf()
         data.forEach {
             it.scheme = scheme
             it.host = host
+            if (!it.is_deleted) {
+                comments.add(it)
+            }
         }
         if (data.size < commentAction.limit) {
-            callback.onResult(data, null, null)
+            callback.onResult(comments, null, null)
         } else {
-            callback.onResult(data, null, 2)
+            callback.onResult(comments, null, 2)
         }
     }
 
@@ -67,15 +71,19 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
                     val data = response.body() ?: mutableListOf()
                     val scheme = commentAction.scheme
                     val host = commentAction.host
+                    val comments: MutableList<CommentDan> = mutableListOf()
                     data.forEach {
                         it.scheme = scheme
                         it.host = host
+                        if (!it.is_deleted) {
+                            comments.add(it)
+                        }
                     }
                     loadAfterOnSuccess()
                     if (data.size < commentAction.limit) {
-                        callback.onResult(data, null)
+                        callback.onResult(comments, null)
                     } else {
-                        callback.onResult(data, page + 1)
+                        callback.onResult(comments, page + 1)
                     }
                 } else {
                     loadAfterOnFailed("error code: ${response.code()}", params, callback)

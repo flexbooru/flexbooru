@@ -330,15 +330,8 @@ object ApiUrlHelper {
     /**
      * return danbooru delete comment request url [HttpUrl]
      * */
-    fun getDanDeleteCommentUrl(commentAction: CommentAction): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(commentAction.scheme)
-            .host(commentAction.host)
-            .addPathSegment("comments/${commentAction.comment_id}.json")
-            .addQueryParameter("login", commentAction.username)
-            .addQueryParameter("api_key", commentAction.auth_key)
-            .build()
-    }
+    fun getDanDeleteCommentUrl(commentAction: CommentAction): String =
+        String.format("%s://%s/comments/%d.json", commentAction.scheme, commentAction.host, commentAction.comment_id)
 
     /**
      * return danbooru create comment request url [String]
