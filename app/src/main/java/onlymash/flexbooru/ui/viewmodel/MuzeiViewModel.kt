@@ -15,14 +15,20 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.repository.muzei.MuzeiRepository
+import onlymash.flexbooru.database.FlexbooruDatabase
+import onlymash.flexbooru.entity.Muzei
 
-class MuzeiViewModel(private val repo: MuzeiRepository) : ViewModel() {
+class MuzeiViewModel : ViewModel() {
 
-    val muzeiOutcome by lazy { repo.muzeiOutcome }
+    val muzeiOutcome: MediatorLiveData<MutableList<Muzei>> = MediatorLiveData()
 
     fun loadMuzei(booruUid: Long) {
-        repo.loadMuzei(booruUid)
+        muzeiOutcome.addSource(FlexbooruDatabase.muzeiDao.getMuzeiByBooruUidLiveData(booruUid)) {
+            if (it != null) {
+                muzeiOutcome.postValue(it)
+            }
+        }
     }
 }

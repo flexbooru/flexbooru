@@ -46,7 +46,7 @@ data class PostMoe(
     val sample_url: String?,
     val sample_width: Int,
     val sample_height: Int,
-    val sample_file_size: Int,
+    val sample_file_size: Int = 0,
     val jpeg_url: String?,
     val jpeg_width: Int = 0,
     val jpeg_height: Int = 0,

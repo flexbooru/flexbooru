@@ -38,7 +38,6 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.content.muzei.FlexArtWorker
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.entity.Muzei
-import onlymash.flexbooru.repository.muzei.MuzeiRepository
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 
@@ -96,7 +95,7 @@ class MuzeiActivity : AppCompatActivity() {
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))
             adapter = muzeiAdapter
         }
-        muzeiViewModel = getMuzeiViewModel(ServiceLocator.instance().getMuzeiRepository())
+        muzeiViewModel = getMuzeiViewModel()
         muzeiViewModel.muzeiOutcome.observe(this, Observer {
             muzeiAdapter.updateData(it)
         })
@@ -104,10 +103,10 @@ class MuzeiActivity : AppCompatActivity() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getMuzeiViewModel(repo: MuzeiRepository): MuzeiViewModel {
+    private fun getMuzeiViewModel(): MuzeiViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MuzeiViewModel(repo) as T
+                return MuzeiViewModel() as T
             }
         })[MuzeiViewModel::class.java]
     }

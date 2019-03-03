@@ -394,7 +394,7 @@ class BrowseActivity : AppCompatActivity() {
             shadow.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, insets.systemWindowInsetBottom)
             insets
         }
-        keyword = intent.getStringExtra(Constants.KEYWORD_KEY)
+        keyword = intent.getStringExtra(Constants.KEYWORD_KEY) ?: ""
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
         booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid) ?: return
         user = UserManager.getUserByBooruUid(booruUid = booru.uid)

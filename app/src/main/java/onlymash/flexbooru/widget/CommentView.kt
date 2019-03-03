@@ -54,6 +54,7 @@ class CommentView @JvmOverloads constructor(
     }
 
     internal fun setComment(body: String) {
+        if(childCount > 0) removeAllViews()
         getComments(body).forEach {
             if (it.type == 0) {
                 addComment(it.text)

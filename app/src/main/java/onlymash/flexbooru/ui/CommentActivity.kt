@@ -106,6 +106,7 @@ class CommentActivity : AppCompatActivity() {
                             }
                             minLines = 6
                             maxLines = 10
+                            hint = getString(R.string.comment_hint)
                         }
                         layout.addView(editText)
                         AlertDialog.Builder(this@CommentActivity)

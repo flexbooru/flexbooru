@@ -27,8 +27,6 @@ import onlymash.flexbooru.repository.comment.CommentData
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.favorite.VoteData
 import onlymash.flexbooru.repository.favorite.VoteRepository
-import onlymash.flexbooru.repository.muzei.MuzeiData
-import onlymash.flexbooru.repository.muzei.MuzeiRepository
 import onlymash.flexbooru.repository.pool.PoolData
 import onlymash.flexbooru.repository.pool.PoolRepository
 import onlymash.flexbooru.repository.popular.PopularData
@@ -92,7 +90,6 @@ interface ServiceLocator {
 
     fun getCommentRepository(): CommentRepository
 
-    fun getMuzeiRepository(): MuzeiRepository
 }
 
 /**
@@ -168,13 +165,6 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = NETWORK_IO
-        )
-    }
-
-    override fun getMuzeiRepository(): MuzeiRepository {
-        return MuzeiData(
-            muzeiDao = FlexbooruDatabase.muzeiDao,
-            ioExecutor = DISK_IO
         )
     }
 
