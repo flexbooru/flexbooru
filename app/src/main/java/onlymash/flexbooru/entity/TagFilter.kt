@@ -31,6 +31,5 @@ data class TagFilter(
     var uid: Long = 0L,
     var booru_uid: Long = -1L,
     var name: String,
-    var type: Int = -1,
-    var checked: Boolean = false
+    var type: Int = -1
 )

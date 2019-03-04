@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
@@ -27,11 +26,16 @@ import onlymash.flexbooru.ui.viewholder.MuzeiViewHolder
 /**
  * Muzei list Adapter
  * */
-class MuzeiAdapter(private val list: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var activeMuzeiUid = Settings.instance().activeMuzeiUid
+class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var data: MutableList<Muzei> = mutableListOf()
+
+    private var activeUid = Settings.instance().activeMuzeiUid
+
+    private fun refresh(uid: Long) {
+        val index = data.indexOfFirst { it.uid == uid }
+        notifyItemChanged(index)
+    }
 
     /**
      * Update adapter data set
@@ -39,16 +43,16 @@ class MuzeiAdapter(private val list: RecyclerView) : RecyclerView.Adapter<Recycl
     fun updateData(data: MutableList<Muzei>) {
         this.data = data
         var isExist = false
-        data.forEachIndexed { index, muzei ->
-            if (muzei.uid == activeMuzeiUid) {
+        data.forEachIndexed { _, muzei ->
+            if (muzei.uid == activeUid) {
                 isExist = true
                 return@forEachIndexed
             }
         }
         if (!isExist && data.size > 0) {
             val uid = data[0].uid
+            activeUid = uid
             Settings.instance().activeMuzeiUid = uid
-            activeMuzeiUid = uid
         }
         notifyDataSetChanged()
     }
@@ -64,13 +68,13 @@ class MuzeiAdapter(private val list: RecyclerView) : RecyclerView.Adapter<Recycl
         (holder as MuzeiViewHolder).bind(data)
         holder.itemView.apply {
             tag = uid
-            isSelected = uid == activeMuzeiUid
+            isSelected = uid == activeUid
             setOnClickListener {
                 if (!isSelected) {
-                    list.findViewWithTag<View>(activeMuzeiUid)?.isSelected = false
-                    isSelected = true
-                    activeMuzeiUid = uid
+                    activeUid = uid
+                    refresh(Settings.instance().activeMuzeiUid)
                     Settings.instance().activeMuzeiUid = uid
+                    isSelected = true
                 }
             }
         }

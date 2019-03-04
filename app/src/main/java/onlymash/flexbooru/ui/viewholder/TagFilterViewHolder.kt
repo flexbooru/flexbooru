@@ -19,53 +19,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.database.TagFilterManager
-import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
-        private const val TAG = "TagFilterViewHolder"
         fun create(parent: ViewGroup): TagFilterViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_tag_filter, parent, false)
             return TagFilterViewHolder(view)
         }
     }
-    private val tagFilterView: TagFilterView = itemView.findViewById(R.id.tag_filter_label)
-    private var tag: TagFilter? = null
     init {
-        tagFilterView.setOnClickListener {
-            tagFilterView.animateCheckedAndInvoke(!tagFilterView.isChecked) {
-                if (tag != null){
-                    tag!!.checked = tagFilterView.isChecked
-                    TagFilterManager.updateTagFilter(tag!!)
-                }
-            }
-        }
-        tagFilterView.setOnLongClickListener {
-            AlertDialog.Builder(itemView.context)
-                .setTitle(String.format(itemView.context.getString(R.string.tag_delete_title), tag!!.name))
-                .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                    TagFilterManager.deleteTagFilter(tag!!)
-                }
-                .setNegativeButton(R.string.dialog_no, null)
-                .create()
-                .show()
-            true
-        }
-    }
-    fun bind(tag: TagFilter) {
-        this.tag = tag
-        tagFilterView.apply {
-            text = tag.name
-            color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
-            selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
-            isChecked = tag.checked
+        (itemView as TagFilterView).apply {
+            color = ContextCompat.getColor(context, R.color.colorPrimary)
+            selectedTextColor = ContextCompat.getColor(context, R.color.white)
         }
     }
 }

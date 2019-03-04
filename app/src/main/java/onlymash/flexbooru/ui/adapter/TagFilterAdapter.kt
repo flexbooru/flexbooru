@@ -16,8 +16,10 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.ui.viewholder.TagFilterOrderViewHolder
 import onlymash.flexbooru.ui.viewholder.TagFilterRatingViewHolder
@@ -26,8 +28,7 @@ import onlymash.flexbooru.ui.viewholder.TagFilterViewHolder
 import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterAdapter(private val orders: Array<String>,
-                       private val ratings: Array<String>,
-                       private val list: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val ratings: Array<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_NORMAL = 1
@@ -39,6 +40,22 @@ class TagFilterAdapter(private val orders: Array<String>,
 
     private var orderSelected = ""
     private var ratingSelected = ""
+    private val tagsSelected: MutableList<String> = mutableListOf()
+
+    private var refreshingOrder = false
+    private var refreshingRating = false
+
+    private fun refreshOrder(order: String) {
+        val index = orders.indexOfFirst { it == order }
+        refreshingOrder = true
+        notifyItemChanged(tags.size + index + 1)
+    }
+
+    private fun refreshRating(rating: String) {
+        val index = ratings.indexOfFirst { it == rating }
+        refreshingRating = true
+        notifyItemChanged(tags.size + orders.size + index + 2)
+    }
 
     private var tags: MutableList<TagFilter> = mutableListOf()
     fun updateData(tags: MutableList<TagFilter>) {
@@ -47,11 +64,10 @@ class TagFilterAdapter(private val orders: Array<String>,
     }
     fun getSelectedTagsString(): String {
         var str = ""
-        tags.forEach {
-            if (it.checked) {
-                str = String.format("%s %s", it.name, str)
-            }
+        tagsSelected.forEach {
+            str = String.format("%s %s", it, str)
         }
+        str = str.trim()
         if (!orderSelected.isBlank()) {
             str = "order:$orderSelected $str"
         }
@@ -84,7 +100,37 @@ class TagFilterAdapter(private val orders: Array<String>,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is TagFilterViewHolder -> holder.bind(tags[position])
+            is TagFilterViewHolder -> {
+                val tag = tags[position]
+                val name = tag.name
+                (holder.itemView as TagFilterView).apply {
+                    text = name
+                    isChecked = tagsSelected.contains(name)
+                    setOnClickListener {
+                        if (tagsSelected.contains(name)) {
+                            animateCheckedAndInvoke(false) {
+                                tagsSelected.remove(name)
+                            }
+                        } else {
+                            animateCheckedAndInvoke(true) {
+                                tagsSelected.add(name)
+                            }
+                        }
+                    }
+                    setOnLongClickListener {
+                        val context = holder.itemView.context ?: return@setOnLongClickListener true
+                        AlertDialog.Builder(context)
+                            .setTitle(String.format(context.getString(R.string.tag_delete_title), name))
+                            .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                                TagFilterManager.deleteTagFilter(tag)
+                            }
+                            .setNegativeButton(R.string.dialog_no, null)
+                            .create()
+                            .show()
+                        true
+                    }
+                }
+            }
             is TagFilterSubheadViewHolder -> {
                 if (position == tags.size) {
                     holder.bind(holder.itemView.context.getString(R.string.order))
@@ -94,39 +140,43 @@ class TagFilterAdapter(private val orders: Array<String>,
             }
             is TagFilterOrderViewHolder -> {
                 val order = orders[position - tags.size - 1]
+                val checkedState = order == orderSelected
                 (holder.itemView as TagFilterView).apply {
                     text = order
                     tag = order
-                    isChecked = order == orderSelected
+                    if (refreshingOrder) {
+                        refreshingOrder = false
+                        animateCheckedAndInvoke(checkedState) {}
+                    } else {
+                        isChecked = checkedState
+                    }
                     setOnClickListener {
                         val checked = !isChecked
                         animateCheckedAndInvoke(checked) {}
-                        orderSelected = if (checked) {
-                            if (!orderSelected.isBlank()) {
-                                list.findViewWithTag<TagFilterView>(orderSelected)
-                                    .animateCheckedAndInvoke(false) {}
-                            }
-                            order
-                        } else ""
+                        val oldSelected = orderSelected
+                        orderSelected = if (checked) order else ""
+                        if (oldSelected.isNotEmpty()) refreshOrder(oldSelected)
                     }
                 }
             }
             is TagFilterRatingViewHolder -> {
                 val rating = ratings[position - tags.size - orders.size - 2]
+                val checkedState = rating == ratingSelected
                 (holder.itemView as TagFilterView).apply {
                     text = rating
                     tag = rating
-                    isChecked = rating == ratingSelected
+                    if (refreshingRating) {
+                        refreshingRating = false
+                        animateCheckedAndInvoke(checkedState) {}
+                    } else {
+                        isChecked = checkedState
+                    }
                     setOnClickListener {
                         val checked = !isChecked
                         animateCheckedAndInvoke(checked) {}
-                        ratingSelected = if (checked) {
-                            if (!ratingSelected.isBlank()) {
-                                list.findViewWithTag<TagFilterView>(ratingSelected).
-                                    animateCheckedAndInvoke(false) {}
-                            }
-                            rating
-                        } else ""
+                        val oldSelected = ratingSelected
+                        ratingSelected = if (checked) rating else ""
+                        if (oldSelected.isNotEmpty()) refreshRating(oldSelected)
                     }
                 }
             }

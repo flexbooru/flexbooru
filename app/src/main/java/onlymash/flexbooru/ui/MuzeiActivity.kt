@@ -33,7 +33,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_muzei.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.content.muzei.FlexArtWorker
 import onlymash.flexbooru.database.MuzeiManager
@@ -89,7 +88,7 @@ class MuzeiActivity : AppCompatActivity() {
                 true
             }
         }
-        muzeiAdapter = MuzeiAdapter(muzei_list)
+        muzeiAdapter = MuzeiAdapter()
         muzei_list.apply {
             layoutManager = LinearLayoutManager(this@MuzeiActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))

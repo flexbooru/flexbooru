@@ -33,7 +33,7 @@ import onlymash.flexbooru.entity.*
     (TagDan::class), (TagMoe::class),
     (ArtistDan::class), (ArtistMoe::class),
     (TagFilter::class), (Muzei::class)],
-    version = 12, exportSchema = true)
+    version = 13, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -73,6 +73,17 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_12_13 by lazy {
+            object : Migration(12, 13) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `tags_filter_tmp` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `type` INTEGER NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                    database.execSQL("INSERT INTO `tags_filter_tmp` SELECT `uid`, `booru_uid`, `name`, `type` FROM `tags_filter`")
+                    database.execSQL("DROP TABLE `tags_filter`")
+                    database.execSQL("ALTER TABLE `tags_filter_tmp` RENAME TO `tags_filter`")
+                    database.execSQL("CREATE UNIQUE INDEX `index_tags_filter_booru_uid_name` ON `tags_filter` (`booru_uid`, `name`)")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
@@ -81,7 +92,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_8_9,
                     MIGRATION_9_10,
                     MIGRATION_10_11,
-                    MIGRATION_11_12
+                    MIGRATION_11_12,
+                    MIGRATION_12_13
                 )
                 .build()
         }

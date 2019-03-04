@@ -110,7 +110,6 @@ class PostFragment : ListFragment() {
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
-        private const val TAG = "PostFragment"
         private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
     }
 
@@ -423,7 +422,7 @@ class PostFragment : ListFragment() {
         }
         val orders = resources.getStringArray(R.array.filter_order)
         val ratings = resources.getStringArray(R.array.filter_rating)
-        tagFilterAdapter = TagFilterAdapter(orders, ratings, tags_filter_list)
+        tagFilterAdapter = TagFilterAdapter(orders, ratings)
         tags_filter_list.apply {
             layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexWrap = FlexWrap.WRAP
