@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.util
 
+import android.app.DownloadManager
 import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Context
@@ -24,8 +25,13 @@ import android.os.Environment
 import android.text.format.DateFormat
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostMoe
+import java.io.File
+import java.net.URLDecoder
 import java.util.*
 
 fun formatDate(time: Long): CharSequence {
@@ -69,4 +75,42 @@ fun isExternalStorageWritable(): Boolean {
 fun isExternalStorageReadable(): Boolean {
     return Environment.getExternalStorageState() in
             setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
+}
+
+fun Context.downloadPost(post: Any?) {
+    if (post == null) return
+    var url = ""
+    var host = "Flexbooru"
+    var id = -1
+    when (post) {
+        is PostDan -> {
+            host = post.host
+            id = post.id
+            url = when (Settings.instance().downloadSize) {
+                Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
+                else -> post.getLargerUrl()
+            }
+        }
+        is PostMoe -> {
+            host = post.host
+            id = post.id
+            url = when (Settings.instance().downloadSize) {
+                Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
+                Settings.POST_SIZE_LARGER -> post.getLargerUrl()
+                else -> post.getSampleUrl()            }
+        }
+    }
+    if (url.isEmpty()) return
+    val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+    val path = File(Environment.getExternalStoragePublicDirectory(
+        Environment.DIRECTORY_PICTURES),
+        String.format("%s/%s/%s", getString(R.string.app_name), host, fileName))
+    val request = DownloadManager.Request(Uri.parse(url)).apply {
+        setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        setTitle(String.format("%s - %d", host, id))
+        setDescription(fileName)
+        setDestinationUri(Uri.fromFile(path))
+        addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+    }
+    (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
 }

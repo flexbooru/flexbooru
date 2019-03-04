@@ -15,12 +15,17 @@
 
 package onlymash.flexbooru.ui.fragment
 
+import android.Manifest
 import android.content.*
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +49,7 @@ import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
+import onlymash.flexbooru.ui.AccountConfigActivity
 import onlymash.flexbooru.ui.BrowseActivity
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -53,6 +59,7 @@ import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
+import onlymash.flexbooru.util.downloadPost
 import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.util.rotate
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
@@ -156,14 +163,76 @@ class PostFragment : ListFragment() {
             }
         }
 
+    private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
+
     private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
-        override fun onClickDanItem(post: PostDan, view: View) {
-            currentPostId = post.id
-            BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+        override fun onClickItem(post: Any?, view: View) {
+            when (post) {
+                is PostDan -> {
+                    currentPostId = post.id
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+                }
+                is PostMoe -> {
+                    currentPostId = post.id
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+                }
+            }
         }
-        override fun onClickMoeItem(post: PostMoe, view: View) {
-            currentPostId = post.id
-            BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+
+        override fun onLongClickItem(post: Any?) {
+            var id = -1
+            when (post) {
+                is PostDan -> id = post.id
+                is PostMoe -> id = post.id
+            }
+            if (id > 0) {
+                val context = requireContext()
+                AlertDialog.Builder(context)
+                    .setTitle("Post: $id")
+                    .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
+                        when (which) {
+                            0 -> {
+                                if (ContextCompat.checkSelfPermission(context,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    ) != PackageManager.PERMISSION_GRANTED) {
+                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
+                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        )) {
+
+                                    } else {
+                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
+                                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        ), 1)
+                                    }
+                                } else {
+                                    context.downloadPost(post)
+                                }
+                            }
+                            1 -> {
+                                if (search.auth_key.isEmpty()) {
+                                    requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
+                                } else {
+                                    val vote = Vote(
+                                        scheme = search.scheme,
+                                        host = search.host,
+                                        post_id = id,
+                                        score = 3,
+                                        username = search.username,
+                                        auth_key = search.auth_key
+                                    )
+                                    when (post) {
+                                        is PostDan -> voteRepo.addDanFav(vote, post)
+                                        is PostMoe -> voteRepo.voteMoePost(vote)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .create()
+                    .show()
+            }
         }
     }
 

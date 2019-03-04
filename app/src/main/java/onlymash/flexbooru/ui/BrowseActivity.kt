@@ -19,8 +19,6 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
@@ -68,7 +66,7 @@ import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
 import onlymash.flexbooru.util.FileUtil
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.util.downloadPost
 import onlymash.flexbooru.util.isImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
@@ -621,45 +619,17 @@ class BrowseActivity : AppCompatActivity() {
 
     private fun download() {
         val position = pager_browse.currentItem
-        var url = ""
-        var host = "Flexbooru"
-        var id = -1
         when (booru.type) {
             Constants.TYPE_DANBOORU -> {
                 postsDan?.let {
-                    host = it[position].host
-                    id = it[position].id
-                    url = when (Settings.instance().downloadSize) {
-                        Settings.POST_SIZE_ORIGIN -> it[position].getOriginUrl()
-                        else -> it[position].getLargerUrl()
-                    }
+                    downloadPost(it[position])
                 }
             }
             Constants.TYPE_MOEBOORU -> {
                 postsMoe?.let {
-                    host = it[position].host
-                    id = it[position].id
-                    url = when (Settings.instance().downloadSize) {
-                        Settings.POST_SIZE_SAMPLE -> it[position].getSampleUrl()
-                        Settings.POST_SIZE_LARGER -> it[position].getLargerUrl()
-                        else -> it[position].getOriginUrl()
-                    }
+                    downloadPost(it[position])
                 }
             }
-        }
-        if (url.isNotBlank()) {
-            val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
-            val path = File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES),
-                String.format("%s/%s/%s", getString(R.string.app_name), host, fileName))
-            val request = DownloadManager.Request(Uri.parse(url)).apply {
-                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                setTitle(String.format("%s - %d", host, id))
-                setDescription(fileName)
-                setDestinationUri(Uri.fromFile(path))
-                addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-            }
-            (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
         }
     }
 

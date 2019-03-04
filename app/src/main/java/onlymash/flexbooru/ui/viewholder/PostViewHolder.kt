@@ -45,12 +45,12 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     private var itemListener: ItemListener? = null
 
     init {
-        preview.isEnabled = false
         itemView.setOnClickListener {
-            when (post) {
-                is PostDan -> itemListener?.onClickDanItem(post as PostDan, preview)
-                is PostMoe -> itemListener?.onClickMoeItem(post as PostMoe, preview)
-            }
+            itemListener?.onClickItem(post, preview)
+        }
+        itemView.setOnLongClickListener {
+            itemListener?.onLongClickItem(post)
+            true
         }
     }
 
@@ -121,7 +121,7 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     }
 
     interface ItemListener {
-        fun onClickDanItem(post: PostDan, view: View)
-        fun onClickMoeItem(post: PostMoe, view: View)
+        fun onClickItem(post: Any?, view: View)
+        fun onLongClickItem(post: Any?)
     }
 }
