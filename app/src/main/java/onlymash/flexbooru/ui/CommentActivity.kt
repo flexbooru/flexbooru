@@ -74,21 +74,21 @@ class CommentActivity : AppCompatActivity() {
 
     private val commentListener = object : CommentViewHolder.Listener {
         override fun onReply(postId: Int) {
-            val action = commentAction
+            val action = commentAction.copy()
             action.post_id = postId
             action.body = ""
             replay(action)
         }
 
         override fun onQuote(postId: Int, quote: String) {
-            val action = commentAction
+            val action = commentAction.copy()
             action.post_id = postId
             action.body = quote
             replay(action)
         }
 
         override fun onDelete(commentId: Int) {
-            val action = commentAction
+            val action = commentAction.copy()
             action.comment_id = commentId
             delete(action)
         }

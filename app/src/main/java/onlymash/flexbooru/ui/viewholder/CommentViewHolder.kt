@@ -109,16 +109,10 @@ class CommentViewHolder(itemView: View,
                 commentView.setComment(data.body)
                 if (user != null) {
                     if (user.id == data.creator_id) {
-                        if (menuView.menu.findItem(R.id.action_comment_reply) == null) {
-                            MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                        } else if (menuView.menu.findItem(R.id.action_comment_delete) == null) {
-                            menuView.menu.apply {
-                                removeItem(R.id.action_comment_reply)
-                                removeItem(R.id.action_comment_quote)
-                            }
-                            MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                        }
-                    } else if (menuView.menu.findItem(R.id.action_comment_reply) == null) {
+                        menuView.menu.clear()
+                        MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
+                    } else {
+                        menuView.menu.clear()
                         MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
                     }
                     setMenuClickListener()
@@ -145,16 +139,10 @@ class CommentViewHolder(itemView: View,
                 commentView.setComment(data.body)
                 if (user != null) {
                     if (user.id == data.creator_id) {
-                        if (menuView.menu.findItem(R.id.action_comment_reply) == null) {
-                            MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                        } else if (menuView.menu.findItem(R.id.action_comment_delete) == null) {
-                            menuView.menu.apply {
-                                removeItem(R.id.action_comment_reply)
-                                removeItem(R.id.action_comment_quote)
-                            }
-                            MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                        }
-                    } else if (menuView.menu.findItem(R.id.action_comment_reply) == null) {
+                        menuView.menu.clear()
+                        MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
+                    } else {
+                        menuView.menu.clear()
                         MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
                     }
                     setMenuClickListener()
