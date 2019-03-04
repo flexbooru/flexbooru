@@ -21,21 +21,20 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.entity.TagFilter
-import onlymash.flexbooru.ui.viewholder.TagFilterOrderViewHolder
-import onlymash.flexbooru.ui.viewholder.TagFilterRatingViewHolder
-import onlymash.flexbooru.ui.viewholder.TagFilterSubheadViewHolder
-import onlymash.flexbooru.ui.viewholder.TagFilterViewHolder
+import onlymash.flexbooru.ui.viewholder.*
 import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterAdapter(private val orders: Array<String>,
-                       private val ratings: Array<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val ratings: Array<String>,
+                       private val addSearchBarTextCallback: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private const val VIEW_TYPE_NORMAL = 1
-        private const val VIEW_TYPE_ORDER_HEAD = 2
-        private const val VIEW_TYPE_ORDER = 3
-        private const val VIEW_TYPE_RATING_HEAD = 4
-        private const val VIEW_TYPE_RATING = 5
+        private const val VIEW_TYPE_ADD = 1
+        private const val VIEW_TYPE_NORMAL = 2
+        private const val VIEW_TYPE_ORDER_HEAD = 3
+        private const val VIEW_TYPE_ORDER = 4
+        private const val VIEW_TYPE_RATING_HEAD = 5
+        private const val VIEW_TYPE_RATING = 6
     }
 
     private var orderSelected = ""
@@ -48,13 +47,13 @@ class TagFilterAdapter(private val orders: Array<String>,
     private fun refreshOrder(order: String) {
         val index = orders.indexOfFirst { it == order }
         refreshingOrder = true
-        notifyItemChanged(tags.size + index + 1)
+        notifyItemChanged(tags.size + index + 2)
     }
 
     private fun refreshRating(rating: String) {
         val index = ratings.indexOfFirst { it == rating }
         refreshingRating = true
-        notifyItemChanged(tags.size + orders.size + index + 2)
+        notifyItemChanged(tags.size + orders.size + index + 3)
     }
 
     private var tags: MutableList<TagFilter> = mutableListOf()
@@ -78,6 +77,7 @@ class TagFilterAdapter(private val orders: Array<String>,
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
+            VIEW_TYPE_ADD -> TagFilterAddViewHolder.create(parent)
             VIEW_TYPE_NORMAL -> TagFilterViewHolder.create(parent)
             VIEW_TYPE_ORDER -> TagFilterOrderViewHolder.create(parent)
             VIEW_TYPE_RATING -> TagFilterRatingViewHolder.create(parent)
@@ -85,23 +85,29 @@ class TagFilterAdapter(private val orders: Array<String>,
         }
 
     override fun getItemViewType(position: Int): Int {
-        val orderHeadPos = tags.size
+        val orderHeadPos = tags.size + 1
         val ratingHeadPos = orderHeadPos + orders.size + 1
-        return when {
-            position < orderHeadPos -> VIEW_TYPE_NORMAL
-            position == ratingHeadPos -> VIEW_TYPE_RATING_HEAD
-            position == orderHeadPos -> VIEW_TYPE_ORDER_HEAD
-            position in (orderHeadPos + 1)..(ratingHeadPos - 1) -> VIEW_TYPE_ORDER
-            else ->  VIEW_TYPE_RATING
+        return when (position) {
+            0 -> VIEW_TYPE_ADD
+            in 1..(orderHeadPos - 1) -> VIEW_TYPE_NORMAL
+            orderHeadPos -> VIEW_TYPE_ORDER_HEAD
+            ratingHeadPos -> VIEW_TYPE_RATING_HEAD
+            in (orderHeadPos + 1)..(ratingHeadPos - 1) -> VIEW_TYPE_ORDER
+            else -> VIEW_TYPE_RATING
         }
     }
 
-    override fun getItemCount(): Int = tags.size + orders.size + ratings.size + 2
+    override fun getItemCount(): Int = tags.size + orders.size + ratings.size + 3
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
+            is TagFilterAddViewHolder -> {
+                holder.itemView.setOnClickListener {
+                    addSearchBarTextCallback()
+                }
+            }
             is TagFilterViewHolder -> {
-                val tag = tags[position]
+                val tag = tags[position - 1]
                 val name = tag.name
                 (holder.itemView as TagFilterView).apply {
                     text = name
@@ -132,14 +138,14 @@ class TagFilterAdapter(private val orders: Array<String>,
                 }
             }
             is TagFilterSubheadViewHolder -> {
-                if (position == tags.size) {
+                if (position == tags.size + 1) {
                     holder.bind(holder.itemView.context.getString(R.string.order))
                 } else {
                     holder.bind(holder.itemView.context.getString(R.string.rating))
                 }
             }
             is TagFilterOrderViewHolder -> {
-                val order = orders[position - tags.size - 1]
+                val order = orders[position - tags.size - 2]
                 val checkedState = order == orderSelected
                 (holder.itemView as TagFilterView).apply {
                     text = order
@@ -160,7 +166,7 @@ class TagFilterAdapter(private val orders: Array<String>,
                 }
             }
             is TagFilterRatingViewHolder -> {
-                val rating = ratings[position - tags.size - orders.size - 2]
+                val rating = ratings[position - tags.size - orders.size - 3]
                 val checkedState = rating == ratingSelected
                 (holder.itemView as TagFilterView).apply {
                     text = rating

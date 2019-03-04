@@ -42,6 +42,7 @@ import onlymash.flexbooru.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.MuzeiManager
+import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
@@ -422,7 +423,12 @@ class PostFragment : ListFragment() {
         }
         val orders = resources.getStringArray(R.array.filter_order)
         val ratings = resources.getStringArray(R.array.filter_rating)
-        tagFilterAdapter = TagFilterAdapter(orders, ratings)
+        tagFilterAdapter = TagFilterAdapter(orders, ratings) {
+            val text = search_bar.getEditTextText()
+            if(text.isNotEmpty()) {
+                TagFilterManager.createTagFilter(TagFilter(booru_uid = Settings.instance().activeBooruUid, name = text))
+            }
+        }
         tags_filter_list.apply {
             layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexWrap = FlexWrap.WRAP

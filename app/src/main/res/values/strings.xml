@@ -209,6 +209,8 @@
     <string name="search_bar_hint_search_tags">Search tags</string>
     <string name="search_bar_hint_search_artists">Search artists</string>
 
+    <string name="tag_filter_add_text">add ↑️</string>
+
     <string name="share_via">Via</string>
     <string name="action_share">Share</string>
     <string name="action_tags">Tags</string>
