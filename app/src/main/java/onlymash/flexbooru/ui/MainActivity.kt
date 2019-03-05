@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             if (isFinishing) return@checkUpdate
             if (it != null && it.version_code > BuildConfig.VERSION_CODE) {
                AlertDialog.Builder(this)
-                   .setTitle(R.string.update_found_an_update)
+                   .setTitle(R.string.update_found_update)
                    .setMessage(getString(R.string.update_version, it.version_name))
                    .setPositiveButton(R.string.dialog_yes) { _, _ ->
                        this@MainActivity.launchUrl(it.url)
