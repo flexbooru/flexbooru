@@ -74,7 +74,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
                 imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
             }
             if (editTextPreference.isCommitOnEnter) {
-                setOnEditorActionListener(TextView.OnEditorActionListener { _, keyCode, event ->
+                setOnEditorActionListener(TextView.OnEditorActionListener { _, keyCode, _ ->
                     if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
                         onClick(dialog, DialogInterface.BUTTON_POSITIVE)
                         dismiss()

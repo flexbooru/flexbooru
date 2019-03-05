@@ -16,6 +16,7 @@
 package onlymash.flexbooru.api
 
 import android.util.Log
+import androidx.annotation.Keep
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -30,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
+@Keep
 interface DanbooruApi {
 
     companion object {

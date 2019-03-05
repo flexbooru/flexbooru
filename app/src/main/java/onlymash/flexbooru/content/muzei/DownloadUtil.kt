@@ -16,6 +16,7 @@
 package onlymash.flexbooru.content.muzei
 
 import android.util.Log
+import androidx.annotation.Keep
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -31,6 +32,7 @@ import retrofit2.http.Url
 /**
  * Download file
  * */
+@Keep
 interface DownloadUtil {
     companion object {
         fun create(): DownloadUtil {

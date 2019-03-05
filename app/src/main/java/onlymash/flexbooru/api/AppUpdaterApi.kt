@@ -16,6 +16,7 @@
 package onlymash.flexbooru.api
 
 import android.util.Log
+import androidx.annotation.Keep
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit
 /**
  * App update api
  * */
+@Keep
 interface AppUpdaterApi {
 
     companion object {
@@ -96,6 +98,7 @@ interface AppUpdaterApi {
 /**
  * data class for app/update.json
  * */
+@Keep
 data class UpdateInfo(
     val version_code: Long,
     val version_name: String,
