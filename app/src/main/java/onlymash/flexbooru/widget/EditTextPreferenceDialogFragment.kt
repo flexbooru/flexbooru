@@ -43,7 +43,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
     private var key = ""
     private var beforeText = ""
 
-    private var editText: EditText? = null
+    private lateinit var editText: EditText
 
     private val editTextPreference: EditTextPreference
         get() = preference as EditTextPreference
@@ -58,39 +58,33 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
 
-        editText = view.findViewById(android.R.id.edit)
+        editText = view.findViewById(android.R.id.edit) ?: return
 
-        if (editText == null) {
-            throw IllegalStateException("Dialog view must contain an EditText with id" + " @android:id/edit")
+        editText.apply {
+            if (editTextPreference.inputType != InputType.TYPE_CLASS_TEXT) {
+                inputType = editTextPreference.inputType
+            }
+            setSingleLine(editTextPreference.isSingleLine)
+            setSelectAllOnFocus(editTextPreference.isSelectAllOnFocus)
+            hint = editTextPreference.hint
+            setText(editTextPreference.text)
+            requestFocus()
+            post {
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            }
+            if (editTextPreference.isCommitOnEnter) {
+                setOnEditorActionListener(TextView.OnEditorActionListener { _, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
+                        onClick(dialog, DialogInterface.BUTTON_POSITIVE)
+                        dismiss()
+                        return@OnEditorActionListener true
+                    }
+                    false
+                })
+            }
+            addTextChangedListener(this@EditTextPreferenceDialogFragment)
         }
-
-        editText!!.setSingleLine(editTextPreference.isSingleLine)
-        editText!!.setSelectAllOnFocus(editTextPreference.isSelectAllOnFocus)
-
-        if (editTextPreference.inputType != InputType.TYPE_CLASS_TEXT)
-            editText!!.inputType = editTextPreference.inputType
-
-        editText!!.hint = editTextPreference.hint
-        editText!!.setText(editTextPreference.text)
-
-        editText!!.requestFocus()
-
-        editText!!.post {
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
-        }
-
-        if (editTextPreference.isCommitOnEnter) {
-            editText!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, keyCode, event ->
-                if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
-                    onClick(dialog, DialogInterface.BUTTON_POSITIVE)
-                    dismiss()
-                    return@OnEditorActionListener true
-                }
-                false
-            })
-        }
-        editText!!.addTextChangedListener(this)
     }
 
     @RestrictTo(LIBRARY_GROUP)
@@ -100,7 +94,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
     }
     override fun onDialogClosed(positiveResult: Boolean) {
         if (positiveResult) {
-            val value = editText!!.text.toString()
+            val value = editText.text.toString()
             if (key == Constants.BOORU_CONFIG_HASH_SALT_KEY && !value.contains(Constants.HASH_SALT_CONTAINED, false)) {
                 Toast.makeText(this.requireContext(), R.string.booru_config_hash_salt_must_contain_yp, Toast.LENGTH_LONG).show()
             } else {
@@ -126,9 +120,9 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
         }
         if (!isValid) {
             if (beforeText.isNotEmpty() && TextMatchesUtil.isHost(beforeText))
-                editText!!.setText(beforeText)
+                editText.setText(beforeText)
             else
-                editText!!.setText("")
+                editText.setText("")
         }
     }
 }
