@@ -76,8 +76,8 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
         editText!!.requestFocus()
 
         editText!!.post {
-            val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
         }
 
         if (editTextPreference.isCommitOnEnter) {
