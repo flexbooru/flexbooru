@@ -188,7 +188,7 @@ class PostFragment : ListFragment() {
             if (id > 0) {
                 val context = requireContext()
                 AlertDialog.Builder(context)
-                    .setTitle("Post: $id")
+                    .setTitle("Post $id")
                     .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                         when (which) {
                             0 -> {
