@@ -402,6 +402,7 @@ class PostFragment : ListFragment() {
         postAdapter = PostAdapter(
             glide = glide,
             listener = itemListener,
+            showInfoBar = Settings.instance().showInfoBar,
             retryCallback = {
                 when (type) {
                     Constants.TYPE_DANBOORU -> postViewModel.retryDan()

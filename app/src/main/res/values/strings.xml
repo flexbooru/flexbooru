@@ -168,8 +168,12 @@
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Large</string>
 
+    <string name="settings_show_info_bar">Show info bar</string>
+
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
+    <string name="switch_yes">Yes</string>
+    <string name="switch_no">No</string>
 
     <string name="pool_description_is_empty">Description is empty.</string>
     <string name="pool_info_id_and_count">#%01$d | %02$d</string>

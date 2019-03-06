@@ -518,7 +518,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            Settings.SAFE_MODE_KEY, Settings.PAGE_SIZE_KEY, Settings.GRID_WIDTH -> {
+            Settings.SAFE_MODE_KEY,
+            Settings.PAGE_SIZE_KEY,
+            Settings.GRID_WIDTH,
+            Settings.SHOW_INFO_BAR_KEY -> {
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 pager_container.currentItem = currentNavItem

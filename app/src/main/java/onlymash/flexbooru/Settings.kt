@@ -48,6 +48,7 @@ class Settings(private val sp: SharedPreferences) {
         const val GRID_WIDTH_NORMAL = "normal"
         const val GRID_WIDTH_LARGE = "large"
         private const val ACTIVE_MUZEI_UID_KEY = "settings_muzei_uid"
+        const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
     }
 
     var activeBooruUid: Long
@@ -90,4 +91,8 @@ class Settings(private val sp: SharedPreferences) {
     var activeMuzeiUid: Long
         get() = sp.getLong(ACTIVE_MUZEI_UID_KEY, 0L)
         set(value) = sp.edit().putLong(ACTIVE_MUZEI_UID_KEY, value).apply()
+
+    var showInfoBar: Boolean
+        get() = sp.getBoolean(SHOW_INFO_BAR_KEY, false)
+        set(value) = sp.edit().putBoolean(SHOW_INFO_BAR_KEY, value).apply()
 }

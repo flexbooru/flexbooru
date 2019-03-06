@@ -19,7 +19,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
@@ -28,23 +29,31 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 
-class PostViewHolder(itemView: View, private val glide: GlideRequests): RecyclerView.ViewHolder(itemView){
+class PostViewHolder(itemView: View,
+                     showInfoBar: Boolean,
+                     private val glide: GlideRequests): RecyclerView.ViewHolder(itemView){
 
     companion object {
-        fun create(parent: ViewGroup, glide: GlideRequests): PostViewHolder {
+        fun create(parent: ViewGroup, showInfoBar: Boolean, glide: GlideRequests): PostViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_post, parent, false)
-            return PostViewHolder(view, glide)
+            return PostViewHolder(view, showInfoBar, glide)
         }
     }
 
     private val preview: ImageView = itemView.findViewById(R.id.preview)
-    private val previewCard: CardView = itemView.findViewById(R.id.preview_card)
+    private val infoContainer: LinearLayout = itemView.findViewById(R.id.info_container)
+    private val postId: TextView = itemView.findViewById(R.id.post_id)
+    private val postSize: TextView = itemView.findViewById(R.id.post_size)
+
     private var post: Any? = null
 
     private var itemListener: ItemListener? = null
 
     init {
+        if (showInfoBar) {
+            infoContainer.visibility = View.VISIBLE
+        }
         itemView.setOnClickListener {
             itemListener?.onClickItem(post, preview)
         }
@@ -59,13 +68,14 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
             is PostDan -> {
                 this.post = post
                 preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
-                previewCard.tag = post.id
+                postId.text = String.format("#%d", post.id)
+                postSize.text = String.format("%d x %d", post.image_width, post.image_height)
                 val placeholderDrawable = when (post.rating) {
                     "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
                     "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
                     else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
                 }
-                val lp = previewCard.layoutParams as ConstraintLayout.LayoutParams
+                val lp = preview.layoutParams as ConstraintLayout.LayoutParams
                 val ratio = post.image_width.toFloat()/post.image_height.toFloat()
                 when {
                     ratio > Constants.MAX_ITEM_ASPECT_RATIO -> {
@@ -78,7 +88,7 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                         lp.dimensionRatio = "H, $ratio:1"
                     }
                 }
-                previewCard.layoutParams = lp
+                preview.layoutParams = lp
                 preview.layout(0,0,0,0)
                 glide.load(post.preview_file_url)
                     .placeholder(placeholderDrawable)
@@ -88,13 +98,14 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
             is PostMoe -> {
                 this.post = post
                 preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
-                previewCard.tag = post.id
+                postId.text = String.format("#%d", post.id)
+                postSize.text = String.format("%d x %d", post.width, post.height)
                 val placeholderDrawable = when (post.rating) {
                     "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
                     "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
                     else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
                 }
-                val lp = previewCard.layoutParams as ConstraintLayout.LayoutParams
+                val lp = preview.layoutParams as ConstraintLayout.LayoutParams
                 val ratio = post.width.toFloat()/post.height.toFloat()
                 when {
                     ratio > Constants.MAX_ITEM_ASPECT_RATIO -> {
@@ -107,7 +118,7 @@ class PostViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                         lp.dimensionRatio = "H, $ratio:1"
                     }
                 }
-                previewCard.layoutParams = lp
+                preview.layoutParams = lp
                 preview.layout(0,0,0,0)
                 glide.load(post.preview_url)
                     .placeholder(placeholderDrawable)
