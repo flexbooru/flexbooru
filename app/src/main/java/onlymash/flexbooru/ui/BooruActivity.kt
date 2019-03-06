@@ -86,7 +86,12 @@ class BooruActivity : AppCompatActivity() {
     private fun initToolbar(){
         toolbar.setTitle(R.string.title_manage_boorus)
         toolbar.setNavigationOnClickListener { finish() }
-        toolbar.inflateMenu(R.menu.booru)
+        toolbar.inflateMenu(
+            if (applicationContext.packageName.contains("play"))
+                R.menu.booru_play
+            else
+                R.menu.booru
+        )
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_booru_help -> {

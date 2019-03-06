@@ -43,6 +43,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.BuildConfig
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.api.AppUpdaterApi
@@ -139,6 +140,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         drawer.onDrawerItemClickListener = drawerItemClickListener
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
+        if (!BooruManager.isNotEmpty()) {
+            BooruManager.createBooru(
+                Booru(
+                    name = "Sample",
+                    scheme = "https",
+                    host = "moe.fiepi.com",
+                    hash_salt = "onlymash--your-password--",
+                    type = Constants.TYPE_MOEBOORU))
+        }
         boorus = BooruManager.getAllBoorus() ?: mutableListOf()
         users = UserManager.getAllUsers() ?: mutableListOf()
         UserManager.listeners.add(userListener)
@@ -184,7 +194,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 startActivity(Intent(this, BooruActivity::class.java))
             }
         }
-        if(boorus.size > 0) {
+        if(!applicationContext.packageName.contains("play")) {
             checkForUpdate()
         }
     }

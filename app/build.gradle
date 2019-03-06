@@ -26,19 +26,18 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file(".gradle/keystore.properties").newDataInputStream())
 
 Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
-String verNameSuffix = 'git rev-parse --short HEAD'.execute().text.trim()
-String verName = "0.2.4" + "." + verNameSuffix
-
-File jsonFile = file('update.json')
-def builder = new JsonBuilder(new JsonSlurper().parseText(jsonFile.text))
-builder.content.version_code = verCode
-builder.content.version_name = verName
-jsonFile.write(builder.toPrettyString())
+String verNameSuffix = '.' + 'git rev-parse --short HEAD'.execute().text.trim()
 
 android {
     signingConfigs {
-        release {
+        github {
             storeFile file("../.gradle/flexbooru.jks")
+            keyAlias properties.getProperty("KEY_ALIAS")
+            keyPassword properties.getProperty("KEY_PASS")
+            storePassword properties.getProperty("STORE_PASS")
+        }
+        play {
+            storeFile file("../.gradle/flexbooru_play.jks")
             keyAlias properties.getProperty("KEY_ALIAS")
             keyPassword properties.getProperty("KEY_PASS")
             storePassword properties.getProperty("STORE_PASS")
@@ -51,7 +50,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode verCode
-        versionName verName
+        versionName "0.2.4"
+        versionNameSuffix verNameSuffix
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -60,12 +60,24 @@ android {
             outputFileName = "flexbooru_${defaultConfig.versionName}.apk"
         }
     }
+    flavorDimensions "channel"
+    productFlavors {
+        github {
+            dimension "channel"
+        }
+        play {
+            dimension "channel"
+            applicationIdSuffix ".play"
+            versionNameSuffix ".play"
+        }
+    }
     buildTypes {
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            productFlavors.github.signingConfig signingConfigs.github
+            productFlavors.play.signingConfig signingConfigs.play
         }
         debug {
             applicationIdSuffix ".debug"
@@ -86,6 +98,12 @@ android {
     }
 }
 
+File jsonFile = file('update.json')
+def builder = new JsonBuilder(new JsonSlurper().parseText(jsonFile.text))
+builder.content.version_code = android.defaultConfig.versionCode
+builder.content.version_name = android.defaultConfig.versionName + android.defaultConfig.versionNameSuffix
+jsonFile.write(builder.toPrettyString())
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -95,7 +113,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.0-rc02'
+    implementation 'android.arch.work:work-runtime-ktx:1.0.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

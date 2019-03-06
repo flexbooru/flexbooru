@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "600642066117-f8fe50jpd3so84ru0o4o8orng33mq00j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "onlymash.flexbooru",
+            "certificate_hash": "fa64b480e2d301b93d80d73b0be37dfc4cb7ac00"
+          }
+        },
+        {
           "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -75,6 +88,68 @@
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600642066117:android:5eeb5ff54943f2c7",
+        "android_client_info": {
+          "package_name": "onlymash.flexbooru.play"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG1ToE5YhzGBNFAejd7gojBmvn7IAPiSg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600642066117:android:1fa1a558a16adaa8",
+        "android_client_info": {
+          "package_name": "onlymash.flexbooru.play.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG1ToE5YhzGBNFAejd7gojBmvn7IAPiSg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
