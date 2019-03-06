@@ -84,7 +84,7 @@ class AboutFragment : PreferenceFragment() {
             "about_app_rate" -> {
                 try {
                     requireContext().startActivity(Intent.createChooser(
-                        Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=onlymash.flexbooru")),
+                        Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${requireContext().applicationContext.packageName}")),
                         getString(R.string.share_via)))
                 } catch (_: ActivityNotFoundException) { }
             }
