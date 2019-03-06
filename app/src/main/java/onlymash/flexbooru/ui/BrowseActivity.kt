@@ -30,6 +30,7 @@ import android.os.Environment
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.core.app.ActivityCompat
@@ -37,6 +38,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -225,16 +227,31 @@ class BrowseActivity : AppCompatActivity() {
     private val sharedElementCallback = object : SharedElementCallback() {
         override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
             val pos = pager_browse.currentItem
-            val sharedElement = pager_browse.findViewWithTag<View>(pos)?.findViewById<View>(R.id.photo_view)
-            if (sharedElement == null) {
+            val view = pager_browse.findViewWithTag<ViewGroup>(pos)
+            if (view == null || view.childCount == 0) {
                 canTransition = false
                 return
-            } else canTransition = true
-            val name = sharedElement.transitionName
-            names.clear()
-            names.add(name)
-            sharedElements.clear()
-            sharedElements[name] = sharedElement
+            } else {
+                var sharedElement: View? = null
+                view.forEach {
+                    if (view.transitionName != null) {
+                        sharedElement = it
+                        return@forEach
+                    }
+                }
+                if (sharedElement != null) {
+                    canTransition = true
+                    sharedElement!!.visibility = View.VISIBLE
+                    val name = sharedElement!!.transitionName
+                    names.clear()
+                    names.add(name)
+                    sharedElements.clear()
+                    sharedElements[name] = sharedElement!!
+                } else {
+                    canTransition = false
+                    return
+                }
+            }
         }
     }
 

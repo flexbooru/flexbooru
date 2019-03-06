@@ -67,7 +67,7 @@ fun String.isStillImage(): Boolean {
 }
 fun String.isGifImage(): Boolean {
     val ext = substring(lastIndexOf(".") + 1)
-    return ext == "gif" || ext == "webp"
+    return ext == "gif"
 }
 fun String.isImageNotWebp(): Boolean {
     val ext = substring(lastIndexOf(".") + 1)

@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
@@ -32,6 +33,7 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.util.isGifImage
 import onlymash.flexbooru.util.isImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 
@@ -65,16 +67,16 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
 
     @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view = LayoutInflater.from(container.context).inflate(R.layout.item_post_pager, null)
-        view.tag = position
-        val photoView: PhotoView = view.findViewById(R.id.photo_view)
-        photoView.setOnViewTapListener { _, _, _ ->
-            photoViewListener?.onClickPhotoView()
+        val layout = DismissFrameLayout(container.context).apply {
+            setDismissListener(onDismissListener)
+            layoutParams = ViewPager.LayoutParams()
+            tag = position
         }
+        var tranName = ""
         var previewUrl = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
-                photoView.transitionName = container.context.getString(R.string.post_transition_name, postsDan[position].id)
+                tranName = container.context.getString(R.string.post_transition_name, postsDan[position].id)
                 previewUrl = postsDan[position].preview_file_url!!
                 when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsDan[position].getSampleUrl()
@@ -83,7 +85,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                photoView.transitionName = container.context.getString(R.string.post_transition_name, postsMoe[position].id)
+                tranName = container.context.getString(R.string.post_transition_name, postsMoe[position].id)
                 previewUrl = postsMoe[position].preview_url
                 when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsMoe[position].getSampleUrl()
@@ -96,29 +98,42 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         if (!url.isEmpty()) {
             when {
                 url.isImage() -> {
+                    layout.removeAllViewsInLayout()
+                    val photoView = PhotoView(container.context).apply {
+                        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        scaleType = ImageView.ScaleType.FIT_CENTER
+                        transitionName = tranName
+                        setOnViewTapListener { _, _, _ ->
+                            photoViewListener?.onClickPhotoView()
+                        }
+                    }
+                    layout.addView(photoView)
                     glideRequests.load(previewUrl)
                         .into(object : CustomTarget<Drawable>() {
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                            }
+                            override fun onLoadCleared(placeholder: Drawable?) {}
                             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                                glideRequests
-                                    .load(url)
-                                    .placeholder(resource)
-                                    .into(photoView)
+                                if (url.isGifImage()) {
+                                    glideRequests
+                                        .asGif()
+                                        .load(url)
+                                        .placeholder(resource)
+                                        .into(photoView)
+                                } else {
+                                    glideRequests
+                                        .load(url)
+                                        .placeholder(resource)
+                                        .into(photoView)
+                                }
                             }
                         })
                 }
                 else -> {
-                    val playerView: PlayerView = view.findViewById(R.id.player_view)
-                    playerView.visibility = View.VISIBLE
+                    val playerView = LayoutInflater.from(container.context).inflate(R.layout.exoplayer, null) as PlayerView
                     playerView.tag = String.format("player_%d", position)
+                    playerView.transitionName = tranName
+                    layout.addView(playerView)
                 }
             }
-        }
-        val layout = DismissFrameLayout(container.context).apply {
-            setDismissListener(onDismissListener)
-            layoutParams = ViewPager.LayoutParams()
-            addView(view)
         }
         container.addView(layout)
         return layout
