@@ -15,11 +15,11 @@
 
 package onlymash.flexbooru.util
 
+import com.crashlytics.android.Crashlytics
 import java.io.*
 
 object FileUtil {
-    @Throws(IOException::class)
-    fun copy(src: File, dst: File) {
+    fun copy(src: File, dst: File): Boolean = try {
         FileInputStream(src).use { inStream ->
             FileOutputStream(dst).use { outStream ->
                 val inChannel = inStream.channel
@@ -29,5 +29,9 @@ object FileUtil {
                 outChannel.close()
             }
         }
+        true
+    } catch (ex: IOException) {
+        Crashlytics.log(ex.message)
+        false
     }
 }

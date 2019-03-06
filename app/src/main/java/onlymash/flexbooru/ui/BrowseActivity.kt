@@ -50,10 +50,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.*
 import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
@@ -601,7 +598,8 @@ class BrowseActivity : AppCompatActivity() {
                     if (file.exists()) file.delete()
                     val handler = Handler()
                     Thread {
-                        FileUtil.copy(resource, file)
+                        if (!FileUtil.copy(resource, file)) return@Thread
+                        App.app.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
                         handler.post {
                             when (action) {
                                 ACTION_SAVE -> Toast.makeText(this@BrowseActivity,
