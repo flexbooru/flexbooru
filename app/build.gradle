@@ -50,7 +50,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode verCode
-        versionName "0.2.4"
+        versionName "0.2.5"
         versionNameSuffix verNameSuffix
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
