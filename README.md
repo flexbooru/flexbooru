@@ -9,4 +9,4 @@ A booru client for Android, support [Danbooru](https://github.com/r888888888/dan
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Screenshot
-<img src="art/screenshot_01.png" height="300" hspace="20"> <img src="art/screenshot_02.png" height="300" hspace="20"> <img src="art/screenshot_03.png" height="300" hspace="20">
+<img src="art/screenshot_01.jpg" height="300" hspace="20"> <img src="art/screenshot_02.jpg" height="300" hspace="20"> <img src="art/screenshot_03.jpg" height="300" hspace="20">
