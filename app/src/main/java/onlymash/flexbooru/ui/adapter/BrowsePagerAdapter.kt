@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.core.net.toUri
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
@@ -37,7 +38,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
@@ -140,7 +140,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             override fun onLoadCleared(placeholder: Drawable?) {}
                             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                                 layout.removeView(progressBar)
-                                stillView.setImage(ImageSource.uri(FlexProvider.getUriFromFile(container.context, resource)))
+                                stillView.setImage(ImageSource.uri(resource.toUri()))
                             }
                         })
                 }

@@ -242,7 +242,6 @@ class BrowseActivity : AppCompatActivity() {
             } else {
                 canTransition = true
                 val name = sharedElement.transitionName
-                Log.w(TAG, "transitionName: $name")
                 names.clear()
                 names.add(name)
                 sharedElements.clear()
