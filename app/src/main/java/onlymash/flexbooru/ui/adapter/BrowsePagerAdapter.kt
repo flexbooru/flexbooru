@@ -16,26 +16,35 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.util.isGifImage
-import onlymash.flexbooru.util.isImage
+import onlymash.flexbooru.util.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout
+import java.io.File
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val onDismissListener: DismissFrameLayout.OnDismissListener,
@@ -106,9 +115,38 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         }
         if (!url.isEmpty()) {
             when {
-                url.isImage() -> {
+                url.isStillImage() -> {
                     layout.removeAllViewsInLayout()
-                    val photoView = PhotoView(container.context).apply {
+                    val stillView = SubsamplingScaleImageView(container.context).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT)
+                        transitionName = tranName
+                        setOnClickListener {
+                            photoViewListener?.onClickPhotoView()
+                        }
+                    }
+                    val progressBar = ProgressBar(container.context).apply {
+                        layoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            Gravity.CENTER)
+                        indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
+                    }
+                    layout.addView(stillView)
+                    layout.addView(progressBar)
+                    glideRequests.downloadOnly().load(url)
+                        .into(object : CustomTarget<File>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                            override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                                layout.removeView(progressBar)
+                                stillView.setImage(ImageSource.uri(FlexProvider.getUriFromFile(container.context, resource)))
+                            }
+                        })
+                }
+                url.isGifImage() -> {
+                    layout.removeAllViewsInLayout()
+                    val gifView = PhotoView(container.context).apply {
                         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                         scaleType = ImageView.ScaleType.FIT_CENTER
                         transitionName = tranName
@@ -116,23 +154,16 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             photoViewListener?.onClickPhotoView()
                         }
                     }
-                    layout.addView(photoView)
+                    layout.addView(gifView)
                     glideRequests.load(previewUrl)
                         .into(object : CustomTarget<Drawable>() {
                             override fun onLoadCleared(placeholder: Drawable?) {}
                             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                                if (url.isGifImage()) {
-                                    glideRequests
-                                        .asGif()
-                                        .load(url)
-                                        .placeholder(resource)
-                                        .into(photoView)
-                                } else {
-                                    glideRequests
-                                        .load(url)
-                                        .placeholder(resource)
-                                        .into(photoView)
-                                }
+                                glideRequests
+                                    .asGif()
+                                    .load(url)
+                                    .placeholder(resource)
+                                    .into(gifView)
                             }
                         })
                 }
