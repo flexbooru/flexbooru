@@ -23,10 +23,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -132,11 +132,13 @@ class PopularFragment : ListFragment() {
             when (post) {
                 is PostDan -> {
                     currentPostId = post.id
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+                    (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
                 }
                 is PostMoe -> {
                     currentPostId = post.id
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+                    (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
                 }
             }
         }
@@ -305,7 +307,6 @@ class PopularFragment : ListFragment() {
     }
 
     private var currentPostId = 0
-
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
@@ -315,20 +316,8 @@ class PopularFragment : ListFragment() {
             if (pos >= 0 && keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
                 list.smoothScrollToPosition(pos + 1)
-            }
-        }
-    }
-
-    private val sharedElementCallback = object : SharedElementCallback() {
-        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
-            if (currentPostId > 0) {
-                val view = list.findViewWithTag<View>(currentPostId) ?: return
-                val newSharedElement = view.findViewById<View>(R.id.preview) ?: return
-                val newTransitionName = newSharedElement.transitionName ?: return
-                names.clear()
-                names.add(newTransitionName)
-                sharedElements.clear()
-                sharedElements[newTransitionName] = newSharedElement
+                (requireActivity() as MainActivity).sharedElement =
+                    list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
             }
         }
     }
@@ -385,7 +374,6 @@ class PopularFragment : ListFragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -398,9 +386,7 @@ class PopularFragment : ListFragment() {
                 safe_mode = Settings.instance().safeMode
             )
         }
-        val activity = requireActivity() as MainActivity
-        activity.setPopularExitSharedElementCallback(sharedElementCallback)
-        activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
+        requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -429,6 +415,7 @@ class PopularFragment : ListFragment() {
             glide = glide,
             listener = itemListener,
             showInfoBar = Settings.instance().showInfoBar,
+            pageType = Constants.PAGE_TYPE_POPULAR,
             retryCallback = {
                 when (type) {
                     Constants.TYPE_DANBOORU -> popularViewModel.retryDan()

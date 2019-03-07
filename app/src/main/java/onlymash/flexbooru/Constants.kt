@@ -62,4 +62,8 @@ object Constants {
     const val ACTIVE_BOORU_UID_KEY = "active_booru_uid"
 
     const val HASH_SALT_CONTAINED = "your-password"
+
+    const val PAGE_TYPE_KEY = "page_type"
+    const val PAGE_TYPE_POST = 0
+    const val PAGE_TYPE_POPULAR = 1
 }

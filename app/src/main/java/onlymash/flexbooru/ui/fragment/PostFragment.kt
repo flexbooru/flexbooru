@@ -24,7 +24,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -165,16 +164,27 @@ class PostFragment : ListFragment() {
 
     private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
 
+    private fun setSharedElement() {
+        val activity = requireActivity()
+        if (activity is MainActivity) {
+            activity.sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
+        } else if (activity is SearchActivity) {
+            activity.sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
+        }
+    }
+
     private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
         override fun onClickItem(post: Any?, view: View) {
             when (post) {
                 is PostDan -> {
                     currentPostId = post.id
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+                    setSharedElement()
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
                 }
                 is PostMoe -> {
                     currentPostId = post.id
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword)
+                    setSharedElement()
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
                 }
             }
         }
@@ -255,20 +265,7 @@ class PostFragment : ListFragment() {
             if (pos >= 0 && search.keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
                 list.smoothScrollToPosition(pos + 1)
-            }
-        }
-    }
-
-    private val sharedElementCallback = object : SharedElementCallback() {
-        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
-            if (currentPostId > 0) {
-                val view = list.findViewWithTag<View>(currentPostId) ?: return
-                val newSharedElement = view.findViewById<View>(R.id.preview) ?: return
-                val newTransitionName = newSharedElement.transitionName ?: return
-                names.clear()
-                names.add(newTransitionName)
-                sharedElements.clear()
-                sharedElements[newTransitionName] = newSharedElement
+                setSharedElement()
             }
         }
     }
@@ -337,7 +334,6 @@ class PostFragment : ListFragment() {
                         auth_key = it.getString(Constants.AUTH_KEY, ""),
                         limit = Settings.instance().pageSize)
                 }
-                activity.setPostExitSharedElementCallback(sharedElementCallback)
             }
             is SearchActivity -> {
                 val uid = Settings.instance().activeBooruUid
@@ -360,7 +356,6 @@ class PostFragment : ListFragment() {
                 } else {
                     activity.finish()
                 }
-                activity.setExitSharedElementCallback(sharedElementCallback)
             }
             else -> activity.finish()
         }
@@ -374,11 +369,6 @@ class PostFragment : ListFragment() {
         }
         init()
         UserManager.listeners.add(userListener)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().setExitSharedElementCallback(sharedElementCallback)
     }
 
     private fun init() {
@@ -398,11 +388,11 @@ class PostFragment : ListFragment() {
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
                 setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
             }
-
         postAdapter = PostAdapter(
             glide = glide,
             listener = itemListener,
             showInfoBar = Settings.instance().showInfoBar,
+            pageType = Constants.PAGE_TYPE_POST,
             retryCallback = {
                 when (type) {
                     Constants.TYPE_DANBOORU -> postViewModel.retryDan()

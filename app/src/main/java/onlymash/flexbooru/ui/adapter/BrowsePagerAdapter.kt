@@ -38,7 +38,8 @@ import onlymash.flexbooru.util.isImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests,
-                         private val onDismissListener: DismissFrameLayout.OnDismissListener): PagerAdapter() {
+                         private val onDismissListener: DismissFrameLayout.OnDismissListener,
+                         private val pageType: Int): PagerAdapter() {
 
     private var type = -1
     private val size = Settings.instance().browseSize
@@ -76,7 +77,11 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         var previewUrl = ""
         val url = when (type) {
             Constants.TYPE_DANBOORU -> {
-                tranName = container.context.getString(R.string.post_transition_name, postsDan[position].id)
+                tranName = when (pageType) {
+                    Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsDan[position].id)
+                    Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsDan[position].id)
+                    else -> throw IllegalStateException("unknown post type $pageType")
+                }
                 previewUrl = postsDan[position].preview_file_url!!
                 when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsDan[position].getSampleUrl()
@@ -85,7 +90,11 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                tranName = container.context.getString(R.string.post_transition_name, postsMoe[position].id)
+                tranName = when (pageType) {
+                    Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsMoe[position].id)
+                    Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsMoe[position].id)
+                    else -> throw IllegalStateException("unknown post type $pageType")
+                }
                 previewUrl = postsMoe[position].preview_url
                 when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsMoe[position].getSampleUrl()

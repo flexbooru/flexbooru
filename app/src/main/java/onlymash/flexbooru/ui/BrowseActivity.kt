@@ -38,7 +38,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -85,17 +84,29 @@ class BrowseActivity : AppCompatActivity() {
         private const val ACTION_SAVE_SET_AS = 2
         private const val ACTION_SAVE_SEND = 3
         private const val ALPHA_MAX = 0xFF
-        fun startActivity(activity: Activity, view: View, postId: Int, keyword: String) {
+        fun startActivity(activity: Activity,
+                          view: View,
+                          postId: Int,
+                          keyword: String,
+                          pageType: Int) {
             val intent = Intent(activity, BrowseActivity::class.java)
                 .apply {
                     putExtra(Constants.ID_KEY, postId)
                     putExtra(Constants.KEYWORD_KEY, keyword)
+                    putExtra(Constants.PAGE_TYPE_KEY, pageType)
                 }
+            val tranName = when (pageType) {
+                Constants.PAGE_TYPE_POST -> activity.getString(R.string.post_transition_name, postId)
+                Constants.PAGE_TYPE_POPULAR -> activity.getString(R.string.post_popular_transition_name, postId)
+                else -> throw IllegalStateException("unknown post type $pageType")
+            }
             val options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity, view, String.format(activity.getString(R.string.post_transition_name), postId))
+                .makeSceneTransitionAnimation(activity, view, tranName)
             activity.startActivity(intent, options.toBundle())
         }
     }
+    private var pageType = Constants.PAGE_TYPE_POST
+
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
@@ -224,30 +235,18 @@ class BrowseActivity : AppCompatActivity() {
     private val sharedElementCallback = object : SharedElementCallback() {
         override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
             val pos = pager_browse.currentItem
-            val view = pager_browse.findViewWithTag<ViewGroup>(pos)
-            if (view == null || view.childCount == 0) {
+            val sharedElement = pager_browse.findViewWithTag<ViewGroup>(pos)?.getChildAt(0)
+            if (sharedElement == null) {
                 canTransition = false
                 return
             } else {
-                var sharedElement: View? = null
-                view.forEach {
-                    if (view.transitionName != null) {
-                        sharedElement = it
-                        return@forEach
-                    }
-                }
-                if (sharedElement != null) {
-                    canTransition = true
-                    sharedElement!!.visibility = View.VISIBLE
-                    val name = sharedElement!!.transitionName
-                    names.clear()
-                    names.add(name)
-                    sharedElements.clear()
-                    sharedElements[name] = sharedElement!!
-                } else {
-                    canTransition = false
-                    return
-                }
+                canTransition = true
+                val name = sharedElement.transitionName
+                Log.w(TAG, "transitionName: $name")
+                names.clear()
+                names.add(name)
+                sharedElements.clear()
+                sharedElements[name] = sharedElement
             }
         }
     }
@@ -323,6 +322,7 @@ class BrowseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
+        pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
         colorDrawable = ColorDrawable(resources.getColor(R.color.black, theme))
         pager_browse.background = colorDrawable
         postponeEnterTransition()
@@ -413,7 +413,7 @@ class BrowseActivity : AppCompatActivity() {
         user?.let {
             initFavViewModel()
         }
-        pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener)
+        pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener, pageType)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         postLoader.setPostLoadedListener(postLoadedListener)

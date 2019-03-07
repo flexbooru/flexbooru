@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
@@ -41,6 +42,7 @@ class PostViewHolder(itemView: View,
         }
     }
 
+    private val previewCard: CardView = itemView.findViewById(R.id.preview_card)
     private val preview: ImageView = itemView.findViewById(R.id.preview)
     private val infoContainer: LinearLayout = itemView.findViewById(R.id.info_container)
     private val postId: TextView = itemView.findViewById(R.id.post_id)
@@ -63,11 +65,15 @@ class PostViewHolder(itemView: View,
         }
     }
 
-    fun bind(post: Any?) {
+    fun bind(post: Any?, pageType: Int) {
         when (post) {
             is PostDan -> {
                 this.post = post
-                preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
+                previewCard.tag = post.id
+                preview.transitionName = when (pageType) {
+                    Constants.PAGE_TYPE_POST -> preview.context.getString(R.string.post_transition_name, post.id)
+                    else -> preview.context.getString(R.string.post_popular_transition_name, post.id)
+                }
                 postId.text = String.format("#%d", post.id)
                 postSize.text = String.format("%d x %d", post.image_width, post.image_height)
                 val placeholderDrawable = when (post.rating) {
@@ -97,7 +103,11 @@ class PostViewHolder(itemView: View,
             }
             is PostMoe -> {
                 this.post = post
-                preview.transitionName = String.format(preview.context.getString(R.string.post_transition_name), post.id)
+                previewCard.tag = post.id
+                preview.transitionName = when (pageType) {
+                    Constants.PAGE_TYPE_POST -> preview.context.getString(R.string.post_transition_name, post.id)
+                    else -> preview.context.getString(R.string.post_popular_transition_name, post.id)
+                }
                 postId.text = String.format("#%d", post.id)
                 postSize.text = String.format("%d x %d", post.width, post.height)
                 val placeholderDrawable = when (post.rating) {

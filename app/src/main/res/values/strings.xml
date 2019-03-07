@@ -57,6 +57,7 @@
     <string name="msg_file_save_success">SUCCESS: File save as %s</string>
 
     <string name="post_transition_name" translatable="false">post_img_%d</string>
+    <string name="post_popular_transition_name" translatable="false">post_popular_img_%d</string>
     <string name="post_expand_tag_filter">Expand tag filter</string>
 
     <string name="post_add_search_to_muzei">` %s ` have been saved to Muzei.</string>

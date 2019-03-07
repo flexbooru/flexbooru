@@ -194,6 +194,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 startActivity(Intent(this, BooruActivity::class.java))
             }
         }
+        setExitSharedElementCallback(sharedElementCallback)
         if(!applicationContext.packageName.contains("play")) {
             checkForUpdate()
         }
@@ -376,6 +377,22 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
+    internal var sharedElement: View? = null
+
+    private val sharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+            if (names == null || sharedElements == null) return
+            sharedElement?.let { view ->
+                view.transitionName?.let { name ->
+                    names.clear()
+                    names.add(name)
+                    sharedElements.clear()
+                    sharedElements[name] = view
+                }
+            }
+        }
+    }
+
     private val pageChangeListener =
         object : ViewPager.OnPageChangeListener {
 
@@ -390,13 +407,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
-                        setExitSharedElementCallback(postExitSharedElementCallback)
                         if (navigation.selectedItemId != R.id.navigation_posts) {
                             navigation.selectedItemId = R.id.navigation_posts
                         }
                     }
                     1 -> {
-                        setExitSharedElementCallback(popularExitSharedElementCallback)
                         if (navigation.selectedItemId != R.id.navigation_popular) {
                             navigation.selectedItemId = R.id.navigation_popular
                         }
@@ -419,19 +434,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
             }
         }
-
-    private var postExitSharedElementCallback: SharedElementCallback? = null
-
-    fun setPostExitSharedElementCallback(callback: SharedElementCallback?) {
-        postExitSharedElementCallback = callback
-        setExitSharedElementCallback(postExitSharedElementCallback)
-    }
-
-    private var popularExitSharedElementCallback: SharedElementCallback? = null
-
-    fun setPopularExitSharedElementCallback(callback: SharedElementCallback?) {
-        popularExitSharedElementCallback = callback
-    }
 
     private fun onNavPosition(position: Int) {
         if (pager_container.currentItem != position) {

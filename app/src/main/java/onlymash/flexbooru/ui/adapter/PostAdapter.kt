@@ -25,6 +25,7 @@ import onlymash.flexbooru.ui.viewholder.PostViewHolder
 class PostAdapter(private val glide: GlideRequests,
                   private val listener: PostViewHolder.ItemListener,
                   private val showInfoBar: Boolean,
+                  private val pageType: Int,
                   retryCallback: () -> Unit
 ) : BaseStatePagedListAdapter<Any, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
 
@@ -47,7 +48,7 @@ class PostAdapter(private val glide: GlideRequests,
     override fun onBindDataViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PostViewHolder) {
             holder.apply {
-                bind(getItem(position))
+                bind(getItem(position), pageType)
                 setItemListener(listener)
             }
         }

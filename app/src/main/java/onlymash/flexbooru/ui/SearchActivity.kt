@@ -18,7 +18,9 @@ package onlymash.flexbooru.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.SharedElementCallback
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 
@@ -38,5 +40,22 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         keyword = intent?.extras?.getString(Constants.KEYWORD_KEY) ?: ""
         setContentView(R.layout.activity_search)
+        setExitSharedElementCallback(sharedElementCallback)
+    }
+
+    internal var sharedElement: View? = null
+
+    private val sharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+            if (names == null || sharedElements == null) return
+            sharedElement?.let { view ->
+                view.transitionName?.let { name ->
+                    names.clear()
+                    names.add(name)
+                    sharedElements.clear()
+                    sharedElements[name] = view
+                }
+            }
+        }
     }
 }
