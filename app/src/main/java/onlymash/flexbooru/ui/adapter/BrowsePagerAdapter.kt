@@ -36,12 +36,16 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
+import com.squareup.picasso.Picasso
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.util.image.CustomDecoder
+import onlymash.flexbooru.util.image.CustomRegionDecoder
 import onlymash.flexbooru.util.isGifImage
 import onlymash.flexbooru.util.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout
@@ -126,6 +130,9 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                         setOnClickListener {
                             photoViewListener?.onClickPhotoView()
                         }
+                        setExecutor(ServiceLocator.instance().getDiskIOExecutor())
+                        setBitmapDecoderFactory { CustomDecoder(Picasso.Builder(context).build()) }
+                        setRegionDecoderFactory { CustomRegionDecoder() }
                     }
                     val progressBar = ProgressBar(container.context).apply {
                         layoutParams = FrameLayout.LayoutParams(
