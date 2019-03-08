@@ -16,12 +16,14 @@
 package onlymash.flexbooru.content.muzei
 
 import android.content.Intent
+import android.util.Log
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.util.okhttp.OkHttp3Downloader
 import java.io.IOException
 import java.io.InputStream
 
@@ -64,15 +66,19 @@ class FlexArtProvider : MuzeiArtProvider() {
 
     @Throws(IOException::class)
     override fun openFile(artwork: Artwork): InputStream {
-        artwork.persistentUri?.takeIf {
-            it.scheme == "http" || it.scheme == "https"
-        }?.run {
-            val response = DownloadUtil.create().trackDownload(toString()).execute()
-            return if(response.isSuccessful) {
+        val uri = artwork.persistentUri
+        val context = context
+        return if (context != null && uri != null && (uri.scheme == "http" || uri.scheme == "https")) {
+            val downloader = OkHttp3Downloader(context)
+            val response = downloader.load(uri)
+            if(response.isSuccessful) {
                 response.body()?.byteStream() ?: throw IOException("Unable to open stream for $this")
             } else {
+                downloader.shutdown()
                 super.openFile(artwork)
             }
-        } ?: return super.openFile(artwork)
+        } else {
+            super.openFile(artwork)
+        }
     }
 }
