@@ -35,6 +35,9 @@ interface PostDanDao {
     @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPostsRaw(host: String, keyword: String) : MutableList<PostDan>
 
+    @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC LIMIT 1")
+    fun getFirstPostRaw(host: String, keyword: String) : PostDan?
+
     @Query("SELECT * FROM posts_danbooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPostsLiveData(host: String, keyword: String) : LiveData<MutableList<PostDan>>
 

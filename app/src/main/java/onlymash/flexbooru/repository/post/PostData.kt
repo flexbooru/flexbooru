@@ -160,8 +160,17 @@ class PostData(
                 override fun onResponse(call: Call<MutableList<PostDan>>, response: Response<MutableList<PostDan>>) {
                     ioExecutor.execute {
                         db.runInTransaction {
+                            val posts = response.body()
+                            if (posts.isNullOrEmpty()) {
+                                db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
+                                return@runInTransaction
+                            }
+                            val first = db.postDanDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
+                            if (first != null && first.id >= posts[0].id) {
+                                return@runInTransaction
+                            }
                             db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
-                            insertDanbooruResultIntoDb(search, response.body())
+                            insertDanbooruResultIntoDb(search, posts)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)
@@ -185,8 +194,17 @@ class PostData(
                 override fun onResponse(call: Call<MutableList<PostMoe>>, response: Response<MutableList<PostMoe>>) {
                     ioExecutor.execute {
                         db.runInTransaction {
+                            val posts = response.body()
+                            if (posts.isNullOrEmpty()) {
+                                db.postMoeDao().deletePosts(host = search.host, keyword = search.keyword)
+                                return@runInTransaction
+                            }
+                            val first = db.postMoeDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
+                            if (first != null && first.id >= posts[0].id) {
+                                return@runInTransaction
+                            }
                             db.postMoeDao().deletePosts(search.host, search.keyword)
-                            insertMoebooruResultIntoDb(search, response.body())
+                            insertMoebooruResultIntoDb(search, posts)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)

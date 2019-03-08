@@ -35,6 +35,9 @@ interface PostMoeDao {
     @Query("SELECT * FROM posts_moebooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPostsRaw(host: String, keyword: String) : MutableList<PostMoe>
 
+    @Query("SELECT * FROM posts_moebooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC LIMIT 1")
+    fun getFirstPostRaw(host: String, keyword: String) : PostMoe?
+
     @Query("SELECT * FROM posts_moebooru WHERE host = :host AND keyword = :keyword ORDER BY indexInResponse ASC")
     fun getPostsLiveData(host: String, keyword: String) : LiveData<MutableList<PostMoe>>
 
