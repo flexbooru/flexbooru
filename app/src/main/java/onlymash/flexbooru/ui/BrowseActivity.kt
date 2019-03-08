@@ -84,6 +84,7 @@ class BrowseActivity : AppCompatActivity() {
         private const val ACTION_SAVE_SET_AS = 2
         private const val ACTION_SAVE_SEND = 3
         private const val ALPHA_MAX = 0xFF
+        private const val ALPHA_MIN = 0x00
         fun startActivity(activity: Activity,
                           view: View,
                           postId: Int,
@@ -253,8 +254,12 @@ class BrowseActivity : AppCompatActivity() {
     private lateinit var colorDrawable: ColorDrawable
 
     private val onDismissListener = object : DismissFrameLayout.OnDismissListener {
-        override fun onScaleProgress(scale: Float) {
-            colorDrawable.alpha = Math.min(ALPHA_MAX, colorDrawable.alpha - (scale * ALPHA_MAX).toInt())
+        override fun onStart() {
+            colorDrawable.alpha = ALPHA_MIN
+        }
+
+        override fun onProgress(progress: Float) {
+
         }
 
         override fun onDismiss() {
@@ -264,7 +269,6 @@ class BrowseActivity : AppCompatActivity() {
         override fun onCancel() {
             colorDrawable.alpha = ALPHA_MAX
         }
-
     }
 
     private lateinit var voteRepository: VoteRepository
