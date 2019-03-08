@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ import onlymash.flexbooru.util.isGifImage
 import onlymash.flexbooru.util.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
+import java.lang.Exception
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val onDismissListener: DismissFrameLayout.OnDismissListener,
@@ -116,7 +118,6 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         if (!url.isEmpty()) {
             when {
                 url.isStillImage() -> {
-                    layout.removeAllViewsInLayout()
                     val stillView = SubsamplingScaleImageView(container.context).apply {
                         layoutParams = ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -133,13 +134,25 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             Gravity.CENTER)
                         indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
                     }
-                    layout.addView(stillView)
-                    layout.addView(progressBar)
+                    layout.apply {
+                        removeAllViewsInLayout()
+                        addView(stillView, 0)
+                        addView(progressBar, 1)
+                    }
+                    stillView.setOnImageEventListener(object : SubsamplingScaleImageView.OnImageEventListener {
+                        override fun onImageLoaded() {
+                            layout.removeView(progressBar)
+                        }
+                        override fun onReady() {}
+                        override fun onTileLoadError(e: Exception?) {}
+                        override fun onPreviewReleased() {}
+                        override fun onImageLoadError(e: Exception?) {}
+                        override fun onPreviewLoadError(e: Exception?) {}
+                    })
                     glideRequests.downloadOnly().load(url)
                         .into(object : CustomTarget<File>() {
                             override fun onLoadCleared(placeholder: Drawable?) {}
                             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                                layout.removeView(progressBar)
                                 stillView.setImage(ImageSource.uri(resource.toUri()))
                             }
                         })

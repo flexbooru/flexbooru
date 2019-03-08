@@ -78,7 +78,7 @@ class PostFragment : ListFragment() {
          * @return A new instance of fragment PostFragment.
          */
         @JvmStatic
-        fun newInstance(keyword: String, booru: Booru, user: User?) =
+        fun newInstance(keyword: String = "", booru: Booru, user: User?) =
             PostFragment().apply {
                 arguments = when (booru.type) {
                     Constants.TYPE_DANBOORU -> Bundle().apply {
