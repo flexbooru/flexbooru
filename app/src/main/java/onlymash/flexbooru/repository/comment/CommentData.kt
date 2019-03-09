@@ -15,19 +15,18 @@
 
 package onlymash.flexbooru.repository.comment
 
-import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.CommentAction
-import onlymash.flexbooru.entity.CommentDan
-import onlymash.flexbooru.entity.CommentMoe
-import onlymash.flexbooru.entity.CommentResponse
+import onlymash.flexbooru.api.url.DanOneUrlHelper
+import onlymash.flexbooru.api.url.DanUrlHelper
+import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.repository.Listing
 import retrofit2.Call
 import retrofit2.Response
@@ -35,6 +34,7 @@ import java.util.concurrent.Executor
 
 //Comment data repository
 class CommentData(private val danbooruApi: DanbooruApi,
+                  private val danbooruOneApi: DanbooruOneApi,
                   private val moebooruApi: MoebooruApi,
                   private val networkExecutor: Executor
 ) : CommentRepository {
@@ -71,7 +71,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
     @MainThread
     override fun createDanComment(commentAction: CommentAction) {
         danbooruApi.createComment(
-            url = ApiUrlHelper.getDanCreateCommentUrl(commentAction),
+            url = DanUrlHelper.getCreateCommentUrl(commentAction),
             body = commentAction.body,
             anonymous = commentAction.anonymous,
             username = commentAction.username,
@@ -93,7 +93,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
     @MainThread
     override fun destroyDanComment(commentAction: CommentAction) {
         danbooruApi.deleteComment(
-            url = ApiUrlHelper.getDanDeleteCommentUrl(commentAction),
+            url = DanUrlHelper.getDeleteCommentUrl(commentAction),
             username = commentAction.username,
             apiKey = commentAction.auth_key
         )
@@ -137,7 +137,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
     @MainThread
     override fun createMoeComment(commentAction: CommentAction) {
         moebooruApi.createComment(
-            url = ApiUrlHelper.getMoeCreateCommentUrl(commentAction),
+            url = MoeUrlHelper.getCreateCommentUrl(commentAction),
             postId = commentAction.post_id,
             body = commentAction.body,
             anonymous = commentAction.anonymous,
@@ -160,7 +160,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
     @MainThread
     override fun destroyMoeComment(commentAction: CommentAction) {
         moebooruApi.destroyComment(
-            url = ApiUrlHelper.getMoeDestroyCommentUrl(commentAction),
+            url = MoeUrlHelper.getDestroyCommentUrl(commentAction),
             commentId = commentAction.comment_id,
             username = commentAction.username,
             passwordHash = commentAction.auth_key).enqueue(object : retrofit2.Callback<CommentResponse> {
@@ -175,5 +175,72 @@ class CommentData(private val danbooruApi: DanbooruApi,
                 }
             }
         })
+    }
+
+    @MainThread
+    override fun getDanOneComments(commentAction: CommentAction): Listing<CommentDanOne> {
+        val sourceFactory = CommentDanOneDataSourceFactory(
+            danbooruOneApi = danbooruOneApi,
+            commentAction = commentAction,
+            retryExecutor = networkExecutor
+        )
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = commentAction.limit,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState =
+            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun createDanOneComment(commentAction: CommentAction) {
+        danbooruOneApi.createComment(
+            url = DanOneUrlHelper.getCreateCommentUrl(commentAction),
+            body = commentAction.body,
+            anonymous = commentAction.anonymous,
+            username = commentAction.username,
+            passwordHash = commentAction.auth_key,
+            postId = commentAction.post_id).enqueue(object : retrofit2.Callback<CommentResponse> {
+            override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                commentState.postValue(CommentState.error(t.message ?: "unknown error"))
+            }
+            override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                if (response.isSuccessful) {
+                    commentState.postValue(CommentState.SUCCESS)
+                } else {
+                    commentState.postValue(CommentState.error("error code: ${response.code()}"))
+                }
+            }
+        })
+    }
+
+    @MainThread
+    override fun destroyDanOneComment(commentAction: CommentAction) {
+        danbooruOneApi.destroyComment(
+            url = DanOneUrlHelper.getDestroyCommentUrl(commentAction),
+            commentId = commentAction.comment_id,
+            username = commentAction.username,
+            passwordHash = commentAction.auth_key)
+            .enqueue(object : retrofit2.Callback<CommentResponse> {
+                override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                    commentState.postValue(CommentState.error(t.message ?: "unknown error"))
+                }
+                override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                    if (response.isSuccessful) {
+                        commentState.postValue(CommentState.SUCCESS)
+                    } else {
+                        commentState.postValue(CommentState.error("error code: ${response.code()}"))
+                    }
+                }
+            })
     }
 }

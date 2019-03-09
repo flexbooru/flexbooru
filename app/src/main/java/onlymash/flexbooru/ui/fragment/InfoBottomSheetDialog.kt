@@ -24,14 +24,13 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
@@ -76,6 +75,16 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(SCORE_KEY, post.score)
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
+                    is PostDanOne -> Bundle().apply {
+                        putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
+                        putString(USER_NAME_KEY, post.author)
+                        putInt(USER_ID_KEY, post.creator_id)
+                        putInt(DATE_KEY, post.created_at.s.toInt())
+                        putString(SOURCE_KEY, post.source)
+                        putString(RATING_KEY, post.rating)
+                        putInt(SCORE_KEY, post.score)
+                        putInt(PARENT_KEY, post.parent_id ?: -1)
+                    }
                     else -> throw IllegalStateException("unknown post type")
                 }
             }
@@ -93,28 +102,28 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            bundle.apply {
-                type = getInt(POST_TYPE_KEY)
-                when (type) {
-                    Constants.TYPE_DANBOORU -> {
-                        name = getString(USER_NAME_KEY) ?: ""
-                        userId = getInt(USER_ID_KEY, -1)
-                        date = formatDate(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(getString(DATE_KEY)).time).toString()
-                        source = getString(SOURCE_KEY) ?: ""
-                        rating = getString(RATING_KEY) ?: ""
-                        score = getInt(SCORE_KEY, -1)
-                        parent = getInt(PARENT_KEY, -1)
-                    }
-                    Constants.TYPE_MOEBOORU -> {
-                        name = getString(USER_NAME_KEY) ?: ""
-                        userId = getInt(USER_ID_KEY, -1)
-                        date = formatDate(getInt(DATE_KEY) * 1000L).toString()
-                        source = getString(SOURCE_KEY) ?: ""
-                        rating = getString(RATING_KEY) ?: ""
-                        score = getInt(SCORE_KEY, -1)
-                        parent = getInt(PARENT_KEY, -1)
-                    }
+        val arg = arguments ?: throw RuntimeException("arg is null")
+        arg.apply {
+            type = getInt(POST_TYPE_KEY)
+            when (type) {
+                Constants.TYPE_DANBOORU -> {
+                    name = getString(USER_NAME_KEY) ?: ""
+                    userId = getInt(USER_ID_KEY, -1)
+                    date = formatDate(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(getString(DATE_KEY)).time).toString()
+                    source = getString(SOURCE_KEY) ?: ""
+                    rating = getString(RATING_KEY) ?: ""
+                    score = getInt(SCORE_KEY, -1)
+                    parent = getInt(PARENT_KEY, -1)
+                }
+                Constants.TYPE_MOEBOORU,
+                Constants.TYPE_DANBOORU_ONE -> {
+                    name = getString(USER_NAME_KEY) ?: ""
+                    userId = getInt(USER_ID_KEY, -1)
+                    date = formatDate(getInt(DATE_KEY) * 1000L).toString()
+                    source = getString(SOURCE_KEY) ?: ""
+                    rating = getString(RATING_KEY) ?: ""
+                    score = getInt(SCORE_KEY, -1)
+                    parent = getInt(PARENT_KEY, -1)
                 }
             }
         }

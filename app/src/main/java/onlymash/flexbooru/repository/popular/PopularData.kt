@@ -20,10 +20,12 @@ import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.SearchPopular
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
@@ -31,6 +33,7 @@ import java.util.concurrent.Executor
 //popular posts data source
 class PopularData(
     private val danbooruApi: DanbooruApi,
+    private val danbooruOneApi: DanbooruOneApi,
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,
     private val networkExecutor: Executor) : PopularRepository {
@@ -86,6 +89,25 @@ class PopularData(
             refresh = {
                 sourceFactory.sourceLiveData.value?.invalidate()
             },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getDanOnePopular(popular: SearchPopular): Listing<PostDanOne> {
+        val sourceFactory = PopularDanOneDataSourceFactory(danbooruOneApi, db, popular, networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = 20,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
             refreshState = refreshState
         )
     }

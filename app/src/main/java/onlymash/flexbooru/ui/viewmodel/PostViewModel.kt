@@ -23,21 +23,26 @@ import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.post.PostRepository
 
 class PostViewModel(private val repo: PostRepository): ViewModel() {
+
     private val searchData = MutableLiveData<Search>()
+    private val danOneRepoResult = map(searchData) { search ->
+        repo.getDanOnePosts(search)
+    }
+    val postsDanOne = switchMap(danOneRepoResult) { it.pagedList }!!
+    val networkStateDanOne = switchMap(danOneRepoResult) { it.networkState }!!
+    val refreshStateDanOne = switchMap(danOneRepoResult) { it.refreshState }!!
     private val danRepoResult = map(searchData) { search ->
         repo.getDanPosts(search)
     }
     val postsDan = switchMap(danRepoResult) { it.pagedList }!!
     val networkStateDan = switchMap(danRepoResult) { it.networkState }!!
     val refreshStateDan = switchMap(danRepoResult) { it.refreshState }!!
-
     private val moeRepoResult = map(searchData) { search ->
         repo.getMoePosts(search)
     }
     val postsMoe = switchMap(moeRepoResult) { it.pagedList }!!
     val networkStateMoe = switchMap(moeRepoResult) { it.networkState }!!
     val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }!!
-
     fun show(search: Search): Boolean {
         if (searchData.value == search) {
             return false
@@ -45,19 +50,21 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
         searchData.value = search
         return true
     }
-
+    fun refreshDanOne() {
+        danOneRepoResult.value?.refresh?.invoke()
+    }
     fun refreshDan() {
         danRepoResult.value?.refresh?.invoke()
     }
-
     fun refreshMoe() {
         moeRepoResult.value?.refresh?.invoke()
     }
-
+    fun retryDanOne() {
+        danOneRepoResult?.value?.retry?.invoke()
+    }
     fun retryDan() {
         danRepoResult?.value?.retry?.invoke()
     }
-
     fun retryMoe() {
         moeRepoResult?.value?.retry?.invoke()
     }

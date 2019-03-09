@@ -21,11 +21,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.url.DanOneUrlHelper
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
@@ -38,12 +42,27 @@ import java.util.concurrent.Executor
 //posts repo
 class PostData(
     private val db: FlexbooruDatabase,
+    private val danbooruOneApi: DanbooruOneApi,
     private val danbooruApi: DanbooruApi,
     private val moebooruApi: MoebooruApi,
     private val ioExecutor: Executor) : PostRepository {
 
+    private var danOneBoundaryCallback: PostDanOneBoundaryCallback? = null
     private var danBoundaryCallback: PostDanBoundaryCallback? = null
     private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
+
+    private fun insertDanbooruOneResultIntoDb(search: Search, body: MutableList<PostDanOne>?) {
+        body?.let { postsDanOne ->
+            val start = db.postDanOneDao().getNextIndex(host = search.host, keyword = search.keyword)
+            val items = postsDanOne.mapIndexed { index, post ->
+                post.host = search.host
+                post.keyword = search.keyword
+                post.indexInResponse = start + index
+                post
+            }
+            db.postDanOneDao().insert(items)
+        }
+    }
 
     private fun insertDanbooruResultIntoDb(search: Search, body: MutableList<PostDan>?) {
         body?.let { postsDan ->
@@ -75,6 +94,40 @@ class PostData(
             }
             db.postMoeDao().insert(items)
         }
+    }
+
+    @MainThread
+    override fun getDanOnePosts(search: Search): Listing<PostDanOne> {
+        danOneBoundaryCallback = PostDanOneBoundaryCallback(
+            danbooruOneApi = danbooruOneApi,
+            handleResponse = this::insertDanbooruOneResultIntoDb,
+            ioExecutor = ioExecutor,
+            search = search
+        )
+        val refreshTrigger = MutableLiveData<Unit>()
+        val refreshState = Transformations.switchMap(refreshTrigger) {
+            refreshDanbooruOne(search)
+        }
+        val livePagedList = db.postDanOneDao()
+            .getPosts(search.host, search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 100
+                ),
+                boundaryCallback = danOneBoundaryCallback)
+        return Listing(
+            pagedList = livePagedList,
+            networkState = danOneBoundaryCallback!!.networkState,
+            retry = {
+                danOneBoundaryCallback!!.helper.retryAllFailed()
+            },
+            refresh = {
+                refreshTrigger.value = null
+            },
+            refreshState = refreshState
+        )
     }
 
     @MainThread
@@ -147,11 +200,46 @@ class PostData(
     }
 
     @MainThread
+    private fun refreshDanbooruOne(search: Search): LiveData<NetworkState> {
+        danOneBoundaryCallback?.lastResponseSize = search.limit
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.value = NetworkState.LOADING
+        danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1)).enqueue(
+            object : Callback<MutableList<PostDanOne>> {
+                override fun onFailure(call: Call<MutableList<PostDanOne>>, t: Throwable) {
+                    networkState.value = NetworkState.error(t.message)
+                }
+                override fun onResponse(call: Call<MutableList<PostDanOne>>,
+                                        response: Response<MutableList<PostDanOne>>) {
+                    ioExecutor.execute {
+                        db.runInTransaction {
+                            val posts = response.body()
+                            if (posts.isNullOrEmpty()) {
+                                db.postDanOneDao().deletePosts(host = search.host, keyword = search.keyword)
+                                return@runInTransaction
+                            }
+                            val first = db.postDanOneDao()
+                                .getFirstPostRaw(host = search.host, keyword = search.keyword)
+                            if (first != null && first.id >= posts[0].id) {
+                                return@runInTransaction
+                            }
+                            db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
+                            insertDanbooruOneResultIntoDb(search, posts)
+                        }
+                    }
+                    networkState.postValue(NetworkState.LOADED)
+                }
+            }
+        )
+        return networkState
+    }
+
+    @MainThread
     private fun refreshDanbooru(search: Search): LiveData<NetworkState> {
         danBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        danbooruApi.getPosts(ApiUrlHelper.getDanUrl(search, 1)).enqueue(
+        danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1)).enqueue(
             object : Callback<MutableList<PostDan>> {
                 override fun onFailure(call: Call<MutableList<PostDan>>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)
@@ -185,7 +273,7 @@ class PostData(
         moeBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        moebooruApi.getPosts(ApiUrlHelper.getMoeUrl(search, 1)).enqueue(
+        moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1)).enqueue(
             object : Callback<MutableList<PostMoe>> {
                 override fun onFailure(call: Call<MutableList<PostMoe>>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)

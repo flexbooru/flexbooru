@@ -15,8 +15,8 @@
 
 package onlymash.flexbooru.repository.pool
 
-import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.PoolDan
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
@@ -30,7 +30,7 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
                         retryExecutor: Executor) : BasePageKeyedDataSource<Int, PoolDan>(retryExecutor) {
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PoolDan>) {
-        val request = danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = 1))
+        val request = danbooruApi.getPools(DanUrlHelper.getPoolUrl(search = search, page = 1))
         val scheme = search.scheme
         val host = search.host
         val keyword = search.keyword
@@ -51,7 +51,7 @@ class PoolDanDataSource(private val danbooruApi: DanbooruApi,
 
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, PoolDan>) {
         val page = params.key
-        danbooruApi.getPools(ApiUrlHelper.getDanPoolUrl(search = search, page = page))
+        danbooruApi.getPools(DanUrlHelper.getPoolUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<PoolDan>> {
                 override fun onFailure(call: Call<MutableList<PoolDan>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

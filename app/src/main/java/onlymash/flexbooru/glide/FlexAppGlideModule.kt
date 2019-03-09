@@ -16,6 +16,7 @@
 package onlymash.flexbooru.glide
 
 import android.content.Context
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
@@ -32,6 +33,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.util.UserAgent
 import java.io.InputStream
@@ -47,18 +49,20 @@ class FlexAppGlideModule : AppGlideModule() {
         val requestOptions = RequestOptions
             .formatOf(DecodeFormat.PREFER_ARGB_8888)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-
         builder.setDefaultRequestOptions(requestOptions)
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         super.registerComponents(context, glide, registry)
-        val interceptor = Interceptor { chain ->
-            val requests =  chain.request().newBuilder()
+        val interceptor = Interceptor {
+            val url = it.request().url()
+            val scheme = url.scheme()
+            val host = url.host()
+            it.proceed(it.request().newBuilder()
                 .removeHeader(Constants.USER_AGENT_KEY)
                 .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-                .build()
-            chain.proceed(requests)
+                .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
+                .build())
         }
         val client = OkHttpClient.Builder().apply {
             connectTimeout(15, TimeUnit.SECONDS)

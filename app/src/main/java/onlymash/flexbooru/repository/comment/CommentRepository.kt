@@ -18,10 +18,13 @@ package onlymash.flexbooru.repository.comment
 import androidx.lifecycle.MutableLiveData
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.entity.CommentDan
+import onlymash.flexbooru.entity.CommentDanOne
 import onlymash.flexbooru.entity.CommentMoe
 import onlymash.flexbooru.repository.Listing
 
 interface CommentRepository {
+    val commentState: MutableLiveData<CommentState>
+
     fun getMoeComments(commentAction: CommentAction): Listing<CommentMoe>
     fun createMoeComment(commentAction: CommentAction)
     fun destroyMoeComment(commentAction: CommentAction)
@@ -30,5 +33,7 @@ interface CommentRepository {
     fun createDanComment(commentAction: CommentAction)
     fun destroyDanComment(commentAction: CommentAction)
 
-    val commentState: MutableLiveData<CommentState>
+    fun getDanOneComments(commentAction: CommentAction): Listing<CommentDanOne>
+    fun createDanOneComment(commentAction: CommentAction)
+    fun destroyDanOneComment(commentAction: CommentAction)
 }

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.CommentDan
+import onlymash.flexbooru.entity.CommentDanOne
 import onlymash.flexbooru.entity.CommentMoe
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.glide.GlideRequests
@@ -150,6 +151,27 @@ class CommentViewHolder(itemView: View,
                 glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
                     .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                     .into(avatar)
+            }
+            is CommentDanOne -> {
+                creatorId = data.creator_id
+                creatorName = data.creator
+                postId = data.post_id
+                commentId = data.id
+
+                userName.text = data.creator
+                postIdView.text = String.format("Post %d", data.post_id)
+                commentDate.text = data.created_at
+                commentView.setComment(data.body)
+                if (user != null) {
+                    if (user.id == data.creator_id) {
+                        menuView.menu.clear()
+                        MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
+                    } else {
+                        menuView.menu.clear()
+                        MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
+                    }
+                    setMenuClickListener()
+                }
             }
         }
     }

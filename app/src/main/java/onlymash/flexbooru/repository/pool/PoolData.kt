@@ -20,8 +20,10 @@ import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.PoolDan
+import onlymash.flexbooru.entity.PoolDanOne
 import onlymash.flexbooru.entity.PoolMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
@@ -29,6 +31,7 @@ import java.util.concurrent.Executor
 
 //pools data source
 class PoolData(private val danbooruApi: DanbooruApi,
+               private val danbooruOneApi: DanbooruOneApi,
                private val moebooruApi: MoebooruApi,
                private val networkExecutor: Executor
 ) : PoolRepository {
@@ -83,6 +86,25 @@ class PoolData(private val danbooruApi: DanbooruApi,
             refresh = {
                 sourceFactory.sourceLiveData.value?.invalidate()
             },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getDanOnePools(search: Search): Listing<PoolDanOne> {
+        val sourceFactory = PoolDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi, search = search, retryExecutor = networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = PoolDanOneDataSource.PAGE_SIZE,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
             refreshState = refreshState
         )
     }

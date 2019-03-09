@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.repository.artist
 
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.SearchArtist
 import onlymash.flexbooru.entity.ArtistMoe
@@ -31,7 +31,7 @@ class ArtistMoeDataSource(private val moebooruApi: MoebooruApi,
                           private val search: SearchArtist,
                           retryExecutor: Executor) : BasePageKeyedDataSource<Int, ArtistMoe>(retryExecutor) {
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, ArtistMoe>) {
-        val request = moebooruApi.getArtists(ApiUrlHelper.getMoeArtistUrl(search = search, page = 1))
+        val request = moebooruApi.getArtists(MoeUrlHelper.getArtistUrl(search = search, page = 1))
         val scheme = search.scheme
         val host = search.host
         val response =  request.execute()
@@ -49,7 +49,7 @@ class ArtistMoeDataSource(private val moebooruApi: MoebooruApi,
 
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, ArtistMoe>) {
         val page = params.key
-        moebooruApi.getArtists(ApiUrlHelper.getMoeArtistUrl(search = search, page = page))
+        moebooruApi.getArtists(MoeUrlHelper.getArtistUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<ArtistMoe>> {
                 override fun onFailure(call: Call<MutableList<ArtistMoe>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

@@ -27,6 +27,7 @@ import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.PoolDan
+import onlymash.flexbooru.entity.PoolDanOne
 import onlymash.flexbooru.entity.PoolMoe
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
@@ -80,6 +81,10 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                     val keyword = String.format("pool:%d", (pool as PoolMoe).id)
                     itemListener?.onClickItem(keyword)
                 }
+                is PoolDanOne -> {
+                    val keyword = String.format("pool:%d", (pool as PoolDanOne).id)
+                    itemListener?.onClickItem(keyword)
+                }
             }
         }
         expandBottom.setOnClickListener {
@@ -98,6 +103,9 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                 }
                 is PoolMoe -> {
                     itemListener?.onClickUserAvatar((pool as PoolMoe).user_id, null)
+                }
+                is PoolDanOne -> {
+                    itemListener?.onClickUserAvatar((pool as PoolDanOne).user_id, null)
                 }
             }
         }
@@ -131,6 +139,11 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
                     }
                 }
                 poolDate.text = formatDate(sdf.parse(date).time)
+            }
+            is PoolDanOne -> {
+                poolName.text = data.name
+                poolIdCount.text = String.format(res.getString(R.string.pool_info_id_and_count), data.id, data.post_count)
+                poolDate.text = formatDate(data.updated_at.s * 1000L)
             }
         }
     }

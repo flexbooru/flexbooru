@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.repository.tag
 
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.SearchTag
 import onlymash.flexbooru.entity.TagMoe
@@ -33,7 +33,7 @@ class TagMoeDataSource(private val moebooruApi: MoebooruApi,
                        retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagMoe>(retryExecutor) {
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagMoe>) {
-        val request = moebooruApi.getTags(ApiUrlHelper.getMoeTagUrl(search = search, page = 1))
+        val request = moebooruApi.getTags(MoeUrlHelper.getTagUrl(search = search, page = 1))
         val scheme = search.scheme
         val host = search.host
         val response =  request.execute()
@@ -53,7 +53,7 @@ class TagMoeDataSource(private val moebooruApi: MoebooruApi,
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, TagMoe>) {
         networkState.postValue(NetworkState.LOADING)
         val page = params.key
-        moebooruApi.getTags(ApiUrlHelper.getMoeTagUrl(search = search, page = page))
+        moebooruApi.getTags(MoeUrlHelper.getTagUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<TagMoe>> {
                 override fun onFailure(call: Call<MutableList<TagMoe>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

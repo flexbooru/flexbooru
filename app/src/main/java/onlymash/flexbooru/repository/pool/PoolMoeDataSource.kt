@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.repository.pool
 
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.PoolMoe
 import onlymash.flexbooru.entity.Search
@@ -36,7 +36,7 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
         val host = search.host
         val keyword = search.keyword
         val response =
-            moebooruApi.getPools(ApiUrlHelper.getMoePoolUrl(search = search, page = 1)).execute()
+            moebooruApi.getPools(MoeUrlHelper.getPoolUrl(search = search, page = 1)).execute()
         val data = response.body() ?: mutableListOf()
         data.forEach {
             it.scheme = scheme
@@ -53,7 +53,7 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
 
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, PoolMoe>) {
         val page = params.key
-        moebooruApi.getPools(ApiUrlHelper.getMoePoolUrl(search = search, page = page))
+        moebooruApi.getPools(MoeUrlHelper.getPoolUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<PoolMoe>> {
                 override fun onFailure(call: Call<MutableList<PoolMoe>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.ArtistDan
+import onlymash.flexbooru.entity.ArtistDanOne
 import onlymash.flexbooru.entity.ArtistMoe
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.toggleArrow
@@ -54,6 +55,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             when (artist) {
                 is ArtistDan -> itemListener?.onClickItem((artist as ArtistDan).name)
                 is ArtistMoe -> itemListener?.onClickItem((artist as ArtistMoe).name)
+                is ArtistDanOne -> itemListener?.onClickItem((artist as ArtistDanOne).name)
             }
         }
         itemView.setOnLongClickListener {
@@ -101,6 +103,19 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
             }
             is ArtistMoe -> {
+                artistName.text = data.name
+                artistId.text = String.format("#%d", data.id)
+                var urlsText = ""
+                data.urls?.let { urls ->
+                    urls.forEach { url ->
+                        urlsText = String.format("%s\r\n%s", url, urlsText)
+                    }
+                }
+                if (urlsText.isNotBlank()) {
+                    artistUrls.text = urlsText
+                }
+            }
+            is ArtistDanOne -> {
                 artistName.text = data.name
                 artistId.text = String.format("#%d", data.id)
                 var urlsText = ""

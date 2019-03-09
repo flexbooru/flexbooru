@@ -54,6 +54,18 @@ class PostLoader(private val db: FlexbooruDatabase,
     }
 
     /**
+     *Load danbooru1.x posts from database
+     */
+    fun loadDanOnePosts(host: String, keyword: String) {
+        ioExecutor.execute {
+            val posts = db.postDanOneDao().getPostsRaw(host, keyword)
+            uiHandler.post {
+                postLoadedListener?.onDanOneItemsLoaded(posts)
+            }
+        }
+    }
+
+    /**
      *Load moebooru posts from database
      */
     fun loadMoePosts(host: String, keyword: String) {
@@ -73,6 +85,18 @@ class PostLoader(private val db: FlexbooruDatabase,
             val posts = db.postDanDao().getPostsLiveData(host, keyword)
             uiHandler.post {
                 postLoadedLiveDataListener?.onDanItemsLoaded(posts)
+            }
+        }
+    }
+
+    /**
+     *Load danbooru1.x posts(livedata) from database
+     */
+    fun loadDanOnePostsLiveData(host: String, keyword: String) {
+        ioExecutor.execute {
+            val posts = db.postDanOneDao().getPostsLiveData(host, keyword)
+            uiHandler.post {
+                postLoadedLiveDataListener?.onDanOneItemsLoaded(posts)
             }
         }
     }

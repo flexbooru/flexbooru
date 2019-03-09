@@ -43,6 +43,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.util.image.CustomDecoder
 import onlymash.flexbooru.util.image.CustomRegionDecoder
@@ -59,17 +60,16 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
     private var type = -1
     private val size = Settings.instance().browseSize
     private var postsDan: MutableList<PostDan> = mutableListOf()
+    private var postsDanOne: MutableList<PostDanOne> = mutableListOf()
     private var postsMoe: MutableList<PostMoe> = mutableListOf()
 
     @Suppress("UNCHECKED_CAST")
     fun updateData(posts: Any, type: Int) {
         this.type = type
-        if (type == Constants.TYPE_DANBOORU) {
-            postsDan = posts as MutableList<PostDan>
-            postsMoe = mutableListOf()
-        } else {
-            postsMoe = posts as MutableList<PostMoe>
-            postsDan = mutableListOf()
+        when (type) {
+            Constants.TYPE_DANBOORU -> postsDan = posts as MutableList<PostDan>
+            Constants.TYPE_DANBOORU_ONE -> postsDanOne = posts as MutableList<PostDanOne>
+            else -> postsMoe = posts as MutableList<PostMoe>
         }
         notifyDataSetChanged()
     }
@@ -77,8 +77,10 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         return view == `object`
     }
 
-    override fun getCount(): Int {
-        return if (type == Constants.TYPE_DANBOORU) postsDan.size else postsMoe.size
+    override fun getCount(): Int = when (type) {
+        Constants.TYPE_DANBOORU -> postsDan.size
+        Constants.TYPE_DANBOORU_ONE -> postsDanOne.size
+        else -> postsMoe.size
     }
 
     @SuppressLint("InflateParams")
@@ -117,7 +119,19 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                     else -> postsMoe[position].getOriginUrl()
                 }
             }
-            else -> ""
+            else -> {
+                tranName = when (pageType) {
+                    Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsDanOne[position].id)
+                    Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsDanOne[position].id)
+                    else -> throw IllegalStateException("unknown post type $pageType")
+                }
+                previewUrl = postsDanOne[position].preview_url
+                when (size) {
+                    Settings.POST_SIZE_SAMPLE -> postsDanOne[position].getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsDanOne[position].getLargerUrl()
+                    else -> postsDanOne[position].getOriginUrl()
+                }
+            }
         }
         if (!url.isEmpty()) {
             when {

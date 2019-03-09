@@ -27,12 +27,19 @@ class PoolViewModel(private val repo: PoolRepository) : ViewModel() {
     private val danRepoResult = map(searchData) {
         repo.getDanPools(it)
     }
+    private val danOneRepoResult = map(searchData) {
+        repo.getDanOnePools(it)
+    }
     private val moeRepoResult = map(searchData) {
         repo.getMoePools(it)
     }
     val poolsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
+
+    val poolsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }!!
+    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }!!
+    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }!!
 
     val poolsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }!!
     val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }!!
@@ -50,12 +57,20 @@ class PoolViewModel(private val repo: PoolRepository) : ViewModel() {
         danRepoResult.value?.refresh?.invoke()
     }
 
+    fun refreshDanOne() {
+        danOneRepoResult.value?.refresh?.invoke()
+    }
+
     fun refreshMoe() {
         moeRepoResult.value?.refresh?.invoke()
     }
 
     fun retryDan() {
         danRepoResult?.value?.retry?.invoke()
+    }
+
+    fun retryDanOne() {
+        danOneRepoResult?.value?.retry?.invoke()
     }
 
     fun retryMoe() {

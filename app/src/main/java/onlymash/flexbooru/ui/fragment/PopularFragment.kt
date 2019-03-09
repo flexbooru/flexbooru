@@ -105,6 +105,18 @@ class PopularFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
@@ -119,7 +131,7 @@ class PopularFragment : ListFragment() {
     }
     private var type: Int = -1
 
-    private var popular: SearchPopular? = null
+    private lateinit var popular: SearchPopular
 
     private var currentYear = -1
     private var currentMonth = -1
@@ -140,6 +152,11 @@ class PopularFragment : ListFragment() {
                     (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
                     BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
                 }
+                is PostDanOne -> {
+                    currentPostId = post.id
+                    (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
+                }
             }
         }
 
@@ -148,6 +165,7 @@ class PopularFragment : ListFragment() {
             when (post) {
                 is PostDan -> id = post.id
                 is PostMoe -> id = post.id
+                is PostDanOne -> id = post.id
             }
             if (id > 0) {
                 val context = requireContext()
@@ -175,21 +193,23 @@ class PopularFragment : ListFragment() {
                                 }
                             }
                             1 -> {
-                                val pop = popular ?: return@setItems
-                                if (pop.auth_key.isEmpty()) {
+                                if (popular.auth_key.isEmpty()) {
                                     requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
                                 } else {
                                     val vote = Vote(
-                                        scheme = pop.scheme,
-                                        host = pop.host,
+                                        scheme = popular.scheme,
+                                        host = popular.host,
                                         post_id = id,
                                         score = 3,
-                                        username = pop.username,
-                                        auth_key = pop.auth_key
+                                        username = popular.username,
+                                        auth_key = popular.auth_key
                                     )
                                     when (post) {
                                         is PostDan -> voteRepo.addDanFav(vote, post)
                                         is PostMoe -> voteRepo.voteMoePost(vote)
+                                        is PostDanOne -> {
+
+                                        }
                                     }
                                 }
                             }
@@ -223,9 +243,6 @@ class PopularFragment : ListFragment() {
                         when (menuItem.itemId) {
                             R.id.action_date -> {
                                 val currentTimeMillis = System.currentTimeMillis()
-                                val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
-                                    timeInMillis = currentTimeMillis
-                                }
                                 val minCalendar = Calendar.getInstance(Locale.getDefault()).apply {
                                     timeInMillis = currentTimeMillis
                                     add(Calendar.YEAR, -20)
@@ -241,14 +258,14 @@ class PopularFragment : ListFragment() {
                                         val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
                                         val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
                                         date = "$yearString-$monthString-$dayString"
-                                        popular!!.date = date
-                                        popularViewModel.show(popular!!)
+                                        popular.date = date
+                                        popularViewModel.show(popular)
                                         swipe_refresh.isRefreshing = true
                                         popularViewModel.refreshDan()
                                     },
-                                    if (currentYear < 0) currentCalendar.get(Calendar.YEAR) else currentYear,
-                                    if (currentMonth < 0) currentCalendar.get(Calendar.MONTH) else currentMonth,
-                                    if (currentDay < 0) currentCalendar.get(Calendar.DAY_OF_MONTH) else currentDay
+                                    currentYear,
+                                    currentMonth,
+                                    currentDay
                                 ).apply {
                                     datePicker.minDate = minCalendar.timeInMillis
                                     datePicker.maxDate = currentTimeMillis
@@ -256,39 +273,97 @@ class PopularFragment : ListFragment() {
                                     .show()
                             }
                             R.id.action_day -> {
-                                popular!!.scale = SCALE_DAY
-                                popularViewModel.show(popular!!)
+                                popular.scale = SCALE_DAY
+                                popularViewModel.show(popular)
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
                             R.id.action_week -> {
-                                popular!!.scale = SCALE_WEEK
-                                popularViewModel.show(popular!!)
+                                popular.scale = SCALE_WEEK
+                                popularViewModel.show(popular)
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
                             R.id.action_month -> {
-                                popular!!.scale = SCALE_MONTH
-                                popularViewModel.show(popular!!)
+                                popular.scale = SCALE_MONTH
+                                popularViewModel.show(popular)
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
                             else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                         }
-                        keyword = popular!!.scale
+                        keyword = popular.scale
                     }
                     Constants.TYPE_MOEBOORU -> {
                         when (menuItem.itemId) {
-                            R.id.action_day -> popular!!.period = PERIOD_DAY
-                            R.id.action_week -> popular!!.period = PERIOD_WEEK
-                            R.id.action_month -> popular!!.period = PERIOD_MONTH
-                            R.id.action_year -> popular!!.period = PERIOD_YEAR
+                            R.id.action_day -> popular.period = PERIOD_DAY
+                            R.id.action_week -> popular.period = PERIOD_WEEK
+                            R.id.action_month -> popular.period = PERIOD_MONTH
+                            R.id.action_year -> popular.period = PERIOD_YEAR
                             else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                         }
-                        keyword = popular!!.period
-                        popularViewModel.show(popular!!)
+                        keyword = popular.period
+                        popularViewModel.show(popular)
                         swipe_refresh.isRefreshing = true
                         popularViewModel.refreshMoe()
+                    }
+                    Constants.TYPE_DANBOORU_ONE -> {
+                        when (menuItem.itemId) {
+                            R.id.action_date -> {
+                                val currentTimeMillis = System.currentTimeMillis()
+                                val minCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                    timeInMillis = currentTimeMillis
+                                    add(Calendar.YEAR, -20)
+                                }
+                                DatePickerDialog(
+                                    requireContext(),
+                                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                                        currentYear = year
+                                        currentMonth = month
+                                        currentDay = dayOfMonth
+                                        val yearString = year.toString()
+                                        val realMonth = month + 1
+                                        val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+                                        val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                                        date = "$yearString-$monthString-$dayString"
+                                        popular.date = date
+                                        popular.day = dayString
+                                        popular.month = monthString
+                                        popular.year = yearString
+                                        popularViewModel.show(popular)
+                                        swipe_refresh.isRefreshing = true
+                                        popularViewModel.refreshDanOne()
+                                    },
+                                    currentYear,
+                                    currentMonth,
+                                    currentDay
+                                ).apply {
+                                    datePicker.minDate = minCalendar.timeInMillis
+                                    datePicker.maxDate = currentTimeMillis
+                                }
+                                    .show()
+                            }
+                            R.id.action_day -> {
+                                popular.scale = SCALE_DAY
+                                popularViewModel.show(popular)
+                                swipe_refresh.isRefreshing = true
+                                popularViewModel.refreshDanOne()
+                            }
+                            R.id.action_week -> {
+                                popular.scale = SCALE_WEEK
+                                popularViewModel.show(popular)
+                                swipe_refresh.isRefreshing = true
+                                popularViewModel.refreshDanOne()
+                            }
+                            R.id.action_month -> {
+                                popular.scale = SCALE_MONTH
+                                popularViewModel.show(popular)
+                                swipe_refresh.isRefreshing = true
+                                popularViewModel.refreshDanOne()
+                            }
+                            else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
+                        }
+                        keyword = popular.scale
                     }
                 }
             }
@@ -329,18 +404,18 @@ class PopularFragment : ListFragment() {
 
         override fun onDelete(user: User) {
             if (user.booru_uid != Settings.instance().activeBooruUid) return
-            popular!!.username = ""
-            popular!!.auth_key = ""
+            popular.username = ""
+            popular.auth_key = ""
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     popularViewModel.apply {
-                        show(popular!!)
+                        show(popular)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     popularViewModel.apply {
-                        show(popular!!)
+                        show(popular)
                         refreshMoe()
                     }
                 }
@@ -356,18 +431,18 @@ class PopularFragment : ListFragment() {
     private fun updateUserInfoAndRefresh(user: User) {
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                popular!!.username = user.name
-                popular!!.auth_key = user.api_key ?: ""
+                popular.username = user.name
+                popular.auth_key = user.api_key ?: ""
                 popularViewModel.apply {
-                    show(popular!!)
+                    show(popular)
                     refreshDan()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                popular!!.username = user.name
-                popular!!.auth_key = user.password_hash ?: ""
+                popular.username = user.name
+                popular.auth_key = user.password_hash ?: ""
                 popularViewModel.apply {
-                    show(popular!!)
+                    show(popular)
                     refreshMoe()
                 }
             }
@@ -376,22 +451,34 @@ class PopularFragment : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            type = it.getInt(Constants.TYPE_KEY, -1)
-            popular = SearchPopular(
-                scheme = it.getString(Constants.SCHEME_KEY, "") ,
-                host = it.getString(Constants.HOST_KEY, ""),
-                username = it.getString(Constants.USERNAME_KEY, ""),
-                auth_key = it.getString(Constants.AUTH_KEY, ""),
-                safe_mode = Settings.instance().safeMode
-            )
+        val arg = arguments ?: throw RuntimeException("arg is null")
+        type = arg.getInt(Constants.TYPE_KEY, -1)
+        popular = SearchPopular(
+            scheme = arg.getString(Constants.SCHEME_KEY, "") ,
+            host = arg.getString(Constants.HOST_KEY, ""),
+            username = arg.getString(Constants.USERNAME_KEY, ""),
+            auth_key = arg.getString(Constants.AUTH_KEY, ""),
+            safe_mode = Settings.instance().safeMode
+        )
+        val currentTimeMillis = System.currentTimeMillis()
+        val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+            timeInMillis = currentTimeMillis
         }
+        currentDay = currentCalendar.get(Calendar.DAY_OF_MONTH)
+        currentMonth = currentCalendar.get(Calendar.MONTH)
+        currentYear = currentCalendar.get(Calendar.YEAR)
+        val yearString = currentYear.toString()
+        val realMonth = currentMonth + 1
+        val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+        val dayString = if (currentDay < 10) "0$currentDay" else currentDay.toString()
+        popular.year = yearString
+        popular.month = monthString
+        popular.day = dayString
         requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (popular == null) return
         init()
         UserManager.listeners.add(userListener)
     }
@@ -402,6 +489,7 @@ class PopularFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
+            Constants.TYPE_DANBOORU_ONE -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             else -> throw IllegalArgumentException("unknown type $type")
         }
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
@@ -420,6 +508,7 @@ class PopularFragment : ListFragment() {
                 when (type) {
                     Constants.TYPE_DANBOORU -> popularViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> popularViewModel.retryMoe()
+                    Constants.TYPE_DANBOORU_ONE -> popularViewModel.retryDanOne()
                 }
             })
         list.apply {
@@ -450,8 +539,19 @@ class PopularFragment : ListFragment() {
                 })
                 initSwipeToRefreshMoe()
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                keyword = SCALE_DAY
+                popularViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<Any>)
+                })
+                popularViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDanOne()
+            }
         }
-        popularViewModel.show(popular!!)
+        popularViewModel.show(popular)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
 
@@ -462,6 +562,15 @@ class PopularFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { popularViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshDanOne() {
+        popularViewModel.refreshStateDanOne.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { popularViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshMoe() {

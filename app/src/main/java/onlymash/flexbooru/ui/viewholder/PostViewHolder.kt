@@ -28,6 +28,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 
 class PostViewHolder(itemView: View,
@@ -102,6 +103,39 @@ class PostViewHolder(itemView: View,
 
             }
             is PostMoe -> {
+                this.post = post
+                previewCard.tag = post.id
+                preview.transitionName = when (pageType) {
+                    Constants.PAGE_TYPE_POST -> preview.context.getString(R.string.post_transition_name, post.id)
+                    else -> preview.context.getString(R.string.post_popular_transition_name, post.id)
+                }
+                postId.text = String.format("#%d", post.id)
+                postSize.text = String.format("%d x %d", post.width, post.height)
+                val placeholderDrawable = when (post.rating) {
+                    "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
+                    "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
+                    else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
+                }
+                val lp = preview.layoutParams as ConstraintLayout.LayoutParams
+                val ratio = post.width.toFloat()/post.height.toFloat()
+                when {
+                    ratio > Constants.MAX_ITEM_ASPECT_RATIO -> {
+                        lp.dimensionRatio = "H, ${Constants.MAX_ITEM_ASPECT_RATIO}:1"
+                    }
+                    ratio < Constants.MIN_ITEM_ASPECT_RATIO -> {
+                        lp.dimensionRatio = "H, ${Constants.MIN_ITEM_ASPECT_RATIO}:1"
+                    }
+                    else -> {
+                        lp.dimensionRatio = "H, $ratio:1"
+                    }
+                }
+                preview.layoutParams = lp
+                preview.layout(0,0,0,0)
+                glide.load(post.preview_url)
+                    .placeholder(placeholderDrawable)
+                    .into(preview)
+            }
+            is PostDanOne -> {
                 this.post = post
                 previewCard.tag = post.id
                 preview.transitionName = when (pageType) {

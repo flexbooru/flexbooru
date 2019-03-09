@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 by onlymash <im@fiepi.me>, All rights reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free Software
+  ~ Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with
+  ~ this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_tag_order"
+            android:title="@string/tag_order"
+            app:showAsAction="never">
+        <menu>
+            <item
+                    android:id="@+id/action_tag_order_date"
+                    android:title="@string/tag_order_date"/>
+            <item
+                    android:id="@+id/action_tag_order_name"
+                    android:title="@string/tag_order_name"/>
+            <item
+                    android:id="@+id/action_tag_order_count"
+                    android:title="@string/tag_order_count"/>
+        </menu>
+    </item>
+    <item
+            android:id="@+id/action_tag_type"
+            android:title="@string/tag_type"
+            app:showAsAction="never">
+        <menu>
+            <item
+                    android:id="@+id/action_tag_type_all"
+                    android:title="@string/tag_type_all"/>
+            <item
+                    android:id="@+id/action_tag_type_general"
+                    android:title="@string/tag_type_general"/>
+            <item
+                    android:id="@+id/action_tag_type_artist"
+                    android:title="@string/tag_type_artist"/>
+            <item
+                    android:id="@+id/action_tag_type_copyright"
+                    android:title="@string/tag_type_copyright"/>
+            <item
+                    android:id="@+id/action_tag_type_character"
+                    android:title="@string/tag_type_character"/>
+            <item
+                    android:id="@+id/action_tag_type_model"
+                    android:title="@string/tag_type_model"/>
+            <item
+                    android:id="@+id/action_tag_type_photo_set"
+                    android:title="@string/tag_type_photo_set"/>
+        </menu>
+    </item>
+</menu>

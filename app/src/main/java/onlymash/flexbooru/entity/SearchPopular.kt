@@ -34,5 +34,10 @@ data class SearchPopular(
     var username: String = "",
     var auth_key: String = "",
 
-    var safe_mode: Boolean = true
+    var safe_mode: Boolean = true,
+
+    //Danbooru1.x
+    var day: String = "",
+    var month: String = "",
+    var year: String = ""
 )

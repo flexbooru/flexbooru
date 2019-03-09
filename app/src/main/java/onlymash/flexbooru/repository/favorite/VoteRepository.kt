@@ -16,12 +16,14 @@
 package onlymash.flexbooru.repository.favorite
 
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.Vote
 
 interface VoteRepository {
+    var voteCallback: VoteCallback?
     fun voteMoePost(vote: Vote)
     fun addDanFav(vote: Vote, post: PostDan)
     fun removeDanFav(vote: Vote, postFav: PostDan)
-    fun onSuccess()
-    fun onFailed(msg: String)
+    fun addDanOneFav(vote: Vote, post: PostDanOne)
+    fun removeDanOneFav(vote: Vote, postFav: PostDanOne)
 }

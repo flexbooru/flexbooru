@@ -19,32 +19,50 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import onlymash.flexbooru.entity.ArtistUrlDan
+import onlymash.flexbooru.entity.DanOneDate
+
 /**
  * room database TypeConverter
  * */
 class Converters {
 
-    // string to list
+    /**
+     * string to list
+     * */
     @TypeConverter
     fun fromStringToStringList(value: String): MutableList<String>? {
         val listType = object : TypeToken<MutableList<String>>(){}.type
         return Gson().fromJson<MutableList<String>>(value, listType)
     }
 
-    //list to json string
+    /**
+     * list to json string
+     * */
     @TypeConverter
     fun fromStringListToString(list: MutableList<String>): String =
         Gson().toJson(list)
 
-    //string to danbooru artist url list
+    /**
+     * string to danbooru artist url list
+     * */
     @TypeConverter
     fun fromStringToUrlDanList(value: String): MutableList<ArtistUrlDan>? {
         val listType = object : TypeToken<MutableList<ArtistUrlDan>>(){}.type
         return Gson().fromJson<MutableList<ArtistUrlDan>>(value, listType)
     }
 
-    //danbooru artist url list to string
+    /**
+     * danbooru artist url list to string
+     * */
     @TypeConverter
     fun fromUrlDanListToString(list: MutableList<ArtistUrlDan>): String =
-            Gson().toJson(list)
+        Gson().toJson(list)
+
+    @TypeConverter
+    fun fromDanOneCreatedAtToString(createdAt: DanOneDate): String =
+        Gson().toJson(createdAt)
+
+    @TypeConverter
+    fun fromStringDanOneCreatedAt(value: String): DanOneDate =
+        Gson().fromJson<DanOneDate>(value, object : TypeToken<DanOneDate>(){}.type)
 }

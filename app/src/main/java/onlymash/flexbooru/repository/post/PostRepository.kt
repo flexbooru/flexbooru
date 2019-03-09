@@ -16,11 +16,14 @@
 package onlymash.flexbooru.repository.post
 
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
 
 interface PostRepository {
+
+    fun getDanOnePosts(search: Search): Listing<PostDanOne>
 
     fun getDanPosts(search: Search): Listing<PostDan>
 

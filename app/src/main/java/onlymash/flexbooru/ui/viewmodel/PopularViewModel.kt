@@ -27,12 +27,19 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     private val danRepoResult = map(popularData) { popular ->
         repo.getDanPopular(popular)
     }
+    private val danOneRepoResult = map(popularData) { popular ->
+        repo.getDanOnePopular(popular)
+    }
     private val moeRepoResult = map(popularData) { popular ->
         repo.getMoePopular(popular)
     }
     val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
+
+    val postsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }!!
+    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }!!
+    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }!!
 
     val postsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }!!
     val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }!!
@@ -50,12 +57,20 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
         danRepoResult.value?.refresh?.invoke()
     }
 
+    fun refreshDanOne() {
+        danOneRepoResult.value?.refresh?.invoke()
+    }
+
     fun refreshMoe() {
         moeRepoResult.value?.refresh?.invoke()
     }
 
     fun retryDan() {
         danRepoResult?.value?.retry?.invoke()
+    }
+
+    fun retryDanOne() {
+        danOneRepoResult?.value?.retry?.invoke()
     }
 
     fun retryMoe() {

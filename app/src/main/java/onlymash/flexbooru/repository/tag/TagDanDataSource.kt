@@ -15,8 +15,8 @@
 
 package onlymash.flexbooru.repository.tag
 
-import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.TagDan
 import onlymash.flexbooru.entity.SearchTag
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
@@ -32,7 +32,7 @@ class TagDanDataSource(private val danbooruApi: DanbooruApi,
                        retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagDan>(retryExecutor) {
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagDan>)  {
-        val request = danbooruApi.getTags(ApiUrlHelper.getDanTagUrl(search = search, page = 1))
+        val request = danbooruApi.getTags(DanUrlHelper.getTagUrl(search = search, page = 1))
         val scheme = search.scheme
         val host = search.host
         val response =  request.execute()
@@ -51,7 +51,7 @@ class TagDanDataSource(private val danbooruApi: DanbooruApi,
 
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, TagDan>) {
         val page = params.key
-        danbooruApi.getTags(ApiUrlHelper.getDanTagUrl(search = search, page = page))
+        danbooruApi.getTags(DanUrlHelper.getTagUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<TagDan>> {
                 override fun onFailure(call: Call<MutableList<TagDan>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

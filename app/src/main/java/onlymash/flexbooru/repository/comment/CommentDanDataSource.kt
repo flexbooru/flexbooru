@@ -15,8 +15,8 @@
 
 package onlymash.flexbooru.repository.comment
 
-import onlymash.flexbooru.api.ApiUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.entity.CommentDan
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
@@ -34,9 +34,9 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
         val scheme = commentAction.scheme
         val host = commentAction.host
         val url = if (commentAction.post_id > 0) {
-            ApiUrlHelper.getDanPostCommentUrl(commentAction, 1)
+            DanUrlHelper.getPostCommentUrl(commentAction, 1)
         } else {
-            ApiUrlHelper.getDanPostsCommentUrl(commentAction, 1)
+            DanUrlHelper.getPostsCommentUrl(commentAction, 1)
         }
         val response = danbooruApi.getComments(url).execute()
         val data = response.body() ?: mutableListOf()
@@ -54,9 +54,9 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, CommentDan>) {
         val page = params.key
         val url = if (commentAction.post_id > 0) {
-            ApiUrlHelper.getDanPostCommentUrl(commentAction, page)
+            DanUrlHelper.getPostCommentUrl(commentAction, page)
         } else {
-            ApiUrlHelper.getDanPostsCommentUrl(commentAction, page)
+            DanUrlHelper.getPostsCommentUrl(commentAction, page)
         }
         danbooruApi.getComments(url).enqueue(object : retrofit2.Callback<MutableList<CommentDan>> {
             override fun onFailure(call: Call<MutableList<CommentDan>>, t: Throwable) {

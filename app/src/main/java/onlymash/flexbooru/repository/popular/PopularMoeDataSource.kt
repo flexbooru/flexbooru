@@ -17,7 +17,7 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.SearchPopular
@@ -57,7 +57,7 @@ class PopularMoeDataSource(
 
     override fun loadInitial(params: LoadInitialParams<Int>,
                              callback: LoadInitialCallback<Int, PostMoe>) {
-        val request = moebooruApi.getPosts(ApiUrlHelper.getMoePopularUrl(popular))
+        val request = moebooruApi.getPosts(MoeUrlHelper.getPopularUrl(popular))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 

@@ -27,9 +27,16 @@ class TagViewModel(private val repo: TagRepository) : ViewModel() {
     private val danRepoResult = map(searchData) {
         repo.getDanTags(it)
     }
+    private val danOneRepoResult = map(searchData) {
+        repo.getDanOneTags(it)
+    }
     private val moeRepoResult = map(searchData) {
         repo.getMoeTags(it)
     }
+    val tagsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }!!
+    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }!!
+    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }!!
+
     val tagsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
@@ -50,12 +57,20 @@ class TagViewModel(private val repo: TagRepository) : ViewModel() {
         danRepoResult.value?.refresh?.invoke()
     }
 
+    fun refreshDanOne() {
+        danOneRepoResult.value?.refresh?.invoke()
+    }
+
     fun refreshMoe() {
         moeRepoResult.value?.refresh?.invoke()
     }
 
     fun retryDan() {
         danRepoResult?.value?.retry?.invoke()
+    }
+
+    fun retryDanOne() {
+        danOneRepoResult?.value?.retry?.invoke()
     }
 
     fun retryMoe() {

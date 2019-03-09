@@ -68,7 +68,7 @@ class CommentActivity : AppCompatActivity() {
     }
 
     private lateinit var commentAdapter: CommentAdapter
-    private lateinit var commentViewModel: CommentViewModel
+    private val commentViewModel by lazy { getCommentViewModel(ServiceLocator.instance().getCommentRepository()) }
     private lateinit var commentAction: CommentAction
     private var type = -1
 
@@ -119,10 +119,10 @@ class CommentActivity : AppCompatActivity() {
                 val str = (editText.text ?: "").toString().trim()
                 if (!str.isEmpty()) {
                     action.body = str
-                    if (type == Constants.TYPE_MOEBOORU) {
-                        commentViewModel.createMoeComment(action)
-                    } else {
-                        commentViewModel.createDanComment(action)
+                    when (type) {
+                        Constants.TYPE_DANBOORU -> commentViewModel.createDanComment(action)
+                        Constants.TYPE_MOEBOORU -> commentViewModel.createMoeComment(action)
+                        Constants.TYPE_DANBOORU_ONE -> commentViewModel.createDanOneComment(action)
                     }
                 }
             }
@@ -136,6 +136,7 @@ class CommentActivity : AppCompatActivity() {
         when (type) {
             Constants.TYPE_DANBOORU -> commentViewModel.deleteDanComment(action)
             Constants.TYPE_MOEBOORU -> commentViewModel.deleteMoeComment(action)
+            Constants.TYPE_DANBOORU_ONE -> commentViewModel.deleteDanOneComment(action)
         }
     }
 
@@ -195,20 +196,17 @@ class CommentActivity : AppCompatActivity() {
             }
         } else if (!name.isEmpty()) {
             when (type) {
-                Constants.TYPE_DANBOORU -> {
-                    commentAction.query = name
-                }
-                Constants.TYPE_MOEBOORU -> {
-                    commentAction.query = "user:$name"
-                }
+                Constants.TYPE_DANBOORU -> commentAction.query = name
+                Constants.TYPE_MOEBOORU,
+                Constants.TYPE_DANBOORU_ONE -> commentAction.query = "user:$name"
             }
             toolbar.subtitle = commentAction.query
         }
-        commentViewModel = getCommentViewModel(ServiceLocator.instance().getCommentRepository())
         commentAdapter = CommentAdapter(GlideApp.with(this), user, commentListener) {
             when (type) {
                 Constants.TYPE_DANBOORU -> commentViewModel.retryDan()
                 Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
+                Constants.TYPE_DANBOORU_ONE -> commentViewModel.retryDanOne()
             }
         }
         list.apply {
@@ -243,12 +241,23 @@ class CommentActivity : AppCompatActivity() {
                 })
                 initSwipeToRefreshMoe()
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                commentViewModel.commentsDanOne.observe(this, Observer {
+                    @Suppress("UNCHECKED_CAST")
+                    commentAdapter.submitList(it as PagedList<Any>)
+                })
+                commentViewModel.networkStateDanOne.observe(this, Observer {
+                    commentAdapter.setNetworkState(it)
+                })
+                initSwipeToRefreshDanOne()
+            }
         }
         commentViewModel.commentState.observe(this, Observer {
             if (it == CommentState.SUCCESS) {
                 when (type) {
                     Constants.TYPE_DANBOORU -> commentViewModel.refreshDan()
                     Constants.TYPE_MOEBOORU -> commentViewModel.refreshMoe()
+                    Constants.TYPE_DANBOORU_ONE -> commentViewModel.refreshDanOne()
                 }
             } else {
                 Snackbar.make(toolbar, it.msg.toString(), Snackbar.LENGTH_LONG).show()
@@ -264,6 +273,15 @@ class CommentActivity : AppCompatActivity() {
             }
         })
         swipe_refresh.setOnRefreshListener { commentViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshDanOne() {
+        commentViewModel.refreshStateDanOne.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { commentViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshMoe() {

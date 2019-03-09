@@ -83,6 +83,7 @@ class BooruViewHolder(itemView: View,
         when (booru.type) {
             Constants.TYPE_DANBOORU -> booruType.setText(R.string.booru_type_danbooru)
             Constants.TYPE_MOEBOORU -> booruType.setText(R.string.booru_type_moebooru)
+            Constants.TYPE_DANBOORU_ONE -> booruType.setText(R.string.booru_type_danbooru_one)
             else -> booruType.text = String.format("%s", "Unknown Type")
         }
     }
@@ -90,7 +91,7 @@ class BooruViewHolder(itemView: View,
     private fun startConfig(booru: Booru) {
         BooruConfigFragment.set(booru)
         val intent = Intent(activity, BooruConfigActivity::class.java)
-            .putExtra(Constants.EXTRA_BOORU_UID, booru.uid)
+            .putExtra(BooruConfigFragment.EXTRA_BOORU_UID, booru.uid)
         activity.startActivityForResult(intent, Constants.REQUEST_EDIT_CODE)
     }
 }

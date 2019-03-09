@@ -62,7 +62,7 @@ class PoolFragment : ListFragment() {
                         putString(Constants.HOST_KEY, booru.host)
                         putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
                         if (user != null) {
-                            putString(Constants.USERNAME_KEY, user.name)
+                              putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.api_key)
                         } else {
                             putString(Constants.USERNAME_KEY, "")
@@ -81,13 +81,25 @@ class PoolFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
     }
 
     private var type = -1
-    private var search: Search? = null
+    private lateinit var search: Search
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -98,14 +110,14 @@ class PoolFragment : ListFragment() {
     override val searchBarHelper: SearchBarHelper
         get() = object : ListFragment.SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {}
-
             override fun onApplySearch(query: String) {
-                search!!.keyword = query
-                poolViewModel.show(search!!)
+                search.keyword = query
+                poolViewModel.show(search)
                 swipe_refresh.isRefreshing = true
                 when (type) {
                     Constants.TYPE_DANBOORU -> poolViewModel.refreshDan()
                     Constants.TYPE_MOEBOORU -> poolViewModel.refreshMoe()
+                    Constants.TYPE_DANBOORU_ONE -> poolViewModel.refreshDanOne()
                 }
             }
         }
@@ -132,19 +144,25 @@ class PoolFragment : ListFragment() {
         }
         override fun onDelete(user: User) {
             if (user.booru_uid != Settings.instance().activeBooruUid) return
-            search!!.username = ""
-            search!!.auth_key = ""
+            search.username = ""
+            search.auth_key = ""
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     poolViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     poolViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshMoe()
+                    }
+                }
+                Constants.TYPE_DANBOORU_ONE -> {
+                    poolViewModel.apply {
+                        show(search)
+                        refreshDanOne()
                     }
                 }
             }
@@ -157,19 +175,27 @@ class PoolFragment : ListFragment() {
     private fun updateUserInfoAndRefresh(user: User) {
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.api_key ?: ""
+                search.username = user.name
+                search.auth_key = user.api_key ?: ""
                 poolViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshDan()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.password_hash ?: ""
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
                 poolViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshMoe()
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                poolViewModel.apply {
+                    show(search)
+                    refreshDanOne()
                 }
             }
         }
@@ -185,16 +211,15 @@ class PoolFragment : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = Search(
-                scheme = it.getString(Constants.SCHEME_KEY, ""),
-                host = it.getString(Constants.HOST_KEY, ""),
-                keyword = "",
-                username = it.getString(Constants.USERNAME_KEY, ""),
-                auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().pageSize)
-        }
+        val arg = arguments ?: throw RuntimeException("arg is null")
+        type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+        search = Search(
+            scheme = arg.getString(Constants.SCHEME_KEY, ""),
+            host = arg.getString(Constants.HOST_KEY, ""),
+            keyword = "",
+            username = arg.getString(Constants.USERNAME_KEY, ""),
+            auth_key = arg.getString(Constants.AUTH_KEY, ""),
+            limit = Settings.instance().pageSize)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -202,7 +227,6 @@ class PoolFragment : ListFragment() {
         search_bar.setTitle(R.string.title_pools)
         search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
         poolViewModel = getPoolViewModel(ServiceLocator.instance().getPoolRepository())
-        if (search == null) return
         val glide = GlideApp.with(this)
         poolAdapter = PoolAdapter(
             glide = glide,
@@ -211,6 +235,7 @@ class PoolFragment : ListFragment() {
                 when (type) {
                     Constants.TYPE_DANBOORU -> poolViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> poolViewModel.retryMoe()
+                    Constants.TYPE_DANBOORU_ONE -> poolViewModel.retryDanOne()
                 }
             }
         )
@@ -239,8 +264,18 @@ class PoolFragment : ListFragment() {
                 })
                 initSwipeToRefreshMoe()
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                poolViewModel.poolsDanOne.observe(this, Observer { pools ->
+                    @Suppress("UNCHECKED_CAST")
+                    poolAdapter.submitList(pools as PagedList<Any>)
+                })
+                poolViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                    poolAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDanOne()
+            }
         }
-        poolViewModel.show(search = search!!)
+        poolViewModel.show(search = search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
@@ -252,6 +287,15 @@ class PoolFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { poolViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshDanOne() {
+        poolViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { poolViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshMoe() {

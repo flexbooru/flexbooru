@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.repository.comment
 
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.CommentAction
 import onlymash.flexbooru.entity.CommentMoe
@@ -34,9 +34,9 @@ class CommentMoeDataSource(private val moebooruApi: MoebooruApi,
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentMoe>) {
         val url = if (commentAction.post_id > 0) {
-            ApiUrlHelper.getMoePostCommentUrl(commentAction = commentAction, page = 1)
+            MoeUrlHelper.getPostCommentUrl(commentAction = commentAction, page = 1)
         } else {
-            ApiUrlHelper.getMoePostsCommentUrl(commentAction = commentAction, page = 1)
+            MoeUrlHelper.getPostsCommentUrl(commentAction = commentAction, page = 1)
         }
         val request = moebooruApi.getComments(url)
         val scheme = commentAction.scheme
@@ -57,9 +57,9 @@ class CommentMoeDataSource(private val moebooruApi: MoebooruApi,
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, CommentMoe>) {
         val page = params.key
         val url = if (commentAction.post_id > 0) {
-            ApiUrlHelper.getMoePostCommentUrl(commentAction = commentAction, page = page)
+            MoeUrlHelper.getPostCommentUrl(commentAction = commentAction, page = page)
         } else {
-            ApiUrlHelper.getMoePostsCommentUrl(commentAction = commentAction, page = page)
+            MoeUrlHelper.getPostsCommentUrl(commentAction = commentAction, page = page)
         }
         moebooruApi.getComments(url)
             .enqueue(object : retrofit2.Callback<MutableList<CommentMoe>> {

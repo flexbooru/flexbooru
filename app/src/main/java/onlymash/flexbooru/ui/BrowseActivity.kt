@@ -58,6 +58,7 @@ import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.favorite.VoteCallback
 import onlymash.flexbooru.repository.favorite.VoteRepository
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
@@ -111,8 +112,10 @@ class BrowseActivity : AppCompatActivity() {
     private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
+    private var postsDanOne: MutableList<PostDanOne>? = null
     private var postsDanFav: MutableList<PostDan>? = null
     private var postsMoeFav: MutableList<PostMoe>? = null
+    private var postsDanOneFav: MutableList<PostDanOne>? = null
     private var keyword = ""
     private lateinit var booru: Booru
     private var user: User? = null
@@ -181,6 +184,37 @@ class BrowseActivity : AppCompatActivity() {
                 favPostViewModel.loadMoeFav(booru.host, it.name)
             }
         }
+
+        override fun onDanOneItemsLoaded(posts: MutableList<PostDanOne>) {
+            postsDanOne = posts
+            var url: String? = null
+            var position = 0
+            if (startId >= 0) {
+                posts.forEachIndexed { index, postDanOne ->
+                    if (postDanOne.id == startId) {
+                        position = index
+                        url = postDanOne.sample_url
+                        return@forEachIndexed
+                    }
+                }
+            }
+            toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
+            pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU_ONE)
+            pager_browse.adapter = pagerAdapter
+            pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
+            if (canTransition) startPostponedEnterTransition()
+            if (!url.isNullOrEmpty() && !url!!.isImage()) {
+                Handler().postDelayed({
+                    val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                    if (playerView is PlayerView) {
+                        playerHolder.start(uri = Uri.parse(url), playerView = playerView)
+                    }
+                }, 300)
+            }
+            user?.let {
+                favPostViewModel.loadDanOneFav(booru.host, it.name)
+            }
+        }
     }
 
     private val playerHolder: PlayerHolder by lazy { PlayerHolder(this) }
@@ -206,6 +240,10 @@ class BrowseActivity : AppCompatActivity() {
                 postsMoe != null -> {
                     url = postsMoe!![position].sample_url
                     postsMoe!![position].id
+                }
+                postsDanOne != null -> {
+                    url = postsDanOne!![position].sample_url
+                    postsDanOne!![position].id
                 }
                 else -> -1
             }
@@ -271,9 +309,18 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var voteRepository: VoteRepository
+    private val voteRepository by lazy { ServiceLocator.instance().getVoteRepository() }
     private lateinit var favPostViewModel: FavPostViewModel
     private lateinit var voteItemView: ActionMenuItemView
+
+    private val voteCallback = object : VoteCallback {
+        override fun onSuccess() {
+
+        }
+        override fun onFailed(msg: String) {
+            Toast.makeText(this@BrowseActivity, msg, Toast.LENGTH_LONG).show()
+        }
+    }
 
     private fun getCurrentPostFav(): Any? {
         val position = pager_browse.currentItem
@@ -297,18 +344,24 @@ class BrowseActivity : AppCompatActivity() {
                     }
                 }
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                val id = postsDanOne!![position].id
+                postsDanOneFav?.forEach {
+                    if (it.id == id) {
+                        post = it
+                        return@forEach
+                    }
+                }
+            }
         }
         return post
     }
 
     private fun getCurrentPost(): Any? {
         return when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                postsDan!![pager_browse.currentItem]
-            }
-            Constants.TYPE_MOEBOORU -> {
-                postsMoe!![pager_browse.currentItem]
-            }
+            Constants.TYPE_DANBOORU -> postsDan!![pager_browse.currentItem]
+            Constants.TYPE_MOEBOORU -> postsMoe!![pager_browse.currentItem]
+            Constants.TYPE_DANBOORU_ONE -> postsDanOne!![pager_browse.currentItem]
             else -> null
         }
     }
@@ -318,6 +371,7 @@ class BrowseActivity : AppCompatActivity() {
         return when (post) {
             is PostDan -> post.id
             is PostMoe -> post.id
+            is PostDanOne -> post.id
             else -> -1
         }
     }
@@ -374,13 +428,27 @@ class BrowseActivity : AppCompatActivity() {
                                         Vote(
                                             scheme = booru.scheme,
                                             host = booru.host,
-                                            score = 3,
+                                            score = 1,
                                             post_id = postsMoe!![pager_browse.currentItem].id,
                                             username = user!!.name,
                                             auth_key = user!!.password_hash!!)
                                     }
                                 }
                                 voteRepository.voteMoePost(vote)
+                            }
+                            Constants.TYPE_DANBOORU_ONE -> {
+                                val vote = Vote(
+                                    scheme = booru.scheme,
+                                    host = booru.host,
+                                    post_id = postsDanOne!![pager_browse.currentItem].id,
+                                    username = user!!.name,
+                                    auth_key = user!!.password_hash!!)
+                                val post = getCurrentPostFav()
+                                if (post is PostDanOne) {
+                                    voteRepository.removeDanOneFav(vote, post)
+                                } else {
+                                    voteRepository.addDanOneFav(vote, postsDanOne!![pager_browse.currentItem])
+                                }
                             }
                         }
                     }
@@ -414,20 +482,17 @@ class BrowseActivity : AppCompatActivity() {
         booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid) ?: return
         user = UserManager.getUserByBooruUid(booruUid = booru.uid)
         user?.let {
+            voteRepository.voteCallback = voteCallback
             initFavViewModel()
         }
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener, pageType)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         postLoader.setPostLoadedListener(postLoadedListener)
-        voteRepository = ServiceLocator.instance().getVoteRepository()
         when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                postLoader.loadDanPosts(host = booru.host, keyword = keyword)
-            }
-            Constants.TYPE_MOEBOORU -> {
-                postLoader.loadMoePosts(host = booru.host, keyword = keyword)
-            }
+            Constants.TYPE_DANBOORU -> postLoader.loadDanPosts(host = booru.host, keyword = keyword)
+            Constants.TYPE_MOEBOORU -> postLoader.loadMoePosts(host = booru.host, keyword = keyword)
+            Constants.TYPE_DANBOORU_ONE -> postLoader.loadDanOnePosts(host = booru.host, keyword = keyword)
         }
         initBottomBar()
     }
@@ -436,6 +501,7 @@ class BrowseActivity : AppCompatActivity() {
         post_tags.setOnClickListener {
             when (booru.type) {
                 Constants.TYPE_DANBOORU -> TagBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
+                Constants.TYPE_DANBOORU_ONE -> TagBottomSheetDialog.create(postsDanOne!![pager_browse.currentItem])
                 else -> TagBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
             }.apply {
                 show(supportFragmentManager, "tags")
@@ -444,6 +510,7 @@ class BrowseActivity : AppCompatActivity() {
         post_info.setOnClickListener {
             when (booru.type) {
                 Constants.TYPE_DANBOORU -> InfoBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
+                Constants.TYPE_DANBOORU_ONE -> InfoBottomSheetDialog.create(postsDanOne!![pager_browse.currentItem])
                 else -> InfoBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
             }.apply {
                 show(supportFragmentManager, "info")
@@ -462,6 +529,17 @@ class BrowseActivity : AppCompatActivity() {
         when (booru.type) {
             Constants.TYPE_DANBOORU -> {
                 val url = String.format("%s://%s/posts/%d", booru.scheme, booru.host, postsDan!![pager_browse.currentItem].id)
+                startActivity(Intent.createChooser(
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, url)
+                    },
+                    getString(R.string.share_via)
+                ))
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                val url = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postsDanOne!![pager_browse.currentItem].id)
                 startActivity(Intent.createChooser(
                     Intent().apply {
                         action = Intent.ACTION_SEND
@@ -500,6 +578,12 @@ class BrowseActivity : AppCompatActivity() {
                     setCurrentVoteItemIcon()
                 })
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                favPostViewModel.postsDanOne.observe(this, Observer { posts ->
+                    postsDanOneFav = posts
+                    setCurrentVoteItemIcon()
+                })
+            }
         }
     }
 
@@ -526,6 +610,22 @@ class BrowseActivity : AppCompatActivity() {
                     val id = postsMoe!![pager_browse.currentItem].id
                     var exist = false
                     postsMoeFav!!.forEach { post ->
+                        if (post.id == id) {
+                            setVoteItemIcon(true)
+                            exist = true
+                            return@forEach
+                        }
+                    }
+                    if (!exist) {
+                        setVoteItemIcon(false)
+                    }
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                if (postsDanOne != null && postsDanOneFav != null) {
+                    var exist = false
+                    val id = postsDanOne!![pager_browse.currentItem].id
+                    postsDanOneFav!!.forEach { post ->
                         if (post.id == id) {
                             setVoteItemIcon(true)
                             exist = true
@@ -568,6 +668,13 @@ class BrowseActivity : AppCompatActivity() {
                     Settings.POST_SIZE_SAMPLE -> postsDan!![position].getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsDan!![position].getLargerUrl()
                     else -> postsDan!![position].getOriginUrl()
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                when (Settings.instance().browseSize) {
+                    Settings.POST_SIZE_SAMPLE -> postsDanOne!![position].getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsDanOne!![position].getLargerUrl()
+                    else -> postsDanOne!![position].getOriginUrl()
                 }
             }
             else -> {
@@ -640,6 +747,11 @@ class BrowseActivity : AppCompatActivity() {
         when (booru.type) {
             Constants.TYPE_DANBOORU -> {
                 postsDan?.let {
+                    downloadPost(it[position])
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                postsDanOne?.let {
                     downloadPost(it[position])
                 }
             }

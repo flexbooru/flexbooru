@@ -27,13 +27,13 @@ import onlymash.flexbooru.database.dao.*
 import onlymash.flexbooru.entity.*
 
 @Database(entities = [
-    (PostMoe::class), (PostDan::class),
+    (PostMoe::class), (PostDan::class), (PostDanOne::class),
     (Booru::class), (User::class),
     (PoolDan::class), (PoolMoe::class),
     (TagDan::class), (TagMoe::class),
     (ArtistDan::class), (ArtistMoe::class),
     (TagFilter::class), (Muzei::class)],
-    version = 13, exportSchema = true)
+    version = 14, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -84,6 +84,14 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_13_14 by lazy {
+            object : Migration(13, 14) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `posts_danbooru_one` (`indexInResponse` INTEGER NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `host` TEXT NOT NULL, `keyword` TEXT NOT NULL, `id` INTEGER NOT NULL, `status` TEXT NOT NULL, `creator_id` INTEGER NOT NULL, `preview_width` INTEGER NOT NULL, `source` TEXT, `author` TEXT NOT NULL, `width` INTEGER NOT NULL, `score` INTEGER NOT NULL, `preview_height` INTEGER NOT NULL, `has_comments` INTEGER NOT NULL, `sample_width` INTEGER NOT NULL, `has_children` INTEGER NOT NULL, `sample_url` TEXT, `file_url` TEXT, `parent_id` INTEGER, `sample_height` INTEGER NOT NULL, `md5` TEXT NOT NULL, `tags` TEXT NOT NULL, `change` INTEGER NOT NULL, `has_notes` INTEGER NOT NULL, `rating` TEXT NOT NULL, `height` INTEGER NOT NULL, `preview_url` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `created_at` TEXT NOT NULL)")
+                    database.execSQL("CREATE UNIQUE INDEX `index_posts_danbooru_one_host_keyword_id` ON `posts_danbooru_one` (`host`, `keyword`, `id`)")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
@@ -93,7 +101,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_9_10,
                     MIGRATION_10_11,
                     MIGRATION_11_12,
-                    MIGRATION_12_13
+                    MIGRATION_12_13,
+                    MIGRATION_13_14
                 )
                 .build()
         }
@@ -103,27 +112,22 @@ abstract class FlexbooruDatabase : RoomDatabase() {
         val muzeiDao get() = instance.muzeiDao()
     }
 
+    abstract fun postDanOneDao(): PostDanOneDao
     abstract fun postDanDao(): PostDanDao
-
     abstract fun postMoeDao(): PostMoeDao
 
     abstract fun booruDao(): BooruDao
-
     abstract fun userDao(): UserDao
 
     abstract fun poolDanDao(): PoolDanDao
-
     abstract fun poolMoeDao(): PoolMoeDao
 
     abstract fun tagDanDao(): TagDanDao
-
     abstract fun tagMoeDao(): TagMoeDao
 
     abstract fun artistDanDao(): ArtistDanDao
-
     abstract fun artistMoeDao(): ArtistMoeDao
 
     abstract fun tagFilterDao(): TagFilterDao
-
     abstract fun muzeiDao(): MuzeiDao
 }

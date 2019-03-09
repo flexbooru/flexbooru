@@ -40,6 +40,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
 
+    private val danOneRepoResult = map(commentAction) {
+        repo.getDanOneComments(it)
+    }
+    val commentsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }!!
+    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }!!
+    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }!!
+
     val commentState = MediatorLiveData<CommentState>().apply {
         addSource(repo.commentState) {
             postValue(it)
@@ -70,6 +77,15 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
         danRepoResult?.value?.retry?.invoke()
     }
 
+    fun refreshDanOne() {
+        danOneRepoResult.value?.refresh?.invoke()
+    }
+
+    fun retryDanOne() {
+        danOneRepoResult?.value?.retry?.invoke()
+    }
+
+
     fun createMoeComment(commentAction: CommentAction) {
         repo.createMoeComment(commentAction)
     }
@@ -84,5 +100,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
 
     fun deleteDanComment(commentAction: CommentAction) {
         repo.destroyDanComment(commentAction)
+    }
+
+    fun createDanOneComment(commentAction: CommentAction) {
+        repo.createDanOneComment(commentAction)
+    }
+
+    fun deleteDanOneComment(commentAction: CommentAction) {
+        repo.destroyDanOneComment(commentAction)
     }
 }

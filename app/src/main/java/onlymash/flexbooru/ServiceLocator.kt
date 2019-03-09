@@ -17,9 +17,11 @@ package onlymash.flexbooru
 
 import androidx.annotation.VisibleForTesting
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.repository.account.UserFinder
+import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.repository.artist.ArtistData
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.repository.browse.PostLoader
@@ -61,35 +63,21 @@ interface ServiceLocator {
             instance = locator
         }
     }
-
     fun getPostRepository(): PostRepository
-
     fun getPopularRepository(): PopularRepository
-
     fun getPoolRepository(): PoolRepository
-
     fun getTagRepository(): TagRepository
-
     fun getArtistRepository(): ArtistRepository
-
     fun getNetworkExecutor(): Executor
-
     fun getDiskIOExecutor(): Executor
-
+    fun getDanbooruOneApi(): DanbooruOneApi
     fun getDanbooruApi(): DanbooruApi
-
     fun getMoebooruApi(): MoebooruApi
-
     fun getPostLoader(): PostLoader
-
-    fun getUserFinder(): UserFinder
-
+    fun getUserRepository(): UserRepository
     fun getTagFilterDataSource(): TagFilterDataSource
-
     fun getVoteRepository(): VoteRepository
-
     fun getCommentRepository(): CommentRepository
-
 }
 
 /**
@@ -105,6 +93,8 @@ open class DefaultServiceLocator : ServiceLocator {
     @Suppress("PrivatePropertyName")
     private val NETWORK_IO = Executors.newFixedThreadPool(5)
 
+    private val danOneApi by lazy { DanbooruOneApi.create() }
+
     private val danApi by lazy { DanbooruApi.create() }
 
     private val moeApi by lazy { MoebooruApi.create() }
@@ -112,6 +102,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getPostRepository(): PostRepository {
         return PostData(
             db = FlexbooruDatabase.instance,
+            danbooruOneApi = getDanbooruOneApi(),
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             ioExecutor = getDiskIOExecutor()
@@ -121,6 +112,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getPopularRepository(): PopularRepository {
         return PopularData(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             db = FlexbooruDatabase.instance,
             networkExecutor = getNetworkExecutor()
@@ -130,6 +122,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getPoolRepository(): PoolRepository {
         return PoolData(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = getNetworkExecutor()
         )
@@ -138,6 +131,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getTagRepository(): TagRepository {
         return TagData(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = getNetworkExecutor()
         )
@@ -146,6 +140,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getArtistRepository(): ArtistRepository {
         return ArtistData(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = getNetworkExecutor()
         )
@@ -154,6 +149,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getVoteRepository(): VoteRepository {
         return VoteData(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             db = FlexbooruDatabase.instance,
             ioExecutor = getDiskIOExecutor()
@@ -163,6 +159,7 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getCommentRepository(): CommentRepository {
         return CommentData(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             networkExecutor = NETWORK_IO
         )
@@ -175,6 +172,8 @@ open class DefaultServiceLocator : ServiceLocator {
 
     override fun getDiskIOExecutor(): Executor = DISK_IO
 
+    override fun getDanbooruOneApi(): DanbooruOneApi = danOneApi
+
     override fun getDanbooruApi(): DanbooruApi = danApi
 
     override fun getMoebooruApi(): MoebooruApi = moeApi
@@ -186,9 +185,10 @@ open class DefaultServiceLocator : ServiceLocator {
         )
     }
 
-    override fun getUserFinder(): UserFinder {
+    override fun getUserRepository(): UserRepository {
         return UserFinder(
             danbooruApi = getDanbooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi()
         )
     }

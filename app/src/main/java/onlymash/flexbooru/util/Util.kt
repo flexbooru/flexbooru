@@ -29,6 +29,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import java.io.File
 import java.net.URLDecoder
@@ -97,7 +98,17 @@ fun Context.downloadPost(post: Any?) {
             url = when (Settings.instance().downloadSize) {
                 Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
                 Settings.POST_SIZE_LARGER -> post.getLargerUrl()
-                else -> post.getSampleUrl()            }
+                else -> post.getSampleUrl()
+            }
+        }
+        is PostDanOne -> {
+            host = post.host
+            id = post.id
+            url = when (Settings.instance().downloadSize) {
+                Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
+                Settings.POST_SIZE_LARGER -> post.getLargerUrl()
+                else -> post.getSampleUrl()
+            }
         }
     }
     if (url.isEmpty()) return
@@ -105,12 +116,14 @@ fun Context.downloadPost(post: Any?) {
     val path = File(Environment.getExternalStoragePublicDirectory(
         Environment.DIRECTORY_PICTURES),
         String.format("%s/%s/%s", getString(R.string.app_name), host, fileName))
-    val request = DownloadManager.Request(Uri.parse(url)).apply {
+    val uri = Uri.parse(url)
+    val request = DownloadManager.Request(uri).apply {
         setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         setTitle(String.format("%s - %d", host, id))
         setDescription(fileName)
         setDestinationUri(Uri.fromFile(path))
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+        addRequestHeader(Constants.REFERER_KEY, "${uri.scheme}://${uri.host}/post")
     }
     (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
 }

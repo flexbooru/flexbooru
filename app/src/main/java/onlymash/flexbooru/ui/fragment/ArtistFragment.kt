@@ -84,13 +84,25 @@ class ArtistFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
     }
 
     private var type = -1
-    private var search: SearchArtist? = null
+    private lateinit var search: SearchArtist
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -104,29 +116,30 @@ class ArtistFragment : ListFragment() {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (menuItem.itemId) {
                     R.id.action_artist_order_default -> {
-                        search!!.order = ORDER_DEFAULT
+                        search.order = ORDER_DEFAULT
                         refresh()
                     }
                     R.id.action_artist_order_date -> {
                         when (type) {
-                            Constants.TYPE_DANBOORU -> search!!.order = ORDER_UPDATED_AT
-                            Constants.TYPE_MOEBOORU -> search!!.order = ORDER_DATE
+                            Constants.TYPE_DANBOORU -> search.order = ORDER_UPDATED_AT
+                            Constants.TYPE_MOEBOORU,
+                            Constants.TYPE_DANBOORU_ONE -> search.order = ORDER_DATE
                         }
                         refresh()
                     }
                     R.id.action_artist_order_name -> {
-                        search!!.order = ORDER_NAME
+                        search.order = ORDER_NAME
                         refresh()
                     }
                     R.id.action_artist_order_count -> {
-                        search!!.order = ORDER_COUNT
+                        search.order = ORDER_COUNT
                         refresh()
                     }
                 }
             }
 
             override fun onApplySearch(query: String) {
-                search!!.name = query
+                search.name = query
                 refresh()
             }
         }
@@ -135,13 +148,18 @@ class ArtistFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 swipe_refresh.isRefreshing = true
-                artistViewModel.show(search!!)
+                artistViewModel.show(search)
                 artistViewModel.refreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
                 swipe_refresh.isRefreshing = true
-                artistViewModel.show(search!!)
+                artistViewModel.show(search)
                 artistViewModel.refreshMoe()
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                swipe_refresh.isRefreshing = true
+                artistViewModel.show(search)
+                artistViewModel.refreshDanOne()
             }
         }
     }
@@ -161,19 +179,25 @@ class ArtistFragment : ListFragment() {
         }
         override fun onDelete(user: User) {
             if (user.booru_uid != Settings.instance().activeBooruUid) return
-            search!!.username = ""
-            search!!.auth_key = ""
+            search.username = ""
+            search.auth_key = ""
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     artistViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     artistViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshMoe()
+                    }
+                }
+                Constants.TYPE_DANBOORU_ONE -> {
+                    artistViewModel.apply {
+                        show(search)
+                        refreshDanOne()
                     }
                 }
             }
@@ -186,19 +210,27 @@ class ArtistFragment : ListFragment() {
     private fun updateUserInfoAndRefresh(user: User) {
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.api_key ?: ""
+                search.username = user.name
+                search.auth_key = user.api_key ?: ""
                 artistViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshDan()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.password_hash ?: ""
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
                 artistViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshMoe()
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                artistViewModel.apply {
+                    show(search)
+                    refreshDanOne()
                 }
             }
         }
@@ -214,18 +246,17 @@ class ArtistFragment : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = SearchArtist(
-                scheme = it.getString(Constants.SCHEME_KEY, ""),
-                host = it.getString(Constants.HOST_KEY, ""),
-                name = "",
-                order = ORDER_DEFAULT,
-                username = it.getString(Constants.USERNAME_KEY, ""),
-                auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().pageSize
-            )
-        }
+        val arg = arguments ?: throw RuntimeException("arg is null")
+        type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+        search = SearchArtist(
+            scheme = arg.getString(Constants.SCHEME_KEY, ""),
+            host = arg.getString(Constants.HOST_KEY, ""),
+            name = "",
+            order = ORDER_DEFAULT,
+            username = arg.getString(Constants.USERNAME_KEY, ""),
+            auth_key = arg.getString(Constants.AUTH_KEY, ""),
+            limit = Settings.instance().pageSize
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -233,13 +264,13 @@ class ArtistFragment : ListFragment() {
         search_bar.setTitle(R.string.title_artists)
         search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
         artistViewModel = getArtistViewModel(ServiceLocator.instance().getArtistRepository())
-        if (search == null) return
         artistAdapter = ArtistAdapter(
             listener = itemListener,
             retryCallback = {
                 when (type) {
                     Constants.TYPE_DANBOORU -> artistViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> artistViewModel.retryMoe()
+                    Constants.TYPE_DANBOORU_ONE -> artistViewModel.retryDanOne()
                 }
             }
         )
@@ -270,8 +301,19 @@ class ArtistFragment : ListFragment() {
                 })
                 initSwipeToRefreshMoe()
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                search_bar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
+                artistViewModel.artistsDanOne.observe(this, Observer { artists ->
+                    @Suppress("UNCHECKED_CAST")
+                    artistAdapter.submitList(artists as PagedList<Any>)
+                })
+                artistViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                    artistAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDanOne()
+            }
         }
-        artistViewModel.show(search = search!!)
+        artistViewModel.show(search = search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
@@ -283,6 +325,15 @@ class ArtistFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { artistViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshDanOne() {
+        artistViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { artistViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshMoe() {

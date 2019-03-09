@@ -22,7 +22,7 @@ import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
@@ -30,6 +30,7 @@ import onlymash.flexbooru.entity.Search
 import java.io.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.database.MuzeiManager
 
 class FlexArtWorker(
@@ -78,7 +79,7 @@ class FlexArtWorker(
                 }
                 val danbooruApi = DanbooruApi.create()
                 val posts = try {
-                    danbooruApi.getPosts(ApiUrlHelper.getDanUrl(search, 1))
+                    danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
@@ -99,7 +100,6 @@ class FlexArtWorker(
                         webUri = String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
-                val srt = providerClient.contentUri
             }
             else -> {
                 val search = Search(
@@ -114,7 +114,7 @@ class FlexArtWorker(
                 }
                 val moebooruApi = MoebooruApi.create()
                 val posts = try {
-                    moebooruApi.getPosts(ApiUrlHelper.getMoeUrl(search, 1))
+                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()

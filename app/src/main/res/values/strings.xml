@@ -90,6 +90,7 @@
     <string name="booru_share_by_clipboard">Export to clipboard</string>
     <string name="booru_edit">Booru edit</string>
     <string name="booru_type_danbooru" translatable="false">Danbooru</string>
+    <string name="booru_type_danbooru_one" translatable="false">Danbooru 1.x</string>
     <string name="booru_type_moebooru" translatable="false">Moebooru</string>
 
     <string name="booru_config_delete">Delete</string>
@@ -102,6 +103,7 @@
     <string name="booru_config_host">Host</string>
     <string name="booru_config_type">Type</string>
     <string name="booru_config_type_danbooru" translatable="false">Danbooru</string>
+    <string name="booru_config_type_danbooru_one" translatable="false">Danbooru 1.x</string>
     <string name="booru_config_type_moebooru" translatable="false">Moebooru</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
@@ -192,6 +194,8 @@
     <string name="tag_type_circle">Circle</string>
     <string name="tag_type_faults">Faults</string>
     <string name="tag_type_meta">Meta</string>
+    <string name="tag_type_model">Model</string>
+    <string name="tag_type_photo_set">Photo set</string>
     <string name="tag_type_unknown">Unknown</string>
 
     <string name="tag_order">Order</string>

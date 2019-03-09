@@ -15,8 +15,9 @@
 
 package onlymash.flexbooru.repository.artist
 
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.ArtistDan
 import onlymash.flexbooru.entity.SearchArtist
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
@@ -32,7 +33,7 @@ class ArtistDanDataSource(private val danbooruApi: DanbooruApi,
                           retryExecutor: Executor) : BasePageKeyedDataSource<Int, ArtistDan>(retryExecutor) {
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, ArtistDan>) {
-        val request = danbooruApi.getArtists(ApiUrlHelper.getDanArtistUrl(search = search, page = 1))
+        val request = danbooruApi.getArtists(DanUrlHelper.getArtistUrl(search = search, page = 1))
         val scheme = search.scheme
         val host = search.host
         val response =  request.execute()
@@ -51,7 +52,7 @@ class ArtistDanDataSource(private val danbooruApi: DanbooruApi,
 
     override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, ArtistDan>) {
         val page = params.key
-        danbooruApi.getArtists(ApiUrlHelper.getDanArtistUrl(search = search, page = page))
+        danbooruApi.getArtists(DanUrlHelper.getArtistUrl(search = search, page = page))
             .enqueue(object : retrofit2.Callback<MutableList<ArtistDan>> {
                 override fun onFailure(call: Call<MutableList<ArtistDan>>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)

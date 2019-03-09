@@ -36,6 +36,7 @@ import moe.shizuku.preference.PreferenceDialogFragment
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 import onlymash.flexbooru.util.TextMatchesUtil
 
 class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher {
@@ -95,7 +96,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
     override fun onDialogClosed(positiveResult: Boolean) {
         if (positiveResult) {
             val value = editText.text.toString()
-            if (key == Constants.BOORU_CONFIG_HASH_SALT_KEY && !value.contains(Constants.HASH_SALT_CONTAINED, false)) {
+            if (key == BooruConfigFragment.BOORU_CONFIG_HASH_SALT_KEY && !value.contains(Constants.HASH_SALT_CONTAINED, false)) {
                 Toast.makeText(this.requireContext(), R.string.booru_config_hash_salt_must_contain_yp, Toast.LENGTH_LONG).show()
             } else {
                 if (editTextPreference.callChangeListener(value)) {
@@ -114,7 +115,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
         val afterText = s.toString()
         var isValid = true
         when (key) {
-            Constants.BOORU_CONFIG_HOST_KEY -> {
+            BooruConfigFragment.BOORU_CONFIG_HOST_KEY -> {
                 if (afterText.isNotEmpty()) isValid = TextMatchesUtil.isHost(afterText)
             }
         }

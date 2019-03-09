@@ -16,14 +16,14 @@
 package onlymash.flexbooru.repository.favorite
 
 import android.util.Log
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.url.DanOneUrlHelper
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.PostDan
-import onlymash.flexbooru.entity.Vote
-import onlymash.flexbooru.entity.VoteDan
-import onlymash.flexbooru.entity.VoteMoe
+import onlymash.flexbooru.entity.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -31,6 +31,7 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 
 class VoteData(private val danbooruApi: DanbooruApi,
+               private val danbooruOneApi: DanbooruOneApi,
                private val moebooruApi: MoebooruApi,
                private val db: FlexbooruDatabase,
                private val ioExecutor: Executor): VoteRepository {
@@ -39,16 +40,18 @@ class VoteData(private val danbooruApi: DanbooruApi,
         private const val TAG = "VoteData"
     }
 
+    override var voteCallback: VoteCallback? = null
+
     override fun voteMoePost(vote: Vote) {
         moebooruApi.votePost(
-            url = ApiUrlHelper.getMoeVoteUrl(vote),
+            url = MoeUrlHelper.getVoteUrl(vote),
             id = vote.post_id,
             score = vote.score,
             username = vote.username,
             passwordHash = vote.auth_key)
             .enqueue(object : retrofit2.Callback<VoteMoe> {
                 override fun onFailure(call: Call<VoteMoe>, t: Throwable) {
-                    onFailed(t.message.toString())
+                    voteCallback?.onFailed(t.message.toString())
                 }
                 override fun onResponse(call: Call<VoteMoe>, response: Response<VoteMoe>) {
                     if (response.isSuccessful) {
@@ -71,12 +74,12 @@ class VoteData(private val danbooruApi: DanbooruApi,
                                     )
                                 }
                             }
-                            onSuccess()
+                            voteCallback?.onSuccess()
                         } else {
-                            onFailed("Unknown issue")
+                            voteCallback?.onFailed("Unknown issue")
                         }
                     } else {
-                        onFailed(response.message())
+                        voteCallback?.onFailed("${response.code()}: ${response.message()}")
                     }
                 }
             })
@@ -84,7 +87,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
 
     override fun addDanFav(vote: Vote, post: PostDan) {
         danbooruApi.favPost(
-            url = ApiUrlHelper.getDanAddFavUrl(vote),
+            url = DanUrlHelper.getAddFavUrl(vote),
             id = vote.post_id,
             username = vote.username,
             apiKey = vote.auth_key
@@ -93,12 +96,12 @@ class VoteData(private val danbooruApi: DanbooruApi,
                 if (t is HttpException) {
                     val data = t.response().errorBody()
                     if (t.code() == 500){
-                        onFailed(data.toString())
+                        voteCallback?.onFailed(data.toString())
                     } else {
-                        onFailed(t.message())
+                        voteCallback?.onFailed(t.message())
                     }
                 } else {
-                    onFailed(t.message.toString())
+                    voteCallback?.onFailed(t.message.toString())
                 }
             }
             override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
@@ -106,42 +109,86 @@ class VoteData(private val danbooruApi: DanbooruApi,
                     val data = response.body()
                     if (data is VoteDan) {
                         post.keyword = "fav:${vote.username}"
-                        post.uid = -1L
+                        post.uid = 0L
                         ioExecutor.execute {
                             db.postDanDao().insert(post)
                         }
                     }
+                    voteCallback?.onSuccess()
                 } else {
-                    onFailed(response.message())
+                    voteCallback?.onFailed("${response.code()}: ${response.message()}")
                 }
             }
         })
     }
 
     override fun removeDanFav(vote: Vote, postFav: PostDan) {
-        danbooruApi.removeFavPost(ApiUrlHelper.getDanRemoveFavUrl(vote))
+        danbooruApi.removeFavPost(DanUrlHelper.getRemoveFavUrl(vote))
             .enqueue(object : Callback<VoteDan> {
                 override fun onFailure(call: Call<VoteDan>, t: Throwable) {
-                    onFailed(t.message.toString())
+                    voteCallback?.onFailed(t.message.toString())
                 }
                 override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
                     if (response.isSuccessful) {
                         ioExecutor.execute {
                             db.postDanDao().deletePost(postFav)
                         }
-                        onSuccess()
+                        voteCallback?.onSuccess()
                     } else {
-                        onFailed(response.message())
+                        voteCallback?.onFailed("${response.code()}: ${response.message()}")
                     }
                 }
             })
     }
 
-    override fun onSuccess() {
-
+    override fun addDanOneFav(vote: Vote, post: PostDanOne) {
+        danbooruOneApi.favPost(
+            url = DanOneUrlHelper.getAddFavUrl(vote),
+            id = vote.post_id,
+            username = vote.username,
+            passwordHash = vote.auth_key
+        ).enqueue(object : Callback<VoteDan> {
+            override fun onFailure(call: Call<VoteDan>, t: Throwable) {
+                voteCallback?.onFailed(t.message.toString())
+            }
+            override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data is VoteDan) {
+                        post.keyword = "fav:${vote.username}"
+                        post.uid = 0L
+                        ioExecutor.execute {
+                            db.postDanOneDao().insert(post)
+                        }
+                    }
+                    voteCallback?.onSuccess()
+                } else {
+                    voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                }
+            }
+        })
     }
 
-    override fun onFailed(msg: String) {
-        Log.w(TAG, msg)
+    override fun removeDanOneFav(vote: Vote, postFav: PostDanOne) {
+        danbooruOneApi.removeFavPost(
+            url = DanOneUrlHelper.getRemoveFavUrl(vote),
+            postId = vote.post_id,
+            username = vote.username,
+            passwordHash = vote.auth_key)
+            .enqueue(object : Callback<VoteDan> {
+                override fun onFailure(call: Call<VoteDan>, t: Throwable) {
+                    voteCallback?.onFailed(t.message.toString())
+                }
+                override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
+                    if (response.isSuccessful) {
+                        ioExecutor.execute {
+                            db.postDanOneDao().deletePost(postFav)
+                        }
+                        voteCallback?.onSuccess()
+                    } else {
+                        voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                    }
+                }
+            })
     }
 }

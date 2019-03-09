@@ -20,8 +20,10 @@ import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.ArtistDan
+import onlymash.flexbooru.entity.ArtistDanOne
 import onlymash.flexbooru.entity.ArtistMoe
 import onlymash.flexbooru.entity.SearchArtist
 import onlymash.flexbooru.repository.Listing
@@ -31,10 +33,10 @@ import java.util.concurrent.Executor
  *Artists data repository
  * */
 class ArtistData(private val danbooruApi: DanbooruApi,
-               private val moebooruApi: MoebooruApi,
-               private val networkExecutor: Executor
+                 private val danbooruOneApi: DanbooruOneApi,
+                 private val moebooruApi: MoebooruApi,
+                 private val networkExecutor: Executor
 ) : ArtistRepository {
-
 
     @MainThread
     override fun getDanArtists(search: SearchArtist): Listing<ArtistDan> {
@@ -86,6 +88,26 @@ class ArtistData(private val danbooruApi: DanbooruApi,
             refresh = {
                 sourceFactory.sourceLiveData.value?.invalidate()
             },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getDanOneArtists(search: SearchArtist): Listing<ArtistDanOne> {
+        val sourceFactory = ArtistDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi , search = search, retryExecutor = networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = 25,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState =
+            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
             refreshState = refreshState
         )
     }

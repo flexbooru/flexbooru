@@ -19,6 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedLiveDataListener
 import onlymash.flexbooru.repository.browse.PostLoader
@@ -27,10 +28,16 @@ class FavPostViewModel(private val postLoader: PostLoader) : ViewModel() {
 
     var postsDan: MediatorLiveData<MutableList<PostDan>> = MediatorLiveData()
 
+    var postsDanOne: MediatorLiveData<MutableList<PostDanOne>> = MediatorLiveData()
+
     var postsMoe: MediatorLiveData<MutableList<PostMoe>> = MediatorLiveData()
 
     private val postLoadedLiveDataListener = object : PostLoadedLiveDataListener {
-
+        override fun onDanOneItemsLoaded(posts: LiveData<MutableList<PostDanOne>>) {
+            postsDanOne.addSource(posts) {
+                postsDanOne.postValue(it)
+            }
+        }
         override fun onDanItemsLoaded(posts: LiveData<MutableList<PostDan>>) {
             postsDan.addSource(posts) {
                 postsDan.postValue(it)
@@ -48,6 +55,10 @@ class FavPostViewModel(private val postLoader: PostLoader) : ViewModel() {
 
     fun loadDanFav(host: String, username: String) {
         postLoader.loadDanPostsLiveData(host, "fav:$username")
+    }
+
+    fun loadDanOneFav(host: String, username: String) {
+        postLoader.loadDanOnePostsLiveData(host, "fav:$username")
     }
 
     fun loadMoeFav(host: String, username: String) {

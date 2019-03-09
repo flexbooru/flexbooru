@@ -17,9 +17,11 @@ package onlymash.flexbooru.repository.browse
 
 import androidx.lifecycle.LiveData
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 
 interface PostLoadedLiveDataListener {
     fun onDanItemsLoaded(posts: LiveData<MutableList<PostDan>>)
     fun onMoeItemsLoaded(posts: LiveData<MutableList<PostMoe>>)
+    fun onDanOneItemsLoaded(posts: LiveData<MutableList<PostDanOne>>)
 }

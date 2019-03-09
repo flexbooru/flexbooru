@@ -26,6 +26,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.ui.SearchActivity
@@ -63,6 +64,12 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                             putString(TAG_ALL_KEY, post.tags)
                         }
                     }
+                    is PostDanOne -> {
+                        Bundle().apply {
+                            putInt(POST_TYPE, Constants.TYPE_DANBOORU_ONE)
+                            putString(TAG_ALL_KEY, post.tags)
+                        }
+                    }
                     else -> throw IllegalStateException("unknown post type or post is null")
                 }
             }
@@ -80,40 +87,44 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val booruUid = Settings.instance().activeBooruUid
-        arguments?.let { bundle ->
-            when (bundle.getInt(POST_TYPE)) {
-                Constants.TYPE_DANBOORU -> {
-                    bundle.apply {
-                        getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                            if (tag.isEmpty()) return@forEach
+        val arg = arguments ?: throw RuntimeException("arg is null")
+        when (arg.getInt(POST_TYPE)) {
+            Constants.TYPE_DANBOORU -> {
+                arg.apply {
+                    getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
                                 booru_uid = booruUid,
                                 name = tag,
                                 type = TagViewHolder.GENERAL))
                         }
-                        getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                            if (tag.isEmpty()) return@forEach
+                    }
+                    getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
                                 booru_uid = booruUid,
                                 name = tag,
                                 type = TagViewHolder.ARTIST))
                         }
-                        getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                            if (tag.isEmpty()) return@forEach
+                    }
+                    getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
                                 booru_uid = booruUid,
                                 name = tag,
                                 type = TagViewHolder.COPYRIGHT))
                         }
-                        getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                            if (tag.isEmpty()) return@forEach
+                    }
+                    getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
                                 booru_uid = booruUid,
                                 name = tag,
                                 type = TagViewHolder.CHARACTER))
                         }
-                        getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                            if (tag.isEmpty()) return@forEach
+                    }
+                    getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
                                 booru_uid = booruUid,
                                 name = tag,
@@ -121,14 +132,11 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         }
                     }
                 }
-                Constants.TYPE_MOEBOORU -> {
-                    bundle.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
-                        if (tag.isEmpty()) return@forEach
-                        tags.add(TagFilter(booru_uid = booruUid, name = tag))
-                    }
-                }
-                else -> {
-
+            }
+            Constants.TYPE_MOEBOORU,
+            Constants.TYPE_DANBOORU_ONE -> {
+                arg.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
+                    if (tag.isNotEmpty()) tags.add(TagFilter(booru_uid = booruUid, name = tag))
                 }
             }
         }
@@ -153,7 +161,6 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
             }
-
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     dismiss()

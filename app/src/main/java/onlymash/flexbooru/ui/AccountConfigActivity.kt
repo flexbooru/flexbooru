@@ -32,7 +32,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
-import onlymash.flexbooru.repository.account.UserFinder
+import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
 
@@ -42,19 +42,20 @@ class AccountConfigActivity : AppCompatActivity() {
         private const val TAG = "AccountConfigActivity"
     }
 
-    private val findUserListener = object : FindUserListener {
+    private val findListener = object : FindUserListener {
         override fun onSuccess(user: User) {
-            when (booru!!.type) {
+            when (booru.type) {
                 Constants.TYPE_DANBOORU -> {
                     user.apply {
-                        booru_uid = booru!!.uid
+                        booru_uid = booru.uid
                         api_key = pass
                     }
                     UserManager.createUser(user)
                 }
-                Constants.TYPE_MOEBOORU -> {
+                Constants.TYPE_MOEBOORU,
+                Constants.TYPE_DANBOORU_ONE -> {
                     user.apply {
-                        booru_uid = booru!!.uid
+                        booru_uid = booru.uid
                         password_hash = pass
                     }
                     UserManager.createUser(user)
@@ -70,39 +71,40 @@ class AccountConfigActivity : AppCompatActivity() {
         }
     }
 
-    private var booru: Booru? = null
+    private lateinit var booru: Booru
     private var username = ""
     private var pass = ""
     private var requesting = false
 
-    private lateinit var userFinder: UserFinder
+    private val userFinder: UserRepository by lazy { ServiceLocator.instance().getUserRepository() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_config)
-        booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid)
-        if (booru == null) {
+        val b = BooruManager.getBooruByUid(Settings.instance().activeBooruUid)
+        if (b == null) {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
             finish()
+            return
         }
-        account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru!!.name)
-        if (booru!!.type == Constants.TYPE_DANBOORU) {
+        booru = b
+        account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru.name)
+        if (booru.type == Constants.TYPE_DANBOORU) {
             password_edit_container.hint = getString(R.string.account_api_key)
             forgot_auth.setText(R.string.account_forgot_api_key)
         }
         forgot_auth.setOnClickListener {
-            when (booru!!.type) {
+            when (booru.type) {
                 Constants.TYPE_DANBOORU -> {
-                    launchUrl(String.format("%s://%s/session/new", booru!!.scheme, booru!!.host))
+                    launchUrl(String.format("%s://%s/session/new", booru.scheme, booru.host))
                 }
-                Constants.TYPE_MOEBOORU -> {
-                    launchUrl(String.format("%s://%s/user/reset_password", booru!!.scheme, booru!!.host))
+                Constants.TYPE_MOEBOORU,
+                Constants.TYPE_DANBOORU_ONE -> {
+                    launchUrl(String.format("%s://%s/user/reset_password", booru.scheme, booru.host))
                 }
             }
         }
-        userFinder = ServiceLocator.instance().getUserFinder().apply {
-            setFindUserListener(findUserListener)
-        }
+        userFinder.findUserListener = findListener
         set_account.setOnClickListener {
             attemptSetAccount()
         }
@@ -116,12 +118,12 @@ class AccountConfigActivity : AppCompatActivity() {
             Snackbar.make(account_config_title, "Username or Password/Api Key cannot be empty.", Snackbar.LENGTH_LONG).show()
             return
         }
-        val hashSalt = booru!!.hash_salt
-        if (booru!!.type == Constants.TYPE_MOEBOORU && hashSalt.isNotBlank()) {
+        val hashSalt = booru.hash_salt
+        if ((booru.type == Constants.TYPE_MOEBOORU || booru.type == Constants.TYPE_DANBOORU_ONE) && hashSalt.isNotBlank()) {
             pass = HashUtil.sha1(hashSalt.replace(Constants.HASH_SALT_CONTAINED, pass))
         }
         set_account.visibility = View.INVISIBLE
         progress_bar.visibility = View.VISIBLE
-        userFinder.findUser(username, booru!!)
+        userFinder.findUserByName(username, booru)
     }
 }

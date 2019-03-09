@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.TagDan
+import onlymash.flexbooru.entity.TagDanOne
 import onlymash.flexbooru.entity.TagMoe
 
 class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,6 +41,8 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         const val CIRCLE = 5
         const val FAULTS = 6
         const val META = 5
+        const val MODEL = 5
+        const val PHOTO_SET = 6
     }
 
     private val tagName: TextView = itemView.findViewById(R.id.tag_name)
@@ -63,6 +66,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             when (tag) {
                 is TagDan -> itemListener?.onClickItem((tag as TagDan).name)
                 is TagMoe -> itemListener?.onClickItem((tag as TagMoe).name)
+                is TagDanOne -> itemListener?.onClickItem((tag as TagDanOne).name)
             }
         }
         itemView.setOnLongClickListener {
@@ -99,6 +103,19 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     CHARACTER -> res.getString(R.string.tag_type_character)
                     CIRCLE -> res.getString(R.string.tag_type_circle)
                     FAULTS -> res.getString(R.string.tag_type_faults)
+                    else -> res.getString(R.string.tag_type_unknown)
+                }
+                count.text = data.count.toString()
+            }
+            is TagDanOne -> {
+                tagName.text = data.name
+                tagType.text = when (data.type) {
+                    GENERAL -> res.getString(R.string.tag_type_general)
+                    ARTIST -> res.getString(R.string.tag_type_artist)
+                    COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                    CHARACTER -> res.getString(R.string.tag_type_character)
+                    MODEL -> res.getString(R.string.tag_type_model)
+                    PHOTO_SET -> res.getString(R.string.tag_type_photo_set)
                     else -> res.getString(R.string.tag_type_unknown)
                 }
                 count.text = data.count.toString()

@@ -39,12 +39,14 @@ class AccountActivity : AppCompatActivity() {
         const val USER_NAME_KEY = "user_name"
     }
 
-    private var booru: Booru? = null
-    private var user: User? = null
+    private lateinit var booru: Booru
+    private lateinit var user: User
+
+    private val userFinder by lazy { ServiceLocator.instance().getUserRepository() }
 
     private var findUserListener = object : FindUserListener {
         override fun onSuccess(user: User) {
-            this@AccountActivity.user!!.name = user.name
+            this@AccountActivity.user.name = user.name
             username.text = user.name
         }
 
@@ -59,38 +61,41 @@ class AccountActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { onBackPressed() }
         val uid = Settings.instance().activeBooruUid
         booru = BooruManager.getBooruByUid(uid) ?: return
-        toolbar.title = String.format(getString(R.string.title_account_and_booru), booru!!.name)
+        toolbar.title = String.format(getString(R.string.title_account_and_booru), booru.name)
         val extras = intent?.extras
-        val type = booru!!.type
+        val type = booru.type
+        var u: User? = null
         when {
             type == Constants.TYPE_DANBOORU && extras != null -> {
                 val id = extras.getInt(USER_ID_KEY, -1)
                 val name = extras.getString(USER_NAME_KEY)
                 if (id > 0 && !name.isNullOrBlank()) {
-                    user = User(name = name, id = id)
+                    u = User(name = name, id = id)
                 }
             }
-            type == Constants.TYPE_MOEBOORU && extras != null -> {
+            (type == Constants.TYPE_MOEBOORU || type == Constants.TYPE_DANBOORU_ONE) && extras != null -> {
                 val id = extras.getInt(USER_ID_KEY, -1)
                 val name = extras.getString(USER_NAME_KEY) ?: ""
                 if (id > 0) {
-                    user = User(id = id, name = name)
+                    u = User(id = id, name = name)
                     if (name.isBlank()) {
-                        ServiceLocator.instance().getUserFinder().apply {
-                            setFindUserListener(findUserListener)
-                            findMoeUserById(id, booru!!)
-                        }
+                        userFinder.findUserListener = findUserListener
+                        userFinder.findUserById(id, booru)
                     }
                 }
             }
         }
-        if (user == null) {
-            user = UserManager.getUserByBooruUid(uid)
-            if (user != null) {
+        if (u == null) {
+            u = UserManager.getUserByBooruUid(uid)
+            if (u != null) {
+                user = u
                 initToolbarMenu()
+                init()
             }
+        } else {
+            user = u
+            init()
         }
-        init()
     }
     private fun initToolbarMenu() {
         toolbar.inflateMenu(R.menu.account)
@@ -99,7 +104,7 @@ class AccountActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@AccountActivity)
                     .setTitle(R.string.account_user_dialog_title_remove)
                     .setPositiveButton(R.string.dialog_yes) {_, _ ->
-                        UserManager.deleteUser(user!!)
+                        UserManager.deleteUser(user)
                         finish()
                     }
                     .setNegativeButton(R.string.dialog_no, null)
@@ -110,34 +115,29 @@ class AccountActivity : AppCompatActivity() {
         }
     }
     private fun init() {
-        if (user == null) return
-        username.text = user!!.name
-        user_id.text = String.format(getString(R.string.account_user_id), user!!.id)
-        when (booru!!.type) {
-            Constants.TYPE_MOEBOORU -> {
-                GlideApp.with(this)
-                    .load(String.format(getString(R.string.account_user_avatars), booru!!.scheme, booru!!.host, user!!.id))
-                    .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
-                    .into(user_avatar)
-            }
-            Constants.TYPE_DANBOORU -> {
-
-            }
+        username.text = user.name
+        user_id.text = String.format(getString(R.string.account_user_id), user.id)
+        if (booru.type == Constants.TYPE_MOEBOORU) {
+            GlideApp.with(this)
+                .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
+                .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
+                .into(user_avatar)
         }
         fav_action_button.setOnClickListener {
-            val keyword = when (booru!!.type) {
-                Constants.TYPE_DANBOORU -> String.format("fav:%s", user!!.name)
-                Constants.TYPE_MOEBOORU -> String.format("vote:3:%s order:vote", user!!.name)
-                else -> throw IllegalStateException("unknown booru type: ${booru!!.type}")
+            val keyword = when (booru.type) {
+                Constants.TYPE_DANBOORU,
+                Constants.TYPE_DANBOORU_ONE -> String.format("fav:%s", user.name)
+                Constants.TYPE_MOEBOORU -> String.format("vote:3:%s order:vote", user.name)
+                else -> throw IllegalStateException("unknown booru type: ${booru.type}")
             }
             SearchActivity.startActivity(this, keyword)
         }
         posts_action_button.setOnClickListener {
-            val keyword = String.format("user:%s", user!!.name)
+            val keyword = String.format("user:%s", user.name)
             SearchActivity.startActivity(this, keyword)
         }
         comments_action_button.setOnClickListener {
-            CommentActivity.startActivity(this, username = user!!.name)
+            CommentActivity.startActivity(this, username = user.name)
         }
     }
 }

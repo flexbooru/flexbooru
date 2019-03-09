@@ -16,9 +16,12 @@
 package onlymash.flexbooru.repository.account
 
 import onlymash.flexbooru.Constants
-import onlymash.flexbooru.api.ApiUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.url.DanOneUrlHelper
+import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import retrofit2.Call
@@ -28,29 +31,31 @@ import retrofit2.Response
  *user repo
  * */
 class UserFinder(private val danbooruApi: DanbooruApi,
-                 private val moebooruApi: MoebooruApi) {
+                 private val danbooruOneApi: DanbooruOneApi,
+                 private val moebooruApi: MoebooruApi) : UserRepository {
 
-    private var findUserListener: FindUserListener? = null
-
-    /**
-     * set user search callback
-     * */
-    fun setFindUserListener(listener: FindUserListener) {
-        findUserListener = listener
-    }
+    override var findUserListener: FindUserListener? = null
 
     /**
      *search user
      * */
-    fun findUser(username: String, booru: Booru) {
+    override fun findUserByName(username: String, booru: Booru) {
         when (booru.type) {
             Constants.TYPE_DANBOORU -> findDanUser(username, booru)
             Constants.TYPE_MOEBOORU -> findMoeUser(username, booru)
+            Constants.TYPE_DANBOORU_ONE -> findDanOneUser(username, booru)
+        }
+    }
+
+    override fun findUserById(id: Int, booru: Booru) {
+        when (booru.type) {
+            Constants.TYPE_MOEBOORU -> findMoeUserById(id, booru)
+            Constants.TYPE_DANBOORU_ONE -> findDanOneUserById(id, booru)
         }
     }
 
     private fun findMoeUser(username: String, booru: Booru) {
-        moebooruApi.getUsers(ApiUrlHelper.getMoeUserUrl(username, booru))
+        moebooruApi.getUsers(MoeUrlHelper.getUserUrl(username, booru))
             .enqueue(object : retrofit2.Callback<MutableList<User>> {
                 override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
                     findUserListener?.onFailed(t.message.toString())
@@ -79,7 +84,7 @@ class UserFinder(private val danbooruApi: DanbooruApi,
     }
 
     private fun findDanUser(username: String, booru: Booru) {
-        danbooruApi.getUsers(ApiUrlHelper.getDanUserUrl(username, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
+        danbooruApi.getUsers(DanUrlHelper.getUserUrl(username, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
             override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
                 findUserListener?.onFailed(t.message.toString())
             }
@@ -109,8 +114,60 @@ class UserFinder(private val danbooruApi: DanbooruApi,
     /**
      *search moebooru user by id
      * */
-    fun findMoeUserById(id: Int, booru: Booru) {
-        moebooruApi.getUsers(ApiUrlHelper.getMoeUserUrlById(id, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
+    private fun findMoeUserById(id: Int, booru: Booru) {
+        moebooruApi.getUsers(MoeUrlHelper.getUserUrlById(id, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
+            override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
+                findUserListener?.onFailed(t.message.toString())
+            }
+            override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
+                if (response.isSuccessful) {
+                    val users = response.body()
+                    if (users != null && users.size == 1) {
+                        findUserListener?.onSuccess(users[0])
+                    } else {
+                        findUserListener?.onFailed("User not found!")
+                    }
+                } else {
+                    findUserListener?.onFailed("Request failed!")
+                }
+            }
+        })
+    }
+
+    private fun findDanOneUser(username: String, booru: Booru) {
+        danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrl(username, booru))
+            .enqueue(object : retrofit2.Callback<MutableList<User>> {
+                override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
+                    findUserListener?.onFailed(t.message.toString())
+                }
+                override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        val users = data?: mutableListOf()
+                        var user: User? = null
+                        users.forEach {
+                            if (it.name == username) {
+                                user = it
+                                return@forEach
+                            }
+                        }
+                        if (user != null) {
+                            findUserListener?.onSuccess(user!!)
+                        } else {
+                            findUserListener?.onFailed("User not found!")
+                        }
+                    } else {
+                        findUserListener?.onFailed("Request failed!")
+                    }
+                }
+            })
+    }
+
+    /**
+     *search danbooru1.x user by id
+     * */
+    private fun findDanOneUserById(id: Int, booru: Booru) {
+        danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrlById(id, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
             override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
                 findUserListener?.onFailed(t.message.toString())
             }

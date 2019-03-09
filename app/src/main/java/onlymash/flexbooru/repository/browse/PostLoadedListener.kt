@@ -16,9 +16,11 @@
 package onlymash.flexbooru.repository.browse
 
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 
 interface PostLoadedListener {
     fun onDanItemsLoaded(posts: MutableList<PostDan>)
     fun onMoeItemsLoaded(posts: MutableList<PostMoe>)
+    fun onDanOneItemsLoaded(posts: MutableList<PostDanOne>)
 }

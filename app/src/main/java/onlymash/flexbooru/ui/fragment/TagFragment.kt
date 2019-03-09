@@ -58,6 +58,8 @@ class TagFragment : ListFragment() {
         private const val TYPE_CIRCLE = "5"
         private const val TYPE_FAULTS = "6"
         private const val TYPE_META = "5"
+        private const val TYPE_MODEL = "5"
+        private const val TYPE_PHOTO_SET = "6"
 
         private const val ORDER_DATE = "date"
         private const val ORDER_NAME = "name"
@@ -91,13 +93,25 @@ class TagFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
     }
 
     private var type = -1
-    private var search: SearchTag? = null
+    private lateinit var search: SearchTag
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -110,54 +124,62 @@ class TagFragment : ListFragment() {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (menuItem.itemId) {
                     R.id.action_tag_order_date -> {
-                        search!!.order = ORDER_DATE
+                        search.order = ORDER_DATE
                         refresh()
                     }
                     R.id.action_tag_order_name -> {
-                        search!!.order = ORDER_NAME
+                        search.order = ORDER_NAME
                         refresh()
                     }
                     R.id.action_tag_order_count -> {
-                        search!!.order = ORDER_COUNT
+                        search.order = ORDER_COUNT
                         refresh()
                     }
                     R.id.action_tag_type_all -> {
-                        search!!.type = TYPE_ALL
+                        search.type = TYPE_ALL
                         refresh()
                     }
                     R.id.action_tag_type_general -> {
-                        search!!.type = TYPE_GENERAL
+                        search.type = TYPE_GENERAL
                         refresh()
                     }
                     R.id.action_tag_type_artist -> {
-                        search!!.type = TYPE_ARTIST
+                        search.type = TYPE_ARTIST
                         refresh()
                     }
                     R.id.action_tag_type_copyright -> {
-                        search!!.type = TYPE_COPYRIGHT
+                        search.type = TYPE_COPYRIGHT
                         refresh()
                     }
                     R.id.action_tag_type_character -> {
-                        search!!.type = TYPE_CHARACTER
+                        search.type = TYPE_CHARACTER
                         refresh()
                     }
                     R.id.action_tag_type_circle -> {
-                        search!!.type = TYPE_CIRCLE
+                        search.type = TYPE_CIRCLE
                         refresh()
                     }
                     R.id.action_tag_type_faults -> {
-                        search!!.type = TYPE_FAULTS
+                        search.type = TYPE_FAULTS
                         refresh()
                     }
                     R.id.action_tag_type_meta -> {
-                        search!!.type = TYPE_META
+                        search.type = TYPE_META
+                        refresh()
+                    }
+                    R.id.action_tag_type_model -> {
+                        search.type = TYPE_MODEL
+                        refresh()
+                    }
+                    R.id.action_tag_type_photo_set -> {
+                        search.type = TYPE_PHOTO_SET
                         refresh()
                     }
                 }
             }
 
             override fun onApplySearch(query: String) {
-                search!!.name = query
+                search.name = query
                 refresh()
             }
         }
@@ -166,13 +188,18 @@ class TagFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 swipe_refresh.isRefreshing = true
-                tagViewModel.show(search!!)
+                tagViewModel.show(search)
                 tagViewModel.refreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
                 swipe_refresh.isRefreshing = true
-                tagViewModel.show(search!!)
+                tagViewModel.show(search)
                 tagViewModel.refreshMoe()
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                swipe_refresh.isRefreshing = true
+                tagViewModel.show(search)
+                tagViewModel.refreshDanOne()
             }
         }
     }
@@ -192,19 +219,25 @@ class TagFragment : ListFragment() {
         }
         override fun onDelete(user: User) {
             if (user.booru_uid != Settings.instance().activeBooruUid) return
-            search!!.username = ""
-            search!!.auth_key = ""
+            search.username = ""
+            search.auth_key = ""
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     tagViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     tagViewModel.apply {
-                        show(search!!)
+                        show(search)
                         refreshMoe()
+                    }
+                }
+                Constants.TYPE_DANBOORU_ONE -> {
+                    tagViewModel.apply {
+                        show(search)
+                        refreshDanOne()
                     }
                 }
             }
@@ -217,19 +250,27 @@ class TagFragment : ListFragment() {
     private fun updateUserInfoAndRefresh(user: User) {
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.api_key ?: ""
+                search.username = user.name
+                search.auth_key = user.api_key ?: ""
                 tagViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshDan()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                search!!.username = user.name
-                search!!.auth_key = user.password_hash ?: ""
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
                 tagViewModel.apply {
-                    show(search!!)
+                    show(search)
                     refreshMoe()
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                tagViewModel.apply {
+                    show(search)
+                    refreshDanOne()
                 }
             }
         }
@@ -245,19 +286,18 @@ class TagFragment : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-            search = SearchTag(
-                scheme = it.getString(Constants.SCHEME_KEY, ""),
-                host = it.getString(Constants.HOST_KEY, ""),
-                name = "",
-                order = ORDER_DATE,
-                type = TYPE_ALL,
-                username = it.getString(Constants.USERNAME_KEY, ""),
-                auth_key = it.getString(Constants.AUTH_KEY, ""),
-                limit = Settings.instance().pageSize
-            )
-        }
+        val arg = arguments ?: throw RuntimeException("arg is null")
+        type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+        search = SearchTag(
+            scheme = arg.getString(Constants.SCHEME_KEY, ""),
+            host = arg.getString(Constants.HOST_KEY, ""),
+            name = "",
+            order = ORDER_DATE,
+            type = TYPE_ALL,
+            username = arg.getString(Constants.USERNAME_KEY, ""),
+            auth_key = arg.getString(Constants.AUTH_KEY, ""),
+            limit = Settings.instance().pageSize
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -265,13 +305,13 @@ class TagFragment : ListFragment() {
         search_bar.setTitle(R.string.title_tags)
         search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_tags))
         tagViewModel = getTagViewModel(ServiceLocator.instance().getTagRepository())
-        if (search == null) return
         tagAdapter = TagAdapter(
             listener = itemListener,
             retryCallback = {
                 when (type) {
                     Constants.TYPE_DANBOORU -> tagViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> tagViewModel.retryMoe()
+                    Constants.TYPE_DANBOORU_ONE -> tagViewModel.retryDanOne()
                 }
             }
         )
@@ -302,8 +342,19 @@ class TagFragment : ListFragment() {
                 })
                 initSwipeToRefreshMoe()
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                search_bar.setMenu(R.menu.tag_dan_one, requireActivity().menuInflater)
+                tagViewModel.tagsDanOne.observe(this, Observer { tags ->
+                    @Suppress("UNCHECKED_CAST")
+                    tagAdapter.submitList(tags as PagedList<Any>)
+                })
+                tagViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                    tagAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDanOne()
+            }
         }
-        tagViewModel.show(search = search!!)
+        tagViewModel.show(search = search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
@@ -315,6 +366,15 @@ class TagFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { tagViewModel.refreshDan() }
+    }
+
+    private fun initSwipeToRefreshDanOne() {
+        tagViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { tagViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshMoe() {

@@ -107,6 +107,19 @@ class PostFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
+                        putString(Constants.KEYWORD_KEY, keyword)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
@@ -186,6 +199,11 @@ class PostFragment : ListFragment() {
                     setSharedElement()
                     BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
                 }
+                is PostDanOne -> {
+                    currentPostId = post.id
+                    setSharedElement()
+                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
+                }
             }
         }
 
@@ -194,6 +212,7 @@ class PostFragment : ListFragment() {
             when (post) {
                 is PostDan -> id = post.id
                 is PostMoe -> id = post.id
+                is PostDanOne -> id = post.id
             }
             if (id > 0) {
                 val context = requireContext()
@@ -235,6 +254,7 @@ class PostFragment : ListFragment() {
                                     when (post) {
                                         is PostDan -> voteRepo.addDanFav(vote, post)
                                         is PostMoe -> voteRepo.voteMoePost(vote)
+                                        is PostDanOne -> {}
                                     }
                                 }
                             }
@@ -291,6 +311,12 @@ class PostFragment : ListFragment() {
                         refreshMoe()
                     }
                 }
+                Constants.TYPE_DANBOORU_ONE -> {
+                    postViewModel.apply {
+                        show(search)
+                        refreshDanOne()
+                    }
+                }
             }
         }
         override fun onUpdate(user: User) {
@@ -314,6 +340,14 @@ class PostFragment : ListFragment() {
                 postViewModel.apply {
                     show(search)
                     refreshMoe()
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                postViewModel.apply {
+                    show(search)
+                    refreshDanOne()
                 }
             }
         }
@@ -348,7 +382,8 @@ class PostFragment : ListFragment() {
                         username = user?.name ?: "",
                         auth_key = when (type) {
                             Constants.TYPE_DANBOORU -> user?.api_key ?: ""
-                            Constants.TYPE_MOEBOORU -> user?.password_hash ?: ""
+                            Constants.TYPE_MOEBOORU,
+                            Constants.TYPE_DANBOORU_ONE -> user?.password_hash ?: ""
                             else -> ""
                         },
                         limit = Settings.instance().pageSize
@@ -397,6 +432,7 @@ class PostFragment : ListFragment() {
                 when (type) {
                     Constants.TYPE_DANBOORU -> postViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
+                    Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()
                 }
             })
         list.apply {
@@ -461,6 +497,16 @@ class PostFragment : ListFragment() {
                 })
                 initSwipeToRefreshMoe()
             }
+            Constants.TYPE_DANBOORU_ONE -> {
+                postViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<Any>)
+                })
+                postViewModel.networkStateDanOne.observe(this, Observer<NetworkState> { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshDanOne()
+            }
         }
         postViewModel.show(search)
         val activity = requireActivity()
@@ -472,6 +518,13 @@ class PostFragment : ListFragment() {
                 Snackbar.make(search_bar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun initSwipeToRefreshDanOne() {
+        postViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+        swipe_refresh.setOnRefreshListener { postViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshDan() {

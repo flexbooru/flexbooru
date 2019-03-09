@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 
@@ -36,6 +37,7 @@ class PostAdapter(private val glide: GlideRequests,
                 return when {
                     oldItem is PostDan && newItem is PostDan -> oldItem.id == newItem.id
                     oldItem is PostMoe && newItem is PostMoe -> oldItem.id == newItem.id
+                    oldItem is PostDanOne && newItem is PostDanOne -> oldItem.id == newItem.id
                     else -> false
                 }
             }
