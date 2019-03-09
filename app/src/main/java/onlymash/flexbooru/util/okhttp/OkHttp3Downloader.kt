@@ -120,9 +120,7 @@ class OkHttp3Downloader : Downloader {
             var size = MIN_DISK_CACHE_SIZE.toLong()
             try {
                 val statFs = StatFs(dir.absolutePath)
-
                 val blockCount = statFs.blockCountLong
-
                 val blockSize = statFs.blockSizeLong
                 val available = blockCount * blockSize
                 // Target 2% of the total space.
@@ -139,10 +137,14 @@ class OkHttp3Downloader : Downloader {
                 level = HttpLoggingInterceptor.Level.BASIC
             }
             val interceptor = Interceptor {
+                val url = it.request().url()
+                val scheme = url.scheme()
+                val host = url.host()
                 it.proceed(it.request()
                     .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
                     .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                     .build())
             }
             return OkHttpClient.Builder()
