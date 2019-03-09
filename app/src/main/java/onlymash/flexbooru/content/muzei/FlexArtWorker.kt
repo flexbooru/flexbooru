@@ -23,13 +23,13 @@ import com.google.android.apps.muzei.api.provider.ProviderContract
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.api.url.MoeUrlHelper
-import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Search
 import java.io.IOException
 import onlymash.flexbooru.R
-import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.database.MuzeiManager
 
@@ -77,7 +77,7 @@ class FlexArtWorker(
                         username = it.name
                     }
                 }
-                val danbooruApi = DanbooruApi.create()
+                val danbooruApi = ServiceLocator.instance().getDanbooruApi()
                 val posts = try {
                     danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")
@@ -101,6 +101,38 @@ class FlexArtWorker(
                     }
                 })
             }
+            Constants.TYPE_MOEBOORU -> {
+                val search = Search(
+                    scheme = booru.scheme,
+                    host = booru.host,
+                    keyword = keyword,
+                    limit = Settings.instance().pageSize).apply {
+                    user?.let {
+                        auth_key = it.password_hash ?: ""
+                        username = it.name
+                    }
+                }
+                val moebooruApi = ServiceLocator.instance().getMoebooruApi()
+                val posts = try {
+                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1))
+                        .execute().body() ?: throw IOException("Response was null")
+                } catch (ex: IOException) {
+                    return Result.retry()
+                }
+                val providerClient = ProviderContract.getProviderClient(
+                    applicationContext, applicationContext.packageName + ".muzei")
+                val attributionString = applicationContext.getString(R.string.muzei_attribution)
+                providerClient.setArtwork(posts.map { post ->
+                    Artwork().apply {
+                        token = "id:${post.id}"
+                        title = "Post ${post.id}"
+                        byline = keyword
+                        attribution = attributionString
+                        persistentUri = post.getLargerUrl().toUri()
+                        webUri = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id).toUri()
+                    }
+                })
+            }
             else -> {
                 val search = Search(
                     scheme = booru.scheme,
@@ -112,9 +144,9 @@ class FlexArtWorker(
                         username = it.name
                     }
                 }
-                val moebooruApi = MoebooruApi.create()
+                val danbooruOneApi = ServiceLocator.instance().getDanbooruOneApi()
                 val posts = try {
-                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1))
+                    danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
