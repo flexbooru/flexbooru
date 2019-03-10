@@ -58,7 +58,7 @@ data class PostDan(
     val is_flagged: Boolean,
     val is_deleted: Boolean,
     val tag_count: Int,
-    val updated_at: String,
+    val updated_at: String?,
     val is_banned: Boolean,
     val pixiv_id: Int,
     val last_commented_at: String?,
@@ -81,6 +81,9 @@ data class PostDan(
 ) : BasePost() {
     // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
+
+    fun getUpdateDate(): String =
+        updated_at ?: created_at
 
     override fun getPreviewUrl(): String =
             if (preview_file_url.isNullOrEmpty()) "" else checkUrl(preview_file_url)

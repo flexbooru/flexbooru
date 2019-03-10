@@ -31,13 +31,13 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -70,7 +70,7 @@ import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.net.URLDecoder
 
-class BrowseActivity : FragmentActivity() {
+class BrowseActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "BrowseActivity"
