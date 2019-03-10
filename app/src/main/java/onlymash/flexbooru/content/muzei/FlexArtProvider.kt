@@ -22,8 +22,9 @@ import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.SearchActivity
-import onlymash.flexbooru.util.okhttp.OkHttp3Downloader
+import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 
@@ -69,14 +70,13 @@ class FlexArtProvider : MuzeiArtProvider() {
         val uri = artwork.persistentUri
         val context = context
         return if (context != null && uri != null && (uri.scheme == "http" || uri.scheme == "https")) {
-            val downloader = OkHttp3Downloader(context)
-            val response = downloader.load(uri)
-            if(response.isSuccessful) {
-                response.body()?.byteStream() ?: throw IOException("Unable to open stream for $this")
-            } else {
-                downloader.shutdown()
-                super.openFile(artwork)
-            }
+            val file =
+                GlideApp.with(context)
+                    .downloadOnly()
+                    .load(uri.toString())
+                    .submit()
+                    .get()
+            if (file != null && file.exists()) FileInputStream(file) else super.openFile(artwork)
         } else {
             super.openFile(artwork)
         }
