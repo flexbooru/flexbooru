@@ -61,6 +61,7 @@ class PopularMoeDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
+        val scheme = popular.scheme
         val host = popular.host
         val keyword = popular.period
 
@@ -79,11 +80,12 @@ class PopularMoeDataSource(
             }
             db.postMoeDao().deletePosts(host, keyword)
             val start = db.postMoeDao().getNextIndex(host, keyword)
-            val items = data.mapIndexed { index, postMoe ->
-                postMoe.host = host
-                postMoe.keyword = keyword
-                postMoe.indexInResponse = start + index
-                postMoe
+            val items = data.mapIndexed { index, post ->
+                post.scheme = scheme
+                post.host = host
+                post.keyword = keyword
+                post.indexInResponse = start + index
+                post
             }
             db.postMoeDao().insert(items)
             retry = null

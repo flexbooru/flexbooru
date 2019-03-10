@@ -61,6 +61,7 @@ class PopularDanOneDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
+        val scheme = popular.scheme
         val host = popular.host
         val keyword = popular.scale
 
@@ -79,11 +80,12 @@ class PopularDanOneDataSource(
             }
             db.postDanOneDao().deletePosts(host, keyword)
             val start = db.postDanOneDao().getNextIndex(host = host, keyword = keyword)
-            val items = data.mapIndexed { index, postDanOne ->
-                postDanOne.host = host
-                postDanOne.keyword = keyword
-                postDanOne.indexInResponse = start + index
-                postDanOne
+            val items = data.mapIndexed { index, post ->
+                post.scheme = scheme
+                post.host = host
+                post.keyword = keyword
+                post.indexInResponse = start + index
+                post
             }
             db.postDanOneDao().insert(items)
             retry = null

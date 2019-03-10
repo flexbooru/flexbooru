@@ -15,14 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "pools_danbooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PoolDan(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     var keyword: String = "",
@@ -37,7 +30,4 @@ data class PoolDan(
     val category: String,
     val creator_name: String,
     val post_count: Int
-) {
-    // to be consistent w/ changing backend order, we need to keep a data like this
-    var indexInResponse: Int = -1
-}
+)

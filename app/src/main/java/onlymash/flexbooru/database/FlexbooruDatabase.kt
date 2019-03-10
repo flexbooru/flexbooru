@@ -29,11 +29,8 @@ import onlymash.flexbooru.entity.*
 @Database(entities = [
     (PostMoe::class), (PostDan::class), (PostDanOne::class),
     (Booru::class), (User::class),
-    (PoolDan::class), (PoolMoe::class),
-    (TagDan::class), (TagMoe::class),
-    (ArtistDan::class), (ArtistMoe::class),
     (TagFilter::class), (Muzei::class)],
-    version = 14, exportSchema = true)
+    version = 15, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -92,6 +89,25 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_14_15 by lazy {
+            object : Migration(14, 15) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("DROP TABLE `artists_moebooru`")
+                    database.execSQL("DROP TABLE `pools_moebooru`")
+                    database.execSQL("DROP TABLE `tags_moebooru`")
+                    database.execSQL("DROP TABLE `artists_danbooru`")
+                    database.execSQL("DROP TABLE `pools_danbooru`")
+                    database.execSQL("DROP TABLE `tags_danbooru`")
+
+                    database.execSQL("DELETE FROM `posts_danbooru`")
+                    database.execSQL("DELETE FROM `posts_danbooru_one`")
+                    database.execSQL("DELETE FROM `posts_moebooru`")
+                    database.execSQL("ALTER TABLE `posts_danbooru` ADD COLUMN `scheme` TEXT NOT NULL DEFAULT('http')")
+                    database.execSQL("ALTER TABLE `posts_danbooru_one` ADD COLUMN `scheme` TEXT NOT NULL DEFAULT('http')")
+                    database.execSQL("ALTER TABLE `posts_moebooru` ADD COLUMN `scheme` TEXT NOT NULL DEFAULT('http')")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
@@ -102,7 +118,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_10_11,
                     MIGRATION_11_12,
                     MIGRATION_12_13,
-                    MIGRATION_13_14
+                    MIGRATION_13_14,
+                    MIGRATION_14_15
                 )
                 .build()
         }
@@ -118,15 +135,6 @@ abstract class FlexbooruDatabase : RoomDatabase() {
 
     abstract fun booruDao(): BooruDao
     abstract fun userDao(): UserDao
-
-    abstract fun poolDanDao(): PoolDanDao
-    abstract fun poolMoeDao(): PoolMoeDao
-
-    abstract fun tagDanDao(): TagDanDao
-    abstract fun tagMoeDao(): TagMoeDao
-
-    abstract fun artistDanDao(): ArtistDanDao
-    abstract fun artistMoeDao(): ArtistMoeDao
 
     abstract fun tagFilterDao(): TagFilterDao
     abstract fun muzeiDao(): MuzeiDao

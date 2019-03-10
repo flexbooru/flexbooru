@@ -15,14 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "tags_danbooru", indices = [(Index(value = ["host", "id"], unique = true))])
 data class TagDan(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     val id: Int,
@@ -34,7 +27,4 @@ data class TagDan(
     val created_at: String,
     val updated_at: String,
     val is_locked: Boolean
-) {
-    // to be consistent w/ changing backend order, we need to keep a data like this
-    var indexInResponse: Int = -1
-}
+)

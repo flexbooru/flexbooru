@@ -13,15 +13,29 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.database.dao
+package onlymash.flexbooru.entity
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import onlymash.flexbooru.entity.PoolDan
+abstract class BasePost {
 
-@Dao
-interface PoolDanDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(pools: List<PoolDan>)
+    abstract fun checkUrl(url: String): String
+
+    /**
+     * return Preview url [String]
+     * */
+    abstract fun getPreviewUrl(): String
+
+    /**
+     * return Sample url [String]
+     * */
+    abstract fun getSampleUrl(): String
+
+    /**
+     * return Larger url [String]
+     * */
+    abstract fun getLargerUrl(): String
+
+    /**
+     * return Origin url [String]
+     * */
+    abstract fun getOriginUrl(): String
 }

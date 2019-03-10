@@ -15,14 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "tags_moebooru", indices = [(Index(value = ["host", "id"], unique = true))])
 data class TagMoe(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     val id: Int,
@@ -30,7 +23,4 @@ data class TagMoe(
     val count: Int,
     val type: Int,
     val ambiguous: Boolean
-) {
-    // to be consistent w/ changing backend order, we need to keep a data like this
-    var indexInResponse: Int = -1
-}
+)

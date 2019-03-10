@@ -15,14 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "artists_moebooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class ArtistMoe(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     var keyword: String? = "",
@@ -31,7 +24,4 @@ data class ArtistMoe(
     val alias_id: Int?,
     val group_id: Int?,
     val urls: MutableList<String>?
-) {
-    // to be consistent w/ changing backend order, we need to keep a data like this
-    var indexInResponse: Int = -1
-}
+)

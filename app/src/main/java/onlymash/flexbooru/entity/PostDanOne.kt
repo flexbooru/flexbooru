@@ -23,6 +23,7 @@ import androidx.room.PrimaryKey
 data class PostDanOne(
     @PrimaryKey(autoGenerate = true)
     var uid: Long = 0L,
+    var scheme: String = "http",
     var host: String = "",
     var keyword: String = "",
     val id: Int,
@@ -50,22 +51,29 @@ data class PostDanOne(
     val preview_url: String,
     val file_size: Int,
     val created_at: DanOneDate
-) {
+) : BasePost() {
     // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
+
+    override fun getPreviewUrl(): String = checkUrl(preview_url)
 
     /**
      * return Sample url [String]
      * */
-    fun getSampleUrl(): String = sample_url ?: preview_url ?: ""
+    override fun getSampleUrl(): String =
+        if (sample_url.isNullOrEmpty()) getPreviewUrl() else checkUrl(sample_url)
 
     /**
      * return Larger url [String]
      * */
-    fun getLargerUrl(): String = getSampleUrl()
+    override fun getLargerUrl(): String = getSampleUrl()
 
     /**
      * return Origin url [String]
      * */
-    fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else file_url
+    override fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else checkUrl(file_url)
+
+    override fun checkUrl(url: String): String =
+        if (url.startsWith("http")) url else "$scheme://$host$url"
+
 }

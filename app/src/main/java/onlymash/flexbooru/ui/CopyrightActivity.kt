@@ -23,6 +23,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
@@ -57,6 +58,7 @@ class CopyrightActivity : AppCompatActivity() {
                     removeSpan(span)
                 }
             }
+            setBackgroundColor(ContextCompat.getColor(this@CopyrightActivity, R.color.background))
             movementMethod = LinkMovementMethod.getInstance()
         }
     }

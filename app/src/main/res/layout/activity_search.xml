@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:background="@color/background"/>
     <fragment
-            android:id="@+id/post_fragment"
+            android:id="@+id/fragment_post"
             android:name="onlymash.flexbooru.ui.fragment.PostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -16,7 +16,6 @@
 package onlymash.flexbooru.entity
 
 data class PoolDanOne(
-    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     var keyword: String = "",

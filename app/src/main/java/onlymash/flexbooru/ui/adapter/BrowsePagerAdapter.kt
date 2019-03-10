@@ -92,15 +92,16 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         }
         var tranName = ""
         var previewUrl = ""
-        val url = when (type) {
+        var url = ""
+        when (type) {
             Constants.TYPE_DANBOORU -> {
                 tranName = when (pageType) {
                     Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsDan[position].id)
                     Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsDan[position].id)
                     else -> throw IllegalStateException("unknown post type $pageType")
                 }
-                previewUrl = postsDan[position].preview_file_url!!
-                when (size) {
+                previewUrl = postsDan[position].getPreviewUrl()
+                url = when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsDan[position].getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsDan[position].getLargerUrl()
                     else -> postsDan[position].getOriginUrl()
@@ -112,28 +113,28 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                     Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsMoe[position].id)
                     else -> throw IllegalStateException("unknown post type $pageType")
                 }
-                previewUrl = postsMoe[position].preview_url
-                when (size) {
+                previewUrl = postsMoe[position].getPreviewUrl()
+                url = when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsMoe[position].getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsMoe[position].getLargerUrl()
                     else -> postsMoe[position].getOriginUrl()
                 }
             }
-            else -> {
+            Constants.TYPE_DANBOORU_ONE -> {
                 tranName = when (pageType) {
                     Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsDanOne[position].id)
                     Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsDanOne[position].id)
                     else -> throw IllegalStateException("unknown post type $pageType")
                 }
-                previewUrl = postsDanOne[position].preview_url
-                when (size) {
+                previewUrl = postsDanOne[position].getPreviewUrl()
+                url = when (size) {
                     Settings.POST_SIZE_SAMPLE -> postsDanOne[position].getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsDanOne[position].getLargerUrl()
                     else -> postsDanOne[position].getOriginUrl()
                 }
             }
         }
-        if (!url.isEmpty()) {
+        if (url.isNotEmpty()) {
             when {
                 url.isStillImage() -> {
                     val stillView = SubsamplingScaleImageView(container.context).apply {

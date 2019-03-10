@@ -24,7 +24,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -38,6 +37,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -70,7 +70,7 @@ import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.net.URLDecoder
 
-class BrowseActivity : AppCompatActivity() {
+class BrowseActivity : FragmentActivity() {
 
     companion object {
         private const val TAG = "BrowseActivity"

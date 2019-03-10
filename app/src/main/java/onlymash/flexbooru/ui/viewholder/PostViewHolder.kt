@@ -97,7 +97,7 @@ class PostViewHolder(itemView: View,
                 }
                 preview.layoutParams = lp
                 preview.layout(0,0,0,0)
-                glide.load(post.preview_file_url)
+                glide.load(post.getPreviewUrl())
                     .placeholder(placeholderDrawable)
                     .into(preview)
 
@@ -131,7 +131,7 @@ class PostViewHolder(itemView: View,
                 }
                 preview.layoutParams = lp
                 preview.layout(0,0,0,0)
-                glide.load(post.preview_url)
+                glide.load(post.getPreviewUrl())
                     .placeholder(placeholderDrawable)
                     .into(preview)
             }
@@ -164,7 +164,7 @@ class PostViewHolder(itemView: View,
                 }
                 preview.layoutParams = lp
                 preview.layout(0,0,0,0)
-                glide.load(post.preview_url)
+                glide.load(post.getPreviewUrl())
                     .placeholder(placeholderDrawable)
                     .into(preview)
             }

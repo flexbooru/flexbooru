@@ -55,6 +55,7 @@ class PostData(
         body?.let { postsDanOne ->
             val start = db.postDanOneDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = postsDanOne.mapIndexed { index, post ->
+                post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
@@ -74,6 +75,7 @@ class PostData(
             }
             val start = db.postDanDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = posts.mapIndexed { index, post ->
+                post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
@@ -87,6 +89,7 @@ class PostData(
         body?.let { posts ->
             val start = db.postMoeDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = posts.mapIndexed { index, post ->
+                post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
