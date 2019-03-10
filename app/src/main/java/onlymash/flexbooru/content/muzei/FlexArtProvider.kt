@@ -73,7 +73,7 @@ class FlexArtProvider : MuzeiArtProvider() {
             val file =
                 GlideApp.with(context)
                     .downloadOnly()
-                    .load(uri.toString())
+                    .load(uri)
                     .submit()
                     .get()
             if (file != null && file.exists()) FileInputStream(file) else super.openFile(artwork)
