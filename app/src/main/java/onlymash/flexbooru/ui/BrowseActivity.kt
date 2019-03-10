@@ -59,7 +59,6 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoadedListener
 import onlymash.flexbooru.repository.browse.PostLoader
 import onlymash.flexbooru.repository.favorite.VoteCallback
-import onlymash.flexbooru.repository.favorite.VoteRepository
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
@@ -125,13 +124,13 @@ class BrowseActivity : AppCompatActivity() {
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
             postsDan = posts
-            var url: String? = null
+            var url = ""
             var position = 0
             if (startId >= 0) {
                 posts.forEachIndexed { index, postDan ->
                     if (postDan.id == startId) {
                         position = index
-                        url = postDan.large_file_url
+                        url = postDan.getLargerUrl()
                         return@forEachIndexed
                     }
                 }
@@ -141,13 +140,13 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             if (canTransition) startPostponedEnterTransition()
-            if (!url.isNullOrBlank() && !url!!.isImage()) {
+            if (url.isNotEmpty() && !url.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
                         playerHolder.start(uri = Uri.parse(url), playerView = playerView)
                     }
-                }, 500)
+                }, 300)
             }
             user?.let {
                 favPostViewModel.loadDanFav(booru.host, it.name)
@@ -156,13 +155,13 @@ class BrowseActivity : AppCompatActivity() {
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
             postsMoe = posts
-            var url: String? = null
+            var url = ""
             var position = 0
             if (startId >= 0) {
                 posts.forEachIndexed { index, postMoe ->
                     if (postMoe.id == startId) {
                         position = index
-                        url = postMoe.sample_url
+                        url = postMoe.getSampleUrl()
                         return@forEachIndexed
                     }
                 }
@@ -172,7 +171,7 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             if (canTransition) startPostponedEnterTransition()
-            if (!url.isNullOrEmpty() && !url!!.isImage()) {
+            if (url.isNotEmpty() && !url.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
@@ -187,13 +186,13 @@ class BrowseActivity : AppCompatActivity() {
 
         override fun onDanOneItemsLoaded(posts: MutableList<PostDanOne>) {
             postsDanOne = posts
-            var url: String? = null
+            var url = ""
             var position = 0
             if (startId >= 0) {
                 posts.forEachIndexed { index, postDanOne ->
                     if (postDanOne.id == startId) {
                         position = index
-                        url = postDanOne.sample_url
+                        url = postDanOne.getSampleUrl()
                         return@forEachIndexed
                     }
                 }
@@ -203,7 +202,7 @@ class BrowseActivity : AppCompatActivity() {
             pager_browse.adapter = pagerAdapter
             pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
             if (canTransition) startPostponedEnterTransition()
-            if (!url.isNullOrEmpty() && !url!!.isImage()) {
+            if (url.isNotEmpty() && !url.isImage()) {
                 Handler().postDelayed({
                     val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                     if (playerView is PlayerView) {
@@ -231,21 +230,27 @@ class BrowseActivity : AppCompatActivity() {
         }
 
         override fun onPageSelected(position: Int) {
-            var url: String? = null
-            val id = when {
-                postsDan != null -> {
-                    url = postsDan!![position].large_file_url
-                    postsDan!![position].id
+            var url = ""
+            var id = -1
+            when (booru.type) {
+                Constants.TYPE_DANBOORU -> {
+                    postsDan?.get(position)?.let {
+                        url = it.getSampleUrl()
+                        id = it.id
+                    }
                 }
-                postsMoe != null -> {
-                    url = postsMoe!![position].sample_url
-                    postsMoe!![position].id
+                Constants.TYPE_MOEBOORU -> {
+                    postsMoe?.get(position)?.let {
+                        url = it.getSampleUrl()
+                        id = it.id
+                    }
                 }
-                postsDanOne != null -> {
-                    url = postsDanOne!![position].sample_url
-                    postsDanOne!![position].id
+                Constants.TYPE_DANBOORU_ONE -> {
+                    postsDanOne?.get(position)?.let {
+                        url = it.getSampleUrl()
+                        id = it.id
+                    }
                 }
-                else -> -1
             }
             if (id > 0) toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), id)
             val intent = Intent(ACTION).apply {
@@ -255,7 +260,7 @@ class BrowseActivity : AppCompatActivity() {
             }
             this@BrowseActivity.sendBroadcast(intent)
             playerHolder.stop()
-            if (!url.isNullOrBlank() && !url.isImage()) {
+            if (url.isNotEmpty() && !url.isImage()) {
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
                     playerHolder.start(uri = Uri.parse(url), playerView = playerView)
@@ -327,7 +332,7 @@ class BrowseActivity : AppCompatActivity() {
         var post: Any? = null
         when (booru.type) {
             Constants.TYPE_DANBOORU -> {
-                val id = postsDan!![position].id
+                val id = postsDan?.get(position)?.id ?: return null
                 postsDanFav?.forEach {
                     if (it.id == id) {
                         post = it
@@ -336,7 +341,7 @@ class BrowseActivity : AppCompatActivity() {
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                val id = postsMoe!![position].id
+                val id = postsMoe?.get(position)?.id ?: return null
                 postsMoeFav?.forEach {
                     if (it.id == id) {
                         post = it
@@ -345,7 +350,7 @@ class BrowseActivity : AppCompatActivity() {
                 }
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                val id = postsDanOne!![position].id
+                val id = postsDanOne?.get(position)?.id ?: return null
                 postsDanOneFav?.forEach {
                     if (it.id == id) {
                         post = it
@@ -359,9 +364,9 @@ class BrowseActivity : AppCompatActivity() {
 
     private fun getCurrentPost(): Any? {
         return when (booru.type) {
-            Constants.TYPE_DANBOORU -> postsDan!![pager_browse.currentItem]
-            Constants.TYPE_MOEBOORU -> postsMoe!![pager_browse.currentItem]
-            Constants.TYPE_DANBOORU_ONE -> postsDanOne!![pager_browse.currentItem]
+            Constants.TYPE_DANBOORU -> postsDan?.get(pager_browse.currentItem)
+            Constants.TYPE_MOEBOORU -> postsMoe?.get(pager_browse.currentItem)
+            Constants.TYPE_DANBOORU_ONE -> postsDanOne?.get(pager_browse.currentItem)
             else -> null
         }
     }
@@ -394,64 +399,64 @@ class BrowseActivity : AppCompatActivity() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_browse_vote -> {
-                    if (user == null) {
-                        startActivity(Intent(this, AccountConfigActivity::class.java))
-                        finish()
-                    } else {
+                    user?.let { user ->
                         when (booru.type) {
                             Constants.TYPE_DANBOORU -> {
+                                val post = postsDan?.get(pager_browse.currentItem) ?: return@let
                                 val vote = Vote(
                                     scheme = booru.scheme,
                                     host = booru.host,
-                                    post_id = postsDan!![pager_browse.currentItem].id,
-                                    username = user!!.name,
-                                    auth_key = user!!.api_key!!)
-                                val post = getCurrentPostFav()
-                                if (post is PostDan) {
-                                    voteRepository.removeDanFav(vote, post)
+                                    post_id = post.id,
+                                    username = user.name,
+                                    auth_key = user.api_key ?: return@let)
+                                val postFav = getCurrentPostFav()
+                                if (postFav is PostDan) {
+                                    voteRepository.removeDanFav(vote, postFav)
                                 } else {
-                                    voteRepository.addDanFav(vote, postsDan!![pager_browse.currentItem])
+                                    voteRepository.addDanFav(vote, post)
                                 }
                             }
                             Constants.TYPE_MOEBOORU -> {
+                                val post = postsMoe?.get(pager_browse.currentItem) ?: return@let
                                 val vote = when (getCurrentPostFav()) {
                                     is PostMoe -> {
                                         Vote(
                                             scheme = booru.scheme,
                                             host = booru.host,
                                             score = 0,
-                                            post_id = postsMoe!![pager_browse.currentItem].id,
-                                            username = user!!.name,
-                                            auth_key = user!!.password_hash!!)
+                                            post_id = post.id,
+                                            username = user.name,
+                                            auth_key = user.password_hash ?: return@let)
                                     }
                                     else -> {
                                         Vote(
                                             scheme = booru.scheme,
                                             host = booru.host,
-                                            score = 1,
-                                            post_id = postsMoe!![pager_browse.currentItem].id,
-                                            username = user!!.name,
-                                            auth_key = user!!.password_hash!!)
+                                            score = 3,
+                                            post_id = post.id,
+                                            username = user.name,
+                                            auth_key = user.password_hash ?: return@let)
                                     }
                                 }
                                 voteRepository.voteMoePost(vote)
                             }
                             Constants.TYPE_DANBOORU_ONE -> {
+                                val post = postsDanOne?.get(pager_browse.currentItem) ?: return@let
+                                val postFav = getCurrentPostFav()
                                 val vote = Vote(
                                     scheme = booru.scheme,
                                     host = booru.host,
-                                    post_id = postsDanOne!![pager_browse.currentItem].id,
-                                    username = user!!.name,
-                                    auth_key = user!!.password_hash!!)
-                                val post = getCurrentPostFav()
-                                if (post is PostDanOne) {
-                                    voteRepository.removeDanOneFav(vote, post)
+                                    post_id = post.id,
+                                    username = user.name,
+                                    auth_key = user.password_hash ?: return@let)
+                                if (postFav is PostDanOne) {
+                                    voteRepository.removeDanOneFav(vote, postFav)
                                 } else {
-                                    voteRepository.addDanOneFav(vote, postsDanOne!![pager_browse.currentItem])
+                                    voteRepository.addDanOneFav(vote, post)
                                 }
                             }
                         }
-                    }
+                    } ?: startActivity(Intent(this, AccountConfigActivity::class.java))
                 }
                 R.id.action_browse_download -> {
                     checkStoragePermissionAndAction(ACTION_DOWNLOAD)
@@ -499,22 +504,10 @@ class BrowseActivity : AppCompatActivity() {
 
     private fun initBottomBar() {
         post_tags.setOnClickListener {
-            when (booru.type) {
-                Constants.TYPE_DANBOORU -> TagBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
-                Constants.TYPE_DANBOORU_ONE -> TagBottomSheetDialog.create(postsDanOne!![pager_browse.currentItem])
-                else -> TagBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
-            }.apply {
-                show(supportFragmentManager, "tags")
-            }
+            TagBottomSheetDialog.create(getCurrentPost()).show(supportFragmentManager, "tags")
         }
         post_info.setOnClickListener {
-            when (booru.type) {
-                Constants.TYPE_DANBOORU -> InfoBottomSheetDialog.create(postsDan!![pager_browse.currentItem])
-                Constants.TYPE_DANBOORU_ONE -> InfoBottomSheetDialog.create(postsDanOne!![pager_browse.currentItem])
-                else -> InfoBottomSheetDialog.create(postsMoe!![pager_browse.currentItem])
-            }.apply {
-                show(supportFragmentManager, "info")
-            }
+            InfoBottomSheetDialog.create(getCurrentPost()).show(supportFragmentManager, "info")
         }
         post_comment.setOnClickListener {
             val id = getCurrentPostId()
@@ -526,40 +519,22 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun shareLink() {
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                val url = String.format("%s://%s/posts/%d", booru.scheme, booru.host, postsDan!![pager_browse.currentItem].id)
-                startActivity(Intent.createChooser(
-                    Intent().apply {
-                        action = Intent.ACTION_SEND
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, url)
-                    },
-                    getString(R.string.share_via)
-                ))
-            }
-            Constants.TYPE_DANBOORU_ONE -> {
-                val url = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postsDanOne!![pager_browse.currentItem].id)
-                startActivity(Intent.createChooser(
-                    Intent().apply {
-                        action = Intent.ACTION_SEND
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, url)
-                    },
-                    getString(R.string.share_via)
-                ))
-            }
-            else -> {
-                val url = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postsMoe!![pager_browse.currentItem].id)
-                startActivity(Intent.createChooser(
-                    Intent().apply {
-                        action = Intent.ACTION_SEND
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, url)
-                    },
-                    getString(R.string.share_via)
-                ))
-            }
+        val post = getCurrentPost()
+        val url = when (post) {
+            is PostDan -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
+            is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+            is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+            else -> ""
+        }
+        if (url.isNotEmpty()) {
+            startActivity(Intent.createChooser(
+                Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, url)
+                },
+                getString(R.string.share_via)
+            ))
         }
     }
 
@@ -588,53 +563,45 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun setCurrentVoteItemIcon() {
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                if (postsDan != null && postsDanFav != null) {
-                    var exist = false
-                    val id = postsDan!![pager_browse.currentItem].id
-                    postsDanFav!!.forEach { post ->
-                        if (post.id == id) {
-                            setVoteItemIcon(true)
-                            exist = true
-                            return@forEach
-                        }
-                    }
-                    if (!exist) {
-                        setVoteItemIcon(false)
+        val post = getCurrentPost()
+        when (post) {
+            is PostDan -> {
+                var exist = false
+                postsDanFav?.forEach {
+                    if (post.id == it.id) {
+                        setVoteItemIcon(true)
+                        exist = true
+                        return@forEach
                     }
                 }
-            }
-            Constants.TYPE_MOEBOORU -> {
-                if (postsMoe != null && postsMoeFav != null) {
-                    val id = postsMoe!![pager_browse.currentItem].id
-                    var exist = false
-                    postsMoeFav!!.forEach { post ->
-                        if (post.id == id) {
-                            setVoteItemIcon(true)
-                            exist = true
-                            return@forEach
-                        }
-                    }
-                    if (!exist) {
-                        setVoteItemIcon(false)
-                    }
+                if (!exist) {
+                    setVoteItemIcon(false)
                 }
             }
-            Constants.TYPE_DANBOORU_ONE -> {
-                if (postsDanOne != null && postsDanOneFav != null) {
-                    var exist = false
-                    val id = postsDanOne!![pager_browse.currentItem].id
-                    postsDanOneFav!!.forEach { post ->
-                        if (post.id == id) {
-                            setVoteItemIcon(true)
-                            exist = true
-                            return@forEach
-                        }
+            is PostMoe -> {
+                var exist = false
+                postsMoeFav?.forEach {
+                    if (post.id == it.id) {
+                        setVoteItemIcon(true)
+                        exist = true
+                        return@forEach
                     }
-                    if (!exist) {
-                        setVoteItemIcon(false)
+                }
+                if (!exist) {
+                    setVoteItemIcon(false)
+                }
+            }
+            is PostDanOne -> {
+                var exist = false
+                postsDanOneFav?.forEach {
+                    if (post.id == it.id) {
+                        setVoteItemIcon(true)
+                        exist = true
+                        return@forEach
                     }
+                }
+                if (!exist) {
+                    setVoteItemIcon(false)
                 }
             }
         }
@@ -665,26 +632,27 @@ class BrowseActivity : AppCompatActivity() {
         val url = when (booru.type) {
             Constants.TYPE_DANBOORU -> {
                 when (Settings.instance().browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsDan!![position].getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsDan!![position].getLargerUrl()
-                    else -> postsDan!![position].getOriginUrl()
+                    Settings.POST_SIZE_SAMPLE -> postsDan?.get(position)?.getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsDan?.get(position)?.getLargerUrl()
+                    else -> postsDan?.get(position)?.getOriginUrl()
                 }
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 when (Settings.instance().browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsDanOne!![position].getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsDanOne!![position].getLargerUrl()
-                    else -> postsDanOne!![position].getOriginUrl()
+                    Settings.POST_SIZE_SAMPLE -> postsDanOne?.get(position)?.getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsDanOne?.get(position)?.getLargerUrl()
+                    else -> postsDanOne?.get(position)?.getOriginUrl()
                 }
             }
             else -> {
                 when (Settings.instance().browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsMoe!![position].getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsMoe!![position].getLargerUrl()
-                    else -> postsMoe!![position].getOriginUrl()
+                    Settings.POST_SIZE_SAMPLE -> postsMoe?.get(position)?.getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsMoe?.get(position)?.getLargerUrl()
+                    else -> postsMoe?.get(position)?.getOriginUrl()
                 }
             }
         }
+        if (url.isNullOrEmpty()) return
         GlideApp.with(this)
             .downloadOnly()
             .load(url)

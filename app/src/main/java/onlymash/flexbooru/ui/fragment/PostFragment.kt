@@ -254,7 +254,7 @@ class PostFragment : ListFragment() {
                                     when (post) {
                                         is PostDan -> voteRepo.addDanFav(vote, post)
                                         is PostMoe -> voteRepo.voteMoePost(vote)
-                                        is PostDanOne -> {}
+                                        is PostDanOne -> voteRepo.addDanOneFav(vote, post)
                                     }
                                 }
                             }
