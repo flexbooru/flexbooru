@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso
 class CustomDecoder(private val picasso: Picasso) : ImageDecoder {
     override fun decode(context: Context?, uri: Uri): Bitmap {
         return picasso.load(uri.toFile())
-            .config(Bitmap.Config.RGB_565)
+            .config(Bitmap.Config.ARGB_8888)
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .get()
     }

@@ -43,7 +43,7 @@ class CustomRegionDecoder : ImageRegionDecoder {
         synchronized(decoderLock) {
             val options = BitmapFactory.Options().apply {
                 inSampleSize = sampleSize
-                inPreferredConfig = Bitmap.Config.RGB_565
+                inPreferredConfig = Bitmap.Config.ARGB_8888
             }
             return decoder?.decodeRegion(sRect, options)
                 ?: throw RuntimeException("Region decoder returned null bitmap - image format may not be supported")
