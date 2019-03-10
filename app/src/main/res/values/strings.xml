@@ -152,15 +152,14 @@
     <string name="account_comments">Comments</string>
 
     <string name="settings_safe_mode">Safe mode</string>
-    <string name="settings_page_size">Page size</string>
+    <string name="settings_page_limit">Page limit</string>
+    <string name="settings_muzei_limit">Muzei limit</string>
     <string name="settings_browse_size">Browse size</string>
-    <string name="settings_browse_size_sample">Sample</string>
-    <string name="settings_browse_size_larger">Larger</string>
-    <string name="settings_browse_size_origin">Origin</string>
     <string name="settings_download_size">Download size</string>
-    <string name="settings_download_size_sample">Sample</string>
-    <string name="settings_download_size_larger">Larger</string>
-    <string name="settings_download_size_origin">Origin</string>
+    <string name="settings_muzei_size">Muzei size</string>
+    <string name="settings_post_size_sample">Sample</string>
+    <string name="settings_post_size_larger">Larger</string>
+    <string name="settings_post_size_origin">Origin</string>
     <string name="settings_theme_mode">Theme</string>
     <string name="settings_theme_mode_system">Follow system</string>
     <string name="settings_theme_mode_auto">Auto</string>

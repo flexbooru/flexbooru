@@ -165,7 +165,7 @@ class CommentActivity : AppCompatActivity() {
             scheme = booru.scheme,
             host = booru.host,
             post_id = postId,
-            limit = Settings.instance().pageSize
+            limit = Settings.instance().pageLimit
         )
         val user = UserManager.getUserByBooruUid(uid)
         user?.let {

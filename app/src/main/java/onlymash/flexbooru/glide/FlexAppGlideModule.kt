@@ -30,10 +30,8 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.resource.bitmap.ExifInterfaceImageHeaderParser
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.util.UserAgent
 import java.io.InputStream
@@ -43,7 +41,7 @@ import java.util.concurrent.TimeUnit
 class FlexAppGlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         val memoryCacheSizeBytes: Int = 1024 * 1024 * 128
-        val diskCacheSizeBytes: Int = 1024 * 1024 * 256
+        val diskCacheSizeBytes: Int = 1024 * 1024 * 512
         builder.setMemoryCache(LruResourceCache(memoryCacheSizeBytes.toLong()))
         builder.setDiskCache(InternalCacheDiskCacheFactory(context, diskCacheSizeBytes.toLong()))
         val requestOptions = RequestOptions

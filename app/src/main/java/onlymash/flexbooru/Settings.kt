@@ -32,9 +32,11 @@ class Settings(private val sp: SharedPreferences) {
             return instance!!
         }
         const val SAFE_MODE_KEY = "settings_safe_mode"
-        const val PAGE_SIZE_KEY = "settings_page_size"
+        const val PAGE_LIMIT_KEY = "settings_page_limit"
+        const val MUZEI_LIMIT_KEY = "settings_muzei_limit"
         const val BROWSE_SIZE_KEY = "settings_browse_size"
         const val DOWNLOAD_SIZE_KEY = "settings_download_size"
+        const val MUZEI_SIZE_KEY = "settings_muzei_size"
         const val POST_SIZE_SAMPLE = "sample"
         const val POST_SIZE_LARGER = "larger"
         const val POST_SIZE_ORIGIN = "origin"
@@ -59,17 +61,25 @@ class Settings(private val sp: SharedPreferences) {
         get() = sp.getBoolean(SAFE_MODE_KEY, true)
         set(value) = sp.edit().putBoolean(SAFE_MODE_KEY, value).apply()
 
-    var pageSize: Int
-        get() = sp.getString(PAGE_SIZE_KEY, "10")!!.toInt()
-        set(value) = sp.edit().putString(PAGE_SIZE_KEY, value.toString()).apply()
+    var pageLimit: Int
+        get() = sp.getString(PAGE_LIMIT_KEY, "10")!!.toInt()
+        set(value) = sp.edit().putString(PAGE_LIMIT_KEY, value.toString()).apply()
+
+    var muzeiLimit: Int
+        get() = sp.getString(MUZEI_LIMIT_KEY, "10")!!.toInt()
+        set(value) = sp.edit().putString(MUZEI_LIMIT_KEY, value.toString()).apply()
 
     var browseSize: String
         get() = sp.getString(BROWSE_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_SAMPLE
         set(value) = sp.edit().putString(BROWSE_SIZE_KEY, value).apply()
 
     var downloadSize: String
-        get() = sp.getString(DOWNLOAD_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_SAMPLE
+        get() = sp.getString(DOWNLOAD_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_LARGER
         set(value) = sp.edit().putString(DOWNLOAD_SIZE_KEY, value).apply()
+
+    var muzeiSize: String
+        get() = sp.getString(MUZEI_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_LARGER
+        set(value) = sp.edit().putString(MUZEI_SIZE_KEY, value).apply()
 
     private var themeModeString: String
         get() = sp.getString(THEME_MODE_KEY, THEME_MODE_SYSTEM) ?: THEME_MODE_SYSTEM

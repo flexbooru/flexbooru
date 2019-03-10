@@ -56,18 +56,18 @@
 
     <!--suppress AndroidElementNotAllowed -->
     <SimpleMenuPreference
-            android:key="settings_page_size"
-            android:entries="@array/settings_page_size_entries"
-            android:entryValues="@array/settings_page_size_entries_values"
+            android:key="settings_page_limit"
+            android:entries="@array/settings_page_limit_entries"
+            android:entryValues="@array/settings_page_limit_entries_values"
             android:defaultValue="10"
             android:summary="%s"
-            android:title="@string/settings_page_size"
+            android:title="@string/settings_page_limit"
             app:iconSpaceReserved="true" />
 
     <!--suppress AndroidElementNotAllowed -->
     <SimpleMenuPreference
             android:key="settings_browse_size"
-            android:entries="@array/settings_browse_size_entries"
+            android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="sample"
             android:summary="%s"
@@ -77,11 +77,31 @@
     <!--suppress AndroidElementNotAllowed -->
     <SimpleMenuPreference
             android:key="settings_download_size"
-            android:entries="@array/settings_download_size_entries"
+            android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
-            android:defaultValue="sample"
+            android:defaultValue="larger"
             android:summary="%s"
             android:title="@string/settings_download_size"
+            app:iconSpaceReserved="true" />
+
+    <!--suppress AndroidElementNotAllowed -->
+    <SimpleMenuPreference
+            android:key="settings_muzei_limit"
+            android:entries="@array/settings_muzei_limit_entries"
+            android:entryValues="@array/settings_muzei_limit_entries_values"
+            android:defaultValue="10"
+            android:summary="%s"
+            android:title="@string/settings_muzei_limit"
+            app:iconSpaceReserved="true" />
+
+    <!--suppress AndroidElementNotAllowed -->
+    <SimpleMenuPreference
+            android:key="settings_muzei_size"
+            android:entries="@array/settings_post_size_entries"
+            android:entryValues="@array/settings_post_size_entries_values"
+            android:defaultValue="larger"
+            android:summary="%s"
+            android:title="@string/settings_muzei_size"
             app:iconSpaceReserved="true" />
 
 </PreferenceScreen>

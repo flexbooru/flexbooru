@@ -366,7 +366,7 @@ class PostFragment : ListFragment() {
                         keyword = it.getString(Constants.KEYWORD_KEY, ""),
                         username = it.getString(Constants.USERNAME_KEY, ""),
                         auth_key = it.getString(Constants.AUTH_KEY, ""),
-                        limit = Settings.instance().pageSize)
+                        limit = Settings.instance().pageLimit)
                 }
             }
             is SearchActivity -> {
@@ -386,7 +386,7 @@ class PostFragment : ListFragment() {
                             Constants.TYPE_DANBOORU_ONE -> user?.password_hash ?: ""
                             else -> ""
                         },
-                        limit = Settings.instance().pageSize
+                        limit = Settings.instance().pageLimit
                     )
                 } else {
                     activity.finish()

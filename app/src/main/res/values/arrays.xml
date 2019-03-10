@@ -33,29 +33,38 @@
         <item>http</item>
         <item>https</item>
     </string-array>
-    <string-array name="settings_page_size_entries">
+    <string-array name="settings_page_limit_entries">
         <item>10</item>
         <item>15</item>
         <item>20</item>
         <item>25</item>
         <item>30</item>
     </string-array>
-    <string-array name="settings_page_size_entries_values">
+    <string-array name="settings_page_limit_entries_values">
         <item>10</item>
         <item>15</item>
         <item>20</item>
         <item>25</item>
         <item>30</item>
     </string-array>
-    <string-array name="settings_browse_size_entries">
-        <item>@string/settings_browse_size_sample</item>
-        <item>@string/settings_browse_size_larger</item>
-        <item>@string/settings_browse_size_origin</item>
+    <string-array name="settings_muzei_limit_entries">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
     </string-array>
-    <string-array name="settings_download_size_entries">
-        <item>@string/settings_download_size_sample</item>
-        <item>@string/settings_download_size_larger</item>
-        <item>@string/settings_download_size_origin</item>
+    <string-array name="settings_muzei_limit_entries_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="settings_post_size_entries">
+        <item>@string/settings_post_size_sample</item>
+        <item>@string/settings_post_size_larger</item>
+        <item>@string/settings_post_size_origin</item>
     </string-array>
     <string-array name="settings_post_size_entries_values">
         <item>sample</item>

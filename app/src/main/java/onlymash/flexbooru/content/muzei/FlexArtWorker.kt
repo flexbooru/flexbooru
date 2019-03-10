@@ -54,6 +54,7 @@ class FlexArtWorker(
         val data = MuzeiManager.getMuzeiByBooruUid(uid)
         val muzeiUid = Settings.instance().activeMuzeiUid
         var keyword = ""
+        val muzeiSize = Settings.instance().muzeiSize
         data?.let { list ->
             list.forEach { muzei ->
                 if(muzei.uid == muzeiUid) {
@@ -71,7 +72,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().pageSize).apply {
+                    limit = Settings.instance().muzeiLimit).apply {
                     user?.let {
                         auth_key = it.api_key ?: ""
                         username = it.name
@@ -96,7 +97,11 @@ class FlexArtWorker(
                         title = "Post ${post.id}"
                         byline = keyword
                         attribution = attributionString
-                        persistentUri = post.getOriginUrl().toUri()
+                        persistentUri = when (muzeiSize) {
+                            Settings.POST_SIZE_SAMPLE -> post.getSampleUrl().toUri()
+                            Settings.POST_SIZE_LARGER -> post.getLargerUrl().toUri()
+                            else -> post.getOriginUrl().toUri()
+                        }
                         webUri = String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
@@ -106,7 +111,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().pageSize).apply {
+                    limit = Settings.instance().muzeiLimit).apply {
                     user?.let {
                         auth_key = it.password_hash ?: ""
                         username = it.name
@@ -128,7 +133,11 @@ class FlexArtWorker(
                         title = "Post ${post.id}"
                         byline = keyword
                         attribution = attributionString
-                        persistentUri = post.getLargerUrl().toUri()
+                        persistentUri = when (muzeiSize) {
+                            Settings.POST_SIZE_SAMPLE -> post.getSampleUrl().toUri()
+                            Settings.POST_SIZE_LARGER -> post.getLargerUrl().toUri()
+                            else -> post.getOriginUrl().toUri()
+                        }
                         webUri = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
@@ -138,7 +147,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().pageSize).apply {
+                    limit = Settings.instance().muzeiLimit).apply {
                     user?.let {
                         auth_key = it.password_hash ?: ""
                         username = it.name
@@ -160,7 +169,11 @@ class FlexArtWorker(
                         title = "Post ${post.id}"
                         byline = keyword
                         attribution = attributionString
-                        persistentUri = post.getLargerUrl().toUri()
+                        persistentUri = when (muzeiSize) {
+                            Settings.POST_SIZE_SAMPLE -> post.getSampleUrl().toUri()
+                            Settings.POST_SIZE_LARGER -> post.getLargerUrl().toUri()
+                            else -> post.getOriginUrl().toUri()
+                        }
                         webUri = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
