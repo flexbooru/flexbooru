@@ -304,6 +304,7 @@ class TagFilterView @JvmOverloads constructor(
         textLayout = if (SDK_INT >= M) {
             StaticLayout.Builder.obtain(text!!, 0, text?.length!!, textPaint, textWidth).build()
         } else {
+            @Suppress("DEPRECATION")
             StaticLayout(text, textPaint, textWidth, ALIGN_NORMAL, 1f, 0f, true)
         }
     }
