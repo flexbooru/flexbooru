@@ -54,7 +54,7 @@ android {
         versionNameSuffix verNameSuffix
         multiDexEnabled true
         resConfigs "en", "zh-rCN", "zh-rHK", "zh-rTW",
-                "de-rDE", "es-rES", "fr-FR", "ja-rJP",
+                "de-rDE", "es-rES", "fr-rFR", "ja-rJP",
                 "nl-rNL", "pt-rBR", "ru-rRU"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
