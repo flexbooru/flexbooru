@@ -24,6 +24,11 @@
                 android:summary="%s"
                 app:iconSpaceReserved="true"/>
         <Preference
+                android:key="about_app_translation"
+                android:title="@string/about_app_translation"
+                android:summary="@string/about_app_translation_summary"
+                app:iconSpaceReserved="true"/>
+        <Preference
                 android:key="about_app_rate"
                 android:title="@string/about_app_rate"
                 app:iconSpaceReserved="true"/>

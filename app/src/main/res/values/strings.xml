@@ -36,6 +36,8 @@
     <string name="about_app">Flexbooru</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Rate this app</string>
+    <string name="about_app_translation">Translation</string>
+    <string name="about_app_translation_summary">Translate this app</string>
     <string name="about_author">Author</string>
     <string name="about_author_email">Email</string>
     <string name="about_author_website">Website</string>

@@ -88,6 +88,9 @@ class AboutFragment : PreferenceFragment() {
                         getString(R.string.share_via)))
                 } catch (_: ActivityNotFoundException) { }
             }
+            "about_app_translation" -> {
+                requireContext().launchUrl("https://onlymash.oneskyapp.com/collaboration/project?id=331005")
+            }
         }
         return super.onPreferenceTreeClick(preference)
     }
