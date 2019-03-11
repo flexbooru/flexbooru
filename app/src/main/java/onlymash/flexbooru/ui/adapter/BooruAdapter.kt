@@ -25,9 +25,8 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.viewholder.BooruViewHolder
 
 class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruViewHolder>(), BooruManager.Listener {
-
-    private var boorus: MutableList<Booru> = BooruManager.getAllBoorus()?.toMutableList() ?: mutableListOf()
-
+    private var boorus: MutableList<Booru> =
+        BooruManager.getAllBoorus()?.toMutableList() ?: mutableListOf()
     init {
         setHasStableIds(true)
     }
@@ -38,25 +37,18 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruV
     override fun onBindViewHolder(holder: BooruViewHolder, position: Int) {
         holder.bind(booru = boorus[position])
     }
-    fun updateData(boorus: MutableList<Booru>) {
-        this.boorus = boorus
-        notifyDataSetChanged()
-    }
     override fun getItemId(position: Int): Long = boorus[position].uid
-
     override fun onAdd(booru: Booru) {
         val pos = itemCount
         boorus.add(booru)
         notifyItemInserted(pos)
     }
-
     override fun onDelete(booruUid: Long) {
         val index = boorus.indexOfFirst { it.uid == booruUid }
         if (index < 0) return
         boorus.removeAt(index)
         notifyItemRemoved(index)
     }
-
     override fun onUpdate(booru: Booru) {
         boorus.forEachIndexed { i, b ->
             if (b.uid == booru.uid) {

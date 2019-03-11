@@ -33,6 +33,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
@@ -516,6 +517,10 @@ class BrowseActivity : AppCompatActivity() {
         post_save.setOnClickListener {
             checkStoragePermissionAndAction(ACTION_SAVE)
         }
+        TooltipCompat.setTooltipText(post_tags, post_tags.contentDescription)
+        TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
+        TooltipCompat.setTooltipText(post_comment, post_comment.contentDescription)
+        TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
     }
 
     private fun shareLink() {

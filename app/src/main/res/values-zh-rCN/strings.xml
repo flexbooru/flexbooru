@@ -83,7 +83,7 @@
     <string name="booru_config_info">Booru 信息</string>
     <string name="booru_config_scheme">协议</string>
     <string name="booru_config_host">主机</string>
-    <string name="booru_config_type">Booru 类型</string>
+    <string name="booru_config_type">类型</string>
     <string name="booru_config_hash_salt">哈希盐</string>
     <string name="booru_config_name_cant_empty">名称不能为空。</string>
     <string name="booru_config_host_cant_empty">主机不能为空。</string>
@@ -156,7 +156,7 @@
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">描述为空。</string>
     <string name="tag_type">分类</string>
-    <string name="tag_type_all">所有分型</string>
+    <string name="tag_type_all">所有分类</string>
     <string name="tag_type_general">General</string>
     <string name="tag_type_artist">Artist</string>
     <string name="tag_type_copyright">Copyright</string>
