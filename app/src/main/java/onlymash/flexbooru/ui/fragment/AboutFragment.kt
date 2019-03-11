@@ -89,7 +89,7 @@ class AboutFragment : PreferenceFragment() {
                 } catch (_: ActivityNotFoundException) { }
             }
             "about_app_translation" -> {
-                requireContext().launchUrl("https://onlymash.oneskyapp.com/collaboration/project?id=331005")
+                requireContext().launchUrl("https://crowdin.com/project/flexbooru")
             }
         }
         return super.onPreferenceTreeClick(preference)
