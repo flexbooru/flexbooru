@@ -53,7 +53,9 @@ android {
         versionName "0.3.5"
         versionNameSuffix verNameSuffix
         multiDexEnabled true
-        resConfigs "en", "zh-rCN"
+        resConfigs "en", "zh-rCN", "zh-rHK", "zh-rTW",
+                "de-rDE", "es-rES", "fr-FR", "ja-rJP",
+                "nl-rNL", "pt-rBR", "ru-rRU"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     applicationVariants.all { variant ->
