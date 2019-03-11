@@ -96,10 +96,16 @@
     <string name="scaner_import_success">成功匯入！</string>
     <string name="scaner_import_failed">匯入失敗。</string>
     <string name="browse_toolbar_title">帖子</string>
-    <string name="browse_vote">投票</string>
+    <string name="browse_add_to_fav">Add to favorites</string>
     <string name="browse_download">下載</string>
     <string name="browse_set_as">設定為</string>
-    <string name="browse_send">傳送</string>
+    <string name="browse_send_file">Send file</string>
+    <string name="browse_save_file">Save file</string>
+    <string name="browse_share_link">Share link</string>
+    <string name="browse_tags">Tags</string>
+    <string name="browse_info">Info</string>
+    <string name="browse_save">Save</string>
+    <string name="browse_comment">Comment</string>
     <string name="browse_tag_exclude">排除</string>
     <string name="browse_tag_include">包括</string>
     <string name="browse_info_source">來源</string>
@@ -178,11 +184,6 @@
     <string name="search_bar_hint_search_artists">搜尋畫師</string>
     <string name="tag_filter_add_text">添加 ↑️</string>
     <string name="share_via">透過</string>
-    <string name="action_share">分享</string>
-    <string name="action_tags">標籤</string>
-    <string name="action_info">資訊</string>
-    <string name="action_save">儲存</string>
-    <string name="action_comment">留言</string>
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
     <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
     <string name="order">排列</string>

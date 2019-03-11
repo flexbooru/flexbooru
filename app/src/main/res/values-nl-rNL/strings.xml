@@ -96,10 +96,16 @@
     <string name="scaner_import_success">Succesvol geïmporteerd!</string>
     <string name="scaner_import_failed">Importeren mislukt.</string>
     <string name="browse_toolbar_title">Post</string>
-    <string name="browse_vote">Stem</string>
+    <string name="browse_add_to_fav">Add to favorites</string>
     <string name="browse_download">Download</string>
     <string name="browse_set_as">Instellen als</string>
-    <string name="browse_send">Verzenden</string>
+    <string name="browse_send_file">Send file</string>
+    <string name="browse_save_file">Save file</string>
+    <string name="browse_share_link">Share link</string>
+    <string name="browse_tags">Tags</string>
+    <string name="browse_info">Info</string>
+    <string name="browse_save">Save</string>
+    <string name="browse_comment">Comment</string>
     <string name="browse_tag_exclude">Uitsluiten</string>
     <string name="browse_tag_include">Toevoegen</string>
     <string name="browse_info_source">Bron</string>
@@ -178,11 +184,6 @@
     <string name="search_bar_hint_search_artists">Artiesten zoeken</string>
     <string name="tag_filter_add_text">toevoegen ↑️</string>
     <string name="share_via">Via</string>
-    <string name="action_share">Delen</string>
-    <string name="action_tags">Tags</string>
-    <string name="action_info">Info</string>
-    <string name="action_save">Opslaan</string>
-    <string name="action_comment">Reageren</string>
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
     <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
     <string name="order">Volgorde</string>

@@ -32,7 +32,7 @@
             android:src="@drawable/ic_bookmark_border_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/action_tags"/>
+            android:contentDescription="@string/browse_tags"/>
 
     <ImageButton
             android:id="@+id/post_info"
@@ -42,7 +42,7 @@
             android:src="@drawable/ic_info_outline_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/action_info"/>
+            android:contentDescription="@string/browse_info"/>
 
     <ImageButton
             android:id="@+id/post_comment"
@@ -52,7 +52,7 @@
             android:src="@drawable/ic_comment_outline_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/action_comment"/>
+            android:contentDescription="@string/browse_comment"/>
 
     <ImageButton
             android:id="@+id/post_save"
@@ -62,6 +62,6 @@
             android:src="@drawable/ic_save_outline_24dp"
             android:tint="@color/white"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/action_save"/>
+            android:contentDescription="@string/browse_save_file"/>
 
 </LinearLayout>
