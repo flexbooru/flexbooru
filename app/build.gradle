@@ -50,12 +50,10 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode verCode
-        versionName "0.3.5"
+        versionName "0.3.6"
         versionNameSuffix verNameSuffix
         multiDexEnabled true
-        resConfigs "en", "zh-rCN", "zh-rHK", "zh-rTW",
-                "de-rDE", "es-rES", "fr-rFR", "ja-rJP",
-                "nl-rNL", "pt-rBR", "ru-rRU"
+        resConfigs "en", "zh-rCN", "zh-rHK", "nl-rNL", "pt-rBR"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     applicationVariants.all { variant ->
