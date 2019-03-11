@@ -7,6 +7,7 @@ A booru client for Android, support [Danbooru](https://github.com/r888888888/dan
 [![Releases](https://img.shields.io/github/downloads/flexbooru/flexbooru/total.svg)](https://github.com/flexbooru/flexbooru/releases)
 [![Language: Kotlin](https://img.shields.io/github/languages/top/flexbooru/flexbooru.svg)](https://github.com/flexbooru/flexbooru/search?l=kotlin)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/fiepi)
 
 <a href="https://play.google.com/store/apps/details?id=onlymash.flexbooru.play"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="48"></a>
 
