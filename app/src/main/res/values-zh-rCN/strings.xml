@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_name" translatable="false">Flexbooru</string>
+    <string name="app_name">Flexbooru</string>
     <string name="app_description">一个兼容 Danbooru 和 Moebooru 引擎的 Android  Booru 客户端，支持 Muzei 壁纸。</string>
     <string name="title_posts">投稿</string>
     <string name="title_popular">人气</string>
