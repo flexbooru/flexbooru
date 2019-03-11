@@ -15,15 +15,14 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_name">Flexbooru</string>
     <string name="app_description">一个兼容 Danbooru 和 Moebooru 引擎的 Android  Booru 客户端，支持 Muzei 壁纸。</string>
     <string name="title_posts">投稿</string>
     <string name="title_popular">人气</string>
     <string name="title_search">搜索</string>
     <string name="title_downloads">下载</string>
-    <string name="title_manage_boorus">Booru 管理</string>
+    <string name="title_manage_boorus">管理 Booru 网站</string>
     <string name="title_settings">设置</string>
-    <string name="title_booru_config">Booru 配置</string>
+    <string name="title_booru_config">配置 Booru</string>
     <string name="title_account">帐号</string>
     <string name="title_account_and_booru">帐号 - %s</string>
     <string name="title_artists">绘师</string>
@@ -32,11 +31,11 @@
     <string name="title_comments">评论</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">版权</string>
-    <string name="title_copyright_with_version">Flexbooru %s</string>
     <string name="title_about">关于</string>
-    <string name="about_app">Flexbooru</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">给此应用评分</string>
+    <string name="about_app_translation">翻译</string>
+    <string name="about_app_translation_summary">翻译此应用</string>
     <string name="about_author">作者</string>
     <string name="about_author_email">电子邮件</string>
     <string name="about_author_website">网站</string>
@@ -51,9 +50,9 @@
     <string name="snackbar_copy_text">` %s ` 已复制到剪贴板。</string>
     <string name="retry">重试</string>
     <string name="msg_press_twice_to_exit">按两次退出。</string>
-    <string name="msg_file_save_success">成功: 文件保存为 %s</string>
+    <string name="msg_file_save_success">文件已存为 %s</string>
     <string name="post_expand_tag_filter">展开标签过滤器</string>
-    <string name="post_add_search_to_muzei">` %s `  已保存到 Muzei。</string>
+    <string name="post_add_search_to_muzei">` %s ` 已添加到 Muzei。</string>
     <string name="post_download">下载</string>
     <string name="post_add_to_fav">添加到收藏</string>
     <string name="msg_download_requires_storage_permission">下载需要存储权限。</string>
@@ -125,6 +124,7 @@
     <string name="account_favorites">收藏</string>
     <string name="account_posts">投稿</string>
     <string name="account_comments">评论</string>
+    <string name="account_config_msg_tip_empty">用户名或密码/Api 密钥不能为空。</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每页限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
@@ -135,7 +135,7 @@
     <string name="settings_post_size_larger">略大</string>
     <string name="settings_post_size_origin">原文件</string>
     <string name="settings_theme_mode">主题</string>
-    <string name="settings_theme_mode_system">遵循系统</string>
+    <string name="settings_theme_mode_system">跟随系统</string>
     <string name="settings_theme_mode_auto">自动</string>
     <string name="settings_theme_mode_day">日间</string>
     <string name="settings_theme_mode_night">夜间</string>
@@ -149,7 +149,6 @@
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">描述为空。</string>
-    <string name="pool_info_id_and_count">#%01$d | %02$d</string>
     <string name="tag_type">分类</string>
     <string name="tag_type_all">所有分型</string>
     <string name="tag_type_general">General</string>
@@ -165,7 +164,7 @@
     <string name="tag_order">排序</string>
     <string name="tag_order_date">日期</string>
     <string name="tag_order_name">名称</string>
-    <string name="tag_order_count">计数</string>
+    <string name="tag_order_count">数量</string>
     <string name="tag_delete_title">删除标签: %s ?</string>
     <string name="artist_urls_is_empty">链接为空。</string>
     <string name="artist_order">排序</string>

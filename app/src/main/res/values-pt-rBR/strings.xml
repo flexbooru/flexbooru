@@ -15,7 +15,6 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_name">Flexbooru</string>
     <string name="app_description">Um cliente booru para Android, com suporte a Danbooru e Moebooru.</string>
     <string name="title_posts">Postagens</string>
     <string name="title_popular">Popular</string>
@@ -32,11 +31,11 @@
     <string name="title_comments">Comentários</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">Direitos autorais</string>
-    <string name="title_copyright_with_version">Flexbooru %s</string>
     <string name="title_about">Sobre</string>
-    <string name="about_app">Flexbooru</string>
     <string name="about_app_version">Versão</string>
     <string name="about_app_rate">Classifique este app</string>
+    <string name="about_app_translation">Translation</string>
+    <string name="about_app_translation_summary">Translate this app</string>
     <string name="about_author">Autor</string>
     <string name="about_author_email">E-mail</string>
     <string name="about_author_website">Site</string>
@@ -51,7 +50,7 @@
     <string name="snackbar_copy_text">`%s` foi copiado para a área de transferência.</string>
     <string name="retry">Tentar de novo</string>
     <string name="msg_press_twice_to_exit">Pressione novamente para sair.</string>
-    <string name="msg_file_save_success">SUCCESSO: Arquivo salvo como %s</string>
+    <string name="msg_file_save_success">The file has been saved as %s</string>
     <string name="post_expand_tag_filter">Expandir filtro de marcadores</string>
     <string name="post_add_search_to_muzei">` %s ` foram salvos no Muzei.</string>
     <string name="post_download">Download</string>
@@ -125,10 +124,11 @@
     <string name="account_favorites">Favoritos</string>
     <string name="account_posts">Postagens</string>
     <string name="account_comments">Comentários</string>
+    <string name="account_config_msg_tip_empty">Username or Password/Api Key cannot be empty.</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Limite de página</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
-    <string name="settings_browse_size">Tamanho de Página</string>
+    <string name="settings_browse_size">Tamanho de visualização da Imagem</string>
     <string name="settings_download_size">Tamanho do download</string>
     <string name="settings_muzei_size">Tamanho do Muzei</string>
     <string name="settings_post_size_sample">Amostra</string>
@@ -149,7 +149,6 @@
     <string name="switch_yes">Sim</string>
     <string name="switch_no">Não</string>
     <string name="pool_description_is_empty">A descrição está vazia.</string>
-    <string name="pool_info_id_and_count">#%01$d | %02$d</string>
     <string name="tag_type">Tipo</string>
     <string name="tag_type_all">Todos os tipos</string>
     <string name="tag_type_general">Geral</string>
@@ -184,11 +183,8 @@
     <string name="action_info">Informação</string>
     <string name="action_save">Salvar</string>
     <string name="action_comment">Comente</string>
-    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s
-        filtro aplicado
-    </string>
-    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filtro não aplicado
-    </string>
+    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
+    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
     <string name="order">Ordem</string>
     <string name="rating">Avaliação</string>
     <string name="muzei_copy">Copiar</string>

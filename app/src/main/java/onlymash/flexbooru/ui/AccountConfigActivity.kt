@@ -115,7 +115,7 @@ class AccountConfigActivity : AppCompatActivity() {
         username = username_edit.text.toString()
         pass = password_edit.text.toString()
         if (username.isBlank() || pass.isBlank()) {
-            Snackbar.make(account_config_title, "Username or Password/Api Key cannot be empty.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(account_config_title, getString(R.string.account_config_msg_tip_empty), Snackbar.LENGTH_LONG).show()
             return
         }
         val hashSalt = booru.hash_salt

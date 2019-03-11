@@ -15,7 +15,6 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_name">Flexbooru</string>
     <string name="app_description">Een booru client voor Android, met ondersteuning voor Danbooru en Moebooru.</string>
     <string name="title_posts">Posts</string>
     <string name="title_popular">Populair</string>
@@ -32,11 +31,11 @@
     <string name="title_comments">Reacties</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">Copyrightinformatie</string>
-    <string name="title_copyright_with_version">Flexbooru %s</string>
     <string name="title_about">Over</string>
-    <string name="about_app">Flexbooru</string>
     <string name="about_app_version">Versie</string>
     <string name="about_app_rate">Beoordeel deze app</string>
+    <string name="about_app_translation">Translation</string>
+    <string name="about_app_translation_summary">Translate this app</string>
     <string name="about_author">Auteur</string>
     <string name="about_author_email">E-mail</string>
     <string name="about_author_website">Website</string>
@@ -51,7 +50,7 @@
     <string name="snackbar_copy_text">` %s ` is gekopieerd naar het klembord.</string>
     <string name="retry">Opnieuw proberen</string>
     <string name="msg_press_twice_to_exit">Druk nogmaals om te verlaten.</string>
-    <string name="msg_file_save_success">SUCCES: Bestand opgeslagen als %s</string>
+    <string name="msg_file_save_success">The file has been saved as %s</string>
     <string name="post_expand_tag_filter">Tag filter uitklappen</string>
     <string name="post_add_search_to_muzei">` %s` opgeslagen in Muzei.</string>
     <string name="post_download">Download</string>
@@ -125,6 +124,7 @@
     <string name="account_favorites">Favorieten</string>
     <string name="account_posts">Posts</string>
     <string name="account_comments">Reacties</string>
+    <string name="account_config_msg_tip_empty">Username or Password/Api Key cannot be empty.</string>
     <string name="settings_safe_mode">Veilige modus</string>
     <string name="settings_page_limit">Paginalimiet</string>
     <string name="settings_muzei_limit">Muzeilimiet</string>
@@ -149,7 +149,6 @@
     <string name="switch_yes">Ja</string>
     <string name="switch_no">Nee</string>
     <string name="pool_description_is_empty">Beschrijving is leeg.</string>
-    <string name="pool_info_id_and_count">#%01$d | %02$d</string>
     <string name="tag_type">Soort</string>
     <string name="tag_type_all">Alle soorten</string>
     <string name="tag_type_general">Algemeen</string>
@@ -184,11 +183,8 @@
     <string name="action_info">Info</string>
     <string name="action_save">Opslaan</string>
     <string name="action_comment">Reageren</string>
-    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s
-        filter toegepast
-    </string>
-    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter niet toegepast
-    </string>
+    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
+    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
     <string name="order">Volgorde</string>
     <string name="rating">Beoordeling</string>
     <string name="muzei_copy">Kopiëren</string>

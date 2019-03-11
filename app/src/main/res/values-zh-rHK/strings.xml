@@ -15,7 +15,6 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_name">Flexbooru</string>
     <string name="app_description">一個支援 Danbooru 同 Moebooru 嘅 Android Booru 客戶端。</string>
     <string name="title_posts">帖子</string>
     <string name="title_popular">熱門</string>
@@ -32,11 +31,11 @@
     <string name="title_comments">留言</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">版權</string>
-    <string name="title_copyright_with_version">Flexbooru %s</string>
     <string name="title_about">關於</string>
-    <string name="about_app">Flexbooru</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">評價呢個App</string>
+    <string name="about_app_translation">Translation</string>
+    <string name="about_app_translation_summary">Translate this app</string>
     <string name="about_author">作者</string>
     <string name="about_author_email">電子郵件</string>
     <string name="about_author_website">網站</string>
@@ -51,7 +50,7 @@
     <string name="snackbar_copy_text">` %s ` 已複製到剪貼板。</string>
     <string name="retry">重試</string>
     <string name="msg_press_twice_to_exit">撳兩次離開。</string>
-    <string name="msg_file_save_success">成功: 檔案儲存為 %s</string>
+    <string name="msg_file_save_success">The file has been saved as %s</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
     <string name="post_download">下載</string>
@@ -125,6 +124,7 @@
     <string name="account_favorites">收藏</string>
     <string name="account_posts">帖子</string>
     <string name="account_comments">留言</string>
+    <string name="account_config_msg_tip_empty">Username or Password/Api Key cannot be empty.</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">頁數限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
@@ -149,7 +149,6 @@
     <string name="switch_yes">係</string>
     <string name="switch_no">唔係</string>
     <string name="pool_description_is_empty">簡介係空白嘅。</string>
-    <string name="pool_info_id_and_count">#%01$d | %02$d</string>
     <string name="tag_type">類型</string>
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">General</string>
@@ -184,8 +183,8 @@
     <string name="action_info">資訊</string>
     <string name="action_save">儲存</string>
     <string name="action_comment">留言</string>
-    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s 過濾器已啟用</string>
-    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s 過濾器已停用</string>
+    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
+    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
     <string name="order">排列</string>
     <string name="rating">評級</string>
     <string name="muzei_copy">複製</string>

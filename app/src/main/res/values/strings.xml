@@ -31,9 +31,9 @@
     <string name="title_comments">Comments</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">Copyright</string>
-    <string name="title_copyright_with_version">Flexbooru %s</string>
+    <string name="title_copyright_with_version" translatable="false">Flexbooru %s</string>
     <string name="title_about">About</string>
-    <string name="about_app">Flexbooru</string>
+    <string name="about_app" translatable="false">Flexbooru</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Rate this app</string>
     <string name="about_app_translation">Translation</string>
@@ -52,7 +52,7 @@
     <string name="snackbar_copy_text">` %s ` have been copied to clipboard.</string>
     <string name="retry">Retry</string>
     <string name="msg_press_twice_to_exit">Press twice to exit.</string>
-    <string name="msg_file_save_success">SUCCESS: File save as %s</string>
+    <string name="msg_file_save_success">The file has been saved as %s</string>
     <string name="post_transition_name" translatable="false">post_img_%d</string>
     <string name="post_popular_transition_name" translatable="false">post_popular_img_%d</string>
     <string name="post_expand_tag_filter">Expand tag filter</string>
@@ -138,6 +138,7 @@
     <string name="account_favorites">Favorites</string>
     <string name="account_posts">Posts</string>
     <string name="account_comments">Comments</string>
+    <string name="account_config_msg_tip_empty">Username or Password/Api Key cannot be empty.</string>
     <string name="settings_safe_mode">Safe mode</string>
     <string name="settings_page_limit">Page limit</string>
     <string name="settings_muzei_limit">Muzei limit</string>
@@ -162,7 +163,7 @@
     <string name="switch_yes">Yes</string>
     <string name="switch_no">No</string>
     <string name="pool_description_is_empty">Description is empty.</string>
-    <string name="pool_info_id_and_count">#%01$d | %02$d</string>
+    <string name="pool_info_id_and_count" translatable="false">#%01$d | %02$d</string>
     <string name="bottom_nav_view_with_snackbar_behavior" translatable="false">onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior</string>
     <string name="tag_type">Type</string>
     <string name="tag_type_all">All type</string>
