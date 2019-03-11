@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <string name="app_name">Flexbooru Debug</string>
+    <string name="app_name" translatable="false">Flexbooru Debug</string>
 </resources>
