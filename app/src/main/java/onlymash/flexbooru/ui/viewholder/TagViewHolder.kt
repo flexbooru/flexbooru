@@ -23,9 +23,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.TagDan
-import onlymash.flexbooru.entity.TagDanOne
-import onlymash.flexbooru.entity.TagMoe
+import onlymash.flexbooru.entity.tag.TagDan
+import onlymash.flexbooru.entity.tag.TagDanOne
+import onlymash.flexbooru.entity.tag.TagMoe
 
 class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {

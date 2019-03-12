@@ -15,9 +15,9 @@
 
 package onlymash.flexbooru.repository.pool
 
-import onlymash.flexbooru.entity.PoolDan
-import onlymash.flexbooru.entity.PoolDanOne
-import onlymash.flexbooru.entity.PoolMoe
+import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDanOne
+import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
 

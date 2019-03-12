@@ -25,9 +25,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.entity.PostDan
-import onlymash.flexbooru.entity.PostDanOne
-import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagBrowseAdapter

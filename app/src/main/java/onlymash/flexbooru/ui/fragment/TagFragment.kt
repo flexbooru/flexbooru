@@ -32,7 +32,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.SearchTag
+import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.tag.TagRepository

@@ -20,8 +20,8 @@ import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.SearchPopular
-import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.entity.post.SearchPopular
+import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.repository.NetworkState
 import java.io.IOException
 import java.util.concurrent.Executor

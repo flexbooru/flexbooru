@@ -15,6 +15,8 @@
 
 package onlymash.flexbooru.entity
 
+import onlymash.flexbooru.entity.post.PostMoe
+
 /**
  * Vote Moebooru post response
  * */

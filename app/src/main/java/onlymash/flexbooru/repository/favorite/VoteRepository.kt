@@ -15,8 +15,8 @@
 
 package onlymash.flexbooru.repository.favorite
 
-import onlymash.flexbooru.entity.PostDan
-import onlymash.flexbooru.entity.PostDanOne
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Vote
 
 interface VoteRepository {

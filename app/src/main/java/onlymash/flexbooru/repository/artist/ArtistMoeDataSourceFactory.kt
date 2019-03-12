@@ -18,8 +18,8 @@ package onlymash.flexbooru.repository.artist
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.SearchArtist
-import onlymash.flexbooru.entity.ArtistMoe
+import onlymash.flexbooru.entity.artist.SearchArtist
+import onlymash.flexbooru.entity.artist.ArtistMoe
 import java.util.concurrent.Executor
 
 /**

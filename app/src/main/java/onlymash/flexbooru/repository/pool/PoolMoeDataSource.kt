@@ -17,7 +17,7 @@ package onlymash.flexbooru.repository.pool
 
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.PoolMoe
+import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import retrofit2.Call

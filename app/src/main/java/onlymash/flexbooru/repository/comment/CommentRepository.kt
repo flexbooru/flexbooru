@@ -16,10 +16,10 @@
 package onlymash.flexbooru.repository.comment
 
 import androidx.lifecycle.MutableLiveData
-import onlymash.flexbooru.entity.CommentAction
-import onlymash.flexbooru.entity.CommentDan
-import onlymash.flexbooru.entity.CommentDanOne
-import onlymash.flexbooru.entity.CommentMoe
+import onlymash.flexbooru.entity.comment.CommentAction
+import onlymash.flexbooru.entity.comment.CommentDan
+import onlymash.flexbooru.entity.comment.CommentDanOne
+import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.repository.Listing
 
 interface CommentRepository {

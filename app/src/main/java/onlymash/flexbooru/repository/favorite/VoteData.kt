@@ -23,6 +23,8 @@ import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.post.PostDanOne
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException

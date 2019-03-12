@@ -26,9 +26,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.PoolDan
-import onlymash.flexbooru.entity.PoolDanOne
-import onlymash.flexbooru.entity.PoolMoe
+import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDanOne
+import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.formatDate

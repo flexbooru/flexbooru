@@ -18,9 +18,9 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.entity.PostDan
-import onlymash.flexbooru.entity.PostDanOne
-import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedLiveDataListener
 import onlymash.flexbooru.repository.browse.PostLoader
 

@@ -17,8 +17,8 @@ package onlymash.flexbooru.repository.artist
 
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.SearchArtist
-import onlymash.flexbooru.entity.ArtistMoe
+import onlymash.flexbooru.entity.artist.SearchArtist
+import onlymash.flexbooru.entity.artist.ArtistMoe
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import retrofit2.Call
 import retrofit2.Response

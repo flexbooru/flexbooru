@@ -23,10 +23,10 @@ import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.SearchPopular
-import onlymash.flexbooru.entity.PostDan
-import onlymash.flexbooru.entity.PostDanOne
-import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.entity.post.SearchPopular
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 

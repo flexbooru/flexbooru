@@ -16,7 +16,13 @@
 package onlymash.flexbooru.api.url
 
 import okhttp3.HttpUrl
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.Vote
+import onlymash.flexbooru.entity.artist.SearchArtist
+import onlymash.flexbooru.entity.comment.CommentAction
+import onlymash.flexbooru.entity.post.SearchPopular
+import onlymash.flexbooru.entity.tag.SearchTag
 
 object MoeUrlHelper {
 

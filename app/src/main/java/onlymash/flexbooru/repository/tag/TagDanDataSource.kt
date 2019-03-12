@@ -17,8 +17,8 @@ package onlymash.flexbooru.repository.tag
 
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.entity.TagDan
-import onlymash.flexbooru.entity.SearchTag
+import onlymash.flexbooru.entity.tag.TagDan
+import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import retrofit2.Call
 import retrofit2.Response

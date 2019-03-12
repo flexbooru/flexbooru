@@ -23,7 +23,14 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Constants.BASE_URL
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.VoteDan
+import onlymash.flexbooru.entity.artist.ArtistDan
+import onlymash.flexbooru.entity.comment.CommentDan
+import onlymash.flexbooru.entity.comment.CommentResponse
+import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.tag.TagDan
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Retrofit

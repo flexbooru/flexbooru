@@ -17,8 +17,8 @@ package onlymash.flexbooru.repository.tag
 
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.SearchTag
-import onlymash.flexbooru.entity.TagMoe
+import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.entity.tag.TagMoe
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call

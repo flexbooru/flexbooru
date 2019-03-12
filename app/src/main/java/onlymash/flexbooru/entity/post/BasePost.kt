@@ -13,11 +13,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.post
+
+import com.crashlytics.android.Crashlytics
 
 abstract class BasePost {
 
-    abstract fun checkUrl(url: String): String
+    var scheme: String = "http"
+    var host: String = ""
+    var keyword: String = ""
+
+    internal fun checkUrl(url: String): String {
+        var u = url
+        if (u.contains("""\/""")) {
+            u = u.replace("""\/""", "/")
+        }
+        return when {
+            u.startsWith("http") -> u
+            u.startsWith("//") -> "$scheme:$u"
+            u.startsWith("/") -> "$scheme://$host$url"
+            else -> {
+                Crashlytics.log("Unknown url: $u")
+                u
+            }
+        }
+    }
 
     /**
      * return Preview url [String]

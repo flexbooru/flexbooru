@@ -18,8 +18,8 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.TagDan
-import onlymash.flexbooru.entity.TagMoe
+import onlymash.flexbooru.entity.tag.TagDan
+import onlymash.flexbooru.entity.tag.TagMoe
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 
 class TagAdapter(private val listener: TagViewHolder.ItemListener,

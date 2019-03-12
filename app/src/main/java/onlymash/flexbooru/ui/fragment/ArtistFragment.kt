@@ -32,7 +32,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.SearchArtist
+import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.artist.ArtistRepository

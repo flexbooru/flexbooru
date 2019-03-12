@@ -17,8 +17,8 @@ package onlymash.flexbooru.repository.tag
 
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.entity.SearchTag
-import onlymash.flexbooru.entity.TagDanOne
+import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.entity.tag.TagDanOne
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call
@@ -29,8 +29,8 @@ import java.util.concurrent.Executor
  * Danbooru1.x tags data source that uses the before/after keys returned in page requests.
  */
 class TagDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
-                       private val search: SearchTag,
-                       retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagDanOne>(retryExecutor) {
+                          private val search: SearchTag,
+                          retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagDanOne>(retryExecutor) {
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagDanOne>) {
         val request = danbooruOneApi.getTags(DanOneUrlHelper.getTagUrl(search = search, page = 1))

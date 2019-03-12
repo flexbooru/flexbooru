@@ -15,10 +15,10 @@
 
 package onlymash.flexbooru.repository.artist
 
-import onlymash.flexbooru.entity.SearchArtist
-import onlymash.flexbooru.entity.ArtistDan
-import onlymash.flexbooru.entity.ArtistDanOne
-import onlymash.flexbooru.entity.ArtistMoe
+import onlymash.flexbooru.entity.artist.SearchArtist
+import onlymash.flexbooru.entity.artist.ArtistDan
+import onlymash.flexbooru.entity.artist.ArtistDanOne
+import onlymash.flexbooru.entity.artist.ArtistMoe
 import onlymash.flexbooru.repository.Listing
 
 interface ArtistRepository {

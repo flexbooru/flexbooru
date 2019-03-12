@@ -25,6 +25,9 @@ import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.database.dao.*
 import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostMoe
 
 @Database(entities = [
     (PostMoe::class), (PostDan::class), (PostDanOne::class),

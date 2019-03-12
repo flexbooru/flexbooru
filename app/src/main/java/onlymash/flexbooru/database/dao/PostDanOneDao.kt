@@ -18,7 +18,7 @@ package onlymash.flexbooru.database.dao
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import onlymash.flexbooru.entity.PostDanOne
+import onlymash.flexbooru.entity.post.PostDanOne
 
 @Dao
 interface PostDanOneDao {

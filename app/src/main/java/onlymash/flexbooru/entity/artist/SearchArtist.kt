@@ -13,18 +13,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.artist
 
-data class TagDan(
-    var scheme: String = "",
-    var host: String = "",
-    val id: Int,
-    val name: String,
-    val post_count: Int,
-    val related_tags: String,
-    val related_tags_updated_at: String,
-    val category: Int,
-    val created_at: String,
-    val updated_at: String,
-    val is_locked: Boolean
+/**
+ * Search artist param
+ * */
+data class SearchArtist(
+    var scheme: String,
+    var host: String,
+    //search keyword
+    var name: String,
+    // danbooru: name, updated_at, post_count (Defaults to ID).
+    // moebooru: name, date
+    var order: String,
+    var limit: Int,
+    var username: String = "",
+    var auth_key: String = ""
 )

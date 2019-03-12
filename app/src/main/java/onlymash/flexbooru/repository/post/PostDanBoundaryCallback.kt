@@ -20,7 +20,7 @@ import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call

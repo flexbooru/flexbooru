@@ -13,9 +13,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.comment
 
 /**
- * Comment response
+ * Moebooru response data class
  * */
-data class CommentResponse(val success: Boolean)
+data class CommentMoe(
+    var uid: Long = 0L,
+    var scheme: String = "",
+    var host: String = "",
+    val id: Int,
+    val created_at: String,
+    val post_id: Int,
+    val creator: String,
+    val creator_id: Int,
+    val body: String
+)

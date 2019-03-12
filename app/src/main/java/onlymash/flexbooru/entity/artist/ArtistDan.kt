@@ -13,14 +13,29 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.artist
 
-data class TagMoe(
+data class ArtistDan(
     var scheme: String = "",
     var host: String = "",
+    var keyword: String? = "",
     val id: Int,
     val name: String,
-    val count: Int,
-    val type: Int,
-    val ambiguous: Boolean
+    val created_at: String,
+    val updated_at: String,
+    val creator_id: Int,
+    val is_active: Boolean,
+    val group_name: String,
+    val is_banned: Boolean,
+    val urls: MutableList<ArtistUrlDan>?
+)
+
+data class ArtistUrlDan(
+    val id: Int,
+    val artist_id: Int,
+    val url: String,
+    val normalized_url: String,
+    val created_at: String,
+    val updated_at: String,
+    val is_active: Boolean
 )

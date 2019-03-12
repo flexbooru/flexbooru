@@ -26,9 +26,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.ArtistDan
-import onlymash.flexbooru.entity.ArtistDanOne
-import onlymash.flexbooru.entity.ArtistMoe
+import onlymash.flexbooru.entity.artist.ArtistDan
+import onlymash.flexbooru.entity.artist.ArtistDanOne
+import onlymash.flexbooru.entity.artist.ArtistMoe
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.toggleArrow
 import onlymash.flexbooru.widget.LinkTransformationMethod

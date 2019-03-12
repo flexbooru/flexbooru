@@ -13,20 +13,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.post
 
 /**
- * Search artist param
+ * Search popular posts param
  * */
-data class SearchArtist(
+data class SearchPopular(
     var scheme: String,
     var host: String,
-    //search keyword
-    var name: String,
-    // danbooru: name, updated_at, post_count (Defaults to ID).
-    // moebooru: name, date
-    var order: String,
-    var limit: Int,
+
+    // Danbooru: yyyy-mm-dd
+    var date: String = "",
+
+    // Danbooru: day week month
+    var scale: String = "day",
+
+    // Moebooru: 1d 1w 1m 1y
+    var period: String = "1d",
+
     var username: String = "",
-    var auth_key: String = ""
+    var auth_key: String = "",
+
+    var safe_mode: Boolean = true,
+
+    //Danbooru1.x
+    var day: String = "",
+    var month: String = "",
+    var year: String = ""
 )

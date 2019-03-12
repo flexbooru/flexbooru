@@ -18,7 +18,7 @@ package onlymash.flexbooru.repository.pool
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.entity.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDan
 import onlymash.flexbooru.entity.Search
 import java.util.concurrent.Executor
 

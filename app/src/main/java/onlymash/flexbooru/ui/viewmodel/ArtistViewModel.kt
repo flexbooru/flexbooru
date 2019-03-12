@@ -19,7 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.entity.SearchArtist
+import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.repository.artist.ArtistRepository
 
 class ArtistViewModel(private val repo: ArtistRepository) : ViewModel() {

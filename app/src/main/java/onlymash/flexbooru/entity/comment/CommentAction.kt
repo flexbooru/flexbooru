@@ -13,22 +13,21 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.comment
 
 /**
- * Search request tags param
+ * Comment request param
  * */
-data class SearchTag(
-    var scheme: String,
-    var host: String,
-    var name: String,
-    //count name date
-    var order: String,
-    // Moebooru General: 0, artist: 1, copyright: 3, character: 4, Circle: 5, Faults: 6
-    // Danbooru General: 0, artist: 1, copyright: 3, character: 4, meta: 5
-    // Danbooru1.x General: 0, artist: 1, copyright: 3, character: 4, model: 5, photo_set: 6
-    var type: String,
-    var limit: Int,
+data class CommentAction(
+    var scheme: String = "",
+    var host: String = "",
+    var limit: Int = 10,
+    var body: String = "",
+    var comment_id: Int = -1,
+    var post_id: Int = -1,
+    var query: String = "",
+    //moebooru danbooru: do_not_bump_post Set to 1 if you do not want the post to be bumped to the top of the comment listing
+    var anonymous: Int = 0,
     var username: String = "",
     var auth_key: String = ""
 )

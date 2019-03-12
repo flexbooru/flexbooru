@@ -13,19 +13,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.post
 
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import onlymash.flexbooru.entity.DanOneDate
 
 @Entity(tableName = "posts_danbooru_one", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostDanOne(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
-    var scheme: String = "http",
-    var host: String = "",
-    var keyword: String = "",
     val id: Int,
     val status: String,
     val creator_id: Int,
@@ -52,6 +48,8 @@ data class PostDanOne(
     val file_size: Int,
     val created_at: DanOneDate
 ) : BasePost() {
+    @PrimaryKey(autoGenerate = true)
+    var uid: Long = 0L
     // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 
@@ -72,8 +70,5 @@ data class PostDanOne(
      * return Origin url [String]
      * */
     override fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else checkUrl(file_url)
-
-    override fun checkUrl(url: String): String =
-        if (url.startsWith("http")) url else "$scheme://$host$url"
 
 }

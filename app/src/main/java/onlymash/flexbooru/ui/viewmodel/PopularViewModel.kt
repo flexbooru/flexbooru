@@ -19,7 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.entity.SearchPopular
+import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.repository.popular.PopularRepository
 
 class PopularViewModel(private val repo: PopularRepository) : ViewModel() {

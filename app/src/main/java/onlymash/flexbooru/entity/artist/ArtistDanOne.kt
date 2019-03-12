@@ -13,21 +13,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.artist
 
-/**
- * Comment request param
- * */
-data class CommentAction(
+data class ArtistDanOne(
+    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
-    var limit: Int = 10,
-    var body: String = "",
-    var comment_id: Int = -1,
-    var post_id: Int = -1,
-    var query: String = "",
-    //moebooru danbooru: do_not_bump_post Set to 1 if you do not want the post to be bumped to the top of the comment listing
-    var anonymous: Int = 0,
-    var username: String = "",
-    var auth_key: String = ""
+    var keyword: String? = "",
+    val updater_id: Int,
+    val version: Int,
+    val is_active: Boolean,
+    val urls: MutableList<String>?,
+    val group_name: String?,
+    val other_name: String?,
+    val name: String,
+    val id: Int
 )

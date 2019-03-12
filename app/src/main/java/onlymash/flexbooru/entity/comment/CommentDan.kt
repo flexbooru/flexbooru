@@ -13,15 +13,26 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.comment
 
-data class ArtistMoe(
+/**
+ * Danbooru response data class
+ * */
+data class CommentDan(
+    var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
-    var keyword: String? = "",
     val id: Int,
-    val name: String,
-    val alias_id: Int?,
-    val group_id: Int?,
-    val urls: MutableList<String>?
+    val created_at: String,
+    val post_id: Int,
+    val creator_id: Int,
+    val body: String,
+    val score: Int,
+    val updated_at: String,
+    val updater_id: Int,
+    val do_not_bump_post: Boolean,
+    val is_deleted: Boolean,
+    val is_sticky: Boolean,
+    val creator_name: String,
+    val updater_name: String
 )

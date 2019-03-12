@@ -18,8 +18,8 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.ArtistDan
-import onlymash.flexbooru.entity.ArtistMoe
+import onlymash.flexbooru.entity.artist.ArtistDan
+import onlymash.flexbooru.entity.artist.ArtistMoe
 import onlymash.flexbooru.ui.viewholder.ArtistViewHolder
 
 class ArtistAdapter(private val listener: ArtistViewHolder.ItemListener,

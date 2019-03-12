@@ -26,7 +26,7 @@ import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.repository.Listing
 import retrofit2.Call
 import retrofit2.Response

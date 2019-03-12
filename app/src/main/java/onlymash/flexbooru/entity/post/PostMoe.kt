@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.post
 
 import androidx.room.Entity
 import androidx.room.Index
@@ -21,11 +21,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "posts_moebooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostMoe(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L,
-    var scheme: String = "http",
-    var host: String = "",
-    var keyword: String = "",
     val id: Int,
     val tags: String?,
     val created_at: Int,
@@ -60,6 +55,8 @@ data class PostMoe(
     val height: Int,
     val is_held: Boolean
 ) : BasePost() {
+    @PrimaryKey(autoGenerate = true)
+    var uid: Long = 0L
     // to be consistent w/ changing backend order, we need to keep a data like this
     var indexInResponse: Int = -1
 
@@ -81,7 +78,4 @@ data class PostMoe(
      * return Origin url [String]
      * */
     override fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else checkUrl(file_url)
-
-    override fun checkUrl(url: String): String =
-        if (url.startsWith("http")) url else "$scheme://$host$url"
 }

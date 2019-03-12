@@ -20,8 +20,8 @@ import androidx.paging.PageKeyedDataSource
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.SearchPopular
-import onlymash.flexbooru.entity.PostDanOne
+import onlymash.flexbooru.entity.post.SearchPopular
+import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.repository.NetworkState
 import java.io.IOException
 import java.util.concurrent.Executor

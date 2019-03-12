@@ -13,31 +13,21 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.pool
 
-/**
- * Search popular posts param
- * */
-data class SearchPopular(
-    var scheme: String,
-    var host: String,
-
-    // Danbooru: yyyy-mm-dd
-    var date: String = "",
-
-    // Danbooru: day week month
-    var scale: String = "day",
-
-    // Moebooru: 1d 1w 1m 1y
-    var period: String = "1d",
-
-    var username: String = "",
-    var auth_key: String = "",
-
-    var safe_mode: Boolean = true,
-
-    //Danbooru1.x
-    var day: String = "",
-    var month: String = "",
-    var year: String = ""
+data class PoolDan(
+    var scheme: String = "",
+    var host: String = "",
+    var keyword: String = "",
+    val id: Int,
+    val name: String,
+    val created_at: String,
+    val updated_at: String,
+    val creator_id: Int,
+    val description: String,
+    val is_active: Boolean,
+    val is_deleted: Boolean,
+    val category: String,
+    val creator_name: String,
+    val post_count: Int
 )

@@ -18,7 +18,7 @@ package onlymash.flexbooru.database
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import onlymash.flexbooru.entity.ArtistUrlDan
+import onlymash.flexbooru.entity.artist.ArtistUrlDan
 import onlymash.flexbooru.entity.DanOneDate
 
 /**

@@ -19,8 +19,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.SearchPopular
-import onlymash.flexbooru.entity.PostDan
+import onlymash.flexbooru.entity.post.SearchPopular
+import onlymash.flexbooru.entity.post.PostDan
 import java.util.concurrent.Executor
 
 /**

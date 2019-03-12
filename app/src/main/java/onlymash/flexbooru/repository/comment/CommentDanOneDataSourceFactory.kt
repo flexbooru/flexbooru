@@ -18,8 +18,8 @@ package onlymash.flexbooru.repository.comment
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.entity.CommentAction
-import onlymash.flexbooru.entity.CommentDanOne
+import onlymash.flexbooru.entity.comment.CommentAction
+import onlymash.flexbooru.entity.comment.CommentDanOne
 import java.util.concurrent.Executor
 
 //Danbooru1.x comment data source factory

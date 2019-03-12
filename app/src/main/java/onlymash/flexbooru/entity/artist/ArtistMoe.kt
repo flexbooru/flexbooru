@@ -13,19 +13,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.artist
 
-/**
- * Moebooru response data class
- * */
-data class CommentMoe(
-    var uid: Long = 0L,
+data class ArtistMoe(
     var scheme: String = "",
     var host: String = "",
+    var keyword: String? = "",
     val id: Int,
-    val created_at: String,
-    val post_id: Int,
-    val creator: String,
-    val creator_id: Int,
-    val body: String
+    val name: String,
+    val alias_id: Int?,
+    val group_id: Int?,
+    val urls: MutableList<String>?
 )

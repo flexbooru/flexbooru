@@ -13,19 +13,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.tag
 
-data class ArtistDanOne(
-    var uid: Long = 0L,
+data class TagDan(
     var scheme: String = "",
     var host: String = "",
-    var keyword: String? = "",
-    val updater_id: Int,
-    val version: Int,
-    val is_active: Boolean,
-    val urls: MutableList<String>?,
-    val group_name: String?,
-    val other_name: String?,
+    val id: Int,
     val name: String,
-    val id: Int
+    val post_count: Int,
+    val related_tags: String,
+    val related_tags_updated_at: String,
+    val category: Int,
+    val created_at: String,
+    val updated_at: String,
+    val is_locked: Boolean
 )

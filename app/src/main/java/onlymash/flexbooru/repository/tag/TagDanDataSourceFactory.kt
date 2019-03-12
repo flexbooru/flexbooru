@@ -18,8 +18,8 @@ package onlymash.flexbooru.repository.tag
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.entity.TagDan
-import onlymash.flexbooru.entity.SearchTag
+import onlymash.flexbooru.entity.tag.TagDan
+import onlymash.flexbooru.entity.tag.SearchTag
 import java.util.concurrent.Executor
 
 /**

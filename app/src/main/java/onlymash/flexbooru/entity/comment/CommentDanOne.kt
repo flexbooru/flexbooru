@@ -13,26 +13,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.comment
 
-/**
- * Danbooru response data class
- * */
-data class CommentDan(
+data class CommentDanOne(
     var uid: Long = 0L,
     var scheme: String = "",
     var host: String = "",
     val id: Int,
+    val score: Int,
     val created_at: String,
     val post_id: Int,
+    val creator: String,
     val creator_id: Int,
-    val body: String,
-    val score: Int,
-    val updated_at: String,
-    val updater_id: Int,
-    val do_not_bump_post: Boolean,
-    val is_deleted: Boolean,
-    val is_sticky: Boolean,
-    val creator_name: String,
-    val updater_name: String
+    val body: String
 )

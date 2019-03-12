@@ -20,7 +20,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.CommentMoe
+import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState

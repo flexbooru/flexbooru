@@ -26,9 +26,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.CommentDan
-import onlymash.flexbooru.entity.CommentDanOne
-import onlymash.flexbooru.entity.CommentMoe
+import onlymash.flexbooru.entity.comment.CommentDan
+import onlymash.flexbooru.entity.comment.CommentDanOne
+import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.AccountActivity

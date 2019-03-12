@@ -17,8 +17,8 @@ package onlymash.flexbooru.repository.comment
 
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.CommentAction
-import onlymash.flexbooru.entity.CommentMoe
+import onlymash.flexbooru.entity.comment.CommentAction
+import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import retrofit2.Call
 import retrofit2.Response

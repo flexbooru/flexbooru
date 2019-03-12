@@ -13,17 +13,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.tag
 
-data class PoolDanOne(
+data class TagDanOne(
     var scheme: String = "",
     var host: String = "",
-    var keyword: String = "",
-    val user_id: Int,
-    val is_public: Boolean,
-    val post_count: Int,
-    val name: String,
-    val updated_at: DanOneDate,
     val id: Int,
-    val created_at: DanOneDate
+    val name: String,
+    val count: Int,
+    val type: Int,
+    val ambiguous: Boolean
 )

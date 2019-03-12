@@ -22,9 +22,9 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.PoolDan
-import onlymash.flexbooru.entity.PoolDanOne
-import onlymash.flexbooru.entity.PoolMoe
+import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDanOne
+import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
