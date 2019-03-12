@@ -22,7 +22,7 @@ import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 
 class TagFilterViewModel(private val repo: TagFilterRepository) : ViewModel() {
 
-    var tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
+    val tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
 
     fun loadTags(booruUid: Long) {
         tagsFilter.addSource(repo.loadTagsFilter(booruUid)) {

@@ -28,30 +28,13 @@ import onlymash.flexbooru.entity.*
 
 @Database(entities = [
     (PostMoe::class), (PostDan::class), (PostDanOne::class),
-    (Booru::class), (User::class),
+    (Booru::class), (User::class), (Suggestion::class),
     (TagFilter::class), (Muzei::class)],
-    version = 16, exportSchema = true)
+    version = 17, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
     companion object {
-        private val MIGRATION_8_9 by lazy {
-            object : Migration(8, 9) {
-                override fun migrate(database: SupportSQLiteDatabase) {
-                    database.execSQL("DROP TABLE `posts_moebooru`")
-                    database.execSQL("CREATE TABLE IF NOT EXISTS `posts_moebooru` (`indexInResponse` INTEGER NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `host` TEXT NOT NULL, `keyword` TEXT NOT NULL, `id` INTEGER NOT NULL, `tags` TEXT, `created_at` INTEGER NOT NULL, `creator_id` INTEGER NOT NULL, `author` TEXT NOT NULL, `change` INTEGER NOT NULL, `source` TEXT, `score` INTEGER NOT NULL, `md5` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `file_url` TEXT, `file_ext` TEXT, `is_shown_in_index` INTEGER NOT NULL, `preview_url` TEXT NOT NULL, `preview_width` INTEGER NOT NULL, `preview_height` INTEGER NOT NULL, `actual_preview_width` INTEGER NOT NULL, `actual_preview_height` INTEGER NOT NULL, `sample_url` TEXT, `sample_width` INTEGER NOT NULL, `sample_height` INTEGER NOT NULL, `sample_file_size` INTEGER NOT NULL, `jpeg_url` TEXT, `jpeg_width` INTEGER NOT NULL, `jpeg_height` INTEGER NOT NULL, `jpeg_file_size` INTEGER NOT NULL, `rating` TEXT NOT NULL, `has_children` INTEGER NOT NULL, `parent_id` INTEGER, `status` TEXT NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `is_held` INTEGER NOT NULL)")
-                    database.execSQL("CREATE UNIQUE INDEX `index_posts_moebooru_host_keyword_id` ON `posts_moebooru` (`host`, `keyword`, `id`)")
-                }
-            }
-        }
-        private val MIGRATION_9_10 by lazy {
-            object : Migration(9, 10) {
-                override fun migrate(database: SupportSQLiteDatabase) {
-                    database.execSQL("CREATE TABLE IF NOT EXISTS `muzei` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `keyword` TEXT, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-                    database.execSQL("CREATE UNIQUE INDEX `index_muzei_booru_uid_keyword` ON `muzei` (`booru_uid`, `keyword`)")
-                }
-            }
-        }
         private val MIGRATION_10_11 by lazy {
             object : Migration(10, 11) {
                 override fun migrate(database: SupportSQLiteDatabase) {
@@ -117,19 +100,26 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_16_17 by lazy {
+            object : Migration(16, 17) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `suggestions` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `keyword` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                    database.execSQL("CREATE UNIQUE INDEX `index_suggestions_booru_uid_keyword` ON `suggestions` (`booru_uid`, `keyword`)")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .addMigrations(
-                    MIGRATION_8_9,
-                    MIGRATION_9_10,
                     MIGRATION_10_11,
                     MIGRATION_11_12,
                     MIGRATION_12_13,
                     MIGRATION_13_14,
                     MIGRATION_14_15,
-                    MIGRATION_15_16
+                    MIGRATION_15_16,
+                    MIGRATION_16_17
                 )
                 .build()
         }
@@ -137,6 +127,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
         val userDao get() = instance.userDao()
         val tagFilterDao get() = instance.tagFilterDao()
         val muzeiDao get() = instance.muzeiDao()
+        val suggestionDao get() = instance.suggestionDao()
     }
 
     abstract fun postDanOneDao(): PostDanOneDao
@@ -145,6 +136,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
 
     abstract fun booruDao(): BooruDao
     abstract fun userDao(): UserDao
+
+    abstract fun suggestionDao(): SuggestionDao
 
     abstract fun tagFilterDao(): TagFilterDao
     abstract fun muzeiDao(): MuzeiDao

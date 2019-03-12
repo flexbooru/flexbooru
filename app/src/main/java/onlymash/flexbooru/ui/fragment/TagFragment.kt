@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
@@ -43,7 +42,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagAdapter
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 import onlymash.flexbooru.ui.viewmodel.TagViewModel
-import onlymash.flexbooru.widget.SearchBar
+import onlymash.flexbooru.widget.search.SearchBar
 
 class TagFragment : ListFragment() {
 
@@ -302,8 +301,8 @@ class TagFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_bar.setTitle(R.string.title_tags)
-        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_tags))
+        searchBar.setTitle(R.string.title_tags)
+        searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_tags))
         tagViewModel = getTagViewModel(ServiceLocator.instance().getTagRepository())
         tagAdapter = TagAdapter(
             listener = itemListener,
@@ -321,7 +320,7 @@ class TagFragment : ListFragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                search_bar.setMenu(R.menu.tag_dan, requireActivity().menuInflater)
+                searchBar.setMenu(R.menu.tag_dan, requireActivity().menuInflater)
                 tagViewModel.tagsDan.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<Any>)
@@ -332,7 +331,7 @@ class TagFragment : ListFragment() {
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                search_bar.setMenu(R.menu.tag_moe, requireActivity().menuInflater)
+                searchBar.setMenu(R.menu.tag_moe, requireActivity().menuInflater)
                 tagViewModel.tagsMoe.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<Any>)
@@ -343,7 +342,7 @@ class TagFragment : ListFragment() {
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                search_bar.setMenu(R.menu.tag_dan_one, requireActivity().menuInflater)
+                searchBar.setMenu(R.menu.tag_dan_one, requireActivity().menuInflater)
                 tagViewModel.tagsDanOne.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<Any>)

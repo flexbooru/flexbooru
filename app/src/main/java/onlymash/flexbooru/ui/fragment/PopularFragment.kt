@@ -23,7 +23,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -58,7 +57,7 @@ import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.util.downloadPost
 import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
-import onlymash.flexbooru.widget.SearchBar
+import onlymash.flexbooru.widget.search.SearchBar
 import java.util.*
 
 
@@ -482,12 +481,12 @@ class PopularFragment : ListFragment() {
     }
 
     private fun init() {
-        search_bar.setTitle(R.string.title_popular)
-        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
+        searchBar.setTitle(R.string.title_popular)
+        searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         when (type) {
-            Constants.TYPE_DANBOORU -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
-            Constants.TYPE_MOEBOORU -> search_bar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
-            Constants.TYPE_DANBOORU_ONE -> search_bar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
+            Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
+            Constants.TYPE_MOEBOORU -> searchBar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
+            Constants.TYPE_DANBOORU_ONE -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             else -> throw IllegalArgumentException("unknown type $type")
         }
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())

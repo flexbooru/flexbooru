@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.fragment
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -25,16 +24,23 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.ui.MainActivity
-import onlymash.flexbooru.widget.SearchBar
-import onlymash.flexbooru.widget.SearchBarMover
+import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
+import onlymash.flexbooru.widget.search.SearchBar
+import onlymash.flexbooru.widget.search.SearchBarMover
 
 abstract class ListFragment : Fragment() {
 
+    internal lateinit var searchBar: SearchBar
     internal lateinit var leftDrawable: DrawerArrowDrawable
     private lateinit var searchBarMover: SearchBarMover
 
@@ -103,11 +109,11 @@ abstract class ListFragment : Fragment() {
                 get() = list
 
             override fun isValidView(recyclerView: RecyclerView): Boolean {
-                return search_bar?.getState() == SearchBar.STATE_NORMAL && recyclerView == list
+                return searchBar?.getState() == SearchBar.STATE_NORMAL && recyclerView == list
             }
 
             override fun forceShowSearchBar(): Boolean {
-                return search_bar?.getState() == SearchBar.STATE_SEARCH
+                return searchBar?.getState() == SearchBar.STATE_SEARCH
             }
         }
 
@@ -116,6 +122,7 @@ abstract class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchBar = view.findViewById(R.id.search_bar)
         initSwipeRefresh()
         initSearchBar()
     }
@@ -136,11 +143,25 @@ abstract class ListFragment : Fragment() {
     }
     private fun initSearchBar() {
         leftDrawable = DrawerArrowDrawable(requireContext())
-        search_bar.apply {
+        searchBar.apply {
             setLeftDrawable(leftDrawable)
             setHelper(helper)
             setStateChangeListener(stateChangeListener)
         }
-        searchBarMover = SearchBarMover(sbMoverHelper, search_bar, list)
+        searchBarMover = SearchBarMover(sbMoverHelper, searchBar, list)
+        val suggestionViewModel = getSuggestionViewModel()
+        suggestionViewModel.suggestions.observe(this, Observer {
+            searchBar.updateSuggestions(it)
+        })
+        suggestionViewModel.loadSuggestions(Settings.instance().activeBooruUid)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getSuggestionViewModel(): SuggestionViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return SuggestionViewModel() as T
+            }
+        })[SuggestionViewModel::class.java]
     }
 }

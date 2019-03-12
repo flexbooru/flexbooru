@@ -28,7 +28,7 @@ object TagFilterManager {
         fun onUpdate(tag: TagFilter)
     }
 
-    var listeners: MutableList<Listener> = mutableListOf()
+    val listeners: MutableList<Listener> = mutableListOf()
 
     @Throws(SQLException::class)
     fun createTagFilter(tag: TagFilter): TagFilter {

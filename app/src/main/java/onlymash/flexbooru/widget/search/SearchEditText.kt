@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.widget
+package onlymash.flexbooru.widget.search
 
 import android.annotation.SuppressLint
 import android.content.Context

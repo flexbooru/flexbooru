@@ -25,7 +25,7 @@
 
     <include layout="@layout/search_layout"/>
 
-    <onlymash.flexbooru.widget.SearchBar
+    <onlymash.flexbooru.widget.search.SearchBar
             android:id="@+id/search_bar"
             android:layout_marginTop="@dimen/search_bar_vertical_margin"
             android:layout_marginBottom="@dimen/search_bar_vertical_margin"

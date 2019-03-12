@@ -49,7 +49,7 @@ object ViewAnimation {
 
     private fun expandAction(v: View): Animation {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        val targtetHeight = v.measuredHeight
+        val targetHeight = v.measuredHeight
 
         v.layoutParams.height = 0
         v.visibility = View.VISIBLE
@@ -58,7 +58,7 @@ object ViewAnimation {
                 v.layoutParams.height = if (interpolatedTime == 1f)
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 else
-                    (targtetHeight * interpolatedTime).toInt()
+                    (targetHeight * interpolatedTime).toInt()
                 v.requestLayout()
             }
 
@@ -67,7 +67,7 @@ object ViewAnimation {
             }
         }
 
-        a.duration = (targtetHeight / v.context.resources.displayMetrics.density).toInt().toLong()
+        a.duration = (targetHeight / v.context.resources.displayMetrics.density).toInt().toLong()
         v.startAnimation(a)
         return a
     }

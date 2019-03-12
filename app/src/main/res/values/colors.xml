@@ -31,7 +31,7 @@
     <color name="menu_icon">@color/grey_600</color>
     <color name="toolbar_menu_icon">@color/black</color>
 
-    <color name="item_line">@color/grey_10</color>
+    <color name="item_line">@color/grey_300</color>
 
     <color name="background">@color/background_light</color>
     <color name="background_light">@color/white</color>

@@ -14,18 +14,16 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="primary_text">@color/white</color>
-    <color name="primary_icon">@color/white</color>
-    <color name="menu_icon">@color/grey_400</color>
-    <color name="toolbar_menu_icon">@color/white</color>
-    <color name="background">@color/background_dark</color>
-    <color name="background_card">@color/background_card_dark</color>
-    <color name="background_text_info">@color/background_card_dark</color>
-    <color name="background_quote">@color/grey_900</color>
-    <color name="background_comment">@color/grey_800</color>
-    <color name="item_line">@color/grey_800</color>
-    <color name="rating_e">#FF424242</color>
-    <color name="rating_q">#FF616161</color>
-    <color name="rating_s">#FF757575</color>
-</resources>
+<TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@android:id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_history_24dp"
+        android:drawableTint="@color/grey_400"
+        android:drawablePadding="?attr/listPreferredItemPaddingStart"
+        android:textAppearance="?attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"
+        android:paddingStart="?attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?attr/listPreferredItemPaddingEnd"
+        android:minHeight="?attr/listPreferredItemHeightSmall" />

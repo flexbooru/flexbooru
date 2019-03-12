@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
@@ -27,7 +26,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -46,7 +44,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
-import onlymash.flexbooru.widget.SearchBar
+import onlymash.flexbooru.widget.search.SearchBar
 
 class PoolFragment : ListFragment() {
 
@@ -224,8 +222,8 @@ class PoolFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_bar.setTitle(R.string.title_pools)
-        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
+        searchBar.setTitle(R.string.title_pools)
+        searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
         poolViewModel = getPoolViewModel(ServiceLocator.instance().getPoolRepository())
         val glide = GlideApp.with(this)
         poolAdapter = PoolAdapter(

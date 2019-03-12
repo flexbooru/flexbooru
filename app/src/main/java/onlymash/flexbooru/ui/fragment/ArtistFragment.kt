@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
@@ -43,7 +42,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.ArtistAdapter
 import onlymash.flexbooru.ui.viewholder.ArtistViewHolder
 import onlymash.flexbooru.ui.viewmodel.ArtistViewModel
-import onlymash.flexbooru.widget.SearchBar
+import onlymash.flexbooru.widget.search.SearchBar
 
 class ArtistFragment : ListFragment() {
 
@@ -261,8 +260,8 @@ class ArtistFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_bar.setTitle(R.string.title_artists)
-        search_bar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
+        searchBar.setTitle(R.string.title_artists)
+        searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
         artistViewModel = getArtistViewModel(ServiceLocator.instance().getArtistRepository())
         artistAdapter = ArtistAdapter(
             listener = itemListener,
@@ -280,7 +279,7 @@ class ArtistFragment : ListFragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                search_bar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
+                searchBar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
                 artistViewModel.artistsDan.observe(this, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
                     artistAdapter.submitList(artists as PagedList<Any>)
@@ -291,7 +290,7 @@ class ArtistFragment : ListFragment() {
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                search_bar.setMenu(R.menu.artist_moe, requireActivity().menuInflater)
+                searchBar.setMenu(R.menu.artist_moe, requireActivity().menuInflater)
                 artistViewModel.artistsMoe.observe(this, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
                     artistAdapter.submitList(artists as PagedList<Any>)
@@ -302,7 +301,7 @@ class ArtistFragment : ListFragment() {
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                search_bar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
+                searchBar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
                 artistViewModel.artistsDanOne.observe(this, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
                     artistAdapter.submitList(artists as PagedList<Any>)

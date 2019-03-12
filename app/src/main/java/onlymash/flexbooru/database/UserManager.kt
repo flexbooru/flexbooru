@@ -29,7 +29,7 @@ object UserManager {
         fun onUpdate(user: User)
     }
 
-    var listeners: MutableList<Listener> = mutableListOf()
+    val listeners: MutableList<Listener> = mutableListOf()
 
     @Throws(SQLException::class)
     fun createUser(user: User): User {

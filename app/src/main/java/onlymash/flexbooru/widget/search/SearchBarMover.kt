@@ -13,11 +13,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.widget
+package onlymash.flexbooru.widget.search
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.util.Log
 import android.view.View
 import androidx.core.math.MathUtils
 import androidx.recyclerview.widget.RecyclerView

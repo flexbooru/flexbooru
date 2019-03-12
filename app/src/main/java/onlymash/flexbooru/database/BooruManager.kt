@@ -30,7 +30,7 @@ object BooruManager {
     }
 
     // booru change callback
-    var listeners: MutableList<Listener> = mutableListOf()
+    val listeners: MutableList<Listener> = mutableListOf()
 
     @Throws(SQLException::class)
     fun createBooru(booru: Booru): Booru {
