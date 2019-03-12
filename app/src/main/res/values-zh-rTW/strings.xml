@@ -19,7 +19,7 @@
     <string name="title_posts">貼圖</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_settings">設定</string>
     <string name="title_booru_config">Booru 設置</string>
     <string name="title_account">帳戶</string>
     <string name="title_account_and_booru">帳戶 - %s</string>
@@ -36,7 +36,7 @@
     <string name="about_app_translation_summary">翻譯這個 App</string>
     <string name="about_author">作者</string>
     <string name="about_author_email">電子郵件</string>
-    <string name="about_author_website">Website</string>
+    <string name="about_author_website">網站</string>
     <string name="about_feedback">意見回報</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
