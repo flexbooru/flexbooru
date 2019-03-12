@@ -24,14 +24,14 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
+import onlymash.flexbooru.api.url.GelUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call
@@ -45,11 +45,13 @@ class PostData(
     private val danbooruOneApi: DanbooruOneApi,
     private val danbooruApi: DanbooruApi,
     private val moebooruApi: MoebooruApi,
+    private val gelbooruApi: GelbooruApi,
     private val ioExecutor: Executor) : PostRepository {
 
     private var danOneBoundaryCallback: PostDanOneBoundaryCallback? = null
     private var danBoundaryCallback: PostDanBoundaryCallback? = null
     private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
+    private var gelBoundaryCallback: PostGelBoundaryCallback? = null
 
     private fun insertDanbooruOneResultIntoDb(search: Search, body: MutableList<PostDanOne>?) {
         body?.let { postsDanOne ->
@@ -96,6 +98,20 @@ class PostData(
                 post
             }
             db.postMoeDao().insert(items)
+        }
+    }
+
+    private fun insertGelbooruResultIntoDb(search: Search, body: MutableList<PostGel>?) {
+        body?.let { posts ->
+            val start = db.postGelDao().getNextIndex(host = search.host, keyword = search.keyword)
+            val items = posts.mapIndexed { index, post ->
+                post.scheme = search.scheme
+                post.host = search.host
+                post.keyword = search.keyword
+                post.indexInResponse = start + index
+                post
+            }
+            db.postGelDao().insert(items)
         }
     }
 
@@ -203,6 +219,41 @@ class PostData(
     }
 
     @MainThread
+    override fun getGelPosts(search: Search): Listing<PostGel> {
+        gelBoundaryCallback = PostGelBoundaryCallback(
+            gelbooruApi = gelbooruApi,
+            handleResponse = this::insertGelbooruResultIntoDb,
+            ioExecutor = ioExecutor,
+            search = search
+        )
+        val refreshTrigger = MutableLiveData<Unit>()
+        val refreshState = Transformations.switchMap(refreshTrigger) {
+            refreshGelbooru(search)
+        }
+        val livePagedList = db.postGelDao()
+            .getPosts(host = search.host, keyword = search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 100
+                ),
+                boundaryCallback = gelBoundaryCallback
+            )
+        return Listing(
+            pagedList = livePagedList,
+            networkState = gelBoundaryCallback!!.networkState,
+            retry = {
+                gelBoundaryCallback!!.helper.retryAllFailed()
+            },
+            refresh = {
+                refreshTrigger.value = null
+            },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
     private fun refreshDanbooruOne(search: Search): LiveData<NetworkState> {
         danOneBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
@@ -281,7 +332,6 @@ class PostData(
                 override fun onFailure(call: Call<MutableList<PostMoe>>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)
                 }
-
                 override fun onResponse(call: Call<MutableList<PostMoe>>, response: Response<MutableList<PostMoe>>) {
                     ioExecutor.execute {
                         db.runInTransaction {
@@ -296,6 +346,39 @@ class PostData(
                             }
                             db.postMoeDao().deletePosts(search.host, search.keyword)
                             insertMoebooruResultIntoDb(search, posts)
+                        }
+                    }
+                    networkState.postValue(NetworkState.LOADED)
+                }
+            }
+        )
+        return networkState
+    }
+
+    @MainThread
+    private fun refreshGelbooru(search: Search): LiveData<NetworkState> {
+        gelBoundaryCallback?.lastResponseSize = search.limit
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.value = NetworkState.LOADING
+        gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1)).enqueue(
+            object : Callback<PostGelResponse> {
+                override fun onFailure(call: Call<PostGelResponse>, t: Throwable) {
+                    networkState.value = NetworkState.error(t.message)
+                }
+                override fun onResponse(call: Call<PostGelResponse>, response: Response<PostGelResponse>) {
+                    ioExecutor.execute {
+                        db.runInTransaction {
+                            val posts = response.body()?.posts
+                            if (posts.isNullOrEmpty()) {
+                                db.postMoeDao().deletePosts(host = search.host, keyword = search.keyword)
+                                return@runInTransaction
+                            }
+                            val first = db.postGelDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
+                            if (first != null && first.id >= posts[0].id) {
+                                return@runInTransaction
+                            }
+                            db.postGelDao().deletePosts(search.host, search.keyword)
+                            insertGelbooruResultIntoDb(search, posts)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)

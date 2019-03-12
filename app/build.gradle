@@ -135,7 +135,6 @@ dependencies {
     implementation 'moe.shizuku.preference:preference-simplemenu:3.0.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.retrofit2:converter-jaxb:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -143,6 +142,10 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide"
     implementation 'androidx.annotation:annotation:1.1.0-alpha01'
+    implementation "com.tickaroo.tikxml:annotation:$tikxml"
+    implementation "com.tickaroo.tikxml:core:$tikxml"
+    implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml"
+    kapt "com.tickaroo.tikxml:processor:$tikxml"
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"

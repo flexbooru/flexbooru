@@ -27,13 +27,14 @@ import onlymash.flexbooru.database.dao.*
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.post.PostMoe
 
 @Database(entities = [
-    (PostMoe::class), (PostDan::class), (PostDanOne::class),
+    (PostMoe::class), (PostDan::class), (PostDanOne::class), (PostGel::class),
     (Booru::class), (User::class), (Suggestion::class),
     (TagFilter::class), (Muzei::class)],
-    version = 17, exportSchema = true)
+    version = 18, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -111,6 +112,14 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_17_18 by lazy {
+            object : Migration(17, 18) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `posts_gelbooru` (`id` INTEGER NOT NULL, `height` INTEGER NOT NULL, `score` INTEGER NOT NULL, `file_url` TEXT NOT NULL, `parent_id` TEXT NOT NULL, `sample_url` TEXT NOT NULL, `sample_width` INTEGER NOT NULL, `sample_height` INTEGER NOT NULL, `preview_url` TEXT NOT NULL, `rating` TEXT NOT NULL, `tags` TEXT NOT NULL, `width` INTEGER NOT NULL, `change` INTEGER NOT NULL, `md5` TEXT NOT NULL, `creator_id` INTEGER NOT NULL, `has_children` INTEGER NOT NULL, `created_at` TEXT NOT NULL, `status` TEXT NOT NULL, `source` TEXT NOT NULL, `has_notes` INTEGER NOT NULL, `has_comments` INTEGER NOT NULL, `preview_width` INTEGER NOT NULL, `preview_height` INTEGER NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `indexInResponse` INTEGER NOT NULL, `scheme` TEXT NOT NULL, `host` TEXT NOT NULL, `keyword` TEXT NOT NULL)")
+                    database.execSQL("CREATE UNIQUE INDEX `index_posts_gelbooru_host_keyword_id` ON `posts_gelbooru` (`host`, `keyword`, `id`)")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
@@ -122,7 +131,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_13_14,
                     MIGRATION_14_15,
                     MIGRATION_15_16,
-                    MIGRATION_16_17
+                    MIGRATION_16_17,
+                    MIGRATION_17_18
                 )
                 .build()
         }
@@ -136,6 +146,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
     abstract fun postDanOneDao(): PostDanOneDao
     abstract fun postDanDao(): PostDanDao
     abstract fun postMoeDao(): PostMoeDao
+    abstract fun postGelDao(): PostGelDao
 
     abstract fun booruDao(): BooruDao
     abstract fun userDao(): UserDao

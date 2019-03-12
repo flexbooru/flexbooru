@@ -17,7 +17,6 @@ package onlymash.flexbooru.entity.post
 
 import androidx.room.Entity
 import androidx.room.Index
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "posts_danbooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostDan(
@@ -74,10 +73,6 @@ data class PostDan(
     val large_file_url: String?,
     val preview_file_url: String?
 ) : BasePost() {
-    @PrimaryKey(autoGenerate = true)
-    var uid: Long = 0L
-    // to be consistent w/ changing backend order, we need to keep a data like this
-    var indexInResponse: Int = -1
 
     fun getUpdateDate(): String =
         updated_at ?: created_at

@@ -28,21 +28,27 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
     private val danOneRepoResult = map(searchData) { search ->
         repo.getDanOnePosts(search)
     }
-    val postsDanOne = switchMap(danOneRepoResult) { it.pagedList }!!
-    val networkStateDanOne = switchMap(danOneRepoResult) { it.networkState }!!
-    val refreshStateDanOne = switchMap(danOneRepoResult) { it.refreshState }!!
+    val postsDanOne = switchMap(danOneRepoResult) { it.pagedList }
+    val networkStateDanOne = switchMap(danOneRepoResult) { it.networkState }
+    val refreshStateDanOne = switchMap(danOneRepoResult) { it.refreshState }
     private val danRepoResult = map(searchData) { search ->
         repo.getDanPosts(search)
     }
-    val postsDan = switchMap(danRepoResult) { it.pagedList }!!
-    val networkStateDan = switchMap(danRepoResult) { it.networkState }!!
-    val refreshStateDan = switchMap(danRepoResult) { it.refreshState }!!
+    val postsDan = switchMap(danRepoResult) { it.pagedList }
+    val networkStateDan = switchMap(danRepoResult) { it.networkState }
+    val refreshStateDan = switchMap(danRepoResult) { it.refreshState }
     private val moeRepoResult = map(searchData) { search ->
         repo.getMoePosts(search)
     }
-    val postsMoe = switchMap(moeRepoResult) { it.pagedList }!!
-    val networkStateMoe = switchMap(moeRepoResult) { it.networkState }!!
-    val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }!!
+    val postsMoe = switchMap(moeRepoResult) { it.pagedList }
+    val networkStateMoe = switchMap(moeRepoResult) { it.networkState }
+    val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }
+    private val gelRepoResult = map(searchData) { search ->
+        repo.getGelPosts(search)
+    }
+    val postsGel = switchMap(gelRepoResult) { it.pagedList }
+    val networkStateGel = switchMap(gelRepoResult) { it.networkState }
+    val refreshStateGel = switchMap(gelRepoResult) { it.refreshState }
     fun show(search: Search): Boolean {
         if (searchData.value == search) {
             return false
@@ -60,12 +66,18 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
         moeRepoResult.value?.refresh?.invoke()
     }
     fun retryDanOne() {
-        danOneRepoResult?.value?.retry?.invoke()
+        danOneRepoResult.value?.retry?.invoke()
     }
     fun retryDan() {
-        danRepoResult?.value?.retry?.invoke()
+        danRepoResult.value?.retry?.invoke()
     }
     fun retryMoe() {
-        moeRepoResult?.value?.retry?.invoke()
+        moeRepoResult.value?.retry?.invoke()
+    }
+    fun refreshGel() {
+        gelRepoResult.value?.refresh?.invoke()
+    }
+    fun retryGel() {
+        gelRepoResult.value?.retry?.invoke()
     }
 }

@@ -18,6 +18,7 @@ package onlymash.flexbooru
 import androidx.annotation.VisibleForTesting
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.repository.account.UserFinder
@@ -73,6 +74,7 @@ interface ServiceLocator {
     fun getDanbooruOneApi(): DanbooruOneApi
     fun getDanbooruApi(): DanbooruApi
     fun getMoebooruApi(): MoebooruApi
+    fun getGelbooruApi(): GelbooruApi
     fun getPostLoader(): PostLoader
     fun getUserRepository(): UserRepository
     fun getTagFilterDataSource(): TagFilterDataSource
@@ -99,12 +101,15 @@ open class DefaultServiceLocator : ServiceLocator {
 
     private val moeApi by lazy { MoebooruApi.create() }
 
+    private val gelApi by lazy { GelbooruApi.create() }
+
     override fun getPostRepository(): PostRepository {
         return PostData(
             db = FlexbooruDatabase.instance,
             danbooruOneApi = getDanbooruOneApi(),
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
+            gelbooruApi = getGelbooruApi(),
             ioExecutor = getDiskIOExecutor()
         )
     }
@@ -177,6 +182,8 @@ open class DefaultServiceLocator : ServiceLocator {
     override fun getDanbooruApi(): DanbooruApi = danApi
 
     override fun getMoebooruApi(): MoebooruApi = moeApi
+
+    override fun getGelbooruApi(): GelbooruApi = gelApi
 
     override fun getPostLoader(): PostLoader {
         return PostLoader(

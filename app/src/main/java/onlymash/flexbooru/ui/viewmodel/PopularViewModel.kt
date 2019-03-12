@@ -33,17 +33,17 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     private val moeRepoResult = map(popularData) { popular ->
         repo.getMoePopular(popular)
     }
-    val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
-    val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
-    val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
+    val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }
+    val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }
+    val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }
 
-    val postsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }!!
-    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }!!
-    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }!!
+    val postsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }
+    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }
+    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }
 
-    val postsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }!!
-    val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }!!
-    val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }!!
+    val postsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }
+    val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }
+    val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }
 
     fun show(popular: SearchPopular): Boolean {
         if (popularData.value == popular) {
@@ -66,14 +66,14 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     }
 
     fun retryDan() {
-        danRepoResult?.value?.retry?.invoke()
+        danRepoResult.value?.retry?.invoke()
     }
 
     fun retryDanOne() {
-        danOneRepoResult?.value?.retry?.invoke()
+        danOneRepoResult.value?.retry?.invoke()
     }
 
     fun retryMoe() {
-        moeRepoResult?.value?.retry?.invoke()
+        moeRepoResult.value?.retry?.invoke()
     }
 }

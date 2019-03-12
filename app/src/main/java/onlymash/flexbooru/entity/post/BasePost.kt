@@ -15,10 +15,14 @@
 
 package onlymash.flexbooru.entity.post
 
+import androidx.room.PrimaryKey
 import com.crashlytics.android.Crashlytics
 
 abstract class BasePost {
-
+    @PrimaryKey(autoGenerate = true)
+    var uid: Long = 0L
+    // to be consistent w/ changing backend order, we need to keep a data like this
+    var indexInResponse: Int = -1
     var scheme: String = "http"
     var host: String = ""
     var keyword: String = ""

@@ -24,6 +24,7 @@ data class Search(
     var host: String,
     var limit: Int,
     var keyword: String,
+    var user_id: Int = -1,
     var username: String = "",
     var auth_key: String = ""
 )

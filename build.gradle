@@ -9,6 +9,7 @@ buildscript {
         room = '2.1.0-alpha04'
         glide = '4.9.0'
         exoplayer = '2.9.5'
+        tikxml = '0.8.13'
     }
     repositories {
         google()

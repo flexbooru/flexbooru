@@ -29,23 +29,23 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     private val moeRepoResult = map(commentAction) {
         repo.getMoeComments(it)
     }
-    val commentsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }!!
-    val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }!!
-    val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }!!
+    val commentsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }
+    val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }
+    val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }
 
     private val danRepoResult = map(commentAction) {
         repo.getDanComments(it)
     }
-    val commentsDan = Transformations.switchMap(danRepoResult) { it.pagedList }!!
-    val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }!!
-    val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }!!
+    val commentsDan = Transformations.switchMap(danRepoResult) { it.pagedList }
+    val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }
+    val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }
 
     private val danOneRepoResult = map(commentAction) {
         repo.getDanOneComments(it)
     }
-    val commentsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }!!
-    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }!!
-    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }!!
+    val commentsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }
+    val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }
+    val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }
 
     val commentState = MediatorLiveData<CommentState>().apply {
         addSource(repo.commentState) {
@@ -66,7 +66,7 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     }
 
     fun retryMoe() {
-        moeRepoResult?.value?.retry?.invoke()
+        moeRepoResult.value?.retry?.invoke()
     }
 
     fun refreshDan() {
@@ -74,7 +74,7 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     }
 
     fun retryDan() {
-        danRepoResult?.value?.retry?.invoke()
+        danRepoResult.value?.retry?.invoke()
     }
 
     fun refreshDanOne() {
@@ -82,7 +82,7 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     }
 
     fun retryDanOne() {
-        danOneRepoResult?.value?.retry?.invoke()
+        danOneRepoResult.value?.retry?.invoke()
     }
 
 

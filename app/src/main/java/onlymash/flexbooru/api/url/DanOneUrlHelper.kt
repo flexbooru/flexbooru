@@ -177,6 +177,7 @@ object DanOneUrlHelper {
             .host(commentAction.host)
             .addPathSegment("comment")
             .addPathSegment("index.json")
+            .addQueryParameter("page", page.toString())
             .addQueryParameter("login", commentAction.username)
             .addQueryParameter("password_hash", commentAction.auth_key)
             .build()
