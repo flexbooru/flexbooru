@@ -18,7 +18,6 @@ package onlymash.flexbooru.util.image
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toFile
 import com.davemorrissey.labs.subscaleview.decoder.ImageDecoder
 import com.squareup.picasso.MemoryPolicy

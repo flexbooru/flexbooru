@@ -17,7 +17,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_booru_add"
             android:icon="@drawable/ic_note_add_outline_24dp"
             android:title="@string/booru_add"
             app:showAsAction="ifRoom">

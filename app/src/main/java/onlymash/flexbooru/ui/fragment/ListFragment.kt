@@ -29,7 +29,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -109,11 +108,11 @@ abstract class ListFragment : Fragment() {
                 get() = list
 
             override fun isValidView(recyclerView: RecyclerView): Boolean {
-                return searchBar?.getState() == SearchBar.STATE_NORMAL && recyclerView == list
+                return searchBar.getState() == SearchBar.STATE_NORMAL && recyclerView == list
             }
 
             override fun forceShowSearchBar(): Boolean {
-                return searchBar?.getState() == SearchBar.STATE_SEARCH
+                return searchBar.getState() == SearchBar.STATE_SEARCH
             }
         }
 

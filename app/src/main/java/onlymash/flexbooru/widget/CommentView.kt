@@ -18,7 +18,6 @@ package onlymash.flexbooru.widget
 import android.content.Context
 import android.text.util.Linkify
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView

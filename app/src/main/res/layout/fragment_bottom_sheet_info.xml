@@ -81,7 +81,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-            android:id="@+id/source_container"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -110,7 +109,6 @@
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/rating_container"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -137,7 +135,6 @@
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/score_container"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"

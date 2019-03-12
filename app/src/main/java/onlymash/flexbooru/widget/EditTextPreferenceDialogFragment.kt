@@ -21,19 +21,16 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-
 import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import moe.shizuku.preference.EditTextPreference
 import moe.shizuku.preference.PreferenceDialogFragment
-
-import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment

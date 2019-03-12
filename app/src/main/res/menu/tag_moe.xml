@@ -17,7 +17,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_tag_order"
             android:title="@string/tag_order"
             app:showAsAction="never">
         <menu>
@@ -33,7 +32,6 @@
         </menu>
     </item>
     <item
-            android:id="@+id/action_tag_type"
             android:title="@string/tag_type"
             app:showAsAction="never">
         <menu>

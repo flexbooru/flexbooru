@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.*
 abstract class BaseHeaderPagedListAdapter<T, VH : RecyclerView.ViewHolder>(
     diffCallback: DiffUtil.ItemCallback<T>) : PagedListAdapter<T, VH>(diffCallback) {
 
+    @Suppress("LeakingThis")
     private val adapterCallback = AdapterListUpdateCallback(this)
     private val listUpdateCallback = object : ListUpdateCallback {
 

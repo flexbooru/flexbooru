@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.repository.artist
 
-import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.ArtistDan

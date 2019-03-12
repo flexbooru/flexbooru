@@ -15,8 +15,6 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.PrimaryKey
-
 data class PoolMoe(
     var scheme: String = "",
     var host: String = "",

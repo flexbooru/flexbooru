@@ -16,7 +16,6 @@
 package onlymash.flexbooru.content.muzei
 
 import android.content.Intent
-import android.util.Log
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider

@@ -15,13 +15,12 @@
 
 package onlymash.flexbooru.repository.favorite
 
-import android.util.Log
-import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
+import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.*
 import retrofit2.Call

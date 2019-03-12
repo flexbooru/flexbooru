@@ -18,8 +18,6 @@
     <string name="app_description">Um cliente booru para Android, com suporte a Danbooru e Moebooru.</string>
     <string name="title_posts">Postagens</string>
     <string name="title_popular">Popular</string>
-    <string name="title_search">Pesquisar</string>
-    <string name="title_downloads">Downloads</string>
     <string name="title_manage_boorus">Gerenciar boorus</string>
     <string name="title_settings">Configurações</string>
     <string name="title_booru_config">Configurar booru</string>
@@ -91,10 +89,7 @@
     <string name="booru_config_dialog_title_delete">Tem a certeza que quer remover este Booru?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt deve conter texto: your-password</string>
     <string name="scaner_scan_qr_code">Escanear código QR</string>
-    <string name="scaner_import_from_file">Importar QR do arquivo</string>
     <string name="scaner_add_booru_permission_required">Permissão de câmera é necessária para escanear o código QR.</string>
-    <string name="scaner_import_success">Importado com sucesso!</string>
-    <string name="scaner_import_failed">Falha ao importar.</string>
     <string name="browse_toolbar_title">Postagem</string>
     <string name="browse_add_to_fav">Add to favorites</string>
     <string name="browse_download">Download</string>
@@ -104,7 +99,6 @@
     <string name="browse_share_link">Share link</string>
     <string name="browse_tags">Tags</string>
     <string name="browse_info">Info</string>
-    <string name="browse_save">Save</string>
     <string name="browse_comment">Comment</string>
     <string name="browse_tag_exclude">Excluir</string>
     <string name="browse_tag_include">Incluir</string>

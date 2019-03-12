@@ -19,7 +19,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -41,17 +40,16 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.PostDan
 import onlymash.flexbooru.entity.PostDanOne
 import onlymash.flexbooru.entity.PostMoe
+import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.image.CustomDecoder
 import onlymash.flexbooru.util.image.CustomRegionDecoder
 import onlymash.flexbooru.util.isGifImage
 import onlymash.flexbooru.util.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
-import java.lang.Exception
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val onDismissListener: DismissFrameLayout.OnDismissListener,

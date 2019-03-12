@@ -18,11 +18,9 @@ package onlymash.flexbooru.util.image
 import android.content.Context
 import android.graphics.*
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toFile
 import com.davemorrissey.labs.subscaleview.decoder.ImageRegionDecoder
 import java.io.FileInputStream
-import java.lang.RuntimeException
 
 class CustomRegionDecoder : ImageRegionDecoder {
 

@@ -15,8 +15,6 @@
   -->
 
 <resources>
-    <color name="primary_text">@color/white</color>
-    <color name="primary_icon">@color/white</color>
     <color name="menu_icon">@color/grey_400</color>
     <color name="toolbar_menu_icon">@color/white</color>
     <color name="background">@color/background_dark</color>

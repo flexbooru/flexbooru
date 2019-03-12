@@ -21,7 +21,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide

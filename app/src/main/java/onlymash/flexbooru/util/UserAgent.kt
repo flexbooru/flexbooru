@@ -17,9 +17,7 @@ package onlymash.flexbooru.util
 
 import android.os.Build
 import onlymash.flexbooru.BuildConfig
-import onlymash.flexbooru.Constants
-
-import java.util.Locale
+import java.util.*
 
 /**
  * Constructs a User-Agent string.
