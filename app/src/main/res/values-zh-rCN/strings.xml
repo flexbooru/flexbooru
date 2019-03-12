@@ -21,8 +21,8 @@
     <string name="title_manage_boorus">管理 Booru 网站</string>
     <string name="title_settings">设置</string>
     <string name="title_booru_config">配置 Booru</string>
-    <string name="title_account">帐号</string>
-    <string name="title_account_and_booru">帐号 - %s</string>
+    <string name="title_account">帐户</string>
+    <string name="title_account_and_booru">帐户 - %s</string>
     <string name="title_artists">绘师</string>
     <string name="title_pools">图集</string>
     <string name="title_tags">标签</string>
@@ -82,7 +82,7 @@
     <string name="booru_config_scheme">协议</string>
     <string name="booru_config_host">主机</string>
     <string name="booru_config_type">类型</string>
-    <string name="booru_config_hash_salt">哈希盐</string>
+    <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">名称不能为空。</string>
     <string name="booru_config_host_cant_empty">主机不能为空。</string>
     <string name="booru_config_hash_salt_cant_empty">哈希盐不能为空。</string>
@@ -114,9 +114,9 @@
     <string name="title_account_config_and_booru">帐户配置 - %s</string>
     <string name="account_username">用户名</string>
     <string name="account_password">密码</string>
-    <string name="account_api_key">Api 密钥</string>
+    <string name="account_api_key">Api Key</string>
     <string name="account_forgot_password">忘记密码？</string>
-    <string name="account_forgot_api_key">我的 Api 密钥是什么？</string>
+    <string name="account_forgot_api_key">我的 Api Key 是什么？</string>
     <string name="account_set">设置帐户</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">移除帐户</string>
@@ -124,7 +124,7 @@
     <string name="account_favorites">收藏</string>
     <string name="account_posts">投稿</string>
     <string name="account_comments">评论</string>
-    <string name="account_config_msg_tip_empty">用户名或密码/Api 密钥不能为空。</string>
+    <string name="account_config_msg_tip_empty">用户名或密码/Api Key不能为空。</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每页限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
