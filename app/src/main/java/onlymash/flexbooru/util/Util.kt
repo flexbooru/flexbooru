@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.entity.post.BasePost
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.post.PostMoe
@@ -78,38 +79,14 @@ fun isExternalStorageReadable(): Boolean {
             setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
 }
 
-fun Context.downloadPost(post: Any?) {
+fun Context.downloadPost(post: BasePost?) {
     if (post == null) return
-    var url = ""
-    var host = "Flexbooru"
-    var id = -1
-    when (post) {
-        is PostDan -> {
-            host = post.host
-            id = post.id
-            url = when (Settings.instance().downloadSize) {
-                Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
-                else -> post.getLargerUrl()
-            }
-        }
-        is PostMoe -> {
-            host = post.host
-            id = post.id
-            url = when (Settings.instance().downloadSize) {
-                Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
-                Settings.POST_SIZE_LARGER -> post.getLargerUrl()
-                else -> post.getSampleUrl()
-            }
-        }
-        is PostDanOne -> {
-            host = post.host
-            id = post.id
-            url = when (Settings.instance().downloadSize) {
-                Settings.POST_SIZE_ORIGIN -> post.getOriginUrl()
-                Settings.POST_SIZE_LARGER -> post.getLargerUrl()
-                else -> post.getSampleUrl()
-            }
-        }
+    val host = post.host
+    val id = post.getPostId()
+    val url = when (Settings.instance().downloadSize) {
+        Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
+        Settings.POST_SIZE_LARGER -> post.getLargerUrl()
+        else -> post.getOriginUrl()
     }
     if (url.isEmpty()) return
     val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")

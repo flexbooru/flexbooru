@@ -445,6 +445,9 @@ class BrowseActivity : AppCompatActivity() {
                                     voteRepository.addDanOneFav(vote, post)
                                 }
                             }
+                            Constants.TYPE_GELBOORU -> {
+
+                            }
                         }
                     } ?: startActivity(Intent(this, AccountConfigActivity::class.java))
                 }
@@ -514,6 +517,7 @@ class BrowseActivity : AppCompatActivity() {
             is PostDan -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
             is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+            is PostGel -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
             else -> ""
         }
         if (url.isNotEmpty()) {
@@ -633,6 +637,13 @@ class BrowseActivity : AppCompatActivity() {
                     else -> postsDan?.get(position)?.getOriginUrl()
                 }
             }
+            Constants.TYPE_MOEBOORU -> {
+                when (Settings.instance().browseSize) {
+                    Settings.POST_SIZE_SAMPLE -> postsMoe?.get(position)?.getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsMoe?.get(position)?.getLargerUrl()
+                    else -> postsMoe?.get(position)?.getOriginUrl()
+                }
+            }
             Constants.TYPE_DANBOORU_ONE -> {
                 when (Settings.instance().browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsDanOne?.get(position)?.getSampleUrl()
@@ -642,9 +653,9 @@ class BrowseActivity : AppCompatActivity() {
             }
             else -> {
                 when (Settings.instance().browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsMoe?.get(position)?.getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsMoe?.get(position)?.getLargerUrl()
-                    else -> postsMoe?.get(position)?.getOriginUrl()
+                    Settings.POST_SIZE_SAMPLE -> postsGel?.get(position)?.getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsGel?.get(position)?.getLargerUrl()
+                    else -> postsGel?.get(position)?.getOriginUrl()
                 }
             }
         }
@@ -721,6 +732,11 @@ class BrowseActivity : AppCompatActivity() {
             }
             Constants.TYPE_MOEBOORU -> {
                 postsMoe?.let {
+                    downloadPost(it[position])
+                }
+            }
+            Constants.TYPE_GELBOORU -> {
+                postsGel?.let {
                     downloadPost(it[position])
                 }
             }
