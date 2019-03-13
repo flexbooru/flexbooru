@@ -94,7 +94,9 @@ class ArtistFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
-                    else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
+                    else -> Bundle().apply {
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+                    }
                 }
             }
     }
@@ -137,6 +139,7 @@ class ArtistFragment : ListFragment() {
             }
 
             override fun onApplySearch(query: String) {
+                if (type < 0) return
                 search.name = query
                 refresh()
             }
@@ -246,6 +249,7 @@ class ArtistFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+        if (type < 0) return
         search = SearchArtist(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -261,6 +265,12 @@ class ArtistFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setTitle(R.string.title_artists)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
+        if (type < 0) {
+            list.visibility = View.GONE
+            swipe_refresh.visibility = View.GONE
+            notSupported.visibility = View.VISIBLE
+            return
+        }
         artistViewModel = getArtistViewModel(ServiceLocator.instance().getArtistRepository())
         artistAdapter = ArtistAdapter(
             listener = itemListener,
@@ -353,8 +363,9 @@ class ArtistFragment : ListFragment() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        if (type < 0) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
-        super.onDestroy()
     }
 }

@@ -55,6 +55,16 @@ data class PostMoe(
     val is_held: Boolean
 ) : BasePost() {
 
+    override fun getPostId(): Int = id
+
+    override fun getPostWidth(): Int = width
+
+    override fun getPostHeight(): Int = height
+
+    override fun getPostScore(): Int = score
+
+    override fun getPostRating(): String = rating
+
     override fun getPreviewUrl(): String = checkUrl(preview_url)
 
     /**

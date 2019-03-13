@@ -30,6 +30,7 @@
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">Copyrightinformatie</string>
     <string name="title_about">Over</string>
+    <string name="page_not_supported">Not supported</string>
     <string name="about_app_version">Versie</string>
     <string name="about_app_rate">Beoordeel deze app</string>
     <string name="about_app_translation">Translation</string>

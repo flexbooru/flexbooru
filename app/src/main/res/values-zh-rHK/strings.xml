@@ -30,6 +30,7 @@
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">版權</string>
     <string name="title_about">關於</string>
+    <string name="page_not_supported">Not supported</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">評價這個應用程式</string>
     <string name="about_app_translation">翻譯</string>
@@ -133,7 +134,7 @@
     <string name="settings_muzei_size">Muzei 大小</string>
     <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">較大</string>
-    <string name="settings_post_size_origin">原檔案</string>
+    <string name="settings_post_size_origin">原始檔案</string>
     <string name="settings_theme_mode">主題</string>
     <string name="settings_theme_mode_system">跟隨系統</string>
     <string name="settings_theme_mode_auto">自動</string>

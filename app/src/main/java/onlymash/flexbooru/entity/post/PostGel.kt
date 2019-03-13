@@ -56,6 +56,16 @@ data class PostGel(
     val preview_height: Int
 ) : BasePost() {
 
+    override fun getPostId(): Int = id
+
+    override fun getPostWidth(): Int = width
+
+    override fun getPostHeight(): Int = height
+
+    override fun getPostScore(): Int = score
+
+    override fun getPostRating(): String = rating
+
     override fun getPreviewUrl(): String = checkUrl(preview_url)
 
     override fun getSampleUrl(): String = checkUrl(sample_url)

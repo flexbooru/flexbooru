@@ -28,7 +28,7 @@ interface GelbooruApi {
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("GelbooruApi", log)
             }).apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
             }
 
             val interceptor = Interceptor { chain ->

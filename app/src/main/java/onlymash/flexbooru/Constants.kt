@@ -28,6 +28,7 @@ object Constants {
     const val ID_KEY = "id"
     const val AUTH_KEY = "auth_key"
     const val USERNAME_KEY = "username"
+    const val USER_ID_KEY = "user_id"
 
     const val TYPE_KEY = "type"
     const val TYPE_DANBOORU = 0

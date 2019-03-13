@@ -41,9 +41,7 @@ import onlymash.flexbooru.database.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.*
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
@@ -85,6 +83,7 @@ class PostFragment : ListFragment() {
                         putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
                         putString(Constants.KEYWORD_KEY, keyword)
                         if (user != null) {
+                            putInt(Constants.USER_ID_KEY, user.id)
                             putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.api_key)
                         } else {
@@ -98,6 +97,7 @@ class PostFragment : ListFragment() {
                         putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
                         putString(Constants.KEYWORD_KEY, keyword)
                         if (user != null) {
+                            putInt(Constants.USER_ID_KEY, user.id)
                             putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.password_hash)
                         } else {
@@ -111,8 +111,23 @@ class PostFragment : ListFragment() {
                         putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
                         putString(Constants.KEYWORD_KEY, keyword)
                         if (user != null) {
+                            putInt(Constants.USER_ID_KEY, user.id)
                             putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
+                    Constants.TYPE_GELBOORU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_GELBOORU)
+                        putString(Constants.KEYWORD_KEY, keyword)
+                        if (user != null) {
+                            putInt(Constants.USER_ID_KEY, user.id)
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.api_key)
                         } else {
                             putString(Constants.USERNAME_KEY, "")
                             putString(Constants.AUTH_KEY, "")
@@ -185,82 +200,63 @@ class PostFragment : ListFragment() {
     }
 
     private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
-        override fun onClickItem(post: Any?, view: View) {
-            when (post) {
-                is PostDan -> {
-                    currentPostId = post.id
-                    setSharedElement()
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
-                }
-                is PostMoe -> {
-                    currentPostId = post.id
-                    setSharedElement()
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
-                }
-                is PostDanOne -> {
-                    currentPostId = post.id
-                    setSharedElement()
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POST)
-                }
-            }
+        override fun onClickItem(post: BasePost?, view: View) {
+            if (post == null) return
+            currentPostId = post.getPostId()
+            setSharedElement()
+            BrowseActivity.startActivity(requireActivity(), view, post.getPostId(), post.keyword, Constants.PAGE_TYPE_POST)
         }
 
-        override fun onLongClickItem(post: Any?) {
-            var id = -1
-            when (post) {
-                is PostDan -> id = post.id
-                is PostMoe -> id = post.id
-                is PostDanOne -> id = post.id
-            }
-            if (id > 0) {
-                val context = requireContext()
-                AlertDialog.Builder(context)
-                    .setTitle("Post $id")
-                    .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
-                        when (which) {
-                            0 -> {
-                                if (ContextCompat.checkSelfPermission(context,
+        override fun onLongClickItem(post: BasePost?) {
+            if (post == null) return
+            val id = post.getPostId()
+            val context = requireContext()
+            AlertDialog.Builder(context)
+                .setTitle("Post $id")
+                .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
+                    when (which) {
+                        0 -> {
+                            if (ContextCompat.checkSelfPermission(context,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                ) != PackageManager.PERMISSION_GRANTED) {
+                                Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    ) != PackageManager.PERMISSION_GRANTED) {
-                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        )) {
+                                    )) {
 
-                                    } else {
-                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
-                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        ), 1)
-                                    }
                                 } else {
-                                    context.downloadPost(post)
+                                    ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
+                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    ), 1)
                                 }
+                            } else {
+                                context.downloadPost(post)
                             }
-                            1 -> {
-                                if (search.auth_key.isEmpty()) {
-                                    requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
-                                } else {
-                                    val vote = Vote(
-                                        scheme = search.scheme,
-                                        host = search.host,
-                                        post_id = id,
-                                        score = 3,
-                                        username = search.username,
-                                        auth_key = search.auth_key
-                                    )
-                                    when (post) {
-                                        is PostDan -> voteRepo.addDanFav(vote, post)
-                                        is PostMoe -> voteRepo.voteMoePost(vote)
-                                        is PostDanOne -> voteRepo.addDanOneFav(vote, post)
-                                    }
+                        }
+                        1 -> {
+                            if (search.auth_key.isEmpty()) {
+                                requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
+                            } else {
+                                val vote = Vote(
+                                    scheme = search.scheme,
+                                    host = search.host,
+                                    post_id = id,
+                                    score = 3,
+                                    username = search.username,
+                                    auth_key = search.auth_key
+                                )
+                                when (post) {
+                                    is PostDan -> voteRepo.addDanFav(vote, post)
+                                    is PostMoe -> voteRepo.voteMoePost(vote)
+                                    is PostDanOne -> voteRepo.addDanOneFav(vote, post)
                                 }
                             }
                         }
                     }
-                    .create()
-                    .show()
-            }
+                }
+                .create()
+                .show()
         }
     }
 
@@ -315,6 +311,12 @@ class PostFragment : ListFragment() {
                         refreshDanOne()
                     }
                 }
+                Constants.TYPE_GELBOORU -> {
+                    postViewModel.apply {
+                        show(search)
+                        refreshGel()
+                    }
+                }
             }
         }
         override fun onUpdate(user: User) {
@@ -348,6 +350,14 @@ class PostFragment : ListFragment() {
                     refreshDanOne()
                 }
             }
+            Constants.TYPE_GELBOORU -> {
+                search.username = user.name
+                search.auth_key = user.api_key ?: ""
+                postViewModel.apply {
+                    show(search)
+                    refreshGel()
+                }
+            }
         }
     }
 
@@ -362,6 +372,7 @@ class PostFragment : ListFragment() {
                         scheme = it.getString(Constants.SCHEME_KEY, ""),
                         host = it.getString(Constants.HOST_KEY, ""),
                         keyword = it.getString(Constants.KEYWORD_KEY, ""),
+                        user_id = it.getInt(Constants.USER_ID_KEY, -1),
                         username = it.getString(Constants.USERNAME_KEY, ""),
                         auth_key = it.getString(Constants.AUTH_KEY, ""),
                         limit = Settings.instance().pageLimit)
@@ -379,7 +390,8 @@ class PostFragment : ListFragment() {
                         keyword = activity.keyword,
                         username = user?.name ?: "",
                         auth_key = when (type) {
-                            Constants.TYPE_DANBOORU -> user?.api_key ?: ""
+                            Constants.TYPE_DANBOORU,
+                            Constants.TYPE_GELBOORU -> user?.api_key ?: ""
                             Constants.TYPE_MOEBOORU,
                             Constants.TYPE_DANBOORU_ONE -> user?.password_hash ?: ""
                             else -> ""
@@ -431,6 +443,7 @@ class PostFragment : ListFragment() {
                     Constants.TYPE_DANBOORU -> postViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()
+                    Constants.TYPE_GELBOORU -> postViewModel.retryGel()
                 }
             })
         list.apply {
@@ -481,7 +494,7 @@ class PostFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> {
                 postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<Any>)
+                    postAdapter.submitList(posts as PagedList<BasePost>)
                 })
                 postViewModel.networkStateDan.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -491,7 +504,7 @@ class PostFragment : ListFragment() {
             Constants.TYPE_MOEBOORU -> {
                 postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<Any>)
+                    postAdapter.submitList(posts as PagedList<BasePost>)
                 })
                 postViewModel.networkStateMoe.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -501,12 +514,22 @@ class PostFragment : ListFragment() {
             Constants.TYPE_DANBOORU_ONE -> {
                 postViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<Any>)
+                    postAdapter.submitList(posts as PagedList<BasePost>)
                 })
                 postViewModel.networkStateDanOne.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
+            }
+            Constants.TYPE_GELBOORU -> {
+                postViewModel.postsGel.observe(this, Observer<PagedList<PostGel>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<BasePost>)
+                })
+                postViewModel.networkStateGel.observe(this, Observer<NetworkState> { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshGel()
             }
         }
         postViewModel.show(search)
@@ -540,6 +563,13 @@ class PostFragment : ListFragment() {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshMoe() }
+    }
+
+    private fun initSwipeToRefreshGel() {
+        postViewModel.refreshStateGel.observe(this, Observer<NetworkState> {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+        swipe_refresh.setOnRefreshListener { postViewModel.refreshGel() }
     }
 
     @Suppress("UNCHECKED_CAST")

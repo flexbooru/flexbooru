@@ -43,6 +43,16 @@ abstract class BasePost {
         }
     }
 
+    abstract fun getPostId(): Int
+
+    abstract fun getPostWidth(): Int
+
+    abstract fun getPostHeight(): Int
+
+    abstract fun getPostScore(): Int
+
+    abstract fun getPostRating(): String
+
     /**
      * return Preview url [String]
      * */

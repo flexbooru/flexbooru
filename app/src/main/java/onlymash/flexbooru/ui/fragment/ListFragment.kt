@@ -22,6 +22,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import android.widget.TextView
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,6 +42,7 @@ abstract class ListFragment : Fragment() {
 
     internal lateinit var searchBar: SearchBar
     internal lateinit var leftDrawable: DrawerArrowDrawable
+    internal lateinit var notSupported: TextView
     private lateinit var searchBarMover: SearchBarMover
 
     interface SearchBarHelper {
@@ -122,6 +124,7 @@ abstract class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchBar = view.findViewById(R.id.search_bar)
+        notSupported = view.findViewById(R.id.not_supported)
         initSwipeRefresh()
         initSearchBar()
     }

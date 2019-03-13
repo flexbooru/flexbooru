@@ -30,6 +30,7 @@
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">版权</string>
     <string name="title_about">关于</string>
+    <string name="page_not_supported">不支持</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">给此应用评分</string>
     <string name="about_app_translation">翻译</string>

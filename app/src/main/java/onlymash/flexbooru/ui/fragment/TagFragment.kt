@@ -103,7 +103,21 @@ class TagFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
-                    else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
+                    Constants.TYPE_GELBOORU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_GELBOORU)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.api_key)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
+                    else -> Bundle().apply {
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+                    }
                 }
             }
     }
@@ -199,6 +213,9 @@ class TagFragment : ListFragment() {
                 tagViewModel.show(search)
                 tagViewModel.refreshDanOne()
             }
+            Constants.TYPE_GELBOORU -> {
+
+            }
         }
     }
 
@@ -238,6 +255,9 @@ class TagFragment : ListFragment() {
                         refreshDanOne()
                     }
                 }
+                Constants.TYPE_GELBOORU -> {
+
+                }
             }
         }
         override fun onUpdate(user: User) {
@@ -271,6 +291,9 @@ class TagFragment : ListFragment() {
                     refreshDanOne()
                 }
             }
+            Constants.TYPE_GELBOORU -> {
+
+            }
         }
     }
 
@@ -286,6 +309,7 @@ class TagFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+        if (type < 0) return
         search = SearchTag(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -302,6 +326,11 @@ class TagFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setTitle(R.string.title_tags)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_tags))
+        if (type < 0) {
+            list.visibility = View.GONE
+            swipe_refresh.visibility = View.GONE
+            notSupported.visibility = View.VISIBLE
+        }
         tagViewModel = getTagViewModel(ServiceLocator.instance().getTagRepository())
         tagAdapter = TagAdapter(
             listener = itemListener,
@@ -310,6 +339,7 @@ class TagFragment : ListFragment() {
                     Constants.TYPE_DANBOORU -> tagViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> tagViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> tagViewModel.retryDanOne()
+                    Constants.TYPE_GELBOORU -> {}
                 }
             }
         )
@@ -350,6 +380,9 @@ class TagFragment : ListFragment() {
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
+            }
+            Constants.TYPE_GELBOORU -> {
+
             }
         }
         tagViewModel.show(search = search)
@@ -394,8 +427,9 @@ class TagFragment : ListFragment() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        if (type < 0) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
-        super.onDestroy()
     }
 }

@@ -33,6 +33,7 @@ class BooruConfigFragment : BasePreferenceFragment(),
         const val BOORU_CONFIG_TYPE_DANBOORU = "danbooru"
         const val BOORU_CONFIG_TYPE_DANBOORU_ONE = "danbooru_one"
         const val BOORU_CONFIG_TYPE_MOEBOORU = "moebooru"
+        const val BOORU_CONFIG_TYPE_GELBOORU = "gelbooru"
         const val BOORU_CONFIG_SCHEME_KEY = "booru_config_scheme"
         const val BOORU_CONFIG_SCHEME_HTTP = "http"
         const val BOORU_CONFIG_SCHEME_HTTPS = "https"
@@ -66,6 +67,7 @@ class BooruConfigFragment : BasePreferenceFragment(),
                     }
                     BOORU_CONFIG_TYPE_DANBOORU_ONE
                 }
+                Constants.TYPE_GELBOORU -> BOORU_CONFIG_TYPE_GELBOORU
                 else -> throw IllegalArgumentException("unknown booru type: ${booru.type}")
             }
             app.sp.edit().apply {
@@ -90,6 +92,7 @@ class BooruConfigFragment : BasePreferenceFragment(),
             return when (sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
                 BOORU_CONFIG_TYPE_MOEBOORU -> Constants.TYPE_MOEBOORU
                 BOORU_CONFIG_TYPE_DANBOORU_ONE -> Constants.TYPE_DANBOORU_ONE
+                BOORU_CONFIG_TYPE_GELBOORU -> Constants.TYPE_GELBOORU
                 else -> Constants.TYPE_DANBOORU
             }
         }
@@ -108,7 +111,10 @@ class BooruConfigFragment : BasePreferenceFragment(),
             return if (host.isNullOrEmpty()) "" else host
         }
         private fun getHashSalt(sp: SharedPreferences): String {
-            if (getTypeInt(sp) == Constants.TYPE_DANBOORU) return ""
+            when (getTypeInt(sp)) {
+                Constants.TYPE_DANBOORU,
+                Constants.TYPE_GELBOORU -> return ""
+            }
             val hashSalt = sp.getString(BOORU_CONFIG_HASH_SALT_KEY, "")
             return if (hashSalt.isNullOrEmpty()) "" else hashSalt
         }
@@ -120,17 +126,21 @@ class BooruConfigFragment : BasePreferenceFragment(),
         booruUid = requireActivity().intent.getLongExtra(EXTRA_BOORU_UID, -1L)
         addPreferencesFromResource(R.xml.pref_booru_config)
         hashSaltPreferences = findPreference(BOORU_CONFIG_HASH_SALT_KEY)
-        if (booruUid < 0 ||
-            app.sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)
-            == BOORU_CONFIG_TYPE_DANBOORU) {
-            hashSaltPreferences.isVisible = false
+        when (app.sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
+            BOORU_CONFIG_TYPE_DANBOORU,
+            BOORU_CONFIG_TYPE_GELBOORU -> {
+                if (booruUid < 0) {
+                    hashSaltPreferences.isVisible = false
+                }
+            }
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == BOORU_CONFIG_TYPE_KEY) {
             when (sharedPreferences.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
-                BOORU_CONFIG_TYPE_DANBOORU -> {
+                BOORU_CONFIG_TYPE_DANBOORU,
+                BOORU_CONFIG_TYPE_GELBOORU -> {
                     hashSaltPreferences.isVisible = false
                 }
                 BOORU_CONFIG_TYPE_MOEBOORU,

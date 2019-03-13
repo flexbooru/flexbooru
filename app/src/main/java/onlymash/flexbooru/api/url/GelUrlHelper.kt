@@ -5,6 +5,8 @@ import onlymash.flexbooru.entity.Search
 
 object GelUrlHelper {
     fun getPostUrl(search: Search, page: Int): HttpUrl {
+        val userId = search.user_id
+        val userIdString = if (userId > 0) userId.toString() else ""
         return HttpUrl.Builder()
             .scheme(search.scheme)
             .host(search.host)
@@ -15,7 +17,7 @@ object GelUrlHelper {
             .addQueryParameter("tags", search.keyword)
             .addQueryParameter("limit", search.limit.toString())
             .addQueryParameter("pid", page.toString())
-            .addQueryParameter("user_id", search.user_id.toString())
+            .addQueryParameter("user_id", userIdString)
             .addQueryParameter("api_key", search.auth_key)
             .build()
     }

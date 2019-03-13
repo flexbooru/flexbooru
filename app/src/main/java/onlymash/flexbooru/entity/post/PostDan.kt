@@ -74,8 +74,17 @@ data class PostDan(
     val preview_file_url: String?
 ) : BasePost() {
 
-    fun getUpdateDate(): String =
-        updated_at ?: created_at
+    override fun getPostId(): Int = id
+
+    override fun getPostWidth(): Int = image_width
+
+    override fun getPostHeight(): Int = image_height
+
+    override fun getPostScore(): Int = score
+
+    override fun getPostRating(): String = rating
+
+    fun getUpdateDate(): String = updated_at ?: created_at
 
     override fun getPreviewUrl(): String =
             if (preview_file_url.isNullOrEmpty()) "" else checkUrl(preview_file_url)

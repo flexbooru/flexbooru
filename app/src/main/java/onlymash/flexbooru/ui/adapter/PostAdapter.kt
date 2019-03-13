@@ -16,11 +16,10 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import onlymash.flexbooru.entity.post.BasePost
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 
 class PostAdapter(private val glide: GlideRequests,
@@ -28,18 +27,13 @@ class PostAdapter(private val glide: GlideRequests,
                   private val showInfoBar: Boolean,
                   private val pageType: Int,
                   retryCallback: () -> Unit
-) : BaseStatePagedListAdapter<Any, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
+) : BaseStatePagedListAdapter<BasePost, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
 
     companion object {
-        val POST_COMPARATOR = object : DiffUtil.ItemCallback<Any>() {
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is PostDan && newItem is PostDan -> oldItem.id == newItem.id
-                    oldItem is PostMoe && newItem is PostMoe -> oldItem.id == newItem.id
-                    oldItem is PostDanOne && newItem is PostDanOne -> oldItem.id == newItem.id
-                    else -> false
-                }
+        val POST_COMPARATOR = object : DiffUtil.ItemCallback<BasePost>() {
+            override fun areContentsTheSame(oldItem: BasePost, newItem: BasePost): Boolean = oldItem == newItem
+            override fun areItemsTheSame(oldItem: BasePost, newItem: BasePost): Boolean {
+                return oldItem.getPostId() == newItem.getPostId()
             }
         }
     }

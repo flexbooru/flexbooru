@@ -42,10 +42,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.*
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
-import onlymash.flexbooru.entity.post.SearchPopular
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
@@ -119,7 +116,9 @@ class PopularFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
-                    else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
+                    else -> Bundle().apply {
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+                    }
                 }
             }
 
@@ -142,82 +141,63 @@ class PopularFragment : ListFragment() {
     private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
 
     private val itemListener = object : PostViewHolder.ItemListener {
-        override fun onClickItem(post: Any?, view: View) {
-            when (post) {
-                is PostDan -> {
-                    currentPostId = post.id
-                    (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
-                }
-                is PostMoe -> {
-                    currentPostId = post.id
-                    (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
-                }
-                is PostDanOne -> {
-                    currentPostId = post.id
-                    (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
-                    BrowseActivity.startActivity(requireActivity(), view, post.id, post.keyword, Constants.PAGE_TYPE_POPULAR)
-                }
-            }
+        override fun onClickItem(post: BasePost?, view: View) {
+            if (post == null) return
+            currentPostId = post.getPostId()
+            (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
+            BrowseActivity.startActivity(requireActivity(), view, currentPostId, post.keyword, Constants.PAGE_TYPE_POPULAR)
         }
 
-        override fun onLongClickItem(post: Any?) {
-            var id = -1
-            when (post) {
-                is PostDan -> id = post.id
-                is PostMoe -> id = post.id
-                is PostDanOne -> id = post.id
-            }
-            if (id > 0) {
-                val context = requireContext()
-                AlertDialog.Builder(context)
-                    .setTitle("Post $id")
-                    .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
-                        when (which) {
-                            0 -> {
-                                if (ContextCompat.checkSelfPermission(context,
+        override fun onLongClickItem(post: BasePost?) {
+            if (post == null) return
+            val id = post.getPostId()
+            val context = requireContext()
+            AlertDialog.Builder(context)
+                .setTitle("Post $id")
+                .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
+                    when (which) {
+                        0 -> {
+                            if (ContextCompat.checkSelfPermission(context,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                ) != PackageManager.PERMISSION_GRANTED) {
+                                Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    ) != PackageManager.PERMISSION_GRANTED) {
-                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        )) {
+                                    )) {
 
-                                    } else {
-                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
-                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        ), 1)
-                                    }
                                 } else {
-                                    context.downloadPost(post)
+                                    ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
+                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    ), 1)
                                 }
+                            } else {
+                                context.downloadPost(post)
                             }
-                            1 -> {
-                                if (popular.auth_key.isEmpty()) {
-                                    requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
-                                } else {
-                                    val vote = Vote(
-                                        scheme = popular.scheme,
-                                        host = popular.host,
-                                        post_id = id,
-                                        score = 3,
-                                        username = popular.username,
-                                        auth_key = popular.auth_key
-                                    )
-                                    when (post) {
-                                        is PostDan -> voteRepo.addDanFav(vote, post)
-                                        is PostMoe -> voteRepo.voteMoePost(vote)
-                                        is PostDanOne -> voteRepo.addDanOneFav(vote, post)
-                                    }
+                        }
+                        1 -> {
+                            if (popular.auth_key.isEmpty()) {
+                                requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
+                            } else {
+                                val vote = Vote(
+                                    scheme = popular.scheme,
+                                    host = popular.host,
+                                    post_id = id,
+                                    score = 3,
+                                    username = popular.username,
+                                    auth_key = popular.auth_key
+                                )
+                                when (post) {
+                                    is PostDan -> voteRepo.addDanFav(vote, post)
+                                    is PostMoe -> voteRepo.voteMoePost(vote)
+                                    is PostDanOne -> voteRepo.addDanOneFav(vote, post)
                                 }
                             }
                         }
                     }
-                    .create()
-                    .show()
-            }
+                }
+                .create()
+                .show()
         }
     }
 
@@ -453,6 +433,7 @@ class PopularFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, -1)
+        if (type < 0) return
         popular = SearchPopular(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -480,12 +461,19 @@ class PopularFragment : ListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        if (type < 0) return
         UserManager.listeners.add(userListener)
     }
 
     private fun init() {
         searchBar.setTitle(R.string.title_popular)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
+        if (type < 0) {
+            list.visibility = View.GONE
+            swipe_refresh.visibility = View.GONE
+            notSupported.visibility = View.VISIBLE
+            return
+        }
         when (type) {
             Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> searchBar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
@@ -521,7 +509,7 @@ class PopularFragment : ListFragment() {
                 keyword = SCALE_DAY
                 popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<Any>)
+                    postAdapter.submitList(posts as PagedList<BasePost>)
                 })
                 popularViewModel.networkStateDan.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -532,7 +520,7 @@ class PopularFragment : ListFragment() {
                 keyword = PERIOD_DAY
                 popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<Any>)
+                    postAdapter.submitList(posts as PagedList<BasePost>)
                 })
                 popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -543,7 +531,7 @@ class PopularFragment : ListFragment() {
                 keyword = SCALE_DAY
                 popularViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<Any>)
+                    postAdapter.submitList(posts as PagedList<BasePost>)
                 })
                 popularViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -592,9 +580,10 @@ class PopularFragment : ListFragment() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        if (type < 0) return
         UserManager.listeners.remove(userListener)
         requireActivity().unregisterReceiver(broadcastReceiver)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
-        super.onDestroy()
     }
 }
