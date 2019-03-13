@@ -31,15 +31,13 @@ import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
-import onlymash.flexbooru.util.formatDate
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
-import java.text.SimpleDateFormat
-import java.util.*
 
 class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
 
@@ -59,7 +57,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU)
                         putString(USER_NAME_KEY, post.uploader_name)
                         putInt(USER_ID_KEY, post.uploader_id)
-                        putString(DATE_KEY, post.created_at)
+                        putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.score)
@@ -69,7 +67,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(POST_TYPE_KEY, Constants.TYPE_MOEBOORU)
                         putString(USER_NAME_KEY, post.author)
                         putInt(USER_ID_KEY, post.creator_id)
-                        putInt(DATE_KEY, post.created_at)
+                        putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.score)
@@ -79,11 +77,21 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
                         putString(USER_NAME_KEY, post.author)
                         putInt(USER_ID_KEY, post.creator_id)
-                        putInt(DATE_KEY, post.created_at.s.toInt())
+                        putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.score)
                         putInt(PARENT_KEY, post.parent_id ?: -1)
+                    }
+                    is PostGel -> Bundle().apply {
+                        putInt(POST_TYPE_KEY, Constants.TYPE_GELBOORU)
+                        putString(USER_NAME_KEY, "")
+                        putInt(USER_ID_KEY, post.creator_id)
+                        putString(DATE_KEY, post.getCreatedDate())
+                        putString(SOURCE_KEY, post.source)
+                        putString(RATING_KEY, post.rating)
+                        putInt(SCORE_KEY, post.score)
+                        putString(PARENT_KEY, post.parent_id)
                     }
                     else -> throw IllegalStateException("unknown post type")
                 }
@@ -109,7 +117,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 Constants.TYPE_DANBOORU -> {
                     name = getString(USER_NAME_KEY) ?: ""
                     userId = getInt(USER_ID_KEY, -1)
-                    date = formatDate(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(getString(DATE_KEY)).time).toString()
+                    date = getString(DATE_KEY) ?: ""
                     source = getString(SOURCE_KEY) ?: ""
                     rating = getString(RATING_KEY) ?: ""
                     score = getInt(SCORE_KEY, -1)
@@ -119,11 +127,21 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 Constants.TYPE_DANBOORU_ONE -> {
                     name = getString(USER_NAME_KEY) ?: ""
                     userId = getInt(USER_ID_KEY, -1)
-                    date = formatDate(getInt(DATE_KEY) * 1000L).toString()
+                    date = getString(DATE_KEY) ?: ""
                     source = getString(SOURCE_KEY) ?: ""
                     rating = getString(RATING_KEY) ?: ""
                     score = getInt(SCORE_KEY, -1)
                     parent = getInt(PARENT_KEY, -1)
+                }
+                Constants.TYPE_GELBOORU -> {
+                    name = getString(USER_NAME_KEY) ?: ""
+                    userId = getInt(USER_ID_KEY, -1)
+                    date = getString(DATE_KEY) ?: ""
+                    source = getString(SOURCE_KEY) ?: ""
+                    rating = getString(RATING_KEY) ?: ""
+                    score = getInt(SCORE_KEY, -1)
+                    val p = getString(PARENT_KEY)
+                    parent = if (p.isNullOrEmpty()) -1 else p.toInt()
                 }
             }
         }
@@ -168,12 +186,14 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 dismiss()
             }
         }
-        view.findViewById<ConstraintLayout>(R.id.user_container).setOnClickListener {
-            startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
-                putExtra(AccountActivity.USER_ID_KEY, userId)
-                putExtra(AccountActivity.USER_NAME_KEY, name)
-            })
-            dismiss()
+        if (type != Constants.TYPE_GELBOORU) {
+            view.findViewById<ConstraintLayout>(R.id.user_container).setOnClickListener {
+                startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
+                    putExtra(AccountActivity.USER_ID_KEY, userId)
+                    putExtra(AccountActivity.USER_NAME_KEY, name)
+                })
+                dismiss()
+            }
         }
         dialog.setContentView(view)
         behavior = BottomSheetBehavior.from(view.parent as View)

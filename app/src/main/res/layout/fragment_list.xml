@@ -21,17 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <include layout="@layout/refreshable_list"/>
-
     <TextView
             android:id="@+id/not_supported"
-            android:text="@string/page_not_supported"
+            android:text="@string/msg_not_supported"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorSecondary"
             android:visibility="gone"/>
+
+    <include layout="@layout/refreshable_list"/>
 
     <include layout="@layout/search_layout"/>
 

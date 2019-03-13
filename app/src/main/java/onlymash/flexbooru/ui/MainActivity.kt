@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -338,8 +339,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
             when (drawerItem.identifier) {
                 DRAWER_ITEM_ID_ACCOUNT -> {
-                    val user = getCurrentUser()
                     val booru = getCurrentBooru()
+                    if (booru?.type == Constants.TYPE_GELBOORU) {
+                        Toast.makeText(this@MainActivity,
+                            getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
+                        return true
+                    }
+                    val user = getCurrentUser()
                     if (user != null && booru != null) {
                         startActivity(Intent(this@MainActivity, AccountActivity::class.java))
                     } else if (booru == null){

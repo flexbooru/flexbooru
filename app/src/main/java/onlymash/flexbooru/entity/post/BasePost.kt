@@ -72,4 +72,8 @@ abstract class BasePost {
      * return Origin url [String]
      * */
     abstract fun getOriginUrl(): String
+
+    abstract fun getCreatedDate(): String
+
+    abstract fun getUpdatedDate(): String
 }

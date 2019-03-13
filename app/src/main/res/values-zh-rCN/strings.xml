@@ -30,7 +30,6 @@
     <string name="title_muzei">Muzei</string>
     <string name="title_copyright">版权</string>
     <string name="title_about">关于</string>
-    <string name="page_not_supported">不支持</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">给此应用评分</string>
     <string name="about_app_translation">翻译</string>
@@ -48,6 +47,7 @@
     <string name="about_donation_btc">比特币</string>
     <string name="snackbar_copy_text">` %s ` 已复制到剪贴板。</string>
     <string name="retry">重试</string>
+    <string name="msg_not_supported">不支持</string>
     <string name="msg_press_twice_to_exit">按两次退出。</string>
     <string name="msg_file_save_success">文件已存为 %s</string>
     <string name="post_expand_tag_filter">展开标签过滤器</string>

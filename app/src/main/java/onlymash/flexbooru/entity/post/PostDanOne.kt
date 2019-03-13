@@ -18,6 +18,7 @@ package onlymash.flexbooru.entity.post
 import androidx.room.Entity
 import androidx.room.Index
 import onlymash.flexbooru.entity.DanOneDate
+import onlymash.flexbooru.util.formatDate
 
 @Entity(tableName = "posts_danbooru_one", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostDanOne(
@@ -75,5 +76,9 @@ data class PostDanOne(
      * return Origin url [String]
      * */
     override fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else checkUrl(file_url)
+
+    override fun getCreatedDate(): String = formatDate(created_at.s * 1000L).toString()
+
+    override fun getUpdatedDate(): String = formatDate(change * 1000L).toString()
 
 }

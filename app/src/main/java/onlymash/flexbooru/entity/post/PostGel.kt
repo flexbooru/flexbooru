@@ -4,6 +4,9 @@ import androidx.room.Entity
 import androidx.room.Index
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Xml(name = "post")
 @Entity(tableName = "posts_gelbooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
@@ -73,4 +76,14 @@ data class PostGel(
     override fun getLargerUrl(): String = getSampleUrl()
 
     override fun getOriginUrl(): String = checkUrl(file_url)
+
+    override fun getCreatedDate(): String =
+        formatDate(SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at).time).toString()
+
+    override fun getUpdatedDate(): String =
+        formatDate(change * 1000L).toString()
+
+    companion object {
+        private const val PATTERN = "EEE MMM dd HH:mm:ss Z yyyy"
+    }
 }

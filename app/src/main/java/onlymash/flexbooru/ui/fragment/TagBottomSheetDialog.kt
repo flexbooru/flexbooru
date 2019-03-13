@@ -29,6 +29,7 @@ import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagBrowseAdapter
 import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
@@ -67,6 +68,12 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     is PostDanOne -> {
                         Bundle().apply {
                             putInt(POST_TYPE, Constants.TYPE_DANBOORU_ONE)
+                            putString(TAG_ALL_KEY, post.tags)
+                        }
+                    }
+                    is PostGel -> {
+                        Bundle().apply {
+                            putInt(POST_TYPE, Constants.TYPE_GELBOORU)
                             putString(TAG_ALL_KEY, post.tags)
                         }
                     }
@@ -134,7 +141,8 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 }
             }
             Constants.TYPE_MOEBOORU,
-            Constants.TYPE_DANBOORU_ONE -> {
+            Constants.TYPE_DANBOORU_ONE,
+            Constants.TYPE_GELBOORU -> {
                 arg.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
                     if (tag.isNotEmpty()) tags.add(TagFilter(booru_uid = booruUid, name = tag))
                 }

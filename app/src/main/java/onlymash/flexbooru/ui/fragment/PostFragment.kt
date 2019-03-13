@@ -235,6 +235,10 @@ class PostFragment : ListFragment() {
                             }
                         }
                         1 -> {
+                            if (type == Constants.TYPE_GELBOORU) {
+                                Snackbar.make(list, getString(R.string.msg_not_supported), Snackbar.LENGTH_SHORT).show()
+                                return@setItems
+                            }
                             if (search.auth_key.isEmpty()) {
                                 requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
                             } else {
@@ -461,7 +465,10 @@ class PostFragment : ListFragment() {
         }
         val orders = resources.getStringArray(R.array.filter_order)
         val ratings = resources.getStringArray(R.array.filter_rating)
-        tagFilterAdapter = TagFilterAdapter(orders, ratings) {
+        tagFilterAdapter = TagFilterAdapter(
+            orders = orders,
+            ratings = ratings,
+            booruType = type) {
             val text = searchBar.getEditTextText()
             if(text.isNotEmpty()) {
                 TagFilterManager.createTagFilter(TagFilter(booru_uid = Settings.instance().activeBooruUid, name = text))

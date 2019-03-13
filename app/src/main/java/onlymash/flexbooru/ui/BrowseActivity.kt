@@ -389,8 +389,14 @@ class BrowseActivity : AppCompatActivity() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_browse_vote -> {
+                    val type = booru.type
+                    if (type == Constants.TYPE_GELBOORU) {
+                        Toast.makeText(this@BrowseActivity,
+                            getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
+                        return@setOnMenuItemClickListener true
+                    }
                     user?.let { user ->
-                        when (booru.type) {
+                        when (type) {
                             Constants.TYPE_DANBOORU -> {
                                 val post = postsDan?.get(pager_browse.currentItem) ?: return@let
                                 val vote = Vote(

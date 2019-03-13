@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.entity.TagFilter
@@ -26,6 +27,7 @@ import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterAdapter(private val orders: Array<String>,
                        private val ratings: Array<String>,
+                       private val booruType: Int,
                        private val addSearchBarTextCallback: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -68,7 +70,11 @@ class TagFilterAdapter(private val orders: Array<String>,
         }
         str = str.trim()
         if (!orderSelected.isBlank()) {
-            str = "order:$orderSelected $str"
+            str = if (booruType == Constants.TYPE_GELBOORU) {
+                "sort:$orderSelected $str"
+            } else {
+                "order:$orderSelected $str"
+            }
         }
         if (!ratingSelected.isBlank()) {
             str = "rating:$ratingSelected $str"

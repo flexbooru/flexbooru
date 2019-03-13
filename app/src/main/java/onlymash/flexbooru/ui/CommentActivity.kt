@@ -180,6 +180,10 @@ class CommentActivity : AppCompatActivity() {
                 subtitle = "Post $postId"
                 inflateMenu(R.menu.comment)
                 setOnMenuItemClickListener {
+                    if (booru.type == Constants.TYPE_GELBOORU) {
+                        Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_SHORT).show()
+                        return@setOnMenuItemClickListener true
+                    }
                     if (it.itemId == R.id.action_comment_reply) {
                         if (commentAction.username.isEmpty() || commentAction.auth_key.isEmpty()) {
                             startActivity(Intent(this@CommentActivity, AccountConfigActivity::class.java))

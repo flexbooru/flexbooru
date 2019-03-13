@@ -17,6 +17,9 @@ package onlymash.flexbooru.entity.post
 
 import androidx.room.Entity
 import androidx.room.Index
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Entity(tableName = "posts_danbooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostDan(
@@ -84,8 +87,6 @@ data class PostDan(
 
     override fun getPostRating(): String = rating
 
-    fun getUpdateDate(): String = updated_at ?: created_at
-
     override fun getPreviewUrl(): String =
             if (preview_file_url.isNullOrEmpty()) "" else checkUrl(preview_file_url)
 
@@ -104,4 +105,14 @@ data class PostDan(
      * return Origin url [String]
      * */
     override fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else checkUrl(file_url)
+
+    override fun getCreatedDate(): String =
+        formatDate(SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at).time).toString()
+
+    override fun getUpdatedDate(): String =
+        formatDate(SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(updated_at ?: created_at).time).toString()
+
+    companion object {
+        private const val PATTERN = "yyyy-MM-dd'T'HH:mm:ss.sss"
+    }
 }
