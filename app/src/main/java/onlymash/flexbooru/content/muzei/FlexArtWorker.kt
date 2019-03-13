@@ -31,6 +31,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
+import onlymash.flexbooru.api.url.GelUrlHelper
 import onlymash.flexbooru.database.MuzeiManager
 
 class FlexArtWorker(
@@ -142,7 +143,7 @@ class FlexArtWorker(
                     }
                 })
             }
-            else -> {
+            Constants.TYPE_DANBOORU_ONE -> {
                 val search = Search(
                     scheme = booru.scheme,
                     host = booru.host,
@@ -175,6 +176,41 @@ class FlexArtWorker(
                             else -> post.getOriginUrl().toUri()
                         }
                         webUri = String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id).toUri()
+                    }
+                })
+            }
+            Constants.TYPE_GELBOORU -> {
+                val search = Search(
+                    scheme = booru.scheme,
+                    host = booru.host,
+                    keyword = keyword,
+                    limit = Settings.instance().muzeiLimit
+                )
+                val gelbooruApi = ServiceLocator.instance().getGelbooruApi()
+                val posts = try {
+                    gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1))
+                        .execute().body()?.posts ?: throw IOException("Response was null")
+                } catch (ex: IOException) {
+                    return Result.retry()
+                }
+                if (posts.isEmpty()) {
+                    return Result.failure()
+                }
+                val providerClient = ProviderContract.getProviderClient(
+                    applicationContext, applicationContext.packageName + ".muzei")
+                val attributionString = applicationContext.getString(R.string.muzei_attribution)
+                providerClient.setArtwork(posts.map { post ->
+                    Artwork().apply {
+                        token = "id:${post.id}"
+                        title = "Post ${post.id}"
+                        byline = keyword
+                        attribution = attributionString
+                        persistentUri = when (muzeiSize) {
+                            Settings.POST_SIZE_SAMPLE -> post.getSampleUrl().toUri()
+                            Settings.POST_SIZE_LARGER -> post.getLargerUrl().toUri()
+                            else -> post.getOriginUrl().toUri()
+                        }
+                        webUri = String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id).toUri()
                     }
                 })
             }
