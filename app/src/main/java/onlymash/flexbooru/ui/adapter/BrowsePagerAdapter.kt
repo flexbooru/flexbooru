@@ -40,9 +40,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.BasePost
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.image.CustomDecoder
 import onlymash.flexbooru.util.image.CustomRegionDecoder
@@ -55,31 +53,19 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val onDismissListener: DismissFrameLayout.OnDismissListener,
                          private val pageType: Int): PagerAdapter() {
 
-    private var type = -1
     private val size = Settings.instance().browseSize
-    private var postsDan: MutableList<PostDan> = mutableListOf()
-    private var postsDanOne: MutableList<PostDanOne> = mutableListOf()
-    private var postsMoe: MutableList<PostMoe> = mutableListOf()
+    private var posts: MutableList<BasePost> = mutableListOf()
 
     @Suppress("UNCHECKED_CAST")
-    fun updateData(posts: Any, type: Int) {
-        this.type = type
-        when (type) {
-            Constants.TYPE_DANBOORU -> postsDan = posts as MutableList<PostDan>
-            Constants.TYPE_DANBOORU_ONE -> postsDanOne = posts as MutableList<PostDanOne>
-            else -> postsMoe = posts as MutableList<PostMoe>
-        }
+    fun updateData(posts: MutableList<BasePost>) {
+        this.posts = posts
         notifyDataSetChanged()
     }
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
     }
 
-    override fun getCount(): Int = when (type) {
-        Constants.TYPE_DANBOORU -> postsDan.size
-        Constants.TYPE_DANBOORU_ONE -> postsDanOne.size
-        else -> postsMoe.size
-    }
+    override fun getCount(): Int = posts.size
 
     @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -88,49 +74,17 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
             layoutParams = ViewPager.LayoutParams()
             tag = position
         }
-        var tranName = ""
-        var previewUrl = ""
-        var url = ""
-        when (type) {
-            Constants.TYPE_DANBOORU -> {
-                tranName = when (pageType) {
-                    Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsDan[position].id)
-                    Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsDan[position].id)
-                    else -> throw IllegalStateException("unknown post type $pageType")
-                }
-                previewUrl = postsDan[position].getPreviewUrl()
-                url = when (size) {
-                    Settings.POST_SIZE_SAMPLE -> postsDan[position].getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsDan[position].getLargerUrl()
-                    else -> postsDan[position].getOriginUrl()
-                }
-            }
-            Constants.TYPE_MOEBOORU -> {
-                tranName = when (pageType) {
-                    Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsMoe[position].id)
-                    Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsMoe[position].id)
-                    else -> throw IllegalStateException("unknown post type $pageType")
-                }
-                previewUrl = postsMoe[position].getPreviewUrl()
-                url = when (size) {
-                    Settings.POST_SIZE_SAMPLE -> postsMoe[position].getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsMoe[position].getLargerUrl()
-                    else -> postsMoe[position].getOriginUrl()
-                }
-            }
-            Constants.TYPE_DANBOORU_ONE -> {
-                tranName = when (pageType) {
-                    Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, postsDanOne[position].id)
-                    Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, postsDanOne[position].id)
-                    else -> throw IllegalStateException("unknown post type $pageType")
-                }
-                previewUrl = postsDanOne[position].getPreviewUrl()
-                url = when (size) {
-                    Settings.POST_SIZE_SAMPLE -> postsDanOne[position].getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsDanOne[position].getLargerUrl()
-                    else -> postsDanOne[position].getOriginUrl()
-                }
-            }
+        val post = posts[position]
+        val tranName = when (pageType) {
+            Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, post.getPostId())
+            Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, post.getPostId())
+            else -> throw IllegalStateException("unknown post type $pageType")
+        }
+        val previewUrl = post.getPreviewUrl()
+        val url = when (size) {
+            Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
+            Settings.POST_SIZE_LARGER -> post.getLargerUrl()
+            else -> post.getOriginUrl()
         }
         if (url.isNotEmpty()) {
             when {

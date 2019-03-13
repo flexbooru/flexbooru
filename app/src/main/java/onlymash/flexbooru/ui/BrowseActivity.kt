@@ -54,13 +54,11 @@ import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.*
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoadedListener
-import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.favorite.VoteCallback
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
@@ -109,113 +107,85 @@ class BrowseActivity : AppCompatActivity() {
             activity.startActivity(intent, options.toBundle())
         }
     }
-    private var pageType = Constants.PAGE_TYPE_POST
 
-    private var startId = -1
     private var postsDan: MutableList<PostDan>? = null
-    private var postsMoe: MutableList<PostMoe>? = null
-    private var postsDanOne: MutableList<PostDanOne>? = null
     private var postsDanFav: MutableList<PostDan>? = null
+    private var postsMoe: MutableList<PostMoe>? = null
     private var postsMoeFav: MutableList<PostMoe>? = null
+    private var postsGel: MutableList<PostGel>? = null
+    private var postsGelFav: MutableList<PostGel>? = null
+    private var postsDanOne: MutableList<PostDanOne>? = null
     private var postsDanOneFav: MutableList<PostDanOne>? = null
-    private var keyword = ""
+
     private lateinit var booru: Booru
+    private var pageType = Constants.PAGE_TYPE_POST
+    private var startId = -1
+    private var keyword = ""
     private var user: User? = null
     private var currentPosition = -1
     private var canTransition = true
     private val postLoader by lazy { ServiceLocator.instance().getPostLoader() }
+
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
             postsDan = posts
-            var url = ""
-            var position = 0
-            if (startId >= 0) {
-                posts.forEachIndexed { index, postDan ->
-                    if (postDan.id == startId) {
-                        position = index
-                        url = postDan.getLargerUrl()
-                        return@forEachIndexed
-                    }
-                }
-            }
-            toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
-            pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU)
-            pager_browse.adapter = pagerAdapter
-            pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
-            if (canTransition) startPostponedEnterTransition()
-            if (url.isNotEmpty() && !url.isImage()) {
-                Handler().postDelayed({
-                    val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
-                    if (playerView is PlayerView) {
-                        playerHolder.start(uri = Uri.parse(url), playerView = playerView)
-                    }
-                }, 300)
-            }
-            user?.let {
-                favPostViewModel.loadDanFav(booru.host, it.name)
-            }
+            @Suppress("UNCHECKED_CAST")
+            initItemsLoaded(posts as MutableList<BasePost>)
         }
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
             postsMoe = posts
-            var url = ""
-            var position = 0
-            if (startId >= 0) {
-                posts.forEachIndexed { index, postMoe ->
-                    if (postMoe.id == startId) {
-                        position = index
-                        url = postMoe.getSampleUrl()
-                        return@forEachIndexed
-                    }
-                }
-            }
-            toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
-            pagerAdapter.updateData(posts, Constants.TYPE_MOEBOORU)
-            pager_browse.adapter = pagerAdapter
-            pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
-            if (canTransition) startPostponedEnterTransition()
-            if (url.isNotEmpty() && !url.isImage()) {
-                Handler().postDelayed({
-                    val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
-                    if (playerView is PlayerView) {
-                        playerHolder.start(uri = Uri.parse(url), playerView = playerView)
-                    }
-                }, 300)
-            }
-            user?.let {
-                favPostViewModel.loadMoeFav(booru.host, it.name)
-            }
+            @Suppress("UNCHECKED_CAST")
+            initItemsLoaded(posts as MutableList<BasePost>)
         }
 
         override fun onDanOneItemsLoaded(posts: MutableList<PostDanOne>) {
             postsDanOne = posts
-            var url = ""
-            var position = 0
-            if (startId >= 0) {
-                posts.forEachIndexed { index, postDanOne ->
-                    if (postDanOne.id == startId) {
-                        position = index
-                        url = postDanOne.getSampleUrl()
-                        return@forEachIndexed
-                    }
+            @Suppress("UNCHECKED_CAST")
+            initItemsLoaded(posts as MutableList<BasePost>)
+        }
+
+        override fun onGelItemsLoaded(posts: MutableList<PostGel>) {
+            postsGel = posts
+            @Suppress("UNCHECKED_CAST")
+            initItemsLoaded(posts as MutableList<BasePost>)
+        }
+    }
+
+    private fun initItemsLoaded(posts: MutableList<BasePost>) {
+        var url = ""
+        var position = 0
+        if (startId >= 0) {
+            posts.forEachIndexed { index, postMoe ->
+                if (postMoe.getPostId() == startId) {
+                    position = index
+                    url = postMoe.getSampleUrl()
+                    return@forEachIndexed
                 }
             }
-            toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].id)
-            pagerAdapter.updateData(posts, Constants.TYPE_DANBOORU_ONE)
-            pager_browse.adapter = pagerAdapter
-            pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
-            if (canTransition) startPostponedEnterTransition()
-            if (url.isNotEmpty() && !url.isImage()) {
-                Handler().postDelayed({
-                    val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
-                    if (playerView is PlayerView) {
-                        playerHolder.start(uri = Uri.parse(url), playerView = playerView)
-                    }
-                }, 300)
-            }
-            user?.let {
-                favPostViewModel.loadDanOneFav(booru.host, it.name)
-            }
+        }
+        toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].getPostId())
+        pagerAdapter.updateData(posts)
+        pager_browse.adapter = pagerAdapter
+        pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
+        if (canTransition) startPostponedEnterTransition()
+        if (url.isNotEmpty() && !url.isImage()) {
+            Handler().postDelayed({
+                val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
+                if (playerView is PlayerView) {
+                    playerHolder.start(uri = Uri.parse(url), playerView = playerView)
+                }
+            }, 300)
+        }
+        user?.let {
+            val type = booru.type
+            favPostViewModel.loadFav(
+                host = booru.host,
+                keyword = when (type) {
+                    Constants.TYPE_MOEBOORU -> "vote:3:${it.name} order:vote"
+                    else -> "fav:${it.name}"
+                },
+                type = type)
         }
     }
 
@@ -250,6 +220,12 @@ class BrowseActivity : AppCompatActivity() {
                 }
                 Constants.TYPE_DANBOORU_ONE -> {
                     postsDanOne?.get(position)?.let {
+                        url = it.getSampleUrl()
+                        id = it.id
+                    }
+                }
+                Constants.TYPE_GELBOORU -> {
+                    postsGel?.get(position)?.let {
                         url = it.getSampleUrl()
                         id = it.id
                     }
@@ -361,6 +337,15 @@ class BrowseActivity : AppCompatActivity() {
                     }
                 }
             }
+            Constants.TYPE_GELBOORU -> {
+                val id = postsGel?.get(position)?.id ?: return null
+                postsGelFav?.forEach {
+                    if (it.id == id) {
+                        post = it
+                        return@forEach
+                    }
+                }
+            }
         }
         return post
     }
@@ -370,6 +355,7 @@ class BrowseActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU -> postsDan?.get(pager_browse.currentItem)
             Constants.TYPE_MOEBOORU -> postsMoe?.get(pager_browse.currentItem)
             Constants.TYPE_DANBOORU_ONE -> postsDanOne?.get(pager_browse.currentItem)
+            Constants.TYPE_GELBOORU -> postsGel?.get(pager_browse.currentItem)
             else -> null
         }
     }
@@ -380,6 +366,7 @@ class BrowseActivity : AppCompatActivity() {
             is PostDan -> post.id
             is PostMoe -> post.id
             is PostDanOne -> post.id
+            is PostGel -> post.id
             else -> -1
         }
     }
@@ -496,12 +483,8 @@ class BrowseActivity : AppCompatActivity() {
         pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener, pageType)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
-        postLoader.setPostLoadedListener(postLoadedListener)
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> postLoader.loadDanPosts(host = booru.host, keyword = keyword)
-            Constants.TYPE_MOEBOORU -> postLoader.loadMoePosts(host = booru.host, keyword = keyword)
-            Constants.TYPE_DANBOORU_ONE -> postLoader.loadDanOnePosts(host = booru.host, keyword = keyword)
-        }
+        postLoader.postLoadedListener = postLoadedListener
+        postLoader.loadPosts(host = booru.host, keyword = keyword, type = booru.type)
         initBottomBar()
     }
 
@@ -563,6 +546,12 @@ class BrowseActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU_ONE -> {
                 favPostViewModel.postsDanOne.observe(this, Observer { posts ->
                     postsDanOneFav = posts
+                    setCurrentVoteItemIcon()
+                })
+            }
+            Constants.TYPE_GELBOORU -> {
+                favPostViewModel.postsGel.observe(this, Observer { posts ->
+                    postsGelFav = posts
                     setCurrentVoteItemIcon()
                 })
             }
@@ -821,7 +810,7 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getFavPostViewModel(loader: PostLoader): FavPostViewModel {
+    private fun getFavPostViewModel(loader: PostLoaderRepository): FavPostViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return FavPostViewModel(loader) as T

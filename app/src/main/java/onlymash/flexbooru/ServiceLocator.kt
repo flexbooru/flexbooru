@@ -26,6 +26,7 @@ import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.repository.artist.ArtistData
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.comment.CommentData
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.favorite.VoteData
@@ -75,7 +76,7 @@ interface ServiceLocator {
     fun getDanbooruApi(): DanbooruApi
     fun getMoebooruApi(): MoebooruApi
     fun getGelbooruApi(): GelbooruApi
-    fun getPostLoader(): PostLoader
+    fun getPostLoader(): PostLoaderRepository
     fun getUserRepository(): UserRepository
     fun getTagFilterDataSource(): TagFilterDataSource
     fun getVoteRepository(): VoteRepository
@@ -185,7 +186,7 @@ open class DefaultServiceLocator : ServiceLocator {
 
     override fun getGelbooruApi(): GelbooruApi = gelApi
 
-    override fun getPostLoader(): PostLoader {
+    override fun getPostLoader(): PostLoaderRepository {
         return PostLoader(
             db = FlexbooruDatabase.instance,
             ioExecutor = getDiskIOExecutor()

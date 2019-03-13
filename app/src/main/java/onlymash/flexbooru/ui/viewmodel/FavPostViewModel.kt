@@ -20,17 +20,20 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.repository.browse.PostLoadedLiveDataListener
-import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.browse.PostLoaderRepository
 
-class FavPostViewModel(private val postLoader: PostLoader) : ViewModel() {
+class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel() {
 
-    var postsDan: MediatorLiveData<MutableList<PostDan>> = MediatorLiveData()
+    val postsDan: MediatorLiveData<MutableList<PostDan>> = MediatorLiveData()
 
-    var postsDanOne: MediatorLiveData<MutableList<PostDanOne>> = MediatorLiveData()
+    val postsDanOne: MediatorLiveData<MutableList<PostDanOne>> = MediatorLiveData()
 
-    var postsMoe: MediatorLiveData<MutableList<PostMoe>> = MediatorLiveData()
+    val postsMoe: MediatorLiveData<MutableList<PostMoe>> = MediatorLiveData()
+
+    val postsGel: MediatorLiveData<MutableList<PostGel>> = MediatorLiveData()
 
     private val postLoadedLiveDataListener = object : PostLoadedLiveDataListener {
         override fun onDanOneItemsLoaded(posts: LiveData<MutableList<PostDanOne>>) {
@@ -48,20 +51,18 @@ class FavPostViewModel(private val postLoader: PostLoader) : ViewModel() {
                 postsMoe.postValue(it)
             }
         }
+        override fun onGelItemsLoaded(posts: LiveData<MutableList<PostGel>>) {
+            postsGel.addSource(posts) {
+                postsGel.postValue(it)
+            }
+        }
     }
+
     init {
-        postLoader.setPostLoadedLiveDataListener(postLoadedLiveDataListener)
+        postLoader.postLoadedLiveDataListener = postLoadedLiveDataListener
     }
 
-    fun loadDanFav(host: String, username: String) {
-        postLoader.loadDanPostsLiveData(host, "fav:$username")
-    }
-
-    fun loadDanOneFav(host: String, username: String) {
-        postLoader.loadDanOnePostsLiveData(host, "fav:$username")
-    }
-
-    fun loadMoeFav(host: String, username: String) {
-        postLoader.loadMoePostsLiveData(host, "vote:3:$username order:vote")
+    fun loadFav(host: String, keyword: String, type: Int) {
+        postLoader.loadPostsLiveData(host, keyword, type)
     }
 }
