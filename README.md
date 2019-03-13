@@ -1,5 +1,5 @@
 # Flexbooru
-A booru client for Android, support [Danbooru](https://github.com/r888888888/danbooru) and [Moebooru](https://github.com/moebooru/moebooru).
+A booru client for Android, support [Danbooru](https://github.com/r888888888/danbooru), [Moebooru](https://github.com/moebooru/moebooru) and Gelbooru.
 
 
 [![Telegram](https://img.shields.io/badge/chat-Telegram-blue.svg)](https://t.me/flexbooru)
