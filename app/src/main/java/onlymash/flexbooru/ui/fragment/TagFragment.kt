@@ -214,7 +214,9 @@ class TagFragment : ListFragment() {
                 tagViewModel.refreshDanOne()
             }
             Constants.TYPE_GELBOORU -> {
-
+                swipe_refresh.isRefreshing = true
+                tagViewModel.show(search)
+                tagViewModel.refreshGel()
             }
         }
     }
@@ -256,7 +258,10 @@ class TagFragment : ListFragment() {
                     }
                 }
                 Constants.TYPE_GELBOORU -> {
-
+                    tagViewModel.apply {
+                        show(search)
+                        refreshGel()
+                    }
                 }
             }
         }
@@ -292,7 +297,12 @@ class TagFragment : ListFragment() {
                 }
             }
             Constants.TYPE_GELBOORU -> {
-
+                search.username = user.name
+                search.auth_key = user.api_key ?: ""
+                tagViewModel.apply {
+                    show(search)
+                    refreshGel()
+                }
             }
         }
     }
@@ -339,7 +349,7 @@ class TagFragment : ListFragment() {
                     Constants.TYPE_DANBOORU -> tagViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> tagViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> tagViewModel.retryDanOne()
-                    Constants.TYPE_GELBOORU -> {}
+                    Constants.TYPE_GELBOORU -> tagViewModel.retryGel()
                 }
             }
         )
@@ -382,7 +392,15 @@ class TagFragment : ListFragment() {
                 initSwipeToRefreshDanOne()
             }
             Constants.TYPE_GELBOORU -> {
-
+                searchBar.setMenu(R.menu.tag_gel, requireActivity().menuInflater)
+                tagViewModel.tagsGel.observe(this, Observer { tags ->
+                    @Suppress("UNCHECKED_CAST")
+                    tagAdapter.submitList(tags as PagedList<Any>)
+                })
+                tagViewModel.networkStateGel.observe(this, Observer { networkState ->
+                    tagAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshGel()
             }
         }
         tagViewModel.show(search = search)
@@ -415,6 +433,15 @@ class TagFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { tagViewModel.refreshMoe() }
+    }
+
+    private fun initSwipeToRefreshGel() {
+        tagViewModel.refreshStateGel.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { tagViewModel.refreshGel() }
     }
 
     @Suppress("UNCHECKED_CAST")

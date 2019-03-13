@@ -23,6 +23,7 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
@@ -36,6 +37,7 @@ import java.util.concurrent.Executor
 class CommentData(private val danbooruApi: DanbooruApi,
                   private val danbooruOneApi: DanbooruOneApi,
                   private val moebooruApi: MoebooruApi,
+                  private val gelbooruApi: GelbooruApi,
                   private val networkExecutor: Executor
 ) : CommentRepository {
     companion object {
@@ -242,5 +244,28 @@ class CommentData(private val danbooruApi: DanbooruApi,
                     }
                 }
             })
+    }
+
+    @MainThread
+    override fun getGelComments(commentAction: CommentAction): Listing<CommentGel> {
+        val sourceFactory = CommentGelDataSourceFactory(
+            gelbooruApi = gelbooruApi,
+            commentAction = commentAction,
+            retryExecutor = networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = commentAction.limit,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState =
+            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
     }
 }

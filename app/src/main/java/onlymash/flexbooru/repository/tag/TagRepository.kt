@@ -15,14 +15,12 @@
 
 package onlymash.flexbooru.repository.tag
 
-import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.entity.tag.TagDan
-import onlymash.flexbooru.entity.tag.TagDanOne
-import onlymash.flexbooru.entity.tag.TagMoe
+import onlymash.flexbooru.entity.tag.*
 import onlymash.flexbooru.repository.Listing
 
 interface TagRepository {
     fun getDanTags(search: SearchTag): Listing<TagDan>
     fun getMoeTags(search: SearchTag): Listing<TagMoe>
     fun getDanOneTags(search: SearchTag): Listing<TagDanOne>
+    fun getGelTags(search: SearchTag): Listing<TagGel>
 }

@@ -19,6 +19,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.tag.TagDan
+import onlymash.flexbooru.entity.tag.TagDanOne
+import onlymash.flexbooru.entity.tag.TagGel
 import onlymash.flexbooru.entity.tag.TagMoe
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 
@@ -32,6 +34,8 @@ class TagAdapter(private val listener: TagViewHolder.ItemListener,
                 return when {
                     oldItem is TagDan && newItem is TagDan -> oldItem.id == newItem.id
                     oldItem is TagMoe && newItem is TagMoe -> oldItem.id == newItem.id
+                    oldItem is TagDanOne && newItem is TagDanOne -> oldItem.id == newItem.id
+                    oldItem is TagGel && newItem is TagGel -> oldItem.id == newItem.id
                     else -> false
                 }
             }

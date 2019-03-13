@@ -9,7 +9,9 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.entity.comment.CommentGelResponse
 import onlymash.flexbooru.entity.post.PostGelResponse
+import onlymash.flexbooru.entity.tag.TagGelResponse
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -63,4 +65,10 @@ interface GelbooruApi {
 
     @GET
     fun getPosts(@Url httpUrl: HttpUrl): Call<PostGelResponse>
+
+    @GET
+    fun getTags(@Url httpUrl: HttpUrl): Call<TagGelResponse>
+
+    @GET
+    fun getComments(@Url httpUrl: HttpUrl): Call<CommentGelResponse>
 }

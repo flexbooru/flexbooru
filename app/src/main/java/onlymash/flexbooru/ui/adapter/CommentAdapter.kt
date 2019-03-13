@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.comment.CommentDan
+import onlymash.flexbooru.entity.comment.CommentDanOne
+import onlymash.flexbooru.entity.comment.CommentGel
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.ui.viewholder.CommentViewHolder
@@ -83,6 +86,9 @@ class CommentAdapter(private val glide: GlideRequests,
             override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
                 return when {
                     oldItem is CommentMoe && newItem is CommentMoe -> oldItem.id == newItem.id
+                    oldItem is CommentDan && newItem is CommentDan -> oldItem.id == newItem.id
+                    oldItem is CommentDanOne && newItem is CommentDanOne -> oldItem.id == newItem.id
+                    oldItem is CommentGel && newItem is CommentGel -> oldItem.id == newItem.id
                     else -> false
                 }
             }

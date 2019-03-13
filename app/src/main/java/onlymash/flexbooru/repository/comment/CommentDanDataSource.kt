@@ -31,8 +31,6 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
 ) : BasePageKeyedDataSource<Int, CommentDan>(retryExecutor){
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentDan>) {
-        val scheme = commentAction.scheme
-        val host = commentAction.host
         val url = if (commentAction.post_id > 0) {
             DanUrlHelper.getPostCommentUrl(commentAction, 1)
         } else {
@@ -40,10 +38,6 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
         }
         val response = danbooruApi.getComments(url).execute()
         val data = response.body() ?: mutableListOf()
-        data.forEach {
-            it.scheme = scheme
-            it.host = host
-        }
         if (data.size < commentAction.limit) {
             callback.onResult(data, null, null)
         } else {
@@ -65,12 +59,6 @@ class CommentDanDataSource(private val danbooruApi: DanbooruApi,
             override fun onResponse(call: Call<MutableList<CommentDan>>, response: Response<MutableList<CommentDan>>) {
                 if (response.isSuccessful) {
                     val data = response.body() ?: mutableListOf()
-                    val scheme = commentAction.scheme
-                    val host = commentAction.host
-                    data.forEach {
-                        it.scheme = scheme
-                        it.host = host
-                    }
                     loadAfterOnSuccess()
                     if (data.size < commentAction.limit) {
                         callback.onResult(data, null)

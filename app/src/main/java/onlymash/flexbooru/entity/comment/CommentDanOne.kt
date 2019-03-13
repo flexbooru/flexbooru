@@ -16,9 +16,6 @@
 package onlymash.flexbooru.entity.comment
 
 data class CommentDanOne(
-    var uid: Long = 0L,
-    var scheme: String = "",
-    var host: String = "",
     val id: Int,
     val score: Int,
     val created_at: String,

@@ -209,6 +209,7 @@ class CommentActivity : AppCompatActivity() {
                 Constants.TYPE_DANBOORU -> commentViewModel.retryDan()
                 Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
                 Constants.TYPE_DANBOORU_ONE -> commentViewModel.retryDanOne()
+                Constants.TYPE_GELBOORU -> commentViewModel.retryGel()
             }
         }
         list.apply {
@@ -253,6 +254,16 @@ class CommentActivity : AppCompatActivity() {
                 })
                 initSwipeToRefreshDanOne()
             }
+            Constants.TYPE_GELBOORU -> {
+                commentViewModel.commentsGel.observe(this, Observer {
+                    @Suppress("UNCHECKED_CAST")
+                    commentAdapter.submitList(it as PagedList<Any>)
+                })
+                commentViewModel.networkStateGel.observe(this, Observer {
+                    commentAdapter.setNetworkState(it)
+                })
+                initSwipeToRefreshGel()
+            }
         }
         commentViewModel.commentState.observe(this, Observer {
             if (it == CommentState.SUCCESS) {
@@ -260,6 +271,7 @@ class CommentActivity : AppCompatActivity() {
                     Constants.TYPE_DANBOORU -> commentViewModel.refreshDan()
                     Constants.TYPE_MOEBOORU -> commentViewModel.refreshMoe()
                     Constants.TYPE_DANBOORU_ONE -> commentViewModel.refreshDanOne()
+                    Constants.TYPE_GELBOORU -> commentViewModel.refreshGel()
                 }
             } else {
                 Snackbar.make(toolbar, it.msg.toString(), Snackbar.LENGTH_LONG).show()
@@ -293,6 +305,15 @@ class CommentActivity : AppCompatActivity() {
             }
         })
         swipe_refresh.setOnRefreshListener { commentViewModel.refreshMoe() }
+    }
+
+    private fun initSwipeToRefreshGel() {
+        commentViewModel.refreshStateGel.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { commentViewModel.refreshGel() }
     }
 
     @Suppress("UNCHECKED_CAST")

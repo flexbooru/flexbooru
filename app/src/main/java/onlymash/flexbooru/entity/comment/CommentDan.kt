@@ -19,9 +19,6 @@ package onlymash.flexbooru.entity.comment
  * Danbooru response data class
  * */
 data class CommentDan(
-    var uid: Long = 0L,
-    var scheme: String = "",
-    var host: String = "",
     val id: Int,
     val created_at: String,
     val post_id: Int,

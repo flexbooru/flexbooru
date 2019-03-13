@@ -23,7 +23,7 @@ import onlymash.flexbooru.entity.tag.TagMoe
 import java.util.concurrent.Executor
 
 /**
- * Moe booru tags data source factory which also provides a way to observe the last created data source.
+ * Moebooru tags data source factory which also provides a way to observe the last created data source.
  * This allows us to channel its network request status etc back to the UI. See the Listing creation
  * in the Repository class.
  */

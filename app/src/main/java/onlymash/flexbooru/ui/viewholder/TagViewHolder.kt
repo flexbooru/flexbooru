@@ -25,6 +25,7 @@ import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.tag.TagDan
 import onlymash.flexbooru.entity.tag.TagDanOne
+import onlymash.flexbooru.entity.tag.TagGel
 import onlymash.flexbooru.entity.tag.TagMoe
 
 class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -67,6 +68,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 is TagDan -> itemListener?.onClickItem((tag as TagDan).name)
                 is TagMoe -> itemListener?.onClickItem((tag as TagMoe).name)
                 is TagDanOne -> itemListener?.onClickItem((tag as TagDanOne).name)
+                is TagGel -> itemListener?.onClickItem((tag as TagGel).name)
             }
         }
         itemView.setOnLongClickListener {
@@ -116,6 +118,18 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     CHARACTER -> res.getString(R.string.tag_type_character)
                     MODEL -> res.getString(R.string.tag_type_model)
                     PHOTO_SET -> res.getString(R.string.tag_type_photo_set)
+                    else -> res.getString(R.string.tag_type_unknown)
+                }
+                count.text = data.count.toString()
+            }
+            is TagGel -> {
+                tagName.text = data.name
+                tagType.text = when (data.type) {
+                    GENERAL -> res.getString(R.string.tag_type_general)
+                    ARTIST -> res.getString(R.string.tag_type_artist)
+                    COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                    CHARACTER -> res.getString(R.string.tag_type_character)
+                    META -> res.getString(R.string.tag_type_meta)
                     else -> res.getString(R.string.tag_type_unknown)
                 }
                 count.text = data.count.toString()

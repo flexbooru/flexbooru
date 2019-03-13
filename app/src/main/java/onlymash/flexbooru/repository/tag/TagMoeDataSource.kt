@@ -34,14 +34,8 @@ class TagMoeDataSource(private val moebooruApi: MoebooruApi,
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagMoe>) {
         val request = moebooruApi.getTags(MoeUrlHelper.getTagUrl(search = search, page = 1))
-        val scheme = search.scheme
-        val host = search.host
         val response =  request.execute()
         val data = response.body() ?: mutableListOf()
-        data.forEach {
-            it.scheme = scheme
-            it.host = host
-        }
         if (data.size < search.limit) {
             callback.onResult(data, null, null)
             onEnd()
@@ -61,12 +55,6 @@ class TagMoeDataSource(private val moebooruApi: MoebooruApi,
                 override fun onResponse(call: Call<MutableList<TagMoe>>, response: Response<MutableList<TagMoe>>) {
                     if (response.isSuccessful) {
                         val data = response.body() ?: mutableListOf()
-                        val scheme = search.scheme
-                        val host = search.host
-                        data.forEach {
-                            it.scheme = scheme
-                            it.host = host
-                        }
                         loadAfterOnSuccess()
                         if (data.size < search.limit) {
                             callback.onResult(data, null)

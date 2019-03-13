@@ -43,14 +43,8 @@ class CommentDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentDanOne>) {
         val url = getUrl(1)
         val request = danbooruOneApi.getComments(url)
-        val scheme = commentAction.scheme
-        val host = commentAction.host
         val response = request.execute()
         val data = response.body() ?: mutableListOf()
-        data.forEach {
-            it.scheme = scheme
-            it.host = host
-        }
         if (data.size < pageSize) {
             callback.onResult(data, null, null)
         } else {
@@ -72,12 +66,6 @@ class CommentDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
                 ) {
                     if (response.isSuccessful) {
                         val data = response.body() ?: mutableListOf()
-                        val scheme = commentAction.scheme
-                        val host = commentAction.host
-                        data.forEach {
-                            it.scheme = scheme
-                            it.host = host
-                        }
                         loadAfterOnSuccess()
                         if (data.size < pageSize) {
                             callback.onResult(data, null)

@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDanOne
 import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
@@ -35,6 +36,7 @@ class PoolAdapter(private val glide: GlideRequests,
                 return when {
                     oldItem is PoolDan && newItem is PoolDan -> oldItem.id == newItem.id
                     oldItem is PoolMoe && newItem is PoolMoe -> oldItem.id == newItem.id
+                    oldItem is PoolDanOne && newItem is PoolDanOne -> oldItem.id == newItem.id
                     else -> false
                 }
             }

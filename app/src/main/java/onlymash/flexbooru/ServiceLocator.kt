@@ -139,6 +139,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
+            gelbooruApi = getGelbooruApi(),
             networkExecutor = getNetworkExecutor()
         )
     }
@@ -167,6 +168,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
+            gelbooruApi = getGelbooruApi(),
             networkExecutor = NETWORK_IO
         )
     }

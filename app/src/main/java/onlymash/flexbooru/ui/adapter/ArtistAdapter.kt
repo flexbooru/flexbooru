@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.artist.ArtistDan
+import onlymash.flexbooru.entity.artist.ArtistDanOne
 import onlymash.flexbooru.entity.artist.ArtistMoe
 import onlymash.flexbooru.ui.viewholder.ArtistViewHolder
 
@@ -32,6 +33,7 @@ class ArtistAdapter(private val listener: ArtistViewHolder.ItemListener,
                 return when {
                     oldItem is ArtistDan && newItem is ArtistDan -> oldItem.id == newItem.id
                     oldItem is ArtistMoe && newItem is ArtistMoe -> oldItem.id == newItem.id
+                    oldItem is ArtistDanOne && newItem is ArtistDanOne -> oldItem.id == newItem.id
                     else -> false
                 }
             }

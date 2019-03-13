@@ -47,6 +47,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }
     val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }
 
+    private val gelRepoResult = map(commentAction) {
+        repo.getGelComments(it)
+    }
+    val commentsGel = Transformations.switchMap(gelRepoResult) { it.pagedList }
+    val networkStateGel = Transformations.switchMap(gelRepoResult) { it.networkState }
+    val refreshStateGel = Transformations.switchMap(gelRepoResult) { it.refreshState }
+
     val commentState = MediatorLiveData<CommentState>().apply {
         addSource(repo.commentState) {
             postValue(it)
@@ -85,6 +92,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
         danOneRepoResult.value?.retry?.invoke()
     }
 
+    fun refreshGel() {
+        gelRepoResult.value?.refresh?.invoke()
+    }
+
+    fun retryGel() {
+        gelRepoResult.value?.retry?.invoke()
+    }
 
     fun createMoeComment(commentAction: CommentAction) {
         repo.createMoeComment(commentAction)

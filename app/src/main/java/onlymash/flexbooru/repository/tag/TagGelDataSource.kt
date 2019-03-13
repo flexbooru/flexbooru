@@ -15,10 +15,11 @@
 
 package onlymash.flexbooru.repository.tag
 
-import onlymash.flexbooru.api.url.DanOneUrlHelper
-import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.url.GelUrlHelper
+import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.entity.tag.TagDanOne
+import onlymash.flexbooru.entity.tag.TagGel
+import onlymash.flexbooru.entity.tag.TagGelResponse
 import onlymash.flexbooru.repository.BasePageKeyedDataSource
 import onlymash.flexbooru.repository.NetworkState
 import retrofit2.Call
@@ -26,16 +27,16 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 
 /**
- * Danbooru1.x tags data source that uses the before/after keys returned in page requests.
+ * Gelbooru tags data source that uses the before/after keys returned in page requests.
  */
-class TagDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
-                          private val search: SearchTag,
-                          retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagDanOne>(retryExecutor) {
+class TagGelDataSource(private val gelbooruApi: GelbooruApi,
+                       private val search: SearchTag,
+                       retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagGel>(retryExecutor) {
 
-    override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagDanOne>) {
-        val request = danbooruOneApi.getTags(DanOneUrlHelper.getTagUrl(search = search, page = 1))
+    override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagGel>) {
+        val request = gelbooruApi.getTags(GelUrlHelper.getTagUrl(search = search, page = 1))
         val response =  request.execute()
-        val data = response.body() ?: mutableListOf()
+        val data = response.body()?.tags ?: mutableListOf()
         if (data.size < search.limit) {
             callback.onResult(data, null, null)
             onEnd()
@@ -44,17 +45,17 @@ class TagDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
         }
     }
 
-    override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, TagDanOne>) {
+    override fun loadAfterRequest(params: LoadParams<Int>, callback: LoadCallback<Int, TagGel>) {
         networkState.postValue(NetworkState.LOADING)
         val page = params.key
-        danbooruOneApi.getTags(DanOneUrlHelper.getTagUrl(search = search, page = page))
-            .enqueue(object : retrofit2.Callback<MutableList<TagDanOne>> {
-                override fun onFailure(call: Call<MutableList<TagDanOne>>, t: Throwable) {
+        gelbooruApi.getTags(GelUrlHelper.getTagUrl(search = search, page = page))
+            .enqueue(object : retrofit2.Callback<TagGelResponse> {
+                override fun onFailure(call: Call<TagGelResponse>, t: Throwable) {
                     loadAfterOnFailed(t.message ?: "unknown err", params, callback)
                 }
-                override fun onResponse(call: Call<MutableList<TagDanOne>>, response: Response<MutableList<TagDanOne>>) {
+                override fun onResponse(call: Call<TagGelResponse>, response: Response<TagGelResponse>) {
                     if (response.isSuccessful) {
-                        val data = response.body() ?: mutableListOf()
+                        val data = response.body()?.tags ?: mutableListOf()
                         loadAfterOnSuccess()
                         if (data.size < search.limit) {
                             callback.onResult(data, null)

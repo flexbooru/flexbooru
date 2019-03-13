@@ -16,8 +16,6 @@
 package onlymash.flexbooru.entity.tag
 
 data class TagDan(
-    var scheme: String = "",
-    var host: String = "",
     val id: Int,
     val name: String,
     val post_count: Int,

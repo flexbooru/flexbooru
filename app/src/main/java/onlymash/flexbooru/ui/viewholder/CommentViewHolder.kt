@@ -30,6 +30,7 @@ import onlymash.flexbooru.entity.comment.CommentDan
 import onlymash.flexbooru.entity.comment.CommentDanOne
 import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.comment.CommentGel
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -63,9 +64,11 @@ class CommentViewHolder(itemView: View,
     private var postId = -1
     private var commentId = -1
 
+    private var comment: Any? = null
+
     init {
         avatar.setOnClickListener {
-            if (creatorId < 0) return@setOnClickListener
+            if (creatorId < 0 || comment is CommentGel) return@setOnClickListener
             val context = itemView.context
             context.startActivity(Intent(context, AccountActivity::class.java).apply {
                 putExtra(AccountActivity.USER_ID_KEY, creatorId)
@@ -73,7 +76,7 @@ class CommentViewHolder(itemView: View,
             })
         }
         itemView.setOnClickListener {
-            if (postId < 0) return@setOnClickListener
+            if (postId < 0 || comment is CommentGel) return@setOnClickListener
             SearchActivity.startActivity(itemView.context, "id:$postId")
         }
     }
@@ -96,6 +99,7 @@ class CommentViewHolder(itemView: View,
         }
     }
     fun bind(data: Any?) {
+        comment = data
         when (data) {
             is CommentDan -> {
                 creatorId = data.creator_id
@@ -172,6 +176,16 @@ class CommentViewHolder(itemView: View,
                     }
                     setMenuClickListener()
                 }
+            }
+            is CommentGel -> {
+                creatorId = data.creator_id
+                creatorName = data.creator
+                postId = data.post_id
+                commentId = data.id
+                userName.text = data.creator
+                postIdView.text = String.format("Post %d", data.post_id)
+                commentDate.text = data.created_at
+                commentView.setComment(data.body)
             }
         }
     }

@@ -21,11 +21,9 @@ import androidx.paging.Config
 import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.tag.TagDan
-import onlymash.flexbooru.entity.tag.TagMoe
-import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.entity.tag.TagDanOne
+import onlymash.flexbooru.entity.tag.*
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
@@ -33,9 +31,9 @@ import java.util.concurrent.Executor
 class TagData(private val danbooruApi: DanbooruApi,
               private val danbooruOneApi: DanbooruOneApi,
               private val moebooruApi: MoebooruApi,
+              private val gelbooruApi: GelbooruApi,
               private val networkExecutor: Executor
 ) : TagRepository {
-
 
     @MainThread
     override fun getDanTags(search: SearchTag): Listing<TagDan> {
@@ -94,6 +92,26 @@ class TagData(private val danbooruApi: DanbooruApi,
     @MainThread
     override fun getDanOneTags(search: SearchTag): Listing<TagDanOne> {
         val sourceFactory = TagDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi, search = search, retryExecutor = networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = search.limit,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState =
+            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getGelTags(search: SearchTag): Listing<TagGel> {
+        val sourceFactory = TagGelDataSourceFactory(gelbooruApi = gelbooruApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = search.limit,
