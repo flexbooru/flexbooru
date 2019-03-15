@@ -60,7 +60,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
-                        putInt(SCORE_KEY, post.score)
+                        putInt(SCORE_KEY, post.getPostScore())
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
                     is PostMoe -> Bundle().apply {
@@ -70,7 +70,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
-                        putInt(SCORE_KEY, post.score)
+                        putInt(SCORE_KEY, post.getPostScore())
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
                     is PostDanOne -> Bundle().apply {
@@ -80,7 +80,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
-                        putInt(SCORE_KEY, post.score)
+                        putInt(SCORE_KEY, post.getPostScore())
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
                     is PostGel -> Bundle().apply {
@@ -90,8 +90,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
-                        putInt(SCORE_KEY, post.score)
-                        putString(PARENT_KEY, post.parent_id)
+                        putInt(SCORE_KEY, post.getPostScore())
                     }
                     else -> throw IllegalStateException("unknown post type")
                 }
@@ -140,8 +139,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     source = getString(SOURCE_KEY) ?: ""
                     rating = getString(RATING_KEY) ?: ""
                     score = getInt(SCORE_KEY, -1)
-                    val p = getString(PARENT_KEY)
-                    parent = if (p.isNullOrEmpty()) -1 else p.toInt()
+                    parent = -1
                 }
             }
         }

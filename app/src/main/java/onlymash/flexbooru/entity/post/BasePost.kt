@@ -25,7 +25,7 @@ abstract class BasePost {
     var indexInResponse: Int = -1
     var scheme: String = "http"
     var host: String = ""
-    var keyword: String = ""
+    var keyword: String = "posts"
 
     internal fun checkUrl(url: String): String {
         var u = url

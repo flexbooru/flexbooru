@@ -16,11 +16,9 @@ data class PostGel(
     @Attribute
     val height: Int,
     @Attribute
-    val score: Int,
+    val score: String,
     @Attribute
     val file_url: String,
-    @Attribute
-    val parent_id: String,
     @Attribute
     val sample_url: String,
     @Attribute
@@ -65,7 +63,7 @@ data class PostGel(
 
     override fun getPostHeight(): Int = height
 
-    override fun getPostScore(): Int = score
+    override fun getPostScore(): Int = if (score.isEmpty()) 0 else score.trim().toInt()
 
     override fun getPostRating(): String = rating
 
