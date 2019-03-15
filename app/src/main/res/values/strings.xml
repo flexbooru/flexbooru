@@ -82,6 +82,8 @@
     <string name="booru_type_danbooru" translatable="false">Danbooru</string>
     <string name="booru_type_danbooru_one" translatable="false">Danbooru 1.x</string>
     <string name="booru_type_moebooru" translatable="false">Moebooru</string>
+    <string name="booru_type_gelbooru" translatable="false">Gelbooru</string>
+    <string name="booru_type_unknown" translatable="false">Unknown</string>
     <string name="booru_config_delete">Delete</string>
     <string name="booru_config_apply">Apply</string>
     <string name="booru_config_name">Name</string>

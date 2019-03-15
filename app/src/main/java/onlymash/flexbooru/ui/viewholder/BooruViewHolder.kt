@@ -80,12 +80,15 @@ class BooruViewHolder(itemView: View,
         this.booru = booru
         booruName.text = booru.name
         booruUrl.text = String.format("%s://%s", booru.scheme, booru.host)
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> booruType.setText(R.string.booru_type_danbooru)
-            Constants.TYPE_MOEBOORU -> booruType.setText(R.string.booru_type_moebooru)
-            Constants.TYPE_DANBOORU_ONE -> booruType.setText(R.string.booru_type_danbooru_one)
-            else -> booruType.text = String.format("%s", "Unknown Type")
-        }
+        booruType.setText(
+            when (booru.type) {
+                Constants.TYPE_DANBOORU -> R.string.booru_type_danbooru
+                Constants.TYPE_MOEBOORU -> R.string.booru_type_moebooru
+                Constants.TYPE_DANBOORU_ONE -> R.string.booru_type_danbooru_one
+                Constants.TYPE_GELBOORU -> R.string.booru_type_gelbooru
+                else -> R.string.booru_type_unknown
+            }
+        )
     }
 
     private fun startConfig(booru: Booru) {

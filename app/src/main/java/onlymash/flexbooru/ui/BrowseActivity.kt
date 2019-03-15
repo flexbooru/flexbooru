@@ -455,7 +455,7 @@ class BrowseActivity : AppCompatActivity() {
 
                             }
                         }
-                    } ?: startActivity(Intent(this, AccountConfigActivity::class.java))
+                    } ?: startAccountConfigAndFinish()
                 }
                 R.id.action_browse_download -> {
                     checkStoragePermissionAndAction(ACTION_DOWNLOAD)
@@ -495,6 +495,11 @@ class BrowseActivity : AppCompatActivity() {
         postLoader.postLoadedListener = postLoadedListener
         postLoader.loadPosts(host = booru.host, keyword = keyword, type = booru.type)
         initBottomBar()
+    }
+
+    private fun startAccountConfigAndFinish() {
+        startActivity(Intent(this, AccountConfigActivity::class.java))
+        finish()
     }
 
     private fun initBottomBar() {
