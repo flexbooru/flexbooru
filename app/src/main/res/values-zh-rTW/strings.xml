@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">原圖</string>
     <string name="settings_theme_mode">主題</string>
     <string name="settings_theme_mode_system">系統</string>
-    <string name="settings_theme_mode_auto">自動</string>
+    <string name="settings_theme_mode_battery">Follow battery saver</string>
     <string name="settings_theme_mode_day">日間模式</string>
     <string name="settings_theme_mode_night">夜間模式</string>
     <string name="settings_grid_width">圖牆欄寬</string>

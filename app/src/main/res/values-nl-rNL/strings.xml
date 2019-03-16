@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">Origineel</string>
     <string name="settings_theme_mode">Thema</string>
     <string name="settings_theme_mode_system">Volg systeem</string>
-    <string name="settings_theme_mode_auto">Automatisch</string>
+    <string name="settings_theme_mode_battery">Follow battery saver</string>
     <string name="settings_theme_mode_day">Dag</string>
     <string name="settings_theme_mode_night">Nacht</string>
     <string name="settings_grid_width">Rasterbreedte</string>

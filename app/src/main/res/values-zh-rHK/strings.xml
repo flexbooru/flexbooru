@@ -47,7 +47,7 @@
     <string name="about_donation_btc">比特幣</string>
     <string name="snackbar_copy_text">` %s ` 已複製到剪貼板。</string>
     <string name="retry">重試</string>
-    <string name="msg_not_supported">Not supported</string>
+    <string name="msg_not_supported">不支援</string>
     <string name="msg_press_twice_to_exit">按兩次以離開。</string>
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">原始檔案</string>
     <string name="settings_theme_mode">主題</string>
     <string name="settings_theme_mode_system">跟隨系統</string>
-    <string name="settings_theme_mode_auto">自動</string>
+    <string name="settings_theme_mode_battery">Follow battery saver</string>
     <string name="settings_theme_mode_day">日間</string>
     <string name="settings_theme_mode_night">夜間</string>
     <string name="settings_grid_width">網格寬度</string>

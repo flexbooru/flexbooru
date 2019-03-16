@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">原文件</string>
     <string name="settings_theme_mode">主题</string>
     <string name="settings_theme_mode_system">跟随系统</string>
-    <string name="settings_theme_mode_auto">自动</string>
+    <string name="settings_theme_mode_battery">跟随省电模式</string>
     <string name="settings_theme_mode_day">日间</string>
     <string name="settings_theme_mode_night">夜间</string>
     <string name="settings_grid_width">网格宽度</string>

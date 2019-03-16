@@ -42,7 +42,7 @@ class Settings(private val sp: SharedPreferences) {
         const val POST_SIZE_ORIGIN = "origin"
         const val THEME_MODE_KEY = "settings_theme_mode"
         const val THEME_MODE_SYSTEM = "system"
-        const val THEME_MODE_AUTO = "auto"
+        const val THEME_MODE_AUTO_BATTERY = "battery"
         const val THEME_MODE_DAY = "day"
         const val THEME_MODE_NIGHT = "night"
         const val GRID_WIDTH = "settings_grid_width"
@@ -88,7 +88,7 @@ class Settings(private val sp: SharedPreferences) {
     @AppCompatDelegate.NightMode
     val themeMode: Int
         get() = when (themeModeString) {
-            THEME_MODE_AUTO -> AppCompatDelegate.MODE_NIGHT_AUTO
+            THEME_MODE_AUTO_BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
             THEME_MODE_DAY -> AppCompatDelegate.MODE_NIGHT_NO
             THEME_MODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM

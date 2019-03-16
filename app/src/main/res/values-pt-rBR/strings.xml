@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">Original</string>
     <string name="settings_theme_mode">Tema</string>
     <string name="settings_theme_mode_system">Seguir o sistema</string>
-    <string name="settings_theme_mode_auto">Automático</string>
+    <string name="settings_theme_mode_battery">Follow battery saver</string>
     <string name="settings_theme_mode_day">Dia</string>
     <string name="settings_theme_mode_night">Noite</string>
     <string name="settings_grid_width">Largura da grade</string>

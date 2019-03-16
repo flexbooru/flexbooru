@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">Origin</string>
     <string name="settings_theme_mode">Theme</string>
     <string name="settings_theme_mode_system">Follow system</string>
-    <string name="settings_theme_mode_auto">Auto</string>
+    <string name="settings_theme_mode_battery">Follow battery saver</string>
     <string name="settings_theme_mode_day">Day</string>
     <string name="settings_theme_mode_night">Night</string>
     <string name="settings_grid_width">Grid width</string>
