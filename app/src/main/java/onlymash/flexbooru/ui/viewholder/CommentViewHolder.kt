@@ -57,7 +57,7 @@ class CommentViewHolder(itemView: View,
     init {
         avatar.setOnClickListener {
             comment?.let {
-                if (it is CommentGel) {
+                if (it !is CommentGel) {
                     val context = itemView.context
                     context.startActivity(Intent(context, AccountActivity::class.java).apply {
                         putExtra(AccountActivity.USER_ID_KEY, it.getCreatorId())
