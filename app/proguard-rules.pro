@@ -113,3 +113,5 @@
 -keepclasseswithmembernames class * {
     @com.tickaroo.tikxml.* <methods>;
 }
+-dontwarn com.tickaroo.tikxml.**
+-dontnote com.tickaroo.tikxml.**
