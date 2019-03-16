@@ -108,48 +108,48 @@ jsonFile.write(builder.toPrettyString())
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha04'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
+    implementation 'androidx.annotation:annotation:1.1.0-alpha02'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.0'
-    implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation "androidx.room:room-runtime:$room"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
+    implementation 'android.arch.work:work-runtime-ktx:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'com.google.android:flexbox:1.1.0'
+    implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     implementation 'com.mikepenz:materialdrawer:7.0.0-alpha4i'
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
-    implementation 'moe.shizuku.preference:preference:3.0.0'
-    implementation 'moe.shizuku.preference:preference-dialog-android:3.0.0'
-    implementation 'moe.shizuku.preference:preference-simplemenu:3.0.0'
+    implementation "moe.shizuku.preference:preference:$preference"
+    implementation "moe.shizuku.preference:preference-dialog-android:$preference"
+    implementation "moe.shizuku.preference:preference-simplemenu:$preference"
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation "androidx.room:room-runtime:$room"
     implementation "com.github.bumptech.glide:glide:$glide"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide"
-    implementation 'androidx.annotation:annotation:1.1.0-alpha01'
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
     implementation "com.tickaroo.tikxml:annotation:$tikxml"
     implementation "com.tickaroo.tikxml:core:$tikxml"
     implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml"
     kapt "com.tickaroo.tikxml:processor:$tikxml"
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
