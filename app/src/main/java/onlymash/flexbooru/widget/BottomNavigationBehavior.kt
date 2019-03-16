@@ -24,11 +24,9 @@ import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class BottomNavigationBehavior : CoordinatorLayout.Behavior<BottomNavigationView> {
-
-    constructor(): super()
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+class BottomNavigationBehavior @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+): CoordinatorLayout.Behavior<BottomNavigationView>(context, attrs) {
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: BottomNavigationView,
                                  dependency: View): Boolean {

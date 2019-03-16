@@ -45,6 +45,6 @@
             app:itemTextAppearanceActive="?android:attr/textAppearance"
             app:itemTextAppearanceInactive="?android:attr/textAppearance"
             app:itemTextColor="@color/navbar_text_color"
-            app:layout_behavior="@string/bottom_nav_view_with_snackbar_behavior"/>
+            app:layout_behavior="onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

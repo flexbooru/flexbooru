@@ -31,10 +31,10 @@ class PostAdapter(private val glide: GlideRequests,
 
     companion object {
         val POST_COMPARATOR = object : DiffUtil.ItemCallback<BasePost>() {
-            override fun areContentsTheSame(oldItem: BasePost, newItem: BasePost): Boolean = oldItem == newItem
-            override fun areItemsTheSame(oldItem: BasePost, newItem: BasePost): Boolean {
-                return oldItem.getPostId() == newItem.getPostId()
-            }
+            override fun areContentsTheSame(oldItem: BasePost, newItem: BasePost): Boolean =
+                oldItem.getPostId() == newItem.getPostId() && oldItem.getPostScore() == newItem.getPostScore()
+            override fun areItemsTheSame(oldItem: BasePost, newItem: BasePost): Boolean =
+                oldItem.getPostId() == newItem.getPostId()
         }
     }
 

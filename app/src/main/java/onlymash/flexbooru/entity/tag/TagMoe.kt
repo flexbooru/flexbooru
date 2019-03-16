@@ -21,4 +21,7 @@ data class TagMoe(
     val count: Int,
     val type: Int,
     val ambiguous: Boolean
-)
+) : BaseTag() {
+    override fun getTagId(): Int = id
+    override fun getTagName(): String = name
+}

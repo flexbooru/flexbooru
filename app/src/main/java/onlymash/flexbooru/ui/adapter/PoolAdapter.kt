@@ -18,28 +18,21 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.pool.PoolDan
-import onlymash.flexbooru.entity.pool.PoolDanOne
-import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.entity.pool.BasePool
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 
 class PoolAdapter(private val glide: GlideRequests,
                   private val listener: PoolViewHolder.ItemListener,
                   retryCallback: () -> Unit
-) : BaseStatePagedListAdapter<Any, RecyclerView.ViewHolder>(POOL_COMPARATOR, retryCallback) {
+) : BaseStatePagedListAdapter<BasePool, RecyclerView.ViewHolder>(POOL_COMPARATOR, retryCallback) {
 
     companion object {
-        val POOL_COMPARATOR = object : DiffUtil.ItemCallback<Any>() {
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is PoolDan && newItem is PoolDan -> oldItem.id == newItem.id
-                    oldItem is PoolMoe && newItem is PoolMoe -> oldItem.id == newItem.id
-                    oldItem is PoolDanOne && newItem is PoolDanOne -> oldItem.id == newItem.id
-                    else -> false
-                }
-            }
+        val POOL_COMPARATOR = object : DiffUtil.ItemCallback<BasePool>() {
+            override fun areContentsTheSame(oldItem: BasePool, newItem: BasePool): Boolean =
+                oldItem.getPoolId() == newItem.getPoolId() && oldItem.getPostCount() == newItem.getPostCount()
+            override fun areItemsTheSame(oldItem: BasePool, newItem: BasePool): Boolean =
+                oldItem.getPoolId() == newItem.getPoolId()
         }
     }
 

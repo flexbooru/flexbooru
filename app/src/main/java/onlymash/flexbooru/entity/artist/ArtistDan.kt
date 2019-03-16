@@ -16,9 +16,6 @@
 package onlymash.flexbooru.entity.artist
 
 data class ArtistDan(
-    var scheme: String = "",
-    var host: String = "",
-    var keyword: String? = "",
     val id: Int,
     val name: String,
     val created_at: String,
@@ -28,7 +25,17 @@ data class ArtistDan(
     val group_name: String,
     val is_banned: Boolean,
     val urls: MutableList<ArtistUrlDan>?
-)
+) : BaseArtist() {
+    override fun getArtistId(): Int = id
+    override fun getArtistName(): String  = name
+    override fun getArtistUrls(): MutableList<String> {
+        val list: MutableList<String> = mutableListOf()
+        urls?.forEach {
+            list.add(it.url)
+        }
+        return list
+    }
+}
 
 data class ArtistUrlDan(
     val id: Int,

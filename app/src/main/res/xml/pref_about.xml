@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/about_app"
                         app:iconSpaceReserved="true">
@@ -83,4 +83,4 @@
                 android:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
                 app:iconSpaceReserved="true"/>
     </PreferenceCategory>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

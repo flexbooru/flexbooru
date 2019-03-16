@@ -24,21 +24,14 @@ import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.comment.CommentDan
-import onlymash.flexbooru.entity.comment.CommentDanOne
-import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.comment.CommentGel
+import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
-import onlymash.flexbooru.util.formatDate
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.CommentView
-import java.text.SimpleDateFormat
-import java.util.*
 
 class CommentViewHolder(itemView: View,
                         private val glide: GlideRequests,
@@ -59,25 +52,26 @@ class CommentViewHolder(itemView: View,
     private val commentView: CommentView = itemView.findViewById(R.id.comment_view)
     private val menuView: ActionMenuView = itemView.findViewById(R.id.menu_view)
 
-    private var creatorId = -1
-    private var creatorName = ""
-    private var postId = -1
-    private var commentId = -1
-
-    private var comment: Any? = null
+    private var comment: BaseComment? = null
 
     init {
         avatar.setOnClickListener {
-            if (creatorId < 0 || comment is CommentGel) return@setOnClickListener
-            val context = itemView.context
-            context.startActivity(Intent(context, AccountActivity::class.java).apply {
-                putExtra(AccountActivity.USER_ID_KEY, creatorId)
-                putExtra(AccountActivity.USER_NAME_KEY, creatorName)
-            })
+            comment?.let {
+                if (it is CommentGel) {
+                    val context = itemView.context
+                    context.startActivity(Intent(context, AccountActivity::class.java).apply {
+                        putExtra(AccountActivity.USER_ID_KEY, it.getCreatorId())
+                        putExtra(AccountActivity.USER_NAME_KEY, it.getCreatorName())
+                    })
+                }
+            }
         }
         itemView.setOnClickListener {
-            if (postId < 0 || comment is CommentGel) return@setOnClickListener
-            SearchActivity.startActivity(itemView.context, "id:$postId")
+            comment?.let {
+                if (it !is CommentGel) {
+                    SearchActivity.startActivity(itemView.context, "id:${it.getPostId()}")
+                }
+            }
         }
     }
 
@@ -88,105 +82,38 @@ class CommentViewHolder(itemView: View,
     }
 
     private fun setMenuClickListener() {
-        menuView.setOnMenuItemClickListener {
-            if (postId < 0) return@setOnMenuItemClickListener true
-            when (it?.itemId) {
-                R.id.action_comment_reply -> listener.onReply(postId)
-                R.id.action_comment_quote -> listener.onQuote(postId, "[quote]$creatorName said:\r\n${commentView.getLastCommentText()}[/quote]")
-                R.id.action_comment_delete -> listener.onDelete(commentId)
+        menuView.setOnMenuItemClickListener { menuItem ->
+            comment?.let {
+                when (menuItem?.itemId) {
+                    R.id.action_comment_reply -> listener.onReply(it.getPostId())
+                    R.id.action_comment_quote -> listener.onQuote(it.getPostId(),
+                        "[quote]${it.getCreatorName()} said:\r\n${commentView.getLastCommentText()}[/quote]")
+                    R.id.action_comment_delete -> listener.onDelete(it.getCommentId())
+                }
             }
             true
         }
     }
-    fun bind(data: Any?) {
-        comment = data
-        when (data) {
-            is CommentDan -> {
-                creatorId = data.creator_id
-                creatorName = data.creator_name
-                postId = data.post_id
-                commentId = data.id
-
-                userName.text = data.creator_name
-                postIdView.text = String.format("Post %d", data.post_id)
-                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH)
-                commentDate.text = formatDate(sdf.parse(data.updated_at).time)
-                commentView.setComment(data.body)
-                if (user != null) {
-                    if (user.id == data.creator_id) {
-                        menuView.menu.clear()
-                        MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                    } else {
-                        menuView.menu.clear()
-                        MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
-                    }
-                    setMenuClickListener()
-                }
+    fun bind(data: BaseComment?) {
+        comment = data ?: return
+        userName.text = data.getCreatorName()
+        postIdView.text = String.format("Post %d", data.getPostId())
+        commentDate.text = data.getCommentDate()
+        commentView.setComment(data.getCommentBody())
+        if (user != null && data !is CommentGel) {
+            if (user.id == data.getCreatorId()) {
+                menuView.menu.clear()
+                MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
+            } else {
+                menuView.menu.clear()
+                MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
             }
-            is CommentMoe -> {
-                creatorId = data.creator_id
-                creatorName = data.creator
-                postId = data.post_id
-                commentId = data.id
-
-                userName.text = data.creator
-                postIdView.text = String.format("Post %d", data.post_id)
-                val date = data.created_at
-                val sdf =  when {
-                    date.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH)
-                    date.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
-                    else -> {
-                        Crashlytics.log("Unknown date format: $date. Host: ${data.host}")
-                        throw IllegalStateException("Unknown date format: $date")
-                    }
-                }
-                commentDate.text = formatDate(sdf.parse(date).time)
-                commentView.setComment(data.body)
-                if (user != null) {
-                    if (user.id == data.creator_id) {
-                        menuView.menu.clear()
-                        MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                    } else {
-                        menuView.menu.clear()
-                        MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
-                    }
-                    setMenuClickListener()
-                }
-                glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
-                    .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
-                    .into(avatar)
-            }
-            is CommentDanOne -> {
-                creatorId = data.creator_id
-                creatorName = data.creator
-                postId = data.post_id
-                commentId = data.id
-
-                userName.text = data.creator
-                postIdView.text = String.format("Post %d", data.post_id)
-                commentDate.text = data.created_at
-                commentView.setComment(data.body)
-                if (user != null) {
-                    if (user.id == data.creator_id) {
-                        menuView.menu.clear()
-                        MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)
-                    } else {
-                        menuView.menu.clear()
-                        MenuInflater(itemView.context).inflate(R.menu.comment_item, menuView.menu)
-                    }
-                    setMenuClickListener()
-                }
-            }
-            is CommentGel -> {
-                creatorId = data.creator_id
-                creatorName = data.creator
-                postId = data.post_id
-                commentId = data.id
-                userName.text = data.creator
-                postIdView.text = String.format("Post %d", data.post_id)
-                commentDate.text = data.created_at
-                commentView.setComment(data.body)
-            }
+            setMenuClickListener()
+        }
+        if (data is CommentMoe) {
+            glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
+                .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
+                .into(avatar)
         }
     }
 }

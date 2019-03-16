@@ -15,4 +15,7 @@ data class TagGel(
     val type: Int,
     @Attribute
     val ambiguous: Boolean
-)
+) : BaseTag() {
+    override fun getTagId(): Int = id
+    override fun getTagName(): String = name
+}

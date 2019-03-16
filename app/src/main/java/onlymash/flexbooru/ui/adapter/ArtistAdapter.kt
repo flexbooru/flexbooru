@@ -18,24 +18,19 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.artist.ArtistDan
-import onlymash.flexbooru.entity.artist.ArtistDanOne
-import onlymash.flexbooru.entity.artist.ArtistMoe
+import onlymash.flexbooru.entity.artist.BaseArtist
 import onlymash.flexbooru.ui.viewholder.ArtistViewHolder
 
 class ArtistAdapter(private val listener: ArtistViewHolder.ItemListener,
-                    retryCallback: () -> Unit) : BaseStatePagedListAdapter<Any, RecyclerView.ViewHolder>(ARTIST_COMPARATOR, retryCallback) {
+                    retryCallback: () -> Unit
+) : BaseStatePagedListAdapter<BaseArtist, RecyclerView.ViewHolder>(ARTIST_COMPARATOR, retryCallback) {
 
     companion object {
-        val ARTIST_COMPARATOR = object : DiffUtil.ItemCallback<Any>() {
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is ArtistDan && newItem is ArtistDan -> oldItem.id == newItem.id
-                    oldItem is ArtistMoe && newItem is ArtistMoe -> oldItem.id == newItem.id
-                    oldItem is ArtistDanOne && newItem is ArtistDanOne -> oldItem.id == newItem.id
-                    else -> false
-                }
+        val ARTIST_COMPARATOR = object : DiffUtil.ItemCallback<BaseArtist>() {
+            override fun areContentsTheSame(oldItem: BaseArtist, newItem: BaseArtist): Boolean =
+                oldItem.getArtistId() == newItem.getArtistId() && oldItem.getArtistName() == newItem.getArtistName()
+            override fun areItemsTheSame(oldItem: BaseArtist, newItem: BaseArtist): Boolean {
+                return oldItem.getArtistId() == newItem.getArtistId()
             }
         }
     }

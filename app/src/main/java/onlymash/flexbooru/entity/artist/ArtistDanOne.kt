@@ -16,16 +16,16 @@
 package onlymash.flexbooru.entity.artist
 
 data class ArtistDanOne(
-    var uid: Long = 0L,
-    var scheme: String = "",
-    var host: String = "",
-    var keyword: String? = "",
+    val id: Int,
+    val name: String,
     val updater_id: Int,
     val version: Int,
     val is_active: Boolean,
     val urls: MutableList<String>?,
     val group_name: String?,
-    val other_name: String?,
-    val name: String,
-    val id: Int
-)
+    val other_name: String?
+) : BaseArtist() {
+    override fun getArtistId(): Int = id
+    override fun getArtistName(): String  = name
+    override fun getArtistUrls(): MutableList<String> = urls ?: mutableListOf()
+}

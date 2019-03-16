@@ -15,10 +15,12 @@
 
 package onlymash.flexbooru.entity.pool
 
+import com.crashlytics.android.Crashlytics
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
+
 data class PoolMoe(
-    var scheme: String = "",
-    var host: String = "",
-    var keyword: String = "",
     val id: Int,
     val name: String,
     val created_at: String,
@@ -27,4 +29,22 @@ data class PoolMoe(
     val is_public: Boolean,
     val post_count: Int,
     val description: String
-)
+) : BasePool() {
+    override fun getPoolId(): Int = id
+    override fun getPoolName(): String = name
+    override fun getPostCount(): Int = post_count
+    override fun getPoolDate(): CharSequence {
+        val date =  when {
+            updated_at.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(updated_at)
+            updated_at.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updated_at)
+            else -> {
+                Crashlytics.log("Unknown date format: $updated_at. Host: $host")
+                throw IllegalStateException("Unknown date format: $updated_at")
+            }
+        } ?: return ""
+        return formatDate(date.time)
+    }
+    override fun getPoolDescription(): String = description
+    override fun getCreatorId(): Int = user_id
+    override fun getCreatorName(): String? = null
+}

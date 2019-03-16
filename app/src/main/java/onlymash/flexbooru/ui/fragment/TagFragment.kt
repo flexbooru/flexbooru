@@ -34,6 +34,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.tag.BaseTag
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.tag.TagRepository
 import onlymash.flexbooru.ui.MainActivity
@@ -362,7 +363,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_dan, requireActivity().menuInflater)
                 tagViewModel.tagsDan.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<Any>)
+                    tagAdapter.submitList(tags as PagedList<BaseTag>)
                 })
                 tagViewModel.networkStateDan.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
@@ -373,7 +374,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_moe, requireActivity().menuInflater)
                 tagViewModel.tagsMoe.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<Any>)
+                    tagAdapter.submitList(tags as PagedList<BaseTag>)
                 })
                 tagViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
@@ -384,7 +385,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_dan_one, requireActivity().menuInflater)
                 tagViewModel.tagsDanOne.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<Any>)
+                    tagAdapter.submitList(tags as PagedList<BaseTag>)
                 })
                 tagViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
@@ -395,7 +396,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_gel, requireActivity().menuInflater)
                 tagViewModel.tagsGel.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<Any>)
+                    tagAdapter.submitList(tags as PagedList<BaseTag>)
                 })
                 tagViewModel.networkStateGel.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)

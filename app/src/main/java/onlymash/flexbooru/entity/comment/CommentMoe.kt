@@ -15,6 +15,11 @@
 
 package onlymash.flexbooru.entity.comment
 
+import com.crashlytics.android.Crashlytics
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
+
 /**
  * Moebooru response data class
  * */
@@ -27,4 +32,21 @@ data class CommentMoe(
     val creator: String,
     val creator_id: Int,
     val body: String
-)
+) : BaseComment() {
+    override fun getPostId(): Int = post_id
+    override fun getCommentId(): Int = id
+    override fun getCommentBody(): String = body
+    override fun getCommentDate(): CharSequence {
+        val date =  when {
+            created_at.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(created_at)
+            created_at.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(created_at)
+            else -> {
+                Crashlytics.log("Unknown date format: $created_at. Host: $host")
+                throw IllegalStateException("Unknown date format: $created_at")
+            }
+        } ?: return ""
+        return formatDate(date.time)
+    }
+    override fun getCreatorId(): Int = creator_id
+    override fun getCreatorName(): String = creator
+}

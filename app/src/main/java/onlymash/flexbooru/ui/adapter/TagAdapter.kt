@@ -18,27 +18,18 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.tag.TagDan
-import onlymash.flexbooru.entity.tag.TagDanOne
-import onlymash.flexbooru.entity.tag.TagGel
-import onlymash.flexbooru.entity.tag.TagMoe
+import onlymash.flexbooru.entity.tag.*
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 
 class TagAdapter(private val listener: TagViewHolder.ItemListener,
-                 retryCallback: () -> Unit) : BaseStatePagedListAdapter<Any, RecyclerView.ViewHolder>(TAG_COMPARATOR, retryCallback) {
+                 retryCallback: () -> Unit) : BaseStatePagedListAdapter<BaseTag, RecyclerView.ViewHolder>(TAG_COMPARATOR, retryCallback) {
 
     companion object {
-        val TAG_COMPARATOR = object : DiffUtil.ItemCallback<Any>() {
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is TagDan && newItem is TagDan -> oldItem.id == newItem.id
-                    oldItem is TagMoe && newItem is TagMoe -> oldItem.id == newItem.id
-                    oldItem is TagDanOne && newItem is TagDanOne -> oldItem.id == newItem.id
-                    oldItem is TagGel && newItem is TagGel -> oldItem.id == newItem.id
-                    else -> false
-                }
-            }
+        val TAG_COMPARATOR = object : DiffUtil.ItemCallback<BaseTag>() {
+            override fun areContentsTheSame(oldItem: BaseTag, newItem: BaseTag): Boolean =
+                oldItem.getTagId() == newItem.getTagId() && oldItem.getTagName() == newItem.getTagName()
+            override fun areItemsTheSame(oldItem: BaseTag, newItem: BaseTag): Boolean =
+                oldItem.getTagId() == newItem.getTagId()
         }
     }
 

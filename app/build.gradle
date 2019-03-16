@@ -43,8 +43,8 @@ android {
             storePassword properties.getProperty("STORE_PASS")
         }
     }
-    compileSdkVersion 'android-Q'
-    buildToolsVersion '29.0.0 rc1'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "onlymash.flexbooru"
         minSdkVersion 23

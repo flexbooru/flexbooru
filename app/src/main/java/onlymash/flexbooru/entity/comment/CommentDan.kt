@@ -15,6 +15,10 @@
 
 package onlymash.flexbooru.entity.comment
 
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
+
 /**
  * Danbooru response data class
  * */
@@ -32,4 +36,14 @@ data class CommentDan(
     val is_sticky: Boolean,
     val creator_name: String,
     val updater_name: String
-)
+) : BaseComment() {
+    override fun getPostId(): Int = post_id
+    override fun getCommentId(): Int = id
+    override fun getCommentBody(): String = body
+    override fun getCommentDate(): CharSequence {
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updated_at) ?: return ""
+        return formatDate(date.time)
+    }
+    override fun getCreatorId(): Int = creator_id
+    override fun getCreatorName(): String = creator_name
+}

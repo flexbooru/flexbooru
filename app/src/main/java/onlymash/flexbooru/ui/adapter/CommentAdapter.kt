@@ -20,11 +20,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.comment.CommentMoe
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.comment.CommentDan
-import onlymash.flexbooru.entity.comment.CommentDanOne
-import onlymash.flexbooru.entity.comment.CommentGel
+import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.ui.viewholder.CommentViewHolder
@@ -33,7 +30,8 @@ import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 class CommentAdapter(private val glide: GlideRequests,
                      private val user: User?,
                      private val listener: CommentViewHolder.Listener,
-                     private val retryCallback: () -> Unit) : PagedListAdapter<Any, RecyclerView.ViewHolder>(COMMENT_COMPARATOR) {
+                     private val retryCallback: () -> Unit
+) : PagedListAdapter<BaseComment, RecyclerView.ViewHolder>(COMMENT_COMPARATOR) {
 
 
     private var networkState: NetworkState? = null
@@ -81,17 +79,11 @@ class CommentAdapter(private val glide: GlideRequests,
     }
 
     companion object {
-        val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<Any>() {
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is CommentMoe && newItem is CommentMoe -> oldItem.id == newItem.id
-                    oldItem is CommentDan && newItem is CommentDan -> oldItem.id == newItem.id
-                    oldItem is CommentDanOne && newItem is CommentDanOne -> oldItem.id == newItem.id
-                    oldItem is CommentGel && newItem is CommentGel -> oldItem.id == newItem.id
-                    else -> false
-                }
-            }
+        val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<BaseComment>() {
+            override fun areContentsTheSame(oldItem: BaseComment, newItem: BaseComment): Boolean =
+                oldItem.getCommentId() == newItem.getCommentId() && oldItem.getCommentBody() == newItem.getCommentBody()
+            override fun areItemsTheSame(oldItem: BaseComment, newItem: BaseComment): Boolean =
+                oldItem.getCommentId() == newItem.getCommentId()
         }
     }
 }

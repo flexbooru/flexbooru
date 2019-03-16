@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -104,4 +104,4 @@
             android:title="@string/settings_muzei_size"
             app:iconSpaceReserved="true" />
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

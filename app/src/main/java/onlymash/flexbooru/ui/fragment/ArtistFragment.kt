@@ -34,6 +34,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.artist.BaseArtist
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.ui.MainActivity
@@ -291,7 +292,7 @@ class ArtistFragment : ListFragment() {
                 searchBar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
                 artistViewModel.artistsDan.observe(this, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
-                    artistAdapter.submitList(artists as PagedList<Any>)
+                    artistAdapter.submitList(artists as PagedList<BaseArtist>)
                 })
                 artistViewModel.networkStateDan.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
@@ -302,7 +303,7 @@ class ArtistFragment : ListFragment() {
                 searchBar.setMenu(R.menu.artist_moe, requireActivity().menuInflater)
                 artistViewModel.artistsMoe.observe(this, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
-                    artistAdapter.submitList(artists as PagedList<Any>)
+                    artistAdapter.submitList(artists as PagedList<BaseArtist>)
                 })
                 artistViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
@@ -313,7 +314,7 @@ class ArtistFragment : ListFragment() {
                 searchBar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
                 artistViewModel.artistsDanOne.observe(this, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
-                    artistAdapter.submitList(artists as PagedList<Any>)
+                    artistAdapter.submitList(artists as PagedList<BaseArtist>)
                 })
                 artistViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)

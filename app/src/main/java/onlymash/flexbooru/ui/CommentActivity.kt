@@ -40,6 +40,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
+import onlymash.flexbooru.entity.comment.BaseComment
 import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
@@ -227,7 +228,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU -> {
                 commentViewModel.commentsDan.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<Any>)
+                    commentAdapter.submitList(it as PagedList<BaseComment>)
                 })
                 commentViewModel.networkStateDan.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
@@ -237,7 +238,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_MOEBOORU -> {
                 commentViewModel.commentsMoe.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<Any>)
+                    commentAdapter.submitList(it as PagedList<BaseComment>)
                 })
                 commentViewModel.networkStateMoe.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
@@ -247,7 +248,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU_ONE -> {
                 commentViewModel.commentsDanOne.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<Any>)
+                    commentAdapter.submitList(it as PagedList<BaseComment>)
                 })
                 commentViewModel.networkStateDanOne.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
@@ -257,7 +258,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_GELBOORU -> {
                 commentViewModel.commentsGel.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<Any>)
+                    commentAdapter.submitList(it as PagedList<BaseComment>)
                 })
                 commentViewModel.networkStateGel.observe(this, Observer {
                     commentAdapter.setNetworkState(it)

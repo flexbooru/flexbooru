@@ -16,11 +16,9 @@
 package onlymash.flexbooru.entity.pool
 
 import onlymash.flexbooru.entity.DanOneDate
+import onlymash.flexbooru.util.formatDate
 
 data class PoolDanOne(
-    var scheme: String = "",
-    var host: String = "",
-    var keyword: String = "",
     val user_id: Int,
     val is_public: Boolean,
     val post_count: Int,
@@ -28,4 +26,12 @@ data class PoolDanOne(
     val updated_at: DanOneDate,
     val id: Int,
     val created_at: DanOneDate
-)
+) : BasePool() {
+    override fun getPoolId(): Int = id
+    override fun getPoolName(): String = name
+    override fun getPostCount(): Int = post_count
+    override fun getPoolDate(): CharSequence = formatDate(updated_at.s * 1000L)
+    override fun getPoolDescription(): String = ""
+    override fun getCreatorId(): Int = user_id
+    override fun getCreatorName(): String? = null
+}

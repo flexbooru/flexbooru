@@ -26,9 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.artist.ArtistDan
-import onlymash.flexbooru.entity.artist.ArtistDanOne
-import onlymash.flexbooru.entity.artist.ArtistMoe
+import onlymash.flexbooru.entity.artist.BaseArtist
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.toggleArrow
 import onlymash.flexbooru.widget.LinkTransformationMethod
@@ -48,14 +46,12 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val urlsContainer: LinearLayout = itemView.findViewById(R.id.urls_container)
     private val artistUrls: TextView = itemView.findViewById(R.id.artist_urls)
     private var isShow = false
-    private var artist: Any? = null
+    private var artist: BaseArtist? = null
 
     init {
         itemView.setOnClickListener {
-            when (artist) {
-                is ArtistDan -> itemListener?.onClickItem((artist as ArtistDan).name)
-                is ArtistMoe -> itemListener?.onClickItem((artist as ArtistMoe).name)
-                is ArtistDanOne -> itemListener?.onClickItem((artist as ArtistDanOne).name)
+            artist?.let {
+                itemListener?.onClickItem(it.getArtistName())
             }
         }
         itemView.setOnLongClickListener {
@@ -86,48 +82,17 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onClickItem(keyword: String)
     }
 
-    fun bind(data: Any?) {
+    fun bind(data: BaseArtist?) {
         artist = data
-        when (data) {
-            is ArtistDan -> {
-                artistName.text = data.name
-                artistId.text = String.format("#%d", data.id)
-                var urlsText = ""
-                data.urls?.let { urls ->
-                    urls.forEach { url ->
-                        urlsText = String.format("%s\r\n%s", url.url, urlsText)
-                    }
-                }
-                if (urlsText.isNotBlank()) {
-                    artistUrls.text = urlsText
-                }
-            }
-            is ArtistMoe -> {
-                artistName.text = data.name
-                artistId.text = String.format("#%d", data.id)
-                var urlsText = ""
-                data.urls?.let { urls ->
-                    urls.forEach { url ->
-                        urlsText = String.format("%s\r\n%s", url, urlsText)
-                    }
-                }
-                if (urlsText.isNotBlank()) {
-                    artistUrls.text = urlsText
-                }
-            }
-            is ArtistDanOne -> {
-                artistName.text = data.name
-                artistId.text = String.format("#%d", data.id)
-                var urlsText = ""
-                data.urls?.let { urls ->
-                    urls.forEach { url ->
-                        urlsText = String.format("%s\r\n%s", url, urlsText)
-                    }
-                }
-                if (urlsText.isNotBlank()) {
-                    artistUrls.text = urlsText
-                }
-            }
+        if (data == null) return
+        artistName.text = data.getArtistName()
+        artistId.text = String.format("#%d", data.getArtistId())
+        var urlsText = ""
+        data.getArtistUrls().forEach { url ->
+            urlsText = String.format("%s\r\n%s", url, urlsText)
+        }
+        if (urlsText.isNotBlank()) {
+            artistUrls.text = urlsText
         }
     }
 

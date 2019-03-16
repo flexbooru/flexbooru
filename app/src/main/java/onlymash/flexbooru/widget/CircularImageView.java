@@ -152,7 +152,7 @@ public class CircularImageView extends AppCompatImageView {
     @Override
     public ScaleType getScaleType() {
         ScaleType currentScaleType = super.getScaleType();
-        return currentScaleType == null || currentScaleType != CENTER_INSIDE ? CENTER_CROP : currentScaleType;
+        return currentScaleType != CENTER_INSIDE ? CENTER_CROP : currentScaleType;
     }
 
     @Override

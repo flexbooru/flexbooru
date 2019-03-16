@@ -23,10 +23,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.tag.TagDan
-import onlymash.flexbooru.entity.tag.TagDanOne
-import onlymash.flexbooru.entity.tag.TagGel
-import onlymash.flexbooru.entity.tag.TagMoe
+import onlymash.flexbooru.entity.tag.*
 
 class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
@@ -50,7 +47,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val tagType: TextView = itemView.findViewById(R.id.tag_type)
     private val count: TextView = itemView.findViewById(R.id.post_count)
 
-    private var tag: Any? = null
+    private var tag: BaseTag? = null
 
     private var itemListener: ItemListener? = null
 
@@ -64,11 +61,8 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     init {
         itemView.setOnClickListener {
-            when (tag) {
-                is TagDan -> itemListener?.onClickItem((tag as TagDan).name)
-                is TagMoe -> itemListener?.onClickItem((tag as TagMoe).name)
-                is TagDanOne -> itemListener?.onClickItem((tag as TagDanOne).name)
-                is TagGel -> itemListener?.onClickItem((tag as TagGel).name)
+            tag?.let {
+                itemListener?.onClickItem(it.getTagName())
             }
         }
         itemView.setOnLongClickListener {
@@ -80,7 +74,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    fun bind(data: Any?) {
+    fun bind(data: BaseTag?) {
         tag = data
         val res = itemView.resources
         when (data) {

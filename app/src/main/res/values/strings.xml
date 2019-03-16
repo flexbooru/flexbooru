@@ -167,7 +167,6 @@
     <string name="switch_no">No</string>
     <string name="pool_description_is_empty">Description is empty.</string>
     <string name="pool_info_id_and_count" translatable="false">#%01$d | %02$d</string>
-    <string name="bottom_nav_view_with_snackbar_behavior" translatable="false">onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior</string>
     <string name="tag_type">Type</string>
     <string name="tag_type_all">All type</string>
     <string name="tag_type_general">General</string>

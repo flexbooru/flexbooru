@@ -15,10 +15,11 @@
 
 package onlymash.flexbooru.entity.pool
 
+import onlymash.flexbooru.util.formatDate
+import java.text.SimpleDateFormat
+import java.util.*
+
 data class PoolDan(
-    var scheme: String = "",
-    var host: String = "",
-    var keyword: String = "",
     val id: Int,
     val name: String,
     val created_at: String,
@@ -30,4 +31,15 @@ data class PoolDan(
     val category: String,
     val creator_name: String,
     val post_count: Int
-)
+) : BasePool() {
+    override fun getPoolId(): Int = id
+    override fun getPoolName(): String = name
+    override fun getPostCount(): Int = post_count
+    override fun getPoolDate(): CharSequence {
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updated_at) ?: return ""
+        return formatDate(date.time)
+    }
+    override fun getPoolDescription(): String = description
+    override fun getCreatorId(): Int = creator_id
+    override fun getCreatorName(): String? = creator_name
+}

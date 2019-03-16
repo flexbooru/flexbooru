@@ -22,14 +22,9 @@ import androidx.fragment.app.DialogFragment
 import moe.shizuku.preference.EditTextPreference
 import moe.shizuku.preference.PreferenceDialogFragment
 
-class EditTextPreference : EditTextPreference {
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    constructor(context: Context) : super(context)
+class EditTextPreference @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+): EditTextPreference(context, attrs, defStyleAttr) {
 
     override fun onCreateDialogFragment(key: String?): DialogFragment {
         return EditTextPreferenceDialogFragment().apply {

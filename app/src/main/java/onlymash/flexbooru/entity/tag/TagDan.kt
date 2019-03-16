@@ -25,4 +25,7 @@ data class TagDan(
     val created_at: String,
     val updated_at: String,
     val is_locked: Boolean
-)
+) : BaseTag() {
+    override fun getTagId(): Int = id
+    override fun getTagName(): String = name
+}

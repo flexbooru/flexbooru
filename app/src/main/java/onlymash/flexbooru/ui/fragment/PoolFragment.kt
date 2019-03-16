@@ -35,6 +35,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.pool.BasePool
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepository
@@ -255,7 +256,7 @@ class PoolFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> {
                 poolViewModel.poolsDan.observe(this, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
-                    poolAdapter.submitList(pools as PagedList<Any>)
+                    poolAdapter.submitList(pools as PagedList<BasePool>)
                 })
                 poolViewModel.networkStateDan.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
@@ -265,7 +266,7 @@ class PoolFragment : ListFragment() {
             Constants.TYPE_MOEBOORU -> {
                 poolViewModel.poolsMoe.observe(this, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
-                    poolAdapter.submitList(pools as PagedList<Any>)
+                    poolAdapter.submitList(pools as PagedList<BasePool>)
                 })
                 poolViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
@@ -275,7 +276,7 @@ class PoolFragment : ListFragment() {
             Constants.TYPE_DANBOORU_ONE -> {
                 poolViewModel.poolsDanOne.observe(this, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
-                    poolAdapter.submitList(pools as PagedList<Any>)
+                    poolAdapter.submitList(pools as PagedList<BasePool>)
                 })
                 poolViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
