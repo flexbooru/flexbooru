@@ -236,21 +236,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
 
         override fun onDelete(booruUid: Long) {
-            var position = -1
-            boorus.forEachIndexed { index, booru ->
-                if (booru.uid == booruUid) {
-                    position = index
-                    return@forEachIndexed
-                }
-            }
-            if (position >= 0) {
-                boorus.removeAt(position)
-            }
+            val index = boorus.indexOfFirst { it.uid == booruUid }
+            boorus.removeAt(index)
             header.removeProfileByIdentifier(booruUid)
             if (boorus.size > 0) {
                 if (Settings.instance().activeBooruUid == booruUid) {
-                    Settings.instance().activeBooruUid = 0
-                    header.setActiveProfile(Settings.instance().activeBooruUid)
+                    val booru = boorus[0]
+                    Settings.instance().activeBooruUid = booru.uid
+                    header.setActiveProfile(booru.uid)
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 }
             } else {
                 Settings.instance().activeBooruUid = -1

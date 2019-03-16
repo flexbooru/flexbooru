@@ -35,7 +35,7 @@ abstract class BasePost {
         return when {
             u.startsWith("http") -> u
             u.startsWith("//") -> "$scheme:$u"
-            u.startsWith("/") -> "$scheme://$host$url"
+            u.startsWith("/") -> "$scheme://$host$u"
             else -> {
                 Crashlytics.log("Unknown url: $u")
                 u
