@@ -43,8 +43,8 @@ android {
             storePassword properties.getProperty("STORE_PASS")
         }
     }
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 'android-Q'
+    buildToolsVersion '29.0.0 rc1'
     defaultConfig {
         applicationId "onlymash.flexbooru"
         minSdkVersion 23
@@ -108,6 +108,8 @@ jsonFile.write(builder.toPrettyString())
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    //Room requires
+    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5"
     implementation 'androidx.annotation:annotation:1.1.0-alpha02'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
@@ -116,7 +118,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
     implementation "androidx.room:room-runtime:$room"
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
@@ -150,9 +152,9 @@ dependencies {
     kapt "com.tickaroo.tikxml:processor:$tikxml"
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    testImplementation 'junit:junit:4.13-beta-2'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
 }
 
 apply plugin: 'com.google.gms.google-services'
