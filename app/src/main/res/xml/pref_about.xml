@@ -14,73 +14,73 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<moe.shizuku.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="@string/about_app"
+    <moe.shizuku.preference.PreferenceCategory android:title="@string/about_app"
                         app:iconSpaceReserved="true">
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_app_version"
                 android:title="@string/about_app_version"
                 android:summary="%s"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_app_translation"
                 android:title="@string/about_app_translation"
                 android:summary="@string/about_app_translation_summary"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_app_rate"
                 android:title="@string/about_app_rate"
                 app:iconSpaceReserved="true"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/about_author"
+    </moe.shizuku.preference.PreferenceCategory>
+    <moe.shizuku.preference.PreferenceCategory android:title="@string/about_author"
                         app:iconSpaceReserved="true">
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_author_website"
                 android:title="@string/about_author_website"
                 android:summary="https://blog.fiepi.com"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_author_email"
                 android:title="@string/about_author_email"
                 android:summary="im@fiepi.me"
                 app:iconSpaceReserved="true"/>
-    </PreferenceCategory>
+    </moe.shizuku.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/about_feedback"
+    <moe.shizuku.preference.PreferenceCategory android:title="@string/about_feedback"
                         app:iconSpaceReserved="true">
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_feedback_github"
                 android:title="@string/about_feedback_github"
                 android:summary="https://github.com/flexbooru/flexbooru/issues"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_feedback_telegram"
                 android:title="@string/about_feedback_telegram"
                 android:summary="https://t.me/Flexbooru"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_feedback_email"
                 android:title="@string/about_feedback_email"
                 android:summary="feedback@fiepi.me"
                 app:iconSpaceReserved="true"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/about_donation"
+    </moe.shizuku.preference.PreferenceCategory>
+    <moe.shizuku.preference.PreferenceCategory android:title="@string/about_donation"
                         app:iconSpaceReserved="true">
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_donation_paypal"
                 android:title="@string/about_donation_paypal"
                 android:summary="https://www.paypal.me/fiepi"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_donation_alipay"
                 android:title="@string/about_donation_alipay"
                 android:summary="im@fiepi.com"
                 app:iconSpaceReserved="true"/>
-        <Preference
+        <moe.shizuku.preference.Preference
                 android:key="about_donation_btc"
                 android:title="@string/about_donation_btc"
                 android:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
                 app:iconSpaceReserved="true"/>
-    </PreferenceCategory>
-</androidx.preference.PreferenceScreen>
+    </moe.shizuku.preference.PreferenceCategory>
+</moe.shizuku.preference.PreferenceScreen>

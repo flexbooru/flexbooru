@@ -14,12 +14,12 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.preference.PreferenceScreen
+<moe.shizuku.preference.PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_theme_mode"
             android:entries="@array/settings_theme_mode_entries"
             android:entryValues="@array/settings_theme_mode_entries_values"
@@ -28,7 +28,7 @@
             android:title="@string/settings_theme_mode"
             app:iconSpaceReserved="true" />
 
-    <SwitchPreference
+    <moe.shizuku.preference.SwitchPreference
             android:key="settings_safe_mode"
             android:title="@string/settings_safe_mode"
             android:defaultValue="true"
@@ -37,7 +37,7 @@
             app:iconSpaceReserved="true"/>
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_grid_width"
             android:entries="@array/settings_grid_width_entries"
             android:entryValues="@array/settings_grid_width_entries_values"
@@ -46,7 +46,7 @@
             android:title="@string/settings_grid_width"
             app:iconSpaceReserved="true" />
 
-    <SwitchPreference
+    <moe.shizuku.preference.SwitchPreference
             android:key="settings_show_info_bar"
             android:title="@string/settings_show_info_bar"
             android:defaultValue="false"
@@ -55,7 +55,7 @@
             app:iconSpaceReserved="true"/>
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_page_limit"
             android:entries="@array/settings_page_limit_entries"
             android:entryValues="@array/settings_page_limit_entries_values"
@@ -65,7 +65,7 @@
             app:iconSpaceReserved="true" />
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_browse_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
@@ -75,7 +75,7 @@
             app:iconSpaceReserved="true" />
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_download_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
@@ -85,7 +85,7 @@
             app:iconSpaceReserved="true" />
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_muzei_limit"
             android:entries="@array/settings_muzei_limit_entries"
             android:entryValues="@array/settings_muzei_limit_entries_values"
@@ -95,7 +95,7 @@
             app:iconSpaceReserved="true" />
 
     <!--suppress AndroidElementNotAllowed -->
-    <SimpleMenuPreference
+    <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_muzei_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
@@ -104,4 +104,4 @@
             android:title="@string/settings_muzei_size"
             app:iconSpaceReserved="true" />
 
-</androidx.preference.PreferenceScreen>
+</moe.shizuku.preference.PreferenceScreen>
