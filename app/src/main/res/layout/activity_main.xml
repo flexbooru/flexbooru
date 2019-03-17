@@ -24,7 +24,7 @@
         android:background="@color/background"
         tools:context=".ui.MainActivity">
 
-    <androidx.viewpager.widget.ViewPager
+    <onlymash.flexbooru.widget.FullDrawerViewPager
             android:id="@+id/pager_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

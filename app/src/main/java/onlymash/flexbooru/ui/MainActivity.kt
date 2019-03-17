@@ -53,6 +53,7 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.util.launchUrl
+import onlymash.flexbooru.util.setDrawerLeftEdgeSize
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -138,6 +139,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             .build()
         drawer.setSelection(-3L)
         drawer.onDrawerItemClickListener = drawerItemClickListener
+        drawer.drawerLayout.setDrawerLeftEdgeSize(this, 1.0f)
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
         if (!BooruManager.isNotEmpty()) {
