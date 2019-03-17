@@ -332,7 +332,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     }
                 }
             }
-            return true
+            return false
         }
     }
 
@@ -379,7 +379,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     startActivity(Intent(this@MainActivity, CopyrightActivity::class.java))
                 }
             }
-            return true
+            return false
         }
     }
 

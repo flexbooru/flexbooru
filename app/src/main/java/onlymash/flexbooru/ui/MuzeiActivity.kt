@@ -20,7 +20,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +38,7 @@ import onlymash.flexbooru.entity.Muzei
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 
-class MuzeiActivity : AppCompatActivity() {
+class MuzeiActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "MuzeiActivity"

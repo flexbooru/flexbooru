@@ -21,7 +21,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +36,7 @@ import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 import onlymash.flexbooru.util.launchUrl
 
-class BooruActivity : AppCompatActivity() {
+class BooruActivity : BaseActivity() {
 
     private val booruAdapter by lazy { BooruAdapter(this) }
 

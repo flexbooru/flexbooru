@@ -26,7 +26,6 @@ import android.os.Bundle
 import android.util.Log
 import android.util.SparseArray
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture
@@ -40,7 +39,7 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt#L111
-class ScannerActivity : AppCompatActivity(), BarcodeRetriever {
+class ScannerActivity : BaseActivity(), BarcodeRetriever {
     companion object {
         private const val TAG = "ScannerActivity"
         private const val REQUEST_GOOGLE_API = 4

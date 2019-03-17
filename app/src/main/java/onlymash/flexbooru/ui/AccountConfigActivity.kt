@@ -19,7 +19,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_account_config.*
@@ -36,7 +35,7 @@ import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
 
-class AccountConfigActivity : AppCompatActivity() {
+class AccountConfigActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "AccountConfigActivity"

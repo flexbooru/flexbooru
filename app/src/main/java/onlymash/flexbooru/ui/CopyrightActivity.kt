@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
@@ -32,7 +31,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.util.launchUrl
 
-class CopyrightActivity : AppCompatActivity() {
+class CopyrightActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
