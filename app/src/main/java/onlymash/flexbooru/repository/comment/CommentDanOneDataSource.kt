@@ -35,9 +35,9 @@ class CommentDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
 
     private fun getUrl(page: Int): HttpUrl =
         when {
-            commentAction.post_id > 0 -> DanOneUrlHelper.getPostCommentUrl(commentAction = commentAction, page = 1)
-            commentAction.query.isNotEmpty() -> DanOneUrlHelper.getPostsCommentSearchUrl(commentAction = commentAction, page = 1)
-            else -> DanOneUrlHelper.getPostsCommentIndexUrl(commentAction = commentAction, page = 1)
+            commentAction.post_id > 0 -> DanOneUrlHelper.getPostCommentUrl(commentAction = commentAction, page = page)
+            commentAction.query.isNotEmpty() -> DanOneUrlHelper.getPostsCommentSearchUrl(commentAction = commentAction, page = page)
+            else -> DanOneUrlHelper.getPostsCommentIndexUrl(commentAction = commentAction, page = page)
         }
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentDanOne>) {
