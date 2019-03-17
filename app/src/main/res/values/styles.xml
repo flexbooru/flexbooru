@@ -95,4 +95,16 @@
         <item name="actionIcon">@drawable/tag_dot</item>
         <item name="showIcon">true</item>
     </style>
+
+    <style name="RightInRightOutAnim" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <style name="AppTheme.Sliding" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/RightInRightOutAnim</item>
+    </style>
+
 </resources>

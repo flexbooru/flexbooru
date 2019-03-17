@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -53,7 +54,7 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.util.launchUrl
-import onlymash.flexbooru.util.setDrawerLeftEdgeSize
+import onlymash.flexbooru.util.setDrawerLayoutSlideListener
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -91,6 +92,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
         drawer = DrawerBuilder()
             .withActivity(this)
+            .withDrawerLayout(DrawerLayout(this).apply {
+                setDrawerLayoutSlideListener()
+            })
             .withTranslucentStatusBar(false)
             .withAccountHeader(header, false)
             .addDrawerItems(
@@ -137,9 +141,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             .withStickyFooterShadow(false)
             .withSavedInstance(savedInstanceState)
             .build()
-        drawer.setSelection(-3L)
-        drawer.onDrawerItemClickListener = drawerItemClickListener
-        drawer.drawerLayout.setDrawerLeftEdgeSize(this, 1.0f)
+        drawer.apply {
+            setSelection(-3L)
+            onDrawerItemClickListener = drawerItemClickListener
+        }
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
         if (!BooruManager.isNotEmpty()) {
@@ -327,7 +332,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     }
                 }
             }
-            return false
+            return true
         }
     }
 
@@ -374,7 +379,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     startActivity(Intent(this@MainActivity, CopyrightActivity::class.java))
                 }
             }
-            return false
+            return true
         }
     }
 

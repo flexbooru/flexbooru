@@ -25,6 +25,7 @@ import android.net.Uri
 import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.customview.widget.ViewDragHelper
@@ -34,7 +35,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.post.BasePost
 import java.io.File
-import java.lang.reflect.Field
+import java.lang.IllegalArgumentException
 import java.net.URLDecoder
 import java.util.*
 
@@ -118,5 +119,21 @@ fun DrawerLayout.setDrawerLeftEdgeSize(activity: Activity, displayWidthPercentag
         val dm = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(dm)
         edgeSizeField.setInt(leftDragger, Math.max(edgeSize, (dm.widthPixels * displayWidthPercentage).toInt()))
-    } catch (_: Exception) { }
+    } catch (_: NoSuchFieldException) {
+
+    } catch (_: IllegalAccessException) {
+
+    } catch (_: IllegalArgumentException) {
+
+    }
+}
+
+fun DrawerLayout.setDrawerLayoutSlideListener() {
+    addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+        override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            super.onDrawerSlide(drawerView, slideOffset)
+            val marginLeft = (getChildAt(1).width * slideOffset).toInt()
+            getChildAt(0).left = marginLeft
+        }
+    })
 }
