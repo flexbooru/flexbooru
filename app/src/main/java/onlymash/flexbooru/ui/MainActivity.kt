@@ -330,8 +330,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private val drawerItemClickListener = object : Drawer.OnDrawerItemClickListener {
-        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
-            when (drawerItem.identifier) {
+        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*, *>?): Boolean {
+            when (drawerItem?.identifier) {
                 DRAWER_ITEM_ID_ACCOUNT -> {
                     val booru = getCurrentBooru()
                     if (booru?.type == Constants.TYPE_GELBOORU) {

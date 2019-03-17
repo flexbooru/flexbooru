@@ -94,9 +94,6 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
     }
-    packagingOptions {
-        exclude 'META-INF/library-core_release.kotlin_module'
-    }
 }
 
 File jsonFile = file('update.json')
@@ -128,7 +125,7 @@ dependencies {
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
-    implementation 'com.mikepenz:materialdrawer:7.0.0-alpha4i'
+    implementation 'com.mikepenz:materialdrawer:6.1.2'
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
     implementation 'com.google.firebase:firebase-core:16.0.8'
