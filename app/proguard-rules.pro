@@ -98,10 +98,8 @@
 -dontnote com.mikepenz.**
 -dontnote com.github.chrisbanes.photoview.**
 
--keepclassmembers class onlymash.flexbooru.entity.** { *; }
--dontwarn onlymash.flexbooru.entity.**
--dontwarn onlymash.flexbooru.ui.adapter.**
--dontnote onlymash.flexbooru.**
+-keep class onlymash.flexbooru.entity.** { *; }
+-keep class onlymash.flexbooru.respository.** { *; }
 
 #https://github.com/Tickaroo/tikxml/blob/master/docs/AnnotatingModelClasses.md
 -keep class com.tickaroo.tikxml.** { *; }
