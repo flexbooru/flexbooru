@@ -22,5 +22,6 @@ import onlymash.flexbooru.entity.post.PostMoe
  * */
 data class VoteMoe(
     val success: Boolean,
-    var posts: MutableList<PostMoe> = mutableListOf()
+    var posts: MutableList<PostMoe> = mutableListOf(),
+    var message: String = ""
 )

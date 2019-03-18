@@ -61,6 +61,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                             if (vote.score == 3) {
                                 ioExecutor.execute {
                                     val post= voteMoe.posts[0].apply {
+                                        scheme = vote.scheme
                                         host = vote.host
                                         keyword = "vote:3:${vote.username} order:vote"
                                     }
@@ -80,7 +81,11 @@ class VoteData(private val danbooruApi: DanbooruApi,
                             voteCallback?.onFailed("Unknown issue")
                         }
                     } else {
-                        voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                        if (response.code() == 403) {
+                            voteCallback?.onFailed("password or hash salt is wrong.")
+                        } else {
+                            voteCallback?.onFailed("code: ${response.code()}")
+                        }
                     }
                 }
             })
@@ -109,6 +114,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data is VoteDan) {
+                        post.scheme = vote.scheme
                         post.keyword = "fav:${vote.username}"
                         post.uid = 0L
                         ioExecutor.execute {
@@ -117,7 +123,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                     }
                     voteCallback?.onSuccess()
                 } else {
-                    voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                    voteCallback?.onFailed("code: ${response.code()}")
                 }
             }
         })
@@ -136,7 +142,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                         }
                         voteCallback?.onSuccess()
                     } else {
-                        voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                        voteCallback?.onFailed("code: ${response.code()}")
                     }
                 }
             })
@@ -156,6 +162,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data is VoteDan) {
+                        post.scheme = vote.scheme
                         post.keyword = "fav:${vote.username}"
                         post.uid = 0L
                         ioExecutor.execute {
@@ -164,7 +171,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                     }
                     voteCallback?.onSuccess()
                 } else {
-                    voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                    voteCallback?.onFailed("code: ${response.code()}")
                 }
             }
         })
@@ -187,7 +194,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
                         }
                         voteCallback?.onSuccess()
                     } else {
-                        voteCallback?.onFailed("${response.code()}: ${response.message()}")
+                        voteCallback?.onFailed("code: ${response.code()}")
                     }
                 }
             })

@@ -68,6 +68,15 @@ class PopularDanDataSource(
         // triggered by a refresh, we better execute sync
         try {
             val response = request.execute()
+            if (response.code() == 401) {
+                retry = {
+                    loadInitial(params, callback)
+                }
+                val error = NetworkState.error("Your Api Key is wrong.")
+                networkState.postValue(error)
+                initialLoad.postValue(error)
+                return
+            }
             val data = response.body()?: mutableListOf()
             var posts: MutableList<PostDan> = mutableListOf()
             data.forEach { post ->

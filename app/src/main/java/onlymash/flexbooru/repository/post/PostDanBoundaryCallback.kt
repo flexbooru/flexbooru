@@ -72,7 +72,11 @@ class PostDanBoundaryCallback(
                 call: Call<MutableList<PostDan>>,
                 response: Response<MutableList<PostDan>>
             ) {
-                insertItemsIntoDb(response, it)
+                if (response.code() == 401) {
+                    it.recordFailure(Throwable("Your Api Key is wrong."))
+                } else {
+                    insertItemsIntoDb(response, it)
+                }
             }
         }
     }
