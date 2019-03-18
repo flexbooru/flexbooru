@@ -50,6 +50,7 @@ import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests,
+                         private val picasso: Picasso,
                          private val onDismissListener: DismissFrameLayout.OnDismissListener,
                          private val pageType: Int): PagerAdapter() {
 
@@ -98,7 +99,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             photoViewListener?.onClickPhotoView()
                         }
                         setExecutor(ServiceLocator.instance().getDiskIOExecutor())
-                        setBitmapDecoderFactory { CustomDecoder(Picasso.Builder(context).build()) }
+                        setBitmapDecoderFactory { CustomDecoder(picasso) }
                         setRegionDecoderFactory { CustomRegionDecoder() }
                     }
                     val progressBar = ProgressBar(container.context).apply {

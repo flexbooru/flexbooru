@@ -46,6 +46,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.exoplayer2.ui.PlayerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -489,7 +490,11 @@ class BrowseActivity : AppCompatActivity() {
             voteRepository.voteCallback = voteCallback
             initFavViewModel()
         }
-        pagerAdapter = BrowsePagerAdapter(GlideApp.with(this), onDismissListener, pageType)
+        pagerAdapter = BrowsePagerAdapter(
+            glideRequests = GlideApp.with(this),
+            picasso = Picasso.Builder(this).build(),
+            onDismissListener = onDismissListener,
+            pageType = pageType)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         postLoader.postLoadedListener = postLoadedListener
