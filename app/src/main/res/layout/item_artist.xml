@@ -20,15 +20,14 @@
         android:background="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:minHeight="60dp">
 
     <TextView
             android:id="@+id/artist_name"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceListItem"
@@ -41,25 +40,32 @@
             android:id="@+id/artist_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="10dp"
             android:textAppearance="?android:attr/textAppearance"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/bt_expand"/>
+            app:layout_constraintBottom_toBottomOf="@+id/space"/>
 
     <ImageButton
             android:id="@+id/bt_expand"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/grey_60"
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_expand_more_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
+    <Space
+            android:id="@+id/space"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_expand"/>
 
     <LinearLayout
             android:id="@+id/urls_container"
@@ -68,7 +74,7 @@
             android:background="@color/background_text_info"
             android:orientation="vertical"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/bt_expand"
+            app:layout_constraintTop_toBottomOf="@+id/space"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 

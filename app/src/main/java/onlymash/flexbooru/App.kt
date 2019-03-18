@@ -38,6 +38,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
+        setupLeakCanary()
         AppCompatDelegate.setDefaultNightMode(Settings.instance().themeMode)
         registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build())
         DrawerImageLoader.init(drawerImageLoader)
@@ -50,6 +51,5 @@ class App : Application() {
             Glide.with(imageView.context).clear(imageView)
         }
     }
-
     val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 }

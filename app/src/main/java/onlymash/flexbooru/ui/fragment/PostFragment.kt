@@ -54,10 +54,7 @@ import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
-import onlymash.flexbooru.util.ViewTransition
-import onlymash.flexbooru.util.downloadPost
-import onlymash.flexbooru.util.gridWidth
-import onlymash.flexbooru.util.rotate
+import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
 
@@ -602,9 +599,10 @@ class PostFragment : ListFragment() {
         val activity = requireActivity()
         if (activity is MainActivity) {
             activity.removeNavigationListener(navigationListener)
+            activity.sharedElement = null
         }
+        activity.unregisterReceiver(broadcastReceiver)
         UserManager.listeners.remove(userListener)
-        requireActivity().unregisterReceiver(broadcastReceiver)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

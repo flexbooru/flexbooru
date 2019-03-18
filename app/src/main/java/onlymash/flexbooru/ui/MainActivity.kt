@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
+    internal var sharedElement: View? = null
     lateinit var drawer: Drawer
     private lateinit var header: AccountHeader
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
@@ -383,16 +384,14 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
-    internal var sharedElement: View? = null
-
     private val sharedElementCallback = object : SharedElementCallback() {
         override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
             if (names == null || sharedElements == null) return
+            names.clear()
+            sharedElements.clear()
             sharedElement?.let { view ->
                 view.transitionName?.let { name ->
-                    names.clear()
                     names.add(name)
-                    sharedElements.clear()
                     sharedElements[name] = view
                 }
             }
@@ -403,7 +402,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(state: Int) {
-
+//                sharedElement = null
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {

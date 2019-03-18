@@ -583,7 +583,10 @@ class PopularFragment : ListFragment() {
         super.onDestroy()
         if (type < 0) return
         UserManager.listeners.remove(userListener)
-        requireActivity().unregisterReceiver(broadcastReceiver)
-        (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
+        (requireActivity() as MainActivity).apply {
+            unregisterReceiver(broadcastReceiver)
+            removeNavigationListener(navigationListener)
+            sharedElement = null
+        }
     }
 }

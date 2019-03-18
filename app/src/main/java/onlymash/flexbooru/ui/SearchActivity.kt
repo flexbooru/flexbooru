@@ -48,11 +48,11 @@ class SearchActivity : AppCompatActivity() {
     private val sharedElementCallback = object : SharedElementCallback() {
         override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
             if (names == null || sharedElements == null) return
+            names.clear()
+            sharedElements.clear()
             sharedElement?.let { view ->
                 view.transitionName?.let { name ->
-                    names.clear()
                     names.add(name)
-                    sharedElements.clear()
                     sharedElements[name] = view
                 }
             }

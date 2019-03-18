@@ -147,6 +147,9 @@ dependencies {
     implementation "com.tickaroo.tikxml:annotation:$tikxml"
     implementation "com.tickaroo.tikxml:core:$tikxml"
     implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
     kapt "com.tickaroo.tikxml:processor:$tikxml"
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"

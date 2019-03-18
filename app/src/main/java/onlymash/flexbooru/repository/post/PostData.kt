@@ -274,7 +274,7 @@ class PostData(
                             }
                             val first = db.postDanOneDao()
                                 .getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id >= posts[0].id) {
+                            if (first != null && first.id == posts[0].id) {
                                 return@runInTransaction
                             }
                             db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
@@ -308,7 +308,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             val first = db.postDanDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id >= posts[0].id) {
+                            if (first != null && first.id == posts[0].id) {
                                 return@runInTransaction
                             }
                             db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
@@ -341,7 +341,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             val first = db.postMoeDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id >= posts[0].id) {
+                            if (first != null && first.id == posts[0].id) {
                                 return@runInTransaction
                             }
                             db.postMoeDao().deletePosts(search.host, search.keyword)
@@ -374,7 +374,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             val first = db.postGelDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id >= posts[0].id) {
+                            if (first != null && first.id == posts[0].id) {
                                 return@runInTransaction
                             }
                             db.postGelDao().deletePosts(search.host, search.keyword)

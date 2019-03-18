@@ -38,7 +38,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 
-//https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt#L111
+//https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt
 class ScannerActivity : BaseActivity(), BarcodeRetriever {
     companion object {
         private const val TAG = "ScannerActivity"
@@ -51,7 +51,7 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
         try {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=tw.com.quickmark")))
         } catch (_: ActivityNotFoundException) { }
-        finish()
+        onBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,7 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
             }
             return
         }
-        if (Build.VERSION.SDK_INT >= 25) getSystemService<ShortcutManager>()!!.reportShortcutUsed("scan")
+        if (Build.VERSION.SDK_INT >= 25) getSystemService<ShortcutManager>()?.reportShortcutUsed("scan")
         if (try {
                 getSystemService<CameraManager>()?.cameraIdList?.isEmpty()
             } catch (_: CameraAccessException) {
@@ -83,18 +83,22 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
         }
         setContentView(R.layout.activity_scanner)
         toolbar.setTitle(R.string.scaner_scan_qr_code)
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         val capture = supportFragmentManager.findFragmentById(R.id.barcode) as BarcodeCapture
         capture.setCustomDetector(detector)
         capture.setRetrieval(this)
     }
 
+    override fun onStop() {
+        super.onStop()
+        detector.release()
+    }
+
     override fun onRetrieved(barcode: Barcode) = runOnUiThread {
-        val b = Booru.url2Booru(barcode.rawValue)
-        if (b != null) BooruManager.createBooru(b)
-        finish()
+        Booru.url2Booru(barcode.rawValue)?.let {
+            BooruManager.createBooru(it)
+        }
+        onBackPressed()
     }
     override fun onRetrievedMultiple(closetToClick: Barcode?, barcode: MutableList<BarcodeGraphic>?) = check(false)
     override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) { }
