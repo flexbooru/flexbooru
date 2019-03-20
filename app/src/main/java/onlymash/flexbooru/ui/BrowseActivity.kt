@@ -239,7 +239,6 @@ class BrowseActivity : AppCompatActivity() {
                 putExtra(EXT_POST_KEYWORD_KEY, keyword)
             }
             this@BrowseActivity.sendBroadcast(intent)
-            playerHolder.stop()
             if (url.isNotEmpty() && !url.isImage()) {
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
