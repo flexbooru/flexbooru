@@ -1,6 +1,7 @@
 package onlymash.flexbooru.ui
 
-import com.aitangba.swipeback.SwipeBackActivity
+import androidx.appcompat.app.AppCompatActivity
 
-abstract class BaseActivity : SwipeBackActivity(){
+abstract class BaseActivity : AppCompatActivity() {
+
 }

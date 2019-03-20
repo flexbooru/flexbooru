@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -49,7 +50,7 @@ import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewholder.CommentViewHolder
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 
-class CommentActivity : BaseActivity() {
+class CommentActivity : AppCompatActivity() {
 
     companion object {
         private const val POST_ID_KEY = "post_id"
@@ -176,7 +177,6 @@ class CommentActivity : BaseActivity() {
             }
         }
         if (postId > 0) {
-            supportSlideBack = false
             toolbar.apply {
                 subtitle = "Post $postId"
                 inflateMenu(R.menu.comment)
@@ -280,10 +280,6 @@ class CommentActivity : BaseActivity() {
         })
         commentViewModel.show(commentAction)
     }
-
-    private var supportSlideBack = true
-
-    override fun supportSlideBack(): Boolean = supportSlideBack
 
     private fun initSwipeToRefreshDan() {
         commentViewModel.refreshStateDan.observe(this, Observer {

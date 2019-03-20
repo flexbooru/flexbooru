@@ -1,6 +1,7 @@
 package onlymash.flexbooru
 
 import android.app.Application
+import android.os.Build
 import com.squareup.leakcanary.LeakCanary
 
 fun Application.setupLeakCanary() {
@@ -9,5 +10,7 @@ fun Application.setupLeakCanary() {
         // You should not init your app in this process.
         return
     }
-    LeakCanary.install(this)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        LeakCanary.install(this)
+    }
 }

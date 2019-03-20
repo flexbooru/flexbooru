@@ -28,7 +28,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -53,8 +52,9 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
+import onlymash.flexbooru.util.getWidth
 import onlymash.flexbooru.util.launchUrl
-import onlymash.flexbooru.util.setDrawerLayoutSlideListener
+import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -93,8 +93,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
         drawer = DrawerBuilder()
             .withActivity(this)
-            .withDrawerLayout(DrawerLayout(this).apply {
-                setDrawerLayoutSlideListener()
+            .withDrawerLayout(FullDrawerLayout(this).apply {
+                setLeftSwipeSize(this@MainActivity.getWidth())
             })
             .withTranslucentStatusBar(false)
             .withAccountHeader(header, false)

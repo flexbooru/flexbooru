@@ -23,7 +23,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
-import com.aitangba.swipeback.ActivityLifecycleHelper
 import com.bumptech.glide.Glide
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
@@ -40,7 +39,6 @@ class App : Application() {
         app = this
         setupLeakCanary()
         AppCompatDelegate.setDefaultNightMode(Settings.instance().themeMode)
-        registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build())
         DrawerImageLoader.init(drawerImageLoader)
     }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {

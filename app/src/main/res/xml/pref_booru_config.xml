@@ -50,7 +50,7 @@
                 app:iconSpaceReserved="true"/>
 
         <!--suppress AndroidElementNotAllowed -->
-        <onlymash.flexbooru.widget.EditTextPreference
+        <onlymash.flexbooru.widget.preference.EditTextPreference
                 android:key="booru_config_host"
                 android:title="@string/booru_config_host"
                 android:singleLine="true"
@@ -59,7 +59,7 @@
                 app:iconSpaceReserved="true"/>
 
         <!--suppress AndroidElementNotAllowed -->
-        <onlymash.flexbooru.widget.EditTextPreference
+        <onlymash.flexbooru.widget.preference.EditTextPreference
                 android:key="booru_config_hash_salt"
                 android:title="@string/booru_config_hash_salt"
                 android:singleLine="true"

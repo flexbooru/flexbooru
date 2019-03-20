@@ -137,3 +137,9 @@ fun DrawerLayout.setDrawerLayoutSlideListener() {
         }
     })
 }
+
+fun Activity.getWidth(): Int {
+    val outMetrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(outMetrics)
+    return outMetrics.widthPixels
+}

@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.widget
+package onlymash.flexbooru.widget.preference
 
 import android.content.Context
 import android.content.DialogInterface

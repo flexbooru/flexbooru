@@ -94,6 +94,9 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 File jsonFile = file('update.json')
@@ -134,7 +137,6 @@ dependencies {
     implementation "moe.shizuku.preference:preference:$preference"
     implementation "moe.shizuku.preference:preference-dialog-android:$preference"
     implementation "moe.shizuku.preference:preference-simplemenu:$preference"
-    implementation 'com.github.onlymash:and_swipeback:2c64c40'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
