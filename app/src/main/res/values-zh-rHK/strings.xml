@@ -137,7 +137,7 @@
     <string name="settings_post_size_origin">原始檔案</string>
     <string name="settings_theme_mode">主題</string>
     <string name="settings_theme_mode_system">跟隨系統</string>
-    <string name="settings_theme_mode_battery">Follow battery saver</string>
+    <string name="settings_theme_mode_battery">按照節電程式</string>
     <string name="settings_theme_mode_day">日間</string>
     <string name="settings_theme_mode_night">夜間</string>
     <string name="settings_grid_width">網格寬度</string>
