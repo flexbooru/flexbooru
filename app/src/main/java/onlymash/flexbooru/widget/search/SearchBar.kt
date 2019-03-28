@@ -19,26 +19,33 @@ import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.ActionMenuView
 import androidx.cardview.widget.CardView
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
+import onlymash.flexbooru.entity.tag.BaseTag
+import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
 
 class SearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : CardView(context, attrs, defStyleAttr), View.OnClickListener {
+) : CardView(context, attrs, defStyleAttr), View.OnClickListener, TextWatcher {
 
     companion object {
         private const val STATE_KEY_SUPER = "super"
@@ -54,8 +61,25 @@ class SearchBar @JvmOverloads constructor(
     private var stateChangeListener: StateChangeListener? = null
     private val viewTransition: ViewTransition
 
+    private var type: Int = -1
+    private var searchTag: SearchTag? = null
+
+    fun setType(type: Int) {
+        this.type = type
+    }
+
+    fun setSearchTag(search: SearchTag) {
+        searchTag = search
+    }
+
+    private var suggestionsOnline: MutableList<BaseTag>? = null
+    private val suggestionsRepo by lazy { ServiceLocator.instance().getSuggestionRepository() }
+    private val ioExecutor by lazy { ServiceLocator.instance().getDiskIOExecutor() }
+    private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
+
     private var suggestions: MutableList<Suggestion>
     private val suggestionAdapter: SuggestionAdapter
+    private val suggestionOnlineAdapter: SuggestionOnlineAdapter
 
     private val suggestionContainer: LinearLayout
     private val editText: SearchEditText
@@ -83,36 +107,7 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
-    private fun hideIME() {
-        if (inputMethodManager.isActive(editText)) {
-            inputMethodManager.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-            editText.clearFocus()
-        }
-    }
-
-    private fun showIME() {
-        inputMethodManager.showSoftInput(editText, 0)
-    }
-
     private val editorActionListener: TextView.OnEditorActionListener
-
-    private val textWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s.isNullOrEmpty() && state == STATE_SEARCH) {
-                showSuggestion()
-            } else {
-                hideSuggestion()
-            }
-        }
-    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.widget_search_bar, this)
@@ -151,20 +146,79 @@ class SearchBar @JvmOverloads constructor(
         editText.apply {
             setSearchEditTextListener(searchEditTextListener)
             setOnEditorActionListener(editorActionListener)
-            addTextChangedListener(textWatcher)
+            addTextChangedListener(this@SearchBar)
         }
         viewTransition = ViewTransition(title, editText)
         booruUid = Settings.instance().activeBooruUid
         suggestions = mutableListOf()
-        suggestionAdapter = SuggestionAdapter(LayoutInflater.from(context))
+        val inflater = LayoutInflater.from(context)
+        suggestionAdapter = SuggestionAdapter(inflater)
+        suggestionOnlineAdapter = SuggestionOnlineAdapter(inflater)
         suggestionList.apply {
             adapter = suggestionAdapter
             onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                setText(suggestions[position].keyword)
+                if (adapter == suggestionAdapter) {
+                    setText(suggestions[position].keyword)
+                } else {
+                    setText(suggestionsOnline!![position].getTagName())
+                }
             }
             onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
-                SuggestionManager.deleteSuggestion(suggestions[position].uid)
+                if (adapter == suggestionAdapter) {
+                    SuggestionManager.deleteSuggestion(suggestions[position].uid)
+                }
                 true
+            }
+        }
+    }
+
+    private fun hideIME() {
+        if (inputMethodManager.isActive(editText)) {
+            inputMethodManager.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            editText.clearFocus()
+        }
+    }
+
+    private fun showIME() {
+        inputMethodManager.showSoftInput(editText, 0)
+    }
+
+    override fun afterTextChanged(s: Editable?) {}
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        if (state == STATE_SEARCH) {
+            when {
+                s.isNullOrEmpty() -> {
+                    suggestionList.adapter = suggestionAdapter
+                    showSuggestion()
+                }
+                s.isNotBlank() && type > -1 && searchTag != null -> {
+                    if (type == Constants.TYPE_GELBOORU) {
+                        searchTag?.name = s.toString()
+                    } else {
+                        searchTag?.name = "$s*"
+                    }
+                    fetchSuggestions()
+                }
+                else -> hideSuggestion()
+            }
+        } else {
+            hideSuggestion()
+        }
+    }
+
+    private fun fetchSuggestions() {
+        searchTag?.let {
+            ioExecutor.execute {
+                suggestionsOnline = suggestionsRepo.fetchSuggestions(type, it)
+                Log.w("Test", suggestionsOnline?.toString() ?: "Null")
+                mainHandler.post {
+                    showSuggestion()
+                    suggestionList.adapter = suggestionOnlineAdapter
+                    suggestionOnlineAdapter.notifyDataSetChanged()
+                }
             }
         }
     }
@@ -361,6 +415,22 @@ class SearchBar @JvmOverloads constructor(
         override fun getItemId(position: Int): Long = position.toLong()
 
         override fun getCount(): Int = suggestions.size
+
+    }
+
+    private inner class SuggestionOnlineAdapter(private val inflater: LayoutInflater) : BaseAdapter() {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val textView = (convertView as? TextView) ?:
+            (inflater.inflate(R.layout.item_suggestion, parent, false)) as TextView
+            textView.text = suggestionsOnline?.get(position)?.getTagName() ?: ""
+            return textView
+        }
+
+        override fun getItem(position: Int): Any = suggestionsOnline!![position]
+
+        override fun getItemId(position: Int): Long = position.toLong()
+
+        override fun getCount(): Int = suggestionsOnline?.size ?: 0
 
     }
 }

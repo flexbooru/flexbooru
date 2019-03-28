@@ -42,6 +42,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.*
+import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
@@ -145,6 +146,7 @@ class PostFragment : ListFragment() {
 
     private var type = -1
     private lateinit var search: Search
+    private lateinit var searchTag: SearchTag
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -406,6 +408,14 @@ class PostFragment : ListFragment() {
             else -> activity.finish()
         }
         activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
+        searchTag = SearchTag(
+            scheme = search.scheme,
+            host = search.host,
+            name = "",
+            order = "name",
+            limit = 6,
+            type = ""
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -415,6 +425,8 @@ class PostFragment : ListFragment() {
         }
         init()
         UserManager.listeners.add(userListener)
+        searchBar.setType(type)
+        searchBar.setSearchTag(searchTag)
     }
 
     private fun init() {

@@ -37,6 +37,8 @@ import onlymash.flexbooru.repository.popular.PopularData
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.repository.post.PostData
 import onlymash.flexbooru.repository.post.PostRepository
+import onlymash.flexbooru.repository.suggestion.SuggestionData
+import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.repository.tag.TagData
 import onlymash.flexbooru.repository.tag.TagRepository
 import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
@@ -81,6 +83,7 @@ interface ServiceLocator {
     fun getTagFilterDataSource(): TagFilterDataSource
     fun getVoteRepository(): VoteRepository
     fun getCommentRepository(): CommentRepository
+    fun getSuggestionRepository(): SuggestionRepository
 }
 
 /**
@@ -200,6 +203,15 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi()
+        )
+    }
+
+    override fun getSuggestionRepository(): SuggestionRepository {
+        return SuggestionData(
+            danbooruApi = getDanbooruApi(),
+            moebooruApi = getMoebooruApi(),
+            danbooruOneApi = getDanbooruOneApi(),
+            gelbooruApi = getGelbooruApi()
         )
     }
 }
