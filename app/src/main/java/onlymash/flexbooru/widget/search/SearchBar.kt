@@ -213,7 +213,6 @@ class SearchBar @JvmOverloads constructor(
         searchTag?.let {
             ioExecutor.execute {
                 suggestionsOnline = suggestionsRepo.fetchSuggestions(type, it)
-                Log.w("Test", suggestionsOnline?.toString() ?: "Null")
                 mainHandler.post {
                     showSuggestion()
                     suggestionList.adapter = suggestionOnlineAdapter
