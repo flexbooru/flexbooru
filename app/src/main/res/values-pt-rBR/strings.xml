@@ -55,6 +55,7 @@
     <string name="post_download">Download</string>
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
     <string name="msg_download_requires_storage_permission">Download requer permissão de armazenamento.</string>
+    <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="popular_day">Dia</string>
     <string name="popular_week">Semana</string>
     <string name="popular_month">Mês</string>
