@@ -420,7 +420,7 @@ class SearchBar @JvmOverloads constructor(
     private inner class SuggestionOnlineAdapter(private val inflater: LayoutInflater) : BaseAdapter() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val textView = (convertView as? TextView) ?:
-            (inflater.inflate(R.layout.item_suggestion, parent, false)) as TextView
+            (inflater.inflate(R.layout.item_suggestion_online, parent, false)) as TextView
             textView.text = suggestionsOnline?.get(position)?.getTagName() ?: ""
             return textView
         }
