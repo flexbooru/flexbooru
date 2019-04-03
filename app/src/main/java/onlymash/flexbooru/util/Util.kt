@@ -20,12 +20,14 @@ import android.app.DownloadManager
 import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.customview.widget.ViewDragHelper
@@ -92,7 +94,8 @@ fun Context.downloadPost(post: BasePost?) {
         else -> post.getOriginUrl()
     }
     if (url.isEmpty()) return
-    val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+    var fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+    if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
     val path = File(Environment.getExternalStoragePublicDirectory(
         Environment.DIRECTORY_PICTURES),
         String.format("%s/%s/%s", getString(R.string.app_name), host, fileName))
@@ -105,7 +108,24 @@ fun Context.downloadPost(post: BasePost?) {
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
         addRequestHeader(Constants.REFERER_KEY, "${uri.scheme}://${uri.host}/post")
     }
-    (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+    try {
+        (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+    } catch (_: Exception) {
+        redirectToDownloadManagerSettings()
+    }
+}
+
+fun Context.redirectToDownloadManagerSettings() {
+    try {
+        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.data = Uri.parse("package:com.android.providers.downloads")
+        startActivity(intent)
+        Toast.makeText(this, getString(R.string.msg_download_must_enable), Toast.LENGTH_LONG).show()
+    } catch (ex: ActivityNotFoundException) {
+        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        startActivity(intent)
+        Toast.makeText(this, getString(R.string.msg_download_must_enable), Toast.LENGTH_LONG).show()
+    }
 }
 
 fun DrawerLayout.setDrawerLeftEdgeSize(activity: Activity, displayWidthPercentage: Float) {

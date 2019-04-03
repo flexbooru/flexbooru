@@ -75,7 +75,6 @@ class SearchBar @JvmOverloads constructor(
     private var suggestionsOnline: MutableList<BaseTag>? = null
     private val suggestionsRepo by lazy { ServiceLocator.instance().getSuggestionRepository() }
     private val ioExecutor by lazy { ServiceLocator.instance().getDiskIOExecutor() }
-    private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
 
     private var suggestions: MutableList<Suggestion>
     private val suggestionAdapter: SuggestionAdapter
@@ -211,6 +210,7 @@ class SearchBar @JvmOverloads constructor(
 
     private fun fetchSuggestions() {
         searchTag?.let {
+            val mainHandler = Handler()
             ioExecutor.execute {
                 suggestionsOnline = suggestionsRepo.fetchSuggestions(type, it)
                 mainHandler.post {
