@@ -22,16 +22,13 @@ import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Search
 import java.io.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
-import onlymash.flexbooru.api.url.DanOneUrlHelper
-import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.api.url.GelUrlHelper
+import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.MuzeiManager
 
 class FlexArtWorker(
@@ -211,6 +208,44 @@ class FlexArtWorker(
                             else -> post.getOriginUrl().toUri()
                         }
                         webUri = String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id).toUri()
+                    }
+                })
+            }
+            Constants.TYPE_SANKAKU -> {
+                val search = Search(
+                    scheme = booru.scheme,
+                    host = booru.host,
+                    keyword = keyword,
+                    limit = Settings.instance().muzeiLimit).apply {
+                    user?.let {
+                        auth_key = it.password_hash ?: ""
+                        username = it.name
+                    }
+                }
+                val sankakuApi = ServiceLocator.instance().getSankakuApi()
+                val posts = try {
+                    sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1))
+                        .execute().body() ?: throw IOException("Response was null")
+                } catch (ex: IOException) {
+                    return Result.retry()
+                }
+                val providerClient = ProviderContract.getProviderClient(
+                    applicationContext, applicationContext.packageName + ".muzei")
+                val attributionString = applicationContext.getString(R.string.muzei_attribution)
+                var host = booru.host
+                if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
+                providerClient.setArtwork(posts.map { post ->
+                    Artwork().apply {
+                        token = "id:${post.id}"
+                        title = "Post ${post.id}"
+                        byline = keyword
+                        attribution = attributionString
+                        persistentUri = when (muzeiSize) {
+                            Settings.POST_SIZE_SAMPLE -> post.getSampleUrl().toUri()
+                            Settings.POST_SIZE_LARGER -> post.getLargerUrl().toUri()
+                            else -> post.getOriginUrl().toUri()
+                        }
+                        webUri = String.format("%s://%s/post/show/%d", booru.scheme, host, post.id).toUri()
                     }
                 })
             }
