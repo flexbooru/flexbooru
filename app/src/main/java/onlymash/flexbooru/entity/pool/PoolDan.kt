@@ -31,7 +31,7 @@ data class PoolDan(
     val category: String,
     val creator_name: String,
     val post_count: Int
-) : BasePool() {
+) : PoolBase() {
     override fun getPoolId(): Int = id
     override fun getPoolName(): String = name
     override fun getPostCount(): Int = post_count

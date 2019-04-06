@@ -22,11 +22,9 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.post.SearchPopular
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
@@ -35,6 +33,7 @@ class PopularData(
     private val danbooruApi: DanbooruApi,
     private val danbooruOneApi: DanbooruOneApi,
     private val moebooruApi: MoebooruApi,
+    private val sankakuApi: SankakuApi,
     private val db: FlexbooruDatabase,
     private val networkExecutor: Executor) : PopularRepository {
 
@@ -99,6 +98,25 @@ class PopularData(
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = 20,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getSankakuPopular(popular: SearchPopular): Listing<PostSankaku> {
+        val sourceFactory = PopularSankakuDataSourceFactory(sankakuApi, db, popular, networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = 30,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)

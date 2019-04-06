@@ -21,14 +21,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import onlymash.flexbooru.api.url.MoeUrlHelper
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.GelbooruApi
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.url.DanOneUrlHelper
-import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.api.url.GelUrlHelper
+import onlymash.flexbooru.api.*
+import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.post.*
@@ -46,12 +40,14 @@ class PostData(
     private val danbooruApi: DanbooruApi,
     private val moebooruApi: MoebooruApi,
     private val gelbooruApi: GelbooruApi,
+    private val sankakuApi: SankakuApi,
     private val ioExecutor: Executor) : PostRepository {
 
     private var danOneBoundaryCallback: PostDanOneBoundaryCallback? = null
     private var danBoundaryCallback: PostDanBoundaryCallback? = null
     private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
     private var gelBoundaryCallback: PostGelBoundaryCallback? = null
+    private var sankakuBoundaryCallback: PostSankakuBoundaryCallback? = null
 
     private fun insertDanbooruOneResultIntoDb(search: Search, body: MutableList<PostDanOne>?) {
         body?.let { postsDanOne ->
@@ -112,6 +108,20 @@ class PostData(
                 post
             }
             db.postGelDao().insert(items)
+        }
+    }
+
+    private fun insertSankakuResultIntoDb(search: Search, body: MutableList<PostSankaku>?) {
+        body?.let { posts ->
+            val start = db.postSankakuDao().getNextIndex(host = search.host, keyword = search.keyword)
+            val items = posts.mapIndexed { index, post ->
+                post.scheme = search.scheme
+                post.host = search.host
+                post.keyword = search.keyword
+                post.indexInResponse = start + index
+                post
+            }
+            db.postSankakuDao().insert(items)
         }
     }
 
@@ -379,6 +389,74 @@ class PostData(
                             }
                             db.postGelDao().deletePosts(search.host, search.keyword)
                             insertGelbooruResultIntoDb(search, posts)
+                        }
+                    }
+                    networkState.postValue(NetworkState.LOADED)
+                }
+            }
+        )
+        return networkState
+    }
+
+    @MainThread
+    override fun getSankakuPosts(search: Search): Listing<PostSankaku> {
+        sankakuBoundaryCallback = PostSankakuBoundaryCallback(
+            sankakuApi = sankakuApi,
+            handleResponse = this::insertSankakuResultIntoDb,
+            ioExecutor = ioExecutor,
+            search = search
+        )
+        val refreshTrigger = MutableLiveData<Unit>()
+        val refreshState = Transformations.switchMap(refreshTrigger) {
+            refreshSankaku(search)
+        }
+        val livePagedList = db.postSankakuDao()
+            .getPosts(host = search.host, keyword = search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 100
+                ),
+                boundaryCallback = sankakuBoundaryCallback
+            )
+        return Listing(
+            pagedList = livePagedList,
+            networkState = sankakuBoundaryCallback!!.networkState,
+            retry = {
+                sankakuBoundaryCallback!!.helper.retryAllFailed()
+            },
+            refresh = {
+                refreshTrigger.value = null
+            },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    private fun refreshSankaku(search: Search): LiveData<NetworkState> {
+        sankakuBoundaryCallback?.lastResponseSize = search.limit
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.value = NetworkState.LOADING
+        sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1)).enqueue(
+            object : Callback<MutableList<PostSankaku>> {
+                override fun onFailure(call: Call<MutableList<PostSankaku>>, t: Throwable) {
+                    networkState.value = NetworkState.error(t.message)
+                }
+                override fun onResponse(call: Call<MutableList<PostSankaku>>, response: Response<MutableList<PostSankaku>>) {
+                    ioExecutor.execute {
+                        db.runInTransaction {
+                            val posts = response.body()
+                            if (posts.isNullOrEmpty()) {
+                                db.postSankakuDao().deletePosts(host = search.host, keyword = search.keyword)
+                                return@runInTransaction
+                            }
+                            val first = db.postSankakuDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
+                            if (first != null && first.id == posts[0].id) {
+                                return@runInTransaction
+                            }
+                            db.postSankakuDao().deletePosts(search.host, search.keyword)
+                            insertSankakuResultIntoDb(search, posts)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)

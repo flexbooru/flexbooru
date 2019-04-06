@@ -41,13 +41,17 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         const val META = 5
         const val MODEL = 5
         const val PHOTO_SET = 6
+        const val GENRE = 5
+        const val MEDIUM = 8
+        const val STUDIO = 2
+        const val META_SANKAKU = 9
     }
 
     private val tagName: TextView = itemView.findViewById(R.id.tag_name)
     private val tagType: TextView = itemView.findViewById(R.id.tag_type)
     private val count: TextView = itemView.findViewById(R.id.post_count)
 
-    private var tag: BaseTag? = null
+    private var tag: TagBase? = null
 
     private var itemListener: ItemListener? = null
 
@@ -74,7 +78,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    fun bind(data: BaseTag?) {
+    fun bind(data: TagBase?) {
         tag = data
         val res = itemView.resources
         when (data) {
@@ -124,6 +128,21 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     COPYRIGHT -> res.getString(R.string.tag_type_copyright)
                     CHARACTER -> res.getString(R.string.tag_type_character)
                     META -> res.getString(R.string.tag_type_meta)
+                    else -> res.getString(R.string.tag_type_unknown)
+                }
+                count.text = data.count.toString()
+            }
+            is TagSankaku -> {
+                tagName.text = data.name
+                tagType.text = when (data.type) {
+                    GENERAL -> res.getString(R.string.tag_type_general)
+                    ARTIST -> res.getString(R.string.tag_type_artist)
+                    COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                    CHARACTER -> res.getString(R.string.tag_type_character)
+                    MEDIUM -> res.getString(R.string.tag_type_medium)
+                    META_SANKAKU -> res.getString(R.string.tag_type_meta)
+                    STUDIO -> res.getString(R.string.tag_type_studio)
+                    GENRE -> res.getString(R.string.tag_type_genre)
                     else -> res.getString(R.string.tag_type_unknown)
                 }
                 count.text = data.count.toString()

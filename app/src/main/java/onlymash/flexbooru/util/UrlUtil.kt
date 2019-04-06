@@ -57,20 +57,27 @@ object UrlUtil {
 }
 
 fun String.isImage(): Boolean {
-    val ext = substring(lastIndexOf(".") + 1)
+    val ext = ext()
     return ext == "jpg" || ext == "png" || ext == "gif" ||
             ext == "webp"
 }
 fun String.isStillImage(): Boolean {
-    val ext = substring(lastIndexOf(".") + 1)
+    val ext = ext()
     return ext == "jpg" || ext == "png"
 }
-fun String.isGifImage(): Boolean {
-    val ext = substring(lastIndexOf(".") + 1)
-    return ext == "gif"
-}
+fun String.isGifImage(): Boolean = ext() == "gif"
 fun String.isImageNotWebp(): Boolean {
-    val ext = substring(lastIndexOf(".") + 1)
+    val ext = ext()
     return ext == "jpg" || ext == "png" || ext == "gif"
 }
-fun String.isWebp(): Boolean = substring(lastIndexOf(".") + 1) == "webp"
+fun String.isWebp(): Boolean = ext() == "webp"
+
+fun String.ext(): String {
+    val start = lastIndexOf('.') + 1
+    val end = indexOfFirst { it == '?' }
+    return if (end > start) {
+        substring(start, end)
+    } else {
+        substring(start)
+    }
+}

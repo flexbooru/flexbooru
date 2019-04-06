@@ -21,7 +21,7 @@ data class ArtistMoe(
     val alias_id: Int?,
     val group_id: Int?,
     val urls: MutableList<String>?
-) : BaseArtist() {
+) : ArtistBase() {
     override fun getArtistId(): Int = id
     override fun getArtistName(): String  = name
     override fun getArtistUrls(): MutableList<String> = urls ?: mutableListOf()

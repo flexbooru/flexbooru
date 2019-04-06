@@ -35,7 +35,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.entity.post.BasePost
+import onlymash.flexbooru.entity.post.PostBase
 import java.io.File
 import java.lang.IllegalArgumentException
 import java.net.URLDecoder
@@ -84,9 +84,19 @@ fun isExternalStorageReadable(): Boolean {
             setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
 }
 
-fun Context.downloadPost(post: BasePost?) {
+fun String.fileName(): String {
+    val start = lastIndexOf('/') + 1
+    val end = indexOfFirst { it == '?' }
+    return if (end > start) {
+        substring(start, end)
+    } else {
+        substring(start)
+    }
+}
+
+fun Context.downloadPost(post: PostBase?) {
     if (post == null) return
-    val host = post.host
+    var host = post.host
     val id = post.getPostId()
     val url = when (Settings.instance().downloadSize) {
         Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
@@ -94,7 +104,7 @@ fun Context.downloadPost(post: BasePost?) {
         else -> post.getOriginUrl()
     }
     if (url.isEmpty()) return
-    var fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+    var fileName = URLDecoder.decode(url.fileName(), "UTF-8")
     if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
     val path = File(Environment.getExternalStoragePublicDirectory(
         Environment.DIRECTORY_PICTURES),
@@ -106,7 +116,8 @@ fun Context.downloadPost(post: BasePost?) {
         setDescription(fileName)
         setDestinationUri(Uri.fromFile(path))
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-        addRequestHeader(Constants.REFERER_KEY, "${uri.scheme}://${uri.host}/post")
+        if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
+        addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")
     }
     try {
         (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)

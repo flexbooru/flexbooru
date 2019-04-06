@@ -1,6 +1,6 @@
 package onlymash.flexbooru.entity.tag
 
-abstract class BaseTag {
+abstract class TagBase {
     abstract fun getTagId(): Int
     abstract fun getTagName(): String
 }

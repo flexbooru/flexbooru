@@ -22,10 +22,12 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.entity.pool.PoolDan
 import onlymash.flexbooru.entity.pool.PoolDanOne
 import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
@@ -33,6 +35,7 @@ import java.util.concurrent.Executor
 class PoolData(private val danbooruApi: DanbooruApi,
                private val danbooruOneApi: DanbooruOneApi,
                private val moebooruApi: MoebooruApi,
+               private val sankakuApi: SankakuApi,
                private val networkExecutor: Executor
 ) : PoolRepository {
 
@@ -96,6 +99,25 @@ class PoolData(private val danbooruApi: DanbooruApi,
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = PoolDanOneDataSource.PAGE_SIZE,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getSankakuPools(search: Search): Listing<PoolSankaku> {
+        val sourceFactory = PoolSankakuDataSourceFactory(sankakuApi = sankakuApi, search = search, retryExecutor = networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = search.limit,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)

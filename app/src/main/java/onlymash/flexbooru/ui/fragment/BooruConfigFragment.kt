@@ -34,6 +34,7 @@ class BooruConfigFragment : BasePreferenceFragment(),
         const val BOORU_CONFIG_TYPE_DANBOORU_ONE = "danbooru_one"
         const val BOORU_CONFIG_TYPE_MOEBOORU = "moebooru"
         const val BOORU_CONFIG_TYPE_GELBOORU = "gelbooru"
+        const val BOORU_CONFIG_TYPE_SANKAKU = "sankaku"
         const val BOORU_CONFIG_SCHEME_KEY = "booru_config_scheme"
         const val BOORU_CONFIG_SCHEME_HTTP = "http"
         const val BOORU_CONFIG_SCHEME_HTTPS = "https"
@@ -68,6 +69,12 @@ class BooruConfigFragment : BasePreferenceFragment(),
                     BOORU_CONFIG_TYPE_DANBOORU_ONE
                 }
                 Constants.TYPE_GELBOORU -> BOORU_CONFIG_TYPE_GELBOORU
+                Constants.TYPE_SANKAKU -> {
+                    if (booru.hash_salt.isNotBlank()) {
+                        hashSalt = booru.hash_salt
+                    }
+                    BOORU_CONFIG_TYPE_SANKAKU
+                }
                 else -> throw IllegalArgumentException("unknown booru type: ${booru.type}")
             }
             app.sp.edit().apply {
@@ -90,10 +97,11 @@ class BooruConfigFragment : BasePreferenceFragment(),
         }
         private fun getTypeInt(sp: SharedPreferences): Int {
             return when (sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
+                BOORU_CONFIG_TYPE_DANBOORU -> Constants.TYPE_DANBOORU
                 BOORU_CONFIG_TYPE_MOEBOORU -> Constants.TYPE_MOEBOORU
                 BOORU_CONFIG_TYPE_DANBOORU_ONE -> Constants.TYPE_DANBOORU_ONE
                 BOORU_CONFIG_TYPE_GELBOORU -> Constants.TYPE_GELBOORU
-                else -> Constants.TYPE_DANBOORU
+                else -> Constants.TYPE_SANKAKU
             }
         }
         private fun getScheme(sp: SharedPreferences): String {
@@ -144,7 +152,8 @@ class BooruConfigFragment : BasePreferenceFragment(),
                     hashSaltPreferences.isVisible = false
                 }
                 BOORU_CONFIG_TYPE_MOEBOORU,
-                BOORU_CONFIG_TYPE_DANBOORU_ONE-> {
+                BOORU_CONFIG_TYPE_DANBOORU_ONE,
+                BOORU_CONFIG_TYPE_SANKAKU -> {
                     hashSaltPreferences.isVisible = true
                 }
             }

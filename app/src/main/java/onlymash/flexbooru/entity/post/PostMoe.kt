@@ -54,7 +54,7 @@ data class PostMoe(
     val width: Int,
     val height: Int,
     val is_held: Boolean
-) : BasePost() {
+) : PostBase() {
 
     override fun getPostId(): Int = id
 

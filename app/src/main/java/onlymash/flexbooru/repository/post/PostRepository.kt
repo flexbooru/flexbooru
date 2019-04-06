@@ -15,11 +15,8 @@
 
 package onlymash.flexbooru.repository.post
 
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.entity.post.PostGel
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 
 interface PostRepository {
@@ -31,4 +28,6 @@ interface PostRepository {
     fun getMoePosts(search: Search): Listing<PostMoe>
 
     fun getGelPosts(search: Search): Listing<PostGel>
+
+    fun getSankakuPosts(search: Search): Listing<PostSankaku>
 }

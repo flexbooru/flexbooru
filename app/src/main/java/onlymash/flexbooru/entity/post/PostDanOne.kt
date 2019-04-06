@@ -47,7 +47,7 @@ data class PostDanOne(
     val preview_url: String,
     val file_size: Int,
     val created_at: DanOneDate
-) : BasePost() {
+) : PostBase() {
 
     override fun getPostId(): Int = id
 

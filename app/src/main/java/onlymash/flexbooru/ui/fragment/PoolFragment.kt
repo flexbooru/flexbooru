@@ -35,7 +35,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.pool.BasePool
+import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepository
@@ -92,6 +92,18 @@ class PoolFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_SANKAKU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_SANKAKU)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> Bundle().apply {
                         putInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
                     }
@@ -120,6 +132,7 @@ class PoolFragment : ListFragment() {
                     Constants.TYPE_DANBOORU -> poolViewModel.refreshDan()
                     Constants.TYPE_MOEBOORU -> poolViewModel.refreshMoe()
                     Constants.TYPE_DANBOORU_ONE -> poolViewModel.refreshDanOne()
+                    Constants.TYPE_SANKAKU -> poolViewModel.refreshSankaku()
                 }
             }
         }
@@ -128,10 +141,11 @@ class PoolFragment : ListFragment() {
     private lateinit var poolAdapter: PoolAdapter
 
     private val itemListener = object : PoolViewHolder.ItemListener {
-        override fun onClickUserAvatar(id: Int, name: String?) {
+        override fun onClickUserAvatar(id: Int, name: String?, avatar: String?) {
             startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
                 putExtra(AccountActivity.USER_ID_KEY, id)
                 putExtra(AccountActivity.USER_NAME_KEY, name)
+                putExtra(AccountActivity.USER_AVATAR_KEY, avatar)
             })
         }
 
@@ -167,6 +181,12 @@ class PoolFragment : ListFragment() {
                         refreshDanOne()
                     }
                 }
+                Constants.TYPE_SANKAKU -> {
+                    poolViewModel.apply {
+                        show(search)
+                        refreshSankaku()
+                    }
+                }
             }
         }
         override fun onUpdate(user: User) {
@@ -198,6 +218,14 @@ class PoolFragment : ListFragment() {
                 poolViewModel.apply {
                     show(search)
                     refreshDanOne()
+                }
+            }
+            Constants.TYPE_SANKAKU -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                poolViewModel.apply {
+                    show(search)
+                    refreshSankaku()
                 }
             }
         }
@@ -245,6 +273,7 @@ class PoolFragment : ListFragment() {
                     Constants.TYPE_DANBOORU -> poolViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> poolViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> poolViewModel.retryDanOne()
+                    Constants.TYPE_SANKAKU -> poolViewModel.retrySankaku()
                 }
             }
         )
@@ -256,7 +285,7 @@ class PoolFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> {
                 poolViewModel.poolsDan.observe(this, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
-                    poolAdapter.submitList(pools as PagedList<BasePool>)
+                    poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
                 poolViewModel.networkStateDan.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
@@ -266,7 +295,7 @@ class PoolFragment : ListFragment() {
             Constants.TYPE_MOEBOORU -> {
                 poolViewModel.poolsMoe.observe(this, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
-                    poolAdapter.submitList(pools as PagedList<BasePool>)
+                    poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
                 poolViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
@@ -276,12 +305,22 @@ class PoolFragment : ListFragment() {
             Constants.TYPE_DANBOORU_ONE -> {
                 poolViewModel.poolsDanOne.observe(this, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
-                    poolAdapter.submitList(pools as PagedList<BasePool>)
+                    poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
                 poolViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
+            }
+            Constants.TYPE_SANKAKU -> {
+                poolViewModel.poolsSankaku.observe(this, Observer { pools ->
+                    @Suppress("UNCHECKED_CAST")
+                    poolAdapter.submitList(pools as PagedList<PoolBase>)
+                })
+                poolViewModel.networkStateSankaku.observe(this, Observer { networkState ->
+                    poolAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshSankaku()
             }
         }
         poolViewModel.show(search = search)
@@ -314,6 +353,15 @@ class PoolFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { poolViewModel.refreshMoe() }
+    }
+
+    private fun initSwipeToRefreshSankaku() {
+        poolViewModel.refreshStateSankaku.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { poolViewModel.refreshSankaku() }
     }
 
     @Suppress("UNCHECKED_CAST")

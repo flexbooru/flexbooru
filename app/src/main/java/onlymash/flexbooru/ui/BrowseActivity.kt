@@ -117,6 +117,8 @@ class BrowseActivity : AppCompatActivity() {
     private var postsGelFav: MutableList<PostGel>? = null
     private var postsDanOne: MutableList<PostDanOne>? = null
     private var postsDanOneFav: MutableList<PostDanOne>? = null
+    private var postsSankaku: MutableList<PostSankaku>? = null
+    private var postsSankakuFav: MutableList<PostSankaku>? = null
 
     private lateinit var booru: Booru
     private var pageType = Constants.PAGE_TYPE_POST
@@ -127,33 +129,35 @@ class BrowseActivity : AppCompatActivity() {
     private var canTransition = true
     private val postLoader by lazy { ServiceLocator.instance().getPostLoader() }
 
+    @Suppress("UNCHECKED_CAST")
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
         override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
             postsDan = posts
-            @Suppress("UNCHECKED_CAST")
-            initItemsLoaded(posts as MutableList<BasePost>)
+            initItemsLoaded(posts as MutableList<PostBase>)
         }
 
         override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
             postsMoe = posts
-            @Suppress("UNCHECKED_CAST")
-            initItemsLoaded(posts as MutableList<BasePost>)
+            initItemsLoaded(posts as MutableList<PostBase>)
         }
 
         override fun onDanOneItemsLoaded(posts: MutableList<PostDanOne>) {
             postsDanOne = posts
-            @Suppress("UNCHECKED_CAST")
-            initItemsLoaded(posts as MutableList<BasePost>)
+            initItemsLoaded(posts as MutableList<PostBase>)
         }
 
         override fun onGelItemsLoaded(posts: MutableList<PostGel>) {
             postsGel = posts
-            @Suppress("UNCHECKED_CAST")
-            initItemsLoaded(posts as MutableList<BasePost>)
+            initItemsLoaded(posts as MutableList<PostBase>)
+        }
+
+        override fun onSankakuItemsLoaded(posts: MutableList<PostSankaku>) {
+            postsSankaku = posts
+            initItemsLoaded(posts as MutableList<PostBase>)
         }
     }
 
-    private fun initItemsLoaded(posts: MutableList<BasePost>) {
+    private fun initItemsLoaded(posts: MutableList<PostBase>) {
         var url = ""
         var position = 0
         if (startId >= 0) {
@@ -227,6 +231,12 @@ class BrowseActivity : AppCompatActivity() {
                 }
                 Constants.TYPE_GELBOORU -> {
                     postsGel?.get(position)?.let {
+                        url = it.getSampleUrl()
+                        id = it.id
+                    }
+                }
+                Constants.TYPE_SANKAKU -> {
+                    postsSankaku?.get(position)?.let {
                         url = it.getSampleUrl()
                         id = it.id
                     }
@@ -346,6 +356,15 @@ class BrowseActivity : AppCompatActivity() {
                     }
                 }
             }
+            Constants.TYPE_SANKAKU -> {
+                val id = postsSankaku?.get(position)?.id ?: return null
+                postsSankakuFav?.forEach {
+                    if (it.id == id) {
+                        post = it
+                        return@forEach
+                    }
+                }
+            }
         }
         return post
     }
@@ -356,6 +375,7 @@ class BrowseActivity : AppCompatActivity() {
             Constants.TYPE_MOEBOORU -> postsMoe?.get(pager_browse.currentItem)
             Constants.TYPE_DANBOORU_ONE -> postsDanOne?.get(pager_browse.currentItem)
             Constants.TYPE_GELBOORU -> postsGel?.get(pager_browse.currentItem)
+            Constants.TYPE_SANKAKU -> postsSankaku?.get(pager_browse.currentItem)
             else -> null
         }
     }
@@ -363,10 +383,7 @@ class BrowseActivity : AppCompatActivity() {
     private fun getCurrentPostId(): Int {
         val post = getCurrentPost()
         return when (post) {
-            is PostDan -> post.id
-            is PostMoe -> post.id
-            is PostDanOne -> post.id
-            is PostGel -> post.id
+            is PostBase -> post.getPostId()
             else -> -1
         }
     }
@@ -454,6 +471,21 @@ class BrowseActivity : AppCompatActivity() {
                             Constants.TYPE_GELBOORU -> {
 
                             }
+                            Constants.TYPE_SANKAKU -> {
+                                val post = postsSankaku?.get(pager_browse.currentItem) ?: return@let
+                                val postFav = getCurrentPostFav()
+                                val vote = Vote(
+                                    scheme = booru.scheme,
+                                    host = booru.host,
+                                    post_id = post.id,
+                                    username = user.name,
+                                    auth_key = user.password_hash ?: return@let)
+                                if (postFav is PostSankaku) {
+                                    voteRepository.removeSankakuFav(vote, postFav)
+                                } else {
+                                    voteRepository.addSankakuFav(vote, post)
+                                }
+                            }
                         }
                     } ?: startAccountConfigAndFinish()
                 }
@@ -533,6 +565,7 @@ class BrowseActivity : AppCompatActivity() {
             is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             is PostGel -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
+            is PostSankaku -> String.format("%s//%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
             else -> ""
         }
         if (url.isNotEmpty()) {
@@ -574,6 +607,12 @@ class BrowseActivity : AppCompatActivity() {
                     setCurrentVoteItemIcon()
                 })
             }
+            Constants.TYPE_SANKAKU -> {
+                favPostViewModel.postsSankaku.observe(this, Observer { posts ->
+                    postsSankakuFav = posts
+                    setCurrentVoteItemIcon()
+                })
+            }
         }
     }
 
@@ -609,6 +648,19 @@ class BrowseActivity : AppCompatActivity() {
             is PostDanOne -> {
                 var exist = false
                 postsDanOneFav?.forEach {
+                    if (post.id == it.id) {
+                        setVoteItemIcon(true)
+                        exist = true
+                        return@forEach
+                    }
+                }
+                if (!exist) {
+                    setVoteItemIcon(false)
+                }
+            }
+            is PostSankaku -> {
+                var exist = false
+                postsSankakuFav?.forEach {
                     if (post.id == it.id) {
                         setVoteItemIcon(true)
                         exist = true
@@ -666,11 +718,18 @@ class BrowseActivity : AppCompatActivity() {
                     else -> postsDanOne?.get(position)?.getOriginUrl()
                 }
             }
-            else -> {
+            Constants.TYPE_GELBOORU -> {
                 when (Settings.instance().browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsGel?.get(position)?.getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsGel?.get(position)?.getLargerUrl()
                     else -> postsGel?.get(position)?.getOriginUrl()
+                }
+            }
+            else -> {
+                when (Settings.instance().browseSize) {
+                    Settings.POST_SIZE_SAMPLE -> postsSankaku?.get(position)?.getSampleUrl()
+                    Settings.POST_SIZE_LARGER -> postsSankaku?.get(position)?.getLargerUrl()
+                    else -> postsSankaku?.get(position)?.getOriginUrl()
                 }
             }
         }
@@ -752,6 +811,11 @@ class BrowseActivity : AppCompatActivity() {
             }
             Constants.TYPE_GELBOORU -> {
                 postsGel?.let {
+                    downloadPost(it[position])
+                }
+            }
+            Constants.TYPE_SANKAKU -> {
+                postsSankaku?.let {
                     downloadPost(it[position])
                 }
             }

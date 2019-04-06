@@ -131,6 +131,20 @@ class PostFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_SANKAKU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_SANKAKU)
+                        putString(Constants.KEYWORD_KEY, keyword)
+                        if (user != null) {
+                            putInt(Constants.USER_ID_KEY, user.id)
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
@@ -199,14 +213,14 @@ class PostFragment : ListFragment() {
     }
 
     private val itemListener: PostViewHolder.ItemListener = object : PostViewHolder.ItemListener {
-        override fun onClickItem(post: BasePost?, view: View) {
+        override fun onClickItem(post: PostBase?, view: View) {
             if (post == null) return
             currentPostId = post.getPostId()
             setSharedElement()
             BrowseActivity.startActivity(requireActivity(), view, post.getPostId(), post.keyword, Constants.PAGE_TYPE_POST)
         }
 
-        override fun onLongClickItem(post: BasePost?) {
+        override fun onLongClickItem(post: PostBase?) {
             if (post == null) return
             val id = post.getPostId()
             val context = requireContext()
@@ -253,6 +267,7 @@ class PostFragment : ListFragment() {
                                     is PostDan -> voteRepo.addDanFav(vote, post)
                                     is PostMoe -> voteRepo.voteMoePost(vote)
                                     is PostDanOne -> voteRepo.addDanOneFav(vote, post)
+                                    is PostSankaku -> voteRepo.addSankakuFav(vote, post)
                                 }
                             }
                         }
@@ -320,6 +335,12 @@ class PostFragment : ListFragment() {
                         refreshGel()
                     }
                 }
+                Constants.TYPE_SANKAKU -> {
+                    postViewModel.apply {
+                        show(search)
+                        refreshSankaku()
+                    }
+                }
             }
         }
         override fun onUpdate(user: User) {
@@ -361,6 +382,14 @@ class PostFragment : ListFragment() {
                     refreshGel()
                 }
             }
+            Constants.TYPE_SANKAKU -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                postViewModel.apply {
+                    show(search)
+                    refreshSankaku()
+                }
+            }
         }
     }
 
@@ -396,7 +425,8 @@ class PostFragment : ListFragment() {
                             Constants.TYPE_DANBOORU,
                             Constants.TYPE_GELBOORU -> user?.api_key ?: ""
                             Constants.TYPE_MOEBOORU,
-                            Constants.TYPE_DANBOORU_ONE -> user?.password_hash ?: ""
+                            Constants.TYPE_DANBOORU_ONE,
+                            Constants.TYPE_SANKAKU -> user?.password_hash ?: ""
                             else -> ""
                         },
                         limit = Settings.instance().pageLimit
@@ -457,6 +487,7 @@ class PostFragment : ListFragment() {
                     Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()
                     Constants.TYPE_GELBOORU -> postViewModel.retryGel()
+                    Constants.TYPE_SANKAKU -> postViewModel.retrySankaku()
                 }
             })
         list.apply {
@@ -472,7 +503,11 @@ class PostFragment : ListFragment() {
                 }
             })
         }
-        val orders = resources.getStringArray(R.array.filter_order)
+        val orders =
+            if (type == Constants.TYPE_SANKAKU)
+                resources.getStringArray(R.array.filter_order_sankaku)
+            else
+                resources.getStringArray(R.array.filter_order)
         val ratings = resources.getStringArray(R.array.filter_rating)
         tagFilterAdapter = TagFilterAdapter(
             orders = orders,
@@ -510,7 +545,7 @@ class PostFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> {
                 postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 postViewModel.networkStateDan.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -520,7 +555,7 @@ class PostFragment : ListFragment() {
             Constants.TYPE_MOEBOORU -> {
                 postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 postViewModel.networkStateMoe.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -530,7 +565,7 @@ class PostFragment : ListFragment() {
             Constants.TYPE_DANBOORU_ONE -> {
                 postViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 postViewModel.networkStateDanOne.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -540,12 +575,22 @@ class PostFragment : ListFragment() {
             Constants.TYPE_GELBOORU -> {
                 postViewModel.postsGel.observe(this, Observer<PagedList<PostGel>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 postViewModel.networkStateGel.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshGel()
+            }
+            Constants.TYPE_SANKAKU -> {
+                postViewModel.postsSankaku.observe(this, Observer<PagedList<PostSankaku>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<PostBase>)
+                })
+                postViewModel.networkStateSankaku.observe(this, Observer<NetworkState> { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshSankaku()
             }
         }
         postViewModel.show(search)
@@ -586,6 +631,13 @@ class PostFragment : ListFragment() {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshGel() }
+    }
+
+    private fun initSwipeToRefreshSankaku() {
+        postViewModel.refreshStateSankaku.observe(this, Observer<NetworkState> {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+        swipe_refresh.setOnRefreshListener { postViewModel.refreshSankaku() }
     }
 
     @Suppress("UNCHECKED_CAST")

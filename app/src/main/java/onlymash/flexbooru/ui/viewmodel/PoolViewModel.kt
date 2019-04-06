@@ -33,6 +33,9 @@ class PoolViewModel(private val repo: PoolRepository) : ViewModel() {
     private val moeRepoResult = map(searchData) {
         repo.getMoePools(it)
     }
+    private val sankakuRepoResult = map(searchData) {
+        repo.getSankakuPools(it)
+    }
     val poolsDan = Transformations.switchMap(danRepoResult) { it.pagedList }
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }
@@ -44,6 +47,10 @@ class PoolViewModel(private val repo: PoolRepository) : ViewModel() {
     val poolsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }
     val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }
     val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }
+
+    val poolsSankaku = Transformations.switchMap(sankakuRepoResult) { it.pagedList }
+    val networkStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.networkState }
+    val refreshStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.refreshState }
 
     fun show(search: Search): Boolean {
         if (searchData.value == search) {
@@ -75,5 +82,13 @@ class PoolViewModel(private val repo: PoolRepository) : ViewModel() {
 
     fun retryMoe() {
         moeRepoResult.value?.retry?.invoke()
+    }
+
+    fun retrySankaku() {
+        sankakuRepoResult.value?.retry?.invoke()
+    }
+
+    fun refreshSankaku() {
+        sankakuRepoResult.value?.refresh?.invoke()
     }
 }

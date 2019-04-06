@@ -18,10 +18,7 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostGel
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.browse.PostLoadedLiveDataListener
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 
@@ -34,6 +31,8 @@ class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel
     val postsMoe: MediatorLiveData<MutableList<PostMoe>> = MediatorLiveData()
 
     val postsGel: MediatorLiveData<MutableList<PostGel>> = MediatorLiveData()
+
+    val postsSankaku: MediatorLiveData<MutableList<PostSankaku>> = MediatorLiveData()
 
     private val postLoadedLiveDataListener = object : PostLoadedLiveDataListener {
         override fun onDanOneItemsLoaded(posts: LiveData<MutableList<PostDanOne>>) {
@@ -54,6 +53,12 @@ class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel
         override fun onGelItemsLoaded(posts: LiveData<MutableList<PostGel>>) {
             postsGel.addSource(posts) {
                 postsGel.postValue(it)
+            }
+        }
+
+        override fun onSankakuItemsLoaded(posts: LiveData<MutableList<PostSankaku>>) {
+            postsSankaku.addSource(posts) {
+                postsSankaku.postValue(it)
             }
         }
     }

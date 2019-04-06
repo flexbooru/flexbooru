@@ -29,7 +29,7 @@ data class PoolMoe(
     val is_public: Boolean,
     val post_count: Int,
     val description: String
-) : BasePool() {
+) : PoolBase() {
     override fun getPoolId(): Int = id
     override fun getPoolName(): String = name
     override fun getPostCount(): Int = post_count

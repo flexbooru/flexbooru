@@ -38,6 +38,7 @@ class PostLoader(private val db: FlexbooruDatabase,
             Constants.TYPE_MOEBOORU -> loadMoePosts(host, keyword)
             Constants.TYPE_DANBOORU_ONE -> loadDanOnePosts(host, keyword)
             Constants.TYPE_GELBOORU -> loadGelPosts(host, keyword)
+            Constants.TYPE_SANKAKU -> loadSankakuPosts(host, keyword)
         }
     }
 
@@ -47,6 +48,7 @@ class PostLoader(private val db: FlexbooruDatabase,
             Constants.TYPE_MOEBOORU -> loadMoePostsLiveData(host, keyword)
             Constants.TYPE_DANBOORU_ONE -> loadDanOnePostsLiveData(host, keyword)
             Constants.TYPE_GELBOORU -> loadGelPostsLiveData(host, keyword)
+            Constants.TYPE_SANKAKU -> loadSankakuPostsLiveData(host, keyword)
         }
     }
 
@@ -95,6 +97,15 @@ class PostLoader(private val db: FlexbooruDatabase,
         }
     }
 
+    private fun loadSankakuPosts(host: String, keyword: String) {
+        ioExecutor.execute {
+            val posts = db.postSankakuDao().getPostsRaw(host, keyword)
+            uiHandler.post {
+                postLoadedListener?.onSankakuItemsLoaded(posts)
+            }
+        }
+    }
+
     private fun loadGelPostsLiveData(host: String, keyword: String) {
         ioExecutor.execute {
             val posts = db.postGelDao().getPostsLiveData(host, keyword)
@@ -136,6 +147,15 @@ class PostLoader(private val db: FlexbooruDatabase,
             val posts = db.postMoeDao().getPostsLiveData(host, keyword)
             uiHandler.post {
                 postLoadedLiveDataListener?.onMoeItemsLoaded(posts)
+            }
+        }
+    }
+
+    private fun loadSankakuPostsLiveData(host: String, keyword: String) {
+        ioExecutor.execute {
+            val posts = db.postSankakuDao().getPostsLiveData(host, keyword)
+            uiHandler.post {
+                postLoadedLiveDataListener?.onSankakuItemsLoaded(posts)
             }
         }
     }

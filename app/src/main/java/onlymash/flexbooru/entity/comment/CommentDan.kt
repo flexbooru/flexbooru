@@ -36,7 +36,7 @@ data class CommentDan(
     val is_sticky: Boolean,
     val creator_name: String,
     val updater_name: String
-) : BaseComment() {
+) : CommentBase() {
     override fun getPostId(): Int = post_id
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body

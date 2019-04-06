@@ -31,7 +31,7 @@ class CommentAdapter(private val glide: GlideRequests,
                      private val user: User?,
                      private val listener: CommentViewHolder.Listener,
                      private val retryCallback: () -> Unit
-) : PagedListAdapter<BaseComment, RecyclerView.ViewHolder>(COMMENT_COMPARATOR) {
+) : PagedListAdapter<CommentBase, RecyclerView.ViewHolder>(COMMENT_COMPARATOR) {
 
 
     private var networkState: NetworkState? = null
@@ -79,10 +79,10 @@ class CommentAdapter(private val glide: GlideRequests,
     }
 
     companion object {
-        val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<BaseComment>() {
-            override fun areContentsTheSame(oldItem: BaseComment, newItem: BaseComment): Boolean =
+        val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<CommentBase>() {
+            override fun areContentsTheSame(oldItem: CommentBase, newItem: CommentBase): Boolean =
                 oldItem.getCommentId() == newItem.getCommentId() && oldItem.getCommentBody() == newItem.getCommentBody()
-            override fun areItemsTheSame(oldItem: BaseComment, newItem: BaseComment): Boolean =
+            override fun areItemsTheSame(oldItem: CommentBase, newItem: CommentBase): Boolean =
                 oldItem.getCommentId() == newItem.getCommentId()
         }
     }

@@ -18,7 +18,7 @@ package onlymash.flexbooru.entity.post
 import androidx.room.PrimaryKey
 import com.crashlytics.android.Crashlytics
 
-abstract class BasePost {
+abstract class PostBase {
     @PrimaryKey(autoGenerate = true)
     var uid: Long = 0L
     // to be consistent w/ changing backend order, we need to keep a data like this

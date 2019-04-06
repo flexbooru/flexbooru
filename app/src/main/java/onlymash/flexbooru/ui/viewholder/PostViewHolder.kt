@@ -47,7 +47,7 @@ class PostViewHolder(itemView: View,
     private val postId: TextView = itemView.findViewById(R.id.post_id)
     private val postSize: TextView = itemView.findViewById(R.id.post_size)
 
-    private var post: BasePost? = null
+    private var post: PostBase? = null
 
     private var itemListener: ItemListener? = null
 
@@ -64,7 +64,7 @@ class PostViewHolder(itemView: View,
         }
     }
 
-    fun bind(post: BasePost?, pageType: Int) {
+    fun bind(post: PostBase?, pageType: Int) {
         if (post == null) return
         this.post = post
         previewCard.tag = post.getPostId()
@@ -104,7 +104,7 @@ class PostViewHolder(itemView: View,
     }
 
     interface ItemListener {
-        fun onClickItem(post: BasePost?, view: View)
-        fun onLongClickItem(post: BasePost?)
+        fun onClickItem(post: PostBase?, view: View)
+        fun onLongClickItem(post: PostBase?)
     }
 }

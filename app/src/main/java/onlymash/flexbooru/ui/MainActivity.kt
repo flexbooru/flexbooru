@@ -165,10 +165,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         if (size > 0) {
             header.removeProfile(profileSettingDrawerItem)
             boorus.forEachIndexed { index, booru ->
+                var host = booru.host
+                if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
                 header.addProfile(
                     ProfileDrawerItem()
                         .withName(booru.name)
-                        .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, booru.host)))
+                        .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
                         .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                         .withIdentifier(booru.uid), index)
             }
@@ -229,10 +231,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         override fun onAdd(booru: Booru) {
             header.removeProfile(profileSettingDrawerItem)
             boorus.add(booru)
+            var host = booru.host
+            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
             header.addProfile(
                 ProfileDrawerItem()
                     .withName(booru.name)
-                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, booru.host)))
+                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
                     .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                     .withIdentifier(booru.uid), boorus.size - 1)
             header.addProfile(profileSettingDrawerItem, boorus.size)
@@ -274,10 +278,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     return@forEach
                 }
             }
+            var host = booru.host
+            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
             header.updateProfile(
                 ProfileDrawerItem()
                     .withName(booru.name)
-                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, booru.host)))
+                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
                     .withEmail(String.format("%s://%s", booru.scheme, booru.host))
                     .withIdentifier(booru.uid))
         }

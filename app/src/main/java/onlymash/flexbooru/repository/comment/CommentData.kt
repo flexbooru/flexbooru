@@ -20,13 +20,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.MoeUrlHelper
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.GelbooruApi
-import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
+import onlymash.flexbooru.api.url.SankakuUrlHelper
 import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.repository.Listing
 import retrofit2.Call
@@ -38,6 +36,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
                   private val danbooruOneApi: DanbooruOneApi,
                   private val moebooruApi: MoebooruApi,
                   private val gelbooruApi: GelbooruApi,
+                  private val sankakuApi: SankakuApi,
                   private val networkExecutor: Executor
 ) : CommentRepository {
     companion object {
@@ -188,7 +187,7 @@ class CommentData(private val danbooruApi: DanbooruApi,
         )
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = commentAction.limit,
+                pageSize = 25,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
@@ -267,5 +266,72 @@ class CommentData(private val danbooruApi: DanbooruApi,
             refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
             refreshState = refreshState
         )
+    }
+
+    @MainThread
+    override fun getSankakuComments(commentAction: CommentAction): Listing<CommentSankaku> {
+        val sourceFactory = CommentSankakuDataSourceFactory(
+            sankakuApi = sankakuApi,
+            commentAction = commentAction,
+            retryExecutor = networkExecutor
+        )
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = 25,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState =
+            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun createSankakuComment(commentAction: CommentAction) {
+        sankakuApi.createComment(
+            url = SankakuUrlHelper.getCreateCommentUrl(commentAction),
+            body = commentAction.body,
+            anonymous = commentAction.anonymous,
+            username = commentAction.username,
+            passwordHash = commentAction.auth_key,
+            postId = commentAction.post_id).enqueue(object : retrofit2.Callback<CommentResponse> {
+            override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                commentState.postValue(CommentState.error(t.message ?: "unknown error"))
+            }
+            override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                if (response.isSuccessful) {
+                    commentState.postValue(CommentState.SUCCESS)
+                } else {
+                    commentState.postValue(CommentState.error("error code: ${response.code()}"))
+                }
+            }
+        })
+    }
+
+    @MainThread
+    override fun destroySankakuComment(commentAction: CommentAction) {
+        sankakuApi.destroyComment(
+            url = SankakuUrlHelper.getDestroyCommentUrl(commentAction),
+            commentId = commentAction.comment_id,
+            username = commentAction.username,
+            passwordHash = commentAction.auth_key)
+            .enqueue(object : retrofit2.Callback<CommentResponse> {
+                override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                    commentState.postValue(CommentState.error(t.message ?: "unknown error"))
+                }
+                override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                    if (response.isSuccessful) {
+                        commentState.postValue(CommentState.SUCCESS)
+                    } else {
+                        commentState.postValue(CommentState.error("error code: ${response.code()}"))
+                    }
+                }
+            })
     }
 }

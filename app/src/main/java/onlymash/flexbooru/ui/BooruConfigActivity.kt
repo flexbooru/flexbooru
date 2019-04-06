@@ -62,9 +62,10 @@ class BooruConfigActivity : BaseActivity() {
                     when {
                         booru.name.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_name_cant_empty, Snackbar.LENGTH_LONG).show()
                         booru.host.isBlank() -> Snackbar.make(toolbar, R.string.booru_config_host_cant_empty, Snackbar.LENGTH_LONG).show()
-                        (booru.type == Constants.TYPE_MOEBOORU ||
-                                booru.type == Constants.TYPE_DANBOORU_ONE) &&
-                                booru.hash_salt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
+                        (booru.type == Constants.TYPE_MOEBOORU
+                                || booru.type == Constants.TYPE_DANBOORU_ONE
+                                || booru.type == Constants.TYPE_SANKAKU)
+                                && booru.hash_salt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
                         booru.uid == -1L -> {
                             BooruManager.createBooru(booru)
                             val intent = Intent().apply {

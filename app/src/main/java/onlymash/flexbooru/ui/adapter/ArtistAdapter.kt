@@ -18,18 +18,18 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.artist.BaseArtist
+import onlymash.flexbooru.entity.artist.ArtistBase
 import onlymash.flexbooru.ui.viewholder.ArtistViewHolder
 
 class ArtistAdapter(private val listener: ArtistViewHolder.ItemListener,
                     retryCallback: () -> Unit
-) : BaseStatePagedListAdapter<BaseArtist, RecyclerView.ViewHolder>(ARTIST_COMPARATOR, retryCallback) {
+) : BaseStatePagedListAdapter<ArtistBase, RecyclerView.ViewHolder>(ARTIST_COMPARATOR, retryCallback) {
 
     companion object {
-        val ARTIST_COMPARATOR = object : DiffUtil.ItemCallback<BaseArtist>() {
-            override fun areContentsTheSame(oldItem: BaseArtist, newItem: BaseArtist): Boolean =
+        val ARTIST_COMPARATOR = object : DiffUtil.ItemCallback<ArtistBase>() {
+            override fun areContentsTheSame(oldItem: ArtistBase, newItem: ArtistBase): Boolean =
                 oldItem.getArtistId() == newItem.getArtistId() && oldItem.getArtistName() == newItem.getArtistName()
-            override fun areItemsTheSame(oldItem: BaseArtist, newItem: BaseArtist): Boolean {
+            override fun areItemsTheSame(oldItem: ArtistBase, newItem: ArtistBase): Boolean {
                 return oldItem.getArtistId() == newItem.getArtistId()
             }
         }

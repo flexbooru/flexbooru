@@ -35,6 +35,7 @@ object Constants {
     const val TYPE_MOEBOORU = 1
     const val TYPE_DANBOORU_ONE = 2
     const val TYPE_GELBOORU = 3
+    const val TYPE_SANKAKU = 4
     const val TYPE_UNKNOWN = -1
 
     const val MAX_ITEM_ASPECT_RATIO = 1.3333f

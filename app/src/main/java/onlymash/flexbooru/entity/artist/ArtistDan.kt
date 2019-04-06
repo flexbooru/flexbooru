@@ -25,7 +25,7 @@ data class ArtistDan(
     val group_name: String,
     val is_banned: Boolean,
     val urls: MutableList<ArtistUrlDan>?
-) : BaseArtist() {
+) : ArtistBase() {
     override fun getArtistId(): Int = id
     override fun getArtistName(): String  = name
     override fun getArtistUrls(): MutableList<String> {

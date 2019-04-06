@@ -52,7 +52,7 @@ class CommentViewHolder(itemView: View,
     private val commentView: CommentView = itemView.findViewById(R.id.comment_view)
     private val menuView: ActionMenuView = itemView.findViewById(R.id.menu_view)
 
-    private var comment: BaseComment? = null
+    private var comment: CommentBase? = null
 
     init {
         avatar.setOnClickListener {
@@ -62,6 +62,9 @@ class CommentViewHolder(itemView: View,
                     context.startActivity(Intent(context, AccountActivity::class.java).apply {
                         putExtra(AccountActivity.USER_ID_KEY, it.getCreatorId())
                         putExtra(AccountActivity.USER_NAME_KEY, it.getCreatorName())
+                        if (it is CommentSankaku) {
+                            putExtra(AccountActivity.USER_AVATAR_KEY, it.getAvatarUrl())
+                        }
                     })
                 }
             }
@@ -94,7 +97,7 @@ class CommentViewHolder(itemView: View,
             true
         }
     }
-    fun bind(data: BaseComment?) {
+    fun bind(data: CommentBase?) {
         comment = data ?: return
         userName.text = data.getCreatorName()
         postIdView.text = String.format("Post %d", data.getPostId())
@@ -112,6 +115,10 @@ class CommentViewHolder(itemView: View,
         }
         if (data is CommentMoe) {
             glide.load(String.format(itemView.resources.getString(R.string.account_user_avatars), data.scheme, data.host, data.creator_id))
+                .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
+                .into(avatar)
+        } else if (data is CommentSankaku) {
+            glide.load(data.getAvatarUrl())
                 .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                 .into(avatar)
         }

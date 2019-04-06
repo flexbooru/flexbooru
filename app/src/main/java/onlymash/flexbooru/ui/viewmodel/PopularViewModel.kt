@@ -33,6 +33,9 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     private val moeRepoResult = map(popularData) { popular ->
         repo.getMoePopular(popular)
     }
+    private val sankakuRepoResult = map(popularData) {
+        repo.getSankakuPopular(it)
+    }
     val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }
     val refreshStateDan = Transformations.switchMap(danRepoResult) { it.refreshState }
@@ -44,6 +47,10 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
     val postsMoe = Transformations.switchMap(moeRepoResult) { it.pagedList }
     val networkStateMoe = Transformations.switchMap(moeRepoResult) { it.networkState }
     val refreshStateMoe = Transformations.switchMap(moeRepoResult) { it.refreshState }
+
+    val postsSankaku = Transformations.switchMap(sankakuRepoResult) { it.pagedList }
+    val networkStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.networkState }
+    val refreshStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.refreshState }
 
     fun show(popular: SearchPopular): Boolean {
         if (popularData.value == popular) {
@@ -75,5 +82,13 @@ class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
 
     fun retryMoe() {
         moeRepoResult.value?.retry?.invoke()
+    }
+
+    fun refreshSankaku() {
+        sankakuRepoResult.value?.refresh?.invoke()
+    }
+
+    fun retrySankaku() {
+        sankakuRepoResult.value?.retry?.invoke()
     }
 }

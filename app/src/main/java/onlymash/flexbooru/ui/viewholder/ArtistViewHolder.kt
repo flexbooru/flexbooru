@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.artist.BaseArtist
+import onlymash.flexbooru.entity.artist.ArtistBase
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.toggleArrow
 import onlymash.flexbooru.widget.LinkTransformationMethod
@@ -46,7 +46,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val urlsContainer: LinearLayout = itemView.findViewById(R.id.urls_container)
     private val artistUrls: TextView = itemView.findViewById(R.id.artist_urls)
     private var isShow = false
-    private var artist: BaseArtist? = null
+    private var artist: ArtistBase? = null
 
     init {
         itemView.setOnClickListener {
@@ -82,7 +82,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onClickItem(keyword: String)
     }
 
-    fun bind(data: BaseArtist?) {
+    fun bind(data: ArtistBase?) {
         artist = data
         if (data == null) return
         artistName.text = data.getArtistName()

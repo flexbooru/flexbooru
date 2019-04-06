@@ -29,10 +29,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostGel
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -45,11 +42,13 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         private const val POST_TYPE_KEY = "post_type"
         private const val USER_NAME_KEY = "name"
         private const val USER_ID_KEY = "id"
+        private const val USER_AVATAR_KEY = "avatar"
         private const val DATE_KEY = "date"
         private const val SOURCE_KEY = "source"
         private const val RATING_KEY = "rating"
         private const val SCORE_KEY = "score"
         private const val PARENT_KEY = "parent"
+
         fun create(post: Any?): InfoBottomSheetDialog {
             return InfoBottomSheetDialog().apply {
                 arguments = when (post) {
@@ -92,6 +91,16 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.getPostScore())
                     }
+                    is PostSankaku -> Bundle().apply {
+                        putInt(POST_TYPE_KEY, Constants.TYPE_SANKAKU)
+                        putString(USER_NAME_KEY, post.author.name)
+                        putInt(USER_ID_KEY, post.author.id)
+                        putString(USER_AVATAR_KEY, post.author.avatar)
+                        putString(DATE_KEY, post.getCreatedDate())
+                        putString(SOURCE_KEY, post.source)
+                        putString(RATING_KEY, post.rating)
+                        putInt(SCORE_KEY, post.getPostScore())
+                    }
                     else -> throw IllegalStateException("unknown post type")
                 }
             }
@@ -106,6 +115,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     private var rating = ""
     private var score = -1
     private var parent = -1
+    private var avatar = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +145,16 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 Constants.TYPE_GELBOORU -> {
                     name = getString(USER_NAME_KEY) ?: ""
                     userId = getInt(USER_ID_KEY, -1)
+                    date = getString(DATE_KEY) ?: ""
+                    source = getString(SOURCE_KEY) ?: ""
+                    rating = getString(RATING_KEY) ?: ""
+                    score = getInt(SCORE_KEY, -1)
+                    parent = -1
+                }
+                Constants.TYPE_SANKAKU -> {
+                    name = getString(USER_NAME_KEY) ?: ""
+                    userId = getInt(USER_ID_KEY, -1)
+                    avatar = getString(USER_AVATAR_KEY) ?: ""
                     date = getString(DATE_KEY) ?: ""
                     source = getString(SOURCE_KEY) ?: ""
                     rating = getString(RATING_KEY) ?: ""
@@ -177,6 +197,11 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
                     .into(view.findViewById<CircularImageView>(R.id.user_avatar))
             }
+        } else if (type == Constants.TYPE_SANKAKU && avatar.isNotEmpty()) {
+            GlideApp.with(this)
+                .load(avatar)
+                .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+                .into(view.findViewById<CircularImageView>(R.id.user_avatar))
         }
         view.findViewById<Toolbar>(R.id.toolbar).apply {
             setTitle(R.string.browse_info_title)
@@ -189,6 +214,9 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
                     putExtra(AccountActivity.USER_ID_KEY, userId)
                     putExtra(AccountActivity.USER_NAME_KEY, name)
+                    if (avatar.isNotEmpty()) {
+                        putExtra(AccountActivity.USER_AVATAR_KEY, avatar)
+                    }
                 })
                 dismiss()
             }

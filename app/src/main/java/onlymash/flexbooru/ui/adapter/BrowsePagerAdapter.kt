@@ -40,7 +40,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.entity.post.BasePost
+import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.image.CustomDecoder
 import onlymash.flexbooru.util.image.CustomRegionDecoder
@@ -55,10 +55,10 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val pageType: Int): PagerAdapter() {
 
     private val size = Settings.instance().browseSize
-    private var posts: MutableList<BasePost> = mutableListOf()
+    private var posts: MutableList<PostBase> = mutableListOf()
 
     @Suppress("UNCHECKED_CAST")
-    fun updateData(posts: MutableList<BasePost>) {
+    fun updateData(posts: MutableList<PostBase>) {
         this.posts = posts
         notifyDataSetChanged()
     }

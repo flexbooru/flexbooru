@@ -26,7 +26,7 @@ data class PoolDanOne(
     val updated_at: DanOneDate,
     val id: Int,
     val created_at: DanOneDate
-) : BasePool() {
+) : PoolBase() {
     override fun getPoolId(): Int = id
     override fun getPoolName(): String = name
     override fun getPostCount(): Int = post_count

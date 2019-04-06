@@ -36,6 +36,9 @@ class TagViewModel(private val repo: TagRepository) : ViewModel() {
     private val gelRepoResult = map(searchData) {
         repo.getGelTags(it)
     }
+    private val sankakuRepoResult = map(searchData) {
+        repo.getSankakuTags(it)
+    }
     val tagsDanOne = Transformations.switchMap(danOneRepoResult) { it.pagedList }
     val networkStateDanOne = Transformations.switchMap(danOneRepoResult) { it.networkState }
     val refreshStateDanOne = Transformations.switchMap(danOneRepoResult) { it.refreshState }
@@ -51,6 +54,10 @@ class TagViewModel(private val repo: TagRepository) : ViewModel() {
     val tagsGel = Transformations.switchMap(gelRepoResult) { it.pagedList }
     val networkStateGel = Transformations.switchMap(gelRepoResult) { it.networkState }
     val refreshStateGel = Transformations.switchMap(gelRepoResult) { it.refreshState }
+
+    val tagsSankaku = Transformations.switchMap(sankakuRepoResult) { it.pagedList }
+    val networkStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.networkState }
+    val refreshStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.refreshState }
 
     fun show(search: SearchTag): Boolean {
         if (searchData.value == search) {
@@ -76,6 +83,10 @@ class TagViewModel(private val repo: TagRepository) : ViewModel() {
         gelRepoResult.value?.refresh?.invoke()
     }
 
+    fun refreshSankaku() {
+        sankakuRepoResult.value?.refresh?.invoke()
+    }
+
     fun retryDan() {
         danRepoResult.value?.retry?.invoke()
     }
@@ -90,5 +101,9 @@ class TagViewModel(private val repo: TagRepository) : ViewModel() {
 
     fun retryGel() {
         gelRepoResult.value?.retry?.invoke()
+    }
+
+    fun retrySankaku() {
+        sankakuRepoResult.value?.retry?.invoke()
     }
 }

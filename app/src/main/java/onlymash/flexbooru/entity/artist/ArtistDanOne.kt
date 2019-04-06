@@ -24,7 +24,7 @@ data class ArtistDanOne(
     val urls: MutableList<String>?,
     val group_name: String?,
     val other_name: String?
-) : BaseArtist() {
+) : ArtistBase() {
     override fun getArtistId(): Int = id
     override fun getArtistName(): String  = name
     override fun getArtistUrls(): MutableList<String> = urls ?: mutableListOf()

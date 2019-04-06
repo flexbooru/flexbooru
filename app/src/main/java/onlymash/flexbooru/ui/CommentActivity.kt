@@ -40,7 +40,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.comment.BaseComment
+import onlymash.flexbooru.entity.comment.CommentBase
 import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
@@ -122,6 +122,7 @@ class CommentActivity : AppCompatActivity() {
                         Constants.TYPE_DANBOORU -> commentViewModel.createDanComment(action)
                         Constants.TYPE_MOEBOORU -> commentViewModel.createMoeComment(action)
                         Constants.TYPE_DANBOORU_ONE -> commentViewModel.createDanOneComment(action)
+                        Constants.TYPE_SANKAKU -> commentViewModel.createSankakuComment(action)
                     }
                 }
             }
@@ -136,6 +137,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU -> commentViewModel.deleteDanComment(action)
             Constants.TYPE_MOEBOORU -> commentViewModel.deleteMoeComment(action)
             Constants.TYPE_DANBOORU_ONE -> commentViewModel.deleteDanOneComment(action)
+            Constants.TYPE_SANKAKU -> commentViewModel.deleteSankakuComment(action)
         }
     }
 
@@ -201,7 +203,8 @@ class CommentActivity : AppCompatActivity() {
             when (type) {
                 Constants.TYPE_DANBOORU -> commentAction.query = name
                 Constants.TYPE_MOEBOORU,
-                Constants.TYPE_DANBOORU_ONE -> commentAction.query = "user:$name"
+                Constants.TYPE_DANBOORU_ONE,
+                Constants.TYPE_SANKAKU -> commentAction.query = "user:$name"
             }
             toolbar.subtitle = commentAction.query
         }
@@ -211,6 +214,7 @@ class CommentActivity : AppCompatActivity() {
                 Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
                 Constants.TYPE_DANBOORU_ONE -> commentViewModel.retryDanOne()
                 Constants.TYPE_GELBOORU -> commentViewModel.retryGel()
+                Constants.TYPE_SANKAKU -> commentViewModel.retrySankaku()
             }
         }
         list.apply {
@@ -228,7 +232,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU -> {
                 commentViewModel.commentsDan.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<BaseComment>)
+                    commentAdapter.submitList(it as PagedList<CommentBase>)
                 })
                 commentViewModel.networkStateDan.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
@@ -238,7 +242,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_MOEBOORU -> {
                 commentViewModel.commentsMoe.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<BaseComment>)
+                    commentAdapter.submitList(it as PagedList<CommentBase>)
                 })
                 commentViewModel.networkStateMoe.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
@@ -248,7 +252,7 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_DANBOORU_ONE -> {
                 commentViewModel.commentsDanOne.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<BaseComment>)
+                    commentAdapter.submitList(it as PagedList<CommentBase>)
                 })
                 commentViewModel.networkStateDanOne.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
@@ -258,12 +262,22 @@ class CommentActivity : AppCompatActivity() {
             Constants.TYPE_GELBOORU -> {
                 commentViewModel.commentsGel.observe(this, Observer {
                     @Suppress("UNCHECKED_CAST")
-                    commentAdapter.submitList(it as PagedList<BaseComment>)
+                    commentAdapter.submitList(it as PagedList<CommentBase>)
                 })
                 commentViewModel.networkStateGel.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
                 })
                 initSwipeToRefreshGel()
+            }
+            Constants.TYPE_SANKAKU -> {
+                commentViewModel.commentsSankaku.observe(this, Observer {
+                    @Suppress("UNCHECKED_CAST")
+                    commentAdapter.submitList(it as PagedList<CommentBase>)
+                })
+                commentViewModel.networkStateSankaku.observe(this, Observer {
+                    commentAdapter.setNetworkState(it)
+                })
+                initSwipeToRefreshSankaku()
             }
         }
         commentViewModel.commentState.observe(this, Observer {
@@ -315,6 +329,15 @@ class CommentActivity : AppCompatActivity() {
             }
         })
         swipe_refresh.setOnRefreshListener { commentViewModel.refreshGel() }
+    }
+
+    private fun initSwipeToRefreshSankaku() {
+        commentViewModel.refreshStateSankaku.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { commentViewModel.refreshSankaku() }
     }
 
     @Suppress("UNCHECKED_CAST")

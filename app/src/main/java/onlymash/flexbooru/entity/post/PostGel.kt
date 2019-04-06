@@ -55,7 +55,7 @@ data class PostGel(
     val preview_width: Int,
     @Attribute
     val preview_height: Int
-) : BasePost() {
+) : PostBase() {
 
     override fun getPostId(): Int = id
 

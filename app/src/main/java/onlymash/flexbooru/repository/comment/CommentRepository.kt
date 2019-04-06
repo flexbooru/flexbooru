@@ -35,4 +35,8 @@ interface CommentRepository {
     fun destroyDanOneComment(commentAction: CommentAction)
 
     fun getGelComments(commentAction: CommentAction): Listing<CommentGel>
+
+    fun getSankakuComments(commentAction: CommentAction): Listing<CommentSankaku>
+    fun createSankakuComment(commentAction: CommentAction)
+    fun destroySankakuComment(commentAction: CommentAction)
 }

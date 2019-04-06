@@ -33,5 +33,6 @@ data class User(
     var name: String,
     var id: Int,
     var password_hash: String? = null,
-    var api_key: String? = null
+    var api_key: String? = null,
+    var avatar_url: String? = null
 )

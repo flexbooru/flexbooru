@@ -1,6 +1,6 @@
 package onlymash.flexbooru.entity.artist
 
-abstract class BaseArtist {
+abstract class ArtistBase {
     var scheme: String = ""
     var host: String = ""
     var keyword: String? = ""

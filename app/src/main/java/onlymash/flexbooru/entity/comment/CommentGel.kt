@@ -17,7 +17,7 @@ data class CommentGel(
     val creator_id: Int,
     @Attribute
     val body: String
-) : BaseComment() {
+) : CommentBase() {
     override fun getPostId(): Int = post_id
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body

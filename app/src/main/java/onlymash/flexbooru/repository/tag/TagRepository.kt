@@ -23,4 +23,5 @@ interface TagRepository {
     fun getMoeTags(search: SearchTag): Listing<TagMoe>
     fun getDanOneTags(search: SearchTag): Listing<TagDanOne>
     fun getGelTags(search: SearchTag): Listing<TagGel>
+    fun getSankakuTags(search: SearchTag): Listing<TagSankaku>
 }

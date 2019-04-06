@@ -18,7 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.post.BasePost
+import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 
@@ -27,13 +27,13 @@ class PostAdapter(private val glide: GlideRequests,
                   private val showInfoBar: Boolean,
                   private val pageType: Int,
                   retryCallback: () -> Unit
-) : BaseStatePagedListAdapter<BasePost, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
+) : BaseStatePagedListAdapter<PostBase, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
 
     companion object {
-        val POST_COMPARATOR = object : DiffUtil.ItemCallback<BasePost>() {
-            override fun areContentsTheSame(oldItem: BasePost, newItem: BasePost): Boolean =
+        val POST_COMPARATOR = object : DiffUtil.ItemCallback<PostBase>() {
+            override fun areContentsTheSame(oldItem: PostBase, newItem: PostBase): Boolean =
                 oldItem.getPostId() == newItem.getPostId() && oldItem.getPostScore() == newItem.getPostScore()
-            override fun areItemsTheSame(oldItem: BasePost, newItem: BasePost): Boolean =
+            override fun areItemsTheSame(oldItem: PostBase, newItem: PostBase): Boolean =
                 oldItem.getPostId() == newItem.getPostId()
         }
     }

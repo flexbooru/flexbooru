@@ -25,16 +25,13 @@ import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.database.dao.*
 import onlymash.flexbooru.entity.*
-import onlymash.flexbooru.entity.post.PostDan
-import onlymash.flexbooru.entity.post.PostDanOne
-import onlymash.flexbooru.entity.post.PostGel
-import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.entity.post.*
 
 @Database(entities = [
-    (PostMoe::class), (PostDan::class), (PostDanOne::class), (PostGel::class),
+    (PostMoe::class), (PostDan::class), (PostDanOne::class), (PostGel::class), (PostSankaku::class),
     (Booru::class), (User::class), (Suggestion::class),
     (TagFilter::class), (Muzei::class)],
-    version = 19, exportSchema = true)
+    version = 21, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -129,6 +126,21 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_19_20 by lazy {
+            object : Migration(19, 20) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `posts_sankaku` (`author` TEXT NOT NULL, `change` INTEGER NOT NULL, `created_at` TEXT NOT NULL, `fav_count` INTEGER NOT NULL, `file_size` INTEGER NOT NULL, `file_type` TEXT, `file_url` TEXT NOT NULL, `has_children` INTEGER NOT NULL, `has_comments` INTEGER NOT NULL, `has_notes` INTEGER NOT NULL, `height` INTEGER NOT NULL, `id` INTEGER NOT NULL, `in_visible_pool` INTEGER NOT NULL, `is_favorited` INTEGER NOT NULL, `is_premium` INTEGER NOT NULL, `md5` TEXT NOT NULL, `parent_id` INTEGER, `preview_height` INTEGER NOT NULL, `preview_url` TEXT NOT NULL, `preview_width` INTEGER NOT NULL, `rating` TEXT, `recommended_posts` INTEGER NOT NULL, `recommended_score` INTEGER NOT NULL, `sample_height` INTEGER NOT NULL, `sample_url` TEXT NOT NULL, `sample_width` INTEGER NOT NULL, `source` TEXT, `status` TEXT NOT NULL, `tags` TEXT NOT NULL, `total_score` INTEGER NOT NULL, `vote_count` INTEGER NOT NULL, `width` INTEGER NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `indexInResponse` INTEGER NOT NULL, `scheme` TEXT NOT NULL, `host` TEXT NOT NULL, `keyword` TEXT NOT NULL)")
+                    database.execSQL("CREATE UNIQUE INDEX `index_posts_sankaku_host_keyword_id` ON `posts_sankaku` (`host`, `keyword`, `id`)")
+                }
+            }
+        }
+        private val MIGRATION_20_21 by lazy {
+            object : Migration(20, 21) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("ALTER TABLE  `users` ADD COLUMN `avatar_url` TEXT")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
@@ -142,7 +154,9 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_15_16,
                     MIGRATION_16_17,
                     MIGRATION_17_18,
-                    MIGRATION_18_19
+                    MIGRATION_18_19,
+                    MIGRATION_19_20,
+                    MIGRATION_20_21
                 )
                 .build()
         }
@@ -157,6 +171,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
     abstract fun postDanDao(): PostDanDao
     abstract fun postMoeDao(): PostMoeDao
     abstract fun postGelDao(): PostGelDao
+    abstract fun postSankakuDao(): PostSankakuDao
 
     abstract fun booruDao(): BooruDao
     abstract fun userDao(): UserDao

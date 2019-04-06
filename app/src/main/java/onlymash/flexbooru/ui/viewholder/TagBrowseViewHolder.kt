@@ -24,6 +24,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.TagFilterManager
@@ -76,24 +77,54 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    fun bind(tag: TagFilter) {
+    fun bind(tag: TagFilter, postType: Int) {
         tagName.text = tag.name
         type = tag.type
-        when (tag.type) {
-            TagViewHolder.GENERAL -> {
-                setType(itemView.context.getString(R.string.tag_type_general))
+        if (type < 0) return
+        if (postType == Constants.TYPE_DANBOORU) {
+            when (tag.type) {
+                TagViewHolder.GENERAL -> {
+                    setType(itemView.context.getString(R.string.tag_type_general))
+                }
+                TagViewHolder.ARTIST -> {
+                    setType(itemView.context.getString(R.string.tag_type_artist))
+                }
+                TagViewHolder.COPYRIGHT -> {
+                    setType(itemView.context.getString(R.string.tag_type_copyright))
+                }
+                TagViewHolder.CHARACTER -> {
+                    setType(itemView.context.getString(R.string.tag_type_character))
+                }
+                TagViewHolder.META -> {
+                    setType(itemView.context.getString(R.string.tag_type_meta))
+                }
             }
-            TagViewHolder.ARTIST -> {
-                setType(itemView.context.getString(R.string.tag_type_artist))
-            }
-            TagViewHolder.COPYRIGHT -> {
-                setType(itemView.context.getString(R.string.tag_type_copyright))
-            }
-            TagViewHolder.CHARACTER -> {
-                setType(itemView.context.getString(R.string.tag_type_character))
-            }
-            TagViewHolder.META -> {
-                setType(itemView.context.getString(R.string.tag_type_meta))
+        } else {
+            when (tag.type) {
+                TagViewHolder.GENERAL -> {
+                    setType(itemView.context.getString(R.string.tag_type_general))
+                }
+                TagViewHolder.ARTIST -> {
+                    setType(itemView.context.getString(R.string.tag_type_artist))
+                }
+                TagViewHolder.COPYRIGHT -> {
+                    setType(itemView.context.getString(R.string.tag_type_copyright))
+                }
+                TagViewHolder.CHARACTER -> {
+                    setType(itemView.context.getString(R.string.tag_type_character))
+                }
+                TagViewHolder.META_SANKAKU -> {
+                    setType(itemView.context.getString(R.string.tag_type_meta))
+                }
+                TagViewHolder.GENRE -> {
+                    setType(itemView.context.getString(R.string.tag_type_genre))
+                }
+                TagViewHolder.MEDIUM -> {
+                    setType(itemView.context.getString(R.string.tag_type_medium))
+                }
+                TagViewHolder.STUDIO -> {
+                    setType(itemView.context.getString(R.string.tag_type_studio))
+                }
             }
         }
     }

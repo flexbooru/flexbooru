@@ -16,10 +16,7 @@
 package onlymash.flexbooru
 
 import androidx.annotation.VisibleForTesting
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.GelbooruApi
-import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.repository.account.UserRepository
@@ -78,6 +75,7 @@ interface ServiceLocator {
     fun getDanbooruApi(): DanbooruApi
     fun getMoebooruApi(): MoebooruApi
     fun getGelbooruApi(): GelbooruApi
+    fun getSankakuApi(): SankakuApi
     fun getPostLoader(): PostLoaderRepository
     fun getUserRepository(): UserRepository
     fun getTagFilterDataSource(): TagFilterDataSource
@@ -107,6 +105,8 @@ open class DefaultServiceLocator : ServiceLocator {
 
     private val gelApi by lazy { GelbooruApi.create() }
 
+    private val sanApi by lazy { SankakuApi.create() }
+
     override fun getPostRepository(): PostRepository {
         return PostData(
             db = FlexbooruDatabase.instance,
@@ -114,6 +114,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             gelbooruApi = getGelbooruApi(),
+            sankakuApi = getSankakuApi(),
             ioExecutor = getDiskIOExecutor()
         )
     }
@@ -123,6 +124,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
+            sankakuApi = getSankakuApi(),
             db = FlexbooruDatabase.instance,
             networkExecutor = getNetworkExecutor()
         )
@@ -133,6 +135,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
+            sankakuApi = getSankakuApi(),
             networkExecutor = getNetworkExecutor()
         )
     }
@@ -143,6 +146,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             gelbooruApi = getGelbooruApi(),
+            sankakuApi = getSankakuApi(),
             networkExecutor = getNetworkExecutor()
         )
     }
@@ -161,6 +165,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
+            sankakuApi = getSankakuApi(),
             db = FlexbooruDatabase.instance,
             ioExecutor = getDiskIOExecutor()
         )
@@ -172,6 +177,7 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruOneApi = getDanbooruOneApi(),
             moebooruApi = getMoebooruApi(),
             gelbooruApi = getGelbooruApi(),
+            sankakuApi = getSankakuApi(),
             networkExecutor = NETWORK_IO
         )
     }
@@ -191,6 +197,8 @@ open class DefaultServiceLocator : ServiceLocator {
 
     override fun getGelbooruApi(): GelbooruApi = gelApi
 
+    override fun getSankakuApi(): SankakuApi = sanApi
+
     override fun getPostLoader(): PostLoaderRepository {
         return PostLoader(
             db = FlexbooruDatabase.instance,
@@ -202,7 +210,8 @@ open class DefaultServiceLocator : ServiceLocator {
         return UserFinder(
             danbooruApi = getDanbooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
-            moebooruApi = getMoebooruApi()
+            moebooruApi = getMoebooruApi(),
+            sankakuApi = getSankakuApi()
         )
     }
 
@@ -211,7 +220,8 @@ open class DefaultServiceLocator : ServiceLocator {
             danbooruApi = getDanbooruApi(),
             moebooruApi = getMoebooruApi(),
             danbooruOneApi = getDanbooruOneApi(),
-            gelbooruApi = getGelbooruApi()
+            gelbooruApi = getGelbooruApi(),
+            sankakuApi = getSankakuApi()
         )
     }
 }

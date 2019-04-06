@@ -22,13 +22,13 @@ import onlymash.flexbooru.entity.tag.*
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 
 class TagAdapter(private val listener: TagViewHolder.ItemListener,
-                 retryCallback: () -> Unit) : BaseStatePagedListAdapter<BaseTag, RecyclerView.ViewHolder>(TAG_COMPARATOR, retryCallback) {
+                 retryCallback: () -> Unit) : BaseStatePagedListAdapter<TagBase, RecyclerView.ViewHolder>(TAG_COMPARATOR, retryCallback) {
 
     companion object {
-        val TAG_COMPARATOR = object : DiffUtil.ItemCallback<BaseTag>() {
-            override fun areContentsTheSame(oldItem: BaseTag, newItem: BaseTag): Boolean =
+        val TAG_COMPARATOR = object : DiffUtil.ItemCallback<TagBase>() {
+            override fun areContentsTheSame(oldItem: TagBase, newItem: TagBase): Boolean =
                 oldItem.getTagId() == newItem.getTagId() && oldItem.getTagName() == newItem.getTagName()
-            override fun areItemsTheSame(oldItem: BaseTag, newItem: BaseTag): Boolean =
+            override fun areItemsTheSame(oldItem: TagBase, newItem: TagBase): Boolean =
                 oldItem.getTagId() == newItem.getTagId()
         }
     }

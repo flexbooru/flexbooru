@@ -20,12 +20,10 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -38,7 +36,7 @@ import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
-import onlymash.flexbooru.entity.tag.BaseTag
+import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
@@ -72,7 +70,7 @@ class SearchBar @JvmOverloads constructor(
         searchTag = search
     }
 
-    private var suggestionsOnline: MutableList<BaseTag>? = null
+    private var suggestionsOnline: MutableList<TagBase>? = null
     private val suggestionsRepo by lazy { ServiceLocator.instance().getSuggestionRepository() }
     private val ioExecutor by lazy { ServiceLocator.instance().getDiskIOExecutor() }
 
@@ -194,7 +192,7 @@ class SearchBar @JvmOverloads constructor(
                     showSuggestion()
                 }
                 s.isNotBlank() && type > -1 && searchTag != null -> {
-                    if (type == Constants.TYPE_GELBOORU) {
+                    if (type == Constants.TYPE_GELBOORU || type == Constants.TYPE_SANKAKU) {
                         searchTag?.name = s.toString()
                     } else {
                         searchTag?.name = "$s*"

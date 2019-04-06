@@ -52,7 +52,8 @@ class AccountConfigActivity : BaseActivity() {
                     UserManager.createUser(user)
                 }
                 Constants.TYPE_MOEBOORU,
-                Constants.TYPE_DANBOORU_ONE -> {
+                Constants.TYPE_DANBOORU_ONE,
+                Constants.TYPE_SANKAKU -> {
                     user.apply {
                         booru_uid = booru.uid
                         password_hash = pass
@@ -101,6 +102,11 @@ class AccountConfigActivity : BaseActivity() {
                 Constants.TYPE_DANBOORU_ONE -> {
                     launchUrl(String.format("%s://%s/user/reset_password", booru.scheme, booru.host))
                 }
+                Constants.TYPE_SANKAKU -> {
+                    var host = booru.host
+                    if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
+                    launchUrl(String.format("%s://%s/reset_password", booru.scheme, host))
+                }
             }
         }
         userFinder.findUserListener = findListener
@@ -118,7 +124,9 @@ class AccountConfigActivity : BaseActivity() {
             return
         }
         val hashSalt = booru.hash_salt
-        if ((booru.type == Constants.TYPE_MOEBOORU || booru.type == Constants.TYPE_DANBOORU_ONE) && hashSalt.isNotBlank()) {
+        if ((booru.type == Constants.TYPE_MOEBOORU
+                    || booru.type == Constants.TYPE_DANBOORU_ONE
+                    || booru.type == Constants.TYPE_SANKAKU) && hashSalt.isNotBlank()) {
             pass = HashUtil.sha1(hashSalt.replace(Constants.HASH_SALT_CONTAINED, pass))
         }
         set_account.visibility = View.INVISIBLE

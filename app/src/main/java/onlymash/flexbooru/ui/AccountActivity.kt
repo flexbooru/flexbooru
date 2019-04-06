@@ -36,6 +36,7 @@ class AccountActivity : BaseActivity() {
     companion object {
         const val USER_ID_KEY = "user_id"
         const val USER_NAME_KEY = "user_name"
+        const val USER_AVATAR_KEY = "user_avatar"
     }
 
     private lateinit var booru: Booru
@@ -65,11 +66,14 @@ class AccountActivity : BaseActivity() {
         val type = booru.type
         var u: User? = null
         when {
-            type == Constants.TYPE_DANBOORU && extras != null -> {
+            (type == Constants.TYPE_DANBOORU || type == Constants.TYPE_SANKAKU) && extras != null -> {
                 val id = extras.getInt(USER_ID_KEY, -1)
                 val name = extras.getString(USER_NAME_KEY)
                 if (id > 0 && !name.isNullOrBlank()) {
                     u = User(name = name, id = id)
+                    if (type == Constants.TYPE_SANKAKU) {
+                        u.avatar_url = extras.getString(USER_AVATAR_KEY)
+                    }
                 }
             }
             (type == Constants.TYPE_MOEBOORU || type == Constants.TYPE_DANBOORU_ONE) && extras != null -> {
@@ -121,11 +125,17 @@ class AccountActivity : BaseActivity() {
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
+        } else if (booru.type == Constants.TYPE_SANKAKU && !user.avatar_url.isNullOrEmpty()) {
+            GlideApp.with(this)
+                .load(user.avatar_url)
+                .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
+                .into(user_avatar)
         }
         fav_action_button.setOnClickListener {
             val keyword = when (booru.type) {
                 Constants.TYPE_DANBOORU,
-                Constants.TYPE_DANBOORU_ONE -> String.format("fav:%s", user.name)
+                Constants.TYPE_DANBOORU_ONE,
+                Constants.TYPE_SANKAKU -> String.format("fav:%s", user.name)
                 Constants.TYPE_MOEBOORU -> String.format("vote:3:%s order:vote", user.name)
                 else -> throw IllegalStateException("unknown booru type: ${booru.type}")
             }

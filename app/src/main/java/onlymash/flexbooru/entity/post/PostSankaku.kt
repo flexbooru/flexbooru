@@ -1,0 +1,67 @@
+package onlymash.flexbooru.entity.post
+
+import androidx.room.Entity
+import androidx.room.Index
+import onlymash.flexbooru.entity.DanOneDate
+import onlymash.flexbooru.entity.SankakuAuthor
+import onlymash.flexbooru.entity.SankakuTag
+import onlymash.flexbooru.util.formatDate
+
+@Entity(tableName = "posts_sankaku", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
+data class PostSankaku(
+    val author: SankakuAuthor,
+    val change: Int,
+    val created_at: DanOneDate,
+    val fav_count: Int,
+    val file_size: Int,
+    val file_type: String?,
+    val file_url: String,
+    val has_children: Boolean,
+    val has_comments: Boolean,
+    val has_notes: Boolean,
+    val height: Int,
+    val id: Int,
+    val in_visible_pool: Boolean,
+    val is_favorited: Boolean,
+    val is_premium: Boolean,
+    val md5: String,
+    val parent_id: Int?,
+    val preview_height: Int,
+    val preview_url: String,
+    val preview_width: Int,
+    val rating: String?,
+    val recommended_posts: Int,
+    val recommended_score: Int,
+    val sample_height: Int,
+    val sample_url: String,
+    val sample_width: Int,
+    val source: String?,
+    val status: String,
+    val tags: List<SankakuTag>,
+    val total_score: Int,
+    val vote_count: Int,
+    val width: Int
+) : PostBase() {
+    override fun getPostId(): Int = id
+
+    override fun getPostWidth(): Int = width
+
+    override fun getPostHeight(): Int = height
+
+    override fun getPostScore(): Int = total_score
+
+    override fun getPostRating(): String = rating ?: "e"
+
+    override fun getPreviewUrl(): String = checkUrl(preview_url)
+
+    override fun getSampleUrl(): String = checkUrl(sample_url)
+
+    override fun getLargerUrl(): String = getSampleUrl()
+
+    override fun getOriginUrl(): String = checkUrl(file_url)
+
+    override fun getCreatedDate(): String = formatDate(created_at.s * 1000L).toString()
+
+    override fun getUpdatedDate(): String = formatDate(change * 1000L).toString()
+
+}

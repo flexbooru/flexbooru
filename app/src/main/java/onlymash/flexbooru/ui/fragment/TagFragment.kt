@@ -34,7 +34,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.tag.BaseTag
+import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.tag.TagRepository
 import onlymash.flexbooru.ui.MainActivity
@@ -59,6 +59,10 @@ class TagFragment : ListFragment() {
         private const val TYPE_META = "5"
         private const val TYPE_MODEL = "5"
         private const val TYPE_PHOTO_SET = "6"
+        private const val TYPE_META_SANKAKU = "9"
+        private const val TYPE_STUDIO = "2"
+        private const val TYPE_GENRE = "5"
+        private const val TYPE_MEDIUM = "8"
 
         private const val ORDER_DATE = "date"
         private const val ORDER_NAME = "name"
@@ -111,6 +115,18 @@ class TagFragment : ListFragment() {
                         if (user != null) {
                             putString(Constants.USERNAME_KEY, user.name)
                             putString(Constants.AUTH_KEY, user.api_key)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
+                    Constants.TYPE_SANKAKU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_SANKAKU)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
                         } else {
                             putString(Constants.USERNAME_KEY, "")
                             putString(Constants.AUTH_KEY, "")
@@ -188,6 +204,22 @@ class TagFragment : ListFragment() {
                         search.type = TYPE_PHOTO_SET
                         refresh()
                     }
+                    R.id.action_tag_type_meta_sankaku -> {
+                        search.type = TYPE_META_SANKAKU
+                        refresh()
+                    }
+                    R.id.action_tag_type_genre -> {
+                        search.type = TYPE_GENRE
+                        refresh()
+                    }
+                    R.id.action_tag_type_studio -> {
+                        search.type = TYPE_STUDIO
+                        refresh()
+                    }
+                    R.id.action_tag_type_medium -> {
+                        search.type = TYPE_MEDIUM
+                        refresh()
+                    }
                 }
             }
 
@@ -218,6 +250,11 @@ class TagFragment : ListFragment() {
                 swipe_refresh.isRefreshing = true
                 tagViewModel.show(search)
                 tagViewModel.refreshGel()
+            }
+            Constants.TYPE_SANKAKU -> {
+                swipe_refresh.isRefreshing = true
+                tagViewModel.show(search)
+                tagViewModel.refreshSankaku()
             }
         }
     }
@@ -264,6 +301,12 @@ class TagFragment : ListFragment() {
                         refreshGel()
                     }
                 }
+                Constants.TYPE_SANKAKU -> {
+                    tagViewModel.apply {
+                        show(search)
+                        refreshSankaku()
+                    }
+                }
             }
         }
         override fun onUpdate(user: User) {
@@ -303,6 +346,14 @@ class TagFragment : ListFragment() {
                 tagViewModel.apply {
                     show(search)
                     refreshGel()
+                }
+            }
+            Constants.TYPE_SANKAKU -> {
+                search.username = user.name
+                search.auth_key = user.password_hash ?: ""
+                tagViewModel.apply {
+                    show(search)
+                    refreshSankaku()
                 }
             }
         }
@@ -351,6 +402,7 @@ class TagFragment : ListFragment() {
                     Constants.TYPE_MOEBOORU -> tagViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> tagViewModel.retryDanOne()
                     Constants.TYPE_GELBOORU -> tagViewModel.retryGel()
+                    Constants.TYPE_SANKAKU -> tagViewModel.retrySankaku()
                 }
             }
         )
@@ -363,7 +415,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_dan, requireActivity().menuInflater)
                 tagViewModel.tagsDan.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<BaseTag>)
+                    tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
                 tagViewModel.networkStateDan.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
@@ -374,7 +426,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_moe, requireActivity().menuInflater)
                 tagViewModel.tagsMoe.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<BaseTag>)
+                    tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
                 tagViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
@@ -385,7 +437,7 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_dan_one, requireActivity().menuInflater)
                 tagViewModel.tagsDanOne.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<BaseTag>)
+                    tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
                 tagViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
@@ -396,12 +448,23 @@ class TagFragment : ListFragment() {
                 searchBar.setMenu(R.menu.tag_gel, requireActivity().menuInflater)
                 tagViewModel.tagsGel.observe(this, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
-                    tagAdapter.submitList(tags as PagedList<BaseTag>)
+                    tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
                 tagViewModel.networkStateGel.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshGel()
+            }
+            Constants.TYPE_SANKAKU -> {
+                searchBar.setMenu(R.menu.tag_sankaku, requireActivity().menuInflater)
+                tagViewModel.tagsSankaku.observe(this, Observer { tags ->
+                    @Suppress("UNCHECKED_CAST")
+                    tagAdapter.submitList(tags as PagedList<TagBase>)
+                })
+                tagViewModel.networkStateSankaku.observe(this, Observer { networkState ->
+                    tagAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshSankaku()
             }
         }
         tagViewModel.show(search = search)
@@ -443,6 +506,15 @@ class TagFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { tagViewModel.refreshGel() }
+    }
+
+    private fun initSwipeToRefreshSankaku() {
+        tagViewModel.refreshStateSankaku.observe(this, Observer<NetworkState> {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { tagViewModel.refreshSankaku() }
     }
 
     @Suppress("UNCHECKED_CAST")

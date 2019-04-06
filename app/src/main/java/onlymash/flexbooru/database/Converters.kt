@@ -20,6 +20,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import onlymash.flexbooru.entity.artist.ArtistUrlDan
 import onlymash.flexbooru.entity.DanOneDate
+import onlymash.flexbooru.entity.SankakuAuthor
+import onlymash.flexbooru.entity.SankakuTag
 
 /**
  * room database TypeConverter
@@ -63,6 +65,32 @@ class Converters {
         Gson().toJson(createdAt)
 
     @TypeConverter
-    fun fromStringDanOneCreatedAt(value: String): DanOneDate =
+    fun fromStringToDanOneCreatedAt(value: String): DanOneDate =
         Gson().fromJson<DanOneDate>(value, object : TypeToken<DanOneDate>(){}.type)
+
+    @TypeConverter
+    fun fromSankakuAuthorToString(author: SankakuAuthor): String =
+        Gson().toJson(author)
+
+    @TypeConverter
+    fun fromStringToSankakuAuthor(value: String): SankakuAuthor =
+        Gson().fromJson<SankakuAuthor>(value, object : TypeToken<SankakuAuthor>(){}.type)
+
+    @TypeConverter
+    fun fromSankakuTagToString(tag: SankakuTag): String =
+        Gson().toJson(tag)
+
+    @TypeConverter
+    fun fromStringToSankakuTag(value: String): SankakuTag =
+        Gson().fromJson<SankakuTag>(value, object : TypeToken<SankakuTag>(){}.type)
+
+    @TypeConverter
+    fun fromSankakuTagListToString(tags: MutableList<SankakuTag>): String =
+        Gson().toJson(tags)
+
+    @TypeConverter
+    fun fromStringToSankakuTagList(value: String): MutableList<SankakuTag> {
+        val listType = object : TypeToken<MutableList<SankakuTag>>(){}.type
+        return Gson().fromJson<MutableList<SankakuTag>>(value, listType)
+    }
 }

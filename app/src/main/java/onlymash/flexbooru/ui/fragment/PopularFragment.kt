@@ -116,6 +116,18 @@ class PopularFragment : ListFragment() {
                             putString(Constants.AUTH_KEY, "")
                         }
                     }
+                    Constants.TYPE_SANKAKU -> Bundle().apply {
+                        putString(Constants.SCHEME_KEY, booru.scheme)
+                        putString(Constants.HOST_KEY, booru.host)
+                        putInt(Constants.TYPE_KEY, Constants.TYPE_SANKAKU)
+                        if (user != null) {
+                            putString(Constants.USERNAME_KEY, user.name)
+                            putString(Constants.AUTH_KEY, user.password_hash)
+                        } else {
+                            putString(Constants.USERNAME_KEY, "")
+                            putString(Constants.AUTH_KEY, "")
+                        }
+                    }
                     else -> Bundle().apply {
                         putInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
                     }
@@ -141,14 +153,14 @@ class PopularFragment : ListFragment() {
     private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
 
     private val itemListener = object : PostViewHolder.ItemListener {
-        override fun onClickItem(post: BasePost?, view: View) {
+        override fun onClickItem(post: PostBase?, view: View) {
             if (post == null) return
             currentPostId = post.getPostId()
             (requireActivity() as MainActivity).sharedElement = list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
             BrowseActivity.startActivity(requireActivity(), view, currentPostId, post.keyword, Constants.PAGE_TYPE_POPULAR)
         }
 
-        override fun onLongClickItem(post: BasePost?) {
+        override fun onLongClickItem(post: PostBase?) {
             if (post == null) return
             val id = post.getPostId()
             val context = requireContext()
@@ -191,6 +203,7 @@ class PopularFragment : ListFragment() {
                                     is PostDan -> voteRepo.addDanFav(vote, post)
                                     is PostMoe -> voteRepo.voteMoePost(vote)
                                     is PostDanOne -> voteRepo.addDanOneFav(vote, post)
+                                    is PostSankaku -> voteRepo.addSankakuFav(vote, post)
                                 }
                             }
                         }
@@ -399,6 +412,12 @@ class PopularFragment : ListFragment() {
                         refreshMoe()
                     }
                 }
+                Constants.TYPE_DANBOORU_ONE -> {
+                    popularViewModel.apply {
+                        show(popular)
+                        refreshDanOne()
+                    }
+                }
             }
         }
 
@@ -424,6 +443,14 @@ class PopularFragment : ListFragment() {
                 popularViewModel.apply {
                     show(popular)
                     refreshMoe()
+                }
+            }
+            Constants.TYPE_DANBOORU_ONE -> {
+                popular.username = user.name
+                popular.auth_key = user.password_hash ?: ""
+                popularViewModel.apply {
+                    show(popular)
+                    refreshDanOne()
                 }
             }
         }
@@ -478,7 +505,6 @@ class PopularFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> searchBar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
             Constants.TYPE_DANBOORU_ONE -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
-            else -> throw IllegalArgumentException("unknown type $type")
         }
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
         glide = GlideApp.with(this)
@@ -497,6 +523,7 @@ class PopularFragment : ListFragment() {
                     Constants.TYPE_DANBOORU -> popularViewModel.retryDan()
                     Constants.TYPE_MOEBOORU -> popularViewModel.retryMoe()
                     Constants.TYPE_DANBOORU_ONE -> popularViewModel.retryDanOne()
+                    Constants.TYPE_SANKAKU -> popularViewModel.retrySankaku()
                 }
             })
         list.apply {
@@ -509,7 +536,7 @@ class PopularFragment : ListFragment() {
                 keyword = SCALE_DAY
                 popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 popularViewModel.networkStateDan.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -520,7 +547,7 @@ class PopularFragment : ListFragment() {
                 keyword = PERIOD_DAY
                 popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
@@ -531,12 +558,23 @@ class PopularFragment : ListFragment() {
                 keyword = SCALE_DAY
                 popularViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
                     @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<BasePost>)
+                    postAdapter.submitList(posts as PagedList<PostBase>)
                 })
                 popularViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
+            }
+            Constants.TYPE_SANKAKU -> {
+                keyword = SCALE_DAY
+                popularViewModel.postsSankaku.observe(this, Observer<PagedList<PostSankaku>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<PostBase>)
+                })
+                popularViewModel.networkStateSankaku.observe(this, Observer { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshSankaku()
             }
         }
         popularViewModel.show(popular)
@@ -568,6 +606,15 @@ class PopularFragment : ListFragment() {
             }
         })
         swipe_refresh.setOnRefreshListener { popularViewModel.refreshMoe() }
+    }
+
+    private fun initSwipeToRefreshSankaku() {
+        popularViewModel.refreshStateSankaku.observe(this, Observer {
+            if (it != NetworkState.LOADING) {
+                swipe_refresh.isRefreshing = false
+            }
+        })
+        swipe_refresh.setOnRefreshListener { popularViewModel.refreshSankaku() }
     }
 
     @Suppress("UNCHECKED_CAST")

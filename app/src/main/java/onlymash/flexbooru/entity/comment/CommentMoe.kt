@@ -32,7 +32,7 @@ data class CommentMoe(
     val creator: String,
     val creator_id: Int,
     val body: String
-) : BaseComment() {
+) : CommentBase() {
     override fun getPostId(): Int = post_id
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body

@@ -18,6 +18,7 @@ package onlymash.flexbooru.repository.favorite
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Vote
+import onlymash.flexbooru.entity.post.PostSankaku
 
 interface VoteRepository {
     var voteCallback: VoteCallback?
@@ -26,4 +27,6 @@ interface VoteRepository {
     fun removeDanFav(vote: Vote, postFav: PostDan)
     fun addDanOneFav(vote: Vote, post: PostDanOne)
     fun removeDanOneFav(vote: Vote, postFav: PostDanOne)
+    fun addSankakuFav(vote: Vote, post: PostSankaku)
+    fun removeSankakuFav(vote: Vote, postFav: PostSankaku)
 }

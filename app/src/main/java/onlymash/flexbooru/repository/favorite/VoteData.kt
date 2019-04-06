@@ -18,13 +18,17 @@ package onlymash.flexbooru.repository.favorite
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.api.url.MoeUrlHelper
+import onlymash.flexbooru.api.url.SankakuUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostSankaku
+import onlymash.flexbooru.util.HashUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -34,6 +38,7 @@ import java.util.concurrent.Executor
 class VoteData(private val danbooruApi: DanbooruApi,
                private val danbooruOneApi: DanbooruOneApi,
                private val moebooruApi: MoebooruApi,
+               private val sankakuApi: SankakuApi,
                private val db: FlexbooruDatabase,
                private val ioExecutor: Executor): VoteRepository {
 
@@ -191,6 +196,55 @@ class VoteData(private val danbooruApi: DanbooruApi,
                     if (response.isSuccessful) {
                         ioExecutor.execute {
                             db.postDanOneDao().deletePost(postFav)
+                        }
+                        voteCallback?.onSuccess()
+                    } else {
+                        voteCallback?.onFailed("code: ${response.code()}")
+                    }
+                }
+            })
+    }
+
+    override fun addSankakuFav(vote: Vote, post: PostSankaku) {
+        sankakuApi.favPost(
+            url = SankakuUrlHelper.getAddFavUrl(vote),
+            postId = vote.post_id,
+            username = vote.username,
+            passwordHash = vote.auth_key
+        ).enqueue(object : Callback<VoteSankaku> {
+            override fun onFailure(call: Call<VoteSankaku>, t: Throwable) {
+                voteCallback?.onFailed(t.message.toString())
+            }
+            override fun onResponse(call: Call<VoteSankaku>, response: Response<VoteSankaku>) {
+                if (response.isSuccessful) {
+                    post.scheme = vote.scheme
+                    post.keyword = "fav:${vote.username}"
+                    post.uid = 0L
+                    ioExecutor.execute {
+                        db.postSankakuDao().insert(post)
+                    }
+                    voteCallback?.onSuccess()
+                } else {
+                    voteCallback?.onFailed("code: ${response.code()}")
+                }
+            }
+        })
+    }
+
+    override fun removeSankakuFav(vote: Vote, postFav: PostSankaku) {
+        sankakuApi.removeFavPost(
+            url = SankakuUrlHelper.getRemoveFavUrl(vote),
+            postId = vote.post_id,
+            username = vote.username,
+            passwordHash = vote.auth_key)
+            .enqueue(object : Callback<VoteSankaku> {
+                override fun onFailure(call: Call<VoteSankaku>, t: Throwable) {
+                    voteCallback?.onFailed(t.message.toString())
+                }
+                override fun onResponse(call: Call<VoteSankaku>, response: Response<VoteSankaku>) {
+                    if (response.isSuccessful) {
+                        ioExecutor.execute {
+                            db.postSankakuDao().deletePost(postFav)
                         }
                         voteCallback?.onSuccess()
                     } else {

@@ -1,60 +1,65 @@
 package onlymash.flexbooru.repository.suggestion
 
 import onlymash.flexbooru.Constants
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.GelbooruApi
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.url.DanOneUrlHelper
-import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.api.url.GelUrlHelper
-import onlymash.flexbooru.api.url.MoeUrlHelper
-import onlymash.flexbooru.entity.tag.BaseTag
+import onlymash.flexbooru.api.*
+import onlymash.flexbooru.api.url.*
+import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.entity.tag.TagSankaku
 import java.io.IOException
 
 class SuggestionData(private val danbooruApi: DanbooruApi,
                      private val moebooruApi: MoebooruApi,
                      private val danbooruOneApi: DanbooruOneApi,
-                     private val gelbooruApi: GelbooruApi) : SuggestionRepository {
+                     private val gelbooruApi: GelbooruApi,
+                     private val sankakuApi: SankakuApi) : SuggestionRepository {
 
-    override fun fetchSuggestions(type: Int, search: SearchTag): MutableList<BaseTag>? =
+    override fun fetchSuggestions(type: Int, search: SearchTag): MutableList<TagBase>? =
         when (type) {
             Constants.TYPE_DANBOORU -> fetchDanTags(search)
             Constants.TYPE_MOEBOORU -> fetchMoeTags(search)
             Constants.TYPE_DANBOORU_ONE -> fetchDanOneTags(search)
             Constants.TYPE_GELBOORU -> fetchGelTags(search)
+            Constants.TYPE_SANKAKU -> fetchSankakuTags(search)
             else -> null
         }
 
     @Suppress("UNCHECKED_CAST")
-    private fun fetchDanTags(search: SearchTag): MutableList<BaseTag>? = try {
+    private fun fetchDanTags(search: SearchTag): MutableList<TagBase>? = try {
         danbooruApi.getTags(DanUrlHelper.getTagUrl(search, 1))
-            .execute().body() as? MutableList<BaseTag>
+            .execute().body() as? MutableList<TagBase>
     } catch (_: IOException) {
         null
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun fetchMoeTags(search: SearchTag): MutableList<BaseTag>? = try {
+    private fun fetchMoeTags(search: SearchTag): MutableList<TagBase>? = try {
         moebooruApi.getTags(MoeUrlHelper.getTagUrl(search, 1))
-            .execute().body() as? MutableList<BaseTag>
+            .execute().body() as? MutableList<TagBase>
     } catch (_: IOException) {
         null
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun fetchDanOneTags(search: SearchTag): MutableList<BaseTag>? = try {
+    private fun fetchDanOneTags(search: SearchTag): MutableList<TagBase>? = try {
         danbooruOneApi.getTags(DanOneUrlHelper.getTagUrl(search, 1))
-            .execute().body() as? MutableList<BaseTag>
+            .execute().body() as? MutableList<TagBase>
     } catch (_: IOException) {
         null
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun fetchGelTags(search: SearchTag): MutableList<BaseTag>? = try {
+    private fun fetchGelTags(search: SearchTag): MutableList<TagBase>? = try {
         gelbooruApi.getTags(GelUrlHelper.getTagUrl(search, 1))
-            .execute().body()?.tags as? MutableList<BaseTag>
+            .execute().body()?.tags as? MutableList<TagBase>
+    } catch (_: IOException) {
+        null
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun fetchSankakuTags(search: SearchTag): MutableList<TagBase>? = try {
+        sankakuApi.getTags(SankakuUrlHelper.getTagUrl(search, 1))
+            .execute().body() as? MutableList<TagBase>
     } catch (_: IOException) {
         null
     }

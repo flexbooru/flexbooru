@@ -49,6 +49,12 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
     val postsGel = switchMap(gelRepoResult) { it.pagedList }
     val networkStateGel = switchMap(gelRepoResult) { it.networkState }
     val refreshStateGel = switchMap(gelRepoResult) { it.refreshState }
+    private val sankakuRepoResult = map(searchData) { search ->
+        repo.getSankakuPosts(search)
+    }
+    val postsSankaku = switchMap(sankakuRepoResult) { it.pagedList }
+    val networkStateSankaku = switchMap(sankakuRepoResult) { it.networkState }
+    val refreshStateSankaku = switchMap(sankakuRepoResult) { it.refreshState }
     fun show(search: Search): Boolean {
         if (searchData.value == search) {
             return false
@@ -79,5 +85,11 @@ class PostViewModel(private val repo: PostRepository): ViewModel() {
     }
     fun retryGel() {
         gelRepoResult.value?.retry?.invoke()
+    }
+    fun refreshSankaku() {
+        sankakuRepoResult.value?.refresh?.invoke()
+    }
+    fun retrySankaku() {
+        sankakuRepoResult.value?.retry?.invoke()
     }
 }

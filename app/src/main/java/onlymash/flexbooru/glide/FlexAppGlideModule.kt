@@ -54,11 +54,12 @@ class FlexAppGlideModule : AppGlideModule() {
         val interceptor = Interceptor {
             val url = it.request().url()
             val scheme = url.scheme()
-            val host = url.host()
+            var host = url.host()
+            if (host.startsWith("cs.")) host = host.replaceFirst("cs.", "beta.")
             it.proceed(it.request().newBuilder()
+                .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                 .removeHeader(Constants.USER_AGENT_KEY)
                 .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-                .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                 .build())
         }
         val client = OkHttpClient.Builder().apply {

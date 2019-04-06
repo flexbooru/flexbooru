@@ -19,10 +19,12 @@ import onlymash.flexbooru.entity.pool.PoolDan
 import onlymash.flexbooru.entity.pool.PoolDanOne
 import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.repository.Listing
 
 interface PoolRepository {
     fun getDanPools(search: Search): Listing<PoolDan>
     fun getMoePools(search: Search): Listing<PoolMoe>
     fun getDanOnePools(search: Search): Listing<PoolDanOne>
+    fun getSankakuPools(search: Search): Listing<PoolSankaku>
 }

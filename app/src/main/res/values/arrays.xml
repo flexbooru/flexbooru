@@ -16,16 +16,18 @@
 
 <resources>
     <string-array name="booru_type_entries">
-        <item>@string/booru_config_type_danbooru</item>
-        <item>@string/booru_config_type_moebooru</item>
-        <item>@string/booru_config_type_danbooru_one</item>
-        <item>@string/booru_config_type_gelbooru</item>
+        <item>@string/booru_type_danbooru</item>
+        <item>@string/booru_type_moebooru</item>
+        <item>@string/booru_type_danbooru_one</item>
+        <item>@string/booru_type_gelbooru</item>
+        <item>@string/booru_type_sankaku</item>
     </string-array>
     <string-array name="booru_type_entries_values">
         <item>danbooru</item>
         <item>moebooru</item>
         <item>danbooru_one</item>
         <item>gelbooru</item>
+        <item>sankaku</item>
     </string-array>
     <string-array name="booru_scheme_entries">
         <item>@string/booru_config_scheme_http</item>
@@ -109,6 +111,31 @@
         <item>portrait</item>
         <item>vote</item>
         <item>favcount</item>
+    </string-array>
+    <string-array name="filter_order_sankaku">
+        <item>id</item>
+        <item>id_desc</item>
+        <item>random</item>
+        <item>popular</item>
+        <item>quality</item>
+        <item>fav</item>
+        <item>wide</item>
+        <item>nonwide</item>
+        <item>mpixels</item>
+        <item>mpixels_asc</item>
+        <item>landscape</item>
+        <item>portrait</item>
+        <item>vote</item>
+        <item>favcount</item>
+        <item>viewcount</item>
+        <item>tagcount</item>
+        <item>tagcount_asc</item>
+        <item>filesize</item>
+        <item>filesize_asc</item>
+        <item>recently_favorited</item>
+        <item>recently_voted</item>
+        <item>recently_commented</item>
+        <item>recently_noted</item>
     </string-array>
     <string-array name="filter_rating">
         <item>safe</item>

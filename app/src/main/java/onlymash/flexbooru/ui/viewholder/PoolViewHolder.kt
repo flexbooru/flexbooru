@@ -25,8 +25,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.pool.BasePool
+import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.toggleArrow
@@ -51,7 +52,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     private val poolDate: TextView = itemView.findViewById(R.id.pool_date)
     private val expandBottom: ImageButton = itemView.findViewById(R.id.bt_expand)
     private val descriptionContainer: LinearLayout = itemView.findViewById(R.id.description_container)
-    private var pool: BasePool? = null
+    private var pool: PoolBase? = null
     private var isShow = false
 
     private var itemListener: ItemListener? = null
@@ -62,7 +63,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
 
     interface ItemListener {
         fun onClickItem(keyword: String)
-        fun onClickUserAvatar(id: Int, name: String?)
+        fun onClickUserAvatar(id: Int, name: String?, avatar: String? = null)
     }
 
     init {
@@ -81,22 +82,34 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
         poolDescription.transformationMethod = LinkTransformationMethod()
         userAvatar.setOnClickListener {
             pool?.let {
-                itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName())
+                if (it is PoolSankaku) {
+                    itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName(), it.author.avatar)
+                } else {
+                    itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName())
+                }
             }
         }
     }
 
-    fun bind(data: BasePool?) {
+    fun bind(data: PoolBase?) {
         pool = data ?: return
         val res = container.context.resources
         poolName.text = data.getPoolName()
         poolIdCount.text = String.format(res.getString(R.string.pool_info_id_and_count), data.getPoolId(), data.getPostCount())
         poolDescription.text = data.getPoolDescription()
         poolDate.text = data.getPoolDate()
-        if (data !is PoolMoe) return
-        glide.load(String.format(res.getString(R.string.account_user_avatars), data.scheme, data.host, data.getCreatorId()))
-            .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
-            .into(userAvatar)
+        when (data) {
+            is PoolMoe -> {
+                glide.load(String.format(res.getString(R.string.account_user_avatars), data.scheme, data.host, data.getCreatorId()))
+                    .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
+                    .into(userAvatar)
+            }
+            is PoolSankaku -> {
+                glide.load(data.author.avatar)
+                    .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
+                    .into(userAvatar)
+            }
+        }
     }
 
     private fun toggleLayoutExpand(show: Boolean, view: View, container: View): Boolean {

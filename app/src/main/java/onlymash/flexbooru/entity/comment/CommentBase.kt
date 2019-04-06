@@ -1,6 +1,6 @@
 package onlymash.flexbooru.entity.comment
 
-abstract class BaseComment {
+abstract class CommentBase {
     abstract fun getPostId(): Int
     abstract fun getCommentId(): Int
     abstract fun getCommentBody(): String

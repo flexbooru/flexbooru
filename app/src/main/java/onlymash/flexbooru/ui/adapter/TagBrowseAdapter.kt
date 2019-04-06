@@ -21,6 +21,7 @@ import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
 
 class TagBrowseAdapter(private val tags: MutableList<TagFilter>,
+                       private val postType: Int,
                        private val itemListener: TagBrowseViewHolder.ItemListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         TagBrowseViewHolder.create(parent)
@@ -29,7 +30,7 @@ class TagBrowseAdapter(private val tags: MutableList<TagFilter>,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as TagBrowseViewHolder).apply {
-            bind(tags[position])
+            bind(tags[position], postType)
             setItemListener(itemListener)
         }
     }

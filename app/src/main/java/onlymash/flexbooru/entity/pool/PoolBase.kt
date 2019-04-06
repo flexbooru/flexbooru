@@ -1,6 +1,6 @@
 package onlymash.flexbooru.entity.pool
 
-abstract class BasePool {
+abstract class PoolBase {
     var scheme: String = ""
     var host: String = ""
     var keyword: String = ""

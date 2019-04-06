@@ -54,6 +54,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
     val networkStateGel = Transformations.switchMap(gelRepoResult) { it.networkState }
     val refreshStateGel = Transformations.switchMap(gelRepoResult) { it.refreshState }
 
+    private val sankakuRepoResult = map(commentAction) {
+        repo.getSankakuComments(it)
+    }
+    val commentsSankaku = Transformations.switchMap(sankakuRepoResult) { it.pagedList }
+    val networkStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.networkState }
+    val refreshStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.refreshState }
+
     val commentState = MediatorLiveData<CommentState>().apply {
         addSource(repo.commentState) {
             postValue(it)
@@ -100,6 +107,14 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
         gelRepoResult.value?.retry?.invoke()
     }
 
+    fun refreshSankaku() {
+        sankakuRepoResult.value?.refresh?.invoke()
+    }
+
+    fun retrySankaku() {
+        sankakuRepoResult.value?.retry?.invoke()
+    }
+
     fun createMoeComment(commentAction: CommentAction) {
         repo.createMoeComment(commentAction)
     }
@@ -122,5 +137,13 @@ class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
 
     fun deleteDanOneComment(commentAction: CommentAction) {
         repo.destroyDanOneComment(commentAction)
+    }
+
+    fun createSankakuComment(commentAction: CommentAction) {
+        repo.createSankakuComment(commentAction)
+    }
+
+    fun deleteSankakuComment(commentAction: CommentAction) {
+        repo.destroySankakuComment(commentAction)
     }
 }
