@@ -162,6 +162,9 @@
     <string name="tag_type_meta">Meta</string>
     <string name="tag_type_model">Model</string>
     <string name="tag_type_photo_set">Fotoserie</string>
+    <string name="tag_type_genre">Genre</string>
+    <string name="tag_type_studio">Studio</string>
+    <string name="tag_type_medium">Medium</string>
     <string name="tag_type_unknown">Onbekend</string>
     <string name="tag_order">Volgorde</string>
     <string name="tag_order_date">Datum</string>

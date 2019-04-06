@@ -162,6 +162,9 @@
     <string name="tag_type_meta">Metadane</string>
     <string name="tag_type_model">Model</string>
     <string name="tag_type_photo_set">Zestaw zdjęć</string>
+    <string name="tag_type_genre">Genre</string>
+    <string name="tag_type_studio">Studio</string>
+    <string name="tag_type_medium">Medium</string>
     <string name="tag_type_unknown">Nieznany</string>
     <string name="tag_order">Kolejność</string>
     <string name="tag_order_date">Data</string>

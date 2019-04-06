@@ -162,6 +162,9 @@
     <string name="tag_type_meta">Metadatos</string>
     <string name="tag_type_model">Modelo</string>
     <string name="tag_type_photo_set">Conjunto de fotos</string>
+    <string name="tag_type_genre">Genre</string>
+    <string name="tag_type_studio">Studio</string>
+    <string name="tag_type_medium">Medium</string>
     <string name="tag_type_unknown">Desconocido</string>
     <string name="tag_order">Orden</string>
     <string name="tag_order_date">Fecha</string>
