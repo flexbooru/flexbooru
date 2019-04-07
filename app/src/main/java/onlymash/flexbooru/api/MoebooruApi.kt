@@ -22,6 +22,8 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.VoteMoe
 import onlymash.flexbooru.entity.artist.ArtistMoe
@@ -53,11 +55,15 @@ interface MoebooruApi {
             }
 
             val interceptor = Interceptor { chain ->
-                val requests =  chain.request().newBuilder()
+                val builder =  chain.request()
+                    .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
                     .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-                    .build()
-                chain.proceed(requests)
+                CookieManager.getCookieByBooruUid(Settings.instance().activeBooruUid)?.cookie?.let {
+                    builder.addHeader("Cookie", it)
+                }
+
+                chain.proceed(builder.build())
             }
 
             val client = OkHttpClient.Builder().apply {
@@ -66,6 +72,7 @@ interface MoebooruApi {
                 writeTimeout(15, TimeUnit.SECONDS)
                     .addInterceptor(interceptor)
                     .addInterceptor(logger)
+                    .addInterceptor(CloudflareInterceptor())
             }
                 .build()
 

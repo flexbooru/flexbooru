@@ -32,6 +32,8 @@ import com.bumptech.glide.request.RequestOptions
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.util.UserAgent
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
@@ -56,11 +58,15 @@ class FlexAppGlideModule : AppGlideModule() {
             val scheme = url.scheme()
             var host = url.host()
             if (host.startsWith("cs.")) host = host.replaceFirst("cs.", "beta.")
-            it.proceed(it.request().newBuilder()
+            val builder = it.request()
+                .newBuilder()
                 .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                 .removeHeader(Constants.USER_AGENT_KEY)
                 .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-                .build())
+            CookieManager.getCookieByBooruUid(Settings.instance().activeBooruUid)?.cookie?.let { cookie ->
+                builder.addHeader("Cookie", cookie)
+            }
+            it.proceed(builder.build())
         }
         val client = OkHttpClient.Builder().apply {
             connectTimeout(15, TimeUnit.SECONDS)

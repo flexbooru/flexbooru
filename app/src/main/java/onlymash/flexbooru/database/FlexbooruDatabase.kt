@@ -29,9 +29,9 @@ import onlymash.flexbooru.entity.post.*
 
 @Database(entities = [
     (PostMoe::class), (PostDan::class), (PostDanOne::class), (PostGel::class), (PostSankaku::class),
-    (Booru::class), (User::class), (Suggestion::class),
+    (Booru::class), (User::class), (Suggestion::class), (Cookie::class),
     (TagFilter::class), (Muzei::class)],
-    version = 21, exportSchema = true)
+    version = 22, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -141,6 +141,14 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_21_22 by lazy {
+            object : Migration(21, 22) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `cookies` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `cookie` TEXT, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                    database.execSQL("CREATE UNIQUE INDEX `index_cookies_booru_uid` ON `cookies` (`booru_uid`)")
+                }
+            }
+        }
         val instance by lazy {
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
@@ -156,7 +164,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_17_18,
                     MIGRATION_18_19,
                     MIGRATION_19_20,
-                    MIGRATION_20_21
+                    MIGRATION_20_21,
+                    MIGRATION_21_22
                 )
                 .build()
         }
@@ -165,6 +174,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
         val tagFilterDao get() = instance.tagFilterDao()
         val muzeiDao get() = instance.muzeiDao()
         val suggestionDao get() = instance.suggestionDao()
+        val cookieDao get() = instance.cookieDao()
     }
 
     abstract fun postDanOneDao(): PostDanOneDao
@@ -180,4 +190,5 @@ abstract class FlexbooruDatabase : RoomDatabase() {
 
     abstract fun tagFilterDao(): TagFilterDao
     abstract fun muzeiDao(): MuzeiDao
+    abstract fun cookieDao(): CookieDao
 }
