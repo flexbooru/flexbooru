@@ -67,6 +67,7 @@ import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
 import onlymash.flexbooru.util.FileUtil
 import onlymash.flexbooru.util.downloadPost
+import onlymash.flexbooru.util.fileName
 import onlymash.flexbooru.util.isImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
@@ -752,7 +753,7 @@ class BrowseActivity : AppCompatActivity() {
                         path.delete()
                         path.mkdirs()
                     }
-                    val fileName = URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), "UTF-8")
+                    val fileName = URLDecoder.decode(url, "UTF-8").fileName()
                     val file = File(path, fileName)
                     if (file.exists()) file.delete()
                     val handler = Handler()
