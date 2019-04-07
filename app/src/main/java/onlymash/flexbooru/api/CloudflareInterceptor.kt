@@ -41,7 +41,7 @@ class CloudflareInterceptor : Interceptor {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun resolveWithWebView(request: Request): Request {
-        // We need to lock this thread until the WebView finds the challenge solution url, because
+        // We need to lock this thread until the WebView finds the challenge cookie, because
         // OkHttp doesn't support asynchronous interceptors.
         val latch = CountDownLatch(1)
         var webView: WebView? = null
@@ -55,16 +55,16 @@ class CloudflareInterceptor : Interceptor {
                     override fun onPageFinished(view: WebView?, url: String?) {
                         super.onPageFinished(view, url)
                         cookie = CookieManager.getInstance().getCookie(url) ?: ""
-                        latch.countDown()
+                        if(cookie.contains("cf_clearance")) latch.countDown()
                     }
                 }
                 loadUrl(request.url().toString(), headers)
             }
         }
 
-        // Wait a reasonable amount of time to retrieve the solution. The minimum should be
+        // Wait a reasonable amount of time to retrieve the cookie. The minimum should be
         // around 4 seconds but it can take more due to slow networks or server issues.
-        latch.await(12, TimeUnit.SECONDS)
+        latch.await(15, TimeUnit.SECONDS)
 
         handler.post {
             webView?.apply {
