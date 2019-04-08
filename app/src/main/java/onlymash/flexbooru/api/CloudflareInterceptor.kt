@@ -58,6 +58,10 @@ class CloudflareInterceptor : Interceptor {
                         if(cookie.contains("cf_clearance")) latch.countDown()
                     }
                 }
+                CookieManager.getInstance().apply {
+                    removeAllCookies {}
+                    flush()
+                }
                 loadUrl(request.url().toString(), headers)
             }
         }
