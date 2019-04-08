@@ -35,6 +35,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -118,6 +119,9 @@ fun Context.downloadPost(post: PostBase?) {
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
         if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
         addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")
+        CookieManager.getCookieByBooruUid(Settings.instance().activeBooruUid)?.cookie?.let { cookie ->
+            addRequestHeader("Cookie", cookie)
+        }
     }
     try {
         (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
