@@ -179,7 +179,10 @@ class BrowseActivity : AppCompatActivity() {
             Handler().postDelayed({
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
-                    playerHolder.start(uri = Uri.parse(url), playerView = playerView)
+                    currentPlayerView = playerView
+                    val uri = Uri.parse(url)
+                    currentVideoUri = uri
+                    playerHolder.start(uri = uri, playerView = playerView)
                 }
             }, 300)
         }
@@ -196,12 +199,14 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private val playerHolder: PlayerHolder by lazy { PlayerHolder(this) }
+    private var currentPlayerView: PlayerView? = null
+    private var currentVideoUri: Uri? = null
 
     private lateinit var pagerAdapter: BrowsePagerAdapter
 
     private val pagerChangeListener = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) {
-            playerHolder.stop()
+            currentPlayerView?.onPause()
         }
 
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -253,8 +258,13 @@ class BrowseActivity : AppCompatActivity() {
             if (url.isNotEmpty() && !url.isImage()) {
                 val playerView: Any? = pager_browse.findViewWithTag(String.format("player_%d", position))
                 if (playerView is PlayerView) {
-                    playerHolder.start(uri = Uri.parse(url), playerView = playerView)
+                    currentPlayerView = playerView
+                    val uri = Uri.parse(url)
+                    currentVideoUri = uri
+                    playerHolder.start(uri = uri, playerView = playerView)
                 }
+            } else {
+                currentPlayerView = null
             }
             setCurrentVoteItemIcon()
         }
@@ -878,6 +888,15 @@ class BrowseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finishAfterTransition()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentPlayerView?.let { playerView ->
+            currentVideoUri?.let { uri ->
+                playerHolder.start(uri, playerView)
+            }
+        }
     }
 
     override fun onStop() {
