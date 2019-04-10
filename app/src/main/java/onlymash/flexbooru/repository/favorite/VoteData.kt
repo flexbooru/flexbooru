@@ -28,7 +28,6 @@ import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.post.PostSankaku
-import onlymash.flexbooru.util.HashUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException

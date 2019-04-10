@@ -5,7 +5,6 @@ import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.entity.tag.TagSankaku
 import java.io.IOException
 
 class SuggestionData(private val danbooruApi: DanbooruApi,

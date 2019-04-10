@@ -8,7 +8,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.VoteDan
 import onlymash.flexbooru.entity.VoteSankaku
 import onlymash.flexbooru.entity.comment.CommentResponse
 import onlymash.flexbooru.entity.comment.CommentSankaku

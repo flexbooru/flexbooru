@@ -50,7 +50,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode verCode
-        versionName "0.6.4"
+        versionName "0.6.5"
         versionNameSuffix verNameSuffix
         multiDexEnabled true
         resConfigs "en", "zh-rCN", "zh-rHK", "zh-rTW",
@@ -111,19 +111,19 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //Room requires
     implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5"
-    implementation 'androidx.annotation:annotation:1.1.0-alpha02'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.annotation:annotation:1.1.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha03'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
     implementation "androidx.room:room-runtime:$room"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.0'
+    implementation 'android.arch.work:work-runtime-ktx:1.0.1'
     implementation 'com.google.android.material:material:1.1.0-alpha05'
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
@@ -157,8 +157,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
     testImplementation 'junit:junit:4.13-beta-2'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
 }
 
 apply plugin: 'com.google.gms.google-services'
