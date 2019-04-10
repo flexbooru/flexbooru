@@ -566,7 +566,7 @@ class BrowseActivity : AppCompatActivity() {
             is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             is PostGel -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
-            is PostSankaku -> String.format("%s//%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
+            is PostSankaku -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
             else -> ""
         }
         if (url.isNotEmpty()) {
