@@ -19,7 +19,6 @@ import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
@@ -208,10 +207,9 @@ class SearchBar @JvmOverloads constructor(
 
     private fun fetchSuggestions() {
         searchTag?.let {
-            val mainHandler = Handler()
             ioExecutor.execute {
                 suggestionsOnline = suggestionsRepo.fetchSuggestions(type, it)
-                mainHandler.post {
+                handler?.post {
                     showSuggestion()
                     suggestionList.adapter = suggestionOnlineAdapter
                     suggestionOnlineAdapter.notifyDataSetChanged()
