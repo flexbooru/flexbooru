@@ -1,1 +1,4 @@
-theme: jekyll-theme-minimal
+title: Flexbooru
+email: im@fiepi.me
+description: A booru client for Android, support Danbooru, Moebooru and Gelbooru.
+remote_theme: pmarsceill/just-the-docs
