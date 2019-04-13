@@ -27,12 +27,10 @@
                 android:key="about_app_translation"
                 android:title="@string/about_app_translation"
                 android:summary="@string/about_app_translation_summary"
-                android:icon="@drawable/ic_translate_24dp"
                 app:iconSpaceReserved="true"/>
         <moe.shizuku.preference.Preference
                 android:key="about_app_rate"
                 android:title="@string/about_app_rate"
-                android:icon="@drawable/ic_thumbs_up_down_24dp"
                 app:iconSpaceReserved="true"/>
     </moe.shizuku.preference.PreferenceCategory>
     <moe.shizuku.preference.PreferenceCategory android:title="@string/about_author"
@@ -46,7 +44,6 @@
                 android:key="about_author_email"
                 android:title="@string/about_author_email"
                 android:summary="im@fiepi.me"
-                android:icon="@drawable/ic_email_24dp"
                 app:iconSpaceReserved="true"/>
     </moe.shizuku.preference.PreferenceCategory>
 
@@ -66,7 +63,6 @@
                 android:key="about_feedback_email"
                 android:title="@string/about_feedback_email"
                 android:summary="feedback@fiepi.me"
-                android:icon="@drawable/ic_email_24dp"
                 app:iconSpaceReserved="true"/>
     </moe.shizuku.preference.PreferenceCategory>
     <moe.shizuku.preference.PreferenceCategory android:title="@string/about_donation"
