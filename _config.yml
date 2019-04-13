@@ -2,3 +2,8 @@ title: Flexbooru
 email: im@fiepi.me
 description: A booru client for Android, support Danbooru, Moebooru and Gelbooru.
 remote_theme: pmarsceill/just-the-docs
+search_enabled: false
+# Aux links for the upper right navigation
+aux_links:
+    "View on GitHub":
+      - "https://github.com/flexbooru/flexbooru"
