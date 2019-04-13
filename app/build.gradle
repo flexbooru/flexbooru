@@ -142,6 +142,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    implementation 'com.squareup.okio:okio:2.2.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.github.bumptech.glide:glide:$glide"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide"

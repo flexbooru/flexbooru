@@ -104,9 +104,8 @@ class VoteData(private val danbooruApi: DanbooruApi,
         ).enqueue(object : Callback<VoteDan> {
             override fun onFailure(call: Call<VoteDan>, t: Throwable) {
                 if (t is HttpException) {
-                    val data = t.response().errorBody()
                     if (t.code() == 500){
-                        voteCallback?.onFailed(data.toString())
+                        voteCallback?.onFailed(t.response()?.message() ?: t.message())
                     } else {
                         voteCallback?.onFailed(t.message())
                     }
