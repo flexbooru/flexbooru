@@ -50,6 +50,7 @@
     <string name="msg_not_supported">不支援</string>
     <string name="msg_press_twice_to_exit">按兩次以離開。</string>
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
+    <string name="msg_invalid_path">Invalid path</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
     <string name="post_download">下載</string>
@@ -132,6 +133,7 @@
     <string name="settings_muzei_limit">Muzei 限制</string>
     <string name="settings_browse_size">瀏覽大小</string>
     <string name="settings_download_size">下載大小</string>
+    <string name="settings_download_path">Download path</string>
     <string name="settings_muzei_size">Muzei 大小</string>
     <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">較大</string>
