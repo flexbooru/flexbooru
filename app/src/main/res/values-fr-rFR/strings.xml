@@ -50,6 +50,7 @@
     <string name="msg_not_supported">Non supporté</string>
     <string name="msg_press_twice_to_exit">Appuyez deux fois pour quitter.</string>
     <string name="msg_file_save_success">Le fichier a été sauvé en tant que %s</string>
+    <string name="msg_invalid_path">Invalid path</string>
     <string name="post_expand_tag_filter">Développez le filtre de balise</string>
     <string name="post_add_search_to_muzei">%s a été sauvé dans Muzei.</string>
     <string name="post_download">Téléchargement</string>
@@ -132,6 +133,7 @@
     <string name="settings_muzei_limit">Limite de Muzei</string>
     <string name="settings_browse_size">Parcourir la taille</string>
     <string name="settings_download_size">Taille du téléchargement</string>
+    <string name="settings_download_path">Download path</string>
     <string name="settings_muzei_size">Taille de Muzei</string>
     <string name="settings_post_size_sample">Exemple</string>
     <string name="settings_post_size_larger">Plus grand</string>
