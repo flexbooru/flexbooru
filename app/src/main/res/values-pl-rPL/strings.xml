@@ -50,6 +50,7 @@
     <string name="msg_not_supported">Nieobsługiwany</string>
     <string name="msg_press_twice_to_exit">Naciśnij ponownie, aby wyjść.</string>
     <string name="msg_file_save_success">Plik został zapisany jako %s</string>
+    <string name="msg_invalid_path">Invalid path</string>
     <string name="post_expand_tag_filter">Poszerz filtr tagów</string>
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
     <string name="post_download">Pobierz</string>
@@ -132,6 +133,7 @@
     <string name="settings_muzei_limit">Muzei limit</string>
     <string name="settings_browse_size">Rozmiar przy przeglądaniu</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
+    <string name="settings_download_path">Download path</string>
     <string name="settings_muzei_size">Rozmiar Muzei</string>
     <string name="settings_post_size_sample">Przykład</string>
     <string name="settings_post_size_larger">Większe</string>
