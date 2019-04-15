@@ -84,6 +84,11 @@
             android:title="@string/settings_download_size"
             app:iconSpaceReserved="true" />
 
+    <moe.shizuku.preference.Preference
+            android:key="settings_download_path"
+            android:title="@string/settings_download_path"
+            app:iconSpaceReserved="true"/>
+
     <!--suppress AndroidElementNotAllowed -->
     <moe.shizuku.preference.SimpleMenuPreference
             android:key="settings_muzei_limit"

@@ -17,7 +17,10 @@ package onlymash.flexbooru
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.net.toUri
 import onlymash.flexbooru.App.Companion.app
+import java.io.File
+import java.net.URI
 
 class Settings(private val sp: SharedPreferences) {
     companion object {
@@ -36,6 +39,7 @@ class Settings(private val sp: SharedPreferences) {
         const val MUZEI_LIMIT_KEY = "settings_muzei_limit"
         const val BROWSE_SIZE_KEY = "settings_browse_size"
         const val DOWNLOAD_SIZE_KEY = "settings_download_size"
+        const val DOWNLOAD_PATH_KEY = "settings_download_path"
         const val MUZEI_SIZE_KEY = "settings_muzei_size"
         const val POST_SIZE_SAMPLE = "sample"
         const val POST_SIZE_LARGER = "larger"
@@ -105,4 +109,8 @@ class Settings(private val sp: SharedPreferences) {
     var showInfoBar: Boolean
         get() = sp.getBoolean(SHOW_INFO_BAR_KEY, false)
         set(value) = sp.edit().putBoolean(SHOW_INFO_BAR_KEY, value).apply()
+
+    var downloadDirPath: String?
+        get() = sp.getString(DOWNLOAD_PATH_KEY, "")
+        set(value) = sp.edit().putString(DOWNLOAD_PATH_KEY, value).apply()
 }

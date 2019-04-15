@@ -25,7 +25,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
@@ -753,18 +752,9 @@ class BrowseActivity : AppCompatActivity() {
 
                 }
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        String.format("%s/%s",
-                            getString(R.string.app_name),
-                            "save"))
-                    if (!path.exists()) {
-                        path.mkdirs()
-                    } else if (path.isFile) {
-                        path.delete()
-                        path.mkdirs()
-                    }
+                    val dir = Path.getSaveDir()
                     val fileName = URLDecoder.decode(url, "UTF-8").fileName()
-                    val file = File(path, fileName)
+                    val file = File(dir, fileName)
                     if (file.exists()) file.delete()
                     val handler = Handler()
                     Thread {

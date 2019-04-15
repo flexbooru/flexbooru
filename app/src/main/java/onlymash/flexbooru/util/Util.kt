@@ -30,9 +30,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.customview.widget.ViewDragHelper
 import androidx.drawerlayout.widget.DrawerLayout
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.Path
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
@@ -107,15 +109,13 @@ fun Context.downloadPost(post: PostBase?) {
     if (url.isEmpty()) return
     var fileName = URLDecoder.decode(url.fileName(), "UTF-8")
     if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
-    val path = File(Environment.getExternalStoragePublicDirectory(
-        Environment.DIRECTORY_PICTURES),
-        String.format("%s/%s/%s", getString(R.string.app_name), host, fileName))
+    val file = Path.getDownloadFilePath(host, fileName)
     val uri = Uri.parse(url)
     val request = DownloadManager.Request(uri).apply {
         setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         setTitle(String.format("%s - %d", host, id))
         setDescription(fileName)
-        setDestinationUri(Uri.fromFile(path))
+        setDestinationUri(file.toUri())
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
         if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
         addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")

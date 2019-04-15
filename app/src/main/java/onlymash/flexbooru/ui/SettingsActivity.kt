@@ -15,15 +15,11 @@
 
 package onlymash.flexbooru.ui
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
 
-class SettingsActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,23 +28,5 @@ class SettingsActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceCha
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        App.app.sp.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        when (key) {
-            Settings.THEME_MODE_KEY -> {
-                val mode = Settings.instance().themeMode
-                AppCompatDelegate.setDefaultNightMode(mode)
-                if (mode != AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
-                    recreate()
-                }
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        App.app.sp.unregisterOnSharedPreferenceChangeListener(this)
     }
 }
