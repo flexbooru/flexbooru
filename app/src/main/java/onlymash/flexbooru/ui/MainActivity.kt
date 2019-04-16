@@ -323,8 +323,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private val headerItemClickListener = object : AccountHeader.OnAccountHeaderListener {
         override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
-            val uid = profile.identifier
-            when (uid) {
+            when (val uid = profile.identifier) {
                 HEADER_ITEM_ID_BOORU_MANAGE -> {
                     startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                 }

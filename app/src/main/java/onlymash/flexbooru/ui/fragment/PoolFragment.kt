@@ -121,7 +121,7 @@ class PoolFragment : ListFragment() {
             }
         }
     override val searchBarHelper: SearchBarHelper
-        get() = object : ListFragment.SearchBarHelper {
+        get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {}
             override fun onApplySearch(query: String) {
                 if (type < 0) return

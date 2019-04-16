@@ -17,10 +17,7 @@ package onlymash.flexbooru
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.net.toUri
 import onlymash.flexbooru.App.Companion.app
-import java.io.File
-import java.net.URI
 
 class Settings(private val sp: SharedPreferences) {
     companion object {

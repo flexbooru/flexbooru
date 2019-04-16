@@ -49,7 +49,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            key = it.getString(PreferenceDialogFragment.ARG_KEY, "")
+            key = it.getString(ARG_KEY, "")
         }
     }
 

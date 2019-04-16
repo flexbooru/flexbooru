@@ -59,7 +59,7 @@ class CommentActivity : AppCompatActivity() {
             context.startActivity(Intent(context, CommentActivity::class.java).apply {
                 if (postId > 0) {
                     putExtra(POST_ID_KEY, postId)
-                } else if (!username.isEmpty()) {
+                } else if (username.isNotEmpty()) {
                     putExtra(USER_NAME_KEY, username)
                 }
             })
@@ -107,7 +107,7 @@ class CommentActivity : AppCompatActivity() {
             minLines = 6
             maxLines = 10
             hint = getString(R.string.comment_hint)
-            if (!action.body.isEmpty()) {
+            if (action.body.isNotEmpty()) {
                 setText(action.body)
             }
         }
@@ -116,7 +116,7 @@ class CommentActivity : AppCompatActivity() {
             .setTitle("Post ${action.post_id}")
             .setPositiveButton(R.string.comment_send) { _, _ ->
                 val str = (editText.text ?: "").toString().trim()
-                if (!str.isEmpty()) {
+                if (str.isNotEmpty()) {
                     action.body = str
                     when (type) {
                         Constants.TYPE_DANBOORU -> commentViewModel.createDanComment(action)
@@ -199,7 +199,7 @@ class CommentActivity : AppCompatActivity() {
                     true
                 }
             }
-        } else if (!name.isEmpty()) {
+        } else if (name.isNotEmpty()) {
             when (type) {
                 Constants.TYPE_DANBOORU -> commentAction.query = name
                 Constants.TYPE_MOEBOORU,

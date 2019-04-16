@@ -39,7 +39,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
-import java.io.File
 import java.lang.IllegalArgumentException
 import java.net.URLDecoder
 import java.util.*

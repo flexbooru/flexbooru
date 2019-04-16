@@ -54,7 +54,7 @@ class VoteData(private val danbooruApi: DanbooruApi,
             score = vote.score,
             username = vote.username,
             passwordHash = vote.auth_key)
-            .enqueue(object : retrofit2.Callback<VoteMoe> {
+            .enqueue(object : Callback<VoteMoe> {
                 override fun onFailure(call: Call<VoteMoe>, t: Throwable) {
                     voteCallback?.onFailed(t.message.toString())
                 }

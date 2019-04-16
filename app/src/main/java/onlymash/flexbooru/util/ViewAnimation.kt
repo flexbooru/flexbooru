@@ -132,7 +132,7 @@ object ViewAnimation {
     }
 
     fun fadeIn(v: View) {
-        ViewAnimation.fadeIn(v, null)
+        fadeIn(v, null)
     }
 
     fun fadeIn(v: View, animListener: AnimListener?) {
@@ -152,7 +152,7 @@ object ViewAnimation {
     }
 
     fun fadeOut(v: View) {
-        ViewAnimation.fadeOut(v, null)
+        fadeOut(v, null)
     }
 
     fun fadeOut(v: View, animListener: AnimListener?) {
@@ -225,7 +225,7 @@ object ViewAnimation {
 
 
     fun showScale(v: View) {
-        ViewAnimation.showScale(v, null)
+        showScale(v, null)
     }
 
     fun showScale(v: View, animListener: AnimListener?) {
@@ -243,7 +243,7 @@ object ViewAnimation {
     }
 
     fun hideScale(v: View) {
-        ViewAnimation.fadeOut(v, null)
+        fadeOut(v, null)
     }
 
     fun hideScale(v: View, animListener: AnimListener?) {

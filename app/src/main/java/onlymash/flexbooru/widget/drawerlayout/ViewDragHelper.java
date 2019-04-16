@@ -50,7 +50,7 @@ public class ViewDragHelper {
     /**
      * Edge flag indicating that the left edge should be affected.
      */
-    public static final int EDGE_LEFT = 1 << 0;
+    public static final int EDGE_LEFT = 1;
 
     /**
      * Edge flag indicating that the right edge should be affected.
@@ -75,7 +75,7 @@ public class ViewDragHelper {
     /**
      * Indicates that a check should occur along the horizontal axis
      */
-    public static final int DIRECTION_HORIZONTAL = 1 << 0;
+    public static final int DIRECTION_HORIZONTAL = 1;
 
     /**
      * Indicates that a check should occur along the vertical axis
@@ -312,20 +312,12 @@ public class ViewDragHelper {
     /**
      * Interpolator defining the animation curve for mScroller
      */
-    private static final Interpolator sInterpolator = new Interpolator() {
-        @Override
-        public float getInterpolation(float t) {
-            t -= 1.0f;
-            return t * t * t * t * t + 1.0f;
-        }
+    private static final Interpolator sInterpolator = t -> {
+        t -= 1.0f;
+        return t * t * t * t * t + 1.0f;
     };
 
-    private final Runnable mSetIdleRunnable = new Runnable() {
-        @Override
-        public void run() {
-            setDragState(STATE_IDLE);
-        }
-    };
+    private final Runnable mSetIdleRunnable = () -> setDragState(STATE_IDLE);
 
     /**
      * Factory method to create a new ViewDragHelper.
@@ -364,13 +356,6 @@ public class ViewDragHelper {
      */
     private ViewDragHelper(@NonNull Context context, @NonNull ViewGroup forParent,
                            @NonNull Callback cb) {
-        if (forParent == null) {
-            throw new IllegalArgumentException("Parent view may not be null");
-        }
-        if (cb == null) {
-            throw new IllegalArgumentException("Callback may not be null");
-        }
-
         mParentView = forParent;
         mCallback = cb;
 

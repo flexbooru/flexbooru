@@ -149,7 +149,7 @@ class TagFragment : ListFragment() {
             }
         }
     override val searchBarHelper: SearchBarHelper
-        get() = object : ListFragment.SearchBarHelper {
+        get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (menuItem.itemId) {
                     R.id.action_tag_order_date -> {

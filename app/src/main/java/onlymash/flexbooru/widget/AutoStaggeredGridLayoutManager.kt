@@ -70,7 +70,7 @@ class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : Stagge
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
         if (columnSizeChanged && columnSize > 0) {
-            val totalSpace: Int = if (orientation == StaggeredGridLayoutManager.VERTICAL) {
+            val totalSpace: Int = if (orientation == VERTICAL) {
                 if (View.MeasureSpec.EXACTLY != View.MeasureSpec.getMode(widthSpec)) {
                     throw IllegalStateException("RecyclerView need a fixed width for AutoStaggeredGridLayoutManager")
                 }

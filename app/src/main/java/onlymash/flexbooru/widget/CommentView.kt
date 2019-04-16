@@ -37,13 +37,13 @@ class CommentView @JvmOverloads constructor(
     private fun getComments(body: String): MutableList<Comment> {
         val comments: MutableList<Comment> = mutableListOf()
         body.split("[/quote]").forEach {
-            if (!it.contains("[quote]") && !it.isEmpty()) {
+            if (!it.contains("[quote]") && it.isNotEmpty()) {
                 comments.add(Comment(text = it, type = 0))
             } else {
                 it.split("[quote]").forEachIndexed { index, s ->
-                    if (index == 0 && !s.isEmpty()) {
+                    if (index == 0 && s.isNotEmpty()) {
                         comments.add(Comment(text = s, type = 0))
-                    } else if(index == 1 && !s.isEmpty()) {
+                    } else if(index == 1 && s.isNotEmpty()) {
                         comments.add(Comment(text = s, type = 1))
                     }
                 }
@@ -74,8 +74,9 @@ class CommentView @JvmOverloads constructor(
     private fun addComment(comment: String) {
         val margin = context.resources.getDimensionPixelSize(R.dimen.spacing_medium)
         val textView = TextView(context).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+            layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT).apply {
                 setMargins(margin, margin, margin, margin)
             }
             setTextIsSelectable(true)
@@ -91,13 +92,14 @@ class CommentView @JvmOverloads constructor(
     private fun addQuote(quote: String) {
         val margin = context.resources.getDimensionPixelSize(R.dimen.spacing_medium)
         val layout = FrameLayout(context).apply {
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+            LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT).apply {
                 setBackgroundColor(ContextCompat.getColor(context, R.color.background_quote))
             }
         }
         val textView = TextView(context).apply {
-            layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+            layoutParams = LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT).apply {
                 setMargins(margin * 2, margin, margin * 2, margin)
             }

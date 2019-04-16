@@ -113,7 +113,7 @@ class ArtistFragment : ListFragment() {
         }
 
     override val searchBarHelper: SearchBarHelper
-        get() = object : ListFragment.SearchBarHelper {
+        get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (menuItem.itemId) {
                     R.id.action_artist_order_default -> {

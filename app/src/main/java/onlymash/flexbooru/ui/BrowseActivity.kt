@@ -391,8 +391,7 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun getCurrentPostId(): Int {
-        val post = getCurrentPost()
-        return when (post) {
+        return when (val post = getCurrentPost()) {
             is PostBase -> post.getPostId()
             else -> -1
         }
@@ -569,8 +568,7 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun shareLink() {
-        val post = getCurrentPost()
-        val url = when (post) {
+        val url = when (val post = getCurrentPost()) {
             is PostDan -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
             is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
@@ -627,8 +625,7 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun setCurrentVoteItemIcon() {
-        val post = getCurrentPost()
-        when (post) {
+        when (val post = getCurrentPost()) {
             is PostDan -> {
                 var exist = false
                 postsDanFav?.forEach {

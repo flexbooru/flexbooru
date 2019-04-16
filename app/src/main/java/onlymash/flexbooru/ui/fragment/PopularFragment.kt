@@ -229,7 +229,7 @@ class PopularFragment : ListFragment() {
             }
         }
     override val searchBarHelper: SearchBarHelper
-        get() = object : ListFragment.SearchBarHelper {
+        get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 when (type) {
                     Constants.TYPE_DANBOORU -> {
@@ -362,7 +362,7 @@ class PopularFragment : ListFragment() {
             }
 
             override fun onApplySearch(query: String) {
-                if (!query.isEmpty()) SearchActivity.startActivity(requireContext(), query)
+                if (query.isNotEmpty()) SearchActivity.startActivity(requireContext(), query)
             }
         }
 

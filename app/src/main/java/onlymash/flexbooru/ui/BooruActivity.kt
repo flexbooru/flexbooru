@@ -140,8 +140,7 @@ class BooruActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             Constants.REQUEST_EDIT_CODE -> {
-                val result = data?.getStringExtra(Constants.EXTRA_RESULT_KEY)
-                when (result) {
+                when (data?.getStringExtra(Constants.EXTRA_RESULT_KEY)) {
                     Constants.RESULT_DELETE -> {
 
                     }

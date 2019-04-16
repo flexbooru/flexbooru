@@ -22,6 +22,6 @@ import onlymash.flexbooru.R
 abstract class TransparentBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.TransparentBottomSheetDialogTheme)
+        setStyle(STYLE_NORMAL, R.style.TransparentBottomSheetDialogTheme)
     }
 }

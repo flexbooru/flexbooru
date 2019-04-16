@@ -184,7 +184,7 @@ class PostFragment : ListFragment() {
     private lateinit var tagFilterViewModel: TagFilterViewModel
 
     override val searchBarHelper: SearchBarHelper
-        get() = object : ListFragment.SearchBarHelper {
+        get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 if (menuItem.itemId == R.id.action_expand_tag_filter) {
                     when {
@@ -197,7 +197,7 @@ class PostFragment : ListFragment() {
                 }
             }
             override fun onApplySearch(query: String) {
-                if (!query.isEmpty() && query != search.keyword) SearchActivity.startActivity(requireContext(), query)
+                if (query.isNotEmpty() && query != search.keyword) SearchActivity.startActivity(requireContext(), query)
             }
         }
 

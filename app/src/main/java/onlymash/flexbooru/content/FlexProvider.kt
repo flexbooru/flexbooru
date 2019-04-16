@@ -35,7 +35,7 @@ class FlexProvider : FileProvider() {
          * */
         fun getUriFromFile(context: Context, file: File): Uri =
             when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> FileProvider.getUriForFile(
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> getUriForFile(
                     context,
                     context.applicationContext.packageName + ".onlymash",
                     file)
