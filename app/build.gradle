@@ -98,6 +98,9 @@ android {
     lintOptions {
         abortOnError false
     }
+//    packagingOptions {
+//        exclude 'META-INF/library-core_release.kotlin_module'
+//    }
 }
 
 File jsonFile = file('update.json')
@@ -142,8 +145,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
-    implementation 'com.squareup.okio:okio:2.2.2'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.okio:okio:2.3.0-SNAPSHOT'
+    implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
     implementation "com.github.bumptech.glide:glide:$glide"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide"
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
@@ -151,13 +154,10 @@ dependencies {
     implementation "com.tickaroo.tikxml:annotation:$tikxml"
     implementation "com.tickaroo.tikxml:core:$tikxml"
     implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml"
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
     kapt "com.tickaroo.tikxml:processor:$tikxml"
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
-    testImplementation 'junit:junit:4.13-beta-2'
+    testImplementation 'junit:junit:5.0-SNAPSHOT'
     androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
 }
