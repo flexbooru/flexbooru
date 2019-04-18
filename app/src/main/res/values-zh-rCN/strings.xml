@@ -57,6 +57,9 @@
     <string name="post_add_to_fav">添加到收藏</string>
     <string name="msg_download_requires_storage_permission">下载需要存储权限。</string>
     <string name="msg_download_must_enable">请启用系统下载管理器。</string>
+    <string name="msg_path_denied">Save failed! No assess to the current path.</string>
+    <string name="msg_download_failed">Download failed</string>
+    <string name="msg_download_complete">Download complete</string>
     <string name="popular_day">日</string>
     <string name="popular_week">周</string>
     <string name="popular_month">月</string>
