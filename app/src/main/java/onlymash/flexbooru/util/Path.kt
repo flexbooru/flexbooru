@@ -122,15 +122,7 @@ fun Activity.getSaveUri(fileName: String): Uri? {
             fileName.getMimeType(),
             fileName)
     } else {
-        val dir = File(appUri.path + "/save")
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-        val file = File(dir, fileName)
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        file.toUri()
+        return null
     }
 }
 
@@ -171,14 +163,6 @@ fun Activity.getDownloadUri(host: String, fileName: String): Uri? {
             fileName.getMimeType(),
             fileName)
     } else {
-        val dir = File(appUri.path + '/' + host)
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-        val file = File(dir, fileName)
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        file.toUri()
+        return null
     }
 }

@@ -57,6 +57,7 @@ import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.util.getWidth
 import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
+import java.net.URLDecoder
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -574,7 +575,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
             val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = docUri.toSafeString()
+            Settings.instance().downloadDirPath = URLDecoder.decode(docUri.toString(), "UTF-8")
         }
     }
 }

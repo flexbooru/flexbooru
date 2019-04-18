@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import moe.shizuku.preference.Preference
 import onlymash.flexbooru.*
 import onlymash.flexbooru.util.getBasePath
+import java.net.URLDecoder
 
 class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -84,7 +85,7 @@ class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
             val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = docUri.toSafeString()
+            Settings.instance().downloadDirPath = URLDecoder.decode(docUri.toString(), "UTF-8")
         }
     }
 }

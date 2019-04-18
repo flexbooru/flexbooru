@@ -749,8 +749,8 @@ class BrowseActivity : AppCompatActivity() {
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     val fileName = URLDecoder.decode(url, "UTF-8").fileName()
                     val handler = Handler()
+                    val uri = getSaveUri(fileName) ?: return
                     Thread {
-                        val uri = getSaveUri(fileName) ?: return@Thread
                         var `is`: InputStream? = null
                         var os: OutputStream? = null
                         try {
@@ -932,7 +932,7 @@ class BrowseActivity : AppCompatActivity() {
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
             val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = docUri.toSafeString()
+            Settings.instance().downloadDirPath = URLDecoder.decode(docUri.toString(), "UTF-8")
         }
     }
 }
