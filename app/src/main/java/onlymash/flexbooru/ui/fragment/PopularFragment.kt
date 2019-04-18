@@ -36,10 +36,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.refreshable_list.*
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.*
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.*
@@ -54,7 +51,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
-import onlymash.flexbooru.util.downloadPost
+import onlymash.flexbooru.util.DownloadUtil
 import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
@@ -169,22 +166,27 @@ class PopularFragment : ListFragment() {
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                     when (which) {
                         0 -> {
-                            if (ContextCompat.checkSelfPermission(context,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                ) != PackageManager.PERMISSION_GRANTED) {
-                                Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
-                                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    )) {
-
-                                } else {
-                                    ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
-                                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    ), 1)
-                                }
+                            if (BuildInfo.isAtLeastQ()) {
+                                DownloadUtil.downloadPost(post, requireActivity())
                             } else {
-                                context.downloadPost(post)
+                                @Suppress("DEPRECATION")
+                                if (ContextCompat.checkSelfPermission(context,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    ) != PackageManager.PERMISSION_GRANTED) {
+                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
+                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        )) {
+
+                                    } else {
+                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
+                                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        ), 1)
+                                    }
+                                } else {
+                                    DownloadUtil.downloadPost(post, requireActivity())
+                                }
                             }
                         }
                         1 -> {

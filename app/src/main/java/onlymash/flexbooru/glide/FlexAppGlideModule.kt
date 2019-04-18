@@ -73,6 +73,7 @@ class FlexAppGlideModule : AppGlideModule() {
             readTimeout(15, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
+                .addInterceptor(ProgressInterceptor())
         }
             .build()
         val factory = OkHttpUrlLoader.Factory(client)

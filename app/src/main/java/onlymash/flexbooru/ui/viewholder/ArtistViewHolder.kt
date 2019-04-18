@@ -57,7 +57,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnLongClickListener {
             val text = artistName.text
             if (!text.isNullOrBlank()) {
-                App.app.clipboard.primaryClip = ClipData.newPlainText("Artist", text)
+                App.app.clipboard.setPrimaryClip(ClipData.newPlainText("Artist", text))
             }
             true
         }

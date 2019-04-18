@@ -62,7 +62,7 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemListener?.onClickItem(tagName.text.toString())
         }
         itemView.setOnLongClickListener {
-            App.app.clipboard.primaryClip = ClipData.newPlainText("Tag", tagName.text)
+            App.app.clipboard.setPrimaryClip(ClipData.newPlainText("Tag", tagName.text))
             true
         }
         tagExclude.setOnClickListener {

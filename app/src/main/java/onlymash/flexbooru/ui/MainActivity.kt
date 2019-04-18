@@ -15,11 +15,13 @@
 
 package onlymash.flexbooru.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.DocumentsContract
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
@@ -565,5 +567,14 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             return false
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
+            val uri = data?.data ?: return
+            val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
+            Settings.instance().downloadDirPath = docUri.toSafeString()
+        }
     }
 }

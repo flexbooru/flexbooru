@@ -19,6 +19,7 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
@@ -26,6 +27,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.DocumentsContract
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -50,7 +52,6 @@ import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.*
-import onlymash.flexbooru.content.FlexProvider
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.*
@@ -64,12 +65,9 @@ import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
-import onlymash.flexbooru.util.FileUtil
-import onlymash.flexbooru.util.downloadPost
-import onlymash.flexbooru.util.fileName
-import onlymash.flexbooru.util.isImage
+import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.DismissFrameLayout
-import java.io.File
+import java.io.*
 import java.net.URLDecoder
 
 class BrowseActivity : AppCompatActivity() {
@@ -499,13 +497,13 @@ class BrowseActivity : AppCompatActivity() {
                     } ?: startAccountConfigAndFinish()
                 }
                 R.id.action_browse_download -> {
-                    checkStoragePermissionAndAction(ACTION_DOWNLOAD)
+                    checkAndAction(ACTION_DOWNLOAD)
                 }
                 R.id.action_browse_set_as -> {
-                    checkStoragePermissionAndAction(ACTION_SAVE_SET_AS)
+                    checkAndAction(ACTION_SAVE_SET_AS)
                 }
                 R.id.action_browse_send -> {
-                    checkStoragePermissionAndAction(ACTION_SAVE_SEND)
+                    checkAndAction(ACTION_SAVE_SEND)
                 }
                 R.id.action_browse_share -> {
                     shareLink()
@@ -559,7 +557,7 @@ class BrowseActivity : AppCompatActivity() {
             if (id > 0) CommentActivity.startActivity(context = this, postId = id)
         }
         post_save.setOnClickListener {
-            checkStoragePermissionAndAction(ACTION_SAVE)
+            checkAndAction(ACTION_SAVE)
         }
         TooltipCompat.setTooltipText(post_tags, post_tags.contentDescription)
         TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
@@ -749,25 +747,35 @@ class BrowseActivity : AppCompatActivity() {
 
                 }
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    val dir = Path.getSaveDir()
                     val fileName = URLDecoder.decode(url, "UTF-8").fileName()
-                    val file = File(dir, fileName)
-                    if (file.exists()) file.delete()
                     val handler = Handler()
                     Thread {
-                        if (!FileUtil.copy(resource, file)) return@Thread
-                        App.app.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
+                        val uri = getSaveUri(fileName) ?: return@Thread
+                        var `is`: InputStream? = null
+                        var os: OutputStream? = null
+                        try {
+                            `is` = FileInputStream(resource)
+                            os = this@BrowseActivity.contentResolver.openOutputStream(uri)
+                            IOUtils.copy(`is`, os)
+                        } catch (_: IOException) {
+                            return@Thread
+                        } finally {
+                            IOUtils.closeQuietly(`is`)
+                            IOUtils.closeQuietly(os)
+                        }
                         handler.post {
                             when (action) {
-                                ACTION_SAVE -> Toast.makeText(this@BrowseActivity,
-                                    getString(R.string.msg_file_save_success, file.absolutePath),
-                                    Toast.LENGTH_LONG).show()
+                                ACTION_SAVE -> {
+                                    Toast.makeText(this@BrowseActivity,
+                                        getString(R.string.msg_file_save_success, uri.path),
+                                        Toast.LENGTH_LONG).show()
+                                }
                                 ACTION_SAVE_SET_AS -> {
                                     this@BrowseActivity.startActivity(Intent.createChooser(
                                         Intent(Intent.ACTION_ATTACH_DATA).apply {
                                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                             putExtra(Intent.EXTRA_MIME_TYPES, "image/*")
-                                            data = FlexProvider.getUriFromFile(this@BrowseActivity, file)
+                                            data = uri
                                         },
                                         getString(R.string.share_via)
                                     ))
@@ -777,7 +785,7 @@ class BrowseActivity : AppCompatActivity() {
                                         Intent(Intent.ACTION_SEND).apply {
                                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                             type = "image/*"
-                                            putExtra(Intent.EXTRA_STREAM, FlexProvider.getUriFromFile(this@BrowseActivity, file))
+                                            putExtra(Intent.EXTRA_STREAM, uri)
                                         },
                                         getString(R.string.share_via)
                                     ))
@@ -791,39 +799,38 @@ class BrowseActivity : AppCompatActivity() {
 
     private fun download() {
         val position = pager_browse.currentItem
+        var post: PostBase? = null
         when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                postsDan?.let {
-                    downloadPost(it[position])
-                }
+            Constants.TYPE_DANBOORU -> post = postsDan?.get(position)
+            Constants.TYPE_DANBOORU_ONE -> post = postsDanOne?.get(position)
+            Constants.TYPE_MOEBOORU -> post = postsMoe?.get(position)
+            Constants.TYPE_GELBOORU -> post = postsGel?.get(position)
+            Constants.TYPE_SANKAKU -> post = postsSankaku?.get(position)
+        }
+        DownloadUtil.downloadPost(post, this)
+    }
+
+    private fun checkAndAction(action: Int) {
+        if (BuildInfo.isAtLeastQ()) {
+            when (action) {
+                ACTION_DOWNLOAD -> download()
+                else -> saveAndAction(action)
             }
-            Constants.TYPE_DANBOORU_ONE -> {
-                postsDanOne?.let {
-                    downloadPost(it[position])
-                }
-            }
-            Constants.TYPE_MOEBOORU -> {
-                postsMoe?.let {
-                    downloadPost(it[position])
-                }
-            }
-            Constants.TYPE_GELBOORU -> {
-                postsGel?.let {
-                    downloadPost(it[position])
-                }
-            }
-            Constants.TYPE_SANKAKU -> {
-                postsSankaku?.let {
-                    downloadPost(it[position])
-                }
-            }
+        } else {
+            checkStoragePermissionAndAction(action)
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun checkStoragePermissionAndAction(action: Int) {
         if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)) {
-
+                Toast.makeText(this, getString(R.string.msg_download_requires_storage_permission), Toast.LENGTH_SHORT).show()
+                try {
+                    val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.data = Uri.parse("package:${applicationContext.packageName}")
+                    startActivity(intent)
+                } catch (_: ActivityNotFoundException) {}
             } else {
                 ActivityCompat.requestPermissions(this,  arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), action)
             }
@@ -918,5 +925,14 @@ class BrowseActivity : AppCompatActivity() {
                 return FavPostViewModel(loader) as T
             }
         })[FavPostViewModel::class.java]
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
+            val uri = data?.data ?: return
+            val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
+            Settings.instance().downloadDirPath = docUri.toSafeString()
+        }
     }
 }

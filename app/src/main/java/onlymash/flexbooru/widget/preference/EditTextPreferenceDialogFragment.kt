@@ -62,7 +62,7 @@ class EditTextPreferenceDialogFragment : PreferenceDialogFragment(), TextWatcher
             if (editTextPreference.inputType != InputType.TYPE_CLASS_TEXT) {
                 inputType = editTextPreference.inputType
             }
-            setSingleLine(editTextPreference.isSingleLine)
+            isSingleLine = editTextPreference.isSingleLine
             setSelectAllOnFocus(editTextPreference.isSelectAllOnFocus)
             hint = editTextPreference.hint
             setText(editTextPreference.text)

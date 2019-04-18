@@ -72,7 +72,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnLongClickListener {
             val text = tagName.text
             if (!text.isNullOrBlank()) {
-                App.app.clipboard.primaryClip = ClipData.newPlainText("Tag", text)
+                App.app.clipboard.setPrimaryClip(ClipData.newPlainText("Tag", text))
             }
             true
         }

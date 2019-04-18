@@ -26,15 +26,14 @@ import android.net.Uri
 import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.customview.widget.ViewDragHelper
 import androidx.drawerlayout.widget.DrawerLayout
 import onlymash.flexbooru.Constants
-import onlymash.flexbooru.Path
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
@@ -96,7 +95,7 @@ fun String.fileName(): String {
     }
 }
 
-fun Context.downloadPost(post: PostBase?) {
+fun Activity.downloadPost(post: PostBase?) {
     if (post == null) return
     var host = post.host
     val id = post.getPostId()
@@ -108,13 +107,12 @@ fun Context.downloadPost(post: PostBase?) {
     if (url.isEmpty()) return
     var fileName = URLDecoder.decode(url.fileName(), "UTF-8")
     if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
-    val file = Path.getDownloadFilePath(host, fileName)
-    val uri = Uri.parse(url)
-    val request = DownloadManager.Request(uri).apply {
+    val uri = getDownloadUri(host, fileName)
+    val request = DownloadManager.Request(Uri.parse(url)).apply {
         setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         setTitle(String.format("%s - %d", host, id))
         setDescription(fileName)
-        setDestinationUri(file.toUri())
+        setDestinationUri(uri)
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
         if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
         addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")
@@ -124,7 +122,7 @@ fun Context.downloadPost(post: PostBase?) {
     }
     try {
         (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
-    } catch (_: Exception) {
+    } catch (ex: Exception) {
         redirectToDownloadManagerSettings()
     }
 }

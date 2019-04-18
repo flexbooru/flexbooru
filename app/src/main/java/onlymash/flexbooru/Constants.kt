@@ -59,4 +59,6 @@ object Constants {
     const val PAGE_TYPE_KEY = "page_type"
     const val PAGE_TYPE_POST = 0
     const val PAGE_TYPE_POPULAR = 1
+
+    const val REQUEST_CODE_OPEN_DIRECTORY = 1
 }
