@@ -57,7 +57,7 @@
     <string name="post_add_to_fav">添加到收藏</string>
     <string name="msg_download_requires_storage_permission">下載需要儲存權限。</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
-    <string name="msg_path_denied">Save failed! No assess to the current path.</string>
+    <string name="msg_path_denied">Save failed! No access to the current path.</string>
     <string name="msg_download_failed">Download failed</string>
     <string name="msg_download_complete">Download complete</string>
     <string name="popular_day">日</string>
