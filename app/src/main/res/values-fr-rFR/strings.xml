@@ -57,6 +57,9 @@
     <string name="post_add_to_fav">Ajouter aux favoris</string>
     <string name="msg_download_requires_storage_permission">Le téléchargement requière un accès au stockage du téléphone.</string>
     <string name="msg_download_must_enable">Le gestionnaire de téléchargement est requis.</string>
+    <string name="msg_path_denied">Save failed! No assess to the current path.</string>
+    <string name="msg_download_failed">Download failed</string>
+    <string name="msg_download_complete">Download complete</string>
     <string name="popular_day">Jour</string>
     <string name="popular_week">Semaine</string>
     <string name="popular_month">Mois</string>
