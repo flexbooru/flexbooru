@@ -57,6 +57,9 @@
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
     <string name="msg_download_requires_storage_permission">Download requer permissão de armazenamento.</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
+    <string name="msg_path_denied">Save failed! No access to the current path.</string>
+    <string name="msg_download_failed">Download failed</string>
+    <string name="msg_download_complete">Download complete</string>
     <string name="popular_day">Dia</string>
     <string name="popular_week">Semana</string>
     <string name="popular_month">Mês</string>

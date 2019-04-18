@@ -57,6 +57,9 @@
     <string name="post_add_to_fav">Aan favorieten toevoegen</string>
     <string name="msg_download_requires_storage_permission">Downloaden vereist machtiging tot opslagruimte.</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
+    <string name="msg_path_denied">Save failed! No access to the current path.</string>
+    <string name="msg_download_failed">Download failed</string>
+    <string name="msg_download_complete">Download complete</string>
     <string name="popular_day">Dag</string>
     <string name="popular_week">Week</string>
     <string name="popular_month">Maand</string>
