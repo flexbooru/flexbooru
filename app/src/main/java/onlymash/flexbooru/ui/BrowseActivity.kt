@@ -15,8 +15,6 @@
 
 package onlymash.flexbooru.ui
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -811,34 +809,9 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun checkAndAction(action: Int) {
-        if (BuildInfo.isAtLeastQ()) {
-            when (action) {
-                ACTION_DOWNLOAD -> download()
-                else -> saveAndAction(action)
-            }
-        } else {
-            checkStoragePermissionAndAction(action)
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun checkStoragePermissionAndAction(action: Int) {
-        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, getString(R.string.msg_download_requires_storage_permission), Toast.LENGTH_SHORT).show()
-                try {
-                    val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    intent.data = Uri.parse("package:${applicationContext.packageName}")
-                    startActivity(intent)
-                } catch (_: ActivityNotFoundException) {}
-            } else {
-                ActivityCompat.requestPermissions(this,  arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), action)
-            }
-        } else {
-            when (action) {
-                ACTION_DOWNLOAD -> download()
-                else -> saveAndAction(action)
-            }
+        when (action) {
+            ACTION_DOWNLOAD -> download()
+            else -> saveAndAction(action)
         }
     }
 
@@ -901,21 +874,6 @@ class BrowseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         playerHolder.release()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            ACTION_DOWNLOAD -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    download()
-                }
-            }
-            ACTION_SAVE, ACTION_SAVE_SET_AS, ACTION_SAVE_SEND -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    saveAndAction(requestCode)
-                }
-            }
-        }
     }
 
     @Suppress("UNCHECKED_CAST")

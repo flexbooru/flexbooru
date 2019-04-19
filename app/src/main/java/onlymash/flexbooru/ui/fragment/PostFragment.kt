@@ -16,7 +16,10 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.Manifest
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
@@ -229,27 +232,7 @@ class PostFragment : ListFragment() {
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                     when (which) {
                         0 -> {
-                            if (BuildInfo.isAtLeastQ()) {
-                                DownloadUtil.downloadPost(post, requireActivity())
-                            } else {
-                                @Suppress("DEPRECATION")
-                                if (ContextCompat.checkSelfPermission(context,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    ) != PackageManager.PERMISSION_GRANTED) {
-                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        )) {
-                                    } else {
-                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
-                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        ), 1)
-                                    }
-                                } else {
-                                    DownloadUtil.downloadPost(post, requireActivity())
-                                }
-                            }
+                            DownloadUtil.downloadPost(post, requireActivity())
                         }
                         1 -> {
                             if (type == Constants.TYPE_GELBOORU) {
