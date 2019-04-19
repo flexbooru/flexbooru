@@ -3,8 +3,10 @@ package onlymash.flexbooru.util
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
@@ -23,6 +25,7 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.net.URLDecoder
 import onlymash.flexbooru.R
+import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 
 class DownloadUtil(
     context: Context,
@@ -35,6 +38,7 @@ class DownloadUtil(
         private const val POST_ID_KEY = "post_id"
         private const val FILENAME_KEY = "filename"
         private const val PATH_KEY = "path"
+        const val EXT_DOWNLOADED = ":downloaded"
 
         internal fun downloadPost(post: PostBase?, activity: Activity) {
             if (post == null) return
@@ -82,7 +86,6 @@ class DownloadUtil(
         val notificationManager = getNotificationManager(channelId)
         val title = "$host - $id"
         val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
-        val downloadedNotificationBuilder = getDownloadedNotificationBuilder(title = title, channelId = channelId)
         var startTime = 0L
         var elapsedTime = 500L
         ProgressInterceptor.addListener(url, object : ProgressListener {
@@ -111,7 +114,6 @@ class DownloadUtil(
                     notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
                     return false
                 }
-
                 override fun onResourceReady(
                     resource: File?,
                     model: Any?,
@@ -120,14 +122,17 @@ class DownloadUtil(
                     isFirstResource: Boolean
                 ): Boolean {
                     ProgressInterceptor.removeListener(url)
-                    notificationManager.notify(id, downloadedNotificationBuilder.build())
                     return false
                 }
 
             })
             .submit()
             .get()
-        if (file == null || !file.exists()) return Result.failure()
+        if (file == null || !file.exists()) {
+            notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
+            return Result.failure()
+        }
+        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, path = path).build())
         val `is` = FileInputStream(file)
         val os = applicationContext.contentResolver.openOutputStream(desUri)
         try {
@@ -165,13 +170,17 @@ class DownloadUtil(
             .setShowWhen(false)
     }
 
-    private fun getDownloadedNotificationBuilder(title: String, channelId: String): NotificationCompat.Builder {
+    private fun getDownloadedNotificationBuilder(title: String, channelId: String, path: String): NotificationCompat.Builder {
+        val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
+            .putExtra(applicationContext.packageName + EXT_DOWNLOADED, path)
+        val pendingIntent = PendingIntent.getBroadcast(applicationContext, System.currentTimeMillis().toInt(), intent, 0)
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download_done)
             .setContentTitle(title)
             .setContentText(applicationContext.getString(R.string.msg_download_complete))
             .setOngoing(false)
             .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
     }
 
     private fun getDownloadErrorNotificationBuilder(title: String, channelId: String): NotificationCompat.Builder {

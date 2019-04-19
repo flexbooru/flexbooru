@@ -62,7 +62,7 @@ class BooruViewHolder(itemView: View,
                             true
                         }
                         R.id.action_booru_share_clipboard -> {
-                            (activity as BooruActivity).clipboard.setPrimaryClip(ClipData.newPlainText(booru.name, booru.toString()))
+                            (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
                             true
                         }
                         else -> false

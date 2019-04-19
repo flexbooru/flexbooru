@@ -119,6 +119,8 @@
                     android:value="onlymash.flexbooru.ui.MuzeiSetupActivity"/>
         </provider>
 
+        <receiver android:name=".receiver.DownloadNotificationClickReceiver"/>
+
         <meta-data
                 android:name="com.google.android.backup.api_key"
                 android:value="AEdPqrEAAAAIEVVDnlCpmat2ve_BztQymxs9OueO1yKAy5c4Yw"/>

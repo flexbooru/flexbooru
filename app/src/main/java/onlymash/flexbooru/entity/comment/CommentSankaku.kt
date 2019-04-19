@@ -17,7 +17,7 @@ data class CommentSankaku(
 
     fun getAvatarUrl() = checkUrl(creator_avatar ?: "")
 
-    internal fun checkUrl(url: String): String {
+    private fun checkUrl(url: String): String {
         var u = url
         if (u.contains("""\/""")) {
             u = u.replace("""\/""", "/")

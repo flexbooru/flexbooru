@@ -41,7 +41,7 @@ class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     SearchActivity.startActivity(itemView.context, muzei.keyword)
                 }
                 R.id.action_muzei_item_copy -> {
-                    App.app.clipboard.setPrimaryClip(ClipData.newPlainText("keyword", muzei.keyword))
+                    App.app.clipboard.primaryClip = ClipData.newPlainText("keyword", muzei.keyword)
                 }
                 R.id.action_muzei_item_delete -> {
                     MuzeiManager.deleteMuzei(muzei)
