@@ -137,6 +137,7 @@
     <string name="settings_browse_size">瀏覽影像大小</string>
     <string name="settings_download_size">下載影像大小</string>
     <string name="settings_download_path">Download path</string>
+    <string name="settings_download_path_not_set">Path not set</string>
     <string name="settings_muzei_size">Muzei 影像大小</string>
     <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">較大</string>
