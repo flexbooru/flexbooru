@@ -22,6 +22,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import onlymash.flexbooru.R
 
 
@@ -83,9 +84,9 @@ class CommentView @JvmOverloads constructor(
             autoLinkMask = Linkify.WEB_URLS
             linksClickable = true
             transformationMethod = LinkTransformationMethod()
-            setTextAppearance(android.R.style.TextAppearance_Material_Body1)
             text = comment
         }
+        TextViewCompat.setTextAppearance(textView, android.R.style.TextAppearance_Material_Body1)
         addView(textView)
     }
 
@@ -107,9 +108,9 @@ class CommentView @JvmOverloads constructor(
             autoLinkMask = Linkify.WEB_URLS
             linksClickable = true
             transformationMethod = LinkTransformationMethod()
-            setTextAppearance(android.R.style.TextAppearance_Material_Body1)
             text = quote
         }
+        TextViewCompat.setTextAppearance(textView, android.R.style.TextAppearance_Material_Body1)
         layout.addView(textView)
         addView(layout)
     }
