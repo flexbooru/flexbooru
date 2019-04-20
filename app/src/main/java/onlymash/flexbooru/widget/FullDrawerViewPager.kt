@@ -9,8 +9,8 @@ class FullDrawerViewPager : ViewPager {
     constructor(context: Context): super(context)
     constructor(context: Context, attrs: AttributeSet?): super(context, attrs)
 
-    var startX = 0f
-    var startY = 0f
+    private var startX = 0f
+    private var startY = 0f
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         when (ev?.action) {

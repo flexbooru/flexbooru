@@ -4,20 +4,10 @@
           package="onlymash.flexbooru">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
     <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
-
-    <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_IMAGES"/>
-
-    <!--suppress DeprecatedClassUsageInspection -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!--suppress DeprecatedClassUsageInspection -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
     <!-- Required by RemoteMuzeiArtSource -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
     <uses-feature
             android:name="android.hardware.camera"
             android:required="false"/>
@@ -126,6 +116,8 @@
                     android:name="setupActivity"
                     android:value="onlymash.flexbooru.ui.MuzeiSetupActivity"/>
         </provider>
+
+        <receiver android:name=".receiver.DownloadNotificationClickReceiver"/>
 
         <meta-data
                 android:name="com.google.android.backup.api_key"

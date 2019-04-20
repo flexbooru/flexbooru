@@ -26,7 +26,6 @@ import android.net.Uri
 import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
@@ -38,7 +37,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
-import java.lang.IllegalArgumentException
 import java.net.URLDecoder
 import java.util.*
 

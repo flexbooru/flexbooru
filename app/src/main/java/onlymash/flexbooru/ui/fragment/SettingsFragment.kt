@@ -15,16 +15,14 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.DocumentsContract
 import androidx.appcompat.app.AppCompatDelegate
 import moe.shizuku.preference.Preference
-import onlymash.flexbooru.*
-import onlymash.flexbooru.util.getBasePath
+import onlymash.flexbooru.App
+import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.util.openDocumentTree
 
 class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -64,27 +62,15 @@ class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPre
     private fun initPathSummary() {
         var path = Settings.instance().downloadDirPath
         if (path.isNullOrEmpty()) {
-            path = getBasePath()
-            Settings.instance().downloadDirPath = path
+            path = getString(R.string.settings_download_path_not_set)
         }
         findPreference(Settings.DOWNLOAD_PATH_KEY)?.summary = path
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         if (preference?.key == Settings.DOWNLOAD_PATH_KEY) {
-            try {
-                startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), Constants.REQUEST_CODE_OPEN_DIRECTORY)
-            } catch (_: ActivityNotFoundException) {}
+            requireActivity().openDocumentTree()
         }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data ?: return
-            val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = docUri.toSafeString()
-        }
     }
 }

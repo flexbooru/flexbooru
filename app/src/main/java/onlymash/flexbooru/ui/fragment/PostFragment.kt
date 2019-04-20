@@ -15,34 +15,37 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.Manifest
-import android.content.*
-import android.content.pm.PackageManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.flexbox.*
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
-import onlymash.flexbooru.*
+import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.*
-import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
@@ -55,7 +58,10 @@ import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
-import onlymash.flexbooru.util.*
+import onlymash.flexbooru.util.DownloadUtil
+import onlymash.flexbooru.util.ViewTransition
+import onlymash.flexbooru.util.gridWidth
+import onlymash.flexbooru.util.rotate
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
 
@@ -229,27 +235,7 @@ class PostFragment : ListFragment() {
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                     when (which) {
                         0 -> {
-                            if (BuildInfo.isAtLeastQ()) {
-                                DownloadUtil.downloadPost(post, requireActivity())
-                            } else {
-                                @Suppress("DEPRECATION")
-                                if (ContextCompat.checkSelfPermission(context,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    ) != PackageManager.PERMISSION_GRANTED) {
-                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        )) {
-                                    } else {
-                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
-                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        ), 1)
-                                    }
-                                } else {
-                                    DownloadUtil.downloadPost(post, requireActivity())
-                                }
-                            }
+                            DownloadUtil.downloadPost(post, requireActivity())
                         }
                         1 -> {
                             if (type == Constants.TYPE_GELBOORU) {
@@ -498,14 +484,6 @@ class PostFragment : ListFragment() {
             setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
             adapter = postAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    when (newState) {
-                        RecyclerView.SCROLL_STATE_IDLE -> glide.resumeRequests()
-                        else -> glide.pauseRequests()
-                    }
-                }
-            })
         }
         val orders =
             if (type == Constants.TYPE_SANKAKU)

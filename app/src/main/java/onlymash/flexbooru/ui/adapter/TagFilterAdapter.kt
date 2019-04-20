@@ -95,10 +95,10 @@ class TagFilterAdapter(private val orders: Array<String>,
         val ratingHeadPos = orderHeadPos + orders.size + 1
         return when (position) {
             0 -> VIEW_TYPE_ADD
-            in 1..(orderHeadPos - 1) -> VIEW_TYPE_NORMAL
+            in 1 until orderHeadPos -> VIEW_TYPE_NORMAL
             orderHeadPos -> VIEW_TYPE_ORDER_HEAD
             ratingHeadPos -> VIEW_TYPE_RATING_HEAD
-            in (orderHeadPos + 1)..(ratingHeadPos - 1) -> VIEW_TYPE_ORDER
+            in (orderHeadPos + 1) until ratingHeadPos -> VIEW_TYPE_ORDER
             else -> VIEW_TYPE_RATING
         }
     }

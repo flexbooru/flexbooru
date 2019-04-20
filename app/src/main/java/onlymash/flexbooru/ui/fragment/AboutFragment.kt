@@ -73,12 +73,12 @@ class AboutFragment : PreferenceFragment() {
             }
             "about_donation_alipay" -> {
                 val text = "im@fiepi.com"
-                App.app.clipboard.setPrimaryClip(ClipData.newPlainText("alipay", text))
+                App.app.clipboard.primaryClip = ClipData.newPlainText("alipay", text)
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_donation_btc" -> {
                 val text = "bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
-                App.app.clipboard.setPrimaryClip(ClipData.newPlainText("btc", text))
+                App.app.clipboard.primaryClip = ClipData.newPlainText("btc", text)
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_app_rate" -> {

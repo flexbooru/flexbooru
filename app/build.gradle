@@ -43,14 +43,14 @@ android {
             storePassword properties.getProperty("STORE_PASS")
         }
     }
-    compileSdkVersion 'android-Q'
-    buildToolsVersion '29.0.0 rc2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "onlymash.flexbooru"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode verCode
-        versionName "0.7.0"
+        versionName "0.7.3"
         versionNameSuffix verNameSuffix
         multiDexEnabled true
         resConfigs "en", "zh-rCN", "zh-rHK", "zh-rTW",
@@ -96,7 +96,7 @@ android {
         }
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
 //    packagingOptions {
 //        exclude 'META-INF/library-core_release.kotlin_module'

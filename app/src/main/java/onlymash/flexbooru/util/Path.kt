@@ -5,28 +5,16 @@ import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
-import android.os.Environment
 import android.provider.DocumentsContract
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import java.io.File
 
 const val APP_DIR_NAME = "Flexbooru"
 
-private fun getDefaultBasePath(): String =
-    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
 
-fun getBasePath(): String {
-    val path = Settings.instance().downloadDirPath
-    if (path.isNullOrEmpty()) {
-        return getDefaultBasePath()
-    }
-    return path
-}
 private fun closeQuietly(closeable: AutoCloseable?) {
     if (closeable == null) return
     try {
@@ -55,34 +43,44 @@ fun String.safeStringToUri(subDirName: String? = null): Uri {
     return DocumentsContract.buildDocumentUriUsingTree(uri, docId)
 }
 
+fun Activity.openDocumentTree() {
+    try {
+        startActivityForResult(
+            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
+                        or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            },
+            Constants.REQUEST_CODE_OPEN_DIRECTORY)
+    } catch (_: ActivityNotFoundException) {}
+}
+
 fun Activity.getAppDirUri(): Uri? {
-    val basePath = getBasePath()
-    if (basePath.startsWith(ContentResolver.SCHEME_CONTENT)) {
-        val pUri = basePath.safeStringToUri()
-        val uri = basePath.safeStringToUri(APP_DIR_NAME)
-        val pDoc = DocumentFile.fromSingleUri(this, pUri) ?: return null
-        if (!pDoc.canWrite()) {
-            Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
-            try {
-                startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), Constants.REQUEST_CODE_OPEN_DIRECTORY)
-            } catch (_: ActivityNotFoundException) {}
-            return null
-        }
-        val doc = DocumentFile.fromSingleUri(this, uri) ?: return null
-        if (!doc.exists()) {
-            DocumentsContract.createDocument(
-                contentResolver,
-                pUri,
-                DocumentsContract.Document.MIME_TYPE_DIR,
-                APP_DIR_NAME)
-        }
-        return uri
-    } else {
+    val basePath = Settings.instance().downloadDirPath
+    if (basePath == null || !basePath.startsWith(ContentResolver.SCHEME_CONTENT)) {
+        openDocumentTree()
+        return null
+    }
+    val pUri = basePath.safeStringToUri()
+    val uri = basePath.safeStringToUri(APP_DIR_NAME)
+    val pDoc = DocumentFile.fromSingleUri(this, pUri) ?: return null
+    if (!pDoc.canWrite()) {
+        Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
         try {
-            startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), Constants.REQUEST_CODE_OPEN_DIRECTORY)
+            openDocumentTree()
         } catch (_: ActivityNotFoundException) {}
         return null
     }
+    val doc = DocumentFile.fromSingleUri(this, uri) ?: return null
+    if (!doc.exists()) {
+        DocumentsContract.createDocument(
+            contentResolver,
+            pUri,
+            DocumentsContract.Document.MIME_TYPE_DIR,
+            APP_DIR_NAME)
+    }
+    return uri
 }
 
 fun Activity.getSaveUri(fileName: String): Uri? {
@@ -122,15 +120,7 @@ fun Activity.getSaveUri(fileName: String): Uri? {
             fileName.getMimeType(),
             fileName)
     } else {
-        val dir = File(appUri.path + "/save")
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-        val file = File(dir, fileName)
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        file.toUri()
+        return null
     }
 }
 
@@ -171,14 +161,6 @@ fun Activity.getDownloadUri(host: String, fileName: String): Uri? {
             fileName.getMimeType(),
             fileName)
     } else {
-        val dir = File(appUri.path + '/' + host)
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-        val file = File(dir, fileName)
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        file.toUri()
+        return null
     }
 }

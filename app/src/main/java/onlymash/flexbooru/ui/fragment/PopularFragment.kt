@@ -15,30 +15,30 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.Manifest
 import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.refreshable_list.*
-import onlymash.flexbooru.*
+import onlymash.flexbooru.Constants
+import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
@@ -166,28 +166,7 @@ class PopularFragment : ListFragment() {
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                     when (which) {
                         0 -> {
-                            if (BuildInfo.isAtLeastQ()) {
-                                DownloadUtil.downloadPost(post, requireActivity())
-                            } else {
-                                @Suppress("DEPRECATION")
-                                if (ContextCompat.checkSelfPermission(context,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    ) != PackageManager.PERMISSION_GRANTED) {
-                                    Snackbar.make(list, context.getString(R.string.msg_download_requires_storage_permission), Snackbar.LENGTH_LONG).show()
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        )) {
-
-                                    } else {
-                                        ActivityCompat.requestPermissions(requireActivity(),  arrayOf(
-                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        ), 1)
-                                    }
-                                } else {
-                                    DownloadUtil.downloadPost(post, requireActivity())
-                                }
-                            }
+                            DownloadUtil.downloadPost(post, requireActivity())
                         }
                         1 -> {
                             if (popular.auth_key.isEmpty()) {

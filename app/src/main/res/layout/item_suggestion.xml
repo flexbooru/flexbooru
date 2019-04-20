@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_history_24dp"
-        android:drawableTint="@color/grey_400"
         android:drawablePadding="?attr/listPreferredItemPaddingStart"
         android:textAppearance="?attr/textAppearanceListItemSmall"
         android:gravity="center_vertical"

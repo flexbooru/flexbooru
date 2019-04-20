@@ -15,13 +15,9 @@
 
 package onlymash.flexbooru.ui
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -34,7 +30,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.TooltipCompat
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
@@ -50,11 +45,16 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
-import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.*
+import kotlinx.android.synthetic.main.toolbar_transparent.*
+import onlymash.flexbooru.Constants
+import onlymash.flexbooru.R
+import onlymash.flexbooru.ServiceLocator
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
@@ -399,12 +399,11 @@ class BrowseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
-        colorDrawable = ColorDrawable(resources.getColor(R.color.black, theme))
+        colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         pager_browse.background = colorDrawable
         postponeEnterTransition()
         setEnterSharedElementCallback(sharedElementCallback)
         toolbar.setTitle(R.string.browse_toolbar_title)
-        toolbar.setBackgroundColor(resources.getColor(R.color.transparent, theme))
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -749,8 +748,8 @@ class BrowseActivity : AppCompatActivity() {
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     val fileName = URLDecoder.decode(url, "UTF-8").fileName()
                     val handler = Handler()
+                    val uri = getSaveUri(fileName) ?: return
                     Thread {
-                        val uri = getSaveUri(fileName) ?: return@Thread
                         var `is`: InputStream? = null
                         var os: OutputStream? = null
                         try {
@@ -811,34 +810,9 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun checkAndAction(action: Int) {
-        if (BuildInfo.isAtLeastQ()) {
-            when (action) {
-                ACTION_DOWNLOAD -> download()
-                else -> saveAndAction(action)
-            }
-        } else {
-            checkStoragePermissionAndAction(action)
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun checkStoragePermissionAndAction(action: Int) {
-        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, getString(R.string.msg_download_requires_storage_permission), Toast.LENGTH_SHORT).show()
-                try {
-                    val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    intent.data = Uri.parse("package:${applicationContext.packageName}")
-                    startActivity(intent)
-                } catch (_: ActivityNotFoundException) {}
-            } else {
-                ActivityCompat.requestPermissions(this,  arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), action)
-            }
-        } else {
-            when (action) {
-                ACTION_DOWNLOAD -> download()
-                else -> saveAndAction(action)
-            }
+        when (action) {
+            ACTION_DOWNLOAD -> download()
+            else -> saveAndAction(action)
         }
     }
 
@@ -903,21 +877,6 @@ class BrowseActivity : AppCompatActivity() {
         playerHolder.release()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            ACTION_DOWNLOAD -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    download()
-                }
-            }
-            ACTION_SAVE, ACTION_SAVE_SET_AS, ACTION_SAVE_SEND -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    saveAndAction(requestCode)
-                }
-            }
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
     private fun getFavPostViewModel(loader: PostLoaderRepository): FavPostViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
@@ -932,7 +891,7 @@ class BrowseActivity : AppCompatActivity() {
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
             val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = docUri.toSafeString()
+            Settings.instance().downloadDirPath = URLDecoder.decode(docUri.toString(), "UTF-8")
         }
     }
 }

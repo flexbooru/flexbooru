@@ -49,9 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/actionBarSize">
-        <include
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                layout="@layout/toolbar"/>
+        <include layout="@layout/toolbar_transparent"/>
     </FrameLayout>
 
     <include layout="@layout/bottom_shortcut_bar"/>
