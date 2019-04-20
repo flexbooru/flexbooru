@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
@@ -23,7 +24,6 @@ import onlymash.flexbooru.glide.ProgressListener
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import java.net.URLDecoder
 import onlymash.flexbooru.R
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 
@@ -50,7 +50,7 @@ class DownloadUtil(
                 else -> post.getOriginUrl()
             }
             if (url.isEmpty()) return
-            var fileName = URLDecoder.decode(url.fileName(), "UTF-8")
+            var fileName = Uri.decode(url.fileName())
             if (!fileName.contains(' ')) fileName = "$id - $fileName"
             val desPath = activity.getDownloadUri(host, fileName)?.toString() ?: return
             val workManager = WorkManager.getInstance()
@@ -79,7 +79,7 @@ class DownloadUtil(
         val id = inputData.getInt(POST_ID_KEY, -1)
         val host = inputData.getString(HOST_KEY)
         val filename = inputData.getString(FILENAME_KEY)
-        val path = URLDecoder.decode(inputData.getString(PATH_KEY), "UTF-8")
+        val path = Uri.decode(inputData.getString(PATH_KEY))
         if (url == null || id < 0 || host == null || filename == null || path == null) return Result.failure()
         val desUri = if (path.startsWith(ContentResolver.SCHEME_CONTENT)) path.safeStringToUri() else File(path).toUri()
         val channelId = applicationContext.packageName + ".download"

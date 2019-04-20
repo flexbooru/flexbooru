@@ -17,13 +17,12 @@ package onlymash.flexbooru.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import java.net.URLDecoder
 
 class SettingsActivity : BaseActivity() {
 
@@ -40,8 +39,12 @@ class SettingsActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
-            val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = URLDecoder.decode(docUri.toString(), "UTF-8")
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(
+                uri,
+                takeFlags
+            )
+            Settings.instance().downloadDirPath = Uri.decode(uri.toString())
         }
     }
 }

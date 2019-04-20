@@ -23,7 +23,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.DocumentsContract
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -68,7 +67,6 @@ import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
 import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.*
-import java.net.URLDecoder
 
 class BrowseActivity : AppCompatActivity() {
 
@@ -746,7 +744,7 @@ class BrowseActivity : AppCompatActivity() {
 
                 }
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    val fileName = URLDecoder.decode(url, "UTF-8").fileName()
+                    val fileName = Uri.decode(url).fileName()
                     val handler = Handler()
                     val uri = getSaveUri(fileName) ?: return
                     Thread {
@@ -890,8 +888,12 @@ class BrowseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
-            val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = URLDecoder.decode(docUri.toString(), "UTF-8")
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(
+                uri,
+                takeFlags
+            )
+            Settings.instance().downloadDirPath = Uri.decode(uri.toString())
         }
     }
 }

@@ -6,7 +6,6 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import java.io.File
-import java.net.URLDecoder
 import java.util.*
 
 fun Context.getUriFromSAFTree(path: String, fileName: String): Uri {
@@ -75,7 +74,7 @@ private fun getFileFromDocumentIdSAF(id: String, fileName: String): File? {
         }
     }
 
-    val normalizedFileName = URLDecoder.decode(fileName, "utf-8").substringAfterLast(":")
+    val normalizedFileName = Uri.decode(fileName).substringAfterLast(":")
 
     if (!file?.name.equals(normalizedFileName)) {
         file = File(file, normalizedFileName)

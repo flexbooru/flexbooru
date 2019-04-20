@@ -14,7 +14,6 @@ import onlymash.flexbooru.Settings
 
 const val APP_DIR_NAME = "Flexbooru"
 
-
 private fun closeQuietly(closeable: AutoCloseable?) {
     if (closeable == null) return
     try {
@@ -62,21 +61,21 @@ fun Activity.getAppDirUri(): Uri? {
         openDocumentTree()
         return null
     }
-    val pUri = basePath.safeStringToUri()
-    val uri = basePath.safeStringToUri(APP_DIR_NAME)
-    val pDoc = DocumentFile.fromSingleUri(this, pUri) ?: return null
-    if (!pDoc.canWrite()) {
+    val baseDocUri = basePath.safeStringToUri()
+    val docDir = DocumentFile.fromSingleUri(this, baseDocUri) ?: return null
+    if (!docDir.canWrite()) {
         Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
         try {
             openDocumentTree()
         } catch (_: ActivityNotFoundException) {}
         return null
     }
-    val doc = DocumentFile.fromSingleUri(this, uri) ?: return null
-    if (!doc.exists()) {
+    val uri = basePath.safeStringToUri(APP_DIR_NAME)
+    val appDir = DocumentFile.fromSingleUri(this, uri) ?: return null
+    if (!appDir.exists()) {
         DocumentsContract.createDocument(
             contentResolver,
-            pUri,
+            baseDocUri,
             DocumentsContract.Document.MIME_TYPE_DIR,
             APP_DIR_NAME)
     }

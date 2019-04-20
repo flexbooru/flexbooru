@@ -37,7 +37,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
-import java.net.URLDecoder
 import java.util.*
 
 fun formatDate(time: Long): CharSequence {
@@ -103,7 +102,7 @@ fun Activity.downloadPost(post: PostBase?) {
         else -> post.getOriginUrl()
     }
     if (url.isEmpty()) return
-    var fileName = URLDecoder.decode(url.fileName(), "UTF-8")
+    var fileName = Uri.decode(url.fileName())
     if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
     val uri = getDownloadUri(host, fileName)
     val request = DownloadManager.Request(Uri.parse(url)).apply {
