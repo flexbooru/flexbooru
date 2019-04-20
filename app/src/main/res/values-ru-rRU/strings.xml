@@ -137,6 +137,7 @@
     <string name="settings_browse_size">Browse size</string>
     <string name="settings_download_size">Download size</string>
     <string name="settings_download_path">Download path</string>
+    <string name="settings_download_path_not_set">Path not set</string>
     <string name="settings_muzei_size">Muzei size</string>
     <string name="settings_post_size_sample">Sample</string>
     <string name="settings_post_size_larger">Larger</string>
