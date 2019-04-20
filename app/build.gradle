@@ -50,7 +50,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode verCode
-        versionName "0.7.3"
+        versionName "0.7.4"
         versionNameSuffix verNameSuffix
         multiDexEnabled true
         resConfigs "en", "zh-rCN", "zh-rHK", "zh-rTW",
