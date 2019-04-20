@@ -74,7 +74,14 @@ class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPre
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         if (preference?.key == Settings.DOWNLOAD_PATH_KEY) {
             try {
-                startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), Constants.REQUEST_CODE_OPEN_DIRECTORY)
+                startActivityForResult(
+                    Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
+                                or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    },
+                    Constants.REQUEST_CODE_OPEN_DIRECTORY)
             } catch (_: ActivityNotFoundException) {}
         }
         return super.onPreferenceTreeClick(preference)

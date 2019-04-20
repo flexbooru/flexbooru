@@ -64,7 +64,14 @@ fun Activity.getAppDirUri(): Uri? {
         if (!pDoc.canWrite()) {
             Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
             try {
-                startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), Constants.REQUEST_CODE_OPEN_DIRECTORY)
+                startActivityForResult(
+                    Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
+                                or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    },
+                    Constants.REQUEST_CODE_OPEN_DIRECTORY)
             } catch (_: ActivityNotFoundException) {}
             return null
         }
