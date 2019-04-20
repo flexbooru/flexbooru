@@ -15,17 +15,14 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.DocumentsContract
 import androidx.appcompat.app.AppCompatDelegate
 import moe.shizuku.preference.Preference
-import onlymash.flexbooru.*
+import onlymash.flexbooru.App
+import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.openDocumentTree
-import java.net.URLDecoder
 
 class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 

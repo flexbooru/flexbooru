@@ -5,15 +5,12 @@ import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
-import android.os.Environment
 import android.provider.DocumentsContract
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import java.io.File
 
 const val APP_DIR_NAME = "Flexbooru"
 
