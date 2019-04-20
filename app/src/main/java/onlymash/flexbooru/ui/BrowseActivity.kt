@@ -397,12 +397,11 @@ class BrowseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
-        colorDrawable = ColorDrawable(resources.getColor(R.color.black, theme))
+        colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         pager_browse.background = colorDrawable
         postponeEnterTransition()
         setEnterSharedElementCallback(sharedElementCallback)
         toolbar.setTitle(R.string.browse_toolbar_title)
-        toolbar.setBackgroundColor(resources.getColor(R.color.transparent, theme))
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
