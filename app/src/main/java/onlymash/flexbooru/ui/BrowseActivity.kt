@@ -48,7 +48,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar_transparent.*
 import onlymash.flexbooru.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
