@@ -54,10 +54,10 @@
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
     <string name="post_download">Pobierz</string>
     <string name="post_add_to_fav">Dodaj do ulubionych</string>
-    <string name="msg_download_must_enable">Download Manager is needed.</string>
-    <string name="msg_path_denied">Save failed! No access to the current path.</string>
-    <string name="msg_download_failed">Download failed</string>
-    <string name="msg_download_complete">Download complete</string>
+    <string name="msg_download_must_enable">Wymagany jest menedżer pobierania.</string>
+    <string name="msg_path_denied">Zapisywanie nie powiodło się! Brak dostępu do wybranej ścieżki.</string>
+    <string name="msg_download_failed">Pobieranie nie powiodło się</string>
+    <string name="msg_download_complete">Pobieranie ukończone</string>
     <string name="popular_day">Dzień</string>
     <string name="popular_week">Tydzień</string>
     <string name="popular_month">Miesiąc</string>
@@ -134,7 +134,8 @@
     <string name="settings_muzei_limit">Muzei limit</string>
     <string name="settings_browse_size">Rozmiar przy przeglądaniu</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
-    <string name="settings_download_path">Download path</string>
+    <string name="settings_download_path">Ścieżka pobierania</string>
+    <string name="settings_download_path_not_set">Nie wybrano ścieżki</string>
     <string name="settings_muzei_size">Rozmiar Muzei</string>
     <string name="settings_post_size_sample">Przykład</string>
     <string name="settings_post_size_larger">Większe</string>
@@ -165,7 +166,7 @@
     <string name="tag_type_meta">Metadane</string>
     <string name="tag_type_model">Model</string>
     <string name="tag_type_photo_set">Zestaw zdjęć</string>
-    <string name="tag_type_genre">Genre</string>
+    <string name="tag_type_genre">Gatunek</string>
     <string name="tag_type_studio">Studio</string>
     <string name="tag_type_medium">Medium</string>
     <string name="tag_type_unknown">Nieznany</string>
