@@ -50,12 +50,10 @@
     <string name="msg_not_supported">不支援</string>
     <string name="msg_press_twice_to_exit">按兩次以離開。</string>
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
-    <string name="msg_invalid_path">Invalid path</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
     <string name="post_download">下載</string>
     <string name="post_add_to_fav">添加到收藏</string>
-    <string name="msg_download_requires_storage_permission">下載需要儲存權限。</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="msg_path_denied">Save failed! No access to the current path.</string>
     <string name="msg_download_failed">Download failed</string>
