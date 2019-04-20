@@ -137,7 +137,7 @@
     <string name="settings_browse_size">浏览大小</string>
     <string name="settings_download_size">下载大小</string>
     <string name="settings_download_path">下载路径</string>
-    <string name="settings_download_path_not_set">Path not set</string>
+    <string name="settings_download_path_not_set">路径未设置</string>
     <string name="settings_muzei_size">Muzei 大小</string>
     <string name="settings_post_size_sample">简略</string>
     <string name="settings_post_size_larger">略大</string>
