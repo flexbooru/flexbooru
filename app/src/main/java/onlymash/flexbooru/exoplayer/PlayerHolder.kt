@@ -20,9 +20,9 @@ import android.net.Uri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.LoopingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -45,8 +45,10 @@ class PlayerHolder(private val context: Context) {
          * */
         fun cache(): SimpleCache {
             if (cache == null) {
-                cache = SimpleCache(File(app.cacheDir, "video"),
-                    LeastRecentlyUsedCacheEvictor(1024 * 1024 * 256))
+                cache = SimpleCache(
+                    File(app.cacheDir, "video"),
+                    LeastRecentlyUsedCacheEvictor(1024 * 1024 * 256),
+                    DefaultDatabaseProvider.databaseProvider())
             }
             return cache!!
         }
@@ -63,7 +65,7 @@ class PlayerHolder(private val context: Context) {
     private fun createExtractorMediaSource(uri: Uri): MediaSource {
         val sourceFactory = DefaultDataSourceFactory(context, UserAgent.get())
         val cacheSourceFactory = CacheDataSourceFactory(cache(), sourceFactory)
-        return ExtractorMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
+        return ProgressiveMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
     }
 
     //start play
