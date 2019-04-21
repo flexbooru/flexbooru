@@ -158,8 +158,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
     testImplementation 'junit:junit:5.0-SNAPSHOT'
-    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha04'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
 }
 
 apply plugin: 'com.google.gms.google-services'
