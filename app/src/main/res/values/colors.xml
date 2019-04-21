@@ -67,4 +67,18 @@
     <color name="playTint">#cc63c866</color>
     <color name="pauseTint">#ccc76185</color>
     <color name="playerControlText">#cca2a2a2</color>
+
+    <color name="tag_type_general">@color/md_white_1000</color>
+    <color name="tag_type_artist">@color/md_pink_200</color>
+    <color name="tag_type_copyright">@color/md_green_500</color>
+    <color name="tag_type_character">@color/md_blue_500</color>
+    <color name="tag_type_circle">@color/md_yellow_300</color>
+    <color name="tag_type_faults">@color/md_amber_800</color>
+    <color name="tag_type_meta">@color/md_blue_grey_500</color>
+    <color name="tag_type_model">@color/md_brown_500</color>
+    <color name="tag_type_photo_set">@color/md_deep_orange_300</color>
+    <color name="tag_type_genre">@color/md_light_green_400</color>
+    <color name="tag_type_studio">@color/md_orange_300</color>
+    <color name="tag_type_medium">@color/md_purple_400</color>
+    <color name="tag_type_unknown">#ccffffff</color>
 </resources>

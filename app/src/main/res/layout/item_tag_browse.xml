@@ -14,68 +14,59 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?android:attr/selectableItemBackground"
-              android:clickable="true"
-              android:focusable="true">
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
-        <TextView
-                android:id="@+id/tag_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="2"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textStyle="bold"/>
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/tag_exclude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/browse_tag_exclude"
-                android:focusable="true"
-                android:nextFocusLeft="@+id/container"
-                android:padding="12dp"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_remove_circle_outline_24dp"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/tag_include"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/browse_tag_include"
-                android:focusable="true"
-                android:padding="12dp"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_add_circle_outline_24dp"/>
-    </LinearLayout>
-
-    <TextView
-            android:id="@+id/tag_type"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" >
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="?attr/listPreferredItemPaddingStart"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/tag_dot"/>
+    <TextView
+            android:id="@+id/tag_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="2dp"
-            android:layout_marginStart="20dp"
+            android:layout_weight="1"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"/>
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tag_exclude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/browse_tag_exclude"
+            android:focusable="true"
+            android:nextFocusLeft="@+id/container"
+            android:padding="?attr/listPreferredItemPaddingStart"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_remove_circle_outline_24dp"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tag_include"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/browse_tag_include"
+            android:focusable="true"
+            android:padding="?attr/listPreferredItemPaddingStart"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_add_circle_outline_24dp"/>
 </LinearLayout>

@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.TooltipCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.App
 import onlymash.flexbooru.Constants
@@ -38,8 +39,8 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             return TagBrowseViewHolder(view)
         }
     }
+    private val dot: AppCompatImageView = itemView.findViewById(R.id.dot)
     private val tagName: TextView = itemView.findViewById(R.id.tag_name)
-    private val tagType: TextView = itemView.findViewById(R.id.tag_type)
     private val tagExclude: AppCompatImageView = itemView.findViewById(R.id.tag_exclude)
     private val tagInclude: AppCompatImageView = itemView.findViewById(R.id.tag_include)
 
@@ -80,56 +81,33 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(tag: TagFilter, postType: Int) {
         tagName.text = tag.name
         type = tag.type
-        if (type < 0) return
-        if (postType == Constants.TYPE_DANBOORU) {
-            when (tag.type) {
-                TagViewHolder.GENERAL -> {
-                    setType(itemView.context.getString(R.string.tag_type_general))
-                }
-                TagViewHolder.ARTIST -> {
-                    setType(itemView.context.getString(R.string.tag_type_artist))
-                }
-                TagViewHolder.COPYRIGHT -> {
-                    setType(itemView.context.getString(R.string.tag_type_copyright))
-                }
-                TagViewHolder.CHARACTER -> {
-                    setType(itemView.context.getString(R.string.tag_type_character))
-                }
-                TagViewHolder.META -> {
-                    setType(itemView.context.getString(R.string.tag_type_meta))
+        when (postType) {
+            Constants.TYPE_DANBOORU -> {
+                when (type) {
+                    TagViewHolder.GENERAL -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_general))
+                    TagViewHolder.ARTIST -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_artist))
+                    TagViewHolder.COPYRIGHT -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_copyright))
+                    TagViewHolder.CHARACTER -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_character))
+                    TagViewHolder.META -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_meta))
+                    else -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_unknown))
                 }
             }
-        } else {
-            when (tag.type) {
-                TagViewHolder.GENERAL -> {
-                    setType(itemView.context.getString(R.string.tag_type_general))
+            Constants.TYPE_SANKAKU -> {
+                when (type) {
+                    TagViewHolder.GENERAL -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_general))
+                    TagViewHolder.ARTIST -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_artist))
+                    TagViewHolder.COPYRIGHT -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_copyright))
+                    TagViewHolder.CHARACTER -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_character))
+                    TagViewHolder.META_SANKAKU -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_meta))
+                    TagViewHolder.GENRE -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_genre))
+                    TagViewHolder.MEDIUM -> dot.setColorFilter(ContextCompat.getColor(itemView.context, R.color.tag_type_medium))
+                    TagViewHolder.STUDIO -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_studio))
+                    else -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_unknown))
                 }
-                TagViewHolder.ARTIST -> {
-                    setType(itemView.context.getString(R.string.tag_type_artist))
-                }
-                TagViewHolder.COPYRIGHT -> {
-                    setType(itemView.context.getString(R.string.tag_type_copyright))
-                }
-                TagViewHolder.CHARACTER -> {
-                    setType(itemView.context.getString(R.string.tag_type_character))
-                }
-                TagViewHolder.META_SANKAKU -> {
-                    setType(itemView.context.getString(R.string.tag_type_meta))
-                }
-                TagViewHolder.GENRE -> {
-                    setType(itemView.context.getString(R.string.tag_type_genre))
-                }
-                TagViewHolder.MEDIUM -> {
-                    setType(itemView.context.getString(R.string.tag_type_medium))
-                }
-                TagViewHolder.STUDIO -> {
-                    setType(itemView.context.getString(R.string.tag_type_studio))
-                }
+            }
+            else -> {
+                dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_unknown))
             }
         }
-    }
-    private fun setType(type: String) {
-        tagType.visibility = View.VISIBLE
-        tagType.text = type
     }
 }
