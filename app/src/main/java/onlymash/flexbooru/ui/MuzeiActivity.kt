@@ -15,6 +15,8 @@
 
 package onlymash.flexbooru.ui
 
+import android.content.ActivityNotFoundException
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.EditText
@@ -37,6 +39,7 @@ import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.entity.Muzei
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
+import onlymash.flexbooru.util.openAppInMarket
 
 class MuzeiActivity : BaseActivity() {
 
@@ -84,6 +87,21 @@ class MuzeiActivity : BaseActivity() {
                     FlexArtWorker.enqueueLoad()
                 }
                 true
+            }
+        }
+        muzei_button.setOnClickListener {
+            val muzeiPackageName = "net.nurik.roman.muzei"
+            try {
+                val intent = packageManager.getLaunchIntentForPackage(muzeiPackageName)
+                if (intent == null) {
+                    openAppInMarket(muzeiPackageName)
+                } else {
+                    startActivity(intent)
+                }
+            } catch (_: PackageManager.NameNotFoundException) {
+                openAppInMarket(muzeiPackageName)
+            } catch (_: ActivityNotFoundException) {
+                openAppInMarket(muzeiPackageName)
             }
         }
         muzeiAdapter = MuzeiAdapter()

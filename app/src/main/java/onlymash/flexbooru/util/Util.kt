@@ -172,3 +172,12 @@ fun Activity.getWidth(): Int {
     windowManager.defaultDisplay.getMetrics(outMetrics)
     return outMetrics.widthPixels
 }
+
+fun Activity.openAppInMarket(packageName: String) {
+    try {
+        startActivity(
+            Intent.createChooser(
+                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")),
+                getString(R.string.share_via)))
+    } catch (_: ActivityNotFoundException) { }
+}

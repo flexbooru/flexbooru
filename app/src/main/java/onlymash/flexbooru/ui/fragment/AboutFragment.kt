@@ -15,10 +15,8 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -30,6 +28,7 @@ import onlymash.flexbooru.App
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.util.launchUrl
+import onlymash.flexbooru.util.openAppInMarket
 
 class AboutFragment : PreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -82,11 +81,7 @@ class AboutFragment : PreferenceFragment() {
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_app_rate" -> {
-                try {
-                    requireContext().startActivity(Intent.createChooser(
-                        Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${requireContext().applicationContext.packageName}")),
-                        getString(R.string.share_via)))
-                } catch (_: ActivityNotFoundException) { }
+                requireActivity().openAppInMarket(requireContext().applicationContext.packageName)
             }
             "about_app_translation" -> {
                 requireContext().launchUrl("https://crowdin.com/project/flexbooru")
