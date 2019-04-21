@@ -84,6 +84,10 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(data: ArtistBase?) {
         artist = data
+        if (urlsContainer.visibility == View.VISIBLE) {
+            btExpand.toggleArrow(show = false, delay = false)
+            urlsContainer.visibility = View.GONE
+        }
         if (data == null) return
         artistName.text = data.getArtistName()
         artistId.text = String.format("#%d", data.getArtistId())

@@ -92,6 +92,10 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     }
 
     fun bind(data: PoolBase?) {
+        if (descriptionContainer.visibility == View.VISIBLE) {
+            expandBottom.toggleArrow(show = false, delay = false)
+            descriptionContainer.visibility = View.GONE
+        }
         pool = data ?: return
         val res = container.context.resources
         poolName.text = data.getPoolName()
