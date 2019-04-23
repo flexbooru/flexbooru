@@ -28,6 +28,7 @@
     <string name="title_tags">Marcadores</string>
     <string name="title_comments">Comentários</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Direitos autorais</string>
     <string name="title_about">Sobre</string>
     <string name="about_app_version">Versão</string>
@@ -89,6 +90,7 @@
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">O nome não pode estar vazio.</string>
     <string name="booru_config_host_cant_empty">O servidor não pode estar vazio.</string>
+    <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">O hash salt não pode ser vazio.</string>
     <string name="booru_config_dialog_title_delete">Tem a certeza que quer remover este Booru?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt deve conter texto: your-password</string>
@@ -140,11 +142,6 @@
     <string name="settings_post_size_sample">Amostra</string>
     <string name="settings_post_size_larger">Maior</string>
     <string name="settings_post_size_origin">Original</string>
-    <string name="settings_theme_mode">Tema</string>
-    <string name="settings_theme_mode_system">Seguir o sistema</string>
-    <string name="settings_theme_mode_battery">Follow battery saver</string>
-    <string name="settings_theme_mode_day">Dia</string>
-    <string name="settings_theme_mode_night">Noite</string>
     <string name="settings_grid_width">Largura da grade</string>
     <string name="settings_grid_width_small">Pequeno</string>
     <string name="settings_grid_width_normal">Normal</string>
