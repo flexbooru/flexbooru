@@ -28,6 +28,7 @@
     <string name="title_tags">Tags</string>
     <string name="title_comments">Reacties</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Copyrightinformatie</string>
     <string name="title_about">Over</string>
     <string name="about_app_version">Versie</string>
@@ -89,6 +90,7 @@
     <string name="booru_config_hash_salt">Hash-zout</string>
     <string name="booru_config_name_cant_empty">De naam mag niet leeg zijn.</string>
     <string name="booru_config_host_cant_empty">De host mag niet leeg zijn.</string>
+    <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">De hash-zout kan niet leeg zijn.</string>
     <string name="booru_config_dialog_title_delete">Weet je zeker dat je deze booru wil verwijderen?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash-zout moet \'your-password\' bevatten</string>
@@ -140,11 +142,6 @@
     <string name="settings_post_size_sample">Voorbeeld</string>
     <string name="settings_post_size_larger">Groter</string>
     <string name="settings_post_size_origin">Origineel</string>
-    <string name="settings_theme_mode">Thema</string>
-    <string name="settings_theme_mode_system">Volg systeem</string>
-    <string name="settings_theme_mode_battery">Follow battery saver</string>
-    <string name="settings_theme_mode_day">Dag</string>
-    <string name="settings_theme_mode_night">Nacht</string>
     <string name="settings_grid_width">Rasterbreedte</string>
     <string name="settings_grid_width_small">Klein</string>
     <string name="settings_grid_width_normal">Normaal</string>
