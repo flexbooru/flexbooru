@@ -28,6 +28,7 @@
     <string name="title_tags">Etiquetas</string>
     <string name="title_comments">Comentarios</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Copyright</string>
     <string name="title_about">Acerca de</string>
     <string name="about_app_version">Versión</string>
@@ -89,6 +90,7 @@
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">El nombre no puede estar vacío.</string>
     <string name="booru_config_host_cant_empty">El host no puede estar vacío.</string>
+    <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">El hash salt no puede estar vacío.</string>
     <string name="booru_config_dialog_title_delete">¿Está seguro de que quiere eliminar este booru?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt debe contener el texto: su-contraseña</string>
@@ -140,11 +142,6 @@
     <string name="settings_post_size_sample">Ejemplo</string>
     <string name="settings_post_size_larger">Más grande</string>
     <string name="settings_post_size_origin">Origen</string>
-    <string name="settings_theme_mode">Tema</string>
-    <string name="settings_theme_mode_system">Del sistema</string>
-    <string name="settings_theme_mode_battery">Ahorrador de batería</string>
-    <string name="settings_theme_mode_day">Día</string>
-    <string name="settings_theme_mode_night">Noche</string>
     <string name="settings_grid_width">Ancho de cuadrícula</string>
     <string name="settings_grid_width_small">Pequeño</string>
     <string name="settings_grid_width_normal">Normal</string>

@@ -28,6 +28,7 @@
     <string name="title_tags">Tagi</string>
     <string name="title_comments">Komentarze</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Prawa autorskie</string>
     <string name="title_about">O programie</string>
     <string name="about_app_version">Wersja</string>
@@ -89,6 +90,7 @@
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">Nazwa nie może być pusta.</string>
     <string name="booru_config_host_cant_empty">Serwer nie może być pusty.</string>
+    <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">Hash salt nie może być pusty.</string>
     <string name="booru_config_dialog_title_delete">Czy na pewno chcesz usunąć te booru?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt musi zawierać tekst: your-password</string>
@@ -140,11 +142,6 @@
     <string name="settings_post_size_sample">Przykład</string>
     <string name="settings_post_size_larger">Większe</string>
     <string name="settings_post_size_origin">Źródło</string>
-    <string name="settings_theme_mode">Motyw</string>
-    <string name="settings_theme_mode_system">System Obserwowania</string>
-    <string name="settings_theme_mode_battery">Włącz oszczędzanie baterii</string>
-    <string name="settings_theme_mode_day">Dzienny</string>
-    <string name="settings_theme_mode_night">Nocny</string>
     <string name="settings_grid_width">Szerokość siatki</string>
     <string name="settings_grid_width_small">Mały</string>
     <string name="settings_grid_width_normal">Normalny</string>
