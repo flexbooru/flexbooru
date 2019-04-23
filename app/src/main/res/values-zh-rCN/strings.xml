@@ -28,6 +28,7 @@
     <string name="title_tags">标签</string>
     <string name="title_comments">评论</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">版权</string>
     <string name="title_about">关于</string>
     <string name="about_app_version">版本</string>
@@ -89,6 +90,7 @@
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">名称不能为空。</string>
     <string name="booru_config_host_cant_empty">主机不能为空。</string>
+    <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">哈希盐不能为空。</string>
     <string name="booru_config_dialog_title_delete">您确定要移除此 Booru 吗？</string>
     <string name="booru_config_hash_salt_must_contain_yp">哈希盐必须包含文本: your-password</string>
@@ -140,11 +142,6 @@
     <string name="settings_post_size_sample">简略</string>
     <string name="settings_post_size_larger">略大</string>
     <string name="settings_post_size_origin">原文件</string>
-    <string name="settings_theme_mode">主题</string>
-    <string name="settings_theme_mode_system">跟随系统</string>
-    <string name="settings_theme_mode_battery">跟随省电模式</string>
-    <string name="settings_theme_mode_day">日间</string>
-    <string name="settings_theme_mode_night">夜间</string>
     <string name="settings_grid_width">网格宽度</string>
     <string name="settings_grid_width_small">小</string>
     <string name="settings_grid_width_normal">正常</string>
