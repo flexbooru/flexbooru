@@ -32,11 +32,11 @@
     <color name="item_line">@color/grey_300</color>
 
     <color name="background">@color/background_light</color>
-    <color name="background_light">@color/white</color>
-    <color name="background_dark">@color/black</color>
+    <color name="background_light">@color/md_light_background</color>
+    <color name="background_dark">@color/grey_900</color>
     <color name="background_card">@color/background_card_light</color>
     <color name="background_card_light">@color/white</color>
-    <color name="background_card_dark">@color/grey_900</color>
+    <color name="background_card_dark">@color/grey_850</color>
     <color name="background_text_info">@color/grey_5</color>
     <color name="background_button">@color/colorPrimary</color>
     <color name="background_button_pressed">@color/purple</color>
@@ -57,7 +57,9 @@
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_400">#BDBDBD</color>
     <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
     <color name="grey_800">#424242</color>
+    <color name="grey_850">#313131</color>
     <color name="grey_900">#212121</color>
 
     <color name="grey_5">#f2f2f2</color>
