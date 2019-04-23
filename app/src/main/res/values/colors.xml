@@ -28,6 +28,7 @@
 
     <color name="icon_tint">@color/grey_600</color>
     <color name="toolbar_icon_tint">@color/black</color>
+    <color name="search_bar_tint">@color/grey_600</color>
 
     <color name="item_line">@color/grey_300</color>
 
