@@ -41,7 +41,7 @@ class CopyrightActivity : BaseActivity() {
         }
         copyright.apply {
             text = SpannableStringBuilder(resources.openRawResource(R.raw.copyright).bufferedReader().readText()
-                .parseAsHtml(HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)).apply {
+                .parseAsHtml(HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST)).apply {
                 for (span in getSpans(0, length, URLSpan::class.java)) {
                     setSpan(object : ClickableSpan() {
                         override fun onClick(view: View) {
@@ -56,6 +56,7 @@ class CopyrightActivity : BaseActivity() {
                     removeSpan(span)
                 }
             }
+//            setBackgroundColor(ContextCompat.getColor(this@CopyrightActivity, R.color.background))
             movementMethod = LinkMovementMethod.getInstance()
         }
     }

@@ -48,6 +48,7 @@
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             app:fabSize="normal"
             app:elevation="@dimen/elevation_size"
+            app:backgroundTint="@color/muzei"
             app:srcCompat="@drawable/ic_muzei_24dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
