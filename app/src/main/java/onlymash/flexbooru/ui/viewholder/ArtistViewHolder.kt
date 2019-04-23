@@ -45,7 +45,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val btExpand: ImageButton = itemView.findViewById(R.id.bt_expand)
     private val urlsContainer: LinearLayout = itemView.findViewById(R.id.urls_container)
     private val artistUrls: TextView = itemView.findViewById(R.id.artist_urls)
-    private var isShow = false
+    private var isShowing = false
     private var artist: ArtistBase? = null
 
     init {
@@ -63,7 +63,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         btExpand.setOnClickListener {
             if (!artistUrls.text.isNullOrBlank()) {
-                isShow = toggleLayoutExpand(!isShow, btExpand, urlsContainer)
+                isShowing = toggleLayoutExpand(!isShowing, btExpand, urlsContainer)
             } else {
                 Snackbar.make(itemView, itemView.context.getString(R.string.artist_urls_is_empty),
                     Snackbar.LENGTH_SHORT).show()
@@ -85,6 +85,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(data: ArtistBase?) {
         artist = data
         if (urlsContainer.visibility == View.VISIBLE) {
+            isShowing = false
             btExpand.toggleArrow(show = false, delay = false)
             urlsContainer.visibility = View.GONE
         }

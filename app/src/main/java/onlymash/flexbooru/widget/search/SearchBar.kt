@@ -235,8 +235,8 @@ class SearchBar @JvmOverloads constructor(
         if (query.isNotEmpty()) {
             SuggestionManager.createSuggestion(Suggestion(booru_uid = booruUid, keyword = query))
         }
-        helper?.onApplySearch(query)
         setState(STATE_NORMAL)
+        helper?.onApplySearch(query)
     }
 
     fun getEditTextText(): String = (editText.text ?: "").toString()

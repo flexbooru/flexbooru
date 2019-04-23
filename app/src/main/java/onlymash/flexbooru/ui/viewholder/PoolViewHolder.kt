@@ -53,7 +53,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
     private val expandBottom: ImageButton = itemView.findViewById(R.id.bt_expand)
     private val descriptionContainer: LinearLayout = itemView.findViewById(R.id.description_container)
     private var pool: PoolBase? = null
-    private var isShow = false
+    private var isShowing = false
 
     private var itemListener: ItemListener? = null
 
@@ -73,7 +73,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
         }
         expandBottom.setOnClickListener {
             if (!poolDescription.text.isNullOrBlank()) {
-                isShow = toggleLayoutExpand(!isShow, expandBottom, descriptionContainer)
+                isShowing = toggleLayoutExpand(!isShowing, expandBottom, descriptionContainer)
             } else {
                 Snackbar.make(container, container.context.getString(R.string.pool_description_is_empty),
                     Snackbar.LENGTH_SHORT).show()
@@ -93,6 +93,7 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
 
     fun bind(data: PoolBase?) {
         if (descriptionContainer.visibility == View.VISIBLE) {
+            isShowing = false
             expandBottom.toggleArrow(show = false, delay = false)
             descriptionContainer.visibility = View.GONE
         }
