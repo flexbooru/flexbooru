@@ -61,13 +61,13 @@ android {
             outputFileName = "flexbooru_${defaultConfig.versionName}.apk"
         }
     }
-    flavorDimensions 'github', 'play'
+    flavorDimensions 'channel'
     productFlavors {
         github {
-            dimension 'github'
+            dimension 'channel'
         }
         play {
-            dimension 'play'
+            dimension 'channel'
             applicationIdSuffix '.play'
             versionNameSuffix '.play'
         }
