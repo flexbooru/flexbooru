@@ -28,6 +28,7 @@
     <string name="title_tags">Tags</string>
     <string name="title_comments">Comments</string>
     <string name="title_muzei">Muzei</string>
+    <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Copyright</string>
     <string name="title_about">About</string>
     <string name="about_app" translatable="false">Flexbooru</string>
@@ -100,6 +101,7 @@
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
     <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
+    <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
     <string name="booru_config_dialog_title_delete">Are you sure you want to remove this booru?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt must contain text: your-password</string>
@@ -153,11 +155,6 @@
     <string name="settings_post_size_sample">Sample</string>
     <string name="settings_post_size_larger">Larger</string>
     <string name="settings_post_size_origin">Origin</string>
-    <string name="settings_theme_mode">Theme</string>
-    <string name="settings_theme_mode_system">Follow system</string>
-    <string name="settings_theme_mode_battery">Follow battery saver</string>
-    <string name="settings_theme_mode_day">Day</string>
-    <string name="settings_theme_mode_night">Night</string>
     <string name="settings_grid_width">Grid width</string>
     <string name="settings_grid_width_small">Small</string>
     <string name="settings_grid_width_normal">Normal</string>

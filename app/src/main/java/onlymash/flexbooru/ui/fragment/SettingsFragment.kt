@@ -17,14 +17,14 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
-import moe.shizuku.preference.Preference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.openDocumentTree
 
-class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,19 +35,9 @@ class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         addPreferencesFromResource(R.xml.pref_settings)
         initPathSummary()
     }
-    override fun onCreateItemDecoration(): DividerDecoration? {
-        return CategoryDivideDividerDecoration()
-    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            Settings.THEME_MODE_KEY -> {
-                val mode = Settings.instance().themeMode
-                AppCompatDelegate.setDefaultNightMode(mode)
-                if (mode != AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
-                    requireActivity().recreate()
-                }
-            }
             Settings.DOWNLOAD_PATH_KEY -> {
                 initPathSummary()
             }
@@ -64,7 +54,7 @@ class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         if (path.isNullOrEmpty()) {
             path = getString(R.string.settings_download_path_not_set)
         }
-        findPreference(Settings.DOWNLOAD_PATH_KEY)?.summary = path
+        findPreference<Preference>(Settings.DOWNLOAD_PATH_KEY)?.summary = path
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

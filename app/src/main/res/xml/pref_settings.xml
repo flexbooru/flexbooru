@@ -14,39 +14,27 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<moe.shizuku.preference.PreferenceScreen
+<PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
-            android:key="settings_theme_mode"
-            android:entries="@array/settings_theme_mode_entries"
-            android:entryValues="@array/settings_theme_mode_entries_values"
-            android:defaultValue="system"
-            android:summary="%s"
-            android:title="@string/settings_theme_mode"
-            app:iconSpaceReserved="true" />
-
-    <moe.shizuku.preference.SwitchPreference
+    <SwitchPreference
             android:key="settings_safe_mode"
             android:title="@string/settings_safe_mode"
             android:defaultValue="true"
             android:summaryOn="@string/switch_on"
             android:summaryOff="@string/switch_off"
             app:iconSpaceReserved="true"/>
-
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
+    
+    <onlymash.flexbooru.widget.SimpleMenuPreference
             android:key="settings_grid_width"
             android:entries="@array/settings_grid_width_entries"
             android:entryValues="@array/settings_grid_width_entries_values"
             android:defaultValue="normal"
-            android:summary="%s"
             android:title="@string/settings_grid_width"
             app:iconSpaceReserved="true" />
 
-    <moe.shizuku.preference.SwitchPreference
+    <SwitchPreference
             android:key="settings_show_info_bar"
             android:title="@string/settings_show_info_bar"
             android:defaultValue="false"
@@ -54,28 +42,23 @@
             android:summaryOff="@string/switch_no"
             app:iconSpaceReserved="true"/>
 
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
+    <onlymash.flexbooru.widget.SimpleMenuPreference
             android:key="settings_page_limit"
             android:entries="@array/settings_page_limit_entries"
             android:entryValues="@array/settings_page_limit_entries_values"
             android:defaultValue="10"
-            android:summary="%s"
             android:title="@string/settings_page_limit"
             app:iconSpaceReserved="true" />
-
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
+    
+    <onlymash.flexbooru.widget.SimpleMenuPreference
             android:key="settings_browse_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="sample"
-            android:summary="%s"
             android:title="@string/settings_browse_size"
             app:iconSpaceReserved="true" />
 
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
+    <onlymash.flexbooru.widget.SimpleMenuPreference
             android:key="settings_download_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
@@ -84,29 +67,25 @@
             android:title="@string/settings_download_size"
             app:iconSpaceReserved="true" />
 
-    <moe.shizuku.preference.Preference
+    <Preference
             android:key="settings_download_path"
             android:title="@string/settings_download_path"
             app:iconSpaceReserved="true"/>
 
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
+    <onlymash.flexbooru.widget.SimpleMenuPreference
             android:key="settings_muzei_limit"
             android:entries="@array/settings_muzei_limit_entries"
             android:entryValues="@array/settings_muzei_limit_entries_values"
             android:defaultValue="10"
-            android:summary="%s"
             android:title="@string/settings_muzei_limit"
             app:iconSpaceReserved="true" />
 
-    <!--suppress AndroidElementNotAllowed -->
-    <moe.shizuku.preference.SimpleMenuPreference
+    <onlymash.flexbooru.widget.SimpleMenuPreference
             android:key="settings_muzei_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="larger"
-            android:summary="%s"
             android:title="@string/settings_muzei_size"
             app:iconSpaceReserved="true" />
 
-</moe.shizuku.preference.PreferenceScreen>
+</PreferenceScreen>

@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -50,7 +49,7 @@ import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewholder.CommentViewHolder
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 
-class CommentActivity : AppCompatActivity() {
+class CommentActivity : BaseActivity() {
 
     companion object {
         private const val POST_ID_KEY = "post_id"

@@ -75,18 +75,6 @@
         <item>larger</item>
         <item>origin</item>
     </string-array>
-    <string-array name="settings_theme_mode_entries">
-        <item>@string/settings_theme_mode_system</item>
-        <item>@string/settings_theme_mode_battery</item>
-        <item>@string/settings_theme_mode_day</item>
-        <item>@string/settings_theme_mode_night</item>
-    </string-array>
-    <string-array name="settings_theme_mode_entries_values">
-        <item>system</item>
-        <item>battery</item>
-        <item>day</item>
-        <item>night</item>
-    </string-array>
     <string-array name="settings_grid_width_entries">
         <item>@string/settings_grid_width_small</item>
         <item>@string/settings_grid_width_normal</item>

@@ -24,6 +24,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
+import onlymash.flexbooru.util.TextMatchesUtil
 
 class BooruConfigActivity : BaseActivity() {
 
@@ -59,13 +60,21 @@ class BooruConfigActivity : BaseActivity() {
                 }
                 R.id.action_booru_config_apply -> {
                     val booru = BooruConfigFragment.get()
+                    val hashBoorus = arrayOf(
+                        Constants.TYPE_MOEBOORU,
+                        Constants.TYPE_DANBOORU_ONE,
+                        Constants.TYPE_SANKAKU
+                        )
                     when {
                         booru.name.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_name_cant_empty, Snackbar.LENGTH_LONG).show()
-                        booru.host.isBlank() -> Snackbar.make(toolbar, R.string.booru_config_host_cant_empty, Snackbar.LENGTH_LONG).show()
-                        (booru.type == Constants.TYPE_MOEBOORU
-                                || booru.type == Constants.TYPE_DANBOORU_ONE
-                                || booru.type == Constants.TYPE_SANKAKU)
-                                && booru.hash_salt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
+                        booru.host.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_host_cant_empty, Snackbar.LENGTH_LONG).show()
+                        !TextMatchesUtil.isHost(booru.host) -> {
+                            Snackbar.make(toolbar, getString(R.string.booru_config_host_invalid), Snackbar.LENGTH_LONG).show()
+                        }
+                        booru.type in hashBoorus && booru.hash_salt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
+                        booru.type in hashBoorus && !booru.hash_salt.contains(Constants.HASH_SALT_CONTAINED) -> {
+                            Snackbar.make(toolbar, getString(R.string.booru_config_hash_salt_must_contain_yp), Snackbar.LENGTH_LONG).show()
+                        }
                         booru.uid == -1L -> {
                             BooruManager.createBooru(booru)
                             val intent = Intent().apply {

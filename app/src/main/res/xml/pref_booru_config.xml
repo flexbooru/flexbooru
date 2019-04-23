@@ -14,59 +14,51 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<moe.shizuku.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <moe.shizuku.preference.EditTextPreference
+    <onlymash.flexbooru.widget.EditTextPreference
             android:key="booru_config_name"
             android:title="@string/booru_config_name"
             android:singleLine="true"
-            android:summary="%s"
             app:iconSpaceReserved="true"/>
 
-    <moe.shizuku.preference.PreferenceCategory
+    <PreferenceCategory
             android:title="@string/booru_config_info"
             app:iconSpaceReserved="true">
-        <!--suppress AndroidElementNotAllowed -->
-        <moe.shizuku.preference.SimpleMenuPreference
+
+        <onlymash.flexbooru.widget.SimpleMenuPreference
                 android:key="booru_config_type"
                 android:title="@string/booru_config_type"
-                android:summary="%s"
                 android:icon="@drawable/ic_class_24dp"
                 android:entries="@array/booru_type_entries"
                 android:entryValues="@array/booru_type_entries_values"
                 android:defaultValue="danbooru"
                 app:iconSpaceReserved="true"/>
 
-        <!--suppress AndroidElementNotAllowed -->
-        <moe.shizuku.preference.SimpleMenuPreference
+        <onlymash.flexbooru.widget.SimpleMenuPreference
                 android:key="booru_config_scheme"
                 android:title="@string/booru_config_scheme"
-                android:summary="%s"
                 android:icon="@drawable/ic_https_24dp"
                 android:entries="@array/booru_scheme_entries"
                 android:entryValues="@array/booru_scheme_entries_values"
                 android:defaultValue="https"
                 app:iconSpaceReserved="true"/>
 
-        <!--suppress AndroidElementNotAllowed -->
-        <onlymash.flexbooru.widget.preference.EditTextPreference
+        <onlymash.flexbooru.widget.EditTextPreference
                 android:key="booru_config_host"
                 android:title="@string/booru_config_host"
                 android:singleLine="true"
-                android:summary="%s"
                 android:icon="@drawable/ic_domain_24dp"
                 app:iconSpaceReserved="true"/>
 
-        <!--suppress AndroidElementNotAllowed -->
-        <onlymash.flexbooru.widget.preference.EditTextPreference
+        <onlymash.flexbooru.widget.EditTextPreference
                 android:key="booru_config_hash_salt"
                 android:title="@string/booru_config_hash_salt"
                 android:singleLine="true"
-                android:summary="%s"
                 android:icon="@drawable/ic_enhanced_encryption_24dp"
                 app:iconSpaceReserved="true"/>
 
-    </moe.shizuku.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-</moe.shizuku.preference.PreferenceScreen>
+</PreferenceScreen>

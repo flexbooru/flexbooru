@@ -21,12 +21,10 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.DocumentsContract
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
@@ -40,6 +38,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.SwitchDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,7 +57,7 @@ import onlymash.flexbooru.util.getWidth
 import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 
-class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -69,6 +68,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         private const val DRAWER_ITEM_ID_COMMENTS = 2L
         private const val DRAWER_ITEM_ID_MUZEI = 3L
         private const val DRAWER_ITEM_ID_SETTINGS = 4L
+        private const val DRAWER_ITEM_ID_NIGHT_MODE = 5L
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -124,7 +124,17 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     .withName(R.string.title_settings)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_SETTINGS)
+                    .withIdentifier(DRAWER_ITEM_ID_SETTINGS),
+                SwitchDrawerItem()
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_brightness_2_outline_24dp))
+                    .withName(R.string.title_night_mode)
+                    .withSelectable(false)
+                    .withIconTintingEnabled(true)
+                    .withIdentifier(DRAWER_ITEM_ID_NIGHT_MODE)
+                    .withChecked(Settings.instance().isNightMode)
+                    .withOnCheckedChangeListener { _, _, isChecked ->
+                        Settings.instance().isNightMode = isChecked
+                    }
             )
             .addStickyDrawerItems(
                 PrimaryDrawerItem()
@@ -386,6 +396,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 DRAWER_ITEM_ID_COPYRIGHT -> {
                     startActivity(Intent(this@MainActivity, CopyrightActivity::class.java))
                 }
+                DRAWER_ITEM_ID_NIGHT_MODE -> return true
             }
             return false
         }
@@ -534,18 +545,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         when (key) {
             Settings.SAFE_MODE_KEY,
             Settings.PAGE_LIMIT_KEY,
-            Settings.GRID_WIDTH,
+            Settings.GRID_WIDTH_KEY,
             Settings.SHOW_INFO_BAR_KEY -> {
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 pager_container.currentItem = currentNavItem
             }
-            Settings.THEME_MODE_KEY -> {
-                val mode = Settings.instance().themeMode
-                AppCompatDelegate.setDefaultNightMode(mode)
-                if (mode != AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
-                    recreate()
-                }
+            Settings.NIGHT_MODE_KEY -> {
+                AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
+                recreate()
             }
         }
     }
@@ -573,8 +581,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
-            val docUri = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri)) ?: return
-            Settings.instance().downloadDirPath = Uri.decode(docUri.toString())
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(
+                uri,
+                takeFlags
+            )
+            Settings.instance().downloadDirPath = Uri.decode(uri.toString())
         }
     }
 }

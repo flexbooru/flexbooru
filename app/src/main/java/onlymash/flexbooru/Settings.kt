@@ -37,16 +37,13 @@ class Settings(private val sp: SharedPreferences) {
         const val BROWSE_SIZE_KEY = "settings_browse_size"
         const val DOWNLOAD_SIZE_KEY = "settings_download_size"
         const val DOWNLOAD_PATH_KEY = "settings_download_path"
+        const val NIGHT_MODE_KEY = "settings_night_mode"
+        const val THEME_KEY = "settings_theme"
         const val MUZEI_SIZE_KEY = "settings_muzei_size"
         const val POST_SIZE_SAMPLE = "sample"
         const val POST_SIZE_LARGER = "larger"
         const val POST_SIZE_ORIGIN = "origin"
-        const val THEME_MODE_KEY = "settings_theme_mode"
-        const val THEME_MODE_SYSTEM = "system"
-        const val THEME_MODE_AUTO_BATTERY = "battery"
-        const val THEME_MODE_DAY = "day"
-        const val THEME_MODE_NIGHT = "night"
-        const val GRID_WIDTH = "settings_grid_width"
+        const val GRID_WIDTH_KEY = "settings_grid_width"
         const val GRID_WIDTH_SMALL = "small"
         const val GRID_WIDTH_NORMAL = "normal"
         const val GRID_WIDTH_LARGE = "large"
@@ -82,22 +79,22 @@ class Settings(private val sp: SharedPreferences) {
         get() = sp.getString(MUZEI_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_LARGER
         set(value) = sp.edit().putString(MUZEI_SIZE_KEY, value).apply()
 
-    private var themeModeString: String
-        get() = sp.getString(THEME_MODE_KEY, THEME_MODE_SYSTEM) ?: THEME_MODE_SYSTEM
-        set(value) = sp.edit().putString(THEME_MODE_KEY, value).apply()
+    var isNightMode: Boolean
+        get() = sp.getBoolean(NIGHT_MODE_KEY, false)
+        set(value) = sp.edit().putBoolean(NIGHT_MODE_KEY, value).apply()
 
     @AppCompatDelegate.NightMode
-    val themeMode: Int
-        get() = when (themeModeString) {
-            THEME_MODE_AUTO_BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-            THEME_MODE_DAY -> AppCompatDelegate.MODE_NIGHT_NO
-            THEME_MODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
-            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    val nightMode: Int
+        get() = if (isNightMode) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
         }
 
+
     var gridWidth: String
-        get() = sp.getString(GRID_WIDTH, GRID_WIDTH_NORMAL) ?: GRID_WIDTH_NORMAL
-        set(value) = sp.edit().putString(GRID_WIDTH, value).apply()
+        get() = sp.getString(GRID_WIDTH_KEY, GRID_WIDTH_NORMAL) ?: GRID_WIDTH_NORMAL
+        set(value) = sp.edit().putString(GRID_WIDTH_KEY, value).apply()
 
     var activeMuzeiUid: Long
         get() = sp.getLong(ACTIVE_MUZEI_UID_KEY, 0L)

@@ -18,29 +18,20 @@ package onlymash.flexbooru.ui.fragment
 import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
-import moe.shizuku.preference.Preference
-import moe.shizuku.preference.PreferenceFragment
 import onlymash.flexbooru.App
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.util.openAppInMarket
 
-class AboutFragment : PreferenceFragment() {
+class AboutFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_about)
-        findPreference("about_app_version")?.summary = BuildConfig.VERSION_NAME
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.background))
-    }
-    override fun onCreateItemDecoration(): DividerDecoration? {
-        return CategoryDivideDividerDecoration()
+        findPreference<Preference>("about_app_version")?.summary = BuildConfig.VERSION_NAME
     }
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {

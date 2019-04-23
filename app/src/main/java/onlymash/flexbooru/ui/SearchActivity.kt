@@ -19,12 +19,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.SharedElementCallback
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     companion object {
         fun startActivity(context: Context, keyword: String) {

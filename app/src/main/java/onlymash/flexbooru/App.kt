@@ -23,10 +23,10 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
-import moe.shizuku.preference.PreferenceManager
 import onlymash.flexbooru.glide.GlideApp
 
 class App : Application() {
@@ -34,12 +34,7 @@ class App : Application() {
         lateinit var app: App
     }
     val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(app) }
-    override fun onCreate() {
-        super.onCreate()
-        app = this
-        AppCompatDelegate.setDefaultNightMode(Settings.instance().themeMode)
-        DrawerImageLoader.init(drawerImageLoader)
-    }
+    val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
             GlideApp.with(imageView.context).load(uri).placeholder(placeholder).into(imageView)
@@ -48,5 +43,10 @@ class App : Application() {
             Glide.with(imageView.context).clear(imageView)
         }
     }
-    val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
+    override fun onCreate() {
+        super.onCreate()
+        app = this
+        AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
+        DrawerImageLoader.init(drawerImageLoader)
+    }
 }
