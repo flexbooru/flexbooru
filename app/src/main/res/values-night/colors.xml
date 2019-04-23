@@ -15,8 +15,8 @@
   -->
 
 <resources>
-    <color name="menu_icon">@color/grey_400</color>
-    <color name="toolbar_menu_icon">@color/white</color>
+    <color name="colorAccent">@color/background_light</color>
+    <color name="toolbar_icon_tint">@color/white</color>
     <color name="background">@color/background_dark</color>
     <color name="background_card">@color/background_card_dark</color>
     <color name="background_text_info">@color/background_card_dark</color>

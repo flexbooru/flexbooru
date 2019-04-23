@@ -26,8 +26,8 @@
     <color name="transparent">@android:color/transparent</color>
     <color name="translucent">#55000000</color>
 
-    <color name="menu_icon">@color/grey_600</color>
-    <color name="toolbar_menu_icon">@color/black</color>
+    <color name="icon_tint">@color/grey_600</color>
+    <color name="toolbar_icon_tint">@color/black</color>
 
     <color name="item_line">@color/grey_300</color>
 

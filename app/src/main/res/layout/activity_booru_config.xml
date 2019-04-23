@@ -14,22 +14,20 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        tools:context=".ui.BooruConfigActivity">
+        android:orientation="vertical"
+        tools:context="onlymash.flexbooru.ui.BooruConfigActivity">
 
     <include layout="@layout/toolbar"/>
 
     <fragment
-            android:layout_below="@+id/toolbar"
-            android:id="@+id/fragment_booru_config"
+            android:name="onlymash.flexbooru.ui.fragment.BooruConfigFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="onlymash.flexbooru.ui.fragment.BooruConfigFragment"
-            tools:ignore="UnknownIdInLayout"/>
+            android:id="@+id/fragment_booru_config"/>
 
-</RelativeLayout>
+</LinearLayout>

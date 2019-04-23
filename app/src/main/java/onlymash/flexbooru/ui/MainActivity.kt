@@ -42,11 +42,8 @@ import com.mikepenz.materialdrawer.model.SwitchDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
+import onlymash.flexbooru.*
 import onlymash.flexbooru.App.Companion.app
-import onlymash.flexbooru.BuildConfig
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
 import onlymash.flexbooru.api.AppUpdaterApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
@@ -133,6 +130,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withIdentifier(DRAWER_ITEM_ID_NIGHT_MODE)
                     .withChecked(Settings.instance().isNightMode)
                     .withOnCheckedChangeListener { _, _, isChecked ->
+                        drawer.closeDrawer()
                         Settings.instance().isNightMode = isChecked
                     }
             )
@@ -396,7 +394,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 DRAWER_ITEM_ID_COPYRIGHT -> {
                     startActivity(Intent(this@MainActivity, CopyrightActivity::class.java))
                 }
-                DRAWER_ITEM_ID_NIGHT_MODE -> return true
+                DRAWER_ITEM_ID_NIGHT_MODE -> return false
             }
             return false
         }
@@ -553,7 +551,15 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             Settings.NIGHT_MODE_KEY -> {
                 AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
-                recreate()
+//                delegate.applyDayNight()
+                Handler().postDelayed({
+                    startActivity(
+                        Intent(this, MainActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    finish()
+                }, 200L)
             }
         }
     }

@@ -20,7 +20,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.App
 import onlymash.flexbooru.BuildConfig
@@ -28,7 +27,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.util.openAppInMarket
 
-class AboutFragment : PreferenceFragmentCompat() {
+class AboutFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_about)
         findPreference<Preference>("about_app_version")?.summary = BuildConfig.VERSION_NAME
