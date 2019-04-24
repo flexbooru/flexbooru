@@ -46,9 +46,9 @@
     <string name="about_donation_paypal">PayPal</string>
     <string name="about_donation_alipay">支付宝</string>
     <string name="about_donation_btc">比特币</string>
-    <string name="about_copyright">Copyright</string>
-    <string name="about_licenses">Licenses</string>
-    <string name="about_open_source_licenses">Open Sources Licenses</string>
+    <string name="about_copyright">版权</string>
+    <string name="about_licenses">授权许可</string>
+    <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="snackbar_copy_text">` %s ` 已复制到剪贴板。</string>
     <string name="retry">重试</string>
     <string name="msg_not_supported">不支持</string>
