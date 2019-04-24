@@ -50,4 +50,13 @@
         <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
         <item name="android:popupElevation">@dimen/elevation_size</item>
     </style>
+    <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:datePickerStyle">@style/DatePickerStyle</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
+    </style>
+    <style name="DatePickerStyle" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:headerBackground">@color/colorPrimary</item>
+        <item name="android:background">@color/background_dark</item>
+    </style>
 </resources>

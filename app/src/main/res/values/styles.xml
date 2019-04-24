@@ -17,15 +17,16 @@
 
     <style name="AppTheme" parent="BaseTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorOnPrimary">?android:attr/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorPrimary</item>
         <item name="colorOnBackground">@color/background</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/background</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:popupWindowStyle">@style/PopupWindow</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
     </style>
     <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
         <item name="android:popupElevation">@dimen/elevation_size</item>
@@ -64,7 +65,7 @@
         <item name="android:statusBarColor">@color/transparent</item>
     </style>
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="colorAccent">?android:attr/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:tint">@color/icon_tint</item>
     </style>
     <style name="PreferenceFragmentStyle" parent="PreferenceFragment.Material">
@@ -123,7 +124,11 @@
         <item name="android:textColor">@color/button_text</item>
     </style>
     <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/white</item>
         <item name="elevation">@dimen/elevation_size</item>
+    </style>
+    <style name="Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/white</item>
     </style>
     <style name="Widget.Account.FloatingActionButton" parent="@style/Widget.FloatingActionButton">
         <item name="backgroundTint">@color/account_action_background_tint</item>
@@ -132,5 +137,14 @@
     <style name="OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow">
         <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
         <item name="android:popupElevation">@dimen/elevation_size</item>
+    </style>
+    <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:datePickerStyle">@style/DatePickerStyle</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
+    </style>
+    <style name="DatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/colorPrimary</item>
+        <item name="android:background">@color/background_light</item>
     </style>
 </resources>
