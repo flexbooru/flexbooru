@@ -28,7 +28,7 @@
     <string name="title_tags">Tagi</string>
     <string name="title_comments">Komentarze</string>
     <string name="title_muzei">Muzei</string>
-    <string name="title_night_mode">Night mode</string>
+    <string name="title_night_mode">Tryb nocny</string>
     <string name="title_copyright">Prawa autorskie</string>
     <string name="title_about">O programie</string>
     <string name="about_app_version">Wersja</string>
@@ -46,9 +46,9 @@
     <string name="about_donation_paypal">PayPal</string>
     <string name="about_donation_alipay">Alipay</string>
     <string name="about_donation_btc">Bitcoin</string>
-    <string name="about_copyright">Copyright</string>
-    <string name="about_licenses">Licenses</string>
-    <string name="about_open_source_licenses">Open Source Licenses</string>
+    <string name="about_copyright">Prawa autorskie</string>
+    <string name="about_licenses">Licencje</string>
+    <string name="about_open_source_licenses">Licencje Open Source</string>
     <string name="snackbar_copy_text">` %s ` został skopiowany do schowka.</string>
     <string name="retry">Spróbuj ponownie</string>
     <string name="msg_not_supported">Nieobsługiwany</string>
@@ -93,7 +93,7 @@
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">Nazwa nie może być pusta.</string>
     <string name="booru_config_host_cant_empty">Serwer nie może być pusty.</string>
-    <string name="booru_config_host_invalid">Invalid host.</string>
+    <string name="booru_config_host_invalid">Nieprawidłowy host.</string>
     <string name="booru_config_hash_salt_cant_empty">Hash salt nie może być pusty.</string>
     <string name="booru_config_dialog_title_delete">Czy na pewno chcesz usunąć te booru?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt musi zawierać tekst: your-password</string>
