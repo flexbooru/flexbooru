@@ -47,6 +47,9 @@
     <string name="about_donation_paypal">Paypal</string>
     <string name="about_donation_alipay">Alipay</string>
     <string name="about_donation_btc">Bitcoin</string>
+    <string name="about_copyright">Copyright</string>
+    <string name="about_licenses">Licenses</string>
+    <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="snackbar_copy_text">%s a été copié dans le presse-papiers.</string>
     <string name="retry">Réessayez</string>
     <string name="msg_not_supported">Non supporté</string>
