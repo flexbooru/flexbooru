@@ -17,8 +17,9 @@
     <dimen name="search_bar_horizontal_margin">8dp</dimen>
     <dimen name="search_bar_vertical_margin">6dp</dimen>
     <dimen name="search_bar_height">54dp</dimen>
-    <dimen name="corner_radius">4dp</dimen>
-    <dimen name="elevation_size">2dp</dimen>
+    <dimen name="corner_radius">5dp</dimen>
+    <dimen name="elevation_size">3dp</dimen>
+    <dimen name="card_item_elevation_size">2dp</dimen>
     <dimen name="post_item_width_small">130dp</dimen>
     <dimen name="post_item_width_normal">190dp</dimen>
     <dimen name="post_item_width_large">260dp</dimen>
@@ -42,5 +43,7 @@
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
+
+    <dimen name="drop_down_offset">40dp</dimen>
 
 </resources>

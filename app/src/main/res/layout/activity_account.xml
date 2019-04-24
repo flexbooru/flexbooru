@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/background"
         tools:context="onlymash.flexbooru.ui.AccountActivity"
         tools:ignore="Overdraw">
 
@@ -89,18 +88,15 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:tint="?android:attr/textColorSecondary"
-                            app:backgroundTint="@color/background_card"
-                            app:elevation="1dp"
-                            app:fabSize="normal"
-                            app:rippleColor="?attr/colorPrimary"
-                            app:srcCompat="@drawable/ic_favorite_24dp"/>
+                            app:srcCompat="@drawable/ic_favorite_24dp"
+                            style="@style/Widget.Account.FloatingActionButton"/>
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/account_favorites"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -117,18 +113,15 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:tint="?android:attr/textColorSecondary"
-                            app:backgroundTint="@color/background_card"
-                            app:elevation="1dp"
-                            app:fabSize="normal"
-                            app:rippleColor="?attr/colorPrimary"
-                            app:srcCompat="@drawable/ic_photo_24dp"/>
+                            app:srcCompat="@drawable/ic_photo_24dp"
+                            style="@style/Widget.Account.FloatingActionButton"/>
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/account_posts"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -145,18 +138,15 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:tint="?android:attr/textColorSecondary"
-                            app:backgroundTint="@color/background_card"
-                            app:elevation="1dp"
-                            app:fabSize="normal"
-                            app:rippleColor="?attr/colorPrimary"
-                            app:srcCompat="@drawable/ic_comment_24dp"/>
+                            app:srcCompat="@drawable/ic_comment_24dp"
+                            style="@style/Widget.Account.FloatingActionButton"/>
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/account_comments"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
                 </LinearLayout>
             </LinearLayout>

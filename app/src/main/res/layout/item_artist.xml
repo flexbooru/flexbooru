@@ -30,7 +30,7 @@
             android:layout_marginEnd="10dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bt_expand"
@@ -41,8 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textAppearance="?android:attr/textAppearance"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/space"/>
 

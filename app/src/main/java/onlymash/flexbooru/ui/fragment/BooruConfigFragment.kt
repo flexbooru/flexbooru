@@ -18,12 +18,13 @@ package onlymash.flexbooru.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.Booru
 
-class BooruConfigFragment : BasePreferenceFragment(),
+class BooruConfigFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {

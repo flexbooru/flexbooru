@@ -18,12 +18,13 @@ package onlymash.flexbooru.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.openDocumentTree
 
-class SettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

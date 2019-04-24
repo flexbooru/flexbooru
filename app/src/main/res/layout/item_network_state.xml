@@ -21,20 +21,26 @@
               android:padding="8dp">
     <TextView
         android:id="@+id/error_msg"
+        android:maxWidth="256dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>
     <ProgressBar
         android:id="@+id/progress_bar"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        style="?android:attr/progressBarStyle"/>
+        style="@style/Widget.AppCompat.ProgressBar"/>
     <Button
         android:id="@+id/retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/retry"
-        style="@style/Widget.AppCompat.Button.Colored"/>
+        style="@style/Widget.Button.OutlinedButton"/>
 </LinearLayout>

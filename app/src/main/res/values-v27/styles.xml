@@ -15,11 +15,10 @@
   -->
 
 <resources>
-    <style name="BaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="BaseTheme" parent="Base">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
-        <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
 </resources>

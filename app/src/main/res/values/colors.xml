@@ -27,9 +27,12 @@
 
     <color name="icon_tint">@color/grey_600</color>
     <color name="toolbar_icon_tint">@color/black</color>
-    <color name="search_bar_tint">@color/grey_600</color>
+    <color name="bar_tint">@color/grey_600</color>
+    <color name="account_action_background_tint">@color/colorPrimary</color>
 
     <color name="item_line">@color/grey_300</color>
+
+    <color name="button_text">@color/colorPrimary</color>
 
     <color name="background">@color/background_light</color>
     <color name="background_light">@color/md_light_background</color>

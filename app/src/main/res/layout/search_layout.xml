@@ -49,11 +49,8 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/white"
-                app:backgroundTint="?attr/colorPrimary"
-                app:elevation="1dp"
-                app:fabSize="normal"
-                app:srcCompat="@drawable/ic_search_24dp"/>
+                app:srcCompat="@drawable/ic_search_24dp"
+                style="@style/Widget.FloatingActionButton"/>
 
     </androidx.cardview.widget.CardView>
 </LinearLayout>

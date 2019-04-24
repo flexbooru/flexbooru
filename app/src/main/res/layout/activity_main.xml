@@ -21,7 +21,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         tools:context=".ui.MainActivity">
 
     <onlymash.flexbooru.widget.FullDrawerViewPager
@@ -45,6 +44,7 @@
             app:itemTextAppearanceActive="?android:attr/textAppearance"
             app:itemTextAppearanceInactive="?android:attr/textAppearance"
             app:itemTextColor="@color/navbar_text_color"
+            app:itemIconTint="@color/navbar_text_color"
             app:layout_behavior="onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

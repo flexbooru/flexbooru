@@ -17,7 +17,8 @@
 <resources>
     <color name="colorAccent">@color/background_light</color>
     <color name="toolbar_icon_tint">@color/white</color>
-    <color name="search_bar_tint">@color/grey_400</color>
+    <color name="bar_tint">@color/grey_400</color>
+    <color name="button_text">@color/md_white_1000</color>
     <color name="background">@color/background_dark</color>
     <color name="background_card">@color/background_card_dark</color>
     <color name="background_text_info">@color/background_card_dark</color>
@@ -28,4 +29,5 @@
     <color name="rating_q">#FF616161</color>
     <color name="rating_s">#FF757575</color>
     <color name="muzei">@color/grey_800</color>
+    <color name="account_action_background_tint">@color/grey_800</color>
 </resources>

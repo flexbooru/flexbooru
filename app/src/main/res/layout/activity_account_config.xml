@@ -69,9 +69,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/account_username"
-                        app:counterEnabled="true">
+                        app:counterEnabled="true"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/username_edit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -88,7 +89,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/account_password"
                         android:id="@+id/password_edit_container"
-                        app:counterEnabled="true">
+                        app:counterEnabled="true"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password_edit"
                             android:layout_width="match_parent"
@@ -109,15 +111,16 @@
                         android:id="@+id/forgot_auth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="26dp"
                         android:layout_gravity="end"
+                        android:gravity="center_vertical"
                         android:layout_marginTop="@dimen/spacing_medium"
                         android:clickable="true"
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
                         android:text="@string/account_forgot_password"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
                         android:textStyle="bold"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -130,15 +133,11 @@
                 android:layout_gravity="center_horizontal">
             <Button
                     android:layout_gravity="center_horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
                     android:id="@+id/set_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account_set"
-                    android:textColor="@color/white"
-                    android:background="@drawable/background_button"
-                    style="@style/Widget.AppCompat.Button.Colored"/>
+                    style="@style/Widget.Button.OutlinedButton"/>
             <ProgressBar
                     android:layout_gravity="center_horizontal"
                     android:id="@+id/progress_bar"

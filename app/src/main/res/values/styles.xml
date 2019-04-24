@@ -17,8 +17,18 @@
 
     <style name="AppTheme" parent="BaseTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">?android:attr/colorPrimary</item>
+        <item name="colorOnBackground">@color/background</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:popupWindowStyle">@style/PopupWindow</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+    </style>
+    <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
+        <item name="android:popupElevation">@dimen/elevation_size</item>
     </style>
     <style name="AppTheme.Main" parent="AppTheme">
         <!-- MaterialDrawer specific values -->
@@ -47,9 +57,11 @@
         <item name="android:taskToBackEnterAnimation">@null</item>
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
-    <style name="BaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/transparent</item>
+    <style name="Base" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="preferenceTheme">@style/PreferenceTheme</item>
+    </style>
+    <style name="BaseTheme" parent="Base">
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="colorAccent">?android:attr/colorAccent</item>
@@ -58,7 +70,7 @@
     <style name="PreferenceFragmentStyle" parent="PreferenceFragment.Material">
         <item name="android:background">@color/background</item>
     </style>
-    <style name="BrowseTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="BrowseTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -68,18 +80,20 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:navigationBarColor">@color/transparent</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:popupWindowStyle">@style/PopupWindow</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>
     <style name="CardViewTheme" parent="CardView.Light">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
         <item name="cardUseCompatPadding">true</item>
-        <item name="cardElevation">@dimen/elevation_size</item>
-        <item name="cardMaxElevation">@dimen/elevation_size</item>
+        <item name="cardElevation">@dimen/card_item_elevation_size</item>
+        <item name="cardMaxElevation">@dimen/card_item_elevation_size</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="contentPadding">0dp</item>
         <item name="cardBackgroundColor">@color/background_card_light</item>
     </style>
-    <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar"/>
-    <style name="PopupTheme" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+    <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Light"/>
     <style name="TransparentBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
     </style>
@@ -88,24 +102,35 @@
     </style>
     <style name="TagFilters">
         <item name="android:padding">@dimen/spacing_normal</item>
-        <item name="android:strokeColor">?android:textColorTertiary</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:strokeColor">?android:attr/textColorTertiary</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">14sp</item>
         <item name="outlineWidth">1dp</item>
         <item name="foreground">?selectableItemBackground</item>
         <item name="actionIcon">@drawable/tag_dot</item>
         <item name="showIcon">true</item>
     </style>
-
     <style name="RightInRightOutAnim" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
-
     <style name="AppTheme.Sliding" parent="AppTheme">
         <item name="android:windowAnimationStyle">@style/RightInRightOutAnim</item>
     </style>
-
+    <style name="Widget.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/button_text</item>
+    </style>
+    <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="elevation">@dimen/elevation_size</item>
+    </style>
+    <style name="Widget.Account.FloatingActionButton" parent="@style/Widget.FloatingActionButton">
+        <item name="backgroundTint">@color/account_action_background_tint</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
+        <item name="android:popupElevation">@dimen/elevation_size</item>
+    </style>
 </resources>

@@ -30,7 +30,7 @@
             android:gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/right"/>
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textAppearance="@android:style/TextAppearance.Material.Caption"/>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
 
         <TextView
                 android:id="@+id/post_count"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textAppearance="@android:style/TextAppearance.Material.Caption"/>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
     </LinearLayout>
     <View
             android:layout_width="0dp"
