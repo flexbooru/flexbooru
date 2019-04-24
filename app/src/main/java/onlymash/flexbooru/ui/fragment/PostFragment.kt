@@ -521,7 +521,7 @@ class PostFragment : ListFragment() {
         action_search.setOnClickListener {
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (!tagString.isBlank()) {
-                searchBar.disableSearchState()
+//                searchBar.disableSearchState()
                 SuggestionManager.createSuggestion(Suggestion(
                     booru_uid = Settings.instance().activeBooruUid,
                     keyword = tagString))
