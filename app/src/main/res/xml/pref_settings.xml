@@ -18,7 +18,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:key="settings_screen"
-        app:initialExpandedChildrenCount="4">
+        app:initialExpandedChildrenCount="5">
 
     <SwitchPreference
             android:key="settings_safe_mode"
@@ -28,12 +28,13 @@
             android:summaryOff="@string/switch_off"
             app:iconSpaceReserved="true"/>
     
-    <onlymash.flexbooru.widget.SimpleMenuPreference
+    <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_grid_width"
             android:entries="@array/settings_grid_width_entries"
             android:entryValues="@array/settings_grid_width_entries_values"
             android:defaultValue="normal"
             android:title="@string/settings_grid_width"
+            app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
 
     <SwitchPreference
@@ -44,29 +45,32 @@
             android:summaryOff="@string/switch_no"
             app:iconSpaceReserved="true"/>
 
-    <onlymash.flexbooru.widget.SimpleMenuPreference
+    <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_page_limit"
             android:entries="@array/settings_page_limit_entries"
             android:entryValues="@array/settings_page_limit_entries_values"
             android:defaultValue="10"
             android:title="@string/settings_page_limit"
+            app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
     
-    <onlymash.flexbooru.widget.SimpleMenuPreference
+    <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_browse_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="sample"
             android:title="@string/settings_browse_size"
+            app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
 
-    <onlymash.flexbooru.widget.SimpleMenuPreference
+    <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_download_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="larger"
             android:summary="%s"
             android:title="@string/settings_download_size"
+            app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
 
     <Preference
@@ -74,20 +78,22 @@
             android:title="@string/settings_download_path"
             app:iconSpaceReserved="true"/>
 
-    <onlymash.flexbooru.widget.SimpleMenuPreference
+    <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_muzei_limit"
             android:entries="@array/settings_muzei_limit_entries"
             android:entryValues="@array/settings_muzei_limit_entries_values"
             android:defaultValue="10"
             android:title="@string/settings_muzei_limit"
+            app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
 
-    <onlymash.flexbooru.widget.SimpleMenuPreference
+    <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_muzei_size"
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="larger"
             android:title="@string/settings_muzei_size"
+            app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
 
 </PreferenceScreen>
