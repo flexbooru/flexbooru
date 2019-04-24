@@ -261,6 +261,8 @@ class SearchBar @JvmOverloads constructor(
         leftButton.visibility = visibility
     }
 
+    fun getLeftButton(): ImageButton = leftButton
+
     fun setMenu(menuId: Int, menuInflater: MenuInflater) {
         menuInflater.inflate(menuId,menuView.menu)
     }

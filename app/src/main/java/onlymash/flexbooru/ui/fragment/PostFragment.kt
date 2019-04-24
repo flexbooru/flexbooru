@@ -40,6 +40,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.database.*
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.*
@@ -167,16 +168,18 @@ class PostFragment : ListFragment() {
     private var type = -1
     private lateinit var search: Search
     private lateinit var searchTag: SearchTag
+    private lateinit var expandButton: View
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
             override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
-                searchBar.findViewById<View>(R.id.action_expand_tag_filter).rotate(135f)
+                expandButton.rotate(135f)
                 if (requireActivity() is MainActivity) toggleArrowLeftDrawable()
                 when (newState) {
                     SearchBar.STATE_NORMAL -> {
-                        if (search_layout.visibility != View.GONE) {
-                            viewTransition.showView(0, true)
+                        if (search_layout.visibility == View.VISIBLE) {
+                            RippleAnimation.create(searchBar.getLeftButton()).setDuration(300).start()
+                            viewTransition.showView(0, false)
                         }
                     }
                     SearchBar.STATE_SEARCH -> {
@@ -194,9 +197,10 @@ class PostFragment : ListFragment() {
             override fun onMenuItemClick(menuItem: MenuItem) {
                 if (menuItem.itemId == R.id.action_expand_tag_filter) {
                     when {
-                        !searchBar.isSearchState() && search_layout.visibility == View.GONE -> {
+                        !searchBar.isSearchState() && search_layout.visibility != View.VISIBLE -> {
                             searchBar.enableSearchState(showIME = false, showSuggestion = false)
-                            viewTransition.showView(1, true)
+                            RippleAnimation.create(expandButton).setDuration(300).start()
+                            viewTransition.showView(1, false)
                         }
                         else -> searchBar.setText("")
                     }
@@ -459,6 +463,7 @@ class PostFragment : ListFragment() {
         }
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         searchBar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
+        expandButton = searchBar.findViewById<View>(R.id.action_expand_tag_filter)
         postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
