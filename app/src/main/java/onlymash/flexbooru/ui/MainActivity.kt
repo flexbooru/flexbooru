@@ -35,10 +35,7 @@ import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
-import com.mikepenz.materialdrawer.model.SwitchDrawerItem
+import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,14 +55,13 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val HEADER_ITEM_ID_BOORU_MANAGE = -11L
-        private const val DRAWER_ITEM_ID_ABOUT = -1L
-        private const val DRAWER_ITEM_ID_COPYRIGHT = -2L
+        private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
         private const val DRAWER_ITEM_ID_COMMENTS = 2L
         private const val DRAWER_ITEM_ID_MUZEI = 3L
         private const val DRAWER_ITEM_ID_SETTINGS = 4L
         private const val DRAWER_ITEM_ID_NIGHT_MODE = 5L
+        private const val DRAWER_ITEM_ID_ABOUT = 6L
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -121,7 +117,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withName(R.string.title_settings)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_SETTINGS),
+                    .withIdentifier(DRAWER_ITEM_ID_SETTINGS)
+            )
+            .addStickyDrawerItems(
                 SwitchDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_brightness_2_outline_24dp))
                     .withName(R.string.title_night_mode)
@@ -132,24 +130,16 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withOnCheckedChangeListener { _, _, isChecked ->
                         drawer.closeDrawer()
                         Settings.instance().isNightMode = isChecked
-                    }
-            )
-            .addStickyDrawerItems(
+                    },
                 PrimaryDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_info_outline_24dp))
                     .withName(R.string.title_about)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_ABOUT),
-                PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_copyright_24dp))
-                    .withName(R.string.title_copyright)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_COPYRIGHT)
+                    .withIdentifier(DRAWER_ITEM_ID_ABOUT)
             )
-            .withStickyFooterDivider(true)
             .withStickyFooterShadow(false)
+            .withStickyFooterDivider(true)
             .withSavedInstance(savedInstanceState)
             .build()
         drawer.apply {
@@ -390,9 +380,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
                 DRAWER_ITEM_ID_ABOUT -> {
                     startActivity(Intent(this@MainActivity, AboutActivity::class.java))
-                }
-                DRAWER_ITEM_ID_COPYRIGHT -> {
-                    startActivity(Intent(this@MainActivity, CopyrightActivity::class.java))
                 }
                 DRAWER_ITEM_ID_NIGHT_MODE -> return false
             }

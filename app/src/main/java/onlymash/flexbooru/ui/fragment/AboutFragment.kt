@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.App
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
+import onlymash.flexbooru.ui.CopyrightActivity
 import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.util.openAppInMarket
 
@@ -75,6 +76,11 @@ class AboutFragment : BasePreferenceFragment() {
             }
             "about_app_translation" -> {
                 requireContext().launchUrl("https://crowdin.com/project/flexbooru")
+            }
+            "about_licenses" -> {
+                requireActivity().run {
+                    startActivity(Intent(this, CopyrightActivity::class.java))
+                }
             }
         }
         return super.onPreferenceTreeClick(preference)

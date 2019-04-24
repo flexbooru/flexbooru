@@ -93,4 +93,15 @@
                 android:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
                 app:iconSpaceReserved="true"/>
     </PreferenceCategory>
+    <PreferenceCategory
+            android:key="copyright"
+            android:title="@string/about_copyright"
+            app:iconSpaceReserved="true">
+        <Preference
+                android:key="about_licenses"
+                android:title="@string/about_licenses"
+                android:summary="@string/about_open_source_licenses"
+                android:icon="@drawable/ic_copyright_24dp"
+                app:iconSpaceReserved="true"/>
+    </PreferenceCategory>
 </PreferenceScreen>
