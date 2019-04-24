@@ -48,7 +48,7 @@
     <string name="about_donation_btc">Bitcoin</string>
     <string name="about_copyright">Copyright</string>
     <string name="about_licenses">Licenses</string>
-    <string name="about_open_source_licenses">Open Sources Licenses</string>
+    <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="snackbar_copy_text">` %s ` is gekopieerd naar het klembord.</string>
     <string name="retry">Opnieuw proberen</string>
     <string name="msg_not_supported">Not supported</string>
