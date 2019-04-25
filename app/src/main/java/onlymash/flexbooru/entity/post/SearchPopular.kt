@@ -39,5 +39,7 @@ data class SearchPopular(
     //Danbooru1.x
     var day: String = "",
     var month: String = "",
-    var year: String = ""
+    var year: String = "",
+
+    var limit: Int = 25
 )

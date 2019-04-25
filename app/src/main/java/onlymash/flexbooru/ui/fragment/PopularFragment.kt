@@ -407,7 +407,8 @@ class PopularFragment : ListFragment() {
     private val navigationListener = object : MainActivity.NavigationListener {
         override fun onClickPosition(position: Int) {
             if (position == 1) {
-                list.smoothScrollToPosition(0)
+                showSearchBar()
+                list.scrollToPosition(0)
             }
         }
     }
@@ -420,8 +421,9 @@ class PopularFragment : ListFragment() {
             val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
             val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
             if (pos >= 0 && keyword == key) {
+                Log.w("Pop", pos.toString())
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
-                list.smoothScrollToPosition(pos + 1)
+                list.scrollToPosition(pos + 1)
                 (requireActivity() as MainActivity).sharedElement =
                     list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
             }
@@ -520,6 +522,7 @@ class PopularFragment : ListFragment() {
         popular.year = yearString
         popular.month = monthString
         popular.day = dayString
+        popular.limit = Settings.instance().pageLimit
         requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 

@@ -39,13 +39,13 @@ object SankakuUrlHelper {
     }
 
 
-    fun getPopularUrl(popular: SearchPopular): HttpUrl {
+    fun getPopularUrl(popular: SearchPopular, page: Int): HttpUrl {
         val builder = HttpUrl.Builder()
             .scheme(popular.scheme)
             .host(popular.host)
             .addPathSegment("posts")
-            .addQueryParameter("page", "1")
-            .addQueryParameter("limit", "30")
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("limit", popular.limit.toString())
             .addQueryParameter("login", popular.username)
             .addQueryParameter("password_hash", popular.auth_key)
         if (popular.date.isNotEmpty()) {

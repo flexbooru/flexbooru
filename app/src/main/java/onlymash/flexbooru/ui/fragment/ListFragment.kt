@@ -166,4 +166,8 @@ abstract class ListFragment : Fragment() {
             }
         })[SuggestionViewModel::class.java]
     }
+
+    internal fun showSearchBar() {
+        searchBarMover.showSearchBar(true)
+    }
 }

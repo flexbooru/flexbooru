@@ -275,7 +275,8 @@ class PostFragment : ListFragment() {
     private val navigationListener by lazy {
         object : MainActivity.NavigationListener {
             override fun onClickPosition(position: Int) {
-                if (position == 0) list.smoothScrollToPosition(0)
+                showSearchBar()
+                if (position == 0) list.scrollToPosition(0)
             }
         }
     }
@@ -290,7 +291,7 @@ class PostFragment : ListFragment() {
             val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
             if (pos >= 0 && search.keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
-                list.smoothScrollToPosition(pos + 1)
+                list.scrollToPosition(pos + 1)
                 setSharedElement()
             }
         }
