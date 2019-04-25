@@ -28,6 +28,7 @@
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
         <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
+        <item name="colorControlActivated">@color/colorControlActivated</item>
     </style>
     <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
         <item name="android:popupElevation">@dimen/elevation_size</item>
@@ -66,7 +67,6 @@
         <item name="android:statusBarColor">#33000000</item>
     </style>
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:tint">@color/icon_tint</item>
     </style>
     <style name="PreferenceFragmentStyle" parent="PreferenceFragment.Material">

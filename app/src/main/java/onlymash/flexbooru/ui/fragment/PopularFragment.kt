@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -147,6 +148,10 @@ class PopularFragment : ListFragment() {
     private var currentMonth = -1
     private var currentDay = -1
 
+    private var currentYearEnd = -1
+    private var currentMonthEnd = -1
+    private var currentDayEnd = -1
+
     private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
 
     private val itemListener = object : PostViewHolder.ItemListener {
@@ -201,7 +206,6 @@ class PopularFragment : ListFragment() {
     private lateinit var postAdapter: PostAdapter
 
     private var keyword = ""
-    private var date = ""
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -231,8 +235,7 @@ class PopularFragment : ListFragment() {
                                         val realMonth = month + 1
                                         val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
                                         val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-                                        date = "$yearString-$monthString-$dayString"
-                                        popular.date = date
+                                        popular.date = "$yearString-$monthString-$dayString"
                                         popularViewModel.show(popular)
                                         swipe_refresh.isRefreshing = true
                                         popularViewModel.refreshDan()
@@ -264,7 +267,6 @@ class PopularFragment : ListFragment() {
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
-                            else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                         }
                         keyword = popular.scale
                     }
@@ -299,8 +301,7 @@ class PopularFragment : ListFragment() {
                                         val realMonth = month + 1
                                         val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
                                         val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-                                        date = "$yearString-$monthString-$dayString"
-                                        popular.date = date
+                                        popular.date = "$yearString-$monthString-$dayString"
                                         popular.day = dayString
                                         popular.month = monthString
                                         popular.year = yearString
@@ -335,9 +336,65 @@ class PopularFragment : ListFragment() {
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDanOne()
                             }
-                            else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
                         }
                         keyword = popular.scale
+                    }
+                    Constants.TYPE_SANKAKU -> {
+                        when (menuItem.itemId) {
+                            R.id.action_date_range -> {
+                                val currentTimeMillis = System.currentTimeMillis()
+                                val minCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                    timeInMillis = currentTimeMillis
+                                    add(Calendar.YEAR, -20)
+                                }
+                                val maxCalendar = Calendar.getInstance(Locale.getDefault()).apply {
+                                    timeInMillis = currentTimeMillis
+                                }
+                                val listener = com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener {
+                                        _, year, monthOfYear, dayOfMonth, yearEnd, monthOfYearEnd, dayOfMonthEnd ->
+                                    currentYear = year
+                                    currentMonth = monthOfYear
+                                    currentDay = dayOfMonth
+                                    currentYearEnd = yearEnd
+                                    currentMonthEnd = monthOfYearEnd
+                                    currentDayEnd = dayOfMonthEnd
+
+                                    val yearString = year.toString()
+                                    val realMonth = monthOfYear + 1
+                                    val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+                                    val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+
+                                    val yearStringEnd = yearEnd.toString()
+                                    val realMonthEnd = monthOfYearEnd + 1
+                                    val monthStringEnd = if (realMonthEnd < 10) "0$realMonthEnd" else realMonthEnd.toString()
+                                    val dayStringEnd = if (dayOfMonthEnd < 10) "0$dayOfMonthEnd" else dayOfMonthEnd.toString()
+                                    popular.date = "$dayString.$monthString.$yearString..$dayStringEnd.$monthStringEnd.$yearStringEnd"
+                                    popularViewModel.show(popular)
+                                    swipe_refresh.isRefreshing = true
+                                    popularViewModel.refreshSankaku()
+                                }
+                                if (currentYearEnd < 0 || currentMonthEnd < 0 || currentDayEnd < 0) {
+                                    currentYearEnd = currentYear
+                                    currentMonthEnd = currentMonth
+                                    currentDayEnd = currentDay
+                                }
+                                com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
+                                    listener,
+                                    currentYear,
+                                    currentMonth,
+                                    currentDay,
+                                    currentYearEnd,
+                                    currentMonthEnd,
+                                    currentDayEnd
+                                ).apply {
+                                    minDate = minCalendar
+                                    maxDate = maxCalendar
+                                    isAutoHighlight = false
+                                    isThemeDark = Settings.instance().isNightMode
+                                }
+                                    .show(requireActivity().supportFragmentManager, "DateRangePickerDialog")
+                            }
+                        }
                     }
                 }
             }
@@ -486,6 +543,7 @@ class PopularFragment : ListFragment() {
             Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_MOEBOORU -> searchBar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
             Constants.TYPE_DANBOORU_ONE -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
+            Constants.TYPE_SANKAKU -> searchBar.setMenu(R.menu.popular_sankaku, requireActivity().menuInflater)
         }
         popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
         glide = GlideApp.with(this)

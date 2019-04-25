@@ -139,6 +139,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     implementation 'androidx.preference:preference-ktx:1.1.0-alpha04'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.0.0'
+    implementation 'com.github.onlymash:MaterialDateRangePicker:09d6020'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"

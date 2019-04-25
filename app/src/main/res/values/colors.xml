@@ -18,7 +18,7 @@
     <color name="colorPrimary">#FF623AB2</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorAccent">@color/pink</color>
-
+    <color name="colorControlActivated">@color/colorAccent</color>
     <color name="pink">#F06292</color>
     <color name="white">@android:color/white</color>
     <color name="black">@android:color/black</color>

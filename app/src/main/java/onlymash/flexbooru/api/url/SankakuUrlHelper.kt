@@ -40,16 +40,20 @@ object SankakuUrlHelper {
 
 
     fun getPopularUrl(popular: SearchPopular): HttpUrl {
-        return HttpUrl.Builder()
+        val builder = HttpUrl.Builder()
             .scheme(popular.scheme)
             .host(popular.host)
             .addPathSegment("posts")
-            .addQueryParameter("tags", "order:popular")
             .addQueryParameter("page", "1")
             .addQueryParameter("limit", "30")
             .addQueryParameter("login", popular.username)
             .addQueryParameter("password_hash", popular.auth_key)
-            .build()
+        if (popular.date.isNotEmpty()) {
+            builder.addQueryParameter("tags", "order:popular date:${popular.date}")
+        } else {
+            builder.addQueryParameter("tags", "order:popular")
+        }
+        return builder.build()
     }
 
     fun getPoolUrl(search: Search, page: Int): HttpUrl {

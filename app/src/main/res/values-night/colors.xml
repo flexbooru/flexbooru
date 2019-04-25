@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <color name="colorAccent">@color/background_light</color>
+    <color name="colorControlActivated">@color/white</color>
     <color name="toolbar_icon_tint">@color/white</color>
     <color name="bar_tint">@color/grey_400</color>
     <color name="button_text">@color/md_white_1000</color>
