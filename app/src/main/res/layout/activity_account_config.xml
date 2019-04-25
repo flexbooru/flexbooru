@@ -71,7 +71,6 @@
                         android:hint="@string/account_username"
                         app:counterEnabled="true"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/username_edit"
                             android:layout_width="match_parent"
@@ -90,6 +89,7 @@
                         android:hint="@string/account_password"
                         android:id="@+id/password_edit_container"
                         app:counterEnabled="true"
+                        app:passwordToggleEnabled="true"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password_edit"
