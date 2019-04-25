@@ -76,12 +76,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:navigationBarColor">@color/transparent</item>
-        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:popupWindowStyle">@style/PopupWindow</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>

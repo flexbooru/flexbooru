@@ -32,13 +32,13 @@
             android:layout_height="match_parent">
         <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
                 android:layout_gravity="top"
                 android:background="@drawable/background_browse_top"/>
 
         <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/background_browse_bottom"/>
     </FrameLayout>

@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -25,6 +26,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ActionMenuItemView
@@ -395,6 +397,7 @@ class BrowseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initWindow()
         setContentView(R.layout.activity_browse)
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
@@ -514,7 +517,6 @@ class BrowseActivity : AppCompatActivity() {
             val bottomPadding = (insets.systemWindowInsetBottom * 1.5f).toInt()
             bottom_bar_container.minimumHeight = resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + bottomPadding
             bottom_bar_container.setPadding(insets.systemWindowInsetLeft, 0, insets.systemWindowInsetRight, bottomPadding)
-            shadow.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, insets.systemWindowInsetBottom)
             insets
         }
         keyword = intent.getStringExtra(Constants.KEYWORD_KEY) ?: ""
@@ -840,9 +842,20 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
+    private fun initWindow() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
+        showBar()
+    }
+
     private fun showBar() {
-        val uiFlags = View.SYSTEM_UI_FLAG_VISIBLE
+        val uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.decorView.systemUiVisibility = uiFlags
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
     }
 
     private fun hideBar() {
@@ -850,6 +863,7 @@ class BrowseActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         window.decorView.systemUiVisibility = uiFlags
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
     }
 
     override fun onBackPressed() {
