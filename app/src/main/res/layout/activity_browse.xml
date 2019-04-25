@@ -38,7 +38,7 @@
 
         <View
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="140dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/background_browse_bottom"/>
     </FrameLayout>

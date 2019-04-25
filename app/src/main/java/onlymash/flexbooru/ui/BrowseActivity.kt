@@ -513,10 +513,14 @@ class BrowseActivity : AppCompatActivity() {
         }
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
             toolbar_container.minimumHeight = toolbar.height + insets.systemWindowInsetTop
-            toolbar_container.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, 0)
-            val bottomPadding = (insets.systemWindowInsetBottom * 1.5f).toInt()
-            bottom_bar_container.minimumHeight = resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + bottomPadding
-            bottom_bar_container.setPadding(insets.systemWindowInsetLeft, 0, insets.systemWindowInsetRight, bottomPadding)
+            toolbar_container.setPadding(
+                insets.systemWindowInsetLeft,
+                insets.systemWindowInsetTop,
+                insets.systemWindowInsetRight,
+                0
+            )
+            bottom_bar_container.minimumHeight =
+                resources.getDimensionPixelSize(R.dimen.browse_bottom_bar_height) + insets.systemWindowInsetBottom
             insets
         }
         keyword = intent.getStringExtra(Constants.KEYWORD_KEY) ?: ""

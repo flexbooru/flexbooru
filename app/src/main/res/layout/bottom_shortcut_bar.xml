@@ -20,48 +20,59 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:minHeight="@dimen/browse_bottom_bar_height">
+        android:orientation="vertical">
 
-    <ImageButton
-            android:id="@+id/post_tags"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/browse_bottom_bar_height"
-            android:src="@drawable/ic_bookmark_border_24dp"
-            android:tint="@color/white"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/browse_tags"/>
+    <LinearLayout
+            android:layout_gravity="top"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/browse_bottom_bar_height">
 
-    <ImageButton
-            android:id="@+id/post_info"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/browse_bottom_bar_height"
-            android:src="@drawable/ic_info_outline_24dp"
-            android:tint="@color/white"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/browse_info"/>
+        <ImageButton
+                android:id="@+id/post_tags"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:src="@drawable/ic_bookmark_border_24dp"
+                android:tint="@color/white"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/browse_tags"/>
 
-    <ImageButton
-            android:id="@+id/post_comment"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/browse_bottom_bar_height"
-            android:src="@drawable/ic_comment_outline_24dp"
-            android:tint="@color/white"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/browse_comment"/>
+        <ImageButton
+                android:id="@+id/post_info"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:src="@drawable/ic_info_outline_24dp"
+                android:tint="@color/white"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/browse_info"/>
 
-    <ImageButton
-            android:id="@+id/post_save"
-            android:layout_weight="1"
+        <ImageButton
+                android:id="@+id/post_comment"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:src="@drawable/ic_comment_outline_24dp"
+                android:tint="@color/white"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/browse_comment"/>
+
+        <ImageButton
+                android:id="@+id/post_save"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:src="@drawable/ic_save_outline_24dp"
+                android:tint="@color/white"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/browse_save_file"/>
+
+    </LinearLayout>
+
+    <Space
             android:layout_width="0dp"
-            android:layout_height="@dimen/browse_bottom_bar_height"
-            android:src="@drawable/ic_save_outline_24dp"
-            android:tint="@color/white"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/browse_save_file"/>
+            android:layout_height="0dp"/>
 
 </LinearLayout>
