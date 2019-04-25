@@ -245,7 +245,7 @@ class RippleAnimation private constructor(
             var x = view.x
             val parent = view.parent
             if (parent is View) {
-                x += getAbsoluteX(parent as View)
+                x += getAbsoluteX(parent)
             }
             return x
         }
@@ -257,7 +257,7 @@ class RippleAnimation private constructor(
             var y = view.y
             val parent = view.parent
             if (parent is View) {
-                y += getAbsoluteY(parent as View)
+                y += getAbsoluteY(parent)
             }
             return y
         }

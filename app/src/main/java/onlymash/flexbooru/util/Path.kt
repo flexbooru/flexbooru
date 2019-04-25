@@ -38,7 +38,7 @@ private fun closeQuietly(closeable: AutoCloseable?) {
     } catch (_: Exception) { }
 }
 
-fun String.safeStringToUri(subDirName: String? = null): Uri {
+fun String.safeStringToUri(subName: String? = null): Uri {
     val uri = Uri.parse(this)
     val type = DocumentsContract.getTreeDocumentId(uri).split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
     val start = lastIndexOf(":") + 1
@@ -47,11 +47,11 @@ fun String.safeStringToUri(subDirName: String? = null): Uri {
         path = substring(start)
     }
     var docId = "$type:$path"
-    if (subDirName != null && subDirName.isNotEmpty()) {
+    if (subName != null && subName.isNotEmpty()) {
         if (path.isEmpty()) {
-            docId += subDirName
+            docId += subName
         } else {
-            docId = "$docId/$subDirName"
+            docId = "$docId/$subName"
         }
     }
     return DocumentsContract.buildDocumentUriUsingTree(uri, docId)
@@ -99,7 +99,7 @@ fun Activity.getAppDirUri(): Uri? {
 
 fun Activity.getSaveUri(fileName: String): Uri? {
     val appUri = getAppDirUri() ?: return null
-    return if (appUri.scheme == ContentResolver.SCHEME_CONTENT) {
+    if (appUri.scheme == ContentResolver.SCHEME_CONTENT) {
         val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
             appUri,
             DocumentsContract.getDocumentId(appUri))
@@ -128,7 +128,12 @@ fun Activity.getSaveUri(fileName: String): Uri? {
         val saveDirUri = uri ?: DocumentsContract.createDocument(
             contentResolver, appUri,
             DocumentsContract.Document.MIME_TYPE_DIR, "save") ?: appUri
-        DocumentsContract.createDocument(
+        val fileUri = Uri.decode(saveDirUri.toString()).safeStringToUri(fileName)
+        val file = DocumentFile.fromSingleUri(this, fileUri)
+        if (file != null && file.exists() && file.isFile) {
+            return fileUri
+        }
+        return DocumentsContract.createDocument(
             contentResolver,
             saveDirUri,
             fileName.getMimeType(),
@@ -140,7 +145,7 @@ fun Activity.getSaveUri(fileName: String): Uri? {
 
 fun Activity.getDownloadUri(host: String, fileName: String): Uri? {
     val appUri = getAppDirUri() ?: return null
-    return if (appUri.scheme == ContentResolver.SCHEME_CONTENT) {
+    if (appUri.scheme == ContentResolver.SCHEME_CONTENT) {
         val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
             appUri,
             DocumentsContract.getDocumentId(appUri))
@@ -169,7 +174,12 @@ fun Activity.getDownloadUri(host: String, fileName: String): Uri? {
         val downloadDirUri = uri ?: DocumentsContract.createDocument(
             contentResolver, appUri,
             DocumentsContract.Document.MIME_TYPE_DIR, host) ?: appUri
-        DocumentsContract.createDocument(
+        val fileUri = Uri.decode(downloadDirUri.toString()).safeStringToUri(fileName)
+        val file = DocumentFile.fromSingleUri(this, fileUri)
+        if (file != null && file.exists() && file.isFile) {
+            return fileUri
+        }
+        return DocumentsContract.createDocument(
             contentResolver,
             downloadDirUri,
             fileName.getMimeType(),

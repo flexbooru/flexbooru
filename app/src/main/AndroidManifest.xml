@@ -105,15 +105,6 @@
         </activity>
 
         <provider
-                android:name=".content.FlexProvider"
-                android:authorities="${applicationId}.onlymash"
-                android:exported="false"
-                android:grantUriPermissions="true">
-            <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_paths"/>
-        </provider>
-        <provider
                 android:name=".content.muzei.FlexArtProvider"
                 android:authorities="${applicationId}.muzei"
                 android:description="@string/app_description"

@@ -147,7 +147,6 @@ class DownloadUtil(
             notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
             return Result.failure()
         }
-        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, path = path).build())
         val `is` = FileInputStream(file)
         val os = applicationContext.contentResolver.openOutputStream(desUri)
         try {
@@ -158,6 +157,7 @@ class DownloadUtil(
             IOUtils.closeQuietly(`is`)
             IOUtils.closeQuietly(os)
         }
+        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, path = path).build())
         return Result.success()
     }
 

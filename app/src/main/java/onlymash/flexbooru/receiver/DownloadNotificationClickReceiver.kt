@@ -18,6 +18,7 @@ package onlymash.flexbooru.receiver
 import android.content.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.util.DownloadUtil
+import onlymash.flexbooru.util.getMimeType
 import onlymash.flexbooru.util.safeStringToUri
 
 class DownloadNotificationClickReceiver : BroadcastReceiver() {
@@ -28,7 +29,7 @@ class DownloadNotificationClickReceiver : BroadcastReceiver() {
             val newIntent = Intent().apply {
                 action = Intent.ACTION_VIEW
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                setDataAndType(path.safeStringToUri(), "image/*")
+                setDataAndType(path.safeStringToUri(), path.getMimeType())
             }
             try {
                 context.startActivity(
