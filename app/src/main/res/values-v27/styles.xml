@@ -20,5 +20,6 @@
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:navigationBarDividerColor">@color/grey_300</item>
     </style>
 </resources>
