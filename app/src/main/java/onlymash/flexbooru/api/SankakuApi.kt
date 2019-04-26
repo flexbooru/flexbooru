@@ -61,8 +61,8 @@ interface SankakuApi {
                     .build())
             }
             val client = OkHttpClient.Builder().apply {
-                connectTimeout(10, TimeUnit.SECONDS)
-                readTimeout(10, TimeUnit.SECONDS)
+                connectTimeout(15, TimeUnit.SECONDS)
+                readTimeout(15, TimeUnit.SECONDS)
                 writeTimeout(15, TimeUnit.SECONDS)
                     .addInterceptor(interceptor)
                     .addInterceptor(logger)
