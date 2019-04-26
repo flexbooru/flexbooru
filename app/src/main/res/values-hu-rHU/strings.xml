@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">Egy Androidos booru kliens, ami kompatibilis a Danbooru és a Moebooru képmegosztó portállal.</string>
+    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">Bejegyzések</string>
     <string name="title_popular">Népszerű</string>
     <string name="title_manage_boorus">Booruk kezelése</string>
