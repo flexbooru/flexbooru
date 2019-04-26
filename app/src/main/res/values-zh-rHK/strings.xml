@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">一個支援 Danbooru 和 Moebooru 的 Android Booru 客戶端。</string>
+    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">帖子</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
