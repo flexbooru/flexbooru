@@ -70,8 +70,8 @@
     <string name="popular_date_range">日期范围</string>
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_cancel">取消</string>
     <string name="update_found_update">新的更新现已准备就绪</string>
     <string name="update_version">版本: %s</string>
     <string name="booru_add">添加 Booru</string>
@@ -153,9 +153,9 @@
     <string name="settings_grid_width_normal">正常</string>
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">显示信息栏</string>
-    <string name="settings_clear_cache">Clear cache</string>
-    <string name="settings_clear_cache_summery">Remove all cached files.</string>
-    <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
+    <string name="settings_clear_cache">清除缓存</string>
+    <string name="settings_clear_cache_summery">清除所有的缓存文件。</string>
+    <string name="settings_clear_cache_dialog_content">缓存的文件将被清除。</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="switch_yes">是</string>
