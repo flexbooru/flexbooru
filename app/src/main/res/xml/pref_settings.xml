@@ -96,4 +96,10 @@
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />
 
+    <Preference
+            android:key="settings_clear_cache"
+            android:title="@string/settings_clear_cache"
+            android:summary="@string/settings_clear_cache_summery"
+            app:iconSpaceReserved="true"/>
+
 </PreferenceScreen>

@@ -49,6 +49,7 @@ class Settings(private val sp: SharedPreferences) {
         const val GRID_WIDTH_LARGE = "large"
         private const val ACTIVE_MUZEI_UID_KEY = "settings_muzei_uid"
         const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
+        const val CLEAR_CACHE_KEY = "settings_clear_cache"
     }
 
     var activeBooruUid: Long

@@ -17,12 +17,14 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.openDocumentTree
+import onlymash.flexbooru.util.trimCache
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -58,8 +60,20 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        if (preference?.key == Settings.DOWNLOAD_PATH_KEY) {
-            requireActivity().openDocumentTree()
+        when (preference?.key) {
+            Settings.DOWNLOAD_PATH_KEY -> {
+                requireActivity().openDocumentTree()
+            }
+            Settings.CLEAR_CACHE_KEY -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.settings_clear_cache)
+                    .setMessage(R.string.settings_clear_cache_dialog_content)
+                    .setNegativeButton(R.string.dialog_cancel, null)
+                    .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                        requireContext().trimCache()
+                    }
+                    .show()
+            }
         }
         return super.onPreferenceTreeClick(preference)
     }

@@ -15,7 +15,9 @@
 
 package onlymash.flexbooru.util
 
+import android.content.Context
 import com.crashlytics.android.Crashlytics
+import onlymash.flexbooru.ServiceLocator
 import java.io.*
 
 object FileUtil {
@@ -33,5 +35,23 @@ object FileUtil {
     } catch (ex: IOException) {
         Crashlytics.log(ex.message)
         false
+    }
+}
+
+fun Context.trimCache() {
+    ServiceLocator.instance().getDiskIOExecutor().execute {
+        try {
+            cacheDir?.deleteAll()
+        } catch (_: IOException) {}
+    }
+}
+
+private fun File.deleteAll() {
+    if (isDirectory) {
+        list().forEach {
+            File(this, it).deleteAll()
+        }
+    } else {
+        delete()
     }
 }
