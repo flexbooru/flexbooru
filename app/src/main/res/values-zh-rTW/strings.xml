@@ -70,6 +70,8 @@
     <string name="popular_date_range">Date range</string>
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
     <string name="update_found_update">有可用的新更新</string>
     <string name="update_version">版本: %s</string>
     <string name="booru_add">新增 Booru</string>
@@ -151,6 +153,9 @@
     <string name="settings_grid_width_normal">正常</string>
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">顯示影像資訊</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache_summery">Remove all cached files.</string>
+    <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
     <string name="switch_yes">是</string>
