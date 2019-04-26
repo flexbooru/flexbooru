@@ -15,11 +15,11 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru and Moebooru.</string>
-    <string name="title_posts">Posts</string>
-    <string name="title_popular">Popular</string>
-    <string name="title_manage_boorus">Manage boorus</string>
-    <string name="title_settings">Settings</string>
+    <string name="app_description">Egy Androidos booru kliens, ami kompatibilis a Danbooru és a Moebooru képmegosztó portállal.</string>
+    <string name="title_posts">Bejegyzések</string>
+    <string name="title_popular">Népszerű</string>
+    <string name="title_manage_boorus">Booruk kezelése</string>
+    <string name="title_settings">Beállítások</string>
     <string name="title_booru_config">Booru config</string>
     <string name="title_account">Account</string>
     <string name="title_account_and_booru">Account - %s</string>
