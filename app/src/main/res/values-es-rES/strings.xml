@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">Un cliente booru para Android, soporta Danbooru y Moebooru.</string>
+    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">Posts</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Administrar boorus</string>
