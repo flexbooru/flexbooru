@@ -20,7 +20,7 @@
               android:id="@+id/search_layout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:visibility="invisible">
+              android:visibility="gone">
 
     <View android:layout_width="match_parent"
           android:layout_height="@dimen/header_item_height"/>
