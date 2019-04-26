@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">一個支援 Danbooru 和 Moebooru 的 Android Booru 客戶端。</string>
+    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">帖子</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
@@ -70,6 +70,8 @@
     <string name="popular_date_range">Date range</string>
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
     <string name="update_found_update">已有新的更新可供使用</string>
     <string name="update_version">版本：%s</string>
     <string name="booru_add">添加 Booru</string>
@@ -151,6 +153,9 @@
     <string name="settings_grid_width_normal">一般</string>
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">顯示資訊列</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache_summery">Remove all cached files.</string>
+    <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
     <string name="switch_yes">是</string>
