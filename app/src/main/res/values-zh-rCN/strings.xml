@@ -67,7 +67,7 @@
     <string name="popular_month">月</string>
     <string name="popular_year">年</string>
     <string name="popular_date">日期</string>
-    <string name="popular_date_range">Date range</string>
+    <string name="popular_date_range">日期范围</string>
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
     <string name="update_found_update">新的更新现已准备就绪</string>
