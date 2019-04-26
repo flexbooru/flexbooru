@@ -70,6 +70,8 @@
     <string name="popular_date_range">Date range</string>
     <string name="dialog_yes">Ja</string>
     <string name="dialog_no">Nee</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
     <string name="update_found_update">Een nieuwe update is nu beschikbaar</string>
     <string name="update_version">Versie: %s</string>
     <string name="booru_add">Booru toevoegen</string>
@@ -151,6 +153,9 @@
     <string name="settings_grid_width_normal">Normaal</string>
     <string name="settings_grid_width_large">Groot</string>
     <string name="settings_show_info_bar">Toon infobalk</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache_summery">Remove all cached files.</string>
+    <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
     <string name="switch_on">Aan</string>
     <string name="switch_off">Uit</string>
     <string name="switch_yes">Ja</string>
