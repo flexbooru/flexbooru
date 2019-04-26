@@ -15,7 +15,7 @@
   -->
 <resources>
     <string name="app_name" translatable="false">Flexbooru</string>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru， Gelbooru， Sankaku， etc.</string>
+    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">Posts</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Manage boorus</string>
