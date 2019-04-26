@@ -47,9 +47,9 @@
     <string name="about_donation_alipay">Alipay</string>
     <string name="about_donation_btc">Bitcoin</string>
     <string name="about_copyright">Szerzői jogok</string>
-    <string name="about_licenses">Licenses</string>
-    <string name="about_open_source_licenses">Open Source Licenses</string>
-    <string name="snackbar_copy_text">` %s ` have been copied to clipboard.</string>
+    <string name="about_licenses">Licenszek</string>
+    <string name="about_open_source_licenses">Nyílt forráskódú licencek</string>
+    <string name="snackbar_copy_text">A(z) `%s` a vágólapra másolva.</string>
     <string name="retry">Retry</string>
     <string name="msg_not_supported">Not supported</string>
     <string name="msg_press_twice_to_exit">Press twice to exit.</string>
