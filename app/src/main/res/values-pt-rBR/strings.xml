@@ -67,6 +67,7 @@
     <string name="popular_month">Mês</string>
     <string name="popular_year">Ano</string>
     <string name="popular_date">Data</string>
+    <string name="popular_date_range">Date range</string>
     <string name="dialog_yes">Sim</string>
     <string name="dialog_no">Não</string>
     <string name="update_found_update">Uma atualização está disponível</string>

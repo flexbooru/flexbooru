@@ -67,6 +67,7 @@
     <string name="popular_month">Maand</string>
     <string name="popular_year">Jaar</string>
     <string name="popular_date">Datum</string>
+    <string name="popular_date_range">Date range</string>
     <string name="dialog_yes">Ja</string>
     <string name="dialog_no">Nee</string>
     <string name="update_found_update">Een nieuwe update is nu beschikbaar</string>
