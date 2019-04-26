@@ -33,15 +33,13 @@
             android:layout_marginStart="@dimen/search_bar_horizontal_margin"
             android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
             android:touchscreenBlocksFocus="false"
-            app:cardUseCompatPadding="false"
-            style="@style/CardViewTheme">
+            style="@style/CardViewTheme.SearchBar">
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tags_filter_list"
                 android:scrollbars="vertical"
-                android:layout_margin="@dimen/spacing_medium"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_search"

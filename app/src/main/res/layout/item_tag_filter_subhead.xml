@@ -25,7 +25,7 @@
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingTop="@dimen/spacing_normal"
         android:paddingBottom="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_micro"
+        android:paddingStart="@dimen/spacing_middle"
         android:paddingEnd="@dimen/spacing_micro"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="bold"

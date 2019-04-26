@@ -90,6 +90,10 @@
         <item name="contentPadding">0dp</item>
         <item name="cardBackgroundColor">@color/background_card_light</item>
     </style>
+    <style name="CardViewTheme.SearchBar" parent="CardViewTheme">
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardElevation">@dimen/elevation_size</item>
+    </style>
     <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
     <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Light"/>
     <style name="TransparentBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">

@@ -44,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:touchscreenBlocksFocus="false"
-            app:cardUseCompatPadding="false"
-            style="@style/CardViewTheme"/>
+            style="@style/CardViewTheme.SearchBar"/>
 
 </FrameLayout>
