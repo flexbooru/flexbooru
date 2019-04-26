@@ -270,20 +270,7 @@ class PopularFragment : ListFragment() {
                         }
                         keyword = popular.scale
                     }
-                    Constants.TYPE_MOEBOORU -> {
-                        when (menuItem.itemId) {
-                            R.id.action_day -> popular.period = PERIOD_DAY
-                            R.id.action_week -> popular.period = PERIOD_WEEK
-                            R.id.action_month -> popular.period = PERIOD_MONTH
-                            R.id.action_year -> popular.period = PERIOD_YEAR
-                            else -> throw IllegalArgumentException("unknown menu item. title: ${menuItem.title}")
-                        }
-                        keyword = popular.period
-                        popularViewModel.show(popular)
-                        swipe_refresh.isRefreshing = true
-                        popularViewModel.refreshMoe()
-                    }
-                    Constants.TYPE_DANBOORU_ONE -> {
+                    Constants.TYPE_DANBOORU_ONE, Constants.TYPE_MOEBOORU -> {
                         when (menuItem.itemId) {
                             R.id.action_date -> {
                                 val currentTimeMillis = System.currentTimeMillis()
@@ -307,7 +294,11 @@ class PopularFragment : ListFragment() {
                                         popular.year = yearString
                                         popularViewModel.show(popular)
                                         swipe_refresh.isRefreshing = true
-                                        popularViewModel.refreshDanOne()
+                                        if (type == Constants.TYPE_DANBOORU_ONE) {
+                                            popularViewModel.refreshDanOne()
+                                        } else {
+                                            popularViewModel.refreshMoe()
+                                        }
                                     },
                                     currentYear,
                                     currentMonth,
@@ -322,19 +313,31 @@ class PopularFragment : ListFragment() {
                                 popular.scale = SCALE_DAY
                                 popularViewModel.show(popular)
                                 swipe_refresh.isRefreshing = true
-                                popularViewModel.refreshDanOne()
+                                if (type == Constants.TYPE_DANBOORU_ONE) {
+                                    popularViewModel.refreshDanOne()
+                                } else {
+                                    popularViewModel.refreshMoe()
+                                }
                             }
                             R.id.action_week -> {
                                 popular.scale = SCALE_WEEK
                                 popularViewModel.show(popular)
                                 swipe_refresh.isRefreshing = true
-                                popularViewModel.refreshDanOne()
+                                if (type == Constants.TYPE_DANBOORU_ONE) {
+                                    popularViewModel.refreshDanOne()
+                                } else {
+                                    popularViewModel.refreshMoe()
+                                }
                             }
                             R.id.action_month -> {
                                 popular.scale = SCALE_MONTH
                                 popularViewModel.show(popular)
                                 swipe_refresh.isRefreshing = true
-                                popularViewModel.refreshDanOne()
+                                if (type == Constants.TYPE_DANBOORU_ONE) {
+                                    popularViewModel.refreshDanOne()
+                                } else {
+                                    popularViewModel.refreshMoe()
+                                }
                             }
                         }
                         keyword = popular.scale
@@ -544,7 +547,7 @@ class PopularFragment : ListFragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
-            Constants.TYPE_MOEBOORU -> searchBar.setMenu(R.menu.popular_moe, requireActivity().menuInflater)
+            Constants.TYPE_MOEBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_DANBOORU_ONE -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_SANKAKU -> searchBar.setMenu(R.menu.popular_sankaku, requireActivity().menuInflater)
         }

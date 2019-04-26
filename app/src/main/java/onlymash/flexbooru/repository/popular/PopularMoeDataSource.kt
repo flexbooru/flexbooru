@@ -63,7 +63,7 @@ class PopularMoeDataSource(
 
         val scheme = popular.scheme
         val host = popular.host
-        val keyword = popular.period
+        val keyword = popular.scale
 
         // triggered by a refresh, we better execute sync
         try {

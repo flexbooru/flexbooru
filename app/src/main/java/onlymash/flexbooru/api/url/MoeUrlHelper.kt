@@ -50,13 +50,14 @@ object MoeUrlHelper {
             .scheme(popular.scheme)
             .host(popular.host)
             .addPathSegment("post")
-            .addPathSegment("popular_recent.json")
-            .addQueryParameter("period", popular.period)
+            .addPathSegment("popular_by_${popular.scale}.json")
+            .addQueryParameter("day", popular.day)
+            .addQueryParameter("month", popular.month)
+            .addQueryParameter("year", popular.year)
             .addQueryParameter("login", popular.username)
             .addQueryParameter("password_hash", popular.auth_key)
             .build()
     }
-
 
 
     /**
