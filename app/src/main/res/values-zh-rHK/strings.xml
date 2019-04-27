@@ -108,7 +108,7 @@
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送檔案</string>
     <string name="browse_save_file">儲存檔案</string>
-    <string name="browse_share_link">分享超連結</string>
+    <string name="browse_share_link">分享連結</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
     <string name="browse_comment">留言</string>
@@ -135,7 +135,7 @@
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">移除帳號</string>
     <string name="account_user_dialog_title_remove">您確定要移除這個帳號嗎？</string>
-    <string name="account_favorites">最愛</string>
+    <string name="account_favorites">收藏</string>
     <string name="account_posts">帖子</string>
     <string name="account_comments">留言</string>
     <string name="account_config_msg_tip_empty">用戶名稱或密碼/API Key 不能為空白。</string>
