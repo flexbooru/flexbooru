@@ -135,7 +135,7 @@
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">移除帳號</string>
     <string name="account_user_dialog_title_remove">您確定要移除這個帳號嗎？</string>
-    <string name="account_favorites">收藏</string>
+    <string name="account_favorites">最愛</string>
     <string name="account_posts">帖子</string>
     <string name="account_comments">留言</string>
     <string name="account_config_msg_tip_empty">用戶名稱或密碼/API Key 不能為空白。</string>
@@ -156,8 +156,8 @@
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">顯示資訊列</string>
     <string name="settings_clear_cache">清除緩存</string>
-    <string name="settings_clear_cache_summery">移除所有緩存檔案</string>
-    <string name="settings_clear_cache_dialog_content">緩存檔案將會被清除</string>
+    <string name="settings_clear_cache_summery">移除所有緩存檔案。</string>
+    <string name="settings_clear_cache_dialog_content">緩存檔案將會被清除。</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
     <string name="switch_yes">是</string>
