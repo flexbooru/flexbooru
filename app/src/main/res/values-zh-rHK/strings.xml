@@ -28,7 +28,7 @@
     <string name="title_tags">標籤</string>
     <string name="title_comments">留言</string>
     <string name="title_muzei">Muzei</string>
-    <string name="title_night_mode">Night mode</string>
+    <string name="title_night_mode">夜間模式</string>
     <string name="title_copyright">版權</string>
     <string name="title_about">關於</string>
     <string name="about_app_version">版本</string>
@@ -46,7 +46,7 @@
     <string name="about_donation_paypal">PayPal</string>
     <string name="about_donation_alipay">支付寶</string>
     <string name="about_donation_btc">比特幣</string>
-    <string name="about_copyright">Copyright</string>
+    <string name="about_copyright">版權</string>
     <string name="about_licenses">Licenses</string>
     <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="snackbar_copy_text">` %s ` 已複製到剪貼板。</string>
@@ -71,7 +71,7 @@
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
     <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_cancel">取消</string>
     <string name="update_found_update">已有新的更新可供使用</string>
     <string name="update_version">版本：%s</string>
     <string name="booru_add">添加 Booru</string>
