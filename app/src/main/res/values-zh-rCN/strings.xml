@@ -24,7 +24,7 @@
     <string name="title_account">帐户</string>
     <string name="title_account_and_booru">帐户 - %s</string>
     <string name="title_artists">画师</string>
-    <string name="title_pools">图集</string>
+    <string name="title_pools">系列</string>
     <string name="title_tags">标签</string>
     <string name="title_comments">评论</string>
     <string name="title_muzei">Muzei</string>
@@ -102,7 +102,7 @@
     <string name="booru_config_hash_salt_must_contain_yp">哈希值必须包含文本: your-password</string>
     <string name="scaner_scan_qr_code">扫描二维码</string>
     <string name="scaner_add_booru_permission_required">扫描二维码需要相机权限。</string>
-    <string name="browse_toolbar_title">投稿</string>
+    <string name="browse_toolbar_title">帖子</string>
     <string name="browse_add_to_fav">添加到收藏</string>
     <string name="browse_download">下载</string>
     <string name="browse_set_as">设置为</string>
@@ -116,9 +116,9 @@
     <string name="browse_tag_include">包括</string>
     <string name="browse_info_source">来源</string>
     <string name="browse_info_rating">评级</string>
-    <string name="browse_info_rating_safe">安全</string>
-    <string name="browse_info_rating_questionable">存疑</string>
-    <string name="browse_info_rating_explicit">赤裸</string>
+    <string name="browse_info_rating_safe">安全的</string>
+    <string name="browse_info_rating_questionable">存疑的</string>
+    <string name="browse_info_rating_explicit">赤裸的</string>
     <string name="browse_info_score">评分</string>
     <string name="browse_info_parent">父级</string>
     <string name="browse_info_title">信息</string>
@@ -134,7 +134,7 @@
     <string name="account_user_remove">移除帐户</string>
     <string name="account_user_dialog_title_remove">您确定要移除此帐户吗？</string>
     <string name="account_favorites">收藏</string>
-    <string name="account_posts">投稿</string>
+    <string name="account_posts">帖子</string>
     <string name="account_comments">评论</string>
     <string name="account_config_msg_tip_empty">用户名或密码/Api 密匙不能为空。</string>
     <string name="settings_safe_mode">安全模式</string>
