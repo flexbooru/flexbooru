@@ -108,7 +108,7 @@
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送檔案</string>
     <string name="browse_save_file">儲存檔案</string>
-    <string name="browse_share_link">分享連結</string>
+    <string name="browse_share_link">分享超連結</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
     <string name="browse_comment">留言</string>
@@ -122,8 +122,8 @@
     <string name="browse_info_score">分數</string>
     <string name="browse_info_parent">Parent</string>
     <string name="browse_info_title">資訊</string>
-    <string name="browse_info_url_open">開啟連結</string>
-    <string name="browse_info_url_download">下載連結</string>
+    <string name="browse_info_url_open">開啟超連結</string>
+    <string name="browse_info_url_download">下載超連結</string>
     <string name="title_account_config">帳號配置</string>
     <string name="title_account_config_and_booru">帳號配置 - %s</string>
     <string name="account_username">用戶名稱</string>
@@ -182,7 +182,7 @@
     <string name="tag_order_date">日期</string>
     <string name="tag_order_name">名稱</string>
     <string name="tag_order_count">數量</string>
-    <string name="tag_delete_title">刪除標籤：%s？</string>
+    <string name="tag_delete_title">刪除標籤: %s ?</string>
     <string name="artist_urls_is_empty">超連結為空白的。</string>
     <string name="artist_order">排序</string>
     <string name="artist_order_date">日期</string>
