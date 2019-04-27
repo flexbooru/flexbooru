@@ -46,7 +46,7 @@
     <string name="about_donation_paypal">PayPal</string>
     <string name="about_donation_alipay">Alipay</string>
     <string name="about_donation_btc">Bitcoin</string>
-    <string name="about_copyright">Copyright</string>
+    <string name="about_copyright">版權</string>
     <string name="about_licenses">Licenses</string>
     <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="snackbar_copy_text">已將 ` %s ` 複製到剪貼簿。</string>
