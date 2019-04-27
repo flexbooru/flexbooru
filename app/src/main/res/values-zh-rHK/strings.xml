@@ -78,7 +78,7 @@
     <string name="booru_add_from_qr_code">掃描 QR Code</string>
     <string name="booru_add_from_clipboard">從剪貼板匯入</string>
     <string name="booru_add_from_manual_settings">手動設定</string>
-    <string name="booru_add_error">錯誤: 無效的數據</string>
+    <string name="booru_add_error">錯誤：無效的數據</string>
     <string name="booru_add_title_dialog">添加這個 Booru 嗎？</string>
     <string name="booru_add_help">幫助</string>
     <string name="booru_name">Booru 名稱</string>
