@@ -122,6 +122,8 @@
     <string name="browse_info_score">Score</string>
     <string name="browse_info_parent">Bovenliggende</string>
     <string name="browse_info_title">Informatie</string>
+    <string name="browse_info_url_open">Open url</string>
+    <string name="browse_info_url_download">Download url</string>
     <string name="title_account_config">Account Configuratie</string>
     <string name="title_account_config_and_booru">Account Configuratie - %s</string>
     <string name="account_username">Gebruikersnaam</string>

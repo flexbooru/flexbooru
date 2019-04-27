@@ -122,6 +122,8 @@
     <string name="browse_info_score">Ocena</string>
     <string name="browse_info_parent">Rodzic</string>
     <string name="browse_info_title">Informacje</string>
+    <string name="browse_info_url_open">Open url</string>
+    <string name="browse_info_url_download">Download url</string>
     <string name="title_account_config">Konfiguracja konta</string>
     <string name="title_account_config_and_booru">Konfiguracja konta - %s</string>
     <string name="account_username">Nazwa użytkownika</string>
