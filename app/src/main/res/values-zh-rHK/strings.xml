@@ -52,14 +52,14 @@
     <string name="snackbar_copy_text">` %s ` 已複製到剪貼板。</string>
     <string name="retry">重試</string>
     <string name="msg_not_supported">不支援</string>
-    <string name="msg_press_twice_to_exit">按兩次以離開。</string>
+    <string name="msg_press_twice_to_exit">再按一次以退出。</string>
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
     <string name="post_download">下載</string>
     <string name="post_add_to_fav">添加到收藏</string>
-    <string name="msg_download_must_enable">需要下載管理員</string>
-    <string name="msg_path_denied">保存失敗！ 沒有存取當前路徑的權限</string>
+    <string name="msg_download_must_enable">需要下載管理員。</string>
+    <string name="msg_path_denied">保存失敗！沒有存取目前路徑的權限。</string>
     <string name="msg_download_failed">下載失敗</string>
     <string name="msg_download_complete">下載完成</string>
     <string name="popular_day">日</string>
