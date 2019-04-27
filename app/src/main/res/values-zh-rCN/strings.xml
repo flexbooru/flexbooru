@@ -122,8 +122,8 @@
     <string name="browse_info_score">得分</string>
     <string name="browse_info_parent">父级</string>
     <string name="browse_info_title">信息</string>
-    <string name="browse_info_url_open">Open url</string>
-    <string name="browse_info_url_download">Download url</string>
+    <string name="browse_info_url_open">打开链接</string>
+    <string name="browse_info_url_download">下载链接</string>
     <string name="title_account_config">帐户配置</string>
     <string name="title_account_config_and_booru">帐户配置 - %s</string>
     <string name="account_username">用户名</string>
