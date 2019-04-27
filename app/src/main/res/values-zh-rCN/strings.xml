@@ -16,14 +16,14 @@
   -->
 <resources>
     <string name="app_description">一个 Booru 客户端，支持 Danbooru、Moebooru、Gelbooru、Sankaku 等图版引擎。</string>
-    <string name="title_posts">投稿</string>
-    <string name="title_popular">人气</string>
+    <string name="title_posts">帖子</string>
+    <string name="title_popular">热门</string>
     <string name="title_manage_boorus">管理 Booru 网站</string>
     <string name="title_settings">设置</string>
     <string name="title_booru_config">配置 Booru</string>
     <string name="title_account">帐户</string>
     <string name="title_account_and_booru">帐户 - %s</string>
-    <string name="title_artists">绘师</string>
+    <string name="title_artists">画师</string>
     <string name="title_pools">图集</string>
     <string name="title_tags">标签</string>
     <string name="title_comments">评论</string>
