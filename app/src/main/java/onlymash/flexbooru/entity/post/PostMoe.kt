@@ -58,12 +58,12 @@ data class PostMoe(
     val is_held: Boolean
 ) : PostBase() {
     override fun getSampleSize(): String =
-        "$sample_width x $sample_width ${Formatter.formatFileSize(App.app, sample_file_size.toLong())}"
+        "$sample_width x $sample_height ${Formatter.formatFileSize(App.app, sample_file_size.toLong())}"
 
     override fun getLargerSize(): String =
         if (jpeg_url.isNullOrEmpty())
             getSampleSize()
-        else "$jpeg_width x $jpeg_width ${Formatter.formatFileSize(App.app, jpeg_file_size.toLong())}"
+        else "$jpeg_width x $jpeg_height ${Formatter.formatFileSize(App.app, jpeg_file_size.toLong())}"
 
     override fun getOriginSize(): String =
         if (file_url.isNullOrEmpty())
