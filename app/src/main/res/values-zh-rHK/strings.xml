@@ -90,7 +90,7 @@
     <string name="booru_config_apply">套用</string>
     <string name="booru_config_name">名稱</string>
     <string name="booru_config_info">Booru 資訊</string>
-    <string name="booru_config_scheme">協議</string>
+    <string name="booru_config_scheme">協定</string>
     <string name="booru_config_host">主機</string>
     <string name="booru_config_type">類型</string>
     <string name="booru_config_hash_salt">Hash salt</string>
@@ -99,7 +99,7 @@
     <string name="booru_config_host_invalid">無效的主機。</string>
     <string name="booru_config_hash_salt_cant_empty">Hash salt 不能為空白。</string>
     <string name="booru_config_dialog_title_delete">您確定要移除這個 Booru 嗎？</string>
-    <string name="booru_config_hash_salt_must_contain_yp">Hash salt 需要包含文本：your-password</string>
+    <string name="booru_config_hash_salt_must_contain_yp">Hash salt 需要包含文本: your-password</string>
     <string name="scaner_scan_qr_code">掃描 QR Code</string>
     <string name="scaner_add_booru_permission_required">掃描 QR Code 需要相機權限。</string>
     <string name="browse_toolbar_title">帖子</string>
@@ -122,7 +122,7 @@
     <string name="browse_info_score">分數</string>
     <string name="browse_info_parent">Parent</string>
     <string name="browse_info_title">資訊</string>
-    <string name="browse_info_url_open">打開連結</string>
+    <string name="browse_info_url_open">開啟連結</string>
     <string name="browse_info_url_download">下載連結</string>
     <string name="title_account_config">帳號配置</string>
     <string name="title_account_config_and_booru">帳號配置 - %s</string>
