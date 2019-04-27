@@ -15,8 +15,10 @@
 
 package onlymash.flexbooru.entity.post
 
+import android.text.format.Formatter
 import androidx.room.Entity
 import androidx.room.Index
+import onlymash.flexbooru.App
 import onlymash.flexbooru.util.formatDate
 
 @Entity(tableName = "posts_moebooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
@@ -55,6 +57,18 @@ data class PostMoe(
     val height: Int,
     val is_held: Boolean
 ) : PostBase() {
+    override fun getSampleSize(): String =
+        "$sample_width x $sample_width ${Formatter.formatFileSize(App.app, sample_file_size.toLong())}"
+
+    override fun getLargerSize(): String =
+        if (jpeg_url.isNullOrEmpty())
+            getSampleSize()
+        else "$jpeg_width x $jpeg_width ${Formatter.formatFileSize(App.app, jpeg_file_size.toLong())}"
+
+    override fun getOriginSize(): String =
+        if (file_url.isNullOrEmpty())
+            getLargerSize()
+        else "$width x $height ${Formatter.formatFileSize(App.app, file_size.toLong())}"
 
     override fun getPostId(): Int = id
 

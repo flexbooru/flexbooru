@@ -16,15 +16,20 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.ClipData
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import onlymash.flexbooru.App
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -33,6 +38,7 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.util.DownloadUtil
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
@@ -49,10 +55,34 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         private const val SCORE_KEY = "score"
         private const val PARENT_KEY = "parent"
 
+        private const val URL_SAMPLE_KEY = "sample_url"
+        private const val URL_LARGER_KEY = "larger_url"
+        private const val URL_ORIGIN_KEY = "origin_url"
+
+        private const val SIZE_SAMPLE_KEY = "sample_size"
+        private const val SIZE_LARGER_KEY = "larger_size"
+        private const val SIZE_ORIGIN_KEY = "origin_size"
+
+        private const val POST_ID_KEY = "post_id"
+        private const val HOST_KEY = "host"
+
         fun create(post: Any?): InfoBottomSheetDialog {
             return InfoBottomSheetDialog().apply {
+                val bundle = Bundle()
+                if (post is PostBase) {
+                    bundle.apply {
+                        putString(HOST_KEY, post.host)
+                        putInt(POST_ID_KEY, post.getPostId())
+                        putString(URL_SAMPLE_KEY, post.getSampleUrl())
+                        putString(URL_LARGER_KEY, post.getLargerUrl())
+                        putString(URL_ORIGIN_KEY, post.getOriginUrl())
+                        putString(SIZE_SAMPLE_KEY, post.getSampleSize())
+                        putString(SIZE_LARGER_KEY, post.getLargerSize())
+                        putString(SIZE_ORIGIN_KEY, post.getOriginSize())
+                    }
+                }
                 arguments = when (post) {
-                    is PostDan -> Bundle().apply {
+                    is PostDan -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU)
                         putString(USER_NAME_KEY, post.uploader_name)
                         putInt(USER_ID_KEY, post.uploader_id)
@@ -62,7 +92,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(SCORE_KEY, post.getPostScore())
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
-                    is PostMoe -> Bundle().apply {
+                    is PostMoe -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_MOEBOORU)
                         putString(USER_NAME_KEY, post.author)
                         putInt(USER_ID_KEY, post.creator_id)
@@ -72,7 +102,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(SCORE_KEY, post.getPostScore())
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
-                    is PostDanOne -> Bundle().apply {
+                    is PostDanOne -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
                         putString(USER_NAME_KEY, post.author)
                         putInt(USER_ID_KEY, post.creator_id)
@@ -82,7 +112,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putInt(SCORE_KEY, post.getPostScore())
                         putInt(PARENT_KEY, post.parent_id ?: -1)
                     }
-                    is PostGel -> Bundle().apply {
+                    is PostGel -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_GELBOORU)
                         putString(USER_NAME_KEY, "")
                         putInt(USER_ID_KEY, post.creator_id)
@@ -91,7 +121,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.getPostScore())
                     }
-                    is PostSankaku -> Bundle().apply {
+                    is PostSankaku -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_SANKAKU)
                         putString(USER_NAME_KEY, post.author.name)
                         putInt(USER_ID_KEY, post.author.id)
@@ -116,6 +146,14 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     private var score = -1
     private var parent = -1
     private var avatar = ""
+    private var sizeSampleString = ""
+    private var sizeLargerString = ""
+    private var sizeOriginString = ""
+    private var urlSampleString = ""
+    private var urlLargerString = ""
+    private var urlOriginString = ""
+    private var postId = -1
+    private var host = "save"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,6 +200,14 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     parent = -1
                 }
             }
+            sizeSampleString = getString(SIZE_SAMPLE_KEY, "")
+            sizeLargerString = getString(SIZE_LARGER_KEY, "")
+            sizeOriginString = getString(SIZE_ORIGIN_KEY, "")
+            urlSampleString = getString(URL_SAMPLE_KEY, "")
+            urlLargerString = getString(URL_LARGER_KEY, "")
+            urlOriginString = getString(URL_ORIGIN_KEY, "")
+            host = getString(HOST_KEY, host)
+            postId = getInt(POST_ID_KEY, -1)
         }
     }
     private lateinit var behavior: BottomSheetBehavior<View>
@@ -220,6 +266,75 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 })
                 dismiss()
             }
+        }
+        view.findViewById<LinearLayout>(R.id.url_sample_container).setOnLongClickListener {
+            App.app.clipboard.primaryClip = ClipData.newPlainText("url", urlSampleString)
+            true
+        }
+        view.findViewById<LinearLayout>(R.id.url_larger_container).setOnLongClickListener {
+            App.app.clipboard.primaryClip = ClipData.newPlainText("url", urlLargerString)
+            true
+        }
+        view.findViewById<LinearLayout>(R.id.url_origin_container).setOnLongClickListener {
+            App.app.clipboard.primaryClip = ClipData.newPlainText("url", urlOriginString)
+            true
+        }
+        view.findViewById<TextView>(R.id.url_sample_size).text = sizeSampleString
+        view.findViewById<TextView>(R.id.url_larger_size).text = sizeLargerString
+        view.findViewById<TextView>(R.id.url_origin_size).text = sizeOriginString
+        view.findViewById<ImageView>(R.id.url_sample_download).setOnClickListener {
+            DownloadUtil.download(
+                url = urlSampleString,
+                postId = postId,
+                host = host,
+                activity = requireActivity()
+            )
+        }
+        view.findViewById<ImageView>(R.id.url_larger_download).setOnClickListener {
+            DownloadUtil.download(
+                url = urlLargerString,
+                postId = postId,
+                host = host,
+                activity = requireActivity()
+            )
+        }
+        view.findViewById<ImageView>(R.id.url_origin_download).setOnClickListener {
+            DownloadUtil.download(
+                url = urlOriginString,
+                postId = postId,
+                host = host,
+                activity = requireActivity()
+            )
+        }
+        view.findViewById<ImageView>(R.id.url_sample_open).setOnClickListener {
+            val intent = Intent().apply {
+                action = Intent.ACTION_VIEW
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                data = Uri.parse(urlSampleString)
+            }
+            try {
+                startActivity(intent)
+            } catch (_: ActivityNotFoundException) {}
+        }
+        view.findViewById<ImageView>(R.id.url_larger_open).setOnClickListener {
+            val intent = Intent().apply {
+                action = Intent.ACTION_VIEW
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                data = Uri.parse(urlLargerString)
+            }
+            try {
+                startActivity(intent)
+            } catch (_: ActivityNotFoundException) {}
+        }
+        view.findViewById<ImageView>(R.id.url_origin_open).setOnClickListener {
+            val intent = Intent().apply {
+                action = Intent.ACTION_VIEW
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                data = Uri.parse(urlOriginString)
+            }
+            try {
+                startActivity(intent)
+            } catch (_: ActivityNotFoundException) {}
         }
         dialog.setContentView(view)
         behavior = BottomSheetBehavior.from(view.parent as View)

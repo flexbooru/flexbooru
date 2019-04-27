@@ -71,6 +71,11 @@ data class PostGel(
     @Attribute
     val preview_height: Int
 ) : PostBase() {
+    override fun getSampleSize(): String = "$sample_width x $sample_height"
+
+    override fun getLargerSize(): String = getSampleSize()
+
+    override fun getOriginSize(): String = "$width x $height"
 
     override fun getPostId(): Int = id
 

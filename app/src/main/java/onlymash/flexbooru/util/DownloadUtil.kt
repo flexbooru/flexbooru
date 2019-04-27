@@ -87,6 +87,31 @@ class DownloadUtil(
                     .build()
             )
         }
+
+        internal fun download(url: String, postId: Int, host: String, activity: Activity) {
+            if (url.isEmpty()) return
+            var fileName = Uri.decode(url.fileName())
+            if (!fileName.contains(' ')) fileName = "$postId - $fileName"
+            val desPath = activity.getDownloadUri(host, fileName)?.toString() ?: return
+            val workManager = WorkManager.getInstance()
+            workManager.enqueue(
+                OneTimeWorkRequestBuilder<DownloadUtil>()
+                    .setInputData(
+                        workDataOf(
+                            URL_KEY to url,
+                            HOST_KEY to host,
+                            POST_ID_KEY to postId,
+                            FILENAME_KEY to fileName,
+                            PATH_KEY to desPath
+                        )
+                    )
+                    .setConstraints(
+                        Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build())
+                    .build()
+            )
+        }
     }
 
     override fun doWork(): Result {

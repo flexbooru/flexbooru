@@ -15,8 +15,10 @@
 
 package onlymash.flexbooru.entity.post
 
+import android.text.format.Formatter
 import androidx.room.Entity
 import androidx.room.Index
+import onlymash.flexbooru.App
 import onlymash.flexbooru.util.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,6 +78,11 @@ data class PostDan(
     val large_file_url: String?,
     val preview_file_url: String?
 ) : PostBase() {
+    override fun getSampleSize(): String = "not data"
+
+    override fun getLargerSize(): String = "not data"
+
+    override fun getOriginSize(): String = "$image_width x $image_height ${Formatter.formatFileSize(App.app, file_size.toLong())}"
 
     override fun getPostId(): Int = id
 

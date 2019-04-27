@@ -15,8 +15,10 @@
 
 package onlymash.flexbooru.entity.post
 
+import android.text.format.Formatter
 import androidx.room.Entity
 import androidx.room.Index
+import onlymash.flexbooru.App
 import onlymash.flexbooru.entity.DanOneDate
 import onlymash.flexbooru.entity.SankakuAuthor
 import onlymash.flexbooru.entity.SankakuTag
@@ -57,6 +59,14 @@ data class PostSankaku(
     val vote_count: Int,
     val width: Int
 ) : PostBase() {
+    override fun getSampleSize(): String =
+        "$sample_width x $sample_height"
+
+    override fun getLargerSize(): String = getSampleSize()
+
+    override fun getOriginSize(): String =
+        "$width x $height ${Formatter.formatFileSize(App.app, file_size.toLong())}"
+
     override fun getPostId(): Int = id
 
     override fun getPostWidth(): Int = width

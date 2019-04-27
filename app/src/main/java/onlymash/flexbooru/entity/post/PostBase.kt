@@ -76,4 +76,19 @@ abstract class PostBase {
     abstract fun getCreatedDate(): String
 
     abstract fun getUpdatedDate(): String
+
+    /**
+     * return Sample size [String]
+     * */
+    abstract fun getSampleSize(): String
+
+    /**
+     * return Larger size [String]
+     * */
+    abstract fun getLargerSize(): String
+
+    /**
+     * return Origin size [String]
+     * */
+    abstract fun getOriginSize(): String
 }
