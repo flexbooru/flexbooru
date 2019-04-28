@@ -121,7 +121,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
     implementation "androidx.room:room-runtime:$room"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
