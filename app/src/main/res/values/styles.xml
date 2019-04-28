@@ -69,9 +69,6 @@
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="android:tint">@color/icon_tint</item>
     </style>
-    <style name="PreferenceFragmentStyle" parent="PreferenceFragment.Material">
-        <item name="android:background">@color/background</item>
-    </style>
     <style name="BrowseTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

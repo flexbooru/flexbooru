@@ -229,8 +229,8 @@ class RippleAnimation private constructor(
          */
         private fun getBitmapFromView(view: View): Bitmap {
             view.measure(
-                MeasureSpec.makeMeasureSpec(view.layoutParams.width, View.MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(view.layoutParams.height, View.MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec(view.layoutParams.width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(view.layoutParams.height, MeasureSpec.EXACTLY)
             )
             val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
