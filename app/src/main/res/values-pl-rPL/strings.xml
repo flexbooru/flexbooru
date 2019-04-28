@@ -82,10 +82,9 @@
     <string name="booru_add_title_dialog">Dodać te booru?</string>
     <string name="booru_add_help">Pomoc</string>
     <string name="booru_name">Nazwa Booru</string>
-    <string name="booru_share">Udostępnij booru</string>
     <string name="booru_share_by_qr_code">Kod QR</string>
     <string name="booru_share_by_clipboard">Skopiuj do schowka</string>
-    <string name="booru_edit">Edycja Booru</string>
+    <string name="booru_edit">Edit</string>
     <string name="booru_config_delete">Usuń</string>
     <string name="booru_config_apply">Zastosuj</string>
     <string name="booru_config_name">Nazwa</string>

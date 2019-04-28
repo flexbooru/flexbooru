@@ -82,10 +82,9 @@
     <string name="booru_add_title_dialog">Hozzáadod ezt a Booru-t?</string>
     <string name="booru_add_help">Súgó</string>
     <string name="booru_name">Booru neve</string>
-    <string name="booru_share">Booru megosztása</string>
     <string name="booru_share_by_qr_code">QR kód</string>
     <string name="booru_share_by_clipboard">Exportálás vágólapra</string>
-    <string name="booru_edit">Booru szerkesztése</string>
+    <string name="booru_edit">Edit</string>
     <string name="booru_config_delete">Törlés</string>
     <string name="booru_config_apply">Alkamaz</string>
     <string name="booru_config_name">Név</string>

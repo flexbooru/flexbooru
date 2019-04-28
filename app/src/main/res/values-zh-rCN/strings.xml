@@ -82,10 +82,9 @@
     <string name="booru_add_title_dialog">添加这个 Booru？</string>
     <string name="booru_add_help">帮助</string>
     <string name="booru_name">Booru 名称</string>
-    <string name="booru_share">分享 Booru</string>
     <string name="booru_share_by_qr_code">二维码</string>
     <string name="booru_share_by_clipboard">导出到剪贴板</string>
-    <string name="booru_edit">编辑 Booru</string>
+    <string name="booru_edit">修改</string>
     <string name="booru_config_delete">删除</string>
     <string name="booru_config_apply">应用</string>
     <string name="booru_config_name">名称</string>
