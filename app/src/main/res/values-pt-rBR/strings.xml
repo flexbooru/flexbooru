@@ -122,6 +122,8 @@
     <string name="browse_info_score">Pontuação</string>
     <string name="browse_info_parent">Pais</string>
     <string name="browse_info_title">Informação</string>
+    <string name="browse_info_url_open">Open url</string>
+    <string name="browse_info_url_download">Download url</string>
     <string name="title_account_config">Configuração da Conta</string>
     <string name="title_account_config_and_booru">Configuração da Conta - %s</string>
     <string name="account_username">Nome de Usuário</string>
