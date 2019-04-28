@@ -18,11 +18,10 @@ package onlymash.flexbooru.ui.viewholder
 import android.app.Activity
 import android.content.ClipData
 import android.content.Intent
+import android.view.MenuInflater
 import android.view.View
-import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.TooltipCompat
+import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -39,39 +38,27 @@ class BooruViewHolder(itemView: View,
     lateinit var booru: Booru
 
     private val booruName: TextView = itemView.findViewById(R.id.booru_name)
-    private val booruShare: AppCompatImageView = itemView.findViewById(R.id.booru_share)
-    private val booruEdit: AppCompatImageView = itemView.findViewById(R.id.booru_edit)
+    private val booruActionMenuView: ActionMenuView = itemView.findViewById(R.id.booru_action_menu)
     private val booruUrl: AutoCollapseTextView = itemView.findViewById(R.id.booru_url)
     private val booruType: AutoCollapseTextView = itemView.findViewById(R.id.booru_type)
 
     init {
-        booruEdit.setOnClickListener {
-            startConfig(booru)
-        }
-        TooltipCompat.setTooltipText(booruEdit, booruEdit.contentDescription)
-        booruShare.setOnClickListener {
-            PopupMenu(activity, booruShare).apply {
-                menuInflater.inflate(R.menu.booru_share_popup, menu)
-                setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.action_booru_share_qr_code -> {
-                            (activity as BooruActivity).supportFragmentManager
-                                .beginTransaction()
-                                .add(QRCodeDialog(booru.toString()), "")
-                                .commitAllowingStateLoss()
-                            true
-                        }
-                        R.id.action_booru_share_clipboard -> {
-                            (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
-                            true
-                        }
-                        else -> false
-                    }
+        MenuInflater(itemView.context).inflate(R.menu.booru_action_menu, booruActionMenuView.menu)
+        booruActionMenuView.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_booru_share_qr_code -> {
+                    (activity as BooruActivity).supportFragmentManager
+                        .beginTransaction()
+                        .add(QRCodeDialog(booru.toString()), "")
+                        .commitAllowingStateLoss()
                 }
+                R.id.action_booru_share_clipboard -> {
+                    (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
+                }
+                R.id.action_booru_edit -> startConfig(booru)
             }
-                .show()
+            true
         }
-        TooltipCompat.setTooltipText(booruShare, booruShare.contentDescription)
     }
     /**
      * Bind [Booru] data

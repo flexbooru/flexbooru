@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
   ~
@@ -13,16 +14,14 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-  <path
-      android:fillColor="@color/toolbar_icon_tint"
-      android:pathData="M14,3.25l-10,10V17h3.75l10,-10L14,3.25zM6.92,15H6v-0.92l8,-8 0.92,0.92 -8,8zM20.71,4.04c0.39,-0.39 0.39,-1.02 0,-1.41L18.37,0.29c-0.39,-0.39 -1.02,-0.39 -1.41,0L15,2.25 18.75,6l1.96,-1.96z"/>
-  <path
-      android:fillColor="@color/toolbar_icon_tint"
-      android:pathData="M0,20h24v4H0v-4z"
-      android:fillAlpha=".36"/>
-</vector>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/action_booru_share_qr_code"
+            android:title="@string/booru_share_by_qr_code"/>
+    <item
+            android:id="@+id/action_booru_share_clipboard"
+            android:title="@string/booru_share_by_clipboard"/>
+    <item
+            android:id="@+id/action_booru_edit"
+            android:title="@string/booru_edit"/>
+</menu>

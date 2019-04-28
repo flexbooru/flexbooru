@@ -44,6 +44,6 @@
 
     <dimen name="margin_normal">16dp</dimen>
 
-    <dimen name="drop_down_offset">40dp</dimen>
+    <dimen name="drop_down_offset">38dp</dimen>
 
 </resources>
