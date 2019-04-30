@@ -157,6 +157,9 @@
     <string name="settings_clear_cache">Gyorsítótár ürítése</string>
     <string name="settings_clear_cache_summery">Minden gyorsítótárazott kép eltávolítása.</string>
     <string name="settings_clear_cache_dialog_content">A gyorsítótárazott fájlok törölve lesznek.</string>
+    <string name="settings_clear_history">Clear search history</string>
+    <string name="settings_clear_history_summery">Remove all search history.</string>
+    <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
     <string name="switch_on">Be</string>
     <string name="switch_off">Ki</string>
     <string name="switch_yes">Igen</string>
