@@ -30,6 +30,8 @@
     <color name="bar_tint">@color/grey_600</color>
     <color name="account_action_background_tint">@color/colorPrimary</color>
 
+    <color name="fast_scroll_bar">@color/grey_300</color>
+
     <color name="item_line">@color/grey_300</color>
 
     <color name="button_text">@color/colorPrimary</color>

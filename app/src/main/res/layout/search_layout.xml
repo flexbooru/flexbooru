@@ -37,9 +37,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tags_filter_list"
-                android:scrollbars="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                app:fastScrollEnabled="true"
+                app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+                app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+                app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+                app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_search"
