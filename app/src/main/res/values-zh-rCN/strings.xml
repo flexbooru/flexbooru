@@ -157,6 +157,9 @@
     <string name="settings_clear_cache">清除缓存</string>
     <string name="settings_clear_cache_summery">清除所有的缓存文件。</string>
     <string name="settings_clear_cache_dialog_content">缓存的文件将被清除。</string>
+    <string name="settings_clear_history">Clear search history</string>
+    <string name="settings_clear_history_summery">Remove all search history.</string>
+    <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="switch_yes">是</string>
