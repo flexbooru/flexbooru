@@ -84,7 +84,7 @@
     <string name="booru_name">Booru 名稱</string>
     <string name="booru_share_by_qr_code">QR Code</string>
     <string name="booru_share_by_clipboard">匯出到剪貼板</string>
-    <string name="booru_edit">Edit</string>
+    <string name="booru_edit">編輯</string>
     <string name="booru_config_delete">刪除</string>
     <string name="booru_config_apply">套用</string>
     <string name="booru_config_name">名稱</string>
@@ -157,9 +157,9 @@
     <string name="settings_clear_cache">清除緩存</string>
     <string name="settings_clear_cache_summery">移除所有緩存檔案。</string>
     <string name="settings_clear_cache_dialog_content">緩存檔案將會被清除。</string>
-    <string name="settings_clear_history">Clear search history</string>
-    <string name="settings_clear_history_summery">Remove all search history.</string>
-    <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
+    <string name="settings_clear_history">清除搜尋記錄</string>
+    <string name="settings_clear_history_summery">移除所有搜尋記錄</string>
+    <string name="settings_clear_history_dialog_content">所有搜尋記錄將會被清除</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
     <string name="switch_yes">是</string>
