@@ -97,6 +97,12 @@
             app:iconSpaceReserved="true" />
 
     <Preference
+            android:key="settings_clear_history"
+            android:title="@string/settings_clear_history"
+            android:summary="@string/settings_clear_history_summery"
+            app:iconSpaceReserved="true"/>
+
+    <Preference
             android:key="settings_clear_cache"
             android:title="@string/settings_clear_cache"
             android:summary="@string/settings_clear_cache_summery"

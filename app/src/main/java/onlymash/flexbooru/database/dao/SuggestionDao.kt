@@ -38,4 +38,7 @@ interface SuggestionDao {
 
     @Query("SELECT * FROM suggestions ORDER BY uid ASC")
     fun getAll(): MutableList<Suggestion>?
+
+    @Query("DELETE FROM suggestions")
+    fun deleteAll(): Int
 }

@@ -23,6 +23,7 @@ import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.util.openDocumentTree
 import onlymash.flexbooru.util.trimCache
 
@@ -71,6 +72,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                     .setNegativeButton(R.string.dialog_cancel, null)
                     .setPositiveButton(R.string.dialog_ok) { _, _ ->
                         requireContext().trimCache()
+                    }
+                    .show()
+            }
+            Settings.CLEAR_HISTORY_KEY -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.settings_clear_history)
+                    .setMessage(R.string.settings_clear_history_dialog_content)
+                    .setNegativeButton(R.string.dialog_cancel, null)
+                    .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                        SuggestionManager.deleteAll()
                     }
                     .show()
             }

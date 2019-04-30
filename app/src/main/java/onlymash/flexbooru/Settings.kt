@@ -50,6 +50,7 @@ class Settings(private val sp: SharedPreferences) {
         private const val ACTIVE_MUZEI_UID_KEY = "settings_muzei_uid"
         const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
         const val CLEAR_CACHE_KEY = "settings_clear_cache"
+        const val CLEAR_HISTORY_KEY = "settings_clear_history"
     }
 
     var activeBooruUid: Long

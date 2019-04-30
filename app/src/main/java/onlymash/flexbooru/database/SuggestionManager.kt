@@ -34,6 +34,9 @@ object SuggestionManager {
     @Throws(SQLException::class)
     fun deleteSuggestion(uid: Long): Boolean = FlexbooruDatabase.suggestionDao.delete(uid) == 1
 
+    @Throws(SQLException::class)
+    fun deleteAll() = FlexbooruDatabase.suggestionDao.deleteAll()
+
     @Throws(IOException::class)
     fun getSuggestionsByBooruUid(booruUid: Long): MutableList<Suggestion>? = try {
         FlexbooruDatabase.suggestionDao.getSuggestionsByBooruUid(booruUid)
