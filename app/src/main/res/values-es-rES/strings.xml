@@ -157,6 +157,9 @@
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_clear_cache_summery">Remove all cached files.</string>
     <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
+    <string name="settings_clear_history">Clear search history</string>
+    <string name="settings_clear_history_summery">Remove all search history.</string>
+    <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
     <string name="switch_on">Activado</string>
     <string name="switch_off">Desactivado</string>
     <string name="switch_yes">Sí</string>
