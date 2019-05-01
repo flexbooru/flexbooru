@@ -72,6 +72,8 @@
     <string name="dialog_no">否</string>
     <string name="dialog_ok">确定</string>
     <string name="dialog_cancel">取消</string>
+    <string name="dialog_exit">Exit</string>
+    <string name="dialog_update">Update</string>
     <string name="update_found_update">新的更新现已准备就绪</string>
     <string name="update_version">版本: %s</string>
     <string name="booru_add">添加 Booru</string>
