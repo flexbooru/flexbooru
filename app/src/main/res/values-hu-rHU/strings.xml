@@ -72,6 +72,8 @@
     <string name="dialog_no">Nem</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Mégse</string>
+    <string name="dialog_exit">Exit</string>
+    <string name="dialog_update">Update</string>
     <string name="update_found_update">Új frissítés érhető el</string>
     <string name="update_version">Verzió: %s</string>
     <string name="booru_add">Booru hozzáadása</string>
