@@ -68,7 +68,6 @@
             android:entries="@array/settings_post_size_entries"
             android:entryValues="@array/settings_post_size_entries_values"
             android:defaultValue="larger"
-            android:summary="%s"
             android:title="@string/settings_download_size"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="true" />

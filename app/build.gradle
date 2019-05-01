@@ -97,9 +97,9 @@ android {
     lintOptions {
         abortOnError true
     }
-//    packagingOptions {
-//        exclude 'META-INF/library-core_release.kotlin_module'
-//    }
+    packagingOptions {
+        exclude 'META-INF/okio.kotlin_module'
+    }
 }
 
 File jsonFile = file('update.json')

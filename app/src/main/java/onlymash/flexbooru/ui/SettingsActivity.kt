@@ -19,6 +19,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -45,6 +46,8 @@ class SettingsActivity : BaseActivity() {
                 takeFlags
             )
             Settings.instance().downloadDirPath = Uri.decode(uri.toString())
+            Settings.instance().downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
+            Settings.instance().downloadDirPathAuthority = uri.authority
         }
     }
 }

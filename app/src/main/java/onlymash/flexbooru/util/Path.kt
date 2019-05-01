@@ -27,34 +27,11 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 
-const val APP_DIR_NAME = "Flexbooru"
-
-private fun closeQuietly(closeable: AutoCloseable?) {
-    if (closeable == null) return
-    try {
-        closeable.close()
-    } catch (rethrown: RuntimeException) {
-        throw rethrown
-    } catch (_: Exception) { }
-}
-
-fun String.safeStringToUri(subName: String? = null): Uri {
-    val uri = Uri.parse(this)
-    val type = DocumentsContract.getTreeDocumentId(uri).split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
-    val start = lastIndexOf(":") + 1
-    var path = ""
-    if (start in 1 until length) {
-        path = substring(start)
-    }
-    var docId = "$type:$path"
-    if (subName != null && subName.isNotEmpty()) {
-        if (path.isEmpty()) {
-            docId += subName
-        } else {
-            docId = "$docId/$subName"
-        }
-    }
-    return DocumentsContract.buildDocumentUriUsingTree(uri, docId)
+fun getFileUri(host: String, fileName: String): Uri? {
+    val treeId = Settings.instance().downloadDirPathTreeId ?: return null
+    val treeUri = DocumentsContract.buildTreeDocumentUri(Settings.instance().downloadDirPathAuthority, treeId) ?: return null
+    val docId = if (treeId.endsWith(":")) "$treeId$host/$fileName" else "$treeId/$host/$fileName"
+    return DocumentsContract.buildDocumentUriUsingTree(treeUri, docId)
 }
 
 fun Activity.openDocumentTree() {
@@ -70,121 +47,48 @@ fun Activity.openDocumentTree() {
     } catch (_: ActivityNotFoundException) {}
 }
 
-fun Activity.getAppDirUri(): Uri? {
+private fun Activity.getUri(dirName: String, fileName: String): Uri? {
     val basePath = Settings.instance().downloadDirPath
-    if (basePath == null || !basePath.startsWith(ContentResolver.SCHEME_CONTENT)) {
-        openDocumentTree()
+    val treeId = Settings.instance().downloadDirPathTreeId
+    val authority = Settings.instance().downloadDirPathAuthority
+    if (basePath == null || !basePath.startsWith(ContentResolver.SCHEME_CONTENT) ||
+        treeId.isNullOrEmpty() || authority.isNullOrEmpty()) {
+        try {
+            openDocumentTree()
+        } catch (_: ActivityNotFoundException) {}
         return null
     }
-    val baseDocUri = basePath.safeStringToUri()
-    val docDir = DocumentFile.fromSingleUri(this, baseDocUri) ?: return null
-    if (!docDir.canWrite()) {
+    val treeUri = DocumentsContract.buildTreeDocumentUri(authority, treeId)
+    val treeDir = DocumentFile.fromTreeUri(this, treeUri)
+    if (treeDir == null || !treeDir.canWrite()) {
         Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
         try {
             openDocumentTree()
         } catch (_: ActivityNotFoundException) {}
         return null
     }
-    val uri = basePath.safeStringToUri(APP_DIR_NAME)
-    val appDir = DocumentFile.fromSingleUri(this, uri) ?: return null
-    if (!appDir.exists()) {
-        DocumentsContract.createDocument(
-            contentResolver,
-            baseDocUri,
-            DocumentsContract.Document.MIME_TYPE_DIR,
-            APP_DIR_NAME)
+    val dirDocId: String
+    val fileDocId: String
+    if (treeId.endsWith(":")) {
+        dirDocId = treeId + dirName
+        fileDocId = "$treeId$dirName/$fileName"
+    } else {
+        dirDocId = "$treeId/$dirName"
+        fileDocId = "$treeId/$dirName/$fileName"
     }
-    return uri
+    val dirDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirDocId)
+    val dir = DocumentFile.fromSingleUri(this, dirDocUri) ?: return null
+    if (!dir.exists()) {
+        treeDir.createFile(DocumentsContract.Document.MIME_TYPE_DIR, dirName)
+    }
+    val fileDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, fileDocId)
+    val file = DocumentFile.fromSingleUri(this, fileDocUri) ?: return null
+    if (!file.exists()) {
+        DocumentsContract.createDocument(contentResolver, dirDocUri, fileName.getMimeType(), fileName)
+    }
+    return fileDocUri
 }
 
-fun Activity.getSaveUri(fileName: String): Uri? {
-    val appUri = getAppDirUri() ?: return null
-    if (appUri.scheme == ContentResolver.SCHEME_CONTENT) {
-        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
-            appUri,
-            DocumentsContract.getDocumentId(appUri))
-        val childrenCursor = contentResolver.query(
-            childrenUri,
-            arrayOf(
-                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                DocumentsContract.Document.COLUMN_DOCUMENT_ID
-            ),
-            null,
-            null,
-            null)
-        var uri: Uri? = null
-        try {
-            if (childrenCursor != null) {
-                while (childrenCursor.moveToNext()) {
-                    if (childrenCursor.getString(0) == "save") {
-                        uri = DocumentsContract.buildDocumentUriUsingTree(childrenUri, childrenCursor.getString(1))
-                        break
-                    }
-                }
-            }
-        } finally {
-            closeQuietly(childrenCursor)
-        }
-        val saveDirUri = uri ?: DocumentsContract.createDocument(
-            contentResolver, appUri,
-            DocumentsContract.Document.MIME_TYPE_DIR, "save") ?: appUri
-        val fileUri = Uri.decode(saveDirUri.toString()).safeStringToUri(fileName)
-        val file = DocumentFile.fromSingleUri(this, fileUri)
-        if (file != null && file.exists() && file.isFile) {
-            return fileUri
-        }
-        return DocumentsContract.createDocument(
-            contentResolver,
-            saveDirUri,
-            fileName.getMimeType(),
-            fileName)
-    } else {
-        return null
-    }
-}
+fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
 
-fun Activity.getDownloadUri(host: String, fileName: String): Uri? {
-    val appUri = getAppDirUri() ?: return null
-    if (appUri.scheme == ContentResolver.SCHEME_CONTENT) {
-        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
-            appUri,
-            DocumentsContract.getDocumentId(appUri))
-        val childrenCursor = contentResolver.query(
-            childrenUri,
-            arrayOf(
-                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                DocumentsContract.Document.COLUMN_DOCUMENT_ID
-            ),
-            null,
-            null,
-            null)
-        var uri: Uri? = null
-        try {
-            if (childrenCursor != null) {
-                while (childrenCursor.moveToNext()) {
-                    if (childrenCursor.getString(0) == host) {
-                        uri = DocumentsContract.buildDocumentUriUsingTree(childrenUri, childrenCursor.getString(1))
-                        break
-                    }
-                }
-            }
-        } finally {
-            closeQuietly(childrenCursor)
-        }
-        val downloadDirUri = uri ?: DocumentsContract.createDocument(
-            contentResolver, appUri,
-            DocumentsContract.Document.MIME_TYPE_DIR, host) ?: appUri
-        val fileUri = Uri.decode(downloadDirUri.toString()).safeStringToUri(fileName)
-        val file = DocumentFile.fromSingleUri(this, fileUri)
-        if (file != null && file.exists() && file.isFile) {
-            return fileUri
-        }
-        return DocumentsContract.createDocument(
-            contentResolver,
-            downloadDirUri,
-            fileName.getMimeType(),
-            fileName)
-    } else {
-        return null
-    }
-}
+fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getUri(host, fileName)

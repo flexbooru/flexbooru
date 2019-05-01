@@ -19,13 +19,11 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.net.toUri
 import androidx.work.*
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -52,8 +50,6 @@ class DownloadUtil(
         private const val HOST_KEY = "host"
         private const val POST_ID_KEY = "post_id"
         private const val FILENAME_KEY = "filename"
-        private const val PATH_KEY = "path"
-        const val EXT_DOWNLOADED = ":downloaded"
 
         internal fun downloadPost(post: PostBase?, activity: Activity) {
             if (post == null) return
@@ -67,7 +63,7 @@ class DownloadUtil(
             if (url.isEmpty()) return
             var fileName = Uri.decode(url.fileName())
             if (!fileName.contains(' ')) fileName = "$id - $fileName"
-            val desPath = activity.getDownloadUri(host, fileName)?.toString() ?: return
+            activity.getDownloadUri(host, fileName) ?: return
             val workManager = WorkManager.getInstance()
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
@@ -76,8 +72,7 @@ class DownloadUtil(
                             URL_KEY to url,
                             HOST_KEY to host,
                             POST_ID_KEY to id,
-                            FILENAME_KEY to fileName,
-                            PATH_KEY to desPath
+                            FILENAME_KEY to fileName
                         )
                     )
                     .setConstraints(
@@ -92,7 +87,7 @@ class DownloadUtil(
             if (url.isEmpty()) return
             var fileName = Uri.decode(url.fileName())
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
-            val desPath = activity.getDownloadUri(host, fileName)?.toString() ?: return
+            activity.getDownloadUri(host, fileName) ?: return
             val workManager = WorkManager.getInstance()
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
@@ -101,8 +96,7 @@ class DownloadUtil(
                             URL_KEY to url,
                             HOST_KEY to host,
                             POST_ID_KEY to postId,
-                            FILENAME_KEY to fileName,
-                            PATH_KEY to desPath
+                            FILENAME_KEY to fileName
                         )
                     )
                     .setConstraints(
@@ -119,9 +113,8 @@ class DownloadUtil(
         val id = inputData.getInt(POST_ID_KEY, -1)
         val host = inputData.getString(HOST_KEY)
         val filename = inputData.getString(FILENAME_KEY)
-        val path = Uri.decode(inputData.getString(PATH_KEY))
-        if (url == null || id < 0 || host == null || filename == null || path == null) return Result.failure()
-        val desUri = if (path.startsWith(ContentResolver.SCHEME_CONTENT)) path.safeStringToUri() else File(path).toUri()
+        if (url == null || id < 0 || host == null || filename == null) return Result.failure()
+        val desUri = getFileUri(host, filename) ?: return Result.failure()
         val channelId = applicationContext.packageName + ".download"
         val notificationManager = getNotificationManager(channelId)
         val title = "$host - $id"
@@ -182,7 +175,7 @@ class DownloadUtil(
             IOUtils.closeQuietly(`is`)
             IOUtils.closeQuietly(os)
         }
-        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, path = path).build())
+        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, desUri = desUri).build())
         return Result.success()
     }
 
@@ -210,9 +203,9 @@ class DownloadUtil(
             .setShowWhen(false)
     }
 
-    private fun getDownloadedNotificationBuilder(title: String, channelId: String, path: String): NotificationCompat.Builder {
+    private fun getDownloadedNotificationBuilder(title: String, channelId: String, desUri: Uri): NotificationCompat.Builder {
         val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
-            .putExtra(applicationContext.packageName + EXT_DOWNLOADED, path)
+        intent.data = desUri
         val pendingIntent = PendingIntent.getBroadcast(applicationContext, System.currentTimeMillis().toInt(), intent, 0)
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download_done)

@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.DocumentsContract
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -770,7 +771,7 @@ class BrowseActivity : AppCompatActivity() {
                             when (action) {
                                 ACTION_SAVE -> {
                                     Toast.makeText(this@BrowseActivity,
-                                        getString(R.string.msg_file_save_success, uri.path),
+                                        getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
                                         Toast.LENGTH_LONG).show()
                                 }
                                 ACTION_SAVE_SET_AS -> {
