@@ -913,6 +913,8 @@ class BrowseActivity : AppCompatActivity() {
                 takeFlags
             )
             Settings.instance().downloadDirPath = Uri.decode(uri.toString())
+            Settings.instance().downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
+            Settings.instance().downloadDirPathAuthority = uri.authority
         }
     }
 }

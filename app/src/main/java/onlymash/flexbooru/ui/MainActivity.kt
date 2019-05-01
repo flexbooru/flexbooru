@@ -21,6 +21,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.DocumentsContract
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
@@ -584,6 +585,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 takeFlags
             )
             Settings.instance().downloadDirPath = Uri.decode(uri.toString())
+            Settings.instance().downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
+            Settings.instance().downloadDirPathAuthority = uri.authority
         }
     }
 }
