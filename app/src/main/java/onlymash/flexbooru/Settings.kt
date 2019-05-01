@@ -53,6 +53,9 @@ class Settings(private val sp: SharedPreferences) {
         const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
         const val CLEAR_CACHE_KEY = "settings_clear_cache"
         const val CLEAR_HISTORY_KEY = "settings_clear_history"
+        const val LATEST_VERSION_CODE_KEY = "settings_latest_version_code"
+        const val LATEST_VERSION_NAME_KEY = "settings_latest_version_name"
+        const val LATEST_VERSION_URL_KEY = "settings_latest_version_url"
     }
 
     var activeBooruUid: Long
@@ -119,4 +122,16 @@ class Settings(private val sp: SharedPreferences) {
     var downloadDirPathAuthority: String?
         get() = sp.getString(DOWNLOAD_PATH_AUTHORITY_KEY, "")
         set(value) = sp.edit().putString(DOWNLOAD_PATH_AUTHORITY_KEY, value).apply()
+
+    var latestVersionCode: Long
+        get() = sp.getLong(LATEST_VERSION_CODE_KEY, -1L)
+        set(value) = sp.edit().putLong(LATEST_VERSION_CODE_KEY, value).apply()
+
+    var latestVersionName: String
+        get() = sp.getString(LATEST_VERSION_NAME_KEY, " ") ?: " "
+        set(value) = sp.edit().putString(LATEST_VERSION_NAME_KEY, value).apply()
+
+    var latestVersionUrl: String
+        get() = sp.getString(LATEST_VERSION_URL_KEY, "") ?: ""
+        set(value) = sp.edit().putString(LATEST_VERSION_URL_KEY, value).apply()
 }

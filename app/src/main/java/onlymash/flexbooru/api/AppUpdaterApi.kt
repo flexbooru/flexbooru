@@ -21,6 +21,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.UserAgent
 import retrofit2.Call
 import retrofit2.Response
@@ -72,17 +73,16 @@ interface AppUpdaterApi {
         /**
          * callback [Unit] return [UpdateInfo]
          * */
-        fun checkUpdate(updateCallback : (UpdateInfo?) -> Unit) {
+        fun checkUpdate() {
             create().checkUpdate().enqueue(object : retrofit2.Callback<UpdateInfo> {
                 override fun onFailure(call: Call<UpdateInfo>, t: Throwable) {
-                    updateCallback(null)
+
                 }
                 override fun onResponse(call: Call<UpdateInfo>, response: Response<UpdateInfo>) {
-                    if (response.isSuccessful) {
-                        updateCallback(response.body())
-                    } else {
-                        updateCallback(null)
-                    }
+                    val data = response.body() ?: return
+                    Settings.instance().latestVersionUrl = data.url
+                    Settings.instance().latestVersionName = data.version_name
+                    Settings.instance().latestVersionCode = data.version_code
                 }
             })
         }

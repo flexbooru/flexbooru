@@ -49,6 +49,7 @@ import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.util.getWidth
 import onlymash.flexbooru.util.launchUrl
+import onlymash.flexbooru.util.openAppInMarket
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 
 class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -205,25 +206,28 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
         }
         setExitSharedElementCallback(sharedElementCallback)
-        if(!applicationContext.packageName.contains("play")) {
-            checkForUpdate()
-        }
-    }
-
-    private fun checkForUpdate() {
-        AppUpdaterApi.checkUpdate {
-            if (isFinishing) return@checkUpdate
-            if (it != null && it.version_code > BuildConfig.VERSION_CODE) {
-               AlertDialog.Builder(this)
-                   .setTitle(R.string.update_found_update)
-                   .setMessage(getString(R.string.update_version, it.version_name))
-                   .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                       this@MainActivity.launchUrl(it.url)
-                   }
-                   .setNegativeButton(R.string.dialog_no, null)
-                   .create()
-                   .show()
-            }
+        AppUpdaterApi.checkUpdate()
+        if (BuildConfig.VERSION_CODE < Settings.instance().latestVersionCode) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.update_found_update)
+                .setMessage(getString(R.string.update_version, Settings.instance().latestVersionName))
+                .setPositiveButton(R.string.dialog_update) { _, _ ->
+                    val pkgName = applicationContext.packageName
+                    if (pkgName.contains("play")) {
+                        openAppInMarket(pkgName)
+                    } else {
+                        launchUrl(Settings.instance().latestVersionUrl)
+                    }
+                    finish()
+                }
+                .setNegativeButton(R.string.dialog_exit) { _, _ ->
+                    finish()
+                }
+                .create().apply {
+                    setCancelable(false)
+                    setCanceledOnTouchOutside(false)
+                    show()
+                }
         }
     }
 
