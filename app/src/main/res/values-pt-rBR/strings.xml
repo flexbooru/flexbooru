@@ -72,6 +72,8 @@
     <string name="dialog_no">Não</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_exit">Exit</string>
+    <string name="dialog_update">Update</string>
     <string name="update_found_update">Uma atualização está disponível</string>
     <string name="update_version">Versão: %s</string>
     <string name="booru_add">Adicionar booru</string>
