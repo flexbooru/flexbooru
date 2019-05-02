@@ -127,6 +127,9 @@
         <meta-data
                 android:name="com.google.android.backup.api_key"
                 android:value="AEdPqrEAAAAIEVVDnlCpmat2ve_BztQymxs9OueO1yKAy5c4Yw"/>
+        <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="${admobAppId}"/>
     </application>
 
 </manifest>

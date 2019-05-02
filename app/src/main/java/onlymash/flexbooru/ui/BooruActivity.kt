@@ -21,10 +21,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -60,6 +65,19 @@ class BooruActivity : BaseActivity() {
         BooruManager.listeners.add(booruAdapter)
         if (intent != null) {
             handleShareIntent(intent)
+        }
+        val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
+        val adView = AdView(this)
+        booru_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        adView.apply {
+            visibility = View.VISIBLE
+            adSize = AdSize.SMART_BANNER
+            adUnitId = if (applicationContext.packageName.contains(".play")) {
+                "ca-app-pub-1547571472841615/5647147698"
+            } else {
+                "ca-app-pub-1547571472841615/4999585900"
+            }
+            loadAd(adBuilder.build())
         }
     }
     override fun onNewIntent(intent: Intent) {

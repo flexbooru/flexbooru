@@ -25,6 +25,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import onlymash.flexbooru.glide.GlideApp
@@ -48,5 +49,11 @@ class App : Application() {
         app = this
         AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
         DrawerImageLoader.init(drawerImageLoader)
+        val admobAppId = if (applicationContext.packageName.contains(".play")) {
+            "ca-app-pub-1547571472841615~2418349121"
+        } else {
+            "ca-app-pub-1547571472841615~9640225411"
+        }
+        MobileAds.initialize(this, admobAppId)
     }
 }

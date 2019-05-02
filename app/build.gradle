@@ -65,11 +65,13 @@ android {
     productFlavors {
         github {
             dimension 'channel'
+            manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~9640225411"]
         }
         play {
             dimension 'channel'
             applicationIdSuffix '.play'
             versionNameSuffix '.play'
+            manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121"]
         }
     }
     buildTypes {
@@ -138,6 +140,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
+    implementation 'com.google.android.gms:play-services-ads:17.2.0'
     implementation 'androidx.preference:preference-ktx:1.1.0-alpha04'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.0.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
