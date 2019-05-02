@@ -64,6 +64,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val DRAWER_ITEM_ID_SETTINGS = 4L
         private const val DRAWER_ITEM_ID_NIGHT_MODE = 5L
         private const val DRAWER_ITEM_ID_ABOUT = 6L
+        private const val DRAWER_ITEM_ID_PURCHASE = 7L
+        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 5
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -147,6 +149,16 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         drawer.apply {
             setSelection(-3L)
             onDrawerItemClickListener = drawerItemClickListener
+        }
+        if (!Settings.instance().isOrderSuccess) {
+            drawer.addItemAtPosition(
+                PrimaryDrawerItem()
+                    .withName(R.string.purchase_title)
+                    .withSelectable(false)
+                    .withIconTintingEnabled(true)
+                    .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
+                DRAWER_ITEM_ID_PURCHASE_POSITION
+                )
         }
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
@@ -386,6 +398,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 DRAWER_ITEM_ID_ABOUT -> {
                     startActivity(Intent(this@MainActivity, AboutActivity::class.java))
                 }
+                DRAWER_ITEM_ID_PURCHASE -> {
+                    startActivity(Intent(this@MainActivity, PurchaseActivity::class.java))
+                }
                 DRAWER_ITEM_ID_NIGHT_MODE -> return false
             }
             return false
@@ -552,6 +567,20 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     finish()
                 }, 200L)
+            }
+            Settings.ORDER_SUCCESS_KEY -> {
+                if (Settings.instance().isOrderSuccess) {
+                    drawer.removeItem(DRAWER_ITEM_ID_PURCHASE)
+                } else {
+                    drawer.addItemAtPosition(
+                        PrimaryDrawerItem()
+                            .withName(R.string.purchase_title)
+                            .withSelectable(false)
+                            .withIconTintingEnabled(true)
+                            .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
+                        DRAWER_ITEM_ID_PURCHASE_POSITION
+                    )
+                }
             }
         }
     }

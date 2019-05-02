@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.adapter.BooruAdapter
@@ -66,18 +67,20 @@ class BooruActivity : BaseActivity() {
         if (intent != null) {
             handleShareIntent(intent)
         }
-        val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
-        val adView = AdView(this)
-        booru_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-        adView.apply {
-            visibility = View.VISIBLE
-            adSize = AdSize.SMART_BANNER
-            adUnitId = if (applicationContext.packageName.contains(".play")) {
-                "ca-app-pub-1547571472841615/5647147698"
-            } else {
-                "ca-app-pub-1547571472841615/4999585900"
+        if (!Settings.instance().isOrderSuccess) {
+            val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
+            val adView = AdView(this)
+            booru_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            adView.apply {
+                visibility = View.VISIBLE
+                adSize = AdSize.SMART_BANNER
+                adUnitId = if (applicationContext.packageName.contains(".play")) {
+                    "ca-app-pub-1547571472841615/5647147698"
+                } else {
+                    "ca-app-pub-1547571472841615/4999585900"
+                }
+                loadAd(adBuilder.build())
             }
-            loadAd(adBuilder.build())
         }
     }
     override fun onNewIntent(intent: Intent) {

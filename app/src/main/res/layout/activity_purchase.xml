@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free Software
+  ~ Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with
+  ~ this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="onlymash.flexbooru.ui.PurchaseActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+            android:padding="@dimen/spacing_middle"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardViewTheme">
+
+            <LinearLayout
+                    android:paddingTop="@dimen/spacing_middle"
+                    android:paddingBottom="@dimen/spacing_middle"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:text="@string/purchase_info_title"
+                        android:paddingBottom="@dimen/spacing_mlarge"
+                        android:paddingTop="@dimen/spacing_middle"
+                        android:paddingStart="@dimen/spacing_middle"
+                        android:paddingEnd="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
+                <TextView
+                        android:text="@string/purchase_info_remove_ads"
+                        android:padding="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+                <TextView
+                        android:text="@string/purchase_info_unlock_full_features"
+                        android:padding="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardViewTheme">
+
+            <LinearLayout
+                    android:paddingTop="@dimen/spacing_middle"
+                    android:paddingBottom="@dimen/spacing_middle"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:text="@string/purchase_pay_title"
+                        android:paddingBottom="@dimen/spacing_mlarge"
+                        android:paddingTop="@dimen/spacing_middle"
+                        android:paddingStart="@dimen/spacing_middle"
+                        android:paddingEnd="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
+                <TextView
+                        android:id="@+id/pay_google_play"
+                        android:text="@string/purchase_pay_google_play"
+                        android:padding="@dimen/spacing_middle"
+                        android:drawableStart="@drawable/ic_logo_google_play_24dp"
+                        android:drawablePadding="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+                <TextView
+                        android:id="@+id/pay_alipay"
+                        android:text="@string/purchase_pay_alipay"
+                        android:padding="@dimen/spacing_middle"
+                        android:drawableStart="@drawable/ic_logo_alipay_24dp"
+                        android:drawablePadding="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</LinearLayout>

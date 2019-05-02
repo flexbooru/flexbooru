@@ -115,3 +115,5 @@
 }
 -dontwarn com.tickaroo.tikxml.**
 -dontnote com.tickaroo.tikxml.**
+
+-keep class com.android.vending.billing.**

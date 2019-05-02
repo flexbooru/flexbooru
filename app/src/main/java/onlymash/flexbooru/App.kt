@@ -24,11 +24,14 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.PurchaseActivity
 
 class App : Application() {
     companion object {
@@ -55,5 +58,32 @@ class App : Application() {
             "ca-app-pub-1547571472841615~9640225411"
         }
         MobileAds.initialize(this, admobAppId)
+        checkOrderFromCache()
+    }
+    private fun checkOrderFromCache() {
+        val billingClient = BillingClient
+            .newBuilder(this)
+            .setListener { _, _ ->
+
+            }
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingServiceDisconnected() {
+
+            }
+            override fun onBillingSetupFinished(responseCode: Int) {
+                if (billingClient.isReady) {
+                    val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP)?.purchasesList
+                    if (purchases != null) {
+                        val index = purchases.indexOfFirst { it.sku == PurchaseActivity.SKU }
+                        Settings.instance().isOrderSuccess = index >= 0
+                    } else {
+                        Settings.instance().isOrderSuccess = false
+                    }
+                    billingClient.endConnection()
+                }
+            }
+
+        })
     }
 }

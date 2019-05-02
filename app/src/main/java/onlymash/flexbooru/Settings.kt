@@ -56,6 +56,10 @@ class Settings(private val sp: SharedPreferences) {
         const val LATEST_VERSION_CODE_KEY = "settings_latest_version_code"
         const val LATEST_VERSION_NAME_KEY = "settings_latest_version_name"
         const val LATEST_VERSION_URL_KEY = "settings_latest_version_url"
+        private const val ORDER_ID_KEY = "order_id"
+        private const val ORDER_TIME_KEY = "order_time"
+        private const val ORDER_TOKEN_KEY = "order_token"
+        const val ORDER_SUCCESS_KEY = "order_success"
     }
 
     var activeBooruUid: Long
@@ -134,4 +138,20 @@ class Settings(private val sp: SharedPreferences) {
     var latestVersionUrl: String
         get() = sp.getString(LATEST_VERSION_URL_KEY, "") ?: ""
         set(value) = sp.edit().putString(LATEST_VERSION_URL_KEY, value).apply()
+
+    var orderId: String
+        get() = sp.getString(ORDER_ID_KEY, "") ?: ""
+        set(value) = sp.edit().putString(ORDER_ID_KEY, value).apply()
+
+    var orderTime: Long
+        get() = sp.getLong(ORDER_TIME_KEY, -1L)
+        set(value) = sp.edit().putLong(ORDER_TIME_KEY, value).apply()
+
+    var orderToken: String
+        get() = sp.getString(ORDER_TOKEN_KEY, "") ?: ""
+        set(value) = sp.edit().putString(ORDER_TOKEN_KEY, value).apply()
+
+    var isOrderSuccess: Boolean
+        get() = sp.getBoolean(ORDER_SUCCESS_KEY, false)
+        set(value) = sp.edit().putBoolean(ORDER_SUCCESS_KEY, value).apply()
 }
