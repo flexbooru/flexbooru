@@ -53,18 +53,14 @@ private fun Activity.getUri(dirName: String, fileName: String): Uri? {
     val authority = Settings.instance().downloadDirPathAuthority
     if (basePath == null || !basePath.startsWith(ContentResolver.SCHEME_CONTENT) ||
         treeId.isNullOrEmpty() || authority.isNullOrEmpty()) {
-        try {
-            openDocumentTree()
-        } catch (_: ActivityNotFoundException) {}
+        openDocumentTree()
         return null
     }
     val treeUri = DocumentsContract.buildTreeDocumentUri(authority, treeId)
     val treeDir = DocumentFile.fromTreeUri(this, treeUri)
     if (treeDir == null || !treeDir.canWrite()) {
         Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
-        try {
-            openDocumentTree()
-        } catch (_: ActivityNotFoundException) {}
+        openDocumentTree()
         return null
     }
     val dirDocId: String
