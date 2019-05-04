@@ -106,6 +106,17 @@
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+                <TextView
+                        android:id="@+id/pay_redeem_code"
+                        android:text="@string/purchase_pay_order_code"
+                        android:padding="@dimen/spacing_middle"
+                        android:drawableStart="@drawable/ic_redeem_24dp"
+                        android:drawablePadding="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

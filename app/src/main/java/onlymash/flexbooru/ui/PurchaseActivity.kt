@@ -15,19 +15,30 @@
 
 package onlymash.flexbooru.ui
 
+import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.android.billingclient.api.*
 import kotlinx.android.synthetic.main.activity_purchase.*
 import kotlinx.android.synthetic.main.toolbar.*
+import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.OrderApi
 
 class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
 
     companion object {
         const val SKU = "flexbooru_pro"
     }
-    private lateinit var billingClient: BillingClient
+    private var billingClient: BillingClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,41 +47,105 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        billingClient = BillingClient
-            .newBuilder(this)
-            .setListener(this)
-            .build()
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingServiceDisconnected() {
+        if (applicationContext.packageName.contains(".play")) {
+            pay_alipay.visibility = View.GONE
+            pay_redeem_code.visibility = View.GONE
+            billingClient = BillingClient
+                .newBuilder(this)
+                .setListener(this)
+                .build()
+            billingClient?.startConnection(object : BillingClientStateListener {
+                override fun onBillingServiceDisconnected() {
 
-            }
-            override fun onBillingSetupFinished(responseCode: Int) {
+                }
+                override fun onBillingSetupFinished(responseCode: Int) {
 
-            }
-        })
-        pay_google_play.setOnClickListener {
-            if (billingClient.isReady) {
-                val params = SkuDetailsParams
-                    .newBuilder()
-                    .setSkusList(listOf(SKU))
-                    .setType(BillingClient.SkuType.INAPP)
-                    .build()
-                billingClient.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
-                    if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
-                        val index = skuDetailsList.indexOfFirst { it.sku == SKU }
-                        if (index >= 0) {
-                            val billingFlowParams = BillingFlowParams
-                                .newBuilder()
-                                .setSkuDetails(skuDetailsList[index])
-                                .build()
-                            billingClient.launchBillingFlow(this, billingFlowParams)
+                }
+            })
+            pay_google_play.setOnClickListener {
+                billingClient?.let {
+                    if (it.isReady) {
+                        val params = SkuDetailsParams
+                            .newBuilder()
+                            .setSkusList(listOf(SKU))
+                            .setType(BillingClient.SkuType.INAPP)
+                            .build()
+                        it.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
+                            if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
+                                val index = skuDetailsList.indexOfFirst { it.sku == SKU }
+                                if (index >= 0) {
+                                    val billingFlowParams = BillingFlowParams
+                                        .newBuilder()
+                                        .setSkuDetails(skuDetailsList[index])
+                                        .build()
+                                    it.launchBillingFlow(this, billingFlowParams)
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-        pay_alipay.setOnClickListener {
+        } else {
+            pay_google_play.visibility = View.GONE
+            pay_alipay.setOnClickListener {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.purchase_pay_alipay_title)
+                    .setMessage(R.string.purchase_pay_alipay_info)
+                    .setPositiveButton(R.string.purchase_pay_alipay_dialog_positive) { _, _ ->
+                        App.app.clipboard.primaryClip = ClipData.newPlainText("alipay", "im@fiepi.com")
+                        val alipayPackageName = "com.eg.android.AlipayGphone"
+                        try {
+                            val intent = packageManager.getLaunchIntentForPackage(alipayPackageName)
+                            if (intent != null) {
+                                startActivity(intent)
+                            }
+                        } catch (_: PackageManager.NameNotFoundException) {
 
+                        } catch (_: ActivityNotFoundException) {
+
+                        }
+                    }
+                    .setNegativeButton(R.string.dialog_cancel, null)
+                    .show()
+            }
+            pay_redeem_code.setOnClickListener {
+                val padding = resources.getDimensionPixelSize(R.dimen.spacing_middle)
+                val layout = FrameLayout(this@PurchaseActivity).apply {
+                    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    setPadding(padding, padding, padding, 0)
+                }
+                val editText = EditText(this@PurchaseActivity)
+                editText.setHint(R.string.purchase_pay_order_code_hint)
+                layout.addView(editText)
+                AlertDialog.Builder(this@PurchaseActivity)
+                    .setTitle(R.string.purchase_pay_order_code)
+                    .setView(layout)
+                    .setPositiveButton(R.string.purchase_pay_order_code_summit) { _, _ ->
+                        val orderId = (editText.text ?: "").toString().trim()
+                        if (orderId.isNotEmpty()) {
+                            OrderApi.orderRegister(orderId, Settings.instance().orderDeviceId) { success ->
+                                if (!isFinishing) {
+                                    if (success) {
+                                        Toast.makeText(
+                                            this@PurchaseActivity,
+                                            getString(R.string.purchase_pay_order_code_summit_success),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            this@PurchaseActivity,
+                                            getString(R.string.purchase_pay_order_code_summit_failed),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .setNegativeButton(R.string.dialog_cancel, null)
+                    .create()
+                    .show()
+            }
         }
     }
 
@@ -91,8 +166,8 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (billingClient.isReady) {
-            billingClient.endConnection()
+        billingClient?.apply {
+            if (isReady) endConnection()
         }
     }
 }

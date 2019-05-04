@@ -18,6 +18,7 @@ package onlymash.flexbooru
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import onlymash.flexbooru.App.Companion.app
+import java.util.*
 
 class Settings(private val sp: SharedPreferences) {
     companion object {
@@ -60,6 +61,7 @@ class Settings(private val sp: SharedPreferences) {
         private const val ORDER_TIME_KEY = "order_time"
         private const val ORDER_TOKEN_KEY = "order_token"
         const val ORDER_SUCCESS_KEY = "order_success"
+        const val ORDER_DEVICE_ID_KEY = "device_id"
     }
 
     var activeBooruUid: Long
@@ -154,4 +156,15 @@ class Settings(private val sp: SharedPreferences) {
     var isOrderSuccess: Boolean
         get() = sp.getBoolean(ORDER_SUCCESS_KEY, false)
         set(value) = sp.edit().putBoolean(ORDER_SUCCESS_KEY, value).apply()
+
+    var orderDeviceId: String
+        get() {
+            var id = sp.getString(ORDER_DEVICE_ID_KEY, "") ?: ""
+            if (id.isEmpty()) {
+                id = UUID.randomUUID().toString()
+                orderDeviceId = id
+            }
+            return id
+        }
+        set(value) = sp.edit().putString(ORDER_DEVICE_ID_KEY, value).apply()
 }

@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
+import onlymash.flexbooru.api.OrderApi
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.PurchaseActivity
 
@@ -52,13 +53,23 @@ class App : Application() {
         app = this
         AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
         DrawerImageLoader.init(drawerImageLoader)
-        val admobAppId = if (applicationContext.packageName.contains(".play")) {
-            "ca-app-pub-1547571472841615~2418349121"
+        initial()
+    }
+    private fun initial() {
+        val admobAppId: String
+        if (applicationContext.packageName.contains(".play")) {
+            admobAppId = "ca-app-pub-1547571472841615~2418349121"
+            checkOrderFromCache()
         } else {
-            "ca-app-pub-1547571472841615~9640225411"
+            admobAppId = "ca-app-pub-1547571472841615~9640225411"
+            val orderId = Settings.instance().orderId
+            if (orderId.isNotEmpty()) {
+                OrderApi.orderChecker(orderId, Settings.instance().orderDeviceId)
+            } else {
+                Settings.instance().isOrderSuccess = false
+            }
         }
         MobileAds.initialize(this, admobAppId)
-        checkOrderFromCache()
     }
     private fun checkOrderFromCache() {
         val billingClient = BillingClient
@@ -69,7 +80,7 @@ class App : Application() {
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
-
+                billingClient.endConnection()
             }
             override fun onBillingSetupFinished(responseCode: Int) {
                 if (billingClient.isReady) {
