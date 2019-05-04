@@ -22,6 +22,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
@@ -57,6 +58,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     companion object {
         private const val TAG = "MainActivity"
+        private const val BOORUS_LIMIT = 3
         private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
         private const val DRAWER_ITEM_ID_COMMENTS = 2L
@@ -175,9 +177,45 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         users = UserManager.getAllUsers() ?: mutableListOf()
         UserManager.listeners.add(userListener)
         BooruManager.listeners.add(booruListener)
+        initDrawerHeader()
+        setExitSharedElementCallback(sharedElementCallback)
+        AppUpdaterApi.checkUpdate()
+        if (BuildConfig.VERSION_CODE < Settings.instance().latestVersionCode) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.update_found_update)
+                .setMessage(getString(R.string.update_version, Settings.instance().latestVersionName))
+                .setPositiveButton(R.string.dialog_update) { _, _ ->
+                    val pkgName = applicationContext.packageName
+                    if (pkgName.contains("play")) {
+                        openAppInMarket(pkgName)
+                    } else {
+                        launchUrl(Settings.instance().latestVersionUrl)
+                    }
+                    finish()
+                }
+                .setNegativeButton(R.string.dialog_exit) { _, _ ->
+                    finish()
+                }
+                .create().apply {
+                    setCancelable(false)
+                    setCanceledOnTouchOutside(false)
+                    show()
+                }
+        }
+    }
+
+    private fun initDrawerHeader() {
         val size = boorus.size
+        if (Settings.instance().isOrderSuccess || size <= BOORUS_LIMIT) {
+            normalInitDrawerHeader(size)
+        } else {
+            limitInitDrawerHeader(size)
+        }
+    }
+
+    private fun normalInitDrawerHeader(size: Int) {
         if (size > 0) {
-            header.removeProfile(profileSettingDrawerItem)
+            header.clear()
             boorus.forEachIndexed { index, booru ->
                 var host = booru.host
                 if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
@@ -218,34 +256,62 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 startActivity(Intent(this, BooruActivity::class.java))
             }
         }
-        setExitSharedElementCallback(sharedElementCallback)
-        AppUpdaterApi.checkUpdate()
-        if (BuildConfig.VERSION_CODE < Settings.instance().latestVersionCode) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.update_found_update)
-                .setMessage(getString(R.string.update_version, Settings.instance().latestVersionName))
-                .setPositiveButton(R.string.dialog_update) { _, _ ->
-                    val pkgName = applicationContext.packageName
-                    if (pkgName.contains("play")) {
-                        openAppInMarket(pkgName)
-                    } else {
-                        launchUrl(Settings.instance().latestVersionUrl)
+    }
+
+    private fun limitInitDrawerHeader(size: Int) {
+        header.clear()
+        boorus.forEachIndexed { index, booru ->
+            if (index >= BOORUS_LIMIT) return@forEachIndexed
+            var host = booru.host
+            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
+            header.addProfile(
+                ProfileDrawerItem()
+                    .withName(booru.name)
+                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
+                    .withEmail(String.format("%s://%s", booru.scheme, booru.host))
+                    .withIdentifier(booru.uid), index)
+        }
+        header.addProfile(profileSettingDrawerItem, BOORUS_LIMIT)
+        var uid = Settings.instance().activeBooruUid
+        if (uid > boorus[BOORUS_LIMIT - 1].uid) {
+            uid = boorus[0].uid
+            Settings.instance().activeBooruUid = uid
+        }
+        when {
+            uid < 0L && size > 0 -> {
+                Settings.instance().activeBooruUid = boorus[0].uid
+                header.setActiveProfile(Settings.instance().activeBooruUid)
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
+            }
+            uid >= 0L && size > 0 -> {
+                var i = -1
+                boorus.forEachIndexed { index, booru ->
+                    if (uid == booru.uid) {
+                        i = index
+                        return@forEachIndexed
                     }
-                    finish()
                 }
-                .setNegativeButton(R.string.dialog_exit) { _, _ ->
-                    finish()
+                if (i >= 0) {
+                    header.setActiveProfile(uid)
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i], getCurrentUser())
+                } else {
+                    Settings.instance().activeBooruUid = boorus[0].uid
+                    header.setActiveProfile(Settings.instance().activeBooruUid)
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
                 }
-                .create().apply {
-                    setCancelable(false)
-                    setCanceledOnTouchOutside(false)
-                    show()
-                }
+            }
+            else -> {
+                startActivity(Intent(this, BooruActivity::class.java))
+            }
         }
     }
 
     private val booruListener = object : BooruManager.Listener {
         override fun onAdd(booru: Booru) {
+            if (!Settings.instance().isOrderSuccess && boorus.size >= BOORUS_LIMIT) {
+                boorus.add(booru)
+                return
+            }
             header.removeProfile(profileSettingDrawerItem)
             boorus.add(booru)
             var host = booru.host
@@ -580,6 +646,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                             .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
                         DRAWER_ITEM_ID_PURCHASE_POSITION
                     )
+                }
+                if (boorus.size > BOORUS_LIMIT) {
+                    initDrawerHeader()
                 }
             }
         }
