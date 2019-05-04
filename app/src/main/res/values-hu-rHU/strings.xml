@@ -199,8 +199,8 @@
     <string name="search_bar_hint_search_artists">Művészek keresése</string>
     <string name="tag_filter_add_text">hozzáadás</string>
     <string name="share_via">Megosztás...</string>
-    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s szűrő alkalmazva</string>
-    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
+    <string name="a11y_filter_applied">%1s szűrő alkalmazva</string>
+    <string name="a11y_filter_not_applied">%1s filter not applied</string>
     <string name="order">Order</string>
     <string name="rating">Rating</string>
     <string name="muzei_copy">Copy</string>
@@ -218,4 +218,11 @@
     <string name="comment_send">Send</string>
     <string name="comment_cancel">Cancel</string>
     <string name="comment_hint">Input comment</string>
+    <string name="purchase_title">Remove ads &amp; feature unlock</string>
+    <string name="purchase_info_title">Remove ads and unlock full features</string>
+    <string name="purchase_info_remove_ads">* Remove ads</string>
+    <string name="purchase_info_unlock_full_features">* Unlock full features</string>
+    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="purchase_pay_google_play">Google Play</string>
+    <string name="purchase_pay_alipay">Alipay</string>
 </resources>

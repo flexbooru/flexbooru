@@ -199,8 +199,8 @@
     <string name="search_bar_hint_search_artists">搜尋畫師</string>
     <string name="tag_filter_add_text">添加 ↑️</string>
     <string name="share_via">透過</string>
-    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s 過濾器已啟用</string>
-    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s 過濾器已停用</string>
+    <string name="a11y_filter_applied">%1s 過濾器已啟用</string>
+    <string name="a11y_filter_not_applied">%1s 過濾器已停用</string>
     <string name="order">排序</string>
     <string name="rating">評級</string>
     <string name="muzei_copy">複製</string>
@@ -218,4 +218,11 @@
     <string name="comment_send">傳送</string>
     <string name="comment_cancel">取消</string>
     <string name="comment_hint">輸入留言</string>
+    <string name="purchase_title">Remove ads &amp; feature unlock</string>
+    <string name="purchase_info_title">Remove ads and unlock full features</string>
+    <string name="purchase_info_remove_ads">* Remove ads</string>
+    <string name="purchase_info_unlock_full_features">* Unlock full features</string>
+    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="purchase_pay_google_play">Google Play</string>
+    <string name="purchase_pay_alipay">Alipay</string>
 </resources>
