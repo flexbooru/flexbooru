@@ -61,7 +61,7 @@ class DownloadUtil(
                 else -> post.getOriginUrl()
             }
             if (url.isEmpty()) return
-            var fileName = Uri.decode(url.fileName())
+            var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$id - $fileName"
             activity.getDownloadUri(host, fileName) ?: return
             val workManager = WorkManager.getInstance()
@@ -85,7 +85,7 @@ class DownloadUtil(
 
         internal fun download(url: String, postId: Int, host: String, activity: Activity) {
             if (url.isEmpty()) return
-            var fileName = Uri.decode(url.fileName())
+            var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
             activity.getDownloadUri(host, fileName) ?: return
             val workManager = WorkManager.getInstance()

@@ -751,7 +751,7 @@ class BrowseActivity : AppCompatActivity() {
 
                 }
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    val fileName = Uri.decode(url).fileName()
+                    val fileName = url.fileName()
                     val handler = Handler()
                     val uri = getSaveUri(fileName) ?: return
                     Thread {

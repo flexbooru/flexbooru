@@ -86,9 +86,9 @@ fun String.fileName(): String {
     val start = lastIndexOf('/') + 1
     val end = indexOfFirst { it == '?' }
     return if (end > start) {
-        substring(start, end)
+        Uri.decode(substring(start, end)).replace("?", "")
     } else {
-        substring(start)
+        Uri.decode(substring(start)).replace("?", "")
     }
 }
 
@@ -102,7 +102,7 @@ fun Activity.downloadPost(post: PostBase?) {
         else -> post.getOriginUrl()
     }
     if (url.isEmpty()) return
-    var fileName = Uri.decode(url.fileName())
+    var fileName = url.fileName()
     if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
     val uri = getDownloadUri(host, fileName)
     val request = DownloadManager.Request(Uri.parse(url)).apply {
