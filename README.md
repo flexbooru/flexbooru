@@ -2,7 +2,7 @@
 A booru client for Android, support [Danbooru](https://github.com/r888888888/danbooru), [Moebooru](https://github.com/moebooru/moebooru), Gelbooru, Sankaku, etc.
 
 [![Telegram](https://img.shields.io/badge/chat-Telegram-blue.svg)](https://t.me/flexbooru)
-[![Discord](https://img.shields.io/discord/555912761742458880.svg?label=discord)](https://discord.gg/xpBn8Pq)
+[![Discord](https://img.shields.io/discord/555912761742458880.svg?label=discord)](https://discord.gg/zxAX5Jh)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Downloads](https://img.shields.io/github/downloads/flexbooru/flexbooru/total.svg)](https://github.com/flexbooru/flexbooru/releases)
 [![Language: Kotlin](https://img.shields.io/github/languages/top/flexbooru/flexbooru.svg)](https://github.com/flexbooru/flexbooru/search?l=kotlin)
