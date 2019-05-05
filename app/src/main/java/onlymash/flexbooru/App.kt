@@ -89,7 +89,7 @@ class App : Application() {
                         val index = purchases.indexOfFirst {
                             it.sku == PurchaseActivity.SKU
                         }
-                        Settings.instance().isOrderSuccess = index > 0
+                        Settings.instance().isOrderSuccess = index >= 0
                     } else {
                         Settings.instance().isOrderSuccess = false
                     }

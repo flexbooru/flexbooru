@@ -638,14 +638,19 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 if (Settings.instance().isOrderSuccess) {
                     drawer.removeItem(DRAWER_ITEM_ID_PURCHASE)
                 } else {
-                    drawer.addItemAtPosition(
-                        PrimaryDrawerItem()
-                            .withName(R.string.purchase_title)
-                            .withSelectable(false)
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
-                        DRAWER_ITEM_ID_PURCHASE_POSITION
-                    )
+                    val index = drawer.drawerItems.indexOfFirst {
+                        it.identifier == DRAWER_ITEM_ID_PURCHASE
+                    }
+                    if (index < 0) {
+                        drawer.addItemAtPosition(
+                            PrimaryDrawerItem()
+                                .withName(R.string.purchase_title)
+                                .withSelectable(false)
+                                .withIconTintingEnabled(true)
+                                .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
+                            DRAWER_ITEM_ID_PURCHASE_POSITION
+                        )
+                    }
                 }
                 if (boorus.size > BOORUS_LIMIT) {
                     initDrawerHeader()
