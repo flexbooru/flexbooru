@@ -85,11 +85,15 @@ fun isExternalStorageReadable(): Boolean {
 fun String.fileName(): String {
     val start = lastIndexOf('/') + 1
     val end = indexOfFirst { it == '?' }
-    return if (end > start) {
-        Uri.decode(substring(start, end)).replace("?", "")
+    val encodeFileName = if (end > start) {
+        substring(start, end)
     } else {
-        Uri.decode(substring(start)).replace("?", "")
+        substring(start)
     }
+    return Uri.decode(encodeFileName)
+        .replace("?", "")
+        .replace("!", "")
+        .replace(":", "_")
 }
 
 fun Activity.downloadPost(post: PostBase?) {
