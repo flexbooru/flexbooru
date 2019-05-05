@@ -86,15 +86,16 @@ class App : Application() {
                 if (billingClient.isReady) {
                     val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP)?.purchasesList
                     if (purchases != null) {
-                        val index = purchases.indexOfFirst { it.sku == PurchaseActivity.SKU }
-                        Settings.instance().isOrderSuccess = index >= 0
+                        val index = purchases.indexOfFirst {
+                            it.sku == PurchaseActivity.SKU
+                        }
+                        Settings.instance().isOrderSuccess = index > 0
                     } else {
                         Settings.instance().isOrderSuccess = false
                     }
                     billingClient.endConnection()
                 }
             }
-
         })
     }
 }

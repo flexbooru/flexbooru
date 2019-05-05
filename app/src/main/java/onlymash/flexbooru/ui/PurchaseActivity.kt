@@ -63,22 +63,27 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                 }
             })
             pay_google_play.setOnClickListener {
-                billingClient?.let {
-                    if (it.isReady) {
+                billingClient?.let { client ->
+                    if (client.isReady) {
                         val params = SkuDetailsParams
                             .newBuilder()
                             .setSkusList(listOf(SKU))
                             .setType(BillingClient.SkuType.INAPP)
                             .build()
-                        it.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
+                        client.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
                             if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
-                                val index = skuDetailsList.indexOfFirst { it.sku == SKU }
+                                val index = skuDetailsList.indexOfFirst {
+                                    it.sku == SKU
+                                }
                                 if (index >= 0) {
                                     val billingFlowParams = BillingFlowParams
                                         .newBuilder()
                                         .setSkuDetails(skuDetailsList[index])
                                         .build()
-                                    it.launchBillingFlow(this, billingFlowParams)
+                                    val code = client.launchBillingFlow(this, billingFlowParams)
+                                    if (code == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
+                                        Settings.instance().isOrderSuccess = true
+                                    }
                                 }
                             }
                         }
