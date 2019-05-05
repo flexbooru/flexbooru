@@ -114,7 +114,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //Room requires
-    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5.1"
     implementation 'androidx.annotation:annotation:1.1.0-beta01'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
@@ -128,7 +128,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
     implementation 'android.arch.work:work-runtime-ktx:1.0.1'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
@@ -138,7 +138,7 @@ dependencies {
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
     implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
     implementation 'com.android.billingclient:billing:1.2.2'
