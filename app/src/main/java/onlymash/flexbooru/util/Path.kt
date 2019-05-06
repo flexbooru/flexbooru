@@ -27,10 +27,10 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 
-fun getFileUri(host: String, fileName: String): Uri? {
+fun getFileUri(dirName: String, fileName: String): Uri? {
     val treeId = Settings.instance().downloadDirPathTreeId ?: return null
     val treeUri = DocumentsContract.buildTreeDocumentUri(Settings.instance().downloadDirPathAuthority, treeId) ?: return null
-    val docId = if (treeId.endsWith(":")) "$treeId$host/$fileName" else "$treeId/$host/$fileName"
+    val docId = if (treeId.endsWith(":")) "$treeId$dirName/$fileName" else "$treeId/$dirName/$fileName"
     return DocumentsContract.buildDocumentUriUsingTree(treeUri, docId)
 }
 
@@ -88,3 +88,5 @@ private fun Activity.getUri(dirName: String, fileName: String): Uri? {
 fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
 
 fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getUri(host, fileName)
+
+fun Activity.getPoolUri(fileName: String): Uri? = getUri("pools", fileName)

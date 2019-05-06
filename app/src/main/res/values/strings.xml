@@ -59,7 +59,7 @@
     <string name="post_popular_transition_name" translatable="false">post_popular_img_%d</string>
     <string name="post_expand_tag_filter">Expand tag filter</string>
     <string name="post_add_search_to_muzei">` %s ` have been saved to Muzei.</string>
-    <string name="post_download">Download</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">Add to favorites</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="msg_path_denied">Save failed! No access to the current path.</string>
@@ -181,6 +181,11 @@
     <string name="switch_no">No</string>
     <string name="pool_description_is_empty">Description is empty.</string>
     <string name="pool_info_id_and_count" translatable="false">#%01$d | %02$d</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
+    <string name="pool_download_jpgs_url_format" translatable="false">%01$s://%02$s/pool/zip/%03$d?jpeg=1</string>
+    <string name="pool_download_pngs_url_format" translatable="false">%01$s://%02$s/pool/zip/%03$d?png=1</string>
     <string name="tag_type">Type</string>
     <string name="tag_type_all">All type</string>
     <string name="tag_type_general">General</string>

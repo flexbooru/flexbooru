@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.glide
+package onlymash.flexbooru.util.okhttp
 
 interface ProgressListener {
     fun onProgress(progress: Int)

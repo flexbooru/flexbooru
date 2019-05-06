@@ -19,6 +19,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -39,12 +41,11 @@ import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepository
-import onlymash.flexbooru.ui.AccountActivity
-import onlymash.flexbooru.ui.MainActivity
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.*
 import onlymash.flexbooru.ui.adapter.PoolAdapter
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
+import onlymash.flexbooru.util.DownloadUtil
 import onlymash.flexbooru.widget.search.SearchBar
 
 class PoolFragment : ListFragment() {
@@ -268,6 +269,43 @@ class PoolFragment : ListFragment() {
         poolAdapter = PoolAdapter(
             glide = glide,
             listener = itemListener,
+            longClickCallback = {
+                val context = requireContext()
+                AlertDialog.Builder(context)
+                    .setTitle("Pool ${it.id}")
+                    .setItems(context.resources.getStringArray(R.array.pool_item_action)) { _, which ->
+                        if (!Settings.instance().isOrderSuccess) {
+                            startActivity(Intent(context, PurchaseActivity::class.java))
+                            return@setItems
+                        }
+                        if (search.username.isEmpty() || search.auth_key.isEmpty()) {
+                            startActivity(Intent(context, AccountConfigActivity::class.java))
+                            return@setItems
+                        }
+                        when (which) {
+                            0 -> {
+                                DownloadUtil.downloadPool(
+                                    activity = requireActivity(),
+                                    pool = it,
+                                    type = DownloadUtil.POOL_DOWNLOAD_TYPE_JPGS,
+                                    username = search.username,
+                                    passwordHash = search.auth_key
+                                    )
+                            }
+                            1 -> {
+                                DownloadUtil.downloadPool(
+                                    activity = requireActivity(),
+                                    pool = it,
+                                    type = DownloadUtil.POOL_DOWNLOAD_TYPE_PNGS,
+                                    username = search.username,
+                                    passwordHash = search.auth_key
+                                )
+                            }
+                        }
+                    }
+                    .create()
+                    .show()
+            },
             retryCallback = {
                 when (type) {
                     Constants.TYPE_DANBOORU -> poolViewModel.retryDan()

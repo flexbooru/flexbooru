@@ -58,8 +58,9 @@ class OkHttp3Downloader : Downloader {
      * @param maxSize The size limit for the cache.
      */
     @JvmOverloads
-    constructor(cacheDir: File, maxSize: Long = calculateDiskCacheSize(cacheDir)) :
-            this(createOkHttpClient(cacheDir, maxSize)) {
+    constructor(
+        cacheDir: File,
+        maxSize: Long = calculateDiskCacheSize(cacheDir)) : this(createOkHttpClient(cacheDir, maxSize)) {
         sharedClient = false
     }
 
@@ -87,6 +88,14 @@ class OkHttp3Downloader : Downloader {
     override fun load(uri: Uri): Response {
         val request = Request.Builder()
             .url(uri.toString())
+            .build()
+        return load(request)
+    }
+
+    @Throws(IOException::class)
+    override fun load(url: String): Response {
+        val request = Request.Builder()
+            .url(url)
             .build()
         return load(request)
     }
@@ -151,6 +160,7 @@ class OkHttp3Downloader : Downloader {
                 .cache(Cache(cacheDir, maxSize))
                 .addInterceptor(interceptor)
                 .addInterceptor(logger)
+                .addInterceptor(ProgressInterceptor())
                 .build()
         }
     }

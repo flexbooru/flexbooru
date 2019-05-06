@@ -37,6 +37,9 @@ interface Downloader {
     @Throws(IOException::class)
     fun load(uri: Uri): Response
 
+    @Throws(IOException::class)
+    fun load(url: String): Response
+
     /**
      * Allows to perform a clean up for this [Downloader] including closing the disk cache and
      * other resources.

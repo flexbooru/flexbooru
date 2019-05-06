@@ -35,6 +35,7 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.util.okhttp.ProgressInterceptor
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 

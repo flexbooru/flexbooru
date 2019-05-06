@@ -35,13 +35,15 @@ import onlymash.flexbooru.widget.AutoCollapseTextView
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
-class PoolViewHolder(itemView: View, private val glide: GlideRequests): RecyclerView.ViewHolder(itemView) {
+class PoolViewHolder(itemView: View,
+                     private val glide: GlideRequests,
+                     private val longClickCallback: (PoolMoe) -> Unit): RecyclerView.ViewHolder(itemView) {
 
     companion object {
-        fun create(parent: ViewGroup, glide: GlideRequests): PoolViewHolder {
+        fun create(parent: ViewGroup, glide: GlideRequests, longClickCallback: (PoolMoe) -> Unit): PoolViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_pool, parent, false)
-            return PoolViewHolder(view, glide)
+            return PoolViewHolder(view, glide, longClickCallback)
         }
     }
     private val container: ConstraintLayout = itemView.findViewById(R.id.container)
@@ -70,6 +72,12 @@ class PoolViewHolder(itemView: View, private val glide: GlideRequests): Recycler
         container.setOnClickListener {
             val id = pool?.getPoolId() ?: return@setOnClickListener
             itemListener?.onClickItem("pool:$id")
+        }
+        container.setOnLongClickListener {
+            if (pool is PoolMoe) {
+                longClickCallback(pool as PoolMoe)
+            }
+            true
         }
         expandBottom.setOnClickListener {
             if (!poolDescription.text.isNullOrBlank()) {

@@ -134,4 +134,8 @@
         <item>@string/post_download</item>
         <item>@string/post_add_to_fav</item>
     </string-array>
+    <string-array name="pool_item_action">
+        <item>@string/pool_download_jpgs</item>
+        <item>@string/pool_download_pngs</item>
+    </string-array>
 </resources>

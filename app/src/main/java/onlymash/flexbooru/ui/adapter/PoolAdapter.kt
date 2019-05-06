@@ -19,11 +19,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.pool.PoolBase
+import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 
 class PoolAdapter(private val glide: GlideRequests,
                   private val listener: PoolViewHolder.ItemListener,
+                  private val longClickCallback: (PoolMoe) -> Unit,
                   retryCallback: () -> Unit
 ) : BaseStatePagedListAdapter<PoolBase, RecyclerView.ViewHolder>(POOL_COMPARATOR, retryCallback) {
 
@@ -37,7 +40,7 @@ class PoolAdapter(private val glide: GlideRequests,
     }
 
     override fun onCreateDataViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        PoolViewHolder.create(parent, glide)
+        PoolViewHolder.create(parent, glide, longClickCallback)
 
     override fun onBindDataViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PoolViewHolder) {

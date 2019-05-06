@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.glide
+package onlymash.flexbooru.util.okhttp
 
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -36,7 +36,7 @@ class ProgressInterceptor : Interceptor {
 
         val LISTENER_MAP: MutableMap<String, ProgressListener> = HashMap()
 
-        //入注册下载监听
+        //注册下载监听
         fun addListener(url: String, listener: ProgressListener) {
             LISTENER_MAP[url] = listener
         }
