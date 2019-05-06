@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
-    <string name="post_download">下載</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">添加到收藏</string>
     <string name="msg_download_must_enable">需要下載管理員。</string>
     <string name="msg_path_denied">保存失敗！沒有存取目前路徑的權限。</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">簡介為空白的。</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">類型</string>
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">General</string>

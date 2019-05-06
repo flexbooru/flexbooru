@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">A fáljt elmentettük mint: %s</string>
     <string name="post_expand_tag_filter">Expand tag filter</string>
     <string name="post_add_search_to_muzei">` %s ` mentésre került a Muzei-ben.</string>
-    <string name="post_download">Letöltés</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">Hozzáadás a kedvencekhez</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="msg_path_denied">Mentés nem sikerült! Nem érhető el a mentés helye.</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">Igen</string>
     <string name="switch_no">Nem</string>
     <string name="pool_description_is_empty">A leírás az üres.</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">Típus</string>
     <string name="tag_type_all">Minden típus</string>
     <string name="tag_type_general">Általános</string>

@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">Plik został zapisany jako %s</string>
     <string name="post_expand_tag_filter">Poszerz filtr tagów</string>
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
-    <string name="post_download">Pobierz</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">Dodaj do ulubionych</string>
     <string name="msg_download_must_enable">Wymagany jest menedżer pobierania.</string>
     <string name="msg_path_denied">Zapisywanie nie powiodło się! Brak dostępu do wybranej ścieżki.</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">Tak</string>
     <string name="switch_no">Nie</string>
     <string name="pool_description_is_empty">Opis jest pusty.</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">Typ</string>
     <string name="tag_type_all">Wszystkie typy</string>
     <string name="tag_type_general">Ogólne</string>
