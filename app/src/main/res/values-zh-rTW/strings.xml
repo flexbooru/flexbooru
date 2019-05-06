@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">已將檔案存為 %s</string>
     <string name="post_expand_tag_filter">展開標籤篩選器</string>
     <string name="post_add_search_to_muzei">已將 ` %s ` 存至 Muzei。</string>
-    <string name="post_download">下載</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">加到收藏</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="msg_path_denied">Save failed! No access to the current path.</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">簡介空白。</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">標籤類型</string>
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">General</string>

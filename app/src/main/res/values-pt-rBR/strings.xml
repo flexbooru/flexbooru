@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">O arquivo foi salvo como %s</string>
     <string name="post_expand_tag_filter">Expandir filtro de marcadores</string>
     <string name="post_add_search_to_muzei">` %s ` foram salvos no Muzei.</string>
-    <string name="post_download">Download</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
     <string name="msg_download_must_enable">Gerenciador de downloads é necessário.</string>
     <string name="msg_path_denied">Falha ao salvar! Nenhum acesso ao caminho atual.</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">Sim</string>
     <string name="switch_no">Não</string>
     <string name="pool_description_is_empty">A descrição está vazia.</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">Tipo</string>
     <string name="tag_type_all">Todos os tipos</string>
     <string name="tag_type_general">Geral</string>
