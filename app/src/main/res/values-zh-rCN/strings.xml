@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">文件已存为 %s</string>
     <string name="post_expand_tag_filter">展开标签过滤器</string>
     <string name="post_add_search_to_muzei">` %s ` 已添加到 Muzei。</string>
-    <string name="post_download">下载</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">添加到收藏</string>
     <string name="msg_download_must_enable">请启用系统下载管理器。</string>
     <string name="msg_path_denied">保存失败！ 没有权限访问当前路径。</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">描述为空。</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">分类</string>
     <string name="tag_type_all">所有分类</string>
     <string name="tag_type_general">General</string>
