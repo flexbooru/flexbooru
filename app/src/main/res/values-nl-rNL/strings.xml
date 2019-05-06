@@ -56,7 +56,7 @@
     <string name="msg_file_save_success">The file has been saved as %s</string>
     <string name="post_expand_tag_filter">Tag filter uitklappen</string>
     <string name="post_add_search_to_muzei">` %s` opgeslagen in Muzei.</string>
-    <string name="post_download">Download</string>
+    <string name="post_download">Download Post</string>
     <string name="post_add_to_fav">Aan favorieten toevoegen</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="msg_path_denied">Save failed! No access to the current path.</string>
@@ -167,6 +167,9 @@
     <string name="switch_yes">Ja</string>
     <string name="switch_no">Nee</string>
     <string name="pool_description_is_empty">Beschrijving is leeg.</string>
+    <string name="pool_download">Download Pool</string>
+    <string name="pool_download_jpgs">Download JPGs</string>
+    <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">Soort</string>
     <string name="tag_type_all">Alle soorten</string>
     <string name="tag_type_general">Algemeen</string>
