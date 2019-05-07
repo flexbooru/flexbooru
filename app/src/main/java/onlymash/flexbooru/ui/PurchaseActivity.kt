@@ -47,7 +47,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        if (applicationContext.packageName.contains(".play")) {
+        if (Settings.instance().isGoogleSign) {
             pay_alipay.visibility = View.GONE
             pay_redeem_code.visibility = View.GONE
             billingClient = BillingClient

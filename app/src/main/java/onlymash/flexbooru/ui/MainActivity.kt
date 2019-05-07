@@ -185,9 +185,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 .setTitle(R.string.update_found_update)
                 .setMessage(getString(R.string.update_version, Settings.instance().latestVersionName))
                 .setPositiveButton(R.string.dialog_update) { _, _ ->
-                    val pkgName = applicationContext.packageName
-                    if (pkgName.contains("play")) {
-                        openAppInMarket(pkgName)
+                    if (Settings.instance().isGoogleSign) {
+                        openAppInMarket(applicationContext.packageName)
                     } else {
                         launchUrl(Settings.instance().latestVersionUrl)
                     }

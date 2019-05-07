@@ -74,11 +74,7 @@ class BooruActivity : BaseActivity() {
             adView.apply {
                 visibility = View.VISIBLE
                 adSize = AdSize.SMART_BANNER
-                adUnitId = if (applicationContext.packageName.contains(".play")) {
-                    "ca-app-pub-1547571472841615/5647147698"
-                } else {
-                    "ca-app-pub-1547571472841615/4999585900"
-                }
+                adUnitId = "ca-app-pub-1547571472841615/5647147698"
                 loadAd(adBuilder.build())
             }
         }
@@ -106,17 +102,9 @@ class BooruActivity : BaseActivity() {
     private fun initToolbar(){
         toolbar.setTitle(R.string.title_manage_boorus)
         toolbar.setNavigationOnClickListener { finish() }
-        toolbar.inflateMenu(
-            if (applicationContext.packageName.contains("play"))
-                R.menu.booru_play
-            else
-                R.menu.booru
-        )
+        toolbar.inflateMenu(R.menu.booru)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_booru_help -> {
-                    this@BooruActivity.launchUrl(Constants.BOORU_HELP_URL)
-                }
                 R.id.action_booru_add_qr -> {
                     addConfigFromQRCode()
                 }

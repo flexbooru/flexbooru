@@ -33,6 +33,7 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import onlymash.flexbooru.api.OrderApi
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.PurchaseActivity
+import onlymash.flexbooru.util.getSignMd5
 
 class App : Application() {
     companion object {
@@ -51,17 +52,16 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
-        AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
-        DrawerImageLoader.init(drawerImageLoader)
         initial()
     }
     private fun initial() {
-        val admobAppId: String
-        if (applicationContext.packageName.contains(".play")) {
-            admobAppId = "ca-app-pub-1547571472841615~2418349121"
+        val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
+        Settings.instance().isGoogleSign = isGoogleSign
+        AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
+        DrawerImageLoader.init(drawerImageLoader)
+        if (isGoogleSign) {
             checkOrderFromCache()
         } else {
-            admobAppId = "ca-app-pub-1547571472841615~9640225411"
             val orderId = Settings.instance().orderId
             if (orderId.isNotEmpty()) {
                 OrderApi.orderChecker(orderId, Settings.instance().orderDeviceId)
@@ -69,7 +69,7 @@ class App : Application() {
                 Settings.instance().isOrderSuccess = false
             }
         }
-        MobileAds.initialize(this, admobAppId)
+        MobileAds.initialize(this, "ca-app-pub-1547571472841615~2418349121")
     }
     private fun checkOrderFromCache() {
         val billingClient = BillingClient

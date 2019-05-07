@@ -32,9 +32,4 @@
                     android:title="@string/booru_add_from_manual_settings"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/action_booru_help"
-        android:icon="@drawable/ic_help_outline_24dp"
-        android:title="@string/booru_add_help"
-        app:showAsAction="ifRoom"/>
 </menu>

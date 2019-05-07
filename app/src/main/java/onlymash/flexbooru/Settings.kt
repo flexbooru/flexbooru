@@ -62,6 +62,7 @@ class Settings(private val sp: SharedPreferences) {
         private const val ORDER_TOKEN_KEY = "order_token"
         const val ORDER_SUCCESS_KEY = "order_success"
         const val ORDER_DEVICE_ID_KEY = "device_id"
+        private const val GOOGLE_SIGN_KEY = "google_sign"
     }
 
     var activeBooruUid: Long
@@ -167,4 +168,8 @@ class Settings(private val sp: SharedPreferences) {
             return id
         }
         set(value) = sp.edit().putString(ORDER_DEVICE_ID_KEY, value).apply()
+
+    var isGoogleSign: Boolean
+        get() = sp.getBoolean(GOOGLE_SIGN_KEY, false)
+        set(value) = sp.edit().putBoolean(GOOGLE_SIGN_KEY, value).apply()
 }

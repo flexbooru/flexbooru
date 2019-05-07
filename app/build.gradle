@@ -24,9 +24,7 @@ import groovy.json.JsonSlurper
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('.gradle/keystore.properties').newDataInputStream())
-
 Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
-String verNameSuffix = '.' + 'git rev-parse --short HEAD'.execute().text.trim()
 
 android {
     signingConfigs {
@@ -46,32 +44,19 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "onlymash.flexbooru"
+        applicationId "onlymash.flexbooru.play"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode verCode
         versionName '0.9.2'
-        versionNameSuffix verNameSuffix
         multiDexEnabled true
         resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121"]
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "flexbooru_${defaultConfig.versionName}.apk"
-        }
-    }
-    flavorDimensions 'channel'
-    productFlavors {
-        github {
-            dimension 'channel'
-            manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~9640225411"]
-        }
-        play {
-            dimension 'channel'
-            applicationIdSuffix '.play'
-            versionNameSuffix '.play'
-            manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121"]
         }
     }
     buildTypes {
@@ -79,8 +64,7 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            productFlavors.github.signingConfig signingConfigs.github
-            productFlavors.play.signingConfig signingConfigs.play
+            signingConfig signingConfigs.play
         }
         debug {
 //            applicationIdSuffix '.debug'
@@ -115,10 +99,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //Room requires
     implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5.1"
-    implementation 'androidx.annotation:annotation:1.1.0-beta01'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
+    implementation 'androidx.annotation:annotation:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+    implementation 'androidx.core:core-ktx:1.1.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
@@ -137,12 +121,12 @@ dependencies {
     implementation 'com.mikepenz:materialdrawer:6.1.2'
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
-    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
     implementation 'com.android.billingclient:billing:1.2.2'
-    implementation 'androidx.preference:preference-ktx:1.1.0-alpha04'
+    implementation 'androidx.preference:preference-ktx:1.1.0-alpha05'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.0.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
@@ -161,8 +145,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
     testImplementation 'junit:junit:5.0-SNAPSHOT'
-    androidTestImplementation 'androidx.test:runner:1.2.0-alpha05'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha05'
+    androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
 }
 
 apply plugin: 'com.google.gms.google-services'

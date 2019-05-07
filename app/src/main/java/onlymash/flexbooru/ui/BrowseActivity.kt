@@ -577,11 +577,7 @@ class BrowseActivity : AppCompatActivity() {
             adView.apply {
                 visibility = View.VISIBLE
                 adSize = AdSize.SMART_BANNER
-                adUnitId = if (applicationContext.packageName.contains(".play")) {
-                    "ca-app-pub-1547571472841615/1729907816"
-                } else {
-                    "ca-app-pub-1547571472841615/4113486432"
-                }
+                adUnitId = "ca-app-pub-1547571472841615/1729907816"
                 loadAd(adBuilder.build())
             }
         }

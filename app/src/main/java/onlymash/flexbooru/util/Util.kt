@@ -15,14 +15,18 @@
 
 package onlymash.flexbooru.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.Signature
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
@@ -37,6 +41,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.*
 
 fun formatDate(time: Long): CharSequence {
@@ -184,4 +190,45 @@ fun Activity.openAppInMarket(packageName: String) {
                 Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")),
                 getString(R.string.share_via)))
     } catch (_: ActivityNotFoundException) { }
+}
+
+@Throws(NoSuchAlgorithmException::class)
+fun Context.getSignMd5(): String? {
+    val paramArrayOfByte = getSignature().toByteArray()
+    val localMessageDigest = MessageDigest.getInstance("MD5")
+    localMessageDigest.update(paramArrayOfByte)
+    return toHexString(localMessageDigest.digest())
+}
+
+@Suppress("DEPRECATION")
+@SuppressLint("PackageManagerGetSignatures")
+private fun Context.getSignature(): Signature {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+        if (packageInfo.signingInfo.hasMultipleSigners()) {
+            packageInfo.signingInfo.apkContentsSigners[0]
+        } else {
+            packageInfo.signingInfo.signingCertificateHistory[0]
+        }
+    } else {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        packageInfo.signatures[0]
+    }
+}
+
+private fun toHexString(paramArrayOfByte: ByteArray?): String? {
+    paramArrayOfByte ?: return null
+    val localStringBuilder = StringBuilder(2 * paramArrayOfByte.size)
+    var i = 0
+    while (true) {
+        if (i >= paramArrayOfByte.size) {
+            return localStringBuilder.toString()
+        }
+        var str = Integer.toString(0xFF and paramArrayOfByte[i].toInt(), 16)
+        if (str.length == 1) {
+            str = "0$str"
+        }
+        localStringBuilder.append(str)
+        i++
+    }
 }
