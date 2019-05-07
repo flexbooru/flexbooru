@@ -91,7 +91,7 @@ android {
 File jsonFile = file('update.json')
 def builder = new JsonBuilder(new JsonSlurper().parseText(jsonFile.text))
 builder.content.version_code = android.defaultConfig.versionCode
-builder.content.version_name = android.defaultConfig.versionName + android.defaultConfig.versionNameSuffix
+builder.content.version_name = android.defaultConfig.versionName
 jsonFile.write(builder.toPrettyString())
 
 dependencies {
