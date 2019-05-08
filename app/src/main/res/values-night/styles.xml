@@ -61,4 +61,7 @@
         <item name="android:background">@color/background_dark</item>
         <item name="android:headerBackground">@color/grey_800</item>
     </style>
+    <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/background_dialog</item>
+    </style>
 </resources>

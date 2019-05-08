@@ -29,6 +29,7 @@
         <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
         <item name="colorControlActivated">@color/colorControlActivated</item>
+        <item name="alertDialogTheme">@style/CustomAlertDialog</item>
     </style>
     <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
         <item name="android:popupElevation">@dimen/elevation_size</item>
@@ -144,5 +145,8 @@
     </style>
     <style name="DatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
         <item name="android:background">@color/white</item>
+    </style>
+    <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/background_dialog</item>
     </style>
 </resources>
