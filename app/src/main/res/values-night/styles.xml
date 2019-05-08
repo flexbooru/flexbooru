@@ -63,5 +63,7 @@
     </style>
     <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
 </resources>

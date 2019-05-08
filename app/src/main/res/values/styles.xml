@@ -146,7 +146,12 @@
     <style name="DatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
         <item name="android:background">@color/white</item>
     </style>
+    <style name="Widget.Button" parent="Widget.MaterialComponents.Button">
+        <item name="elevation">@dimen/elevation_size</item>
+    </style>
     <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
 </resources>
