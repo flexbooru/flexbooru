@@ -144,8 +144,8 @@ class Settings(private val sp: SharedPreferences) {
         set(value) = sp.edit().putString(LATEST_VERSION_URL_KEY, value).apply()
 
     var isAvailableOnStore: Boolean
-        get() = sp.getBoolean(GOOGLE_SIGN_KEY, false)
-        set(value) = sp.edit().putBoolean(GOOGLE_SIGN_KEY, value).apply()
+        get() = sp.getBoolean(IS_AVAILABLE_STORE, false)
+        set(value) = sp.edit().putBoolean(IS_AVAILABLE_STORE, value).apply()
 
     var orderId: String
         get() = sp.getString(ORDER_ID_KEY, "") ?: ""
