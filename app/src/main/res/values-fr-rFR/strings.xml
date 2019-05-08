@@ -140,6 +140,7 @@
     <string name="account_posts">Posts</string>
     <string name="account_comments">Commentaires</string>
     <string name="account_config_msg_tip_empty">Le nom d\'utilisateur ou le mot de passe/clef Api ne peuvent être vides.</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">Mode sécurisé</string>
     <string name="settings_page_limit">Limite de pages</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
