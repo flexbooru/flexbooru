@@ -55,11 +55,11 @@
         <item name="colorAccent">@color/pink</item>
         <item name="colorPrimary">@color/white</item>
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
-        <item name="android:background">@color/grey_800</item>
+        <item name="android:background">@color/dark_level_1</item>
     </style>
     <style name="DatePickerStyle" parent="@android:style/Widget.Material.DatePicker">
         <item name="android:background">@color/background_dark</item>
-        <item name="android:headerBackground">@color/grey_800</item>
+        <item name="android:headerBackground">@color/dark_level_1</item>
     </style>
     <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>

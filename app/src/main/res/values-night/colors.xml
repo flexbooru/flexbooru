@@ -29,7 +29,7 @@
     <color name="rating_e">#FF424242</color>
     <color name="rating_q">#FF616161</color>
     <color name="rating_s">#FF757575</color>
-    <color name="muzei">@color/grey_800</color>
-    <color name="account_action_background_tint">@color/grey_800</color>
+    <color name="muzei">@color/dark_level_1</color>
+    <color name="account_action_background_tint">@color/dark_level_1</color>
     <color name="fast_scroll_bar">@color/grey_700</color>
 </resources>

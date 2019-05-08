@@ -17,7 +17,7 @@
 <resources>
     <style name="BaseTheme" parent="Base">
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">@color/background</item>
-        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:statusBarColor">@color/background_dark</item>
+        <item name="android:navigationBarColor">@color/background_dark</item>
     </style>
 </resources>
