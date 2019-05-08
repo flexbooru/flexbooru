@@ -14,7 +14,7 @@
   -->
 
 <resources>
-    <dimen name="search_bar_horizontal_margin">8dp</dimen>
+    <dimen name="search_bar_horizontal_margin">9dp</dimen>
     <dimen name="search_bar_vertical_margin">6dp</dimen>
     <dimen name="search_bar_height">54dp</dimen>
     <dimen name="corner_radius">5dp</dimen>
