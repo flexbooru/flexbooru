@@ -18,7 +18,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/action_browse_comment"
-            android:icon="@drawable/ic_comment_outline_24dp"
+            android:icon="@drawable/ic_chat_bubble_outline_24dp"
             android:title="@string/browse_comment"
             app:showAsAction="ifRoom"/>
 

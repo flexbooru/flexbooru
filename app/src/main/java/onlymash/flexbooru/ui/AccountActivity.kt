@@ -16,6 +16,7 @@
 package onlymash.flexbooru.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
@@ -147,6 +148,14 @@ class AccountActivity : BaseActivity() {
         }
         comments_action_button.setOnClickListener {
             CommentActivity.startActivity(this, username = user.name)
+        }
+        if (booru.type == Constants.TYPE_SANKAKU) {
+            recommended_action_button.setOnClickListener {
+                val keyword = String.format("recommended_for:%s", user.name)
+                SearchActivity.startActivity(this, keyword)
+            }
+        } else {
+            recommended_action_button_container.visibility = View.GONE
         }
     }
 }
