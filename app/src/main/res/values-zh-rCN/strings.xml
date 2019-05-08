@@ -140,6 +140,7 @@
     <string name="account_posts">投稿</string>
     <string name="account_comments">评论</string>
     <string name="account_config_msg_tip_empty">用户名或密码/Api Key不能为空。</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每页限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
