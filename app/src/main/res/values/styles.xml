@@ -67,7 +67,9 @@
     <style name="BaseTheme" parent="Base">
         <item name="android:statusBarColor">#33000000</item>
     </style>
-    <style name="PreferenceTheme" parent="PreferenceThemeOverlay"/>
+    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="android:tint">@color/pref_icon_tint</item>
+    </style>
     <style name="BrowseTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

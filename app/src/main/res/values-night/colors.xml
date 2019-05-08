@@ -19,6 +19,7 @@
     <color name="toolbar_icon_tint">@color/white</color>
     <color name="bar_tint">@color/grey_400</color>
     <color name="button_text">@color/md_white_1000</color>
+    <color name="pref_icon_tint">@color/grey_400</color>
     <color name="background">@color/background_dark</color>
     <color name="background_card">@color/background_card_dark</color>
     <color name="background_text_info">@color/background_card_dark</color>
