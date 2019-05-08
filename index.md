@@ -12,6 +12,6 @@ A booru client for Android, support [Danbooru](https://github.com/r888888888/dan
 
 * [Google Play](https://play.google.com/store/apps/details?id=onlymash.flexbooru.play)
 
-* [Coolapk](https://www.coolapk.com/apk/onlymash.flexbooru)
+* [Coolapk](https://www.coolapk.com/apk/onlymash.flexbooru.play)
 
 * [Github Releases](https://github.com/flexbooru/flexbooru/releases)
