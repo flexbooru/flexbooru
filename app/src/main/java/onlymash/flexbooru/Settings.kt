@@ -63,6 +63,7 @@ class Settings(private val sp: SharedPreferences) {
         const val ORDER_SUCCESS_KEY = "order_success"
         const val ORDER_DEVICE_ID_KEY = "device_id"
         private const val GOOGLE_SIGN_KEY = "google_sign"
+        private const val IS_AVAILABLE_STORE = "is_available_store"
     }
 
     var activeBooruUid: Long
@@ -141,6 +142,10 @@ class Settings(private val sp: SharedPreferences) {
     var latestVersionUrl: String
         get() = sp.getString(LATEST_VERSION_URL_KEY, "") ?: ""
         set(value) = sp.edit().putString(LATEST_VERSION_URL_KEY, value).apply()
+
+    var isAvailableOnStore: Boolean
+        get() = sp.getBoolean(GOOGLE_SIGN_KEY, false)
+        set(value) = sp.edit().putBoolean(GOOGLE_SIGN_KEY, value).apply()
 
     var orderId: String
         get() = sp.getString(ORDER_ID_KEY, "") ?: ""

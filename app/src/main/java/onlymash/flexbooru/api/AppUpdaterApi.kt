@@ -83,6 +83,7 @@ interface AppUpdaterApi {
                     Settings.instance().latestVersionUrl = data.url
                     Settings.instance().latestVersionName = data.version_name
                     Settings.instance().latestVersionCode = data.version_code
+                    Settings.instance().isAvailableOnStore = data.is_available_store
                 }
             })
         }
@@ -102,5 +103,6 @@ interface AppUpdaterApi {
 data class UpdateInfo(
     val version_code: Long,
     val version_name: String,
-    val url: String
+    val url: String,
+    val is_available_store: Boolean
 )
