@@ -140,6 +140,7 @@
     <string name="account_posts">Posts</string>
     <string name="account_comments">Comentarios</string>
     <string name="account_config_msg_tip_empty">Nombre de usuario o contraseña / La clave API no puede estar vacía.</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Límite de páginas</string>
     <string name="settings_muzei_limit">Límite Muzei</string>
