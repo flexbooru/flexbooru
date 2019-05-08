@@ -100,6 +100,7 @@ fun String.fileName(): String {
         .replace("?", "")
         .replace("!", "")
         .replace(":", "_")
+        .replace("\"","_")
 }
 
 fun Activity.downloadPost(post: PostBase?) {
