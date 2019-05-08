@@ -22,8 +22,10 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.ui.fragment.*
 
-class NavPagerAdapter(fragmentManager: FragmentManager,
-                      private val booru: Booru, private val user: User?) : FragmentStatePagerAdapter(fragmentManager) {
+class NavPagerAdapter(
+    fragmentManager: FragmentManager,
+    private val booru: Booru, private val user: User?
+) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
