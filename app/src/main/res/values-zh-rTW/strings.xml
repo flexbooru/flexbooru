@@ -140,6 +140,7 @@
     <string name="account_posts">貼圖</string>
     <string name="account_comments">留言</string>
     <string name="account_config_msg_tip_empty">使用者名稱或密碼/Api 金鑰不可為空白。</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每頁限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
