@@ -104,5 +104,5 @@ data class UpdateInfo(
     val version_code: Long,
     val version_name: String,
     val url: String,
-    val is_available_store: Boolean
+    var is_available_store: Boolean = true
 )
