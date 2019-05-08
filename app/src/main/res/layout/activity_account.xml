@@ -150,6 +150,35 @@
 
                 </LinearLayout>
             </LinearLayout>
+            <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/spacing_large" />
+            <LinearLayout
+                    android:id="@+id/recommended_action_button_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minWidth="100dp"
+                    android:orientation="vertical">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/recommended_action_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:tint="?android:attr/textColorSecondary"
+                        app:srcCompat="@drawable/ic_sentiment_very_satisfied_24dp"
+                        style="@style/Widget.Account.FloatingActionButton"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:text="@string/account_recommended"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
