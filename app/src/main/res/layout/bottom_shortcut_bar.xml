@@ -50,16 +50,6 @@
                 android:contentDescription="@string/browse_info"/>
 
         <ImageButton
-                android:id="@+id/post_comment"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/browse_bottom_bar_height"
-                android:src="@drawable/ic_comment_outline_24dp"
-                android:tint="@color/white"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/browse_comment"/>
-
-        <ImageButton
                 android:id="@+id/post_save"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -68,6 +58,16 @@
                 android:tint="@color/white"
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/browse_save_file"/>
+
+        <ImageButton
+                android:id="@+id/post_fav"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:src="@drawable/ic_star_border_24dp"
+                android:tint="@color/white"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/browse_add_to_fav"/>
 
     </LinearLayout>
 

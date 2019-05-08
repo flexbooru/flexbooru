@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.ui
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -30,7 +29,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
@@ -317,7 +315,6 @@ class BrowseActivity : AppCompatActivity() {
 
     private val voteRepository by lazy { ServiceLocator.instance().getVoteRepository() }
     private lateinit var favPostViewModel: FavPostViewModel
-    private lateinit var voteItemView: ActionMenuItemView
 
     private val voteCallback = object : VoteCallback {
         override fun onSuccess() {
@@ -413,92 +410,11 @@ class BrowseActivity : AppCompatActivity() {
             onBackPressed()
         }
         toolbar.inflateMenu(R.menu.browse)
-        voteItemView = toolbar.findViewById(R.id.action_browse_vote)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_browse_vote -> {
-                    val type = booru.type
-                    if (type == Constants.TYPE_GELBOORU) {
-                        Toast.makeText(this@BrowseActivity,
-                            getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
-                        return@setOnMenuItemClickListener true
-                    }
-                    user?.let { user ->
-                        when (type) {
-                            Constants.TYPE_DANBOORU -> {
-                                val post = postsDan?.get(pager_browse.currentItem) ?: return@let
-                                val vote = Vote(
-                                    scheme = booru.scheme,
-                                    host = booru.host,
-                                    post_id = post.id,
-                                    username = user.name,
-                                    auth_key = user.api_key ?: return@let)
-                                val postFav = getCurrentPostFav()
-                                if (postFav is PostDan) {
-                                    voteRepository.removeDanFav(vote, postFav)
-                                } else {
-                                    voteRepository.addDanFav(vote, post)
-                                }
-                            }
-                            Constants.TYPE_MOEBOORU -> {
-                                val post = postsMoe?.get(pager_browse.currentItem) ?: return@let
-                                val vote = when (getCurrentPostFav()) {
-                                    is PostMoe -> {
-                                        Vote(
-                                            scheme = booru.scheme,
-                                            host = booru.host,
-                                            score = 0,
-                                            post_id = post.id,
-                                            username = user.name,
-                                            auth_key = user.password_hash ?: return@let)
-                                    }
-                                    else -> {
-                                        Vote(
-                                            scheme = booru.scheme,
-                                            host = booru.host,
-                                            score = 3,
-                                            post_id = post.id,
-                                            username = user.name,
-                                            auth_key = user.password_hash ?: return@let)
-                                    }
-                                }
-                                voteRepository.voteMoePost(vote)
-                            }
-                            Constants.TYPE_DANBOORU_ONE -> {
-                                val post = postsDanOne?.get(pager_browse.currentItem) ?: return@let
-                                val postFav = getCurrentPostFav()
-                                val vote = Vote(
-                                    scheme = booru.scheme,
-                                    host = booru.host,
-                                    post_id = post.id,
-                                    username = user.name,
-                                    auth_key = user.password_hash ?: return@let)
-                                if (postFav is PostDanOne) {
-                                    voteRepository.removeDanOneFav(vote, postFav)
-                                } else {
-                                    voteRepository.addDanOneFav(vote, post)
-                                }
-                            }
-                            Constants.TYPE_GELBOORU -> {
-
-                            }
-                            Constants.TYPE_SANKAKU -> {
-                                val post = postsSankaku?.get(pager_browse.currentItem) ?: return@let
-                                val postFav = getCurrentPostFav()
-                                val vote = Vote(
-                                    scheme = booru.scheme,
-                                    host = booru.host,
-                                    post_id = post.id,
-                                    username = user.name,
-                                    auth_key = user.password_hash ?: return@let)
-                                if (postFav is PostSankaku) {
-                                    voteRepository.removeSankakuFav(vote, postFav)
-                                } else {
-                                    voteRepository.addSankakuFav(vote, post)
-                                }
-                            }
-                        }
-                    } ?: startAccountConfigAndFinish()
+                R.id.action_browse_comment -> {
+                    val id = getCurrentPostId()
+                    if (id > 0) CommentActivity.startActivity(context = this, postId = id)
                 }
                 R.id.action_browse_download -> {
                     checkAndAction(ACTION_DOWNLOAD)
@@ -558,16 +474,96 @@ class BrowseActivity : AppCompatActivity() {
         post_info.setOnClickListener {
             InfoBottomSheetDialog.create(getCurrentPost()).show(supportFragmentManager, "info")
         }
-        post_comment.setOnClickListener {
-            val id = getCurrentPostId()
-            if (id > 0) CommentActivity.startActivity(context = this, postId = id)
+        post_fav.setOnClickListener {
+            val type = booru.type
+            if (type == Constants.TYPE_GELBOORU) {
+                Toast.makeText(this@BrowseActivity,
+                    getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            user?.let { user ->
+                when (type) {
+                    Constants.TYPE_DANBOORU -> {
+                        val post = postsDan?.get(pager_browse.currentItem) ?: return@let
+                        val vote = Vote(
+                            scheme = booru.scheme,
+                            host = booru.host,
+                            post_id = post.id,
+                            username = user.name,
+                            auth_key = user.api_key ?: return@let)
+                        val postFav = getCurrentPostFav()
+                        if (postFav is PostDan) {
+                            voteRepository.removeDanFav(vote, postFav)
+                        } else {
+                            voteRepository.addDanFav(vote, post)
+                        }
+                    }
+                    Constants.TYPE_MOEBOORU -> {
+                        val post = postsMoe?.get(pager_browse.currentItem) ?: return@let
+                        val vote = when (getCurrentPostFav()) {
+                            is PostMoe -> {
+                                Vote(
+                                    scheme = booru.scheme,
+                                    host = booru.host,
+                                    score = 0,
+                                    post_id = post.id,
+                                    username = user.name,
+                                    auth_key = user.password_hash ?: return@let)
+                            }
+                            else -> {
+                                Vote(
+                                    scheme = booru.scheme,
+                                    host = booru.host,
+                                    score = 3,
+                                    post_id = post.id,
+                                    username = user.name,
+                                    auth_key = user.password_hash ?: return@let)
+                            }
+                        }
+                        voteRepository.voteMoePost(vote)
+                    }
+                    Constants.TYPE_DANBOORU_ONE -> {
+                        val post = postsDanOne?.get(pager_browse.currentItem) ?: return@let
+                        val postFav = getCurrentPostFav()
+                        val vote = Vote(
+                            scheme = booru.scheme,
+                            host = booru.host,
+                            post_id = post.id,
+                            username = user.name,
+                            auth_key = user.password_hash ?: return@let)
+                        if (postFav is PostDanOne) {
+                            voteRepository.removeDanOneFav(vote, postFav)
+                        } else {
+                            voteRepository.addDanOneFav(vote, post)
+                        }
+                    }
+                    Constants.TYPE_GELBOORU -> {
+
+                    }
+                    Constants.TYPE_SANKAKU -> {
+                        val post = postsSankaku?.get(pager_browse.currentItem) ?: return@let
+                        val postFav = getCurrentPostFav()
+                        val vote = Vote(
+                            scheme = booru.scheme,
+                            host = booru.host,
+                            post_id = post.id,
+                            username = user.name,
+                            auth_key = user.password_hash ?: return@let)
+                        if (postFav is PostSankaku) {
+                            voteRepository.removeSankakuFav(vote, postFav)
+                        } else {
+                            voteRepository.addSankakuFav(vote, post)
+                        }
+                    }
+                }
+            } ?: startAccountConfigAndFinish()
         }
         post_save.setOnClickListener {
             checkAndAction(ACTION_SAVE)
         }
         TooltipCompat.setTooltipText(post_tags, post_tags.contentDescription)
         TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
-        TooltipCompat.setTooltipText(post_comment, post_comment.contentDescription)
+        TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
         TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
         if (!Settings.instance().isOrderSuccess) {
             val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
@@ -696,13 +692,8 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setVoteItemIcon(checked: Boolean) {
-        if (checked) {
-            voteItemView.setIcon(getDrawable(R.drawable.ic_star_24dp))
-        } else {
-            voteItemView.setIcon(getDrawable(R.drawable.ic_star_border_24dp))
-        }
+        post_fav.setImageResource(if (checked) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
