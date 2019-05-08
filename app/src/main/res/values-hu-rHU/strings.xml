@@ -140,6 +140,7 @@
     <string name="account_posts">Posts</string>
     <string name="account_comments">Comments</string>
     <string name="account_config_msg_tip_empty">Username or Password/Api Key cannot be empty.</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">Safe mode</string>
     <string name="settings_page_limit">Page limit</string>
     <string name="settings_muzei_limit">Muzei limit</string>
