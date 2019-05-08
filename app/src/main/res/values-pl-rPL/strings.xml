@@ -140,6 +140,7 @@
     <string name="account_posts">Posty</string>
     <string name="account_comments">Komentarze</string>
     <string name="account_config_msg_tip_empty">Nazwa użytkownika lub hasło/klucz Api nie mogą być puste.</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
     <string name="settings_muzei_limit">Muzei limit</string>
