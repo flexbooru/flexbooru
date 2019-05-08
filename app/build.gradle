@@ -67,7 +67,7 @@ android {
             signingConfig signingConfigs.play
         }
         debug {
-//            applicationIdSuffix '.debug'
+            applicationIdSuffix '.debug'
         }
     }
     compileOptions {
