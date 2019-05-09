@@ -20,14 +20,12 @@ import androidx.core.net.toUri
 import androidx.work.*
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.*
+import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Search
 import java.io.IOException
-import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.MuzeiManager
 
@@ -37,7 +35,7 @@ class FlexArtWorker(
 ) : Worker(context, workerParameters) {
     companion object {
         internal fun enqueueLoad() {
-            val workManager = WorkManager.getInstance()
+            val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(OneTimeWorkRequestBuilder<FlexArtWorker>()
                 .setConstraints(Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
