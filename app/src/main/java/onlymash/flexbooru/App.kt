@@ -76,6 +76,7 @@ class App : Application() {
     private fun checkOrderFromCache() {
         val billingClient = BillingClient
             .newBuilder(this)
+            .enablePendingPurchases()
             .setListener { _, _ ->
 
             }

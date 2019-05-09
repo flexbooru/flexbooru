@@ -52,6 +52,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
             pay_redeem_code.visibility = View.GONE
             billingClient = BillingClient
                 .newBuilder(this)
+                .enablePendingPurchases()
                 .setListener(this)
                 .build()
             billingClient?.startConnection(object : BillingClientStateListener {
