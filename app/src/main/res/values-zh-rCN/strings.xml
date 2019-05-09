@@ -31,6 +31,7 @@
     <string name="title_night_mode">夜间模式</string>
     <string name="title_copyright">版权</string>
     <string name="title_about">关于</string>
+    <string name="title_tag_blacklist">Tag blacklist</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">给此应用评分</string>
     <string name="about_app_translation">翻译</string>
@@ -216,6 +217,9 @@
     <string name="muzei_action_view_post">在 Flexboru 查看此投稿</string>
     <string name="muzei_action_search_posts">在 Flexboru 搜索这组投稿</string>
     <string name="muzei_attribution">Post from Flexbooru</string>
+    <string name="tag_blacklist_copy">Copy</string>
+    <string name="tag_blacklist_delete">Delete</string>
+    <string name="tag_blacklist_add">Add</string>
     <string name="comment_reply">回复</string>
     <string name="comment_quote">引用</string>
     <string name="comment_delete">删除</string>
