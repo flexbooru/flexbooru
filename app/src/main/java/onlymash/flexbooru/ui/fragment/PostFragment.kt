@@ -58,11 +58,10 @@ import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
+import onlymash.flexbooru.ui.viewmodel.TagBlacklistViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
-import onlymash.flexbooru.util.DownloadUtil
-import onlymash.flexbooru.util.ViewTransition
-import onlymash.flexbooru.util.gridWidth
-import onlymash.flexbooru.util.rotate
+import onlymash.flexbooru.util.*
+import onlymash.flexbooru.util.DownloadUtil.Companion.downloadPost
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
 
@@ -158,6 +157,7 @@ class PostFragment : ListFragment() {
         private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
     }
 
+    private lateinit var tagBlacklistViewModel: TagBlacklistViewModel
     private lateinit var postViewModel: PostViewModel
     private lateinit var glide: GlideRequests
 
@@ -169,7 +169,7 @@ class PostFragment : ListFragment() {
     private lateinit var search: Search
     private lateinit var searchTag: SearchTag
     private lateinit var expandButton: View
-    private lateinit var tagBlacklists: MutableList<TagBlacklist>
+    private var tagBlacklists: MutableList<TagBlacklist> = mutableListOf()
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -309,31 +309,31 @@ class PostFragment : ListFragment() {
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     postViewModel.apply {
-                        show(search)
+                        show(search, tagBlacklists)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     postViewModel.apply {
-                        show(search)
+                        show(search, tagBlacklists)
                         refreshMoe()
                     }
                 }
                 Constants.TYPE_DANBOORU_ONE -> {
                     postViewModel.apply {
-                        show(search)
+                        show(search, tagBlacklists)
                         refreshDanOne()
                     }
                 }
                 Constants.TYPE_GELBOORU -> {
                     postViewModel.apply {
-                        show(search)
+                        show(search, tagBlacklists)
                         refreshGel()
                     }
                 }
                 Constants.TYPE_SANKAKU -> {
                     postViewModel.apply {
-                        show(search)
+                        show(search, tagBlacklists)
                         refreshSankaku()
                     }
                 }
@@ -350,7 +350,7 @@ class PostFragment : ListFragment() {
                 search.username = user.name
                 search.auth_key = user.api_key ?: ""
                 postViewModel.apply {
-                    show(search)
+                    show(search, tagBlacklists)
                     refreshDan()
                 }
             }
@@ -358,7 +358,7 @@ class PostFragment : ListFragment() {
                 search.username = user.name
                 search.auth_key = user.password_hash ?: ""
                 postViewModel.apply {
-                    show(search)
+                    show(search, tagBlacklists)
                     refreshMoe()
                 }
             }
@@ -366,7 +366,7 @@ class PostFragment : ListFragment() {
                 search.username = user.name
                 search.auth_key = user.password_hash ?: ""
                 postViewModel.apply {
-                    show(search)
+                    show(search, tagBlacklists)
                     refreshDanOne()
                 }
             }
@@ -374,7 +374,7 @@ class PostFragment : ListFragment() {
                 search.username = user.name
                 search.auth_key = user.api_key ?: ""
                 postViewModel.apply {
-                    show(search)
+                    show(search, tagBlacklists)
                     refreshGel()
                 }
             }
@@ -382,7 +382,7 @@ class PostFragment : ListFragment() {
                 search.username = user.name
                 search.auth_key = user.password_hash ?: ""
                 postViewModel.apply {
-                    show(search)
+                    show(search, tagBlacklists)
                     refreshSankaku()
                 }
             }
@@ -449,7 +449,6 @@ class PostFragment : ListFragment() {
         if (Settings.instance().safeMode) {
             search.keyword = "rating:safe ${search.keyword}"
         }
-        tagBlacklists = TagBlacklistManager.getTagBlacklistByBooruUid(Settings.instance().activeBooruUid)
         init()
         UserManager.listeners.add(userListener)
         searchBar.setType(type)
@@ -583,7 +582,26 @@ class PostFragment : ListFragment() {
                 initSwipeToRefreshSankaku()
             }
         }
-        postViewModel.show(search)
+        tagBlacklistViewModel = getViewModel(object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TagBlacklistViewModel() as T
+            }
+        })
+        tagBlacklistViewModel.tagOutcome.observe(this, Observer {
+            postViewModel.show(search, it)
+            if (tagBlacklists != it) {
+                tagBlacklists = it
+                when (type) {
+                    Constants.TYPE_DANBOORU -> postViewModel.refreshDan()
+                    Constants.TYPE_DANBOORU_ONE -> postViewModel.refreshDanOne()
+                    Constants.TYPE_MOEBOORU -> postViewModel.refreshMoe()
+                    Constants.TYPE_GELBOORU -> postViewModel.refreshGel()
+                    Constants.TYPE_SANKAKU -> postViewModel.refreshSankaku()
+                }
+            }
+        })
+        tagBlacklistViewModel.loadTags(Settings.instance().activeBooruUid)
         val activity = requireActivity()
         if (activity is MainActivity) {
             activity.addNavigationListener(navigationListener)

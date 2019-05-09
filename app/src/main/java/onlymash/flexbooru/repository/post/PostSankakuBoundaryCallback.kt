@@ -22,6 +22,7 @@ import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.api.url.SankakuUrlHelper
 import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,9 +39,10 @@ import java.util.concurrent.Executor
  */
 class PostSankakuBoundaryCallback(
     private val sankakuApi: SankakuApi,
-    private val handleResponse: (Search, MutableList<PostSankaku>?) -> Unit,
+    private val handleResponse: (Search, MutableList<PostSankaku>?, MutableList<TagBlacklist>) -> Unit,
     private val ioExecutor: Executor,
-    private val search: Search
+    private val search: Search,
+    private val tagBlacklists: MutableList<TagBlacklist>
 ) : PagedList.BoundaryCallback<PostSankaku>() {
 
     //PagingRequestHelper
@@ -55,7 +57,7 @@ class PostSankakuBoundaryCallback(
         ioExecutor.execute {
             val data = response.body()
             lastResponseSize = data?.size ?: 0
-            handleResponse(search, data)
+            handleResponse(search, data, tagBlacklists)
             it.recordSuccess()
         }
     }

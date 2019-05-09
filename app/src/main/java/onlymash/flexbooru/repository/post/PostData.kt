@@ -25,6 +25,7 @@ import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 import onlymash.flexbooru.repository.NetworkState
@@ -49,41 +50,64 @@ class PostData(
     private var gelBoundaryCallback: PostGelBoundaryCallback? = null
     private var sankakuBoundaryCallback: PostSankakuBoundaryCallback? = null
 
-    private fun insertDanbooruOneResultIntoDb(search: Search, body: MutableList<PostDanOne>?) {
+    private fun insertDanbooruOneResultIntoDb(
+        search: Search,
+        body: MutableList<PostDanOne>?,
+        tagBlacklists: MutableList<TagBlacklist>
+    ) {
         body?.let { postsDanOne ->
             val start = db.postDanOneDao().getNextIndex(host = search.host, keyword = search.keyword)
-            val items = postsDanOne.mapIndexed { index, post ->
+            val posts = postsDanOne.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
                 post
+            }
+            val items = mutableListOf<PostDanOne>()
+            posts.forEach { post ->
+                val index = tagBlacklists.indexOfFirst {
+                    post.tags.contains(it.tag)
+                }
+                if (index == -1) {
+                    items.add(post)
+                }
             }
             db.postDanOneDao().insert(items)
         }
     }
 
-    private fun insertDanbooruResultIntoDb(search: Search, body: MutableList<PostDan>?) {
+    private fun insertDanbooruResultIntoDb(
+        search: Search,
+        body: MutableList<PostDan>?,
+        tagBlacklists: MutableList<TagBlacklist>
+    ) {
         body?.let { postsDan ->
-            val posts = mutableListOf<PostDan>()
-            postsDan.forEach { postDan ->
-                if (!postDan.preview_file_url.isNullOrBlank()) {
-                    posts.add(postDan)
-                }
-            }
             val start = db.postDanDao().getNextIndex(host = search.host, keyword = search.keyword)
-            val items = posts.mapIndexed { index, post ->
+            val posts = postsDan.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
                 post
             }
+            val items = mutableListOf<PostDan>()
+            posts.forEach { postDan ->
+                val index = tagBlacklists.indexOfFirst {
+                    postDan.tag_string.contains(it.tag)
+                }
+                if (index == -1 && !postDan.preview_file_url.isNullOrBlank()) {
+                    items.add(postDan)
+                }
+            }
             db.postDanDao().insert(items)
         }
     }
 
-    private fun insertMoebooruResultIntoDb(search: Search, body: MutableList<PostMoe>?) {
+    private fun insertMoebooruResultIntoDb(
+        search: Search,
+        body: MutableList<PostMoe>?
+    ) {
         body?.let { posts ->
             val start = db.postMoeDao().getNextIndex(host = search.host, keyword = search.keyword)
             val items = posts.mapIndexed { index, post ->
@@ -97,45 +121,73 @@ class PostData(
         }
     }
 
-    private fun insertGelbooruResultIntoDb(search: Search, body: MutableList<PostGel>?) {
-        body?.let { posts ->
+    private fun insertGelbooruResultIntoDb(
+        search: Search,
+        body: MutableList<PostGel>?,
+        tagBlacklists: MutableList<TagBlacklist>
+    ) {
+        body?.let { data ->
             val start = db.postGelDao().getNextIndex(host = search.host, keyword = search.keyword)
-            val items = posts.mapIndexed { index, post ->
+            val posts = data.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
                 post
             }
+            val items = mutableListOf<PostGel>()
+            posts.forEach { post ->
+                val index = tagBlacklists.indexOfFirst {
+                    post.tags.contains(it.tag)
+                }
+                if (index == -1) {
+                    items.add(post)
+                }
+            }
             db.postGelDao().insert(items)
         }
     }
 
-    private fun insertSankakuResultIntoDb(search: Search, body: MutableList<PostSankaku>?) {
-        body?.let { posts ->
+    private fun insertSankakuResultIntoDb(
+        search: Search,
+        body: MutableList<PostSankaku>?,
+        tagBlacklists: MutableList<TagBlacklist>
+    ) {
+        body?.let { data ->
             val start = db.postSankakuDao().getNextIndex(host = search.host, keyword = search.keyword)
-            val items = posts.mapIndexed { index, post ->
+            val posts = data.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
                 post.keyword = search.keyword
                 post.indexInResponse = start + index
                 post
+            }
+            val blackTags = tagBlacklists.map { it.tag }
+            val items = mutableListOf<PostSankaku>()
+            posts.forEach { postSankaku ->
+                if (postSankaku.tags.map { it.name }.intersect(blackTags).isEmpty()) {
+                    items.add(postSankaku)
+                }
             }
             db.postSankakuDao().insert(items)
         }
     }
 
     @MainThread
-    override fun getDanOnePosts(search: Search): Listing<PostDanOne> {
+    override fun getDanOnePosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostDanOne> {
         danOneBoundaryCallback = PostDanOneBoundaryCallback(
             danbooruOneApi = danbooruOneApi,
             handleResponse = this::insertDanbooruOneResultIntoDb,
             ioExecutor = ioExecutor,
-            search = search
+            search = search,
+            tagBlacklists = tagBlacklists
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshDanbooruOne(search)
+            refreshDanbooruOne(search, tagBlacklists)
         }
         val livePagedList = db.postDanOneDao()
             .getPosts(search.host, search.keyword)
@@ -160,16 +212,20 @@ class PostData(
     }
 
     @MainThread
-    override fun getDanPosts(search: Search): Listing<PostDan> {
+    override fun getDanPosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostDan> {
         danBoundaryCallback = PostDanBoundaryCallback(
             danbooruApi = danbooruApi,
             handleResponse = this::insertDanbooruResultIntoDb,
             ioExecutor = ioExecutor,
-            search = search
+            search = search,
+            tagBlacklists = tagBlacklists
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshDanbooru(search)
+            refreshDanbooru(search, tagBlacklists)
         }
         val livePagedList = db.postDanDao()
             .getPosts(search.host, search.keyword)
@@ -194,16 +250,20 @@ class PostData(
     }
 
     @MainThread
-    override fun getMoePosts(search: Search): Listing<PostMoe> {
+    override fun getMoePosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostMoe> {
         moeBoundaryCallback = PostMoeBoundaryCallback(
             moebooruApi = moebooruApi,
             handleResponse = this::insertMoebooruResultIntoDb,
             ioExecutor = ioExecutor,
-            search = search
+            search = search,
+            tagBlacklists = tagBlacklists
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshMoebooru(search)
+            refreshMoebooru(search, tagBlacklists)
         }
         val livePagedList = db.postMoeDao()
             .getPosts(host = search.host, keyword = search.keyword)
@@ -229,16 +289,20 @@ class PostData(
     }
 
     @MainThread
-    override fun getGelPosts(search: Search): Listing<PostGel> {
+    override fun getGelPosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostGel> {
         gelBoundaryCallback = PostGelBoundaryCallback(
             gelbooruApi = gelbooruApi,
             handleResponse = this::insertGelbooruResultIntoDb,
             ioExecutor = ioExecutor,
-            search = search
+            search = search,
+            tagBlacklists = tagBlacklists
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshGelbooru(search)
+            refreshGelbooru(search, tagBlacklists)
         }
         val livePagedList = db.postGelDao()
             .getPosts(host = search.host, keyword = search.keyword)
@@ -264,7 +328,10 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshDanbooruOne(search: Search): LiveData<NetworkState> {
+    private fun refreshDanbooruOne(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): LiveData<NetworkState> {
         danOneBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
@@ -288,7 +355,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
-                            insertDanbooruOneResultIntoDb(search, posts)
+                            insertDanbooruOneResultIntoDb(search, posts, tagBlacklists)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)
@@ -299,7 +366,10 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshDanbooru(search: Search): LiveData<NetworkState> {
+    private fun refreshDanbooru(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): LiveData<NetworkState> {
         danBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
@@ -322,7 +392,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
-                            insertDanbooruResultIntoDb(search, posts)
+                            insertDanbooruResultIntoDb(search, posts, tagBlacklists)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)
@@ -333,11 +403,19 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshMoebooru(search: Search): LiveData<NetworkState> {
+    private fun refreshMoebooru(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): LiveData<NetworkState> {
         moeBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1)).enqueue(
+        var tags = ""
+        tagBlacklists.forEach { tagBlacklist ->
+            tags = "$tags -${tagBlacklist.tag}"
+        }
+        tags = "${search.keyword}$tags".trim()
+        moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags)).enqueue(
             object : Callback<MutableList<PostMoe>> {
                 override fun onFailure(call: Call<MutableList<PostMoe>>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)
@@ -366,7 +444,10 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshGelbooru(search: Search): LiveData<NetworkState> {
+    private fun refreshGelbooru(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): LiveData<NetworkState> {
         gelBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
@@ -388,7 +469,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             db.postGelDao().deletePosts(search.host, search.keyword)
-                            insertGelbooruResultIntoDb(search, posts)
+                            insertGelbooruResultIntoDb(search, posts, tagBlacklists)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)
@@ -399,16 +480,20 @@ class PostData(
     }
 
     @MainThread
-    override fun getSankakuPosts(search: Search): Listing<PostSankaku> {
+    override fun getSankakuPosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostSankaku> {
         sankakuBoundaryCallback = PostSankakuBoundaryCallback(
             sankakuApi = sankakuApi,
             handleResponse = this::insertSankakuResultIntoDb,
             ioExecutor = ioExecutor,
-            search = search
+            search = search,
+            tagBlacklists = tagBlacklists
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshSankaku(search)
+            refreshSankaku(search, tagBlacklists)
         }
         val livePagedList = db.postSankakuDao()
             .getPosts(host = search.host, keyword = search.keyword)
@@ -434,7 +519,10 @@ class PostData(
     }
 
     @MainThread
-    private fun refreshSankaku(search: Search): LiveData<NetworkState> {
+    private fun refreshSankaku(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): LiveData<NetworkState> {
         sankakuBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
@@ -456,7 +544,7 @@ class PostData(
                                 return@runInTransaction
                             }
                             db.postSankakuDao().deletePosts(search.host, search.keyword)
-                            insertSankakuResultIntoDb(search, posts)
+                            insertSankakuResultIntoDb(search, posts, tagBlacklists)
                         }
                     }
                     networkState.postValue(NetworkState.LOADED)

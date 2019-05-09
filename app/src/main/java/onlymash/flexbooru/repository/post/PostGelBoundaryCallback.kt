@@ -22,6 +22,7 @@ import onlymash.flexbooru.api.url.GelUrlHelper
 import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.entity.post.PostGelResponse
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
@@ -39,9 +40,10 @@ import java.util.concurrent.Executor
  */
 class PostGelBoundaryCallback(
     private val gelbooruApi: GelbooruApi,
-    private val handleResponse: (Search, MutableList<PostGel>?) -> Unit,
+    private val handleResponse: (Search, MutableList<PostGel>?, MutableList<TagBlacklist>) -> Unit,
     private val ioExecutor: Executor,
-    private val search: Search
+    private val search: Search,
+    private val tagBlacklists: MutableList<TagBlacklist>
 ) : PagedList.BoundaryCallback<PostGel>() {
 
     //paging request helper
@@ -56,7 +58,7 @@ class PostGelBoundaryCallback(
         ioExecutor.execute {
             val data = response.body()?.posts
             lastResponseSize = data?.size ?: 0
-            handleResponse(search, data)
+            handleResponse(search, data, tagBlacklists)
             it.recordSuccess()
         }
     }

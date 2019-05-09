@@ -20,46 +20,56 @@ import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.repository.post.PostRepository
+
+data class SearchData(
+    val search: Search,
+    val tagBlacklists: MutableList<TagBlacklist>
+)
 
 class PostViewModel(private val repo: PostRepository): ViewModel() {
 
-    private val searchData = MutableLiveData<Search>()
+    private val searchData = MutableLiveData<SearchData>()
     private val danOneRepoResult = map(searchData) { search ->
-        repo.getDanOnePosts(search)
+        repo.getDanOnePosts(search.search, search.tagBlacklists)
     }
     val postsDanOne = switchMap(danOneRepoResult) { it.pagedList }
     val networkStateDanOne = switchMap(danOneRepoResult) { it.networkState }
     val refreshStateDanOne = switchMap(danOneRepoResult) { it.refreshState }
     private val danRepoResult = map(searchData) { search ->
-        repo.getDanPosts(search)
+        repo.getDanPosts(search.search, search.tagBlacklists)
     }
     val postsDan = switchMap(danRepoResult) { it.pagedList }
     val networkStateDan = switchMap(danRepoResult) { it.networkState }
     val refreshStateDan = switchMap(danRepoResult) { it.refreshState }
     private val moeRepoResult = map(searchData) { search ->
-        repo.getMoePosts(search)
+        repo.getMoePosts(search.search, search.tagBlacklists)
     }
     val postsMoe = switchMap(moeRepoResult) { it.pagedList }
     val networkStateMoe = switchMap(moeRepoResult) { it.networkState }
     val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }
     private val gelRepoResult = map(searchData) { search ->
-        repo.getGelPosts(search)
+        repo.getGelPosts(search.search, search.tagBlacklists)
     }
     val postsGel = switchMap(gelRepoResult) { it.pagedList }
     val networkStateGel = switchMap(gelRepoResult) { it.networkState }
     val refreshStateGel = switchMap(gelRepoResult) { it.refreshState }
     private val sankakuRepoResult = map(searchData) { search ->
-        repo.getSankakuPosts(search)
+        repo.getSankakuPosts(search.search, search.tagBlacklists)
     }
     val postsSankaku = switchMap(sankakuRepoResult) { it.pagedList }
     val networkStateSankaku = switchMap(sankakuRepoResult) { it.networkState }
     val refreshStateSankaku = switchMap(sankakuRepoResult) { it.refreshState }
-    fun show(search: Search): Boolean {
-        if (searchData.value == search) {
+    fun show(search: Search, tagBlacklists: MutableList<TagBlacklist>): Boolean {
+        val value = SearchData(
+            search = search,
+            tagBlacklists = tagBlacklists
+        )
+        if (searchData.value == value) {
             return false
         }
-        searchData.value = search
+        searchData.value = value
         return true
     }
     fun refreshDanOne() {

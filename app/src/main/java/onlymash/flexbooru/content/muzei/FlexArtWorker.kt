@@ -117,7 +117,7 @@ class FlexArtWorker(
                 }
                 val moebooruApi = ServiceLocator.instance().getMoebooruApi()
                 val posts = try {
-                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1))
+                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, search.keyword))
                         .execute().body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()

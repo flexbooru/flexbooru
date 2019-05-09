@@ -22,6 +22,7 @@ import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,8 +41,18 @@ class PostMoeBoundaryCallback(
     private val moebooruApi: MoebooruApi,
     private val handleResponse: (Search, MutableList<PostMoe>?) -> Unit,
     private val ioExecutor: Executor,
-    private val search: Search
+    private val search: Search,
+    tagBlacklists: MutableList<TagBlacklist>
 ) : PagedList.BoundaryCallback<PostMoe>() {
+
+    var tags = ""
+
+    init {
+        tagBlacklists.forEach { tagBlacklist ->
+            tags = "$tags -${tagBlacklist.tag}"
+        }
+        tags = "${search.keyword}$tags".trim()
+    }
 
     //paging request helper
     val helper = PagingRequestHelper(ioExecutor)
@@ -84,7 +95,7 @@ class PostMoeBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1)).enqueue(createMoebooruCallback(it))
+            moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags)).enqueue(createMoebooruCallback(it))
         }
     }
 
@@ -94,7 +105,7 @@ class PostMoeBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, indexInNext/limit + 1))
+                moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, indexInNext/limit + 1, tags))
                     .enqueue(createMoebooruCallback(it))
             }
         }

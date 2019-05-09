@@ -16,18 +16,34 @@
 package onlymash.flexbooru.repository.post
 
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 
 interface PostRepository {
 
-    fun getDanOnePosts(search: Search): Listing<PostDanOne>
+    fun getDanOnePosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostDanOne>
 
-    fun getDanPosts(search: Search): Listing<PostDan>
+    fun getDanPosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostDan>
 
-    fun getMoePosts(search: Search): Listing<PostMoe>
+    fun getMoePosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostMoe>
 
-    fun getGelPosts(search: Search): Listing<PostGel>
+    fun getGelPosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostGel>
 
-    fun getSankakuPosts(search: Search): Listing<PostSankaku>
+    fun getSankakuPosts(
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostSankaku>
 }

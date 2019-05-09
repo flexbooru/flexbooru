@@ -29,13 +29,13 @@ object MoeUrlHelper {
     /**
      * return moebooru posts request url [HttpUrl]
      * */
-    fun getPostUrl(search: Search, page: Int): HttpUrl {
+    fun getPostUrl(search: Search, page: Int, tags: String): HttpUrl {
         return HttpUrl.Builder()
             .scheme(search.scheme)
             .host(search.host)
             .addPathSegment("post.json")
             .addQueryParameter("limit", search.limit.toString())
-            .addQueryParameter("tags", search.keyword)
+            .addQueryParameter("tags", tags)
             .addQueryParameter("page", page.toString())
             .addQueryParameter("login", search.username)
             .addQueryParameter("password_hash", search.auth_key)

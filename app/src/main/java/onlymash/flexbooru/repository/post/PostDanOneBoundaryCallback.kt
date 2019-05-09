@@ -22,6 +22,7 @@ import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.util.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,9 +39,10 @@ import java.util.concurrent.Executor
  */
 class PostDanOneBoundaryCallback(
     private val danbooruOneApi: DanbooruOneApi,
-    private val handleResponse: (Search, MutableList<PostDanOne>?) -> Unit,
+    private val handleResponse: (Search, MutableList<PostDanOne>?, MutableList<TagBlacklist>) -> Unit,
     private val ioExecutor: Executor,
-    private val search: Search
+    private val search: Search,
+    private val tagBlacklists: MutableList<TagBlacklist>
 ) : PagedList.BoundaryCallback<PostDanOne>() {
 
     //PagingRequestHelper
@@ -55,7 +57,7 @@ class PostDanOneBoundaryCallback(
         ioExecutor.execute {
             val data = response.body()
             lastResponseSize = data?.size ?: 0
-            handleResponse(search, data)
+            handleResponse(search, data, tagBlacklists)
             it.recordSuccess()
         }
     }
