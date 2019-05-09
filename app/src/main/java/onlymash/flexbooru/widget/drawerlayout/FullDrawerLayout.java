@@ -2075,8 +2075,8 @@ public class FullDrawerLayout extends DrawerLayout {
         private void copyNodeInfoNoChildren(AccessibilityNodeInfoCompat dest,
                                             AccessibilityNodeInfoCompat src) {
             final Rect rect = mTmpRect;
-            src.getBoundsInParent(rect);
-            dest.setBoundsInParent(rect);
+            src.getBoundsInScreen(rect);
+            dest.setBoundsInScreen(rect);
             src.getBoundsInScreen(rect);
             dest.setBoundsInScreen(rect);
             dest.setVisibleToUser(src.isVisibleToUser());

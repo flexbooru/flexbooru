@@ -106,6 +106,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha01'
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
