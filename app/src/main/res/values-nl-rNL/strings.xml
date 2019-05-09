@@ -31,6 +31,7 @@
     <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Copyrightinformatie</string>
     <string name="title_about">Over</string>
+    <string name="title_tag_blacklist">Tag blacklist</string>
     <string name="about_app_version">Versie</string>
     <string name="about_app_rate">Beoordeel deze app</string>
     <string name="about_app_translation">Translation</string>
@@ -216,6 +217,9 @@
     <string name="muzei_action_view_post">Post in Flexbooru weergeven</string>
     <string name="muzei_action_search_posts">Posts zoeken op Flexbooru</string>
     <string name="muzei_attribution">Post uit Flexbooru</string>
+    <string name="tag_blacklist_copy">Copy</string>
+    <string name="tag_blacklist_delete">Delete</string>
+    <string name="tag_blacklist_add">Add</string>
     <string name="comment_reply">Reageren</string>
     <string name="comment_quote">Citeren</string>
     <string name="comment_delete">Verwijderen</string>
