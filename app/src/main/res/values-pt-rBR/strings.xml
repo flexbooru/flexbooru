@@ -31,6 +31,7 @@
     <string name="title_night_mode">Modo Noturno</string>
     <string name="title_copyright">Direitos autorais</string>
     <string name="title_about">Sobre</string>
+    <string name="title_tag_blacklist">Tag blacklist</string>
     <string name="about_app_version">Versão</string>
     <string name="about_app_rate">Classifique este app</string>
     <string name="about_app_translation">Tradução</string>
@@ -216,6 +217,9 @@
     <string name="muzei_action_view_post">Ver post no Flexbooru</string>
     <string name="muzei_action_search_posts">Pesquisar postagens no Flexbooru</string>
     <string name="muzei_attribution">Postagem de Flexbooru</string>
+    <string name="tag_blacklist_copy">Copy</string>
+    <string name="tag_blacklist_delete">Delete</string>
+    <string name="tag_blacklist_add">Add</string>
     <string name="comment_reply">Responder</string>
     <string name="comment_quote">Citação</string>
     <string name="comment_delete">Excluir</string>
