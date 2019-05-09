@@ -31,6 +31,7 @@
     <string name="title_night_mode">Night mode</string>
     <string name="title_copyright">Copyright</string>
     <string name="title_about">Acerca de</string>
+    <string name="title_tag_blacklist">Tag blacklist</string>
     <string name="about_app_version">Versión</string>
     <string name="about_app_rate">Calificar esta aplicación</string>
     <string name="about_app_translation">Traducción</string>
@@ -140,6 +141,7 @@
     <string name="account_posts">Posts</string>
     <string name="account_comments">Comentarios</string>
     <string name="account_config_msg_tip_empty">Nombre de usuario o contraseña / La clave API no puede estar vacía.</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Límite de páginas</string>
     <string name="settings_muzei_limit">Límite Muzei</string>
@@ -215,6 +217,9 @@
     <string name="muzei_action_view_post">Ver post en Flexbooru</string>
     <string name="muzei_action_search_posts">Buscar posts en Flexbooru</string>
     <string name="muzei_attribution">Post de Flexbooru</string>
+    <string name="tag_blacklist_copy">Copy</string>
+    <string name="tag_blacklist_delete">Delete</string>
+    <string name="tag_blacklist_add">Add</string>
     <string name="comment_reply">Responder</string>
     <string name="comment_quote">Citar</string>
     <string name="comment_delete">Eliminar</string>

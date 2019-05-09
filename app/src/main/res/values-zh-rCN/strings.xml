@@ -31,6 +31,7 @@
     <string name="title_night_mode">夜间模式</string>
     <string name="title_copyright">版权</string>
     <string name="title_about">关于</string>
+    <string name="title_tag_blacklist">标签黑名单</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">给此应用评分</string>
     <string name="about_app_translation">翻译</string>
@@ -140,6 +141,7 @@
     <string name="account_posts">投稿</string>
     <string name="account_comments">评论</string>
     <string name="account_config_msg_tip_empty">用户名或密码/Api Key不能为空。</string>
+    <string name="account_recommended">个性推荐</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每页限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
@@ -215,6 +217,9 @@
     <string name="muzei_action_view_post">在 Flexboru 查看此投稿</string>
     <string name="muzei_action_search_posts">在 Flexboru 搜索这组投稿</string>
     <string name="muzei_attribution">Post from Flexbooru</string>
+    <string name="tag_blacklist_copy">复制</string>
+    <string name="tag_blacklist_delete">删除</string>
+    <string name="tag_blacklist_add">添加</string>
     <string name="comment_reply">回复</string>
     <string name="comment_quote">引用</string>
     <string name="comment_delete">删除</string>

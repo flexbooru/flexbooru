@@ -31,6 +31,7 @@
     <string name="title_night_mode">Tryb nocny</string>
     <string name="title_copyright">Prawa autorskie</string>
     <string name="title_about">O programie</string>
+    <string name="title_tag_blacklist">Tag blacklist</string>
     <string name="about_app_version">Wersja</string>
     <string name="about_app_rate">Oceń aplikację</string>
     <string name="about_app_translation">Tłumaczenie</string>
@@ -140,6 +141,7 @@
     <string name="account_posts">Posty</string>
     <string name="account_comments">Komentarze</string>
     <string name="account_config_msg_tip_empty">Nazwa użytkownika lub hasło/klucz Api nie mogą być puste.</string>
+    <string name="account_recommended">Recommended</string>
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
     <string name="settings_muzei_limit">Muzei limit</string>
@@ -215,6 +217,9 @@
     <string name="muzei_action_view_post">Zobacz post na Flexbooru</string>
     <string name="muzei_action_search_posts">Szukaj postów na Flexbooru</string>
     <string name="muzei_attribution">Wyślij z Flexbooru</string>
+    <string name="tag_blacklist_copy">Copy</string>
+    <string name="tag_blacklist_delete">Delete</string>
+    <string name="tag_blacklist_add">Add</string>
     <string name="comment_reply">Odpowiedz</string>
     <string name="comment_quote">Cytat</string>
     <string name="comment_delete">Usuń</string>
