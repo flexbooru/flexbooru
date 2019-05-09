@@ -195,7 +195,7 @@ class PostData(
                 config = Config(
                     pageSize = search.limit,
                     enablePlaceholders = true,
-                    maxSize = 100
+                    maxSize = 150
                 ),
                 boundaryCallback = danOneBoundaryCallback)
         return Listing(
@@ -233,7 +233,7 @@ class PostData(
                 config = Config(
                     pageSize = search.limit,
                     enablePlaceholders = true,
-                    maxSize = 100
+                    maxSize = 150
                 ),
                 boundaryCallback = danBoundaryCallback)
         return Listing(
@@ -271,7 +271,7 @@ class PostData(
                 config = Config(
                     pageSize = search.limit,
                     enablePlaceholders = true,
-                    maxSize = 100
+                    maxSize = 150
                 ),
                 boundaryCallback = moeBoundaryCallback
             )
@@ -310,7 +310,7 @@ class PostData(
                 config = Config(
                     pageSize = search.limit,
                     enablePlaceholders = true,
-                    maxSize = 100
+                    maxSize = 150
                 ),
                 boundaryCallback = gelBoundaryCallback
             )
@@ -501,7 +501,7 @@ class PostData(
                 config = Config(
                     pageSize = search.limit,
                     enablePlaceholders = true,
-                    maxSize = 100
+                    maxSize = 150
                 ),
                 boundaryCallback = sankakuBoundaryCallback
             )
