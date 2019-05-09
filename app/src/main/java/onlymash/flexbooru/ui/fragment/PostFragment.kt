@@ -169,6 +169,7 @@ class PostFragment : ListFragment() {
     private lateinit var search: Search
     private lateinit var searchTag: SearchTag
     private lateinit var expandButton: View
+    private lateinit var tagBlacklists: MutableList<TagBlacklist>
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
@@ -448,6 +449,7 @@ class PostFragment : ListFragment() {
         if (Settings.instance().safeMode) {
             search.keyword = "rating:safe ${search.keyword}"
         }
+        tagBlacklists = TagBlacklistManager.getTagBlacklistByBooruUid(Settings.instance().activeBooruUid)
         init()
         UserManager.listeners.add(userListener)
         searchBar.setType(type)

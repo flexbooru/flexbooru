@@ -111,7 +111,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.1'
+    implementation "androidx.work:work-runtime-ktx:$work"
+    implementation "androidx.work:work-rxjava2:$work"
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
@@ -145,6 +146,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room"
     kapt "com.github.bumptech.glide:compiler:$glide"
     testImplementation 'junit:junit:5.0-SNAPSHOT'
+    androidTestImplementation "androidx.work:work-testing:$work"
     androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
 }

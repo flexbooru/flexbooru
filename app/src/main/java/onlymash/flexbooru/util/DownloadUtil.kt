@@ -29,6 +29,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import onlymash.flexbooru.App
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideApp
@@ -78,7 +79,7 @@ class DownloadUtil(
             var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$id - $fileName"
             activity.getDownloadUri(host, fileName) ?: return
-            val workManager = WorkManager.getInstance()
+            val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
                     .setInputData(
@@ -103,7 +104,7 @@ class DownloadUtil(
             var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
             activity.getDownloadUri(host, fileName) ?: return
-            val workManager = WorkManager.getInstance()
+            val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
                     .setInputData(
@@ -143,7 +144,7 @@ class DownloadUtil(
                 }
             }
             activity.getPoolUri(fileName) ?: return
-            val workManager = WorkManager.getInstance()
+            val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
                     .setInputData(

@@ -53,8 +53,9 @@ class PostDanBoundaryCallback(
 
     private fun insertItemsIntoDb(response: Response<MutableList<PostDan>>, it: PagingRequestHelper.Request.Callback) {
         ioExecutor.execute {
-            lastResponseSize = if (!response.body().isNullOrEmpty()) response.body()?.size!! else 0
-            handleResponse(search, response.body())
+            val data = response.body()
+            lastResponseSize = data?.size ?: 0
+            handleResponse(search, data)
             it.recordSuccess()
         }
     }

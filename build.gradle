@@ -7,6 +7,7 @@ buildscript {
         retrofit = '2.6.0-SNAPSHOT'
         okhttp = '4.0.0-SNAPSHOT'
         lifecycle = '2.2.0-alpha01'
+        work = '2.1.0-alpha01'
         room = '2.1.0-beta01'
         glide = '4.10.0-SNAPSHOT'
         exoplayer = '2.10.0'

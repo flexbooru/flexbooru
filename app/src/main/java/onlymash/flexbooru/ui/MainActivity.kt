@@ -62,12 +62,13 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
         private const val DRAWER_ITEM_ID_COMMENTS = 2L
-        private const val DRAWER_ITEM_ID_MUZEI = 3L
-        private const val DRAWER_ITEM_ID_SETTINGS = 4L
-        private const val DRAWER_ITEM_ID_NIGHT_MODE = 5L
-        private const val DRAWER_ITEM_ID_ABOUT = 6L
-        private const val DRAWER_ITEM_ID_PURCHASE = 7L
-        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 5
+        private const val DRAWER_ITEM_ID_TAG_BLACKLIST = 3L
+        private const val DRAWER_ITEM_ID_MUZEI = 4L
+        private const val DRAWER_ITEM_ID_SETTINGS = 5L
+        private const val DRAWER_ITEM_ID_NIGHT_MODE = 6L
+        private const val DRAWER_ITEM_ID_ABOUT = 7L
+        private const val DRAWER_ITEM_ID_PURCHASE = 8L
+        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 6
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -111,6 +112,12 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withName(R.string.title_comments)
                     .withSelectable(false)
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_comment_outline_24dp))
+                    .withIconTintingEnabled(true),
+                PrimaryDrawerItem()
+                    .withIdentifier(DRAWER_ITEM_ID_TAG_BLACKLIST)
+                    .withName(R.string.title_tag_blacklist)
+                    .withSelectable(false)
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_visibility_off_outline_24dp))
                     .withIconTintingEnabled(true),
                 PrimaryDrawerItem()
                     .withIdentifier(DRAWER_ITEM_ID_MUZEI)
@@ -446,6 +453,13 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 DRAWER_ITEM_ID_COMMENTS -> {
                     if (getCurrentBooru() != null) {
                         CommentActivity.startActivity(this@MainActivity)
+                    } else {
+                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                    }
+                }
+                DRAWER_ITEM_ID_TAG_BLACKLIST -> {
+                    if (getCurrentBooru() != null) {
+                        startActivity(Intent(this@MainActivity, TagBlacklistActivity::class.java))
                     } else {
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
