@@ -9,7 +9,7 @@ buildscript {
         lifecycle = '2.2.0-alpha01'
         room = '2.1.0-beta01'
         glide = '4.10.0-SNAPSHOT'
-        exoplayer = '2.10.0-alpha2'
+        exoplayer = '2.10.0'
         tikxml = '0.8.13'
     }
     repositories {

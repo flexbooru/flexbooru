@@ -55,10 +55,11 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                 .setListener(this)
                 .build()
             billingClient?.startConnection(object : BillingClientStateListener {
-                override fun onBillingServiceDisconnected() {
+                override fun onBillingSetupFinished(billingResult: BillingResult?) {
 
                 }
-                override fun onBillingSetupFinished(responseCode: Int) {
+
+                override fun onBillingServiceDisconnected() {
 
                 }
             })
@@ -70,8 +71,8 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                             .setSkusList(listOf(SKU))
                             .setType(BillingClient.SkuType.INAPP)
                             .build()
-                        client.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
-                            if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
+                        client.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+                            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
                                 val index = skuDetailsList.indexOfFirst {
                                     it.sku == SKU
                                 }
@@ -80,8 +81,8 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                                         .newBuilder()
                                         .setSkuDetails(skuDetailsList[index])
                                         .build()
-                                    val code = client.launchBillingFlow(this, billingFlowParams)
-                                    if (code == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
+                                    val result = client.launchBillingFlow(this, billingFlowParams)
+                                    if (result.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                                         Settings.instance().isOrderSuccess = true
                                     }
                                 }
@@ -154,18 +155,19 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         }
     }
 
-    override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
-        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
-            val index = purchases.indexOfFirst { it.sku == SKU }
+    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
+        val responseCode = billingResult?.responseCode ?: return
+        if (responseCode == BillingClient.BillingResponseCode.OK ||
+            responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Settings.instance().isOrderSuccess = true
+            if (purchases == null) return
+            val index = purchases.indexOfFirst { it.sku == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
             if (index >= 0) {
                 val purchase = purchases[index]
                 Settings.instance().orderId = purchase.orderId
                 Settings.instance().orderTime = purchase.purchaseTime
                 Settings.instance().orderToken = purchase.purchaseToken
-                Settings.instance().isOrderSuccess = true
             }
-        } else if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
-            Settings.instance().isOrderSuccess = true
         }
     }
 

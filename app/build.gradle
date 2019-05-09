@@ -101,13 +101,13 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5.1"
     implementation 'androidx.annotation:annotation:1.1.0-rc01'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
-    implementation 'androidx.core:core-ktx:1.1.0-beta01'
+    implementation 'androidx.core:core-ktx:1.2.0-alpha01'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
     implementation "androidx.room:room-runtime:$room"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
@@ -125,9 +125,9 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
-    implementation 'com.android.billingclient:billing:1.2.2'
+    implementation 'com.android.billingclient:billing:2.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.0-alpha05'
-    implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.0.0'
+    implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:okhttp:$okhttp"

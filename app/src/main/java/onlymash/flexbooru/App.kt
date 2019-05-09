@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
@@ -79,15 +81,12 @@ class App : Application() {
             }
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingServiceDisconnected() {
-                billingClient.endConnection()
-            }
-            override fun onBillingSetupFinished(responseCode: Int) {
+            override fun onBillingSetupFinished(billingResult: BillingResult?) {
                 if (billingClient.isReady) {
                     val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP)?.purchasesList
                     if (purchases != null) {
                         val index = purchases.indexOfFirst {
-                            it.sku == PurchaseActivity.SKU
+                            it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
                         }
                         Settings.instance().isOrderSuccess = index >= 0
                     } else {
@@ -95,6 +94,9 @@ class App : Application() {
                     }
                     billingClient.endConnection()
                 }
+            }
+            override fun onBillingServiceDisconnected() {
+                billingClient.endConnection()
             }
         })
     }
