@@ -31,7 +31,7 @@
     <string name="title_night_mode">Modo Noturno</string>
     <string name="title_copyright">Direitos autorais</string>
     <string name="title_about">Sobre</string>
-    <string name="title_tag_blacklist">Tag blacklist</string>
+    <string name="title_tag_blacklist">Lista negra de marcadores</string>
     <string name="about_app_version">Versão</string>
     <string name="about_app_rate">Classifique este app</string>
     <string name="about_app_translation">Tradução</string>
@@ -57,7 +57,7 @@
     <string name="msg_file_save_success">O arquivo foi salvo como %s</string>
     <string name="post_expand_tag_filter">Expandir filtro de marcadores</string>
     <string name="post_add_search_to_muzei">` %s ` foram salvos no Muzei.</string>
-    <string name="post_download">Download Post</string>
+    <string name="post_download">Baixar Postagem</string>
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
     <string name="msg_download_must_enable">Gerenciador de downloads é necessário.</string>
     <string name="msg_path_denied">Falha ao salvar! Nenhum acesso ao caminho atual.</string>
@@ -141,7 +141,7 @@
     <string name="account_posts">Postagens</string>
     <string name="account_comments">Comentários</string>
     <string name="account_config_msg_tip_empty">Nome de usuário ou senha/chave de Api não pode estar vazio.</string>
-    <string name="account_recommended">Recommended</string>
+    <string name="account_recommended">Recomendado</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Limite de página</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
@@ -169,9 +169,9 @@
     <string name="switch_yes">Sim</string>
     <string name="switch_no">Não</string>
     <string name="pool_description_is_empty">A descrição está vazia.</string>
-    <string name="pool_download">Download Pool</string>
-    <string name="pool_download_jpgs">Download JPGs</string>
-    <string name="pool_download_pngs">Download PNGs</string>
+    <string name="pool_download">Baixar Grupo</string>
+    <string name="pool_download_jpgs">Baixar JPGs</string>
+    <string name="pool_download_pngs">Baixar PNGs</string>
     <string name="tag_type">Tipo</string>
     <string name="tag_type_all">Todos os tipos</string>
     <string name="tag_type_general">Geral</string>
@@ -217,9 +217,9 @@
     <string name="muzei_action_view_post">Ver post no Flexbooru</string>
     <string name="muzei_action_search_posts">Pesquisar postagens no Flexbooru</string>
     <string name="muzei_attribution">Postagem de Flexbooru</string>
-    <string name="tag_blacklist_copy">Copy</string>
-    <string name="tag_blacklist_delete">Delete</string>
-    <string name="tag_blacklist_add">Add</string>
+    <string name="tag_blacklist_copy">Copiar</string>
+    <string name="tag_blacklist_delete">Excluir</string>
+    <string name="tag_blacklist_add">Adicionar</string>
     <string name="comment_reply">Responder</string>
     <string name="comment_quote">Citação</string>
     <string name="comment_delete">Excluir</string>
