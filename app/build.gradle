@@ -106,19 +106,19 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
-    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
-    implementation "androidx.work:work-runtime-ktx:$work"
-    implementation "androidx.work:work-rxjava2:$work"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation "androidx.work:work-rxjava2:$work_version"
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'com.github.onlymash:subsampling-scale-image-view:-SNAPSHOT'
-    implementation 'com.github.onlymash:MaterialDateRangePicker:-SNAPSHOT'
+    implementation 'com.github.onlymash:subsampling-scale-image-view:3.10.1'
+    implementation 'com.github.onlymash:MaterialDateRangePicker:2.1'
     implementation 'com.mikepenz:materialdrawer:6.1.2'
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
@@ -129,24 +129,24 @@ dependencies {
     implementation 'com.android.billingclient:billing:2.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.0-alpha05'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation 'com.squareup.okio:okio:2.2.2'
     implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
-    implementation "com.github.bumptech.glide:glide:$glide"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$glide"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
-    implementation "com.tickaroo.tikxml:annotation:$tikxml"
-    implementation "com.tickaroo.tikxml:core:$tikxml"
-    implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml"
-    kapt "com.tickaroo.tikxml:processor:$tikxml"
-    kapt "androidx.room:room-compiler:$room"
-    kapt "com.github.bumptech.glide:compiler:$glide"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    implementation "com.tickaroo.tikxml:annotation:$tikxml_version"
+    implementation "com.tickaroo.tikxml:core:$tikxml_version"
+    implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml_version"
+    kapt "com.tickaroo.tikxml:processor:$tikxml_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
     testImplementation 'junit:junit:5.0-SNAPSHOT'
-    androidTestImplementation "androidx.work:work-testing:$work"
+    androidTestImplementation "androidx.work:work-testing:$work_version"
     androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
 }
