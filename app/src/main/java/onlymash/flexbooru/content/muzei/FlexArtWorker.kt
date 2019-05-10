@@ -22,12 +22,14 @@ import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
 import onlymash.flexbooru.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Search
 import java.io.IOException
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.MuzeiManager
+import org.kodein.di.generic.instance
 
 class FlexArtWorker(
     context: Context,
@@ -74,7 +76,7 @@ class FlexArtWorker(
                         username = it.name
                     }
                 }
-                val danbooruApi = ServiceLocator.instance().getDanbooruApi()
+                val danbooruApi: DanbooruApi by App.app.instance()
                 val posts = try {
                     danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")
@@ -113,7 +115,7 @@ class FlexArtWorker(
                         username = it.name
                     }
                 }
-                val moebooruApi = ServiceLocator.instance().getMoebooruApi()
+                val moebooruApi: MoebooruApi by App.app.instance()
                 val posts = try {
                     moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, search.keyword))
                         .execute().body() ?: throw IOException("Response was null")
@@ -149,7 +151,7 @@ class FlexArtWorker(
                         username = it.name
                     }
                 }
-                val danbooruOneApi = ServiceLocator.instance().getDanbooruOneApi()
+                val danbooruOneApi: DanbooruOneApi by App.app.instance()
                 val posts = try {
                     danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")
@@ -181,7 +183,7 @@ class FlexArtWorker(
                     keyword = keyword,
                     limit = Settings.instance().muzeiLimit
                 )
-                val gelbooruApi = ServiceLocator.instance().getGelbooruApi()
+                val gelbooruApi: GelbooruApi by App.app.instance()
                 val posts = try {
                     gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1))
                         .execute().body()?.posts ?: throw IOException("Response was null")
@@ -220,7 +222,7 @@ class FlexArtWorker(
                         username = it.name
                     }
                 }
-                val sankakuApi = ServiceLocator.instance().getSankakuApi()
+                val sankakuApi: SankakuApi by App.app.instance()
                 val posts = try {
                     sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1))
                         .execute().body() ?: throw IOException("Response was null")

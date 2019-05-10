@@ -40,7 +40,7 @@ interface GelbooruApi {
         /**
          * return [GelbooruApi]
          * */
-        fun create(): GelbooruApi {
+        operator fun invoke(): GelbooruApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("GelbooruApi", log)

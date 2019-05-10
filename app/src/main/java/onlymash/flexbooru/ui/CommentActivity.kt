@@ -35,21 +35,25 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.comment.CommentBase
 import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.comment.CommentData
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.comment.CommentState
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewholder.CommentViewHolder
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
+import java.util.concurrent.Executor
 
-class CommentActivity : BaseActivity() {
+class CommentActivity : BaseActivity(), KodeinAware {
 
     companion object {
         private const val POST_ID_KEY = "post_id"
@@ -65,8 +69,24 @@ class CommentActivity : BaseActivity() {
         }
     }
 
+    private val danApi: DanbooruApi by instance()
+    private val danOneApi: DanbooruOneApi by instance()
+    private val moeApi: MoebooruApi by instance()
+    private val gelApi: GelbooruApi by instance()
+    private val sankakuApi: SankakuApi by instance()
+    private val ioExecutor: Executor by instance()
+
     private lateinit var commentAdapter: CommentAdapter
-    private val commentViewModel by lazy { getCommentViewModel(ServiceLocator.instance().getCommentRepository()) }
+    private val commentViewModel by lazy { getCommentViewModel(
+        CommentData(
+            danbooruApi = danApi,
+            danbooruOneApi = danOneApi,
+            moebooruApi = moeApi,
+            gelbooruApi = gelApi,
+            sankakuApi = sankakuApi,
+            networkExecutor = ioExecutor
+        )
+    ) }
     private lateinit var commentAction: CommentAction
     private var type = -1
 

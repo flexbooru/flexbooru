@@ -16,7 +16,10 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.UserDao
 import onlymash.flexbooru.entity.User
+import org.kodein.di.generic.instance
 import java.io.IOException
 import java.sql.SQLException
 
@@ -30,10 +33,12 @@ object UserManager {
 
     val listeners: MutableList<Listener> = mutableListOf()
 
+    private val userDao: UserDao by App.app.instance()
+
     @Throws(SQLException::class)
     fun createUser(user: User): User {
         user.uid = 0
-        user.uid = FlexbooruDatabase.userDao.insert(user)
+        user.uid = userDao.insert(user)
         if (user.uid >= 0) {
             listeners.forEach {
                 it.onAdd(user)
@@ -44,7 +49,7 @@ object UserManager {
 
     @Throws(SQLException::class)
     fun updateUser(user: User): Boolean {
-        val result = FlexbooruDatabase.userDao.update(user) == 1
+        val result = userDao.update(user) == 1
         if (result) {
             listeners.forEach {
                 it.onUpdate(user)
@@ -55,7 +60,7 @@ object UserManager {
 
     @Throws(IOException::class)
     fun getUserByBooruUid(booruUid: Long): User? = try {
-        FlexbooruDatabase.userDao.getUserByBooruUid(booruUid)
+        userDao.getUserByBooruUid(booruUid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -65,7 +70,7 @@ object UserManager {
 
     @Throws(IOException::class)
     fun getUserByUserUid(uid: Long): User? = try {
-        FlexbooruDatabase.userDao.getUserByUserUid(uid)
+        userDao.getUserByUserUid(uid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -75,7 +80,7 @@ object UserManager {
 
     @Throws(SQLException::class)
     fun deleteUser(user: User) {
-        if (FlexbooruDatabase.userDao.delete(user.uid) == 1) {
+        if (userDao.delete(user.uid) == 1) {
             listeners.forEach {
                 it.onDelete(user)
             }
@@ -83,11 +88,11 @@ object UserManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteAll() = FlexbooruDatabase.userDao.deleteAll()
+    fun deleteAll() = userDao.deleteAll()
 
     @Throws(IOException::class)
     fun getAllUsers(): MutableList<User>? = try {
-        FlexbooruDatabase.userDao.getAll()
+        userDao.getAll()
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {

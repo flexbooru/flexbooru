@@ -13,12 +13,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.util
 
-import androidx.appcompat.app.AppCompatActivity
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
+import onlymash.flexbooru.entity.Result
+import java.io.IOException
 
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-    override val kodein by kodein()
+suspend fun <T : Any> safeApiCall(call: suspend () -> Result<T>, errorMessage: String): Result<T> = try {
+    call.invoke()
+} catch (e: Exception) {
+    Result.Error(IOException(errorMessage, e))
 }
+
+val <T> T.exhaustive: T get() = this

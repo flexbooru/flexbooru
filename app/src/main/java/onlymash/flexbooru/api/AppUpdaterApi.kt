@@ -17,17 +17,18 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.UserAgent
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -38,7 +39,7 @@ interface AppUpdaterApi {
 
     companion object {
         private const val BASE_URL = "https://raw.githubusercontent.com"
-        private fun create(): AppUpdaterApi {
+        operator fun invoke(): AppUpdaterApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("AppUpdaterApi", log)
@@ -66,26 +67,20 @@ interface AppUpdaterApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AppUpdaterApi::class.java)
         }
-        /**
-         * callback [Unit] return [UpdateInfo]
-         * */
-        fun checkUpdate() {
-            create().checkUpdate().enqueue(object : retrofit2.Callback<UpdateInfo> {
-                override fun onFailure(call: Call<UpdateInfo>, t: Throwable) {
 
-                }
-                override fun onResponse(call: Call<UpdateInfo>, response: Response<UpdateInfo>) {
-                    val data = response.body() ?: return
-                    Settings.instance().latestVersionUrl = data.url
-                    Settings.instance().latestVersionName = data.version_name
-                    Settings.instance().latestVersionCode = data.version_code
-                    Settings.instance().isAvailableOnStore = data.is_available_store
-                }
-            })
+        suspend fun checkUpdate() {
+            try {
+                val data = AppUpdaterApi().checkUpdateAsync().await()
+                Settings.instance().latestVersionUrl = data.url
+                Settings.instance().latestVersionName = data.version_name
+                Settings.instance().latestVersionCode = data.version_code
+                Settings.instance().isAvailableOnStore = data.is_available_store
+            } catch (_: IOException) {}
         }
     }
 
@@ -93,7 +88,7 @@ interface AppUpdaterApi {
      * check app new version
      * */
     @GET("/flexbooru/flexbooru/master/app/update.json")
-    fun checkUpdate(): Call<UpdateInfo>
+    fun checkUpdateAsync(): Deferred<UpdateInfo>
 }
 
 /**

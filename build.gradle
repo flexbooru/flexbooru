@@ -12,6 +12,8 @@ buildscript {
         glide_version = '4.10.0-SNAPSHOT'
         exoplayer_version = '2.10.0'
         tikxml_version = '0.8.13'
+        coroutines_version = '1.2.1'
+        kodein_version = '6.2.0'
     }
     repositories {
         google()

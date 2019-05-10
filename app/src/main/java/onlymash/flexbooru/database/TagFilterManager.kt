@@ -16,7 +16,10 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.TagFilterDao
 import onlymash.flexbooru.entity.TagFilter
+import org.kodein.di.generic.instance
 import java.io.IOException
 import java.sql.SQLException
 
@@ -30,10 +33,12 @@ object TagFilterManager {
 
     val listeners: MutableList<Listener> = mutableListOf()
 
+    private val tagFilterDao: TagFilterDao by App.app.instance()
+
     @Throws(SQLException::class)
     fun createTagFilter(tag: TagFilter): TagFilter {
         tag.uid = 0
-        tag.uid = FlexbooruDatabase.tagFilterDao.insert(tag)
+        tag.uid = tagFilterDao.insert(tag)
         if (tag.uid >= 0) {
             listeners.forEach {
                 it.onAdd(tag)
@@ -44,7 +49,7 @@ object TagFilterManager {
 
     @Throws(SQLException::class)
     fun updateTagFilter(tag: TagFilter): Boolean {
-        val result = FlexbooruDatabase.tagFilterDao.update(tag) == 1
+        val result = tagFilterDao.update(tag) == 1
         if (result) {
             listeners.forEach {
                 it.onUpdate(tag)
@@ -55,7 +60,7 @@ object TagFilterManager {
 
     @Throws(IOException::class)
     fun getTagFilterByBooruUid(booruUid: Long): MutableList<TagFilter>? = try {
-        FlexbooruDatabase.tagFilterDao.getTagByBooruUid(booruUid)
+        tagFilterDao.getTagByBooruUid(booruUid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -65,7 +70,7 @@ object TagFilterManager {
 
     @Throws(IOException::class)
     fun getTagFilterByTagFilterUid(uid: Long): TagFilter? = try {
-        FlexbooruDatabase.tagFilterDao.getTagByTagUid(uid)
+        tagFilterDao.getTagByTagUid(uid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -75,7 +80,7 @@ object TagFilterManager {
 
     @Throws(SQLException::class)
     fun deleteTagFilter(tag: TagFilter) {
-        if (FlexbooruDatabase.tagFilterDao.delete(tag.uid) == 1) {
+        if (tagFilterDao.delete(tag.uid) == 1) {
             listeners.forEach {
                 it.onDelete(tag)
             }
@@ -83,11 +88,11 @@ object TagFilterManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteAll() = FlexbooruDatabase.tagFilterDao.deleteAll()
+    fun deleteAll() = tagFilterDao.deleteAll()
 
     @Throws(IOException::class)
     fun getAllTagFilters(): MutableList<TagFilter>? = try {
-        FlexbooruDatabase.tagFilterDao.getAll()
+        tagFilterDao.getAll()
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {

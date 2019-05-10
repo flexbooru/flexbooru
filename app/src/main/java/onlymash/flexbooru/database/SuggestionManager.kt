@@ -19,27 +19,32 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteCantOpenDatabaseException
 import androidx.lifecycle.LiveData
 import com.crashlytics.android.Crashlytics
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.SuggestionDao
 import onlymash.flexbooru.entity.Suggestion
+import org.kodein.di.generic.instance
 import java.io.IOException
 
 object SuggestionManager {
 
+    private val suggestionDao: SuggestionDao by App.app.instance()
+
     @Throws(SQLException::class)
     fun createSuggestion(suggestion: Suggestion): Suggestion {
         suggestion.uid = 0L
-        suggestion.uid = FlexbooruDatabase.suggestionDao.insert(suggestion)
+        suggestion.uid = suggestionDao.insert(suggestion)
         return suggestion
     }
 
     @Throws(SQLException::class)
-    fun deleteSuggestion(uid: Long): Boolean = FlexbooruDatabase.suggestionDao.delete(uid) == 1
+    fun deleteSuggestion(uid: Long): Boolean = suggestionDao.delete(uid) == 1
 
     @Throws(SQLException::class)
-    fun deleteAll() = FlexbooruDatabase.suggestionDao.deleteAll()
+    fun deleteAll() = suggestionDao.deleteAll()
 
     @Throws(IOException::class)
     fun getSuggestionsByBooruUid(booruUid: Long): MutableList<Suggestion>? = try {
-        FlexbooruDatabase.suggestionDao.getSuggestionsByBooruUid(booruUid)
+        suggestionDao.getSuggestionsByBooruUid(booruUid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -49,7 +54,7 @@ object SuggestionManager {
 
     @Throws(IOException::class)
     fun getSuggestionsByBooruUidLiveData(booruUid: Long): LiveData<MutableList<Suggestion>>? = try {
-        FlexbooruDatabase.suggestionDao.getSuggestionsByBooruUidLiveData(booruUid)
+        suggestionDao.getSuggestionsByBooruUidLiveData(booruUid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {

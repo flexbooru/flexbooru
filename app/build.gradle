@@ -97,6 +97,10 @@ jsonFile.write(builder.toPrettyString())
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
     //Room requires
     implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.5.1"
     implementation 'androidx.annotation:annotation:1.1.0-rc01'
@@ -113,7 +117,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
     implementation "androidx.work:work-runtime-ktx:$work_version"
-    implementation "androidx.work:work-rxjava2:$work_version"
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
@@ -130,6 +133,7 @@ dependencies {
     implementation 'com.android.billingclient:billing:2.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.0-alpha05'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"

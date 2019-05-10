@@ -31,14 +31,15 @@ import androidx.appcompat.widget.ActionMenuView
 import androidx.cardview.widget.CardView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
+import java.util.concurrent.Executor
 
 class SearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -70,8 +71,8 @@ class SearchBar @JvmOverloads constructor(
     }
 
     private var suggestionsOnline: MutableList<TagBase>? = null
-    private val suggestionsRepo by lazy { ServiceLocator.instance().getSuggestionRepository() }
-    private val ioExecutor by lazy { ServiceLocator.instance().getDiskIOExecutor() }
+    private var suggestionsRepo: SuggestionRepository? = null
+    private var ioExecutor: Executor? = null
 
     private var suggestions: MutableList<Suggestion>
     private val suggestionAdapter: SuggestionAdapter
@@ -205,10 +206,18 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
+    fun setSuggestionsRepo(repo: SuggestionRepository) {
+        suggestionsRepo = repo
+    }
+
+    fun setExecutor(executor: Executor) {
+        ioExecutor = executor
+    }
+
     private fun fetchSuggestions() {
         searchTag?.let {
-            ioExecutor.execute {
-                suggestionsOnline = suggestionsRepo.fetchSuggestions(type, it)
+            ioExecutor?.execute {
+                suggestionsOnline = suggestionsRepo?.fetchSuggestions(type, it)
                 handler?.post {
                     showSuggestion()
                     suggestionList.adapter = suggestionOnlineAdapter

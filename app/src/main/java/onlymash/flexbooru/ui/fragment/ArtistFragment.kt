@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
@@ -36,6 +35,7 @@ import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.artist.ArtistBase
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.artist.ArtistData
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -272,7 +272,14 @@ class ArtistFragment : ListFragment() {
             notSupported.visibility = View.VISIBLE
             return
         }
-        artistViewModel = getArtistViewModel(ServiceLocator.instance().getArtistRepository())
+        artistViewModel = getArtistViewModel(
+            ArtistData(
+                danbooruApi = danApi,
+                danbooruOneApi = danOneApi,
+                moebooruApi = moeApi,
+                networkExecutor = ioExecutor
+            )
+        )
         artistAdapter = ArtistAdapter(
             listener = itemListener,
             retryCallback = {

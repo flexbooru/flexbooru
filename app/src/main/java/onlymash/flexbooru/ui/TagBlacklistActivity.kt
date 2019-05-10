@@ -33,11 +33,15 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.TagBlacklistManager
+import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
 import onlymash.flexbooru.ui.viewmodel.TagBlacklistViewModel
+import org.kodein.di.generic.instance
 
 class TagBlacklistActivity : BaseActivity() {
+
+    private val tagBlacklistDao: TagBlacklistDao by instance()
 
     private lateinit var tagBlacklistAdapter: TagBlacklistAdapter
     private lateinit var tagBlacklistViewModel: TagBlacklistViewModel
@@ -98,7 +102,7 @@ class TagBlacklistActivity : BaseActivity() {
     private fun getTagBlacklistViewModel(): TagBlacklistViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TagBlacklistViewModel() as T
+                return TagBlacklistViewModel(tagBlacklistDao) as T
             }
         })[TagBlacklistViewModel::class.java]
     }

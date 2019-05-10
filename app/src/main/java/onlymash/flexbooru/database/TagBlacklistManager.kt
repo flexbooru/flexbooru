@@ -15,18 +15,23 @@
 
 package onlymash.flexbooru.database
 
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.TagBlacklist
+import org.kodein.di.generic.instance
 import java.io.IOException
 import java.sql.SQLException
 
 object TagBlacklistManager {
+
+    private val tagBlacklistDao: TagBlacklistDao by App.app.instance()
     /**
      * Create a [TagBlacklist]
      * */
     @Throws(SQLException::class)
     fun createTagBlacklist(tagBlacklist: TagBlacklist): TagBlacklist {
         tagBlacklist.uid = 0L
-        tagBlacklist.uid = FlexbooruDatabase.tagBlacklistDao.insert(tagBlacklist)
+        tagBlacklist.uid = tagBlacklistDao.insert(tagBlacklist)
         return tagBlacklist
     }
     /**
@@ -34,13 +39,13 @@ object TagBlacklistManager {
      * */
     @Throws(SQLException::class)
     fun deleteTagBlacklist(tagBlacklist: TagBlacklist) {
-        FlexbooruDatabase.tagBlacklistDao.delete(tagBlacklist)
+        tagBlacklistDao.delete(tagBlacklist)
     }
     /**
      * return [TagBlacklist] list by booru uid
      * */
     @Throws(IOException::class)
     fun getTagBlacklistByBooruUid(booruUid: Long): MutableList<TagBlacklist> {
-        return FlexbooruDatabase.tagBlacklistDao.getTagBlacklistByBooruUid(booruUid)
+        return tagBlacklistDao.getTagBlacklistByBooruUid(booruUid)
     }
 }

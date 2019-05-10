@@ -15,7 +15,10 @@
 
 package onlymash.flexbooru.database
 
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.MuzeiDao
 import onlymash.flexbooru.entity.Muzei
+import org.kodein.di.generic.instance
 import java.io.IOException
 import java.sql.SQLException
 
@@ -23,13 +26,15 @@ import java.sql.SQLException
  * Manage [Muzei] table
  * */
 object MuzeiManager {
+
+    private val muzeiDao: MuzeiDao by App.app.instance()
     /**
      * Create a [Muzei]
      * */
     @Throws(SQLException::class)
     fun createMuzei(muzei: Muzei): Muzei {
         muzei.uid = 0L
-        muzei.uid = FlexbooruDatabase.muzeiDao.insert(muzei)
+        muzei.uid = muzeiDao.insert(muzei)
         return muzei
     }
     /**
@@ -37,13 +42,13 @@ object MuzeiManager {
      * */
     @Throws(SQLException::class)
     fun deleteMuzei(muzei: Muzei) {
-        FlexbooruDatabase.muzeiDao.delete(muzei)
+        muzeiDao.delete(muzei)
     }
     /**
      * return [Muzei] list by booru uid
      * */
     @Throws(IOException::class)
     fun getMuzeiByBooruUid(booruUid: Long): MutableList<Muzei>? {
-        return FlexbooruDatabase.muzeiDao.getMuzeiByBooruUid(booruUid)
+        return muzeiDao.getMuzeiByBooruUid(booruUid)
     }
 }

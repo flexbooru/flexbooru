@@ -32,15 +32,50 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
-import onlymash.flexbooru.api.OrderApi
+import onlymash.flexbooru.api.*
+import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
 import onlymash.flexbooru.ui.PurchaseActivity
 import onlymash.flexbooru.util.getSignMd5
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.androidXModule
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
+import org.kodein.di.generic.singleton
+import java.util.concurrent.Executors
 
-class App : Application() {
+class App : Application(), KodeinAware {
     companion object {
         lateinit var app: App
     }
+
+    override val kodein by Kodein.lazy {
+        import(androidXModule(this@App))
+
+        bind() from singleton { FlexbooruDatabase(instance()) }
+        bind() from singleton { instance<FlexbooruDatabase>().booruDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().userDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().cookieDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().suggestionDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().tagFilterDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().tagBlacklistDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().muzeiDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().postDanDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().postDanOneDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().postMoeDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().postGelDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().postSankakuDao() }
+        bind() from singleton { DanbooruApi() }
+        bind() from singleton { DanbooruOneApi() }
+        bind() from singleton { MoebooruApi() }
+        bind() from singleton { GelbooruApi() }
+        bind() from singleton { SankakuApi() }
+        bind() from singleton { Executors.newSingleThreadExecutor() }
+        bind() from singleton { TagFilterDataSource(instance()) }
+    }
+
     val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(app) }
     val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {

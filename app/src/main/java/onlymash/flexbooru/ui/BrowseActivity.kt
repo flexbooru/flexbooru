@@ -51,9 +51,10 @@ import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar_transparent.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
@@ -62,17 +63,21 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoadedListener
+import onlymash.flexbooru.repository.browse.PostLoader
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.favorite.VoteCallback
+import onlymash.flexbooru.repository.favorite.VoteData
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
 import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.DismissFrameLayout
+import org.kodein.di.generic.instance
 import java.io.*
+import java.util.concurrent.Executor
 
-class BrowseActivity : AppCompatActivity() {
+class BrowseActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "BrowseActivity"
@@ -109,6 +114,13 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
+    private val danApi: DanbooruApi by instance()
+    private val danOneApi: DanbooruOneApi by instance()
+    private val moeApi: MoebooruApi by instance()
+    private val sankakuApi: SankakuApi by instance()
+    private val db: FlexbooruDatabase by instance()
+    private val ioExecutor: Executor by instance()
+
     private var postsDan: MutableList<PostDan>? = null
     private var postsDanFav: MutableList<PostDan>? = null
     private var postsMoe: MutableList<PostMoe>? = null
@@ -127,7 +139,12 @@ class BrowseActivity : AppCompatActivity() {
     private var user: User? = null
     private var currentPosition = -1
     private var canTransition = true
-    private val postLoader by lazy { ServiceLocator.instance().getPostLoader() }
+    private val postLoader by lazy {
+        PostLoader(
+            db = db,
+            ioExecutor = ioExecutor
+        )
+    }
 
     @Suppress("UNCHECKED_CAST")
     private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
@@ -313,7 +330,16 @@ class BrowseActivity : AppCompatActivity() {
         }
     }
 
-    private val voteRepository by lazy { ServiceLocator.instance().getVoteRepository() }
+    private val voteRepository by lazy {
+        VoteData(
+            danbooruApi = danApi,
+            danbooruOneApi = danOneApi,
+            moebooruApi = moeApi,
+            sankakuApi = sankakuApi,
+            db = db,
+            ioExecutor = ioExecutor
+        )
+    }
     private lateinit var favPostViewModel: FavPostViewModel
 
     private val voteCallback = object : VoteCallback {
@@ -454,7 +480,8 @@ class BrowseActivity : AppCompatActivity() {
             glideRequests = GlideApp.with(this),
             picasso = Picasso.Builder(this).build(),
             onDismissListener = onDismissListener,
-            pageType = pageType)
+            pageType = pageType,
+            ioExecutor = ioExecutor)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
         postLoader.postLoadedListener = postLoadedListener

@@ -13,12 +13,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.entity
 
-import androidx.appcompat.app.AppCompatActivity
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-    override val kodein by kodein()
+sealed class Result<out T : Any> {
+    data class Success<out T : Any>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
 }

@@ -38,17 +38,20 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.database.*
+import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.favorite.VoteData
+import onlymash.flexbooru.repository.post.PostData
 import onlymash.flexbooru.repository.post.PostRepository
+import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.ui.AccountConfigActivity
 import onlymash.flexbooru.ui.BrowseActivity
@@ -63,6 +66,7 @@ import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
+import org.kodein.di.generic.instance
 
 class PostFragment : ListFragment() {
 
@@ -156,6 +160,10 @@ class PostFragment : ListFragment() {
         private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
     }
 
+    private val db: FlexbooruDatabase by instance()
+    private val tagFilterDataSource: TagFilterDataSource by instance()
+    private val tagBlacklistDao: TagBlacklistDao by instance()
+
     private lateinit var tagBlacklistViewModel: TagBlacklistViewModel
     private lateinit var postViewModel: PostViewModel
     private lateinit var glide: GlideRequests
@@ -211,7 +219,16 @@ class PostFragment : ListFragment() {
             }
         }
 
-    private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
+    private val voteRepo by lazy {
+        VoteData(
+            danbooruApi = danApi,
+            danbooruOneApi = danOneApi,
+            moebooruApi = moeApi,
+            sankakuApi = sankakuApi,
+            db = db,
+            ioExecutor = ioExecutor
+        )
+    }
 
     private fun setSharedElement() {
         val activity = requireActivity()
@@ -465,7 +482,17 @@ class PostFragment : ListFragment() {
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         searchBar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
         expandButton = searchBar.findViewById<View>(R.id.action_expand_tag_filter)
-        postViewModel = getPostViewModel(ServiceLocator.instance().getPostRepository())
+        postViewModel = getPostViewModel(
+            PostData(
+                db = db,
+                danbooruApi = danApi,
+                danbooruOneApi = danOneApi,
+                moebooruApi = moeApi,
+                gelbooruApi = gelApi,
+                sankakuApi = sankakuApi,
+                ioExecutor = ioExecutor
+            )
+        )
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
             columnSize = resources.gridWidth(),
@@ -514,7 +541,7 @@ class PostFragment : ListFragment() {
             }
             adapter = tagFilterAdapter
         }
-        tagFilterViewModel = getTagFilterViewModel(ServiceLocator.instance().getTagFilterDataSource())
+        tagFilterViewModel = getTagFilterViewModel(tagFilterDataSource)
         tagFilterViewModel.tagsFilter.observe(this, Observer {
             tagFilterAdapter.updateData(it)
         })
@@ -584,7 +611,7 @@ class PostFragment : ListFragment() {
         tagBlacklistViewModel = getViewModel(object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TagBlacklistViewModel() as T
+                return TagBlacklistViewModel(tagBlacklistDao) as T
             }
         })
         tagBlacklistViewModel.tagOutcome.observe(this, Observer {

@@ -38,7 +38,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideRequests
@@ -48,11 +47,13 @@ import onlymash.flexbooru.util.isGifImage
 import onlymash.flexbooru.util.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
+import java.util.concurrent.Executor
 
 class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val picasso: Picasso,
                          private val onDismissListener: DismissFrameLayout.OnDismissListener,
-                         private val pageType: Int): PagerAdapter() {
+                         private val pageType: Int,
+                         private val ioExecutor: Executor): PagerAdapter() {
 
     private val size = Settings.instance().browseSize
     private var posts: MutableList<PostBase> = mutableListOf()
@@ -98,7 +99,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                         setOnClickListener {
                             photoViewListener?.onClickPhotoView()
                         }
-                        setExecutor(ServiceLocator.instance().getDiskIOExecutor())
+                        setExecutor(ioExecutor)
                         setBitmapDecoderFactory { CustomDecoder(picasso) }
                         setRegionDecoderFactory { CustomRegionDecoder() }
                     }

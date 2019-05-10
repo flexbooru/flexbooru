@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -31,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
@@ -40,6 +38,7 @@ import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.pool.PoolData
 import onlymash.flexbooru.repository.pool.PoolRepository
 import onlymash.flexbooru.ui.*
 import onlymash.flexbooru.ui.adapter.PoolAdapter
@@ -264,7 +263,15 @@ class PoolFragment : ListFragment() {
             notSupported.visibility = View.VISIBLE
             return
         }
-        poolViewModel = getPoolViewModel(ServiceLocator.instance().getPoolRepository())
+        poolViewModel = getPoolViewModel(
+            PoolData(
+                danbooruApi = danApi,
+                danbooruOneApi = danOneApi,
+                moebooruApi = moeApi,
+                sankakuApi = sankakuApi,
+                networkExecutor = ioExecutor
+            )
+        )
         val glide = GlideApp.with(this)
         poolAdapter = PoolAdapter(
             glide = glide,

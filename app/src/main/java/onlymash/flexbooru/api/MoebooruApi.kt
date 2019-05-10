@@ -46,7 +46,7 @@ interface MoebooruApi {
         /**
          * return [MoebooruApi]
          * */
-        fun create(): MoebooruApi {
+        operator fun invoke(): MoebooruApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("MoebooruApi", log)

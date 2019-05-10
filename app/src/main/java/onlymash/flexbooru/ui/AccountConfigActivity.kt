@@ -24,16 +24,18 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account_config.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
+import onlymash.flexbooru.repository.account.UserFinder
 import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
+import org.kodein.di.generic.instance
 
 class AccountConfigActivity : BaseActivity() {
 
@@ -71,12 +73,24 @@ class AccountConfigActivity : BaseActivity() {
         }
     }
 
+    private val danApi: DanbooruApi by instance()
+    private val danOneApi: DanbooruOneApi by instance()
+    private val moeApi: MoebooruApi by instance()
+    private val sankakuApi: SankakuApi by instance()
+
     private lateinit var booru: Booru
     private var username = ""
     private var pass = ""
     private var requesting = false
 
-    private val userFinder: UserRepository by lazy { ServiceLocator.instance().getUserRepository() }
+    private val userFinder: UserRepository by lazy {
+        UserFinder(
+            danbooruApi = danApi,
+            danbooruOneApi = danOneApi,
+            moebooruApi = moeApi,
+            sankakuApi = sankakuApi
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

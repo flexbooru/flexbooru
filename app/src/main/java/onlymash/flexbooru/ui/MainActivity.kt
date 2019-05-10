@@ -22,7 +22,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
@@ -41,6 +40,9 @@ import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.*
 import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.api.AppUpdaterApi
@@ -186,13 +188,19 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         BooruManager.listeners.add(booruListener)
         initDrawerHeader()
         setExitSharedElementCallback(sharedElementCallback)
-        AppUpdaterApi.checkUpdate()
+        checkUpdate()
+    }
+
+    private fun checkUpdate() {
+        GlobalScope.launch(Dispatchers.IO) {
+            AppUpdaterApi.checkUpdate()
+        }
         if (BuildConfig.VERSION_CODE < Settings.instance().latestVersionCode) {
             AlertDialog.Builder(this)
                 .setTitle(R.string.update_found_update)
                 .setMessage(getString(R.string.update_version, Settings.instance().latestVersionName))
                 .setPositiveButton(R.string.dialog_update) { _, _ ->
-                    if (Settings.instance().isGoogleSign) {
+                    if (Settings.instance().isGoogleSign && Settings.instance().isAvailableOnStore) {
                         openAppInMarket(applicationContext.packageName)
                     } else {
                         launchUrl(Settings.instance().latestVersionUrl)

@@ -42,7 +42,7 @@ interface SankakuApi {
         /**
          * return [SankakuApi]
          * */
-        fun create(): SankakuApi {
+        operator fun invoke(): SankakuApi {
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("SankakuApi", log)
             }).apply {

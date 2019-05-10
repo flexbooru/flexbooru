@@ -23,14 +23,19 @@ import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
+import onlymash.flexbooru.repository.account.UserFinder
+import org.kodein.di.generic.instance
 
 class AccountActivity : BaseActivity() {
 
@@ -40,10 +45,22 @@ class AccountActivity : BaseActivity() {
         const val USER_AVATAR_KEY = "user_avatar"
     }
 
+    private val danApi: DanbooruApi by instance()
+    private val danOneApi: DanbooruOneApi by instance()
+    private val moeApi: MoebooruApi by instance()
+    private val sankakuApi: SankakuApi by instance()
+
     private lateinit var booru: Booru
     private lateinit var user: User
 
-    private val userFinder by lazy { ServiceLocator.instance().getUserRepository() }
+    private val userFinder by lazy {
+        UserFinder(
+            danbooruApi = danApi,
+            danbooruOneApi = danOneApi,
+            moebooruApi = moeApi,
+            sankakuApi = sankakuApi
+        )
+    }
 
     private var findUserListener = object : FindUserListener {
         override fun onSuccess(user: User) {

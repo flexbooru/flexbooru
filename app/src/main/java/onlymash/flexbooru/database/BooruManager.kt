@@ -17,7 +17,10 @@ package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
 import com.crashlytics.android.Crashlytics
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.BooruDao
 import onlymash.flexbooru.entity.Booru
+import org.kodein.di.generic.instance
 import java.io.IOException
 import java.sql.SQLException
 
@@ -32,10 +35,12 @@ object BooruManager {
     // booru change callback
     val listeners: MutableList<Listener> = mutableListOf()
 
+    private val booruDao: BooruDao by App.app.instance()
+
     @Throws(SQLException::class)
     fun createBooru(booru: Booru): Booru {
         booru.uid = 0
-        val uid = FlexbooruDatabase.booruDao.insert(booru)
+        val uid = booruDao.insert(booru)
         if (uid >= 0) {
             booru.uid = uid
             listeners.forEach {
@@ -47,7 +52,7 @@ object BooruManager {
 
     @Throws(SQLException::class)
     fun updateBooru(booru: Booru): Boolean {
-        val result = FlexbooruDatabase.booruDao.update(booru) == 1
+        val result = booruDao.update(booru) == 1
         if (result) {
             listeners.forEach {
                 it.onUpdate(booru)
@@ -58,7 +63,7 @@ object BooruManager {
 
     @Throws(IOException::class)
     fun getBooru(scheme: String, host: String): Booru? = try {
-        FlexbooruDatabase.booruDao[scheme, host]
+        booruDao[scheme, host]
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -68,7 +73,7 @@ object BooruManager {
 
     @Throws(IOException::class)
     fun getBooruByUid(uid: Long): Booru? = try {
-        FlexbooruDatabase.booruDao.getBooruByUid(uid)
+        booruDao.getBooruByUid(uid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -78,7 +83,7 @@ object BooruManager {
 
     @Throws(SQLException::class)
     fun deleteBooru(uid: Long) {
-        if (FlexbooruDatabase.booruDao.delete(uid) == 1) {
+        if (booruDao.delete(uid) == 1) {
             listeners.forEach {
                 it.onDelete(uid)
             }
@@ -86,7 +91,7 @@ object BooruManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteAll() = FlexbooruDatabase.booruDao.deleteAll()
+    fun deleteAll() = booruDao.deleteAll()
 
 
     /**
@@ -94,7 +99,7 @@ object BooruManager {
      * */
     @Throws(IOException::class)
     fun isNotEmpty(): Boolean = try {
-        FlexbooruDatabase.booruDao.isNotEmpty()
+        booruDao.isNotEmpty()
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
@@ -107,7 +112,7 @@ object BooruManager {
      * */
     @Throws(IOException::class)
     fun getAllBoorus(): MutableList<Booru>? = try {
-        FlexbooruDatabase.booruDao.getAll()
+        booruDao.getAll()
     } catch (ex: SQLiteCantOpenDatabaseException) {
         Crashlytics.logException(ex)
         throw IOException(ex)

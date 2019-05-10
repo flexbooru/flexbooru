@@ -17,21 +17,26 @@ package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
 import com.crashlytics.android.Crashlytics
+import onlymash.flexbooru.App
+import onlymash.flexbooru.database.dao.CookieDao
 import onlymash.flexbooru.entity.Cookie
+import org.kodein.di.generic.instance
 import java.io.IOException
 import java.sql.SQLException
 
 object CookieManager {
 
+    private val cookieDao: CookieDao by App.app.instance()
+
     @Throws(SQLException::class)
     fun createCookie(cookie: Cookie): Cookie {
-        cookie.uid = FlexbooruDatabase.cookieDao.insert(cookie)
+        cookie.uid = cookieDao.insert(cookie)
         return cookie
     }
 
     @Throws(IOException::class)
     fun getCookieByBooruUid(booruUid: Long): Cookie? = try {
-        FlexbooruDatabase.cookieDao.getCookieByBooruUid(booruUid)
+        cookieDao.getCookieByBooruUid(booruUid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {

@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
@@ -36,6 +35,7 @@ import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.tag.TagData
 import onlymash.flexbooru.repository.tag.TagRepository
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -393,7 +393,16 @@ class TagFragment : ListFragment() {
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
         }
-        tagViewModel = getTagViewModel(ServiceLocator.instance().getTagRepository())
+        tagViewModel = getTagViewModel(
+            TagData(
+                danbooruApi = danApi,
+                danbooruOneApi = danOneApi,
+                moebooruApi = moeApi,
+                gelbooruApi = gelApi,
+                sankakuApi = sankakuApi,
+                networkExecutor = ioExecutor
+            )
+        )
         tagAdapter = TagAdapter(
             listener = itemListener,
             retryCallback = {

@@ -33,12 +33,27 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.*
+import onlymash.flexbooru.repository.suggestion.SuggestionData
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.widget.search.SearchBar
 import onlymash.flexbooru.widget.search.SearchBarMover
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
+import java.util.concurrent.Executor
 
-abstract class ListFragment : Fragment() {
+abstract class ListFragment : Fragment(), KodeinAware {
+
+    override val kodein by kodein()
+
+    internal val danApi: DanbooruApi by instance()
+    internal val danOneApi: DanbooruOneApi by instance()
+    internal val moeApi: MoebooruApi by instance()
+    internal val gelApi: GelbooruApi by instance()
+    internal val sankakuApi: SankakuApi by instance()
+    internal val ioExecutor: Executor by instance()
 
     internal lateinit var searchBar: SearchBar
     internal lateinit var leftDrawable: DrawerArrowDrawable
@@ -149,6 +164,16 @@ abstract class ListFragment : Fragment() {
             setLeftDrawable(leftDrawable)
             setHelper(helper)
             setStateChangeListener(stateChangeListener)
+            setSuggestionsRepo(
+                SuggestionData(
+                    danbooruApi = danApi,
+                    moebooruApi = moeApi,
+                    danbooruOneApi = danOneApi,
+                    gelbooruApi = gelApi,
+                    sankakuApi = sankakuApi
+                )
+            )
+            setExecutor(ioExecutor)
         }
         searchBarMover = SearchBarMover(sbMoverHelper, searchBar, list)
         val suggestionViewModel = getSuggestionViewModel()

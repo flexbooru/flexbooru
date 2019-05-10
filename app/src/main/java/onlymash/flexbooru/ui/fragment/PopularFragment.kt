@@ -34,8 +34,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ServiceLocator
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.api.*
+import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
@@ -44,6 +45,8 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.favorite.VoteData
+import onlymash.flexbooru.repository.popular.PopularData
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.AccountConfigActivity
 import onlymash.flexbooru.ui.BrowseActivity
@@ -56,6 +59,7 @@ import onlymash.flexbooru.util.DownloadUtil
 import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
+import org.kodein.di.generic.instance
 import java.util.*
 
 
@@ -140,6 +144,9 @@ class PopularFragment : ListFragment() {
         private const val PERIOD_MONTH = "1m"
         private const val PERIOD_YEAR = "1y"
     }
+
+    private val db: FlexbooruDatabase by instance()
+
     private var type: Int = -1
 
     private lateinit var popular: SearchPopular
@@ -152,7 +159,16 @@ class PopularFragment : ListFragment() {
     private var currentMonthEnd = -1
     private var currentDayEnd = -1
 
-    private val voteRepo by lazy { ServiceLocator.instance().getVoteRepository() }
+    private val voteRepo by lazy {
+        VoteData(
+            danbooruApi = danApi,
+            danbooruOneApi = danOneApi,
+            moebooruApi = moeApi,
+            sankakuApi = sankakuApi,
+            db = db,
+            ioExecutor = ioExecutor
+        )
+    }
 
     private val itemListener = object : PostViewHolder.ItemListener {
         override fun onClickItem(post: PostBase?, view: View) {
@@ -551,7 +567,16 @@ class PopularFragment : ListFragment() {
             Constants.TYPE_DANBOORU_ONE -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
             Constants.TYPE_SANKAKU -> searchBar.setMenu(R.menu.popular_sankaku, requireActivity().menuInflater)
         }
-        popularViewModel = getPopularViewModel(ServiceLocator.instance().getPopularRepository())
+        popularViewModel = getPopularViewModel(
+            PopularData(
+                danbooruApi = danApi,
+                danbooruOneApi = danOneApi,
+                moebooruApi = moeApi,
+                sankakuApi = sankakuApi,
+                db = db,
+                networkExecutor = ioExecutor
+            )
+        )
         glide = GlideApp.with(this)
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
             columnSize = resources.gridWidth(),

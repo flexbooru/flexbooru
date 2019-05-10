@@ -17,7 +17,9 @@ package onlymash.flexbooru.util
 
 import android.content.Context
 import com.crashlytics.android.Crashlytics
-import onlymash.flexbooru.ServiceLocator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.*
 
 object FileUtil {
@@ -39,7 +41,7 @@ object FileUtil {
 }
 
 fun Context.trimCache() {
-    ServiceLocator.instance().getDiskIOExecutor().execute {
+    GlobalScope.launch(Dispatchers.IO) {
         try {
             cacheDir?.deleteAll()
         } catch (_: IOException) {}

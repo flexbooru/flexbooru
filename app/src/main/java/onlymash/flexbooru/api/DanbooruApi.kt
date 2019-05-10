@@ -45,7 +45,7 @@ interface DanbooruApi {
         /**
          * return [DanbooruApi]
          * */
-        fun create(): DanbooruApi {
+        operator fun invoke(): DanbooruApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("DanbooruApi", log)

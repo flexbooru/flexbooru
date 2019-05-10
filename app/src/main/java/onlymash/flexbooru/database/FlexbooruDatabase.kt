@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.database
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -158,7 +159,13 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
-        val instance by lazy {
+        @Volatile
+        private var instance: FlexbooruDatabase? = null
+        private val LOCK = Any()
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
+            instance ?: buildDatabase(context).also { instance = it }
+        }
+        private fun buildDatabase(context: Context) =
             Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
@@ -178,14 +185,6 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_22_23
                 )
                 .build()
-        }
-        val booruDao get() = instance.booruDao()
-        val userDao get() = instance.userDao()
-        val tagFilterDao get() = instance.tagFilterDao()
-        val muzeiDao get() = instance.muzeiDao()
-        val suggestionDao get() = instance.suggestionDao()
-        val cookieDao get() = instance.cookieDao()
-        val tagBlacklistDao get() = instance.tagBlacklistDao()
     }
 
     abstract fun postDanOneDao(): PostDanOneDao

@@ -36,10 +36,12 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.content.muzei.FlexArtWorker
 import onlymash.flexbooru.database.MuzeiManager
+import onlymash.flexbooru.database.dao.MuzeiDao
 import onlymash.flexbooru.entity.Muzei
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.util.openAppInMarket
+import org.kodein.di.generic.instance
 
 class MuzeiActivity : BaseActivity() {
 
@@ -49,6 +51,8 @@ class MuzeiActivity : BaseActivity() {
 
     private lateinit var muzeiViewModel: MuzeiViewModel
     private lateinit var muzeiAdapter: MuzeiAdapter
+
+    private val muzeiDao: MuzeiDao by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +114,7 @@ class MuzeiActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))
             adapter = muzeiAdapter
         }
-        muzeiViewModel = getMuzeiViewModel()
+        muzeiViewModel = getMuzeiViewModel(muzeiDao)
         muzeiViewModel.muzeiOutcome.observe(this, Observer {
             muzeiAdapter.updateData(it)
         })
@@ -118,10 +122,10 @@ class MuzeiActivity : BaseActivity() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getMuzeiViewModel(): MuzeiViewModel {
+    private fun getMuzeiViewModel(muzeiDao: MuzeiDao): MuzeiViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MuzeiViewModel() as T
+                return MuzeiViewModel(muzeiDao) as T
             }
         })[MuzeiViewModel::class.java]
     }
