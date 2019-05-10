@@ -61,7 +61,6 @@ import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagBlacklistViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.util.*
-import onlymash.flexbooru.util.DownloadUtil.Companion.downloadPost
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
 
@@ -590,16 +589,6 @@ class PostFragment : ListFragment() {
         })
         tagBlacklistViewModel.tagOutcome.observe(this, Observer {
             postViewModel.show(search, it)
-            if (tagBlacklists != it) {
-                tagBlacklists = it
-                when (type) {
-                    Constants.TYPE_DANBOORU -> postViewModel.refreshDan()
-                    Constants.TYPE_DANBOORU_ONE -> postViewModel.refreshDanOne()
-                    Constants.TYPE_MOEBOORU -> postViewModel.refreshMoe()
-                    Constants.TYPE_GELBOORU -> postViewModel.refreshGel()
-                    Constants.TYPE_SANKAKU -> postViewModel.refreshSankaku()
-                }
-            }
         })
         tagBlacklistViewModel.loadTags(Settings.instance().activeBooruUid)
         val activity = requireActivity()
