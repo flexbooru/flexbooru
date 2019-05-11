@@ -345,16 +345,7 @@ class PostRepositoryIml(
                     ioExecutor.execute {
                         db.runInTransaction {
                             val posts = response.body()
-                            if (posts.isNullOrEmpty()) {
-                                db.postDanOneDao().deletePosts(host = search.host, keyword = search.keyword)
-                                return@runInTransaction
-                            }
-                            val first = db.postDanOneDao()
-                                .getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id == posts[0].id) {
-                                return@runInTransaction
-                            }
-                            db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
+                            db.postDanOneDao().deletePosts(host = search.host, keyword = search.keyword)
                             insertDanbooruOneResultIntoDb(search, posts, tagBlacklists)
                         }
                     }
@@ -383,14 +374,6 @@ class PostRepositoryIml(
                     ioExecutor.execute {
                         db.runInTransaction {
                             val posts = response.body()
-                            if (posts.isNullOrEmpty()) {
-                                db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
-                                return@runInTransaction
-                            }
-                            val first = db.postDanDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id == posts[0].id) {
-                                return@runInTransaction
-                            }
                             db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
                             insertDanbooruResultIntoDb(search, posts, tagBlacklists)
                         }
@@ -424,14 +407,6 @@ class PostRepositoryIml(
                     ioExecutor.execute {
                         db.runInTransaction {
                             val posts = response.body()
-                            if (posts.isNullOrEmpty()) {
-                                db.postMoeDao().deletePosts(host = search.host, keyword = search.keyword)
-                                return@runInTransaction
-                            }
-                            val first = db.postMoeDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id == posts[0].id) {
-                                return@runInTransaction
-                            }
                             db.postMoeDao().deletePosts(search.host, search.keyword)
                             insertMoebooruResultIntoDb(search, posts)
                         }
@@ -460,14 +435,6 @@ class PostRepositoryIml(
                     ioExecutor.execute {
                         db.runInTransaction {
                             val posts = response.body()?.posts
-                            if (posts.isNullOrEmpty()) {
-                                db.postMoeDao().deletePosts(host = search.host, keyword = search.keyword)
-                                return@runInTransaction
-                            }
-                            val first = db.postGelDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id == posts[0].id) {
-                                return@runInTransaction
-                            }
                             db.postGelDao().deletePosts(search.host, search.keyword)
                             insertGelbooruResultIntoDb(search, posts, tagBlacklists)
                         }
@@ -535,14 +502,6 @@ class PostRepositoryIml(
                     ioExecutor.execute {
                         db.runInTransaction {
                             val posts = response.body()
-                            if (posts.isNullOrEmpty()) {
-                                db.postSankakuDao().deletePosts(host = search.host, keyword = search.keyword)
-                                return@runInTransaction
-                            }
-                            val first = db.postSankakuDao().getFirstPostRaw(host = search.host, keyword = search.keyword)
-                            if (first != null && first.id == posts[0].id) {
-                                return@runInTransaction
-                            }
                             db.postSankakuDao().deletePosts(search.host, search.keyword)
                             insertSankakuResultIntoDb(search, posts, tagBlacklists)
                         }
