@@ -18,15 +18,12 @@ package onlymash.flexbooru.extension
 import kotlinx.coroutines.*
 
 fun <T : Any> ioMain(
-    work: suspend (() -> T?),
-    callback: ((T?) -> Unit)? = null
+    work: suspend (() -> T),
+    callback: ((T) -> Unit)
 ): Job =
     CoroutineScope(Dispatchers.Main).launch {
         val data = CoroutineScope(Dispatchers.IO).async {
             return@async work()
         }.await()
-
-        callback?.let {
-            it(data)
-        }
+        callback(data)
     }

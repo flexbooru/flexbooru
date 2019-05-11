@@ -177,10 +177,9 @@ abstract class ListFragment : Fragment(), KodeinAware {
         }
         searchBarMover = SearchBarMover(sbMoverHelper, searchBar, list)
         val suggestionViewModel = getSuggestionViewModel()
-        suggestionViewModel.suggestions.observe(this, Observer {
+        suggestionViewModel.loadSuggestions(Settings.activeBooruUid).observe(this, Observer {
             searchBar.updateSuggestions(it)
         })
-        suggestionViewModel.loadSuggestions(Settings.activeBooruUid)
     }
 
     @Suppress("UNCHECKED_CAST")

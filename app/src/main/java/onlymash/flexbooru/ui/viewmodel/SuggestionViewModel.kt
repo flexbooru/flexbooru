@@ -15,20 +15,26 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
+import onlymash.flexbooru.extension.ioMain
 
 class SuggestionViewModel : ViewModel() {
 
-    val suggestions: MediatorLiveData<MutableList<Suggestion>> = MediatorLiveData()
+    private val suggestions: MediatorLiveData<MutableList<Suggestion>> = MediatorLiveData()
 
-    fun loadSuggestions(booruUid: Long) {
-        suggestions.addSource(
-            SuggestionManager.getSuggestionsByBooruUidLiveData(booruUid) ?: MutableLiveData()) {
-            suggestions.postValue(it ?: mutableListOf())
+    fun loadSuggestions(booruUid: Long): LiveData<MutableList<Suggestion>> {
+        ioMain({
+            SuggestionManager.getSuggestionsByBooruUidLiveData(booruUid) ?: MutableLiveData()
+        }){ data ->
+            suggestions.addSource(data) {
+                suggestions.postValue(it ?: mutableListOf())
+            }
         }
+        return suggestions
     }
 }

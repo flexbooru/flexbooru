@@ -542,10 +542,12 @@ class PostFragment : ListFragment() {
             adapter = tagFilterAdapter
         }
         tagFilterViewModel = getTagFilterViewModel(tagFilterRepositoryIml)
-        tagFilterViewModel.tagsFilter.observe(this, Observer {
-            tagFilterAdapter.updateData(it)
-        })
-        tagFilterViewModel.loadTags(Settings.activeBooruUid)
+        tagFilterViewModel.loadTags(Settings.activeBooruUid).observe(
+            this,
+            Observer {
+                tagFilterAdapter.updateData(it)
+            }
+        )
         action_search.setOnClickListener {
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (!tagString.isBlank()) {
@@ -614,10 +616,9 @@ class PostFragment : ListFragment() {
                 return TagBlacklistViewModel(tagBlacklistDao) as T
             }
         })
-        tagBlacklistViewModel.tagOutcome.observe(this, Observer {
+        tagBlacklistViewModel.loadTags(Settings.activeBooruUid).observe(this, Observer {
             postViewModel.show(search, it)
         })
-        tagBlacklistViewModel.loadTags(Settings.activeBooruUid)
         val activity = requireActivity()
         if (activity is MainActivity) {
             activity.addNavigationListener(navigationListener)

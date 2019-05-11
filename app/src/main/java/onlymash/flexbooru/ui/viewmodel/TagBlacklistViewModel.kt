@@ -15,22 +15,29 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.extension.ioMain
 
 class TagBlacklistViewModel(private val tagBlacklistDao: TagBlacklistDao) : ViewModel() {
 
-    val tagOutcome: MediatorLiveData<MutableList<TagBlacklist>> = MediatorLiveData()
+    private val tagOutcome: MediatorLiveData<MutableList<TagBlacklist>> = MediatorLiveData()
 
-    fun loadTags(booruUid: Long) {
-        tagOutcome.addSource(tagBlacklistDao.getTagBlacklistByBooruUidLiveData(booruUid)) {
-           if (it != null) {
-               tagOutcome.postValue(it)
-           } else {
-               tagOutcome.postValue(mutableListOf())
-           }
+    fun loadTags(booruUid: Long): LiveData<MutableList<TagBlacklist>> {
+        ioMain({
+            tagBlacklistDao.getTagBlacklistByBooruUidLiveData(booruUid)
+        }) { data ->
+            tagOutcome.addSource(data) {
+                if (it != null) {
+                    tagOutcome.postValue(it)
+                } else {
+                    tagOutcome.postValue(mutableListOf())
+                }
+            }
         }
+        return tagOutcome
     }
 }

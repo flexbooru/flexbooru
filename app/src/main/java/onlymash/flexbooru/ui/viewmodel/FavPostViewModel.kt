@@ -32,10 +32,8 @@ class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel
         ioMain({
             postLoader.loadPostsLiveData(host, keyword, type)
         }) { data ->
-            if (data != null) {
-                posts.addSource(data) {
-                    posts.postValue(it)
-                }
+            posts.addSource(data) {
+                posts.postValue(it)
             }
         }
         return posts

@@ -115,10 +115,9 @@ class MuzeiActivity : BaseActivity() {
             adapter = muzeiAdapter
         }
         muzeiViewModel = getMuzeiViewModel(muzeiDao)
-        muzeiViewModel.muzeiOutcome.observe(this, Observer {
+        muzeiViewModel.loadMuzei(uid).observe(this, Observer {
             muzeiAdapter.updateData(it)
         })
-        muzeiViewModel.loadMuzei(uid)
     }
 
     @Suppress("UNCHECKED_CAST")

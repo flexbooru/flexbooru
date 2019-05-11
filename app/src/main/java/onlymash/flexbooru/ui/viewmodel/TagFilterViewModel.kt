@@ -15,18 +15,25 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.extension.ioMain
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 
 class TagFilterViewModel(private val repo: TagFilterRepository) : ViewModel() {
 
-    val tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
+    private val tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
 
-    fun loadTags(booruUid: Long) {
-        tagsFilter.addSource(repo.loadTagsFilter(booruUid)) {
-            tagsFilter.postValue(it)
+    fun loadTags(booruUid: Long): LiveData<MutableList<TagFilter>> {
+        ioMain({
+            repo.loadTagsFilter(booruUid)
+        }) { data ->
+            tagsFilter.addSource(data) {
+                tagsFilter.postValue(it)
+            }
         }
+        return tagsFilter
     }
 }
