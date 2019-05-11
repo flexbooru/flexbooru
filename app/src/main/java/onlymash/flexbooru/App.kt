@@ -32,6 +32,9 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.glide.GlideApp
@@ -96,7 +99,9 @@ class App : Application(), KodeinAware {
         } else {
             val orderId = Settings.orderId
             if (orderId.isNotEmpty()) {
-                OrderApi.orderChecker(orderId, Settings.orderDeviceId)
+                GlobalScope.launch(Dispatchers.IO) {
+                    OrderApi.orderChecker(orderId, Settings.orderDeviceId)
+                }
             } else {
                 Settings.isOrderSuccess = false
             }

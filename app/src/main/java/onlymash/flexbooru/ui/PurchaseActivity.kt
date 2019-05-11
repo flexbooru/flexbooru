@@ -28,6 +28,9 @@ import androidx.appcompat.app.AlertDialog
 import com.android.billingclient.api.*
 import kotlinx.android.synthetic.main.activity_purchase.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -130,20 +133,22 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                     .setPositiveButton(R.string.purchase_pay_order_code_summit) { _, _ ->
                         val orderId = (editText.text ?: "").toString().trim()
                         if (orderId.isNotEmpty()) {
-                            OrderApi.orderRegister(orderId, Settings.orderDeviceId) { success ->
-                                if (!isFinishing) {
-                                    if (success) {
-                                        Toast.makeText(
-                                            this@PurchaseActivity,
-                                            getString(R.string.purchase_pay_order_code_summit_success),
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            this@PurchaseActivity,
-                                            getString(R.string.purchase_pay_order_code_summit_failed),
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                            GlobalScope.launch(Dispatchers.Main) {
+                                OrderApi.orderRegister(orderId, Settings.orderDeviceId) { success ->
+                                    if (!isFinishing) {
+                                        if (success) {
+                                            Toast.makeText(
+                                                this@PurchaseActivity,
+                                                getString(R.string.purchase_pay_order_code_summit_success),
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                this@PurchaseActivity,
+                                                getString(R.string.purchase_pay_order_code_summit_failed),
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
                                     }
                                 }
                             }
