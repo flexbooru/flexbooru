@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.entity.pool.PoolMoe
-import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 

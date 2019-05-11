@@ -40,7 +40,6 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
-import onlymash.flexbooru.util.launchUrl
 
 class BooruActivity : BaseActivity() {
 

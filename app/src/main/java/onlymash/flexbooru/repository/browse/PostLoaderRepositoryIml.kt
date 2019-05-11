@@ -19,7 +19,6 @@ import androidx.lifecycle.LiveData
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.post.PostBase
-import onlymash.flexbooru.extension.NetResult
 
 /**
  *Load posts from database
