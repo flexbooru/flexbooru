@@ -63,10 +63,9 @@ class TagBlacklistActivity : BaseActivity() {
             adapter = tagBlacklistAdapter
         }
         tagBlacklistViewModel = getTagBlacklistViewModel()
-        tagBlacklistViewModel.tagOutcome.observe(this, Observer {
+        tagBlacklistViewModel.loadTags(uid).observe(this, Observer {
             tagBlacklistAdapter.updateData(it)
         })
-        tagBlacklistViewModel.loadTags(uid)
         add_button.setOnClickListener {
             val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
             val layout = FrameLayout(this@TagBlacklistActivity).apply {
