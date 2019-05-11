@@ -13,11 +13,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.account
+package onlymash.flexbooru.extension
 
-import onlymash.flexbooru.entity.User
-
-interface FindUserListener {
-    fun onSuccess(user: User)
-    fun onFailed(msg: String)
+sealed class NetResult<out T : Any> {
+    data class Success<out T : Any>(val data: T) : NetResult<T>()
+    data class Error<out T : Any>(val errorMsg: String): NetResult<T>()
 }

@@ -26,8 +26,8 @@ import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.api.url.SankakuUrlHelper
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
-import retrofit2.Call
-import retrofit2.Response
+import onlymash.flexbooru.extension.NetResult
+import java.io.IOException
 
 /**
  *user repo
@@ -37,185 +37,112 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
                         private val moebooruApi: MoebooruApi,
                         private val sankakuApi: SankakuApi) : UserRepository {
 
-    override var findUserListener: FindUserListener? = null
-
     /**
      *search user
      * */
-    override fun findUserByName(username: String, booru: Booru) {
-        when (booru.type) {
+    override suspend fun findUserByName(username: String, booru: Booru): NetResult<User> {
+        return when (booru.type) {
             Constants.TYPE_DANBOORU -> findDanUser(username, booru)
             Constants.TYPE_MOEBOORU -> findMoeUser(username, booru)
             Constants.TYPE_DANBOORU_ONE -> findDanOneUser(username, booru)
             Constants.TYPE_SANKAKU -> findSankakuUser(username, booru)
+            else -> NetResult.Error("unknown type")
         }
     }
 
-    override fun findUserById(id: Int, booru: Booru) {
-        when (booru.type) {
+    override suspend fun findUserById(id: Int, booru: Booru): NetResult<User> {
+        return when (booru.type) {
             Constants.TYPE_MOEBOORU -> findMoeUserById(id, booru)
             Constants.TYPE_DANBOORU_ONE -> findDanOneUserById(id, booru)
+            else -> NetResult.Error("unknown type")
         }
     }
 
-    private fun findMoeUser(username: String, booru: Booru) {
-        moebooruApi.getUsers(MoeUrlHelper.getUserUrl(username, booru))
-            .enqueue(object : retrofit2.Callback<MutableList<User>> {
-                override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
-                    findUserListener?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                    if (response.isSuccessful) {
-                        val data = response.body()
-                        val users = data?: mutableListOf()
-                        var user: User? = null
-                        users.forEach {
-                            if (it.name == username) {
-                                user = it
-                                return@forEach
-                            }
-                        }
-                        if (user != null) {
-                            findUserListener?.onSuccess(user!!)
-                        } else {
-                            findUserListener?.onFailed("User not found!")
-                        }
-                    } else {
-                        findUserListener?.onFailed("Request failed!")
-                    }
-                }
-            })
+    private suspend fun findMoeUser(username: String, booru: Booru): NetResult<User> {
+        return try {
+            val users = moebooruApi.getUsersAsync(MoeUrlHelper.getUserUrl(username, booru)).await()
+            val index = users.indexOfFirst { it.name == username }
+            if (index == -1) {
+                NetResult.Error("User not found!")
+            } else {
+                NetResult.Success(users[index])
+            }
+        } catch (e: IOException) {
+            NetResult.Error(e.message.toString())
+        }
     }
 
-    private fun findDanUser(username: String, booru: Booru) {
-        danbooruApi.getUsers(DanUrlHelper.getUserUrl(username, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
-            override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
-                findUserListener?.onFailed(t.message.toString())
+    private suspend fun findDanUser(username: String, booru: Booru): NetResult<User> {
+        return try {
+            val users = danbooruApi.getUsersAsync(DanUrlHelper.getUserUrl(username, booru)).await()
+            val index = users.indexOfFirst { it.name == username }
+            if (index == -1) {
+                NetResult.Error("User not found!")
+            } else {
+                NetResult.Success(users[index])
             }
-            override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    val users = data?: mutableListOf()
-                    var user: User? = null
-                    users.forEach {
-                        if (it.name == username) {
-                            user = it
-                            return@forEach
-                        }
-                    }
-                    if (user != null) {
-                        findUserListener?.onSuccess(user!!)
-                    } else {
-                        findUserListener?.onFailed("User not found!")
-                    }
-                } else {
-                    findUserListener?.onFailed("Request failed!")
-                }
-            }
-        })
+        } catch (e: IOException) {
+            NetResult.Error(e.message.toString())
+        }
     }
 
     /**
      *search moebooru user by id
      * */
-    private fun findMoeUserById(id: Int, booru: Booru) {
-        moebooruApi.getUsers(MoeUrlHelper.getUserUrlById(id, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
-            override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
-                findUserListener?.onFailed(t.message.toString())
+    private suspend fun findMoeUserById(id: Int, booru: Booru): NetResult<User> {
+        return try {
+            val users = moebooruApi.getUsersAsync(MoeUrlHelper.getUserUrlById(id, booru)).await()
+            if (users.size == 1) {
+                NetResult.Success(users[0])
+            } else {
+                NetResult.Error("User not found!")
             }
-            override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                if (response.isSuccessful) {
-                    val users = response.body()
-                    if (users != null && users.size == 1) {
-                        findUserListener?.onSuccess(users[0])
-                    } else {
-                        findUserListener?.onFailed("User not found!")
-                    }
-                } else {
-                    findUserListener?.onFailed("Request failed!")
-                }
-            }
-        })
+        } catch (e: IOException) {
+            NetResult.Error(e.message.toString())
+        }
     }
 
-    private fun findDanOneUser(username: String, booru: Booru) {
-        danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrl(username, booru))
-            .enqueue(object : retrofit2.Callback<MutableList<User>> {
-                override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
-                    findUserListener?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                    if (response.isSuccessful) {
-                        val data = response.body()
-                        val users = data?: mutableListOf()
-                        var user: User? = null
-                        users.forEach {
-                            if (it.name == username) {
-                                user = it
-                                return@forEach
-                            }
-                        }
-                        if (user != null) {
-                            findUserListener?.onSuccess(user!!)
-                        } else {
-                            findUserListener?.onFailed("User not found!")
-                        }
-                    } else {
-                        findUserListener?.onFailed("Request failed!")
-                    }
-                }
-            })
+    private suspend fun findDanOneUser(username: String, booru: Booru): NetResult<User> {
+        return try {
+            val users = danbooruOneApi.getUsersAsync(DanOneUrlHelper.getUserUrl(username, booru)).await()
+            val index = users.indexOfFirst { it.name == username }
+            if (index == -1) {
+                NetResult.Error("User not found!")
+            } else {
+                NetResult.Success(users[index])
+            }
+        } catch (e: IOException) {
+            NetResult.Error(e.message.toString())
+        }
     }
 
-    private fun findSankakuUser(username: String, booru: Booru) {
-        sankakuApi.getUsers(SankakuUrlHelper.getUserUrl(username, booru))
-            .enqueue(object : retrofit2.Callback<MutableList<User>> {
-                override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
-                    findUserListener?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                    if (response.isSuccessful) {
-                        val data = response.body()
-                        val users = data?: mutableListOf()
-                        var user: User? = null
-                        users.forEach {
-                            if (it.name == username) {
-                                user = it
-                                return@forEach
-                            }
-                        }
-                        if (user != null) {
-                            findUserListener?.onSuccess(user!!)
-                        } else {
-                            findUserListener?.onFailed("User not found!")
-                        }
-                    } else {
-                        findUserListener?.onFailed("Request failed!")
-                    }
-                }
-            })
+    private suspend fun findSankakuUser(username: String, booru: Booru): NetResult<User> {
+        return try {
+            val users = sankakuApi.getUsersAsync(SankakuUrlHelper.getUserUrl(username, booru)).await()
+            val index = users.indexOfFirst { it.name == username }
+            if (index == -1) {
+                NetResult.Error("User not found!")
+            } else {
+                NetResult.Success(users[index])
+            }
+        } catch (e: IOException) {
+            NetResult.Error(e.message.toString())
+        }
     }
 
     /**
      *search danbooru1.x user by id
      * */
-    private fun findDanOneUserById(id: Int, booru: Booru) {
-        danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrlById(id, booru)).enqueue(object : retrofit2.Callback<MutableList<User>> {
-            override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
-                findUserListener?.onFailed(t.message.toString())
+    private suspend fun findDanOneUserById(id: Int, booru: Booru): NetResult<User> {
+        return try {
+            val users = danbooruOneApi.getUsersAsync(DanOneUrlHelper.getUserUrlById(id, booru)).await()
+            if (users.size == 1) {
+                NetResult.Success(users[0])
+            } else {
+                NetResult.Error("User not found!")
             }
-            override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                if (response.isSuccessful) {
-                    val users = response.body()
-                    if (users != null && users.size == 1) {
-                        findUserListener?.onSuccess(users[0])
-                    } else {
-                        findUserListener?.onFailed("User not found!")
-                    }
-                } else {
-                    findUserListener?.onFailed("Request failed!")
-                }
-            }
-        })
+        } catch (e: IOException) {
+            NetResult.Error(e.message.toString())
+        }
     }
 }

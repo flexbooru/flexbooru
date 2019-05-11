@@ -17,6 +17,7 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
@@ -68,6 +69,7 @@ interface GelbooruApi {
             return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .client(client)
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(TikXmlConverterFactory.create(
                     TikXml.Builder()
                         .exceptionOnUnreadXml(false)

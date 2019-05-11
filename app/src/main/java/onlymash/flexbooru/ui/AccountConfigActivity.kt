@@ -22,6 +22,7 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_account_config.*
+import kotlinx.coroutines.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -30,47 +31,18 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.repository.account.FindUserListener
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.account.UserRepositoryIml
 import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
+import kotlin.coroutines.CoroutineContext
 
-class AccountConfigActivity : BaseActivity() {
+class AccountConfigActivity : BaseActivity(), CoroutineScope {
 
     companion object {
         private const val TAG = "AccountConfigActivity"
-    }
-
-    private val findListener = object : FindUserListener {
-        override fun onSuccess(user: User) {
-            when (booru.type) {
-                Constants.TYPE_DANBOORU -> {
-                    user.apply {
-                        booru_uid = booru.uid
-                        api_key = pass
-                    }
-                    UserManager.createUser(user)
-                }
-                Constants.TYPE_MOEBOORU,
-                Constants.TYPE_DANBOORU_ONE,
-                Constants.TYPE_SANKAKU -> {
-                    user.apply {
-                        booru_uid = booru.uid
-                        password_hash = pass
-                    }
-                    UserManager.createUser(user)
-                }
-            }
-            startActivity(Intent(this@AccountConfigActivity, AccountActivity::class.java))
-            finish()
-        }
-        override fun onFailed(msg: String) {
-            error_msg.text = msg
-            progress_bar.visibility = View.INVISIBLE
-            set_account.visibility = View.VISIBLE
-        }
     }
 
     private val danApi: DanbooruApi by instance()
@@ -83,7 +55,7 @@ class AccountConfigActivity : BaseActivity() {
     private var pass = ""
     private var requesting = false
 
-    private val userFinder: UserRepository by lazy {
+    private val userRepository: UserRepository by lazy {
         UserRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
@@ -92,9 +64,20 @@ class AccountConfigActivity : BaseActivity() {
         )
     }
 
+    private lateinit var job: Job
+
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_config)
+        job = Job()
         val b = BooruManager.getBooruByUid(Settings.activeBooruUid)
         if (b == null) {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
@@ -123,7 +106,6 @@ class AccountConfigActivity : BaseActivity() {
                 }
             }
         }
-        userFinder.findUserListener = findListener
         set_account.setOnClickListener {
             attemptSetAccount()
         }
@@ -145,6 +127,42 @@ class AccountConfigActivity : BaseActivity() {
         }
         set_account.visibility = View.INVISIBLE
         progress_bar.visibility = View.VISIBLE
-        userFinder.findUserByName(username, booru)
+        launch {
+            val result = userRepository.findUserByName(username, booru)
+            handlerResult(result)
+        }
+    }
+
+    private fun handlerResult(result: NetResult<User>) {
+        when (result) {
+            is NetResult.Success -> {
+                val user = result.data
+                when (booru.type) {
+                    Constants.TYPE_DANBOORU -> {
+                        user.apply {
+                            booru_uid = booru.uid
+                            api_key = pass
+                        }
+                        UserManager.createUser(user)
+                    }
+                    Constants.TYPE_MOEBOORU,
+                    Constants.TYPE_DANBOORU_ONE,
+                    Constants.TYPE_SANKAKU -> {
+                        user.apply {
+                            booru_uid = booru.uid
+                            password_hash = pass
+                        }
+                        UserManager.createUser(user)
+                    }
+                }
+                startActivity(Intent(this@AccountConfigActivity, AccountActivity::class.java))
+                finish()
+            }
+            is NetResult.Error -> {
+                error_msg.text = result.errorMsg
+                progress_bar.visibility = View.INVISIBLE
+                set_account.visibility = View.VISIBLE
+            }
+        }
     }
 }

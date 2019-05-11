@@ -16,9 +16,10 @@
 package onlymash.flexbooru.repository.account
 
 import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.extension.NetResult
 
 interface UserRepository {
-    var findUserListener: FindUserListener?
-    fun findUserByName(username: String, booru: Booru)
-    fun findUserById(id: Int, booru: Booru)
+    suspend fun findUserByName(username: String, booru: Booru): NetResult<User>
+    suspend fun findUserById(id: Int, booru: Booru): NetResult<User>
 }

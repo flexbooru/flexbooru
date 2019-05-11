@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -33,11 +34,12 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.repository.account.FindUserListener
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.account.UserRepositoryIml
 import org.kodein.di.generic.instance
+import kotlin.coroutines.CoroutineContext
 
-class AccountActivity : BaseActivity() {
+class AccountActivity : BaseActivity(), CoroutineScope {
 
     companion object {
         const val USER_ID_KEY = "user_id"
@@ -53,7 +55,7 @@ class AccountActivity : BaseActivity() {
     private lateinit var booru: Booru
     private lateinit var user: User
 
-    private val userFinder by lazy {
+    private val userRepository by lazy {
         UserRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
@@ -62,15 +64,19 @@ class AccountActivity : BaseActivity() {
         )
     }
 
-    private var findUserListener = object : FindUserListener {
-        override fun onSuccess(user: User) {
-            this@AccountActivity.user.name = user.name
-            username.text = user.name
+    private var job: Job? = null
+
+    override val coroutineContext: CoroutineContext
+        get() {
+            if (job == null) {
+                job = Job()
+            }
+            return job!! + Dispatchers.Main
         }
 
-        override fun onFailed(msg: String) {
-            Snackbar.make(this@AccountActivity.findViewById(R.id.root_container), msg, Snackbar.LENGTH_LONG).show()
-        }
+    override fun onDestroy() {
+        job?.cancel()
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,8 +106,10 @@ class AccountActivity : BaseActivity() {
                 if (id > 0) {
                     u = User(id = id, name = name)
                     if (name.isBlank()) {
-                        userFinder.findUserListener = findUserListener
-                        userFinder.findUserById(id, booru)
+                        launch {
+                            val result = userRepository.findUserById(id, booru)
+                            handlerResult(result)
+                        }
                     }
                 }
             }
@@ -173,6 +181,18 @@ class AccountActivity : BaseActivity() {
             }
         } else {
             recommended_action_button_container.visibility = View.GONE
+        }
+    }
+
+    private fun handlerResult(result: NetResult<User>) {
+        when (result) {
+            is NetResult.Success -> {
+                user.name = result.data.name
+                username.text = user.name
+            }
+            is NetResult.Error -> {
+                Snackbar.make(this.findViewById(R.id.root_container), result.errorMsg, Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 }
