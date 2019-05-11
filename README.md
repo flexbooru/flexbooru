@@ -31,5 +31,6 @@ Click on this [link](https://crowdin.com/project/flexbooru) and you can translat
 - [FlexboxLayout:](https://github.com/google/flexbox-layout) A library project which brings the similar capabilities of CSS Flexible Box Layout Module to Android.
 - [PhotoView:](https://github.com/chrisbanes/PhotoView) Implementation of ImageView for Android that supports zooming, by various touch gestures.
 - [SubsamplingScaleImageView:](https://github.com/davemorrissey/subsampling-scale-image-view) Highly configurable, easily extendable deep zoom view for displaying huge images without loss of detail. Perfect for photo galleries, maps, building plans etc.
-- [ExoPlayer:](https://github.com/google/ExoPlayer) An application level media player for Android. 
+- [ExoPlayer:](https://github.com/google/ExoPlayer) An application level media player for Android.
+- [Kodein-DI:](https://github.com/Kodein-Framework/Kodein-DI) A very simple and yet very useful dependency retrieval container. It is very easy to use and configure.
 - [Muzei:](https://github.com/romannurik/muzei) A live wallpaper that gently refreshes your home screen each day with famous works of art. It also recedes into the background, blurring and dimming artwork to keep your icons and widgets in the spotlight. Simply double touch the wallpaper or open the Muzei app to enjoy and explore the artwork in its full glory.
