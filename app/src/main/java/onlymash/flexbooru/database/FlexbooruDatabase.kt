@@ -166,7 +166,7 @@ abstract class FlexbooruDatabase : RoomDatabase() {
             instance ?: buildDatabase(context).also { instance = it }
         }
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(app, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
+            Room.databaseBuilder(context, FlexbooruDatabase::class.java, Constants.DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .addMigrations(
