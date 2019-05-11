@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.popular
+package onlymash.flexbooru.repository.pool
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
@@ -23,37 +23,38 @@ import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.SankakuApi
-import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.entity.post.*
+import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDanOne
+import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
-//popular posts data source
-class PopularData(
-    private val danbooruApi: DanbooruApi,
-    private val danbooruOneApi: DanbooruOneApi,
-    private val moebooruApi: MoebooruApi,
-    private val sankakuApi: SankakuApi,
-    private val db: FlexbooruDatabase,
-    private val networkExecutor: Executor) : PopularRepository {
-
+//pools data source
+class PoolRepositoryIml(private val danbooruApi: DanbooruApi,
+                        private val danbooruOneApi: DanbooruOneApi,
+                        private val moebooruApi: MoebooruApi,
+                        private val sankakuApi: SankakuApi,
+                        private val networkExecutor: Executor
+) : PoolRepository {
 
     @MainThread
-    override fun getDanPopular(popular: SearchPopular): Listing<PostDan> {
-        val sourceFactory = PopularDanDataSourceFactory(danbooruApi, db, popular, networkExecutor)
+    override fun getDanPools(search: Search): Listing<PoolDan> {
+        val sourceFactory = PoolDanDataSourceFactory(danbooruApi = danbooruApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = 20,
+                pageSize = search.limit,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularMoeDataSource ->
-            popularMoeDataSource.initialLoad
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolDanDataSource ->
+            poolDanDataSource.initialLoad
         }
         return Listing(
             pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularDanDataSource ->
-                popularDanDataSource.networkState
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolDanDataSource ->
+                poolDanDataSource.networkState
             },
             retry = {
                 sourceFactory.sourceLiveData.value?.retryAllFailed()
@@ -66,21 +67,21 @@ class PopularData(
     }
 
     @MainThread
-    override fun getMoePopular(popular: SearchPopular): Listing<PostMoe> {
-        val sourceFactory = PopularMoeDataSourceFactory(moebooruApi, db, popular, networkExecutor)
+    override fun getMoePools(search: Search): Listing<PoolMoe> {
+        val sourceFactory = PoolMoeDataSourceFactory(moebooruApi = moebooruApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = 40,
+                pageSize = 20,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularMoeDataSource ->
-            popularMoeDataSource.initialLoad
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolMoeDataSource ->
+            poolMoeDataSource.initialLoad
         }
         return Listing(
             pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularMoeDataSource ->
-                popularMoeDataSource.networkState
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolMoeDataSource ->
+                poolMoeDataSource.networkState
             },
             retry = {
                 sourceFactory.sourceLiveData.value?.retryAllFailed()
@@ -93,11 +94,11 @@ class PopularData(
     }
 
     @MainThread
-    override fun getDanOnePopular(popular: SearchPopular): Listing<PostDanOne> {
-        val sourceFactory = PopularDanOneDataSourceFactory(danbooruOneApi, db, popular, networkExecutor)
+    override fun getDanOnePools(search: Search): Listing<PoolDanOne> {
+        val sourceFactory = PoolDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = 20,
+                pageSize = PoolDanOneDataSource.PAGE_SIZE,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
@@ -112,11 +113,11 @@ class PopularData(
     }
 
     @MainThread
-    override fun getSankakuPopular(popular: SearchPopular): Listing<PostSankaku> {
-        val sourceFactory = PopularSankakuDataSourceFactory(sankakuApi, db, popular, networkExecutor)
+    override fun getSankakuPools(search: Search): Listing<PoolSankaku> {
+        val sourceFactory = PoolSankakuDataSourceFactory(sankakuApi = sankakuApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = 30,
+                pageSize = search.limit,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)

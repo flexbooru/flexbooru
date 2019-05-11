@@ -35,7 +35,7 @@ import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.artist.ArtistBase
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.artist.ArtistData
+import onlymash.flexbooru.repository.artist.ArtistRepositoryIml
 import onlymash.flexbooru.repository.artist.ArtistRepository
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -273,7 +273,7 @@ class ArtistFragment : ListFragment() {
             return
         }
         artistViewModel = getArtistViewModel(
-            ArtistData(
+            ArtistRepositoryIml(
                 danbooruApi = danApi,
                 danbooruOneApi = danOneApi,
                 moebooruApi = moeApi,

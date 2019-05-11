@@ -34,7 +34,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
-import onlymash.flexbooru.repository.account.UserFinder
+import onlymash.flexbooru.repository.account.UserRepositoryIml
 import org.kodein.di.generic.instance
 
 class AccountActivity : BaseActivity() {
@@ -54,7 +54,7 @@ class AccountActivity : BaseActivity() {
     private lateinit var user: User
 
     private val userFinder by lazy {
-        UserFinder(
+        UserRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,

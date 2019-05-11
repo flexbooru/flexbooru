@@ -25,12 +25,12 @@ import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
 //tags repo
-class TagData(private val danbooruApi: DanbooruApi,
-              private val danbooruOneApi: DanbooruOneApi,
-              private val moebooruApi: MoebooruApi,
-              private val gelbooruApi: GelbooruApi,
-              private val sankakuApi: SankakuApi,
-              private val networkExecutor: Executor
+class TagRepositoryIml(private val danbooruApi: DanbooruApi,
+                       private val danbooruOneApi: DanbooruOneApi,
+                       private val moebooruApi: MoebooruApi,
+                       private val gelbooruApi: GelbooruApi,
+                       private val sankakuApi: SankakuApi,
+                       private val networkExecutor: Executor
 ) : TagRepository {
 
     @MainThread

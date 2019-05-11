@@ -32,15 +32,15 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 
 //Comment data repository
-class CommentData(private val danbooruApi: DanbooruApi,
-                  private val danbooruOneApi: DanbooruOneApi,
-                  private val moebooruApi: MoebooruApi,
-                  private val gelbooruApi: GelbooruApi,
-                  private val sankakuApi: SankakuApi,
-                  private val networkExecutor: Executor
+class CommentRepositoryIml(private val danbooruApi: DanbooruApi,
+                           private val danbooruOneApi: DanbooruOneApi,
+                           private val moebooruApi: MoebooruApi,
+                           private val gelbooruApi: GelbooruApi,
+                           private val sankakuApi: SankakuApi,
+                           private val networkExecutor: Executor
 ) : CommentRepository {
     companion object {
-        private const val TAG = "CommentData"
+        private const val TAG = "CommentRepositoryIml"
     }
 
     override val commentState: MutableLiveData<CommentState> = MutableLiveData()

@@ -32,10 +32,10 @@ import java.util.concurrent.Executor
 /**
  *Artists data repository
  * */
-class ArtistData(private val danbooruApi: DanbooruApi,
-                 private val danbooruOneApi: DanbooruOneApi,
-                 private val moebooruApi: MoebooruApi,
-                 private val networkExecutor: Executor
+class ArtistRepositoryIml(private val danbooruApi: DanbooruApi,
+                          private val danbooruOneApi: DanbooruOneApi,
+                          private val moebooruApi: MoebooruApi,
+                          private val networkExecutor: Executor
 ) : ArtistRepository {
 
     @MainThread

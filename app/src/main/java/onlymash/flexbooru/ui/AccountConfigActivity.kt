@@ -31,7 +31,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.repository.account.FindUserListener
-import onlymash.flexbooru.repository.account.UserFinder
+import onlymash.flexbooru.repository.account.UserRepositoryIml
 import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
@@ -84,7 +84,7 @@ class AccountConfigActivity : BaseActivity() {
     private var requesting = false
 
     private val userFinder: UserRepository by lazy {
-        UserFinder(
+        UserRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,

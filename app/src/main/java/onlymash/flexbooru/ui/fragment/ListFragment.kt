@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.api.*
-import onlymash.flexbooru.repository.suggestion.SuggestionData
+import onlymash.flexbooru.repository.suggestion.SuggestionRepositoryIml
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.widget.search.SearchBar
@@ -165,7 +165,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
             setHelper(helper)
             setStateChangeListener(stateChangeListener)
             setSuggestionsRepo(
-                SuggestionData(
+                SuggestionRepositoryIml(
                     danbooruApi = danApi,
                     moebooruApi = moeApi,
                     danbooruOneApi = danOneApi,

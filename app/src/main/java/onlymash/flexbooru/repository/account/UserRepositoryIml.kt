@@ -32,10 +32,10 @@ import retrofit2.Response
 /**
  *user repo
  * */
-class UserFinder(private val danbooruApi: DanbooruApi,
-                 private val danbooruOneApi: DanbooruOneApi,
-                 private val moebooruApi: MoebooruApi,
-                 private val sankakuApi: SankakuApi) : UserRepository {
+class UserRepositoryIml(private val danbooruApi: DanbooruApi,
+                        private val danbooruOneApi: DanbooruOneApi,
+                        private val moebooruApi: MoebooruApi,
+                        private val sankakuApi: SankakuApi) : UserRepository {
 
     override var findUserListener: FindUserListener? = null
 

@@ -43,7 +43,7 @@ import onlymash.flexbooru.entity.comment.CommentBase
 import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.comment.CommentData
+import onlymash.flexbooru.repository.comment.CommentRepositoryIml
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.comment.CommentState
 import onlymash.flexbooru.ui.adapter.CommentAdapter
@@ -78,7 +78,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
 
     private lateinit var commentAdapter: CommentAdapter
     private val commentViewModel by lazy { getCommentViewModel(
-        CommentData(
+        CommentRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,

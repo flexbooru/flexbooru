@@ -28,7 +28,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
@@ -63,10 +62,10 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoadedListener
-import onlymash.flexbooru.repository.browse.PostLoader
+import onlymash.flexbooru.repository.browse.PostLoaderRepositoryIml
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.favorite.VoteCallback
-import onlymash.flexbooru.repository.favorite.VoteData
+import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
@@ -140,7 +139,7 @@ class BrowseActivity : BaseActivity() {
     private var currentPosition = -1
     private var canTransition = true
     private val postLoader by lazy {
-        PostLoader(
+        PostLoaderRepositoryIml(
             db = db,
             ioExecutor = ioExecutor
         )
@@ -331,7 +330,7 @@ class BrowseActivity : BaseActivity() {
     }
 
     private val voteRepository by lazy {
-        VoteData(
+        VoteRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,

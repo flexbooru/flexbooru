@@ -23,8 +23,8 @@ import java.util.concurrent.Executor
 /**
  *Load posts from database
  */
-class PostLoader(private val db: FlexbooruDatabase,
-                 private val ioExecutor: Executor) : PostLoaderRepository {
+class PostLoaderRepositoryIml(private val db: FlexbooruDatabase,
+                              private val ioExecutor: Executor) : PostLoaderRepository {
 
     private val uiHandler = Handler()
 

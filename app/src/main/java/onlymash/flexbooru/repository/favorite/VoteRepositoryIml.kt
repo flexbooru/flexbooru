@@ -34,15 +34,15 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.util.concurrent.Executor
 
-class VoteData(private val danbooruApi: DanbooruApi,
-               private val danbooruOneApi: DanbooruOneApi,
-               private val moebooruApi: MoebooruApi,
-               private val sankakuApi: SankakuApi,
-               private val db: FlexbooruDatabase,
-               private val ioExecutor: Executor): VoteRepository {
+class VoteRepositoryIml(private val danbooruApi: DanbooruApi,
+                        private val danbooruOneApi: DanbooruOneApi,
+                        private val moebooruApi: MoebooruApi,
+                        private val sankakuApi: SankakuApi,
+                        private val db: FlexbooruDatabase,
+                        private val ioExecutor: Executor): VoteRepository {
 
     companion object {
-        private const val TAG = "VoteData"
+        private const val TAG = "VoteRepositoryIml"
     }
 
     override var voteCallback: VoteCallback? = null

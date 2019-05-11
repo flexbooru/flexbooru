@@ -35,7 +35,7 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
+import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryIml
 import onlymash.flexbooru.ui.PurchaseActivity
 import onlymash.flexbooru.util.getSignMd5
 import org.kodein.di.Kodein
@@ -73,7 +73,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { GelbooruApi() }
         bind() from singleton { SankakuApi() }
         bind() from singleton { Executors.newSingleThreadExecutor() }
-        bind() from singleton { TagFilterDataSource(instance()) }
+        bind() from singleton { TagFilterRepositoryIml(instance()) }
     }
 
     val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(app) }

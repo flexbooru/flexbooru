@@ -48,10 +48,10 @@ import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.favorite.VoteData
-import onlymash.flexbooru.repository.post.PostData
+import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
+import onlymash.flexbooru.repository.post.PostRepositoryIml
 import onlymash.flexbooru.repository.post.PostRepository
-import onlymash.flexbooru.repository.tagfilter.TagFilterDataSource
+import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryIml
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.ui.AccountConfigActivity
 import onlymash.flexbooru.ui.BrowseActivity
@@ -161,7 +161,7 @@ class PostFragment : ListFragment() {
     }
 
     private val db: FlexbooruDatabase by instance()
-    private val tagFilterDataSource: TagFilterDataSource by instance()
+    private val tagFilterRepositoryIml: TagFilterRepositoryIml by instance()
     private val tagBlacklistDao: TagBlacklistDao by instance()
 
     private lateinit var tagBlacklistViewModel: TagBlacklistViewModel
@@ -220,7 +220,7 @@ class PostFragment : ListFragment() {
         }
 
     private val voteRepo by lazy {
-        VoteData(
+        VoteRepositoryIml(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
@@ -483,7 +483,7 @@ class PostFragment : ListFragment() {
         searchBar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
         expandButton = searchBar.findViewById<View>(R.id.action_expand_tag_filter)
         postViewModel = getPostViewModel(
-            PostData(
+            PostRepositoryIml(
                 db = db,
                 danbooruApi = danApi,
                 danbooruOneApi = danOneApi,
@@ -541,7 +541,7 @@ class PostFragment : ListFragment() {
             }
             adapter = tagFilterAdapter
         }
-        tagFilterViewModel = getTagFilterViewModel(tagFilterDataSource)
+        tagFilterViewModel = getTagFilterViewModel(tagFilterRepositoryIml)
         tagFilterViewModel.tagsFilter.observe(this, Observer {
             tagFilterAdapter.updateData(it)
         })

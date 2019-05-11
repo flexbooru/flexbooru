@@ -35,7 +35,7 @@ import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.tag.TagData
+import onlymash.flexbooru.repository.tag.TagRepositoryIml
 import onlymash.flexbooru.repository.tag.TagRepository
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.SearchActivity
@@ -394,7 +394,7 @@ class TagFragment : ListFragment() {
             notSupported.visibility = View.VISIBLE
         }
         tagViewModel = getTagViewModel(
-            TagData(
+            TagRepositoryIml(
                 danbooruApi = danApi,
                 danbooruOneApi = danOneApi,
                 moebooruApi = moeApi,

@@ -22,11 +22,11 @@ import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
 import java.io.IOException
 
-class SuggestionData(private val danbooruApi: DanbooruApi,
-                     private val moebooruApi: MoebooruApi,
-                     private val danbooruOneApi: DanbooruOneApi,
-                     private val gelbooruApi: GelbooruApi,
-                     private val sankakuApi: SankakuApi) : SuggestionRepository {
+class SuggestionRepositoryIml(private val danbooruApi: DanbooruApi,
+                              private val moebooruApi: MoebooruApi,
+                              private val danbooruOneApi: DanbooruOneApi,
+                              private val gelbooruApi: GelbooruApi,
+                              private val sankakuApi: SankakuApi) : SuggestionRepository {
 
     override fun fetchSuggestions(type: Int, search: SearchTag): MutableList<TagBase>? =
         when (type) {
