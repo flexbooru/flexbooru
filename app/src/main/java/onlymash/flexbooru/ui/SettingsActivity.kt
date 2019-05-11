@@ -45,9 +45,9 @@ class SettingsActivity : BaseActivity() {
                 uri,
                 takeFlags
             )
-            Settings.instance().downloadDirPath = Uri.decode(uri.toString())
-            Settings.instance().downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
-            Settings.instance().downloadDirPathAuthority = uri.authority
+            Settings.downloadDirPath = Uri.decode(uri.toString())
+            Settings.downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
+            Settings.downloadDirPathAuthority = uri.authority
         }
     }
 }

@@ -63,7 +63,7 @@ fun Context.launchUrl(uri: Uri) = try {
 
 fun Context.launchUrl(url: String) = this.launchUrl(Uri.parse(url))
 
-fun Resources.gridWidth() = when (Settings.instance().gridWidth) {
+fun Resources.gridWidth() = when (Settings.gridWidth) {
         Settings.GRID_WIDTH_SMALL -> getDimensionPixelSize(R.dimen.post_item_width_small)
         Settings.GRID_WIDTH_NORMAL -> getDimensionPixelSize(R.dimen.post_item_width_normal)
         else -> getDimensionPixelSize(R.dimen.post_item_width_large)
@@ -107,7 +107,7 @@ fun Activity.downloadPost(post: PostBase?) {
     if (post == null) return
     var host = post.host
     val id = post.getPostId()
-    val url = when (Settings.instance().downloadSize) {
+    val url = when (Settings.downloadSize) {
         Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
         Settings.POST_SIZE_LARGER -> post.getLargerUrl()
         else -> post.getOriginUrl()
@@ -124,7 +124,7 @@ fun Activity.downloadPost(post: PostBase?) {
         addRequestHeader(Constants.USER_AGENT_KEY, UserAgent.get())
         if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
         addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")
-        CookieManager.getCookieByBooruUid(Settings.instance().activeBooruUid)?.cookie?.let { cookie ->
+        CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
             addRequestHeader("Cookie", cookie)
         }
     }

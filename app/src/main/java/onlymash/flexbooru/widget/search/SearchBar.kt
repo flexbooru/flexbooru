@@ -146,7 +146,7 @@ class SearchBar @JvmOverloads constructor(
             addTextChangedListener(this@SearchBar)
         }
         viewTransition = ViewTransition(title, editText)
-        booruUid = Settings.instance().activeBooruUid
+        booruUid = Settings.activeBooruUid
         suggestions = mutableListOf()
         val inflater = LayoutInflater.from(context)
         suggestionAdapter = SuggestionAdapter(inflater)

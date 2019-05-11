@@ -19,10 +19,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import onlymash.flexbooru.App.Companion.app
+import onlymash.flexbooru.App
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.Booru
+import org.kodein.di.generic.instance
 
 class BooruConfigFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -41,11 +42,11 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
         const val BOORU_CONFIG_SCHEME_HTTPS = "https"
         const val BOORU_CONFIG_HOST_KEY = "booru_config_host"
         const val BOORU_CONFIG_HASH_SALT_KEY = "booru_config_hash_salt"
-        
+        private val sp: SharedPreferences by App.app.instance()
         var booruUid = -1L
         fun reset() {
             booruUid = -1L
-            app.sp.edit().apply {
+            sp.edit().apply {
                 putString(BOORU_CONFIG_NAME_KEY, "")
                 putString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)
                 putString(BOORU_CONFIG_SCHEME_KEY, BOORU_CONFIG_SCHEME_HTTPS)
@@ -78,7 +79,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 }
                 else -> throw IllegalArgumentException("unknown booru type: ${booru.type}")
             }
-            app.sp.edit().apply {
+            sp.edit().apply {
                 putString(BOORU_CONFIG_NAME_KEY, booru.name)
                 putString(BOORU_CONFIG_TYPE_KEY, type)
                 putString(BOORU_CONFIG_SCHEME_KEY, booru.scheme)
@@ -89,11 +90,11 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
         fun get(): Booru {
             return Booru(
                 uid = booruUid,
-                name = getName(app.sp),
-                scheme = getScheme(app.sp),
-                host = getHost(app.sp),
-                hash_salt = getHashSalt(app.sp),
-                type = getTypeInt(app.sp)
+                name = getName(sp),
+                scheme = getScheme(sp),
+                host = getHost(sp),
+                hash_salt = getHashSalt(sp),
+                type = getTypeInt(sp)
             )
         }
         private fun getTypeInt(sp: SharedPreferences): Int {
@@ -135,7 +136,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
         booruUid = requireActivity().intent.getLongExtra(EXTRA_BOORU_UID, -1L)
         addPreferencesFromResource(R.xml.pref_booru_config)
         hashSaltPreferences = findPreference(BOORU_CONFIG_HASH_SALT_KEY)
-        when (app.sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
+        when (sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
             BOORU_CONFIG_TYPE_DANBOORU,
             BOORU_CONFIG_TYPE_GELBOORU -> {
                 hashSaltPreferences?.isVisible = false
@@ -161,11 +162,11 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
 
     override fun onPause() {
         super.onPause()
-        app.sp.unregisterOnSharedPreferenceChangeListener(this)
+        sp.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onResume() {
         super.onResume()
-        app.sp.registerOnSharedPreferenceChangeListener(this)
+        sp.registerOnSharedPreferenceChangeListener(this)
     }
 }

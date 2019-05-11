@@ -59,7 +59,7 @@ interface MoebooruApi {
                     .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
                     .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-                CookieManager.getCookieByBooruUid(Settings.instance().activeBooruUid)?.cookie?.let {
+                CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let {
                     builder.addHeader("Cookie", it)
                 }
 

@@ -55,7 +55,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                          private val pageType: Int,
                          private val ioExecutor: Executor): PagerAdapter() {
 
-    private val size = Settings.instance().browseSize
+    private val size = Settings.browseSize
     private var posts: MutableList<PostBase> = mutableListOf()
 
     @Suppress("UNCHECKED_CAST")

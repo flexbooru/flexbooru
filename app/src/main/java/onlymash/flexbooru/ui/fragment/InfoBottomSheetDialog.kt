@@ -237,7 +237,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             view.findViewById<LinearLayout>(R.id.parent_container).visibility = View.GONE
         }
         if (type == Constants.TYPE_MOEBOORU  && userId > 0) {
-            BooruManager.getBooruByUid(Settings.instance().activeBooruUid)?.let { booru ->
+            BooruManager.getBooruByUid(Settings.activeBooruUid)?.let { booru ->
                 GlideApp.with(this)
                     .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, userId))
                     .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))

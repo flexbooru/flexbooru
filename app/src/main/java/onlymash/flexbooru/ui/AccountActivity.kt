@@ -77,7 +77,7 @@ class AccountActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         booru = BooruManager.getBooruByUid(uid) ?: return
         toolbar.title = String.format(getString(R.string.title_account_and_booru), booru.name)
         val extras = intent?.extras

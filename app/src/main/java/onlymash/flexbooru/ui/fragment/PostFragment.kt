@@ -319,7 +319,7 @@ class PostFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.instance().activeBooruUid) return
+            if (user.booru_uid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -419,11 +419,11 @@ class PostFragment : ListFragment() {
                         user_id = it.getInt(Constants.USER_ID_KEY, -1),
                         username = it.getString(Constants.USERNAME_KEY, ""),
                         auth_key = it.getString(Constants.AUTH_KEY, ""),
-                        limit = Settings.instance().pageLimit)
+                        limit = Settings.pageLimit)
                 }
             }
             is SearchActivity -> {
-                val uid = Settings.instance().activeBooruUid
+                val uid = Settings.activeBooruUid
                 val booru = BooruManager.getBooruByUid(uid)
                 val user = UserManager.getUserByBooruUid(uid)
                 if (booru != null) {
@@ -441,7 +441,7 @@ class PostFragment : ListFragment() {
                             Constants.TYPE_SANKAKU -> user?.password_hash ?: ""
                             else -> ""
                         },
-                        limit = Settings.instance().pageLimit
+                        limit = Settings.pageLimit
                     )
                 } else {
                     activity.finish()
@@ -462,7 +462,7 @@ class PostFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (Settings.instance().safeMode) {
+        if (Settings.safeMode) {
             search.keyword = "rating:safe ${search.keyword}"
         }
         init()
@@ -502,7 +502,7 @@ class PostFragment : ListFragment() {
         postAdapter = PostAdapter(
             glide = glide,
             listener = itemListener,
-            showInfoBar = Settings.instance().showInfoBar,
+            showInfoBar = Settings.showInfoBar,
             pageType = Constants.PAGE_TYPE_POST,
             retryCallback = {
                 when (type) {
@@ -530,7 +530,7 @@ class PostFragment : ListFragment() {
             booruType = type) {
             val text = searchBar.getEditTextText()
             if(text.isNotEmpty()) {
-                TagFilterManager.createTagFilter(TagFilter(booru_uid = Settings.instance().activeBooruUid, name = text))
+                TagFilterManager.createTagFilter(TagFilter(booru_uid = Settings.activeBooruUid, name = text))
             }
         }
         tags_filter_list.apply {
@@ -545,13 +545,13 @@ class PostFragment : ListFragment() {
         tagFilterViewModel.tagsFilter.observe(this, Observer {
             tagFilterAdapter.updateData(it)
         })
-        tagFilterViewModel.loadTags(Settings.instance().activeBooruUid)
+        tagFilterViewModel.loadTags(Settings.activeBooruUid)
         action_search.setOnClickListener {
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (!tagString.isBlank()) {
 //                searchBar.disableSearchState()
                 SuggestionManager.createSuggestion(Suggestion(
-                    booru_uid = Settings.instance().activeBooruUid,
+                    booru_uid = Settings.activeBooruUid,
                     keyword = tagString))
                 SearchActivity.startActivity(requireContext(), tagString)
             }
@@ -617,13 +617,13 @@ class PostFragment : ListFragment() {
         tagBlacklistViewModel.tagOutcome.observe(this, Observer {
             postViewModel.show(search, it)
         })
-        tagBlacklistViewModel.loadTags(Settings.instance().activeBooruUid)
+        tagBlacklistViewModel.loadTags(Settings.activeBooruUid)
         val activity = requireActivity()
         if (activity is MainActivity) {
             activity.addNavigationListener(navigationListener)
         } else {
             searchBar.setTitleOnLongClickCallback {
-                MuzeiManager.createMuzei(Muzei(booru_uid = Settings.instance().activeBooruUid, keyword = search.keyword))
+                MuzeiManager.createMuzei(Muzei(booru_uid = Settings.activeBooruUid, keyword = search.keyword))
                 Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
             }
         }

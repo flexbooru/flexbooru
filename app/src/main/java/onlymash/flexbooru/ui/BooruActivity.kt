@@ -67,7 +67,7 @@ class BooruActivity : BaseActivity() {
         if (intent != null) {
             handleShareIntent(intent)
         }
-        if (!Settings.instance().isOrderSuccess) {
+        if (!Settings.isOrderSuccess) {
             val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
             val adView = AdView(this)
             booru_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))

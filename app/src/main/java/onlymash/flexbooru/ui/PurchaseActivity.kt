@@ -47,7 +47,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        if (Settings.instance().isGoogleSign) {
+        if (Settings.isGoogleSign) {
             pay_alipay.visibility = View.GONE
             pay_redeem_code.visibility = View.GONE
             billingClient = BillingClient
@@ -84,7 +84,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                                         .build()
                                     val result = client.launchBillingFlow(this, billingFlowParams)
                                     if (result.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                                        Settings.instance().isOrderSuccess = true
+                                        Settings.isOrderSuccess = true
                                     }
                                 }
                             }
@@ -130,7 +130,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                     .setPositiveButton(R.string.purchase_pay_order_code_summit) { _, _ ->
                         val orderId = (editText.text ?: "").toString().trim()
                         if (orderId.isNotEmpty()) {
-                            OrderApi.orderRegister(orderId, Settings.instance().orderDeviceId) { success ->
+                            OrderApi.orderRegister(orderId, Settings.orderDeviceId) { success ->
                                 if (!isFinishing) {
                                     if (success) {
                                         Toast.makeText(
@@ -160,14 +160,14 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         val responseCode = billingResult?.responseCode ?: return
         if (responseCode == BillingClient.BillingResponseCode.OK ||
             responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Settings.instance().isOrderSuccess = true
+            Settings.isOrderSuccess = true
             if (purchases == null) return
             val index = purchases.indexOfFirst { it.sku == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
             if (index >= 0) {
                 val purchase = purchases[index]
-                Settings.instance().orderId = purchase.orderId
-                Settings.instance().orderTime = purchase.purchaseTime
-                Settings.instance().orderToken = purchase.purchaseToken
+                Settings.orderId = purchase.orderId
+                Settings.orderTime = purchase.purchaseTime
+                Settings.orderToken = purchase.purchaseToken
             }
         }
     }

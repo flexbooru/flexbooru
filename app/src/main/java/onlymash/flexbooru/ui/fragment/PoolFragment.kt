@@ -159,7 +159,7 @@ class PoolFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.instance().activeBooruUid) return
+            if (user.booru_uid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -250,7 +250,7 @@ class PoolFragment : ListFragment() {
             keyword = "",
             username = arg.getString(Constants.USERNAME_KEY, ""),
             auth_key = arg.getString(Constants.AUTH_KEY, ""),
-            limit = Settings.instance().pageLimit)
+            limit = Settings.pageLimit)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -281,7 +281,7 @@ class PoolFragment : ListFragment() {
                 AlertDialog.Builder(context)
                     .setTitle("Pool ${it.id}")
                     .setItems(context.resources.getStringArray(R.array.pool_item_action)) { _, which ->
-                        if (!Settings.instance().isOrderSuccess) {
+                        if (!Settings.isOrderSuccess) {
                             startActivity(Intent(context, PurchaseActivity::class.java))
                             return@setItems
                         }

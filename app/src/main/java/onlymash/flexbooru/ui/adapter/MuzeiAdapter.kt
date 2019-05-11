@@ -30,7 +30,7 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var data: MutableList<Muzei> = mutableListOf()
 
-    private var activeUid = Settings.instance().activeMuzeiUid
+    private var activeUid = Settings.activeMuzeiUid
 
     private fun refresh(uid: Long) {
         val index = data.indexOfFirst { it.uid == uid }
@@ -52,7 +52,7 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (!isExist && data.size > 0) {
             val uid = data[0].uid
             activeUid = uid
-            Settings.instance().activeMuzeiUid = uid
+            Settings.activeMuzeiUid = uid
         }
         notifyDataSetChanged()
     }
@@ -72,8 +72,8 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             setOnClickListener {
                 if (!isSelected) {
                     activeUid = uid
-                    refresh(Settings.instance().activeMuzeiUid)
-                    Settings.instance().activeMuzeiUid = uid
+                    refresh(Settings.activeMuzeiUid)
+                    Settings.activeMuzeiUid = uid
                     isSelected = true
                 }
             }

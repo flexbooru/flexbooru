@@ -95,7 +95,7 @@ class AccountConfigActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_config)
-        val b = BooruManager.getBooruByUid(Settings.instance().activeBooruUid)
+        val b = BooruManager.getBooruByUid(Settings.activeBooruUid)
         if (b == null) {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
             finish()

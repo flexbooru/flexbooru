@@ -167,7 +167,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         val booru = BooruManager.getBooruByUid(uid)
         if (booru == null) {
             startActivity(Intent(this, BooruActivity::class.java))
@@ -185,7 +185,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
             scheme = booru.scheme,
             host = booru.host,
             post_id = postId,
-            limit = Settings.instance().pageLimit
+            limit = Settings.pageLimit
         )
         val user = UserManager.getUserByBooruUid(uid)
         user?.let {

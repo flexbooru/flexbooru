@@ -83,10 +83,10 @@ interface OrderApi {
                 override fun onResponse(call: Call<OrderResponse>, response: Response<OrderResponse>) {
                     val data = response.body() ?: return
                     if (data.success) {
-                        Settings.instance().isOrderSuccess = data.activated
+                        Settings.isOrderSuccess = data.activated
                     } else {
-                        Settings.instance().isOrderSuccess = false
-                        Settings.instance().orderId = ""
+                        Settings.isOrderSuccess = false
+                        Settings.orderId = ""
                     }
                 }
             })
@@ -101,12 +101,12 @@ interface OrderApi {
                     val data = response.body() ?: return
                     if (data.success) {
                         success(true)
-                        Settings.instance().isOrderSuccess = data.activated
-                        Settings.instance().orderId = orderId
+                        Settings.isOrderSuccess = data.activated
+                        Settings.orderId = orderId
                     } else {
                         success(false)
-                        Settings.instance().isOrderSuccess = false
-                        Settings.instance().orderId = ""
+                        Settings.isOrderSuccess = false
+                        Settings.orderId = ""
                     }
                 }
             })

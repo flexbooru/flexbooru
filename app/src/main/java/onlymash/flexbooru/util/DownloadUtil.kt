@@ -70,7 +70,7 @@ class DownloadUtil(
             if (post == null) return
             val host = post.host
             val id = post.getPostId()
-            val url = when (Settings.instance().downloadSize) {
+            val url = when (Settings.downloadSize) {
                 Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
                 Settings.POST_SIZE_LARGER -> post.getLargerUrl()
                 else -> post.getOriginUrl()

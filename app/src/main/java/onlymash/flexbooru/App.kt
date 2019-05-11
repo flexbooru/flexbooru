@@ -40,10 +40,7 @@ import onlymash.flexbooru.ui.PurchaseActivity
 import onlymash.flexbooru.util.getSignMd5
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.androidXModule
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
+import org.kodein.di.generic.*
 import java.util.concurrent.Executors
 
 class App : Application(), KodeinAware {
@@ -52,8 +49,8 @@ class App : Application(), KodeinAware {
     }
 
     override val kodein by Kodein.lazy {
-        import(androidXModule(this@App))
-
+        bind<Context>() with instance(this@App)
+        bind<SharedPreferences>() with provider { PreferenceManager.getDefaultSharedPreferences(instance()) }
         bind() from singleton { FlexbooruDatabase(instance()) }
         bind() from singleton { instance<FlexbooruDatabase>().booruDao() }
         bind() from singleton { instance<FlexbooruDatabase>().userDao() }
@@ -75,8 +72,6 @@ class App : Application(), KodeinAware {
         bind() from singleton { Executors.newSingleThreadExecutor() }
         bind() from singleton { TagFilterRepositoryIml(instance()) }
     }
-
-    val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(app) }
     val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
@@ -93,17 +88,17 @@ class App : Application(), KodeinAware {
     }
     private fun initial() {
         val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
-        Settings.instance().isGoogleSign = isGoogleSign
-        AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
+        Settings.isGoogleSign = isGoogleSign
+        AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
         DrawerImageLoader.init(drawerImageLoader)
         if (isGoogleSign) {
             checkOrderFromCache()
         } else {
-            val orderId = Settings.instance().orderId
+            val orderId = Settings.orderId
             if (orderId.isNotEmpty()) {
-                OrderApi.orderChecker(orderId, Settings.instance().orderDeviceId)
+                OrderApi.orderChecker(orderId, Settings.orderDeviceId)
             } else {
-                Settings.instance().isOrderSuccess = false
+                Settings.isOrderSuccess = false
             }
         }
         MobileAds.initialize(this, "ca-app-pub-1547571472841615~2418349121")
@@ -124,9 +119,9 @@ class App : Application(), KodeinAware {
                         val index = purchases.indexOfFirst {
                             it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
                         }
-                        Settings.instance().isOrderSuccess = index >= 0
+                        Settings.isOrderSuccess = index >= 0
                     } else {
-                        Settings.instance().isOrderSuccess = false
+                        Settings.isOrderSuccess = false
                     }
                     billingClient.endConnection()
                 }

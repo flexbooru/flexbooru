@@ -180,7 +180,7 @@ class ArtistFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.instance().activeBooruUid) return
+            if (user.booru_uid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -258,7 +258,7 @@ class ArtistFragment : ListFragment() {
             order = ORDER_DEFAULT,
             username = arg.getString(Constants.USERNAME_KEY, ""),
             auth_key = arg.getString(Constants.AUTH_KEY, ""),
-            limit = Settings.instance().pageLimit
+            limit = Settings.pageLimit
         )
     }
 

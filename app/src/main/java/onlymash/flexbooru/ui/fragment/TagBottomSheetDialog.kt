@@ -118,7 +118,7 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val booruUid = Settings.instance().activeBooruUid
+        val booruUid = Settings.activeBooruUid
         val arg = arguments ?: throw RuntimeException("arg is null")
         postType = arg.getInt(POST_TYPE)
         when (postType) {

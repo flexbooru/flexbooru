@@ -49,7 +49,7 @@ class TagBlacklistActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tag_blacklist)
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         toolbar.apply {
             setTitle(R.string.title_tag_blacklist)
             setNavigationOnClickListener {

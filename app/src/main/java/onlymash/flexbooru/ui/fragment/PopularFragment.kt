@@ -408,7 +408,7 @@ class PopularFragment : ListFragment() {
                                     minDate = minCalendar
                                     maxDate = maxCalendar
                                     isAutoHighlight = false
-                                    isThemeDark = Settings.instance().isNightMode
+                                    isThemeDark = Settings.isNightMode
                                 }
                                     .show(requireActivity().supportFragmentManager, "DateRangePickerDialog")
                             }
@@ -454,7 +454,7 @@ class PopularFragment : ListFragment() {
         }
 
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.instance().activeBooruUid) return
+            if (user.booru_uid != Settings.activeBooruUid) return
             popular.username = ""
             popular.auth_key = ""
             when (type) {
@@ -524,7 +524,7 @@ class PopularFragment : ListFragment() {
             host = arg.getString(Constants.HOST_KEY, ""),
             username = arg.getString(Constants.USERNAME_KEY, ""),
             auth_key = arg.getString(Constants.AUTH_KEY, ""),
-            safe_mode = Settings.instance().safeMode
+            safe_mode = Settings.safeMode
         )
         val currentTimeMillis = System.currentTimeMillis()
         val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
@@ -540,7 +540,7 @@ class PopularFragment : ListFragment() {
         popular.year = yearString
         popular.month = monthString
         popular.day = dayString
-        popular.limit = Settings.instance().pageLimit
+        popular.limit = Settings.pageLimit
         requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
@@ -585,7 +585,7 @@ class PopularFragment : ListFragment() {
         postAdapter = PostAdapter(
             glide = glide,
             listener = itemListener,
-            showInfoBar = Settings.instance().showInfoBar,
+            showInfoBar = Settings.showInfoBar,
             pageType = Constants.PAGE_TYPE_POPULAR,
             retryCallback = {
                 when (type) {

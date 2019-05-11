@@ -469,7 +469,7 @@ class BrowseActivity : BaseActivity() {
         }
         keyword = intent.getStringExtra(Constants.KEYWORD_KEY) ?: ""
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
-        booru = BooruManager.getBooruByUid(Settings.instance().activeBooruUid) ?: return
+        booru = BooruManager.getBooruByUid(Settings.activeBooruUid) ?: return
         user = UserManager.getUserByBooruUid(booruUid = booru.uid)
         user?.let {
             voteRepository.voteCallback = voteCallback
@@ -591,7 +591,7 @@ class BrowseActivity : BaseActivity() {
         TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
         TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
         TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
-        if (!Settings.instance().isOrderSuccess) {
+        if (!Settings.isOrderSuccess) {
             val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
             val adView = AdView(this)
             bottom_bar_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -737,35 +737,35 @@ class BrowseActivity : BaseActivity() {
         val position = pager_browse.currentItem
         val url = when (booru.type) {
             Constants.TYPE_DANBOORU -> {
-                when (Settings.instance().browseSize) {
+                when (Settings.browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsDan?.get(position)?.getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsDan?.get(position)?.getLargerUrl()
                     else -> postsDan?.get(position)?.getOriginUrl()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                when (Settings.instance().browseSize) {
+                when (Settings.browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsMoe?.get(position)?.getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsMoe?.get(position)?.getLargerUrl()
                     else -> postsMoe?.get(position)?.getOriginUrl()
                 }
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                when (Settings.instance().browseSize) {
+                when (Settings.browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsDanOne?.get(position)?.getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsDanOne?.get(position)?.getLargerUrl()
                     else -> postsDanOne?.get(position)?.getOriginUrl()
                 }
             }
             Constants.TYPE_GELBOORU -> {
-                when (Settings.instance().browseSize) {
+                when (Settings.browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsGel?.get(position)?.getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsGel?.get(position)?.getLargerUrl()
                     else -> postsGel?.get(position)?.getOriginUrl()
                 }
             }
             else -> {
-                when (Settings.instance().browseSize) {
+                when (Settings.browseSize) {
                     Settings.POST_SIZE_SAMPLE -> postsSankaku?.get(position)?.getSampleUrl()
                     Settings.POST_SIZE_LARGER -> postsSankaku?.get(position)?.getLargerUrl()
                     else -> postsSankaku?.get(position)?.getOriginUrl()
@@ -942,9 +942,9 @@ class BrowseActivity : BaseActivity() {
                 uri,
                 takeFlags
             )
-            Settings.instance().downloadDirPath = Uri.decode(uri.toString())
-            Settings.instance().downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
-            Settings.instance().downloadDirPathAuthority = uri.authority
+            Settings.downloadDirPath = Uri.decode(uri.toString())
+            Settings.downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
+            Settings.downloadDirPathAuthority = uri.authority
         }
     }
 }

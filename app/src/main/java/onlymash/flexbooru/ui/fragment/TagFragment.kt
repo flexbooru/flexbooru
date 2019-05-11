@@ -273,7 +273,7 @@ class TagFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.instance().activeBooruUid) return
+            if (user.booru_uid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -380,7 +380,7 @@ class TagFragment : ListFragment() {
             type = TYPE_ALL,
             username = arg.getString(Constants.USERNAME_KEY, ""),
             auth_key = arg.getString(Constants.AUTH_KEY, ""),
-            limit = Settings.instance().pageLimit
+            limit = Settings.pageLimit
         )
     }
 

@@ -44,7 +44,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.*
-import onlymash.flexbooru.App.Companion.app
 import onlymash.flexbooru.api.AppUpdaterApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
@@ -55,6 +54,7 @@ import onlymash.flexbooru.util.getWidth
 import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.util.openAppInMarket
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
+import org.kodein.di.generic.instance
 
 class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -81,10 +81,12 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private var currentNavItem = 0
 
+    private val sp: SharedPreferences by instance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        app.sp.registerOnSharedPreferenceChangeListener(this)
+        sp.registerOnSharedPreferenceChangeListener(this)
         profileSettingDrawerItem = ProfileSettingDrawerItem()
             .withName(R.string.title_manage_boorus)
             .withIdentifier(HEADER_ITEM_ID_BOORU_MANAGE)
@@ -141,10 +143,10 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
                     .withIdentifier(DRAWER_ITEM_ID_NIGHT_MODE)
-                    .withChecked(Settings.instance().isNightMode)
+                    .withChecked(Settings.isNightMode)
                     .withOnCheckedChangeListener { _, _, isChecked ->
                         drawer.closeDrawer()
-                        Settings.instance().isNightMode = isChecked
+                        Settings.isNightMode = isChecked
                     },
                 PrimaryDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_info_outline_24dp))
@@ -161,7 +163,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             setSelection(-3L)
             onDrawerItemClickListener = drawerItemClickListener
         }
-        if (!Settings.instance().isOrderSuccess) {
+        if (!Settings.isOrderSuccess) {
             drawer.addItemAtPosition(
                 PrimaryDrawerItem()
                     .withName(R.string.purchase_title)
@@ -195,15 +197,15 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         GlobalScope.launch(Dispatchers.IO) {
             AppUpdaterApi.checkUpdate()
         }
-        if (BuildConfig.VERSION_CODE < Settings.instance().latestVersionCode) {
+        if (BuildConfig.VERSION_CODE < Settings.latestVersionCode) {
             AlertDialog.Builder(this)
                 .setTitle(R.string.update_found_update)
-                .setMessage(getString(R.string.update_version, Settings.instance().latestVersionName))
+                .setMessage(getString(R.string.update_version, Settings.latestVersionName))
                 .setPositiveButton(R.string.dialog_update) { _, _ ->
-                    if (Settings.instance().isGoogleSign && Settings.instance().isAvailableOnStore) {
+                    if (Settings.isGoogleSign && Settings.isAvailableOnStore) {
                         openAppInMarket(applicationContext.packageName)
                     } else {
-                        launchUrl(Settings.instance().latestVersionUrl)
+                        launchUrl(Settings.latestVersionUrl)
                     }
                     finish()
                 }
@@ -220,7 +222,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private fun initDrawerHeader() {
         val size = boorus.size
-        if (Settings.instance().isOrderSuccess || size <= BOORUS_LIMIT) {
+        if (Settings.isOrderSuccess || size <= BOORUS_LIMIT) {
             normalInitDrawerHeader(size)
         } else {
             limitInitDrawerHeader(size)
@@ -242,11 +244,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             header.addProfile(profileSettingDrawerItem, boorus.size)
         }
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         when {
             uid < 0L && size > 0 -> {
-                Settings.instance().activeBooruUid = boorus[0].uid
-                header.setActiveProfile(Settings.instance().activeBooruUid)
+                Settings.activeBooruUid = boorus[0].uid
+                header.setActiveProfile(Settings.activeBooruUid)
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
             }
             uid >= 0L && size > 0 -> {
@@ -261,8 +263,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     header.setActiveProfile(uid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i], getCurrentUser())
                 } else {
-                    Settings.instance().activeBooruUid = boorus[0].uid
-                    header.setActiveProfile(Settings.instance().activeBooruUid)
+                    Settings.activeBooruUid = boorus[0].uid
+                    header.setActiveProfile(Settings.activeBooruUid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
                 }
             }
@@ -286,15 +288,15 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withIdentifier(booru.uid), index)
         }
         header.addProfile(profileSettingDrawerItem, BOORUS_LIMIT)
-        var uid = Settings.instance().activeBooruUid
+        var uid = Settings.activeBooruUid
         if (uid > boorus[BOORUS_LIMIT - 1].uid) {
             uid = boorus[0].uid
-            Settings.instance().activeBooruUid = uid
+            Settings.activeBooruUid = uid
         }
         when {
             uid < 0L && size > 0 -> {
-                Settings.instance().activeBooruUid = boorus[0].uid
-                header.setActiveProfile(Settings.instance().activeBooruUid)
+                Settings.activeBooruUid = boorus[0].uid
+                header.setActiveProfile(Settings.activeBooruUid)
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
             }
             uid >= 0L && size > 0 -> {
@@ -309,8 +311,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     header.setActiveProfile(uid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i], getCurrentUser())
                 } else {
-                    Settings.instance().activeBooruUid = boorus[0].uid
-                    header.setActiveProfile(Settings.instance().activeBooruUid)
+                    Settings.activeBooruUid = boorus[0].uid
+                    header.setActiveProfile(Settings.activeBooruUid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
                 }
             }
@@ -322,7 +324,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private val booruListener = object : BooruManager.Listener {
         override fun onAdd(booru: Booru) {
-            if (!Settings.instance().isOrderSuccess && boorus.size >= BOORUS_LIMIT) {
+            if (!Settings.isOrderSuccess && boorus.size >= BOORUS_LIMIT) {
                 boorus.add(booru)
                 return
             }
@@ -338,8 +340,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withIdentifier(booru.uid), boorus.size - 1)
             header.addProfile(profileSettingDrawerItem, boorus.size)
             if (boorus.size == 1) {
-                Settings.instance().activeBooruUid = booru.uid
-                header.setActiveProfile(Settings.instance().activeBooruUid)
+                Settings.activeBooruUid = booru.uid
+                header.setActiveProfile(Settings.activeBooruUid)
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
             }
         }
@@ -349,14 +351,14 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             boorus.removeAt(index)
             header.removeProfileByIdentifier(booruUid)
             if (boorus.size > 0) {
-                if (Settings.instance().activeBooruUid == booruUid) {
+                if (Settings.activeBooruUid == booruUid) {
                     val booru = boorus[0]
-                    Settings.instance().activeBooruUid = booru.uid
+                    Settings.activeBooruUid = booru.uid
                     header.setActiveProfile(booru.uid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 }
             } else {
-                Settings.instance().activeBooruUid = -1
+                Settings.activeBooruUid = -1
                 pager_container.adapter = null
             }
         }
@@ -369,7 +371,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     it.host = booru.host
                     it.hash_salt = booru.hash_salt
                     it.type = booru.type
-                    if (Settings.instance().activeBooruUid == booru.uid) {
+                    if (Settings.activeBooruUid == booru.uid) {
                         pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                     }
                     return@forEach
@@ -425,7 +427,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                 }
                 else -> {
-                    Settings.instance().activeBooruUid = uid
+                    Settings.activeBooruUid = uid
                     boorus.forEach { booru ->
                         if (booru.uid == uid) {
                             pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
@@ -603,7 +605,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onDestroy() {
-        app.sp.unregisterOnSharedPreferenceChangeListener(this)
+        sp.unregisterOnSharedPreferenceChangeListener(this)
         BooruManager.listeners.remove(booruListener)
         UserManager.listeners.remove(userListener)
         super.onDestroy()
@@ -611,7 +613,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     internal fun getCurrentBooru(): Booru? {
         var booru: Booru? = null
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         boorus.forEach {
             if (it.uid == uid) {
                 booru = it
@@ -623,7 +625,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     internal fun getCurrentUser(): User? {
         var user: User? = null
-        val booruUid = Settings.instance().activeBooruUid
+        val booruUid = Settings.activeBooruUid
         users.forEach {
             if (it.booru_uid == booruUid) {
                 user = it
@@ -644,7 +646,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 pager_container.currentItem = currentNavItem
             }
             Settings.NIGHT_MODE_KEY -> {
-                AppCompatDelegate.setDefaultNightMode(Settings.instance().nightMode)
+                AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
 //                delegate.applyDayNight()
                 Handler().postDelayed({
                     startActivity(
@@ -656,7 +658,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }, 200L)
             }
             Settings.ORDER_SUCCESS_KEY -> {
-                if (Settings.instance().isOrderSuccess) {
+                if (Settings.isOrderSuccess) {
                     drawer.removeItem(DRAWER_ITEM_ID_PURCHASE)
                 } else {
                     val index = drawer.drawerItems.indexOfFirst {
@@ -708,9 +710,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 uri,
                 takeFlags
             )
-            Settings.instance().downloadDirPath = Uri.decode(uri.toString())
-            Settings.instance().downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
-            Settings.instance().downloadDirPathAuthority = uri.authority
+            Settings.downloadDirPath = Uri.decode(uri.toString())
+            Settings.downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
+            Settings.downloadDirPathAuthority = uri.authority
         }
     }
 }

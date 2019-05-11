@@ -64,7 +64,7 @@ class FlexAppGlideModule : AppGlideModule() {
                 .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                 .removeHeader(Constants.USER_AGENT_KEY)
                 .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-            CookieManager.getCookieByBooruUid(Settings.instance().activeBooruUid)?.cookie?.let { cookie ->
+            CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
                 builder.addHeader("Cookie", cookie)
             }
             it.proceed(builder.build())

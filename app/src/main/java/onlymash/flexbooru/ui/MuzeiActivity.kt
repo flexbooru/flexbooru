@@ -57,7 +57,7 @@ class MuzeiActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_muzei)
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         toolbar.apply {
             setTitle(R.string.title_muzei)
             inflateMenu(R.menu.muzei)

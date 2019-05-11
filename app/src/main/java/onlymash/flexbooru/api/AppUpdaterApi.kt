@@ -76,10 +76,10 @@ interface AppUpdaterApi {
         suspend fun checkUpdate() {
             try {
                 val data = AppUpdaterApi().checkUpdateAsync().await()
-                Settings.instance().latestVersionUrl = data.url
-                Settings.instance().latestVersionName = data.version_name
-                Settings.instance().latestVersionCode = data.version_code
-                Settings.instance().isAvailableOnStore = data.is_available_store
+                Settings.latestVersionUrl = data.url
+                Settings.latestVersionName = data.version_name
+                Settings.latestVersionCode = data.version_code
+                Settings.isAvailableOnStore = data.is_available_store
             } catch (_: IOException) {}
         }
     }

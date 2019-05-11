@@ -180,7 +180,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
         suggestionViewModel.suggestions.observe(this, Observer {
             searchBar.updateSuggestions(it)
         })
-        suggestionViewModel.loadSuggestions(Settings.instance().activeBooruUid)
+        suggestionViewModel.loadSuggestions(Settings.activeBooruUid)
     }
 
     @Suppress("UNCHECKED_CAST")

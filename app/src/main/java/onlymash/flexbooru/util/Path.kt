@@ -28,8 +28,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 
 fun getFileUri(dirName: String, fileName: String): Uri? {
-    val treeId = Settings.instance().downloadDirPathTreeId ?: return null
-    val treeUri = DocumentsContract.buildTreeDocumentUri(Settings.instance().downloadDirPathAuthority, treeId) ?: return null
+    val treeId = Settings.downloadDirPathTreeId ?: return null
+    val treeUri = DocumentsContract.buildTreeDocumentUri(Settings.downloadDirPathAuthority, treeId) ?: return null
     val docId = if (treeId.endsWith(":")) "$treeId$dirName/$fileName" else "$treeId/$dirName/$fileName"
     return DocumentsContract.buildDocumentUriUsingTree(treeUri, docId)
 }
@@ -48,9 +48,9 @@ fun Activity.openDocumentTree() {
 }
 
 private fun Activity.getUri(dirName: String, fileName: String): Uri? {
-    val basePath = Settings.instance().downloadDirPath
-    val treeId = Settings.instance().downloadDirPathTreeId
-    val authority = Settings.instance().downloadDirPathAuthority
+    val basePath = Settings.downloadDirPath
+    val treeId = Settings.downloadDirPathTreeId
+    val authority = Settings.downloadDirPathAuthority
     if (basePath == null || !basePath.startsWith(ContentResolver.SCHEME_CONTENT) ||
         treeId.isNullOrEmpty() || authority.isNullOrEmpty()) {
         openDocumentTree()

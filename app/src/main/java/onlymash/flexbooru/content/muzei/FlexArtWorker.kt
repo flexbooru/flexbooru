@@ -46,13 +46,13 @@ class FlexArtWorker(
         }
     }
     override fun doWork(): Result {
-        val uid = Settings.instance().activeBooruUid
+        val uid = Settings.activeBooruUid
         val booru = BooruManager.getBooruByUid(uid) ?: return Result.failure()
         val user = UserManager.getUserByBooruUid(uid)
         val data = MuzeiManager.getMuzeiByBooruUid(uid)
-        val muzeiUid = Settings.instance().activeMuzeiUid
+        val muzeiUid = Settings.activeMuzeiUid
         var keyword = ""
-        val muzeiSize = Settings.instance().muzeiSize
+        val muzeiSize = Settings.muzeiSize
         data?.let { list ->
             list.forEach { muzei ->
                 if(muzei.uid == muzeiUid) {
@@ -70,7 +70,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().muzeiLimit).apply {
+                    limit = Settings.muzeiLimit).apply {
                     user?.let {
                         auth_key = it.api_key ?: ""
                         username = it.name
@@ -109,7 +109,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().muzeiLimit).apply {
+                    limit = Settings.muzeiLimit).apply {
                     user?.let {
                         auth_key = it.password_hash ?: ""
                         username = it.name
@@ -145,7 +145,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().muzeiLimit).apply {
+                    limit = Settings.muzeiLimit).apply {
                     user?.let {
                         auth_key = it.password_hash ?: ""
                         username = it.name
@@ -181,7 +181,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().muzeiLimit
+                    limit = Settings.muzeiLimit
                 )
                 val gelbooruApi: GelbooruApi by App.app.instance()
                 val posts = try {
@@ -216,7 +216,7 @@ class FlexArtWorker(
                     scheme = booru.scheme,
                     host = booru.host,
                     keyword = keyword,
-                    limit = Settings.instance().muzeiLimit).apply {
+                    limit = Settings.muzeiLimit).apply {
                     user?.let {
                         auth_key = it.password_hash ?: ""
                         username = it.name
