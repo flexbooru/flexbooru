@@ -15,59 +15,29 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
+import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.post.*
-import onlymash.flexbooru.repository.browse.PostLoadedLiveDataListener
+import onlymash.flexbooru.extension.ioMain
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 
 class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel() {
 
-    val postsDan: MediatorLiveData<MutableList<PostDan>> = MediatorLiveData()
+    private val posts = MediatorLiveData<MutableList<PostBase>>()
 
-    val postsDanOne: MediatorLiveData<MutableList<PostDanOne>> = MediatorLiveData()
-
-    val postsMoe: MediatorLiveData<MutableList<PostMoe>> = MediatorLiveData()
-
-    val postsGel: MediatorLiveData<MutableList<PostGel>> = MediatorLiveData()
-
-    val postsSankaku: MediatorLiveData<MutableList<PostSankaku>> = MediatorLiveData()
-
-    private val postLoadedLiveDataListener = object : PostLoadedLiveDataListener {
-        override fun onDanOneItemsLoaded(posts: LiveData<MutableList<PostDanOne>>) {
-            postsDanOne.addSource(posts) {
-                postsDanOne.postValue(it)
+    @UiThread
+    fun load(host: String, keyword: String, type: Int): LiveData<MutableList<PostBase>> {
+        ioMain({
+            postLoader.loadPostsLiveData(host, keyword, type)
+        }) { data ->
+            if (data != null) {
+                posts.addSource(data) {
+                    posts.postValue(it)
+                }
             }
         }
-        override fun onDanItemsLoaded(posts: LiveData<MutableList<PostDan>>) {
-            postsDan.addSource(posts) {
-                postsDan.postValue(it)
-            }
-        }
-        override fun onMoeItemsLoaded(posts: LiveData<MutableList<PostMoe>>) {
-            postsMoe.addSource(posts) {
-                postsMoe.postValue(it)
-            }
-        }
-        override fun onGelItemsLoaded(posts: LiveData<MutableList<PostGel>>) {
-            postsGel.addSource(posts) {
-                postsGel.postValue(it)
-            }
-        }
-
-        override fun onSankakuItemsLoaded(posts: LiveData<MutableList<PostSankaku>>) {
-            postsSankaku.addSource(posts) {
-                postsSankaku.postValue(it)
-            }
-        }
-    }
-
-    init {
-        postLoader.postLoadedLiveDataListener = postLoadedLiveDataListener
-    }
-
-    fun loadFav(host: String, keyword: String, type: Int) {
-        postLoader.loadPostsLiveData(host, keyword, type)
+        return posts
     }
 }

@@ -13,15 +13,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.browse
+package onlymash.flexbooru.extension
 
-import androidx.lifecycle.LiveData
-import onlymash.flexbooru.entity.post.*
+import kotlinx.coroutines.*
 
-interface PostLoadedLiveDataListener {
-    fun onDanItemsLoaded(posts: LiveData<MutableList<PostDan>>)
-    fun onMoeItemsLoaded(posts: LiveData<MutableList<PostMoe>>)
-    fun onDanOneItemsLoaded(posts: LiveData<MutableList<PostDanOne>>)
-    fun onGelItemsLoaded(posts: LiveData<MutableList<PostGel>>)
-    fun onSankakuItemsLoaded(posts: LiveData<MutableList<PostSankaku>>)
-}
+fun <T : Any> ioMain(
+    work: suspend (() -> T?),
+    callback: ((T?) -> Unit)? = null
+): Job =
+    CoroutineScope(Dispatchers.Main).launch {
+        val data = CoroutineScope(Dispatchers.IO).async {
+            return@async work()
+        }.await()
+
+        callback?.let {
+            it(data)
+        }
+    }

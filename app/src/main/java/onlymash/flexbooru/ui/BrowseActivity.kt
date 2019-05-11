@@ -48,10 +48,14 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar_transparent.*
+import kotlinx.coroutines.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.api.*
+import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.database.UserManager
@@ -61,9 +65,8 @@ import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.repository.browse.PostLoadedListener
-import onlymash.flexbooru.repository.browse.PostLoaderRepositoryIml
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
+import onlymash.flexbooru.repository.browse.PostLoaderRepositoryIml
 import onlymash.flexbooru.repository.favorite.VoteCallback
 import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
@@ -75,8 +78,9 @@ import onlymash.flexbooru.widget.DismissFrameLayout
 import org.kodein.di.generic.instance
 import java.io.*
 import java.util.concurrent.Executor
+import kotlin.coroutines.CoroutineContext
 
-class BrowseActivity : BaseActivity() {
+class BrowseActivity : BaseActivity(), CoroutineScope {
 
     companion object {
         private const val TAG = "BrowseActivity"
@@ -120,16 +124,8 @@ class BrowseActivity : BaseActivity() {
     private val db: FlexbooruDatabase by instance()
     private val ioExecutor: Executor by instance()
 
-    private var postsDan: MutableList<PostDan>? = null
-    private var postsDanFav: MutableList<PostDan>? = null
-    private var postsMoe: MutableList<PostMoe>? = null
-    private var postsMoeFav: MutableList<PostMoe>? = null
-    private var postsGel: MutableList<PostGel>? = null
-    private var postsGelFav: MutableList<PostGel>? = null
-    private var postsDanOne: MutableList<PostDanOne>? = null
-    private var postsDanOneFav: MutableList<PostDanOne>? = null
-    private var postsSankaku: MutableList<PostSankaku>? = null
-    private var postsSankakuFav: MutableList<PostSankaku>? = null
+    private var posts: MutableList<PostBase>? = null
+    private var postsFav: MutableList<PostBase>? = null
 
     private lateinit var booru: Booru
     private var pageType = Constants.PAGE_TYPE_POST
@@ -138,39 +134,16 @@ class BrowseActivity : BaseActivity() {
     private var user: User? = null
     private var currentPosition = -1
     private var canTransition = true
-    private val postLoader by lazy {
-        PostLoaderRepositoryIml(
-            db = db,
-            ioExecutor = ioExecutor
-        )
-    }
+    private val postLoader by lazy { PostLoaderRepositoryIml(db) }
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     @Suppress("UNCHECKED_CAST")
-    private val postLoadedListener: PostLoadedListener = object : PostLoadedListener {
-        override fun onDanItemsLoaded(posts: MutableList<PostDan>) {
-            postsDan = posts
-            initItemsLoaded(posts as MutableList<PostBase>)
-        }
-
-        override fun onMoeItemsLoaded(posts: MutableList<PostMoe>) {
-            postsMoe = posts
-            initItemsLoaded(posts as MutableList<PostBase>)
-        }
-
-        override fun onDanOneItemsLoaded(posts: MutableList<PostDanOne>) {
-            postsDanOne = posts
-            initItemsLoaded(posts as MutableList<PostBase>)
-        }
-
-        override fun onGelItemsLoaded(posts: MutableList<PostGel>) {
-            postsGel = posts
-            initItemsLoaded(posts as MutableList<PostBase>)
-        }
-
-        override fun onSankakuItemsLoaded(posts: MutableList<PostSankaku>) {
-            postsSankaku = posts
-            initItemsLoaded(posts as MutableList<PostBase>)
-        }
+    private fun handleResult(data: MutableList<PostBase>) {
+        posts = data
+        initItemsLoaded(data)
     }
 
     private fun initItemsLoaded(posts: MutableList<PostBase>) {
@@ -201,16 +174,6 @@ class BrowseActivity : BaseActivity() {
                 }
             }, 300)
         }
-        user?.let {
-            val type = booru.type
-            favPostViewModel.loadFav(
-                host = booru.host,
-                keyword = when (type) {
-                    Constants.TYPE_MOEBOORU -> "vote:3:${it.name} order:vote"
-                    else -> "fav:${it.name}"
-                },
-                type = type)
-        }
     }
 
     private val playerHolder: PlayerHolder by lazy { PlayerHolder(this) }
@@ -231,37 +194,9 @@ class BrowseActivity : BaseActivity() {
         override fun onPageSelected(position: Int) {
             var url = ""
             var id = -1
-            when (booru.type) {
-                Constants.TYPE_DANBOORU -> {
-                    postsDan?.get(position)?.let {
-                        url = it.getSampleUrl()
-                        id = it.id
-                    }
-                }
-                Constants.TYPE_MOEBOORU -> {
-                    postsMoe?.get(position)?.let {
-                        url = it.getSampleUrl()
-                        id = it.id
-                    }
-                }
-                Constants.TYPE_DANBOORU_ONE -> {
-                    postsDanOne?.get(position)?.let {
-                        url = it.getSampleUrl()
-                        id = it.id
-                    }
-                }
-                Constants.TYPE_GELBOORU -> {
-                    postsGel?.get(position)?.let {
-                        url = it.getSampleUrl()
-                        id = it.id
-                    }
-                }
-                Constants.TYPE_SANKAKU -> {
-                    postsSankaku?.get(position)?.let {
-                        url = it.getSampleUrl()
-                        id = it.id
-                    }
-                }
+            posts?.get(position)?.let {
+                url = it.getSampleUrl()
+                id = it.getPostId()
             }
             if (id > 0) toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), id)
             val intent = Intent(ACTION).apply {
@@ -350,81 +285,30 @@ class BrowseActivity : BaseActivity() {
         }
     }
 
-    private fun getCurrentPostFav(): Any? {
+    private fun getCurrentPostFav(): PostBase? {
         val position = pager_browse.currentItem
-        var post: Any? = null
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                val id = postsDan?.get(position)?.id ?: return null
-                postsDanFav?.forEach {
-                    if (it.id == id) {
-                        post = it
-                        return@forEach
-                    }
-                }
-            }
-            Constants.TYPE_MOEBOORU -> {
-                val id = postsMoe?.get(position)?.id ?: return null
-                postsMoeFav?.forEach {
-                    if (it.id == id) {
-                        post = it
-                        return@forEach
-                    }
-                }
-            }
-            Constants.TYPE_DANBOORU_ONE -> {
-                val id = postsDanOne?.get(position)?.id ?: return null
-                postsDanOneFav?.forEach {
-                    if (it.id == id) {
-                        post = it
-                        return@forEach
-                    }
-                }
-            }
-            Constants.TYPE_GELBOORU -> {
-                val id = postsGel?.get(position)?.id ?: return null
-                postsGelFav?.forEach {
-                    if (it.id == id) {
-                        post = it
-                        return@forEach
-                    }
-                }
-            }
-            Constants.TYPE_SANKAKU -> {
-                val id = postsSankaku?.get(position)?.id ?: return null
-                postsSankakuFav?.forEach {
-                    if (it.id == id) {
-                        post = it
-                        return@forEach
-                    }
-                }
+        var post: PostBase? = null
+        val id = posts?.get(position)?.getPostId() ?: return null
+        postsFav?.forEach {
+            if (it.getPostId() == id) {
+                post = it
+                return@forEach
             }
         }
         return post
     }
 
-    private fun getCurrentPost(): Any? {
-        return when (booru.type) {
-            Constants.TYPE_DANBOORU -> postsDan?.get(pager_browse.currentItem)
-            Constants.TYPE_MOEBOORU -> postsMoe?.get(pager_browse.currentItem)
-            Constants.TYPE_DANBOORU_ONE -> postsDanOne?.get(pager_browse.currentItem)
-            Constants.TYPE_GELBOORU -> postsGel?.get(pager_browse.currentItem)
-            Constants.TYPE_SANKAKU -> postsSankaku?.get(pager_browse.currentItem)
-            else -> null
-        }
+    private fun getCurrentPost(): PostBase? {
+        return posts?.get(pager_browse.currentItem)
     }
 
-    private fun getCurrentPostId(): Int {
-        return when (val post = getCurrentPost()) {
-            is PostBase -> post.getPostId()
-            else -> -1
-        }
-    }
+    private fun getCurrentPostId(): Int = getCurrentPost()?.getPostId() ?: -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initWindow()
         setContentView(R.layout.activity_browse)
+        job = Job()
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         pager_browse.background = colorDrawable
@@ -483,8 +367,16 @@ class BrowseActivity : BaseActivity() {
             ioExecutor = ioExecutor)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
-        postLoader.postLoadedListener = postLoadedListener
-        postLoader.loadPosts(host = booru.host, keyword = keyword, type = booru.type)
+        launch {
+            val data = withContext(Dispatchers.IO) {
+                postLoader.loadPosts(
+                    host = booru.host,
+                    keyword = keyword,
+                    type = booru.type
+                )
+            }
+            handleResult(data)
+        }
         initBottomBar()
     }
 
@@ -507,10 +399,10 @@ class BrowseActivity : BaseActivity() {
                     getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            val post = getCurrentPost() ?: return@setOnClickListener
             user?.let { user ->
-                when (type) {
-                    Constants.TYPE_DANBOORU -> {
-                        val post = postsDan?.get(pager_browse.currentItem) ?: return@let
+                when (post) {
+                    is PostDan -> {
                         val vote = Vote(
                             scheme = booru.scheme,
                             host = booru.host,
@@ -524,8 +416,7 @@ class BrowseActivity : BaseActivity() {
                             voteRepository.addDanFav(vote, post)
                         }
                     }
-                    Constants.TYPE_MOEBOORU -> {
-                        val post = postsMoe?.get(pager_browse.currentItem) ?: return@let
+                    is PostMoe -> {
                         val vote = when (getCurrentPostFav()) {
                             is PostMoe -> {
                                 Vote(
@@ -548,8 +439,7 @@ class BrowseActivity : BaseActivity() {
                         }
                         voteRepository.voteMoePost(vote)
                     }
-                    Constants.TYPE_DANBOORU_ONE -> {
-                        val post = postsDanOne?.get(pager_browse.currentItem) ?: return@let
+                    is PostDanOne -> {
                         val postFav = getCurrentPostFav()
                         val vote = Vote(
                             scheme = booru.scheme,
@@ -563,11 +453,7 @@ class BrowseActivity : BaseActivity() {
                             voteRepository.addDanOneFav(vote, post)
                         }
                     }
-                    Constants.TYPE_GELBOORU -> {
-
-                    }
-                    Constants.TYPE_SANKAKU -> {
-                        val post = postsSankaku?.get(pager_browse.currentItem) ?: return@let
+                    is PostSankaku -> {
                         val postFav = getCurrentPostFav()
                         val vote = Vote(
                             scheme = booru.scheme,
@@ -626,96 +512,26 @@ class BrowseActivity : BaseActivity() {
     }
 
     private fun initFavViewModel() {
+        val u = user ?: return
+        val type = booru.type
         favPostViewModel = getFavPostViewModel(postLoader)
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                favPostViewModel.postsDan.observe(this, Observer { posts ->
-                    postsDanFav = posts
-                    setCurrentVoteItemIcon()
-                })
-            }
-            Constants.TYPE_MOEBOORU -> {
-                favPostViewModel.postsMoe.observe(this, Observer { posts ->
-                    postsMoeFav = posts
-                    setCurrentVoteItemIcon()
-                })
-            }
-            Constants.TYPE_DANBOORU_ONE -> {
-                favPostViewModel.postsDanOne.observe(this, Observer { posts ->
-                    postsDanOneFav = posts
-                    setCurrentVoteItemIcon()
-                })
-            }
-            Constants.TYPE_GELBOORU -> {
-                favPostViewModel.postsGel.observe(this, Observer { posts ->
-                    postsGelFav = posts
-                    setCurrentVoteItemIcon()
-                })
-            }
-            Constants.TYPE_SANKAKU -> {
-                favPostViewModel.postsSankaku.observe(this, Observer { posts ->
-                    postsSankakuFav = posts
-                    setCurrentVoteItemIcon()
-                })
-            }
-        }
+        favPostViewModel.load(
+            host = booru.host,
+            keyword = when (type) {
+                Constants.TYPE_MOEBOORU -> "vote:3:${u.name} order:vote"
+                else -> "fav:${u.name}"
+            },
+            type = type
+        ).observe(this, Observer {
+            postsFav = it
+            setCurrentVoteItemIcon()
+        })
     }
 
     private fun setCurrentVoteItemIcon() {
-        when (val post = getCurrentPost()) {
-            is PostDan -> {
-                var exist = false
-                postsDanFav?.forEach {
-                    if (post.id == it.id) {
-                        setVoteItemIcon(true)
-                        exist = true
-                        return@forEach
-                    }
-                }
-                if (!exist) {
-                    setVoteItemIcon(false)
-                }
-            }
-            is PostMoe -> {
-                var exist = false
-                postsMoeFav?.forEach {
-                    if (post.id == it.id) {
-                        setVoteItemIcon(true)
-                        exist = true
-                        return@forEach
-                    }
-                }
-                if (!exist) {
-                    setVoteItemIcon(false)
-                }
-            }
-            is PostDanOne -> {
-                var exist = false
-                postsDanOneFav?.forEach {
-                    if (post.id == it.id) {
-                        setVoteItemIcon(true)
-                        exist = true
-                        return@forEach
-                    }
-                }
-                if (!exist) {
-                    setVoteItemIcon(false)
-                }
-            }
-            is PostSankaku -> {
-                var exist = false
-                postsSankakuFav?.forEach {
-                    if (post.id == it.id) {
-                        setVoteItemIcon(true)
-                        exist = true
-                        return@forEach
-                    }
-                }
-                if (!exist) {
-                    setVoteItemIcon(false)
-                }
-            }
-        }
+        val post = getCurrentPost() ?: return
+        val index = postsFav?.indexOfFirst { post.getPostId() == it.getPostId() } ?: return
+        setVoteItemIcon(index >= 0)
     }
 
     private fun setVoteItemIcon(checked: Boolean) {
@@ -735,42 +551,10 @@ class BrowseActivity : BaseActivity() {
 
     private fun saveAndAction(action: Int) {
         val position = pager_browse.currentItem
-        val url = when (booru.type) {
-            Constants.TYPE_DANBOORU -> {
-                when (Settings.browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsDan?.get(position)?.getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsDan?.get(position)?.getLargerUrl()
-                    else -> postsDan?.get(position)?.getOriginUrl()
-                }
-            }
-            Constants.TYPE_MOEBOORU -> {
-                when (Settings.browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsMoe?.get(position)?.getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsMoe?.get(position)?.getLargerUrl()
-                    else -> postsMoe?.get(position)?.getOriginUrl()
-                }
-            }
-            Constants.TYPE_DANBOORU_ONE -> {
-                when (Settings.browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsDanOne?.get(position)?.getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsDanOne?.get(position)?.getLargerUrl()
-                    else -> postsDanOne?.get(position)?.getOriginUrl()
-                }
-            }
-            Constants.TYPE_GELBOORU -> {
-                when (Settings.browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsGel?.get(position)?.getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsGel?.get(position)?.getLargerUrl()
-                    else -> postsGel?.get(position)?.getOriginUrl()
-                }
-            }
-            else -> {
-                when (Settings.browseSize) {
-                    Settings.POST_SIZE_SAMPLE -> postsSankaku?.get(position)?.getSampleUrl()
-                    Settings.POST_SIZE_LARGER -> postsSankaku?.get(position)?.getLargerUrl()
-                    else -> postsSankaku?.get(position)?.getOriginUrl()
-                }
-            }
+        val url = when (Settings.browseSize) {
+            Settings.POST_SIZE_SAMPLE -> posts?.get(position)?.getSampleUrl()
+            Settings.POST_SIZE_LARGER -> posts?.get(position)?.getLargerUrl()
+            else -> posts?.get(position)?.getOriginUrl()
         }
         if (url.isNullOrEmpty()) return
         GlideApp.with(this)
@@ -831,22 +615,9 @@ class BrowseActivity : BaseActivity() {
             })
     }
 
-    private fun download() {
-        val position = pager_browse.currentItem
-        var post: PostBase? = null
-        when (booru.type) {
-            Constants.TYPE_DANBOORU -> post = postsDan?.get(position)
-            Constants.TYPE_DANBOORU_ONE -> post = postsDanOne?.get(position)
-            Constants.TYPE_MOEBOORU -> post = postsMoe?.get(position)
-            Constants.TYPE_GELBOORU -> post = postsGel?.get(position)
-            Constants.TYPE_SANKAKU -> post = postsSankaku?.get(position)
-        }
-        DownloadUtil.downloadPost(post, this)
-    }
-
     private fun checkAndAction(action: Int) {
         when (action) {
-            ACTION_DOWNLOAD -> download()
+            ACTION_DOWNLOAD -> DownloadUtil.downloadPost(getCurrentPost(), this)
             else -> saveAndAction(action)
         }
     }
@@ -921,6 +692,7 @@ class BrowseActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        job.cancel()
         playerHolder.release()
     }
 

@@ -15,9 +15,10 @@
 
 package onlymash.flexbooru.repository.browse
 
+import androidx.lifecycle.LiveData
+import onlymash.flexbooru.entity.post.PostBase
+
 interface PostLoaderRepository {
-    var postLoadedListener: PostLoadedListener?
-    var postLoadedLiveDataListener: PostLoadedLiveDataListener?
-    fun loadPosts(host: String, keyword: String, type: Int)
-    fun loadPostsLiveData(host: String, keyword: String, type: Int)
+    suspend fun loadPosts(host: String, keyword: String, type: Int): MutableList<PostBase>
+    suspend fun loadPostsLiveData(host: String, keyword: String, type: Int): LiveData<MutableList<PostBase>>
 }

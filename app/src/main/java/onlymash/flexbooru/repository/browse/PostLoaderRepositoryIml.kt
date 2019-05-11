@@ -15,148 +15,36 @@
 
 package onlymash.flexbooru.repository.browse
 
-import android.os.Handler
+import androidx.lifecycle.LiveData
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.database.FlexbooruDatabase
-import java.util.concurrent.Executor
+import onlymash.flexbooru.entity.post.PostBase
+import onlymash.flexbooru.extension.NetResult
 
 /**
  *Load posts from database
  */
-class PostLoaderRepositoryIml(private val db: FlexbooruDatabase,
-                              private val ioExecutor: Executor) : PostLoaderRepository {
+class PostLoaderRepositoryIml(private val db: FlexbooruDatabase) : PostLoaderRepository {
 
-    private val uiHandler = Handler()
-
-    override var postLoadedListener: PostLoadedListener? = null
-
-    override var postLoadedLiveDataListener: PostLoadedLiveDataListener? = null
-
-    override fun loadPosts(host: String, keyword: String, type: Int) {
-        when (type) {
-            Constants.TYPE_DANBOORU -> loadDanPosts(host, keyword)
-            Constants.TYPE_MOEBOORU -> loadMoePosts(host, keyword)
-            Constants.TYPE_DANBOORU_ONE -> loadDanOnePosts(host, keyword)
-            Constants.TYPE_GELBOORU -> loadGelPosts(host, keyword)
-            Constants.TYPE_SANKAKU -> loadSankakuPosts(host, keyword)
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun loadPosts(host: String, keyword: String, type: Int): MutableList<PostBase> {
+        return when (type) {
+            Constants.TYPE_DANBOORU -> db.postDanDao().getPostsRaw(host, keyword) as MutableList<PostBase>
+            Constants.TYPE_MOEBOORU -> db.postMoeDao().getPostsRaw(host, keyword) as MutableList<PostBase>
+            Constants.TYPE_DANBOORU_ONE -> db.postDanOneDao().getPostsRaw(host, keyword) as MutableList<PostBase>
+            Constants.TYPE_GELBOORU -> db.postGelDao().getPostsRaw(host, keyword) as MutableList<PostBase>
+            else -> db.postSankakuDao().getPostsRaw(host, keyword) as MutableList<PostBase>
         }
     }
 
-    override fun loadPostsLiveData(host: String, keyword: String, type: Int) {
-        when (type) {
-            Constants.TYPE_DANBOORU -> loadDanPostsLiveData(host, keyword)
-            Constants.TYPE_MOEBOORU -> loadMoePostsLiveData(host, keyword)
-            Constants.TYPE_DANBOORU_ONE -> loadDanOnePostsLiveData(host, keyword)
-            Constants.TYPE_GELBOORU -> loadGelPostsLiveData(host, keyword)
-            Constants.TYPE_SANKAKU -> loadSankakuPostsLiveData(host, keyword)
-        }
-    }
-
-    /**
-     *Load danbooru posts from database
-     */
-    private fun loadDanPosts(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postDanDao().getPostsRaw(host, keyword)
-            uiHandler.post {
-                postLoadedListener?.onDanItemsLoaded(posts)
-            }
-        }
-    }
-
-    /**
-     *Load danbooru1.x posts from database
-     */
-    private fun loadDanOnePosts(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postDanOneDao().getPostsRaw(host, keyword)
-            uiHandler.post {
-                postLoadedListener?.onDanOneItemsLoaded(posts)
-            }
-        }
-    }
-
-    /**
-     *Load moebooru posts from database
-     */
-    private fun loadMoePosts(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postMoeDao().getPostsRaw(host, keyword)
-            uiHandler.post {
-                postLoadedListener?.onMoeItemsLoaded(posts)
-            }
-        }
-    }
-
-    private fun loadGelPosts(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postGelDao().getPostsRaw(host, keyword)
-            uiHandler.post {
-                postLoadedListener?.onGelItemsLoaded(posts)
-            }
-        }
-    }
-
-    private fun loadSankakuPosts(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postSankakuDao().getPostsRaw(host, keyword)
-            uiHandler.post {
-                postLoadedListener?.onSankakuItemsLoaded(posts)
-            }
-        }
-    }
-
-    private fun loadGelPostsLiveData(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postGelDao().getPostsLiveData(host, keyword)
-            uiHandler.post {
-                postLoadedLiveDataListener?.onGelItemsLoaded(posts)
-            }
-        }
-    }
-
-    /**
-     *Load danbooru posts(livedata) from database
-     */
-    private fun loadDanPostsLiveData(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postDanDao().getPostsLiveData(host, keyword)
-            uiHandler.post {
-                postLoadedLiveDataListener?.onDanItemsLoaded(posts)
-            }
-        }
-    }
-
-    /**
-     *Load danbooru1.x posts(livedata) from database
-     */
-    private fun loadDanOnePostsLiveData(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postDanOneDao().getPostsLiveData(host, keyword)
-            uiHandler.post {
-                postLoadedLiveDataListener?.onDanOneItemsLoaded(posts)
-            }
-        }
-    }
-
-    /**
-     *Load moebooru posts(livedata) from database
-     */
-    private fun loadMoePostsLiveData(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postMoeDao().getPostsLiveData(host, keyword)
-            uiHandler.post {
-                postLoadedLiveDataListener?.onMoeItemsLoaded(posts)
-            }
-        }
-    }
-
-    private fun loadSankakuPostsLiveData(host: String, keyword: String) {
-        ioExecutor.execute {
-            val posts = db.postSankakuDao().getPostsLiveData(host, keyword)
-            uiHandler.post {
-                postLoadedLiveDataListener?.onSankakuItemsLoaded(posts)
-            }
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun loadPostsLiveData(host: String, keyword: String, type: Int): LiveData<MutableList<PostBase>> {
+        return when (type) {
+            Constants.TYPE_DANBOORU -> db.postDanDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
+            Constants.TYPE_MOEBOORU -> db.postMoeDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
+            Constants.TYPE_DANBOORU_ONE -> db.postDanOneDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
+            Constants.TYPE_SANKAKU -> db.postSankakuDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
+            else -> db.postGelDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
         }
     }
 }

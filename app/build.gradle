@@ -112,9 +112,12 @@ dependencies {
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha01'
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation 'com.google.android.material:material:1.1.0-alpha06'
