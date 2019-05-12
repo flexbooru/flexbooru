@@ -29,7 +29,12 @@ import android.widget.ProgressBar
 import androidx.core.net.toUri
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
@@ -134,7 +139,6 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                         })
                 }
                 url.isGifImage() -> {
-                    layout.removeAllViewsInLayout()
                     val gifView = PhotoView(container.context).apply {
                         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                         scaleType = ImageView.ScaleType.FIT_CENTER
@@ -143,7 +147,18 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             photoViewListener?.onClickPhotoView()
                         }
                     }
-                    layout.addView(gifView)
+                    val progressBar = ProgressBar(container.context).apply {
+                        layoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            Gravity.CENTER)
+                        indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
+                    }
+                    layout.apply {
+                        removeAllViewsInLayout()
+                        addView(gifView, 0)
+                        addView(progressBar, 1)
+                    }
                     glideRequests.load(previewUrl)
                         .into(object : CustomTarget<Drawable>() {
                             override fun onLoadCleared(placeholder: Drawable?) {}
@@ -152,6 +167,28 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                                     .asGif()
                                     .load(url)
                                     .placeholder(resource)
+                                    .addListener(object : RequestListener<GifDrawable> {
+                                        override fun onLoadFailed(
+                                            e: GlideException?,
+                                            model: Any?,
+                                            target: Target<GifDrawable>?,
+                                            isFirstResource: Boolean
+                                        ): Boolean {
+                                            layout.removeView(progressBar)
+                                            return false
+                                        }
+
+                                        override fun onResourceReady(
+                                            resource: GifDrawable?,
+                                            model: Any?,
+                                            target: Target<GifDrawable>?,
+                                            dataSource: DataSource?,
+                                            isFirstResource: Boolean
+                                        ): Boolean {
+                                            layout.removeView(progressBar)
+                                            return false
+                                        }
+                                    })
                                     .into(gifView)
                             }
                         })
