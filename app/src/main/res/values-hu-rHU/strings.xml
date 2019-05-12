@@ -63,6 +63,7 @@
     <string name="msg_path_denied">Mentés nem sikerült! Nem érhető el a mentés helye.</string>
     <string name="msg_download_failed">A letöltés sikertelen</string>
     <string name="msg_download_complete">Letöltés kész</string>
+    <string name="msg_password_or_hash_salt_wrong">Password or Hash salt is wrong.</string>
     <string name="popular_day">Nap</string>
     <string name="popular_week">Hét</string>
     <string name="popular_month">Hónap</string>
