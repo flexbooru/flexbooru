@@ -63,6 +63,7 @@
     <string name="msg_path_denied">Zapisywanie nie powiodło się! Brak dostępu do wybranej ścieżki.</string>
     <string name="msg_download_failed">Pobieranie nie powiodło się</string>
     <string name="msg_download_complete">Pobieranie ukończone</string>
+    <string name="msg_password_or_hash_salt_wrong">Password or Hash salt is wrong.</string>
     <string name="popular_day">Dzień</string>
     <string name="popular_week">Tydzień</string>
     <string name="popular_month">Miesiąc</string>
