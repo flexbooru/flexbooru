@@ -647,15 +647,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             Settings.NIGHT_MODE_KEY -> {
                 AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
-//                delegate.applyDayNight()
-                Handler().postDelayed({
-                    startActivity(
-                        Intent(this, MainActivity::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    )
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                    finish()
-                }, 200L)
             }
             Settings.ORDER_SUCCESS_KEY -> {
                 if (Settings.isOrderSuccess) {
