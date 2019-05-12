@@ -43,8 +43,8 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
 import onlymash.flexbooru.R
-import onlymash.flexbooru.util.lerp
-import onlymash.flexbooru.util.textWidth
+import onlymash.flexbooru.extension.lerp
+import onlymash.flexbooru.extension.textWidth
 
 /**
  * A custom view for displaying filters. Allows a custom presentation of the tag color and selection

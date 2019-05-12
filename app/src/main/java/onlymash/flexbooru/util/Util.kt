@@ -41,6 +41,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
+import onlymash.flexbooru.extension.getDownloadUri
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*

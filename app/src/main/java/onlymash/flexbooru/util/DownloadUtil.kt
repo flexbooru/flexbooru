@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.bumptech.glide.load.DataSource
@@ -40,6 +41,9 @@ import java.io.FileInputStream
 import java.io.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.extension.getDownloadUri
+import onlymash.flexbooru.extension.getFileUriByDocId
+import onlymash.flexbooru.extension.getPoolUri
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 import onlymash.flexbooru.util.okhttp.OkHttp3Downloader
 import java.io.InputStream
@@ -53,7 +57,6 @@ class DownloadUtil(
         private const val URL_KEY = "url"
         private const val HOST_KEY = "host"
         private const val POST_ID_KEY = "post_id"
-        private const val FILENAME_KEY = "filename"
 
         private const val TYPE_KEY = "type"
         private const val TYPE_POST = "type_post"
@@ -63,8 +66,10 @@ class DownloadUtil(
         private const val POOL_DOWNLOAD_TYPE_KEY = "pool_download_type"
         const val POOL_DOWNLOAD_TYPE_JPGS = 0
         const val POOL_DOWNLOAD_TYPE_PNGS = 1
-        private val USERNAME_KEY = "username"
-        private val PASSWORD_HASH_KEY = "password_hash"
+        private const val USERNAME_KEY = "username"
+        private const val PASSWORD_HASH_KEY = "password_hash"
+
+        const val DOC_ID_KEY = "doc_id"
 
         internal fun downloadPost(post: PostBase?, activity: Activity) {
             if (post == null) return
@@ -78,7 +83,8 @@ class DownloadUtil(
             if (url.isEmpty()) return
             var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$id - $fileName"
-            activity.getDownloadUri(host, fileName) ?: return
+            val docUri = activity.getDownloadUri(host, fileName) ?: return
+            val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
@@ -87,8 +93,8 @@ class DownloadUtil(
                             URL_KEY to url,
                             HOST_KEY to host,
                             POST_ID_KEY to id,
-                            FILENAME_KEY to fileName,
-                            TYPE_KEY to TYPE_POST
+                            TYPE_KEY to TYPE_POST,
+                            DOC_ID_KEY to docId
                         )
                     )
                     .setConstraints(
@@ -103,7 +109,8 @@ class DownloadUtil(
             if (url.isEmpty()) return
             var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
-            activity.getDownloadUri(host, fileName) ?: return
+            val docUri = activity.getDownloadUri(host, fileName) ?: return
+            val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
@@ -112,8 +119,8 @@ class DownloadUtil(
                             URL_KEY to url,
                             HOST_KEY to host,
                             POST_ID_KEY to postId,
-                            FILENAME_KEY to fileName,
-                            TYPE_KEY to TYPE_POST
+                            TYPE_KEY to TYPE_POST,
+                            DOC_ID_KEY to docId
                         )
                     )
                     .setConstraints(
@@ -143,7 +150,8 @@ class DownloadUtil(
                     "$host - $id.png.zip"
                 }
             }
-            activity.getPoolUri(fileName) ?: return
+            val docUri = activity.getPoolUri(fileName) ?: return
+            val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadUtil>()
@@ -155,7 +163,8 @@ class DownloadUtil(
                             POOL_DOWNLOAD_TYPE_KEY to type,
                             TYPE_KEY to TYPE_POOL,
                             USERNAME_KEY to username,
-                            PASSWORD_HASH_KEY to passwordHash
+                            PASSWORD_HASH_KEY to passwordHash,
+                            DOC_ID_KEY to docId
                         )
                     )
                     .setConstraints(
@@ -173,9 +182,9 @@ class DownloadUtil(
                 val url = inputData.getString(URL_KEY)
                 val id = inputData.getInt(POST_ID_KEY, -1)
                 val host = inputData.getString(HOST_KEY)
-                val filename = inputData.getString(FILENAME_KEY)
-                if (url == null || id < 0 || host == null || filename == null) return Result.failure()
-                val desUri = getFileUri(host, filename) ?: return Result.failure()
+                val docId =  inputData.getString(DOC_ID_KEY)
+                if (url == null || id < 0 || host == null || docId == null) return Result.failure()
+                val desUri = getFileUriByDocId(docId) ?: return Result.failure()
                 val channelId = applicationContext.packageName + ".download"
                 val notificationManager = getNotificationManager(
                     channelId,
@@ -249,22 +258,22 @@ class DownloadUtil(
                 val type = inputData.getInt(POOL_DOWNLOAD_TYPE_KEY, POOL_DOWNLOAD_TYPE_JPGS)
                 val username = inputData.getString(USERNAME_KEY)
                 val passwordHash = inputData.getString(PASSWORD_HASH_KEY)
-                if (id < 0 || scheme.isNullOrEmpty() || host.isNullOrEmpty() || username.isNullOrEmpty() || passwordHash.isNullOrEmpty())
+                val docId =  inputData.getString(DOC_ID_KEY)
+                if (id < 0 || scheme.isNullOrEmpty() ||
+                    host.isNullOrEmpty() || username.isNullOrEmpty() ||
+                    passwordHash.isNullOrEmpty() || docId == null)
                     return Result.failure()
                 var url: String
-                val fileName: String
                 when (type) {
                     POOL_DOWNLOAD_TYPE_JPGS -> {
-                        fileName = "$host - $id.jpg.zip"
                         url = applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
                     }
                     else -> {
-                        fileName = "$host - $id.png.zip"
                         url = applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
                     }
                 }
                 url = "$url&login=$username&password_hash=$passwordHash"
-                val desUri = getFileUri("pools", fileName) ?: return Result.failure()
+                val desUri = getFileUriByDocId(docId) ?: return Result.failure()
                 val channelId = applicationContext.packageName + ".download_pool"
                 val notificationManager = getNotificationManager(
                     channelId,

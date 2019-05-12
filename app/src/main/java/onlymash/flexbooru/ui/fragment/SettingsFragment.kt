@@ -23,7 +23,7 @@ import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.SuggestionManager
-import onlymash.flexbooru.util.openDocumentTree
+import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.util.trimCache
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware

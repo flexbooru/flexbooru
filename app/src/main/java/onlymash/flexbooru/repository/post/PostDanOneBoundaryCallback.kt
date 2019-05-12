@@ -23,7 +23,7 @@ import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
-import onlymash.flexbooru.util.createStatusLiveData
+import onlymash.flexbooru.extension.createStatusLiveData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

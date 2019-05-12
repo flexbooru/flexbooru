@@ -13,11 +13,12 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util
+package onlymash.flexbooru.extension
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.DocumentsContract
@@ -26,11 +27,12 @@ import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.util.getMimeType
 
-fun getFileUri(dirName: String, fileName: String): Uri? {
+fun getFileUriByDocId(docId: String): Uri? {
     val treeId = Settings.downloadDirPathTreeId ?: return null
-    val treeUri = DocumentsContract.buildTreeDocumentUri(Settings.downloadDirPathAuthority, treeId) ?: return null
-    val docId = if (treeId.endsWith(":")) "$treeId$dirName/$fileName" else "$treeId/$dirName/$fileName"
+    val authority = Settings.downloadDirPathAuthority ?: return null
+    val treeUri = DocumentsContract.buildTreeDocumentUri(authority, treeId) ?: return null
     return DocumentsContract.buildDocumentUriUsingTree(treeUri, docId)
 }
 
@@ -63,24 +65,26 @@ private fun Activity.getUri(dirName: String, fileName: String): Uri? {
         openDocumentTree()
         return null
     }
-    val dirDocId: String
-    val fileDocId: String
-    if (treeId.endsWith(":")) {
-        dirDocId = treeId + dirName
-        fileDocId = "$treeId$dirName/$fileName"
+    var dirDocId = findChildrenDocIdByFilename(treeUri, dirName)
+    if (dirDocId == null) {
+        treeDir.createFile(DocumentsContract.Document.MIME_TYPE_DIR, dirName)
+        dirDocId = findChildrenDocIdByFilename(treeUri, dirName) ?: return null
+    }
+    val fileDocId = if (dirDocId.endsWith(":")) {
+        dirDocId + fileName
     } else {
-        dirDocId = "$treeId/$dirName"
-        fileDocId = "$treeId/$dirName/$fileName"
+        "$dirDocId/$fileName"
     }
     val dirDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirDocId)
-    val dir = DocumentFile.fromSingleUri(this, dirDocUri) ?: return null
-    if (!dir.exists()) {
-        treeDir.createFile(DocumentsContract.Document.MIME_TYPE_DIR, dirName)
-    }
-    val fileDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, fileDocId)
-    val file = DocumentFile.fromSingleUri(this, fileDocUri) ?: return null
-    if (!file.exists()) {
-        DocumentsContract.createDocument(contentResolver, dirDocUri, fileName.getMimeType(), fileName)
+    var fileDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, fileDocId)
+    val fileDoc = DocumentFile.fromSingleUri(this, fileDocUri)
+    if (fileDoc == null || !fileDoc.exists()) {
+        fileDocUri = DocumentsContract.createDocument(
+            contentResolver,
+            dirDocUri,
+            fileName.getMimeType(),
+            fileName
+        )
     }
     return fileDocUri
 }
@@ -90,3 +94,43 @@ fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
 fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getUri(host, fileName)
 
 fun Activity.getPoolUri(fileName: String): Uri? = getUri("pools", fileName)
+
+private fun closeQuietly(closeable: AutoCloseable?) {
+    closeable ?: return
+    try {
+        closeable.close()
+    } catch (rethrown: RuntimeException) {
+        throw rethrown
+    } catch (_: Exception) { }
+}
+
+private fun Context.findChildrenDocIdByFilename(treeUri: Uri, filename: String): String? {
+    var docId: String? = null
+    val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
+        treeUri,
+        DocumentsContract.getTreeDocumentId(treeUri)
+    )
+    val childrenCursor = contentResolver.query(
+        childrenUri,
+        arrayOf(
+            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            DocumentsContract.Document.COLUMN_DOCUMENT_ID
+        ),
+        null,
+        null,
+        null
+    )
+    try {
+        childrenCursor?.let {
+            while (it.moveToNext()) {
+                if ( childrenCursor.getString(0) == filename) {
+                    docId = childrenCursor.getString(1)
+                    break
+                }
+            }
+        }
+    } finally {
+        closeQuietly(childrenCursor)
+    }
+    return docId
+}
