@@ -27,7 +27,6 @@ import onlymash.flexbooru.api.url.SankakuUrlHelper
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
-import java.io.IOException
 
 /**
  *user repo
@@ -67,8 +66,8 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
             } else {
                 NetResult.Success(users[index])
             }
-        } catch (e: IOException) {
-            NetResult.Error(e.message.toString())
+        } catch (e: Exception) {
+            NetResult.Error(e.toString())
         }
     }
 
@@ -81,8 +80,8 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
             } else {
                 NetResult.Success(users[index])
             }
-        } catch (e: IOException) {
-            NetResult.Error(e.message.toString())
+        } catch (e: Exception) {
+            NetResult.Error(e.toString())
         }
     }
 
@@ -97,8 +96,8 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
             } else {
                 NetResult.Error("User not found!")
             }
-        } catch (e: IOException) {
-            NetResult.Error(e.message.toString())
+        } catch (e: Exception) {
+            NetResult.Error(e.toString())
         }
     }
 
@@ -111,8 +110,8 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
             } else {
                 NetResult.Success(users[index])
             }
-        } catch (e: IOException) {
-            NetResult.Error(e.message.toString())
+        } catch (e: Exception) {
+            NetResult.Error(e.toString())
         }
     }
 
@@ -125,8 +124,8 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
             } else {
                 NetResult.Success(users[index])
             }
-        } catch (e: IOException) {
-            NetResult.Error(e.message.toString())
+        } catch (e: Exception) {
+            NetResult.Error(e.toString())
         }
     }
 
@@ -141,8 +140,8 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
             } else {
                 NetResult.Error("User not found!")
             }
-        } catch (e: IOException) {
-            NetResult.Error(e.message.toString())
+        } catch (e: Exception) {
+            NetResult.Error(e.toString())
         }
     }
 }

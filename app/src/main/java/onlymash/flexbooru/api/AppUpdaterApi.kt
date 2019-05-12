@@ -25,7 +25,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.UserAgent
-import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -80,7 +79,7 @@ interface AppUpdaterApi {
                 Settings.latestVersionName = data.version_name
                 Settings.latestVersionCode = data.version_code
                 Settings.isAvailableOnStore = data.is_available_store
-            } catch (_: HttpException) {}
+            } catch (_: Exception) {}
         }
     }
 

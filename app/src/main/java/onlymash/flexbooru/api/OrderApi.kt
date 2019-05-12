@@ -85,7 +85,7 @@ interface OrderApi {
                     Settings.isOrderSuccess = false
                     Settings.orderId = ""
                 }
-            } catch (_: HttpException) {}
+            } catch (_: Exception) {}
         }
         suspend fun orderRegister(orderId: String, deviceId: String, success: (Boolean) -> Unit) {
             try {
@@ -99,7 +99,7 @@ interface OrderApi {
                     Settings.isOrderSuccess = false
                     Settings.orderId = ""
                 }
-            } catch (_: HttpException) {
+            } catch (_: Exception) {
                 success(false)
             }
         }
