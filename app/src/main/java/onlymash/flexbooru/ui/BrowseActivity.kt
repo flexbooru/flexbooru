@@ -591,22 +591,24 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                 }
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     val fileName = url.fileName()
-                    val handler = Handler()
                     val uri = getSaveUri(fileName) ?: return
-                    Thread {
-                        var `is`: InputStream? = null
-                        var os: OutputStream? = null
-                        try {
-                            `is` = FileInputStream(resource)
-                            os = this@BrowseActivity.contentResolver.openOutputStream(uri)
-                            IOUtils.copy(`is`, os)
-                        } catch (_: IOException) {
-                            return@Thread
-                        } finally {
-                            IOUtils.closeQuietly(`is`)
-                            IOUtils.closeQuietly(os)
+                    launch {
+                        val success = withContext(Dispatchers.IO) {
+                            var `is`: InputStream? = null
+                            var os: OutputStream? = null
+                            try {
+                                `is` = FileInputStream(resource)
+                                os = contentResolver.openOutputStream(uri)
+                                IOUtils.copy(`is`, os)
+                                return@withContext true
+                            } catch (_: IOException) {
+                                return@withContext false
+                            } finally {
+                                IOUtils.closeQuietly(`is`)
+                                IOUtils.closeQuietly(os)
+                            }
                         }
-                        handler.post {
+                        if (success) {
                             when (action) {
                                 ACTION_SAVE -> {
                                     Toast.makeText(this@BrowseActivity,
@@ -617,7 +619,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                                     this@BrowseActivity.startActivity(Intent.createChooser(
                                         Intent(Intent.ACTION_ATTACH_DATA).apply {
                                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                            putExtra(Intent.EXTRA_MIME_TYPES, "image/*")
+                                            putExtra(Intent.EXTRA_MIME_TYPES, fileName.getMimeType())
                                             data = uri
                                         },
                                         getString(R.string.share_via)
@@ -627,7 +629,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                                     this@BrowseActivity.startActivity(Intent.createChooser(
                                         Intent(Intent.ACTION_SEND).apply {
                                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                            type = "image/*"
+                                            type = fileName.getMimeType()
                                             putExtra(Intent.EXTRA_STREAM, uri)
                                         },
                                         getString(R.string.share_via)
@@ -635,7 +637,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                                 }
                             }
                         }
-                    }.start()
+                    }
                 }
             })
     }
