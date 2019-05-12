@@ -25,11 +25,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.UserAgent
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 @Keep
@@ -85,7 +85,7 @@ interface OrderApi {
                     Settings.isOrderSuccess = false
                     Settings.orderId = ""
                 }
-            } catch (_: IOException) {}
+            } catch (_: HttpException) {}
         }
         suspend fun orderRegister(orderId: String, deviceId: String, success: (Boolean) -> Unit) {
             try {
@@ -99,7 +99,7 @@ interface OrderApi {
                     Settings.isOrderSuccess = false
                     Settings.orderId = ""
                 }
-            } catch (_: IOException) {
+            } catch (_: HttpException) {
                 success(false)
             }
         }
