@@ -36,6 +36,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -225,8 +227,7 @@ class PostFragment : ListFragment() {
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
             sankakuApi = sankakuApi,
-            db = db,
-            ioExecutor = ioExecutor
+            db = db
         )
     }
 
@@ -274,11 +275,13 @@ class PostFragment : ListFragment() {
                                     username = search.username,
                                     auth_key = search.auth_key
                                 )
-                                when (post) {
-                                    is PostDan -> voteRepo.addDanFav(vote, post)
-                                    is PostMoe -> voteRepo.voteMoePost(vote)
-                                    is PostDanOne -> voteRepo.addDanOneFav(vote, post)
-                                    is PostSankaku -> voteRepo.addSankakuFav(vote, post)
+                                GlobalScope.launch {
+                                    when (post) {
+                                        is PostDan -> voteRepo.addDanFav(vote, post)
+                                        is PostMoe -> voteRepo.voteMoePost(vote)
+                                        is PostDanOne -> voteRepo.addDanOneFav(vote, post)
+                                        is PostSankaku -> voteRepo.addSankakuFav(vote, post)
+                                    }
                                 }
                             }
                         }

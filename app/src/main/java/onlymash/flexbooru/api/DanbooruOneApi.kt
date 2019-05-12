@@ -95,17 +95,17 @@ interface DanbooruOneApi {
 
     @FormUrlEncoded
     @POST
-    fun favPost(@Url url: String,
-                @Field("id") id: Int,
-                @Field("login") username: String,
-                @Field("password_hash") passwordHash: String): Call<VoteDan>
+    fun favPostAsync(@Url url: String,
+                     @Field("id") id: Int,
+                     @Field("login") username: String,
+                     @Field("password_hash") passwordHash: String): Deferred<VoteDan>
 
     @FormUrlEncoded
     @HTTP(method = "POST", hasBody = true)
-    fun removeFavPost(@Url url: String,
-                      @Field("id") postId: Int,
-                      @Field("login") username: String,
-                      @Field("password_hash") passwordHash: String): Call<VoteDan>
+    fun removeFavPostAsync(@Url url: String,
+                           @Field("id") postId: Int,
+                           @Field("login") username: String,
+                           @Field("password_hash") passwordHash: String): Deferred<VoteDan>
 
     /* comment/create.json
      */

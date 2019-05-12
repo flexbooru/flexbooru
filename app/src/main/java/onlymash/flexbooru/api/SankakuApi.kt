@@ -94,17 +94,17 @@ interface SankakuApi {
 
     @FormUrlEncoded
     @POST
-    fun favPost(@Url url: String,
-                @Field("id") postId: Int,
-                @Field("login") username: String,
-                @Field("password_hash") passwordHash: String): Call<VoteSankaku>
+    fun favPostAsync(@Url url: String,
+                     @Field("id") postId: Int,
+                     @Field("login") username: String,
+                     @Field("password_hash") passwordHash: String): Deferred<VoteSankaku>
 
     @FormUrlEncoded
     @HTTP(method = "POST", hasBody = true)
-    fun removeFavPost(@Url url: String,
-                      @Field("id") postId: Int,
-                      @Field("login") username: String,
-                      @Field("password_hash") passwordHash: String): Call<VoteSankaku>
+    fun removeFavPostAsync(@Url url: String,
+                           @Field("id") postId: Int,
+                           @Field("login") username: String,
+                           @Field("password_hash") passwordHash: String): Deferred<VoteSankaku>
 
 
     @GET

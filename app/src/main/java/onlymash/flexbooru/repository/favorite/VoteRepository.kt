@@ -18,15 +18,18 @@ package onlymash.flexbooru.repository.favorite
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Vote
+import onlymash.flexbooru.entity.VoteDan
+import onlymash.flexbooru.entity.VoteMoe
+import onlymash.flexbooru.entity.VoteSankaku
 import onlymash.flexbooru.entity.post.PostSankaku
+import onlymash.flexbooru.extension.NetResult
 
 interface VoteRepository {
-    var voteCallback: VoteCallback?
-    fun voteMoePost(vote: Vote)
-    fun addDanFav(vote: Vote, post: PostDan)
-    fun removeDanFav(vote: Vote, postFav: PostDan)
-    fun addDanOneFav(vote: Vote, post: PostDanOne)
-    fun removeDanOneFav(vote: Vote, postFav: PostDanOne)
-    fun addSankakuFav(vote: Vote, post: PostSankaku)
-    fun removeSankakuFav(vote: Vote, postFav: PostSankaku)
+    suspend fun voteMoePost(vote: Vote): NetResult<VoteMoe>
+    suspend fun addDanFav(vote: Vote, post: PostDan): NetResult<VoteDan>
+    suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<VoteDan>
+    suspend fun addDanOneFav(vote: Vote, post: PostDanOne): NetResult<VoteDan>
+    suspend fun removeDanOneFav(vote: Vote, postFav: PostDanOne): NetResult<VoteDan>
+    suspend fun addSankakuFav(vote: Vote, post: PostSankaku): NetResult<VoteSankaku>
+    suspend fun removeSankakuFav(vote: Vote, postFav: PostSankaku): NetResult<VoteSankaku>
 }

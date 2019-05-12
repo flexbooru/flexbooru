@@ -15,6 +15,10 @@
 
 package onlymash.flexbooru.repository.favorite
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import onlymash.flexbooru.App
+import onlymash.flexbooru.R
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
@@ -28,227 +32,200 @@ import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.post.PostSankaku
-import retrofit2.Call
-import retrofit2.Callback
+import onlymash.flexbooru.extension.NetResult
 import retrofit2.HttpException
-import retrofit2.Response
-import java.util.concurrent.Executor
 
 class VoteRepositoryIml(private val danbooruApi: DanbooruApi,
                         private val danbooruOneApi: DanbooruOneApi,
                         private val moebooruApi: MoebooruApi,
                         private val sankakuApi: SankakuApi,
-                        private val db: FlexbooruDatabase,
-                        private val ioExecutor: Executor): VoteRepository {
+                        private val db: FlexbooruDatabase): VoteRepository {
 
-    companion object {
-        private const val TAG = "VoteRepositoryIml"
-    }
-
-    override var voteCallback: VoteCallback? = null
-
-    override fun voteMoePost(vote: Vote) {
-        moebooruApi.votePost(
-            url = MoeUrlHelper.getVoteUrl(vote),
-            id = vote.post_id,
-            score = vote.score,
-            username = vote.username,
-            passwordHash = vote.auth_key)
-            .enqueue(object : Callback<VoteMoe> {
-                override fun onFailure(call: Call<VoteMoe>, t: Throwable) {
-                    voteCallback?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<VoteMoe>, response: Response<VoteMoe>) {
-                    if (response.isSuccessful) {
-                        val voteMoe = response.body()
-                        if (voteMoe != null && voteMoe.success) {
-                            if (vote.score == 3) {
-                                ioExecutor.execute {
-                                    val post= voteMoe.posts[0].apply {
-                                        scheme = vote.scheme
-                                        host = vote.host
-                                        keyword = "vote:3:${vote.username} order:vote"
-                                    }
-                                    db.postMoeDao().insert(post)
-                                }
-                            } else {
-                                ioExecutor.execute {
-                                    db.postMoeDao().deletePost(
-                                        host = vote.host,
-                                        keyword = "vote:3:${vote.username} order:vote",
-                                        id = vote.post_id
-                                    )
-                                }
-                            }
-                            voteCallback?.onSuccess()
-                        } else {
-                            voteCallback?.onFailed("Unknown issue")
+    override suspend fun voteMoePost(vote: Vote): NetResult<VoteMoe> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = moebooruApi.votePostAsync(
+                    url = MoeUrlHelper.getVoteUrl(vote),
+                    id = vote.post_id,
+                    score = vote.score,
+                    username = vote.username,
+                    passwordHash = vote.auth_key).await()
+                if (data.success) {
+                    if (vote.score == 0) {
+                        db.runInTransaction {
+                            db.postMoeDao().deletePost(
+                                host = vote.host,
+                                keyword = "vote:1:${vote.username} order:vote",
+                                id = vote.post_id
+                            )
+                            db.postMoeDao().deletePost(
+                                host = vote.host,
+                                keyword = "vote:2:${vote.username} order:vote",
+                                id = vote.post_id
+                            )
+                            db.postMoeDao().deletePost(
+                                host = vote.host,
+                                keyword = "vote:3:${vote.username} order:vote",
+                                id = vote.post_id
+                            )
                         }
                     } else {
-                        if (response.code() == 403) {
-                            voteCallback?.onFailed("password or hash salt is wrong.")
-                        } else {
-                            voteCallback?.onFailed("code: ${response.code()}")
+                        val post= data.posts[0].apply {
+                            scheme = vote.scheme
+                            host = vote.host
+                            keyword = "vote:${vote.score}:${vote.username} order:vote"
                         }
+                        db.postMoeDao().insert(post)
                     }
-                }
-            })
-    }
-
-    override fun addDanFav(vote: Vote, post: PostDan) {
-        danbooruApi.favPost(
-            url = DanUrlHelper.getAddFavUrl(vote),
-            id = vote.post_id,
-            username = vote.username,
-            apiKey = vote.auth_key
-        ).enqueue(object : Callback<VoteDan> {
-            override fun onFailure(call: Call<VoteDan>, t: Throwable) {
-                if (t is HttpException) {
-                    if (t.code() == 500){
-                        voteCallback?.onFailed(t.response()?.message() ?: t.message())
+                    NetResult.Success(data)
+                } else NetResult.Error(data.message)
+            } catch (e: Exception) {
+                if (e is HttpException) {
+                    val code = e.code()
+                    if (code == 403) {
+                        NetResult.Error(App.app.getString(R.string.msg_password_or_hash_salt_wrong))
                     } else {
-                        voteCallback?.onFailed(t.message())
+                        NetResult.Error("code: $code")
                     }
-                } else {
-                    voteCallback?.onFailed(t.message.toString())
-                }
+                } else NetResult.Error(e.message.toString())
             }
-            override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data is VoteDan) {
+        }
+    }
+
+    override suspend fun addDanFav(vote: Vote, post: PostDan): NetResult<VoteDan> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = danbooruApi.favPostAsync(
+                    url = DanUrlHelper.getAddFavUrl(vote),
+                    id = vote.post_id,
+                    username = vote.username,
+                    apiKey = vote.auth_key
+                ).await()
+                post.scheme = vote.scheme
+                post.keyword = "fav:${vote.username}"
+                post.uid = 0L
+                db.postDanDao().insert(post)
+                NetResult.Success(data)
+            } catch (e: Exception) {
+                if (e is HttpException) {
+                    val code = e.code()
+                    if (code == 500) {
                         post.scheme = vote.scheme
                         post.keyword = "fav:${vote.username}"
                         post.uid = 0L
-                        ioExecutor.execute {
-                            db.postDanDao().insert(post)
-                        }
-                    }
-                    voteCallback?.onSuccess()
-                } else {
-                    voteCallback?.onFailed("code: ${response.code()}")
-                }
+                        db.postDanDao().insert(post)
+                        NetResult.Success(VoteDan(
+                            success = true,
+                            id = post.id
+                        ))
+                    } else NetResult.Error("code: ${e.code()}")
+                } else NetResult.Error(e.message.toString())
             }
-        })
+        }
     }
 
-    override fun removeDanFav(vote: Vote, postFav: PostDan) {
-        danbooruApi.removeFavPost(DanUrlHelper.getRemoveFavUrl(vote))
-            .enqueue(object : Callback<VoteDan> {
-                override fun onFailure(call: Call<VoteDan>, t: Throwable) {
-                    voteCallback?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
-                    if (response.isSuccessful) {
-                        ioExecutor.execute {
-                            db.postDanDao().deletePost(postFav)
-                        }
-                        voteCallback?.onSuccess()
-                    } else {
-                        voteCallback?.onFailed("code: ${response.code()}")
-                    }
-                }
-            })
+    override suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<VoteDan> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = danbooruApi.removeFavPostAsync(DanUrlHelper.getRemoveFavUrl(vote)).await()
+                db.postDanDao().deletePost(postFav)
+                NetResult.Success(data)
+            } catch (e: Exception) {
+                if (e is HttpException)
+                    NetResult.Error("code: ${e.code()}")
+                else
+                    NetResult.Error(e.message.toString())
+            }
+        }
     }
 
-    override fun addDanOneFav(vote: Vote, post: PostDanOne) {
-        danbooruOneApi.favPost(
-            url = DanOneUrlHelper.getAddFavUrl(vote),
-            id = vote.post_id,
-            username = vote.username,
-            passwordHash = vote.auth_key
-        ).enqueue(object : Callback<VoteDan> {
-            override fun onFailure(call: Call<VoteDan>, t: Throwable) {
-                voteCallback?.onFailed(t.message.toString())
+    override suspend fun addDanOneFav(vote: Vote, post: PostDanOne): NetResult<VoteDan> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = danbooruOneApi.favPostAsync(
+                    url = DanOneUrlHelper.getAddFavUrl(vote),
+                    id = vote.post_id,
+                    username = vote.username,
+                    passwordHash = vote.auth_key
+                ).await()
+                post.scheme = vote.scheme
+                post.keyword = "fav:${vote.username}"
+                post.uid = 0L
+                db.postDanOneDao().insert(post)
+                NetResult.Success(data)
+            } catch (e: Exception) {
+                if (e is HttpException)
+                    NetResult.Error("code: ${e.code()}")
+                else
+                    NetResult.Error(e.message.toString())
             }
-            override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data is VoteDan) {
-                        post.scheme = vote.scheme
-                        post.keyword = "fav:${vote.username}"
-                        post.uid = 0L
-                        ioExecutor.execute {
-                            db.postDanOneDao().insert(post)
-                        }
-                    }
-                    voteCallback?.onSuccess()
-                } else {
-                    voteCallback?.onFailed("code: ${response.code()}")
-                }
-            }
-        })
+        }
     }
 
-    override fun removeDanOneFav(vote: Vote, postFav: PostDanOne) {
-        danbooruOneApi.removeFavPost(
-            url = DanOneUrlHelper.getRemoveFavUrl(vote),
-            postId = vote.post_id,
-            username = vote.username,
-            passwordHash = vote.auth_key)
-            .enqueue(object : Callback<VoteDan> {
-                override fun onFailure(call: Call<VoteDan>, t: Throwable) {
-                    voteCallback?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<VoteDan>, response: Response<VoteDan>) {
-                    if (response.isSuccessful) {
-                        ioExecutor.execute {
-                            db.postDanOneDao().deletePost(postFav)
-                        }
-                        voteCallback?.onSuccess()
-                    } else {
-                        voteCallback?.onFailed("code: ${response.code()}")
-                    }
-                }
-            })
+    override suspend fun removeDanOneFav(vote: Vote, postFav: PostDanOne): NetResult<VoteDan> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = danbooruOneApi.removeFavPostAsync(
+                    url = DanOneUrlHelper.getRemoveFavUrl(vote),
+                    postId = vote.post_id,
+                    username = vote.username,
+                    passwordHash = vote.auth_key
+                ).await()
+                db.postDanOneDao().deletePost(postFav)
+                NetResult.Success(data)
+            } catch (e: Exception) {
+                if (e is HttpException)
+                    NetResult.Error("code: ${e.code()}")
+                else
+                    NetResult.Error(e.message.toString())
+            }
+        }
     }
 
-    override fun addSankakuFav(vote: Vote, post: PostSankaku) {
-        sankakuApi.favPost(
-            url = SankakuUrlHelper.getAddFavUrl(vote),
-            postId = vote.post_id,
-            username = vote.username,
-            passwordHash = vote.auth_key
-        ).enqueue(object : Callback<VoteSankaku> {
-            override fun onFailure(call: Call<VoteSankaku>, t: Throwable) {
-                voteCallback?.onFailed(t.message.toString())
-            }
-            override fun onResponse(call: Call<VoteSankaku>, response: Response<VoteSankaku>) {
-                if (response.isSuccessful) {
+    override suspend fun addSankakuFav(vote: Vote, post: PostSankaku): NetResult<VoteSankaku> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = sankakuApi.favPostAsync(
+                    url = SankakuUrlHelper.getAddFavUrl(vote),
+                    postId = vote.post_id,
+                    username = vote.username,
+                    passwordHash = vote.auth_key
+                ).await()
+                if (data.post_id == post.id) {
                     post.scheme = vote.scheme
                     post.keyword = "fav:${vote.username}"
                     post.uid = 0L
-                    ioExecutor.execute {
-                        db.postSankakuDao().insert(post)
-                    }
-                    voteCallback?.onSuccess()
-                } else {
-                    voteCallback?.onFailed("code: ${response.code()}")
-                }
+                    db.postSankakuDao().insert(post)
+                    NetResult.Success(data)
+                } else NetResult.Error(data.toString())
+            } catch (e: Exception) {
+                if (e is HttpException)
+                    NetResult.Error("code: ${e.code()}")
+                else
+                    NetResult.Error(e.message.toString())
             }
-        })
+        }
     }
 
-    override fun removeSankakuFav(vote: Vote, postFav: PostSankaku) {
-        sankakuApi.removeFavPost(
-            url = SankakuUrlHelper.getRemoveFavUrl(vote),
-            postId = vote.post_id,
-            username = vote.username,
-            passwordHash = vote.auth_key)
-            .enqueue(object : Callback<VoteSankaku> {
-                override fun onFailure(call: Call<VoteSankaku>, t: Throwable) {
-                    voteCallback?.onFailed(t.message.toString())
-                }
-                override fun onResponse(call: Call<VoteSankaku>, response: Response<VoteSankaku>) {
-                    if (response.isSuccessful) {
-                        ioExecutor.execute {
-                            db.postSankakuDao().deletePost(postFav)
-                        }
-                        voteCallback?.onSuccess()
-                    } else {
-                        voteCallback?.onFailed("code: ${response.code()}")
-                    }
-                }
-            })
+    override suspend fun removeSankakuFav(vote: Vote, postFav: PostSankaku): NetResult<VoteSankaku> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val data = sankakuApi.removeFavPostAsync(
+                    url = SankakuUrlHelper.getRemoveFavUrl(vote),
+                    postId = vote.post_id,
+                    username = vote.username,
+                    passwordHash = vote.auth_key
+                ).await()
+                if (data.post_id == postFav.id) {
+                    db.postSankakuDao().deletePost(postFav)
+                    NetResult.Success(data)
+                } else NetResult.Error(data.toString())
+            } catch (e: Exception) {
+                if (e is HttpException)
+                    NetResult.Error("code: ${e.code()}")
+                else
+                    NetResult.Error(e.message.toString())
+            }
+        }
     }
 }

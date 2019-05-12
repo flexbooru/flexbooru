@@ -21,7 +21,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -32,6 +31,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -164,8 +165,7 @@ class PopularFragment : ListFragment() {
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
             sankakuApi = sankakuApi,
-            db = db,
-            ioExecutor = ioExecutor
+            db = db
         )
     }
 
@@ -200,11 +200,13 @@ class PopularFragment : ListFragment() {
                                     username = popular.username,
                                     auth_key = popular.auth_key
                                 )
-                                when (post) {
-                                    is PostDan -> voteRepo.addDanFav(vote, post)
-                                    is PostMoe -> voteRepo.voteMoePost(vote)
-                                    is PostDanOne -> voteRepo.addDanOneFav(vote, post)
-                                    is PostSankaku -> voteRepo.addSankakuFav(vote, post)
+                                GlobalScope.launch {
+                                    when (post) {
+                                        is PostDan -> voteRepo.addDanFav(vote, post)
+                                        is PostMoe -> voteRepo.voteMoePost(vote)
+                                        is PostDanOne -> voteRepo.addDanOneFav(vote, post)
+                                        is PostSankaku -> voteRepo.addSankakuFav(vote, post)
+                                    }
                                 }
                             }
                         }
@@ -439,7 +441,6 @@ class PopularFragment : ListFragment() {
             val pos = bundle.getInt(BrowseActivity.EXT_POST_POSITION_KEY, -1)
             val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
             if (pos >= 0 && keyword == key) {
-                Log.w("Pop", pos.toString())
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
                 list.scrollToPosition(pos + 1)
                 (requireActivity() as MainActivity).sharedElement =

@@ -105,11 +105,11 @@ interface MoebooruApi {
 
     @FormUrlEncoded
     @POST
-    fun votePost(@Url url: String,
-                 @Field("id") id: Int,
-                 @Field("score") score: Int = 3, //0-3
-                 @Field("login") username: String,
-                 @Field("password_hash") passwordHash: String): Call<VoteMoe>
+    fun votePostAsync(@Url url: String,
+                      @Field("id") id: Int,
+                      @Field("score") score: Int = 3, //0-3
+                      @Field("login") username: String,
+                      @Field("password_hash") passwordHash: String): Deferred<VoteMoe>
 
     /* comment/create.json
      */

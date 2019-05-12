@@ -64,10 +64,10 @@ import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.browse.PostLoaderRepositoryIml
-import onlymash.flexbooru.repository.favorite.VoteCallback
 import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
@@ -270,20 +270,11 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
             sankakuApi = sankakuApi,
-            db = db,
-            ioExecutor = ioExecutor
+            db = db
         )
     }
+
     private lateinit var favPostViewModel: FavPostViewModel
-
-    private val voteCallback = object : VoteCallback {
-        override fun onSuccess() {
-
-        }
-        override fun onFailed(msg: String) {
-            Toast.makeText(this@BrowseActivity, msg, Toast.LENGTH_LONG).show()
-        }
-    }
 
     private fun getCurrentPostFav(): PostBase? {
         val position = pager_browse.currentItem
@@ -356,7 +347,6 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
         booru = BooruManager.getBooruByUid(Settings.activeBooruUid) ?: return
         user = UserManager.getUserByBooruUid(booruUid = booru.uid)
         user?.let {
-            voteRepository.voteCallback = voteCallback
             initFavViewModel()
         }
         pagerAdapter = BrowsePagerAdapter(
@@ -411,9 +401,19 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             auth_key = user.api_key ?: return@let)
                         val postFav = getCurrentPostFav()
                         if (postFav is PostDan) {
-                            voteRepository.removeDanFav(vote, postFav)
+                            launch {
+                                val result = voteRepository.removeDanFav(vote, postFav)
+                                if (result is NetResult.Error) {
+                                    Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
                         } else {
-                            voteRepository.addDanFav(vote, post)
+                            launch {
+                                val result = voteRepository.addDanFav(vote, post)
+                                if (result is NetResult.Error) {
+                                    Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
                         }
                     }
                     is PostMoe -> {
@@ -437,7 +437,12 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                                     auth_key = user.password_hash ?: return@let)
                             }
                         }
-                        voteRepository.voteMoePost(vote)
+                        launch {
+                            val result = voteRepository.voteMoePost(vote)
+                            if (result is NetResult.Error) {
+                                Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                            }
+                        }
                     }
                     is PostDanOne -> {
                         val postFav = getCurrentPostFav()
@@ -448,9 +453,19 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             username = user.name,
                             auth_key = user.password_hash ?: return@let)
                         if (postFav is PostDanOne) {
-                            voteRepository.removeDanOneFav(vote, postFav)
+                            launch {
+                                val result = voteRepository.removeDanOneFav(vote, postFav)
+                                if (result is NetResult.Error) {
+                                    Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
                         } else {
-                            voteRepository.addDanOneFav(vote, post)
+                            launch {
+                                val result = voteRepository.addDanOneFav(vote, post)
+                                if (result is NetResult.Error) {
+                                    Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
                         }
                     }
                     is PostSankaku -> {
@@ -462,9 +477,19 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             username = user.name,
                             auth_key = user.password_hash ?: return@let)
                         if (postFav is PostSankaku) {
-                            voteRepository.removeSankakuFav(vote, postFav)
+                            launch {
+                                val result = voteRepository.removeSankakuFav(vote, postFav)
+                                if (result is NetResult.Error) {
+                                    Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
                         } else {
-                            voteRepository.addSankakuFav(vote, post)
+                            launch {
+                                val result = voteRepository.addSankakuFav(vote, post)
+                                if (result is NetResult.Error) {
+                                    Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
                         }
                     }
                 }
