@@ -63,6 +63,7 @@
     <string name="msg_path_denied">Save failed! No access to the current path.</string>
     <string name="msg_download_failed">Download failed</string>
     <string name="msg_download_complete">Download complete</string>
+    <string name="msg_password_or_hash_salt_wrong">Password or Hash salt is wrong.</string>
     <string name="popular_day">Dag</string>
     <string name="popular_week">Week</string>
     <string name="popular_month">Maand</string>

@@ -63,6 +63,7 @@
     <string name="msg_path_denied">保存失败！ 没有权限访问当前路径。</string>
     <string name="msg_download_failed">下载失败</string>
     <string name="msg_download_complete">下载完毕</string>
+    <string name="msg_password_or_hash_salt_wrong">密码或 Hash salt 有误。</string>
     <string name="popular_day">日</string>
     <string name="popular_week">周</string>
     <string name="popular_month">月</string>
