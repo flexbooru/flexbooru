@@ -21,9 +21,9 @@
     android:viewportHeight="500.0">
 
     <group
-            android:translateY="500.000000"
-            android:scaleX="0.100000"
-            android:scaleY="-0.100000">
+            android:translateY="500.0"
+            android:scaleX="0.1"
+            android:scaleY="-0.1">
         <path
             android:fillColor="@color/colorPrimary"
             android:strokeWidth="1"
@@ -80,7 +80,5 @@
                 android:fillColor="@color/pref_icon_tint"
                 android:strokeWidth="1"
                 android:pathData="M4080 2379 l0 -171 29 -29 29 -29 132 0 132 0 29 29 29 29 0 171 0 171 -35 0 -34 0 -3 -142 -3 -143 -115 0 -115 0 -3 143 -3 142 -34 0 -35 0 0 -171z" />
-
-
     </group>
 </vector>
