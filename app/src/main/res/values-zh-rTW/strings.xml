@@ -57,7 +57,7 @@
     <string name="msg_file_save_success">已將檔案存為 %s</string>
     <string name="post_expand_tag_filter">展開標籤篩選器</string>
     <string name="post_add_search_to_muzei">已將 ` %s ` 存至 Muzei。</string>
-    <string name="post_download">Download Post</string>
+    <string name="post_download">Download post</string>
     <string name="post_add_to_fav">加到收藏</string>
     <string name="msg_download_must_enable">Download Manager is needed.</string>
     <string name="msg_path_denied">Save failed! No access to the current path.</string>
@@ -173,7 +173,7 @@
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">簡介空白。</string>
-    <string name="pool_download">Download Pool</string>
+    <string name="pool_download">Download pool</string>
     <string name="pool_download_jpgs">Download JPGs</string>
     <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">標籤類型</string>
@@ -234,6 +234,8 @@
     <string name="purchase_info_title">Remove ads and unlock full features</string>
     <string name="purchase_info_remove_ads">* Remove ads</string>
     <string name="purchase_info_unlock_full_features">* Unlock full features</string>
+    <string name="purchase_info_features">        1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.
+    </string>
     <string name="purchase_pay_title">Pay/Restore purchase</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
