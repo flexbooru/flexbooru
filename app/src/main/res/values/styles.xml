@@ -47,6 +47,9 @@
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
         <item name="material_drawer_header_selection_subtext">@color/material_drawer_header_selection_subtext</item>
     </style>
+    <style name="BaseTheme.Launcher" parent="BaseTheme">
+        <item name="android:windowBackground">@drawable/background_launcher</item>
+    </style>
     <style name="AppTheme.Search" parent="AppTheme">
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>

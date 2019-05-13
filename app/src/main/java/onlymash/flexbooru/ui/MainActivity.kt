@@ -84,6 +84,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private val sp: SharedPreferences by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme_Main)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sp.registerOnSharedPreferenceChangeListener(this)
