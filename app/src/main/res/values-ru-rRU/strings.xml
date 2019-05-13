@@ -89,6 +89,9 @@
     <string name="booru_share_by_qr_code">QR code</string>
     <string name="booru_share_by_clipboard">Export to clipboard</string>
     <string name="booru_edit">Edit</string>
+    <string name="booru_backup_or_restore">Backup or Restore</string>
+    <string name="booru_backup_to_file">Backup to file</string>
+    <string name="booru_restore_from_file">Restore from file</string>
     <string name="booru_config_delete">Delete</string>
     <string name="booru_config_apply">Apply</string>
     <string name="booru_config_name">Name</string>
