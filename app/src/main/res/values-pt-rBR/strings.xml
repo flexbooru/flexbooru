@@ -57,7 +57,7 @@
     <string name="msg_file_save_success">O arquivo foi salvo como %s</string>
     <string name="post_expand_tag_filter">Expandir filtro de marcadores</string>
     <string name="post_add_search_to_muzei">` %s ` foram salvos no Muzei.</string>
-    <string name="post_download">Baixar Postagem</string>
+    <string name="post_download">Download post</string>
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
     <string name="msg_download_must_enable">Gerenciador de downloads é necessário.</string>
     <string name="msg_path_denied">Falha ao salvar! Nenhum acesso ao caminho atual.</string>
@@ -173,7 +173,7 @@
     <string name="switch_yes">Sim</string>
     <string name="switch_no">Não</string>
     <string name="pool_description_is_empty">A descrição está vazia.</string>
-    <string name="pool_download">Baixar Grupo</string>
+    <string name="pool_download">Download pool</string>
     <string name="pool_download_jpgs">Baixar JPGs</string>
     <string name="pool_download_pngs">Baixar PNGs</string>
     <string name="tag_type">Tipo</string>
@@ -234,6 +234,8 @@
     <string name="purchase_info_title">Remover anúncios e desbloquear todas as funcionalidades</string>
     <string name="purchase_info_remove_ads">* Remover anúncios</string>
     <string name="purchase_info_unlock_full_features">Desbloquear todas as funcionalidades</string>
+    <string name="purchase_info_features">        1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.
+    </string>
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
