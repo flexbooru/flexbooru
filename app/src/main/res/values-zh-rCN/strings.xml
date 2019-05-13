@@ -89,9 +89,9 @@
     <string name="booru_share_by_qr_code">二维码</string>
     <string name="booru_share_by_clipboard">导出到剪贴板</string>
     <string name="booru_edit">修改</string>
-    <string name="booru_backup_or_restore">Backup or Restore</string>
-    <string name="booru_backup_to_file">Backup to file</string>
-    <string name="booru_restore_from_file">Restore from file</string>
+    <string name="booru_backup_or_restore">备份 / 还原</string>
+    <string name="booru_backup_to_file">备份至文件</string>
+    <string name="booru_restore_from_file">从文件恢复</string>
     <string name="booru_config_delete">删除</string>
     <string name="booru_config_apply">应用</string>
     <string name="booru_config_name">名称</string>
