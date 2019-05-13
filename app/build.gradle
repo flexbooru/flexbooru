@@ -53,7 +53,7 @@ android {
         multiDexEnabled true
         resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121"]
+        manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121", backupApiKey: "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"]
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
