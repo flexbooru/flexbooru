@@ -32,4 +32,17 @@
                     android:title="@string/booru_add_from_manual_settings"/>
         </menu>
     </item>
+    <item
+            android:icon="@drawable/ic_restore_page_outline_24dp"
+            android:title="@string/booru_backup_or_restore"
+            app:showAsAction="ifRoom">
+        <menu>
+            <item
+                    android:id="@+id/action_booru_backup_to_file"
+                    android:title="@string/booru_backup_to_file"/>
+            <item
+                    android:id="@+id/action_booru_restore_from_file"
+                    android:title="@string/booru_restore_from_file"/>
+        </menu>
+    </item>
 </menu>

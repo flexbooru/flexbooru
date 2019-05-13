@@ -15,7 +15,9 @@
 
 package onlymash.flexbooru.ui
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -23,6 +25,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,15 +34,23 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.Constants
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
+import onlymash.flexbooru.util.IOUtils
+import java.io.IOException
 
 class BooruActivity : BaseActivity() {
 
@@ -113,12 +124,46 @@ class BooruActivity : BaseActivity() {
                 R.id.action_booru_add_manual -> {
                     addConfig()
                 }
-                else -> {
-                    // unknown id
+                R.id.action_booru_backup_to_file -> {
+                    backupToFile()
+                }
+                R.id.action_booru_restore_from_file -> {
+                    restoreFromFile()
                 }
             }
             true
         }
+    }
+
+    private fun backupToFile() {
+        if (!Settings.isOrderSuccess) {
+            startActivity(Intent(this, PurchaseActivity::class.java))
+            return
+        }
+        val intent = Intent().apply {
+            action = Intent.ACTION_CREATE_DOCUMENT
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/octet-stream"
+            putExtra(Intent.EXTRA_TITLE, "boorus.json")
+        }
+        try {
+            startActivityForResult(intent, REQUEST_CODE_BACKUP_TO_FILE)
+        } catch (_: ActivityNotFoundException) {}
+    }
+
+    private fun restoreFromFile() {
+        if (!Settings.isOrderSuccess) {
+            startActivity(Intent(this, PurchaseActivity::class.java))
+            return
+        }
+        val intent = Intent().apply {
+            action = Intent.ACTION_OPEN_DOCUMENT
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/octet-stream"
+        }
+        try {
+            startActivityForResult(intent, REQUEST_CODE_RESTORE_FROM_FILE)
+        } catch (_: ActivityNotFoundException) {}
     }
 
     private fun addConfig() {
@@ -146,21 +191,51 @@ class BooruActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK || data == null) return
         when (requestCode) {
-            Constants.REQUEST_EDIT_CODE -> {
-                when (data?.getStringExtra(Constants.EXTRA_RESULT_KEY)) {
-                    Constants.RESULT_DELETE -> {
-
+            REQUEST_CODE_BACKUP_TO_FILE -> {
+                val uri = data.data ?: return
+                GlobalScope.launch(Dispatchers.Main) {
+                    val success = withContext(Dispatchers.IO) {
+                        val boorus = BooruManager.getAllBoorus()
+                        if (boorus.isNullOrEmpty()) return@withContext false
+                        val jsonString = GsonBuilder()
+                            .setPrettyPrinting()
+                            .create()
+                            .toJson(boorus)
+                        val `is` = jsonString.byteInputStream()
+                        val os = contentResolver.openOutputStream(uri)
+                        try {
+                            IOUtils.copy(`is` = `is`, os = os)
+                        } catch (_:IOException) {
+                            return@withContext false
+                        } finally {
+                            IOUtils.closeQuietly(`is`)
+                            IOUtils.closeQuietly(os)
+                        }
+                        return@withContext true
                     }
-                    Constants.RESULT_UPDATE -> {
-
+                    if (success) {
+                        Toast.makeText(this@BooruActivity, "Success: ${uri.path}", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this@BooruActivity, "Save failed!", Toast.LENGTH_LONG).show()
                     }
                 }
             }
-            Constants.REQUEST_ADD_CODE -> {
-                val result = data?.getStringExtra(Constants.EXTRA_RESULT_KEY)
-                if (result == Constants.RESULT_ADD) {
+            REQUEST_CODE_RESTORE_FROM_FILE -> {
+                val uri = data.data ?: return
+                val `is` = contentResolver.openInputStream(uri) ?: return
+                try {
+                    val jsonString = `is`.readBytes().toString(Charsets.UTF_8)
+                    val boorus = Gson().fromJson<MutableList<Booru>>(
+                        jsonString,
+                        object : TypeToken<MutableList<Booru>>(){}.type
+                    )?: return
+                    BooruManager.createBoorus(boorus)
+                } catch (_: Exception) {
 
+                } finally {
+                    `is`.close()
                 }
             }
         }
@@ -169,5 +244,10 @@ class BooruActivity : BaseActivity() {
     override fun onDestroy() {
         BooruManager.listeners.remove(booruAdapter)
         super.onDestroy()
+    }
+
+    companion object {
+        private const val REQUEST_CODE_BACKUP_TO_FILE = 11
+        private const val REQUEST_CODE_RESTORE_FROM_FILE = 12
     }
 }

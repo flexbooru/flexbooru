@@ -62,4 +62,9 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruV
             }
         }
     }
+
+    override fun onChanged() {
+        boorus = BooruManager.getAllBoorus()?.toMutableList() ?: mutableListOf()
+        notifyDataSetChanged()
+    }
 }

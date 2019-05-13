@@ -323,6 +323,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private val booruListener = object : BooruManager.Listener {
+        override fun onChanged() {
+            boorus = BooruManager.getAllBoorus() ?: mutableListOf()
+            initDrawerHeader()
+        }
+
         override fun onAdd(booru: Booru) {
             if (!Settings.isOrderSuccess && boorus.size >= BOORUS_LIMIT) {
                 boorus.add(booru)

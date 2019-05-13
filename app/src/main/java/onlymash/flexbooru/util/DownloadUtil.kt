@@ -263,13 +263,12 @@ class DownloadUtil(
                     host.isNullOrEmpty() || username.isNullOrEmpty() ||
                     passwordHash.isNullOrEmpty() || docId == null)
                     return Result.failure()
-                var url: String
-                when (type) {
+                var url = when (type) {
                     POOL_DOWNLOAD_TYPE_JPGS -> {
-                        url = applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
+                        applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
                     }
                     else -> {
-                        url = applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
+                        applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
                     }
                 }
                 url = "$url&login=$username&password_hash=$passwordHash"

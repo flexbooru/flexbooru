@@ -30,6 +30,7 @@ object BooruManager {
         fun onAdd(booru: Booru)
         fun onDelete(booruUid: Long)
         fun onUpdate(booru: Booru)
+        fun onChanged()
     }
 
     // booru change callback
@@ -48,6 +49,14 @@ object BooruManager {
             }
         }
         return booru
+    }
+
+    @Throws(SQLException::class)
+    fun createBoorus(boorus: MutableList<Booru>) {
+        booruDao.insert(boorus)
+        listeners.forEach {
+            it.onChanged()
+        }
     }
 
     @Throws(SQLException::class)

@@ -92,6 +92,9 @@
     <string name="booru_share_by_qr_code">QR code</string>
     <string name="booru_share_by_clipboard">Export to clipboard</string>
     <string name="booru_edit">Edit</string>
+    <string name="booru_backup_or_restore">Backup or Restore</string>
+    <string name="booru_backup_to_file">Backup to file</string>
+    <string name="booru_restore_from_file">Restore from file</string>
     <string name="booru_type_danbooru" translatable="false">Danbooru</string>
     <string name="booru_type_danbooru_one" translatable="false">Danbooru 1.x</string>
     <string name="booru_type_moebooru" translatable="false">Moebooru</string>

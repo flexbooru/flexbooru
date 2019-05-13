@@ -36,6 +36,9 @@ interface BooruDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(booru: Booru): Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(boorus: MutableList<Booru>)
+
     @Update
     fun update(booru: Booru): Int
 
