@@ -43,10 +43,7 @@
                     android:layout_height="wrap_content">
                 <TextView
                         android:text="@string/purchase_info_title"
-                        android:paddingBottom="@dimen/spacing_mlarge"
-                        android:paddingTop="@dimen/spacing_middle"
-                        android:paddingStart="@dimen/spacing_middle"
-                        android:paddingEnd="@dimen/spacing_middle"
+                        android:padding="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
@@ -62,6 +59,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+                <TextView
+                        android:text="@string/purchase_info_features"
+                        android:paddingStart="@dimen/spacing_large"
+                        android:paddingEnd="@dimen/spacing_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -79,10 +83,7 @@
                     android:layout_height="wrap_content">
                 <TextView
                         android:text="@string/purchase_pay_title"
-                        android:paddingBottom="@dimen/spacing_mlarge"
-                        android:paddingTop="@dimen/spacing_middle"
-                        android:paddingStart="@dimen/spacing_middle"
-                        android:paddingEnd="@dimen/spacing_middle"
+                        android:padding="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
