@@ -83,7 +83,6 @@
     <string name="booru_add_from_manual_settings">Handmatig toevoegen</string>
     <string name="booru_add_error">FOUT: Ongeldige gegevens</string>
     <string name="booru_add_title_dialog">Voeg deze booru toe?</string>
-    <string name="booru_add_help">Hulp</string>
     <string name="booru_name">Booru naam</string>
     <string name="booru_share_by_qr_code">QR-code</string>
     <string name="booru_share_by_clipboard">Exporteren naar klembord</string>
@@ -233,8 +232,7 @@
     <string name="purchase_info_title">Remove ads and unlock full features</string>
     <string name="purchase_info_remove_ads">* Remove ads</string>
     <string name="purchase_info_unlock_full_features">* Unlock full features</string>
-    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.
-    </string>
+    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.</string>
     <string name="purchase_pay_title">Pay/Restore purchase</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
