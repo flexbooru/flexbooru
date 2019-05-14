@@ -160,6 +160,7 @@
     <string name="settings_grid_width_normal">Normalny</string>
     <string name="settings_grid_width_large">Duży</string>
     <string name="settings_show_info_bar">Pokaż pasek informacyjny</string>
+    <string name="settings_show_all_tags">Show tags for all sites</string>
     <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
     <string name="settings_clear_cache_summery">Usuń wszystkie zapisane grafiki.</string>
     <string name="settings_clear_cache_dialog_content">Pamięć podręczna zostanie wyczyszczona.</string>
