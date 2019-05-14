@@ -126,7 +126,6 @@ dependencies {
     implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.github.onlymash:subsampling-scale-image-view:3.10.1'
-    implementation 'com.github.onlymash:MaterialDateRangePicker:2.1'
     implementation 'com.mikepenz:materialdrawer:6.1.2'
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'

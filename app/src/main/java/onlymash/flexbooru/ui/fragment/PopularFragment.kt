@@ -58,6 +58,7 @@ import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.util.DownloadUtil
 import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
+import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.search.SearchBar
 import org.kodein.di.generic.instance
 import java.util.*
@@ -367,52 +368,54 @@ class PopularFragment : ListFragment() {
                                     timeInMillis = currentTimeMillis
                                     add(Calendar.YEAR, -20)
                                 }
-                                val maxCalendar = Calendar.getInstance(Locale.getDefault()).apply {
-                                    timeInMillis = currentTimeMillis
-                                }
-                                val listener = com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener {
-                                        _, year, monthOfYear, dayOfMonth, yearEnd, monthOfYearEnd, dayOfMonthEnd ->
-                                    currentYear = year
-                                    currentMonth = monthOfYear
-                                    currentDay = dayOfMonth
-                                    currentYearEnd = yearEnd
-                                    currentMonthEnd = monthOfYearEnd
-                                    currentDayEnd = dayOfMonthEnd
-
-                                    val yearString = year.toString()
-                                    val realMonth = monthOfYear + 1
-                                    val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
-                                    val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-
-                                    val yearStringEnd = yearEnd.toString()
-                                    val realMonthEnd = monthOfYearEnd + 1
-                                    val monthStringEnd = if (realMonthEnd < 10) "0$realMonthEnd" else realMonthEnd.toString()
-                                    val dayStringEnd = if (dayOfMonthEnd < 10) "0$dayOfMonthEnd" else dayOfMonthEnd.toString()
-                                    popular.date = "$dayString.$monthString.$yearString..$dayStringEnd.$monthStringEnd.$yearStringEnd"
-                                    popularViewModel.show(popular)
-                                    swipe_refresh.isRefreshing = true
-                                    popularViewModel.refreshSankaku()
-                                }
                                 if (currentYearEnd < 0 || currentMonthEnd < 0 || currentDayEnd < 0) {
                                     currentYearEnd = currentYear
                                     currentMonthEnd = currentMonth
                                     currentDayEnd = currentDay
                                 }
-                                com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
-                                    listener,
-                                    currentYear,
-                                    currentMonth,
-                                    currentDay,
-                                    currentYearEnd,
-                                    currentMonthEnd,
-                                    currentDayEnd
-                                ).apply {
-                                    minDate = minCalendar
-                                    maxDate = maxCalendar
-                                    isAutoHighlight = false
-                                    isThemeDark = Settings.isNightMode
+                                val callback = object : DateRangePickerDialogFragment.OnDateRangeSetListener {
+                                    override fun onDateRangeSet(
+                                        startDay: Int,
+                                        startMonth: Int,
+                                        startYear: Int,
+                                        endDay: Int,
+                                        endMonth: Int,
+                                        endYear: Int
+                                    ) {
+                                        currentYear = startYear
+                                        currentMonth = startMonth
+                                        currentDay = startDay
+                                        currentYearEnd = endYear
+                                        currentMonthEnd = endMonth
+                                        currentDayEnd = endDay
+
+                                        val yearString = startYear.toString()
+                                        val realMonth = startMonth + 1
+                                        val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
+                                        val dayString = if (startDay < 10) "0$startDay" else startDay.toString()
+
+                                        val yearStringEnd = endYear.toString()
+                                        val realMonthEnd = endMonth + 1
+                                        val monthStringEnd = if (realMonthEnd < 10) "0$realMonthEnd" else realMonthEnd.toString()
+                                        val dayStringEnd = if (endDay < 10) "0$endDay" else endDay.toString()
+                                        popular.date = "$dayString.$monthString.$yearString..$dayStringEnd.$monthStringEnd.$yearStringEnd"
+                                        popularViewModel.show(popular)
+                                        swipe_refresh.isRefreshing = true
+                                        popularViewModel.refreshSankaku()
+                                    }
                                 }
-                                    .show(requireActivity().supportFragmentManager, "DateRangePickerDialog")
+                                DateRangePickerDialogFragment.newInstance(
+                                    listener = callback,
+                                    startDay = currentDay,
+                                    startMonth = currentMonth,
+                                    startYear = currentYear,
+                                    endDay = currentDayEnd,
+                                    endMonth = currentMonthEnd,
+                                    endYear = currentYearEnd,
+                                    minDate = minCalendar.timeInMillis,
+                                    maxDate = currentTimeMillis
+                                )
+                                    .show(requireFragmentManager(), "DateRangePicker")
                             }
                         }
                     }

@@ -266,4 +266,6 @@
         由于需要人工确认订单，需要等待数小时或隔日之后你提交的订单号才会被激活。人工处理难免有疏忽，如若几天还不能使用，请发送电子邮件联系处理。\n\n
         订单号不限制使用次数，但是在一台设备使用时其它设备的激活状态将会失效。
     </string>
+    <string name="tab_start_date">Start date</string>
+    <string name="tab_end_date">End date</string>
 </resources>
