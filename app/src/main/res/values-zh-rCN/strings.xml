@@ -67,7 +67,6 @@
     <string name="popular_day">日</string>
     <string name="popular_week">周</string>
     <string name="popular_month">月</string>
-    <string name="popular_year">年</string>
     <string name="popular_date">日期</string>
     <string name="popular_date_range">日期范围</string>
     <string name="dialog_yes">是</string>
@@ -84,7 +83,6 @@
     <string name="booru_add_from_manual_settings">手动设置</string>
     <string name="booru_add_error">错误：无效的数据</string>
     <string name="booru_add_title_dialog">添加这个 Booru？</string>
-    <string name="booru_add_help">帮助</string>
     <string name="booru_name">Booru 名称</string>
     <string name="booru_share_by_qr_code">二维码</string>
     <string name="booru_share_by_clipboard">导出到剪贴板</string>
@@ -234,8 +232,7 @@
     <string name="purchase_info_title">删除广告并解锁完整功能</string>
     <string name="purchase_info_remove_ads">移除广告</string>
     <string name="purchase_info_unlock_full_features">解锁所有功能</string>
-    <string name="purchase_info_features">        1、解除可用的图站数量限制。\n2、支持下载图集压缩文档。\n3、从文件批量备份和恢复图站。
-    </string>
+    <string name="purchase_info_features">1、解除可用的图站数量限制。\n2、支持下载图集压缩文档。\n3、从文件批量备份和恢复图站。</string>
     <string name="purchase_pay_title">支付/恢复购买</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付宝</string>
