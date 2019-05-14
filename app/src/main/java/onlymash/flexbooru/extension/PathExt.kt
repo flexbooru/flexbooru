@@ -22,12 +22,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.DocumentsContract
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.util.getMimeType
+import onlymash.flexbooru.util.ext
+import java.util.*
 
 fun getFileUriByDocId(docId: String): Uri? {
     val treeId = Settings.downloadDirPathTreeId ?: return null
@@ -133,4 +135,17 @@ private fun Context.findChildrenDocIdByFilename(treeUri: Uri, filename: String):
         closeQuietly(childrenCursor)
     }
     return docId
+}
+
+fun String.getMimeType(): String {
+    var extension = this.ext()
+    // Convert the URI string to lower case to ensure compatibility with MimeTypeMap (see CB-2185).
+    extension = extension.toLowerCase(Locale.getDefault())
+    if (extension == "3ga") {
+        return "audio/3gpp"
+    } else if (extension == "js") {
+        // Missing from the map :(.
+        return "text/javascript"
+    }
+    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: ""
 }

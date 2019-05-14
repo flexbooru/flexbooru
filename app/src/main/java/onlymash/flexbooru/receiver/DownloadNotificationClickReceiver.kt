@@ -17,7 +17,7 @@ package onlymash.flexbooru.receiver
 
 import android.content.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.util.getMimeType
+import onlymash.flexbooru.extension.getMimeType
 
 class DownloadNotificationClickReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

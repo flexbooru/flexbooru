@@ -65,6 +65,7 @@ import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.extension.getMimeType
 import onlymash.flexbooru.extension.getSaveUri
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
