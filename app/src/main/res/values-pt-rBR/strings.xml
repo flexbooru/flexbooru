@@ -160,6 +160,7 @@
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Grande</string>
     <string name="settings_show_info_bar">Mostrar Barra de Informação</string>
+    <string name="settings_show_all_tags">Show tags for all sites</string>
     <string name="settings_clear_cache">Limpar cache</string>
     <string name="settings_clear_cache_summery">Remover todos os arquivos em cache.</string>
     <string name="settings_clear_cache_dialog_content">Os arquivos em cache serão apagados.</string>
