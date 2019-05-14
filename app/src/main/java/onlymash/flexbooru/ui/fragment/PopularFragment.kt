@@ -542,7 +542,6 @@ class PopularFragment : ListFragment() {
         popular.month = monthString
         popular.day = dayString
         popular.limit = Settings.pageLimit
-        requireActivity().registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -553,6 +552,10 @@ class PopularFragment : ListFragment() {
     }
 
     private fun init() {
+        (requireActivity() as MainActivity).apply {
+            addNavigationListener(navigationListener)
+            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
+        }
         searchBar.setTitle(R.string.title_popular)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         if (type < 0) {
@@ -648,7 +651,6 @@ class PopularFragment : ListFragment() {
             }
         }
         popularViewModel.show(popular)
-        (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
 
     private fun initSwipeToRefreshDan() {

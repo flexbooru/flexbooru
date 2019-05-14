@@ -408,8 +408,15 @@ class PostFragment : ListFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+        UserManager.listeners.add(userListener)
+        searchBar.setType(type)
+        searchBar.setSearchTag(searchTag)
+    }
+
+    private fun init() {
         val activity = requireActivity()
         when (activity) {
             is MainActivity -> {
@@ -424,6 +431,7 @@ class PostFragment : ListFragment() {
                         auth_key = it.getString(Constants.AUTH_KEY, ""),
                         limit = Settings.pageLimit)
                 }
+                activity.addNavigationListener(navigationListener)
             }
             is SearchActivity -> {
                 val uid = Settings.activeBooruUid
@@ -446,6 +454,10 @@ class PostFragment : ListFragment() {
                         },
                         limit = Settings.pageLimit
                     )
+                    searchBar.setTitleOnLongClickCallback {
+                        MuzeiManager.createMuzei(Muzei(booru_uid = Settings.activeBooruUid, keyword = search.keyword))
+                        Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
+                    }
                 } else {
                     activity.finish()
                 }
@@ -461,20 +473,9 @@ class PostFragment : ListFragment() {
             limit = 6,
             type = ""
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         if (Settings.safeMode) {
             search.keyword = "rating:safe ${search.keyword}"
         }
-        init()
-        UserManager.listeners.add(userListener)
-        searchBar.setType(type)
-        searchBar.setSearchTag(searchTag)
-    }
-
-    private fun init() {
         viewTransition = ViewTransition(swipe_refresh, search_layout)
         if (requireActivity() !is MainActivity) {
             leftDrawable.progress = 1f
@@ -622,15 +623,6 @@ class PostFragment : ListFragment() {
         tagBlacklistViewModel.loadTags(Settings.activeBooruUid).observe(this, Observer {
             postViewModel.show(search, it)
         })
-        val activity = requireActivity()
-        if (activity is MainActivity) {
-            activity.addNavigationListener(navigationListener)
-        } else {
-            searchBar.setTitleOnLongClickCallback {
-                MuzeiManager.createMuzei(Muzei(booru_uid = Settings.activeBooruUid, keyword = search.keyword))
-                Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
-            }
-        }
     }
 
     private fun initSwipeToRefreshDanOne() {
