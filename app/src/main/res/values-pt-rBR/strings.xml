@@ -83,7 +83,6 @@
     <string name="booru_add_from_manual_settings">Configurar manualmente</string>
     <string name="booru_add_error">ERRO: Dados inválidos</string>
     <string name="booru_add_title_dialog">Adicionar este booru?</string>
-    <string name="booru_add_help">Ajuda</string>
     <string name="booru_name">Nome do Booru</string>
     <string name="booru_share_by_qr_code">Código QR</string>
     <string name="booru_share_by_clipboard">Exportar para a Área de Transferência</string>
@@ -233,8 +232,7 @@
     <string name="purchase_info_title">Remover anúncios e desbloquear todas as funcionalidades</string>
     <string name="purchase_info_remove_ads">* Remover anúncios</string>
     <string name="purchase_info_unlock_full_features">Desbloquear todas as funcionalidades</string>
-    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.
-    </string>
+    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.</string>
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
