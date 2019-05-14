@@ -57,13 +57,13 @@
     <string name="msg_file_save_success">O arquivo foi salvo como %s</string>
     <string name="post_expand_tag_filter">Expandir filtro de marcadores</string>
     <string name="post_add_search_to_muzei">` %s ` foram salvos no Muzei.</string>
-    <string name="post_download">Download post</string>
+    <string name="post_download">Baixar Postagem</string>
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
     <string name="msg_download_must_enable">Gerenciador de downloads é necessário.</string>
     <string name="msg_path_denied">Falha ao salvar! Nenhum acesso ao caminho atual.</string>
     <string name="msg_download_failed">Falha no download</string>
     <string name="msg_download_complete">Download concluído</string>
-    <string name="msg_password_or_hash_salt_wrong">Password or Hash salt is wrong.</string>
+    <string name="msg_password_or_hash_salt_wrong">Senha ou Hash salt está errada.</string>
     <string name="popular_day">Dia</string>
     <string name="popular_week">Semana</string>
     <string name="popular_month">Mês</string>
@@ -87,9 +87,9 @@
     <string name="booru_share_by_qr_code">Código QR</string>
     <string name="booru_share_by_clipboard">Exportar para a Área de Transferência</string>
     <string name="booru_edit">Editar</string>
-    <string name="booru_backup_or_restore">Backup or Restore</string>
-    <string name="booru_backup_to_file">Backup to file</string>
-    <string name="booru_restore_from_file">Restore from file</string>
+    <string name="booru_backup_or_restore">Restauração e Backup</string>
+    <string name="booru_backup_to_file">Backup para arquivo</string>
+    <string name="booru_restore_from_file">Restaurar do arquivo</string>
     <string name="booru_config_delete">Excluir</string>
     <string name="booru_config_apply">Aplicar</string>
     <string name="booru_config_name">Nome</string>
@@ -160,7 +160,7 @@
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Grande</string>
     <string name="settings_show_info_bar">Mostrar Barra de Informação</string>
-    <string name="settings_show_all_tags">Show tags for all sites</string>
+    <string name="settings_show_all_tags">Mostrar tags para todos os sites</string>
     <string name="settings_clear_cache">Limpar cache</string>
     <string name="settings_clear_cache_summery">Remover todos os arquivos em cache.</string>
     <string name="settings_clear_cache_dialog_content">Os arquivos em cache serão apagados.</string>
@@ -172,7 +172,7 @@
     <string name="switch_yes">Sim</string>
     <string name="switch_no">Não</string>
     <string name="pool_description_is_empty">A descrição está vazia.</string>
-    <string name="pool_download">Download pool</string>
+    <string name="pool_download">Baixar Grupo</string>
     <string name="pool_download_jpgs">Baixar JPGs</string>
     <string name="pool_download_pngs">Baixar PNGs</string>
     <string name="tag_type">Tipo</string>
@@ -233,7 +233,7 @@
     <string name="purchase_info_title">Remover anúncios e desbloquear todas as funcionalidades</string>
     <string name="purchase_info_remove_ads">* Remover anúncios</string>
     <string name="purchase_info_unlock_full_features">Desbloquear todas as funcionalidades</string>
-    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.</string>
+    <string name="purchase_info_features">1. Desbloqueie o limite de boorus disponíveis.\n Baixe o arquivo zip do pool de moebooru.\n. Backup &amp; Restaurar boorus do arquivo.</string>
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
