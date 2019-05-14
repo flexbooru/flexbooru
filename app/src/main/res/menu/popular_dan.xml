@@ -19,23 +19,30 @@
 
     <item
             android:id="@+id/action_date"
-            android:icon="@drawable/ic_date_range_24dp"
+            android:icon="@drawable/ic_event_24dp"
             android:title="@string/popular_date"
             app:showAsAction="ifRoom"/>
 
     <item
-            android:id="@+id/action_day"
-            android:title="@string/popular_day"
-            app:showAsAction="never"/>
+            android:id="@+id/action_date_range"
+            android:title="@string/popular_date_range"
+            android:icon="@drawable/ic_event_note_24dp"
+            app:showAsAction="ifRoom">
+        <menu>
+            <item
+                    android:id="@+id/action_day"
+                    android:icon="@drawable/ic_today_outline_24dp"
+                    android:title="@string/popular_day"/>
 
-    <item
-            android:id="@+id/action_week"
-            android:title="@string/popular_week"
-            app:showAsAction="never"/>
+            <item
+                    android:id="@+id/action_week"
+                    android:icon="@drawable/ic_view_week_outline_24dp"
+                    android:title="@string/popular_week"/>
 
-    <item
-            android:id="@+id/action_month"
-            android:title="@string/popular_month"
-            app:showAsAction="never"/>
-
+            <item
+                    android:id="@+id/action_month"
+                    android:icon="@drawable/ic_event_note_24dp"
+                    android:title="@string/popular_month"/>
+        </menu>
+    </item>
 </menu>

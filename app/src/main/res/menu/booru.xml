@@ -23,12 +23,15 @@
         <menu>
             <item
                     android:id="@+id/action_booru_add_qr"
+                    android:icon="@drawable/ic_camera_alt_outline_24dp"
                     android:title="@string/booru_add_from_qr_code"/>
             <item
                     android:id="@+id/action_booru_add_clipboard"
+                    android:icon="@drawable/ic_input_outline_24dp"
                     android:title="@string/booru_add_from_clipboard"/>
             <item
                     android:id="@+id/action_booru_add_manual"
+                    android:icon="@drawable/ic_build_outline_24dp"
                     android:title="@string/booru_add_from_manual_settings"/>
         </menu>
     </item>
@@ -39,9 +42,11 @@
         <menu>
             <item
                     android:id="@+id/action_booru_backup_to_file"
+                    android:icon="@drawable/ic_create_new_folder_outline_24dp"
                     android:title="@string/booru_backup_to_file"/>
             <item
                     android:id="@+id/action_booru_restore_from_file"
+                    android:icon="@drawable/ic_folder_open_outline_24dp"
                     android:title="@string/booru_restore_from_file"/>
         </menu>
     </item>

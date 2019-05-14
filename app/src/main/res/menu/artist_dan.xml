@@ -17,7 +17,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:title="@string/artist_order"
-            app:showAsAction="never">
+            android:icon="@drawable/ic_sort_24dp"
+            app:showAsAction="ifRoom">
         <menu>
             <item
                     android:id="@+id/action_artist_order_default"

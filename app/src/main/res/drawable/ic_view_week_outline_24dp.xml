@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
   ~
@@ -14,10 +13,12 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_comment_reply"
-          android:title="@string/comment_reply"
-          android:icon="@drawable/ic_add_comment_outline_24dp"
-          app:showAsAction="ifRoom"/>
-</menu>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:fillColor="@color/pref_icon_tint"
+      android:pathData="M21,4L3,4c-0.55,0 -1,0.45 -1,1v14c0,0.55 0.45,1 1,1h18c0.55,0 1,-0.45 1,-1L22,5c0,-0.55 -0.45,-1 -1,-1zM8,18L4,18L4,6h4v12zM14,18h-4L10,6h4v12zM20,18h-4L16,6h4v12z"/>
+</vector>

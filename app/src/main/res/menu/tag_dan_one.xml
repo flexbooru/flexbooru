@@ -17,23 +17,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:title="@string/tag_order"
-            app:showAsAction="never">
-        <menu>
-            <item
-                    android:id="@+id/action_tag_order_date"
-                    android:title="@string/tag_order_date"/>
-            <item
-                    android:id="@+id/action_tag_order_name"
-                    android:title="@string/tag_order_name"/>
-            <item
-                    android:id="@+id/action_tag_order_count"
-                    android:title="@string/tag_order_count"/>
-        </menu>
-    </item>
-    <item
             android:title="@string/tag_type"
-            app:showAsAction="never">
+            android:icon="@drawable/ic_filter_list_24dp"
+            app:showAsAction="ifRoom">
         <menu>
             <item
                     android:id="@+id/action_tag_type_all"
@@ -56,6 +42,22 @@
             <item
                     android:id="@+id/action_tag_type_photo_set"
                     android:title="@string/tag_type_photo_set"/>
+        </menu>
+    </item>
+    <item
+            android:title="@string/tag_order"
+            android:icon="@drawable/ic_sort_24dp"
+            app:showAsAction="ifRoom">
+        <menu>
+            <item
+                    android:id="@+id/action_tag_order_date"
+                    android:title="@string/tag_order_date"/>
+            <item
+                    android:id="@+id/action_tag_order_name"
+                    android:title="@string/tag_order_name"/>
+            <item
+                    android:id="@+id/action_tag_order_count"
+                    android:title="@string/tag_order_count"/>
         </menu>
     </item>
 </menu>

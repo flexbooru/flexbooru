@@ -18,7 +18,8 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:title="@string/tag_order"
-            app:showAsAction="never">
+            android:icon="@drawable/ic_sort_24dp"
+            app:showAsAction="ifRoom">
         <menu>
             <item
                     android:id="@+id/action_tag_order_date"
