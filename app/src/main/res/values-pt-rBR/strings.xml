@@ -233,7 +233,7 @@
     <string name="purchase_info_title">Remover anúncios e desbloquear todas as funcionalidades</string>
     <string name="purchase_info_remove_ads">* Remover anúncios</string>
     <string name="purchase_info_unlock_full_features">Desbloquear todas as funcionalidades</string>
-    <string name="purchase_info_features">1. Desbloqueie o limite de boorus disponíveis.\n Baixe o arquivo zip do pool de moebooru.\n. Backup &amp; Restaurar boorus do arquivo.</string>
+    <string name="purchase_info_features">1. Desbloqueie o limite de boorus disponíveis.\n2. Baixe o arquivo zip do pool de moebooru.\n3. Backup &amp; Restaurar boorus do arquivo.</string>
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
