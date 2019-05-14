@@ -160,6 +160,7 @@
     <string name="settings_grid_width_normal">Normaal</string>
     <string name="settings_grid_width_large">Groot</string>
     <string name="settings_show_info_bar">Toon infobalk</string>
+    <string name="settings_show_all_tags">Show tags for all sites</string>
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_clear_cache_summery">Remove all cached files.</string>
     <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
