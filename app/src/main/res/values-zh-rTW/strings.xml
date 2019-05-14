@@ -67,7 +67,6 @@
     <string name="popular_day">日</string>
     <string name="popular_week">星期</string>
     <string name="popular_month">月</string>
-    <string name="popular_year">年</string>
     <string name="popular_date">日期</string>
     <string name="popular_date_range">Date range</string>
     <string name="dialog_yes">是</string>
@@ -239,4 +238,5 @@
     <string name="purchase_pay_title">Pay/Restore purchase</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
+    <string name="menu_more_options">More options</string>
 </resources>
