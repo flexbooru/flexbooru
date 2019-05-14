@@ -29,7 +29,6 @@ import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.bumptech.glide.Glide
-import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.Dispatchers
@@ -106,7 +105,6 @@ class App : Application(), KodeinAware {
                 Settings.isOrderSuccess = false
             }
         }
-        MobileAds.initialize(this, "ca-app-pub-1547571472841615~2418349121")
     }
     private fun checkOrderFromCache() {
         val billingClient = BillingClient
