@@ -76,21 +76,23 @@
                     android:orientation="horizontal"
                     android:layout_gravity="end"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/spacing_middle"
+                    android:paddingEnd="@dimen/spacing_middle">
                 <androidx.appcompat.widget.AppCompatButton 
                         android:id="@+id/cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dialog_cancel"
                         android:textColor="@color/colorAccent"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
                 <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/ok"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dialog_ok"
                         android:textColor="@color/colorAccent"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
             </LinearLayout>
         </LinearLayout>
     </TabHost>
