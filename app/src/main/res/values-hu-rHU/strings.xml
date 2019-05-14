@@ -67,7 +67,6 @@
     <string name="popular_day">Nap</string>
     <string name="popular_week">Hét</string>
     <string name="popular_month">Hónap</string>
-    <string name="popular_year">Év</string>
     <string name="popular_date">Dátum</string>
     <string name="popular_date_range">Dátum intervallum</string>
     <string name="dialog_yes">Igen</string>
@@ -239,4 +238,5 @@
     <string name="purchase_pay_title">Pay/Restore purchase</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
+    <string name="menu_more_options">More options</string>
 </resources>
