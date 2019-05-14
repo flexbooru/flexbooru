@@ -59,8 +59,33 @@ class TagFilterAdapter(private val orders: Array<String>,
     }
 
     private var tags: MutableList<TagFilter> = mutableListOf()
-    fun updateData(tags: MutableList<TagFilter>) {
-        this.tags = tags
+    private var allTags: MutableList<TagFilter> = mutableListOf()
+    fun updateData(tags: MutableList<TagFilter>, booruUid: Long, showAll: Boolean) {
+        allTags = tags
+        this.tags.clear()
+        if (showAll) {
+            this.tags.addAll(tags)
+        } else {
+            allTags.forEach {
+                if (it.booru_uid == booruUid) {
+                    this.tags.add(it)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+    fun updateData(booruUid: Long, showAll: Boolean) {
+        tagsSelected.clear()
+        this.tags.clear()
+        if (showAll) {
+            this.tags.addAll(allTags)
+        } else {
+            allTags.forEach {
+                if (it.booru_uid == booruUid) {
+                    this.tags.add(it)
+                }
+            }
+        }
         notifyDataSetChanged()
     }
     fun getSelectedTagsString(): String {

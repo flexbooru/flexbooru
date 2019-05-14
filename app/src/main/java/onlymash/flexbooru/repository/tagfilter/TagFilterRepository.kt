@@ -19,5 +19,5 @@ import androidx.lifecycle.LiveData
 import onlymash.flexbooru.entity.TagFilter
 
 interface TagFilterRepository {
-    fun loadTagsFilter(booruUid: Long): LiveData<MutableList<TagFilter>>
+    fun loadTagsFilter(): LiveData<MutableList<TagFilter>>
 }

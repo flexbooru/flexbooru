@@ -24,16 +24,16 @@ import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 
 class TagFilterViewModel(private val repo: TagFilterRepository) : ViewModel() {
 
-    private val tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
+    private val _tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
 
-    fun loadTags(booruUid: Long): LiveData<MutableList<TagFilter>> {
+    fun loadTags(): LiveData<MutableList<TagFilter>> {
         ioMain({
-            repo.loadTagsFilter(booruUid)
+            repo.loadTagsFilter()
         }) { data ->
-            tagsFilter.addSource(data) {
-                tagsFilter.postValue(it)
+            _tagsFilter.addSource(data) {
+                _tagsFilter.postValue(it ?: mutableListOf())
             }
         }
-        return tagsFilter
+        return _tagsFilter
     }
 }

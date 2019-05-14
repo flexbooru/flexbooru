@@ -22,7 +22,7 @@ import onlymash.flexbooru.entity.TagFilter
 //tags filter data source
 class TagFilterRepositoryIml(private val dao: TagFilterDao) : TagFilterRepository {
 
-    override fun loadTagsFilter(booruUid: Long): LiveData<MutableList<TagFilter>> {
-        return dao.getTagByBooruUidLiveData(booruUid)
+    override fun loadTagsFilter(): LiveData<MutableList<TagFilter>> {
+        return dao.getAllLiveData()
     }
 }

@@ -15,10 +15,7 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -70,7 +67,7 @@ import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
 import org.kodein.di.generic.instance
 
-class PostFragment : ListFragment() {
+class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         /**
@@ -165,6 +162,7 @@ class PostFragment : ListFragment() {
     private val db: FlexbooruDatabase by instance()
     private val tagFilterRepositoryIml: TagFilterRepositoryIml by instance()
     private val tagBlacklistDao: TagBlacklistDao by instance()
+    private val sp: SharedPreferences by instance()
 
     private lateinit var tagBlacklistViewModel: TagBlacklistViewModel
     private lateinit var postViewModel: PostViewModel
@@ -414,6 +412,7 @@ class PostFragment : ListFragment() {
         UserManager.listeners.add(userListener)
         searchBar.setType(type)
         searchBar.setSearchTag(searchTag)
+        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     private fun init() {
@@ -546,12 +545,9 @@ class PostFragment : ListFragment() {
             adapter = tagFilterAdapter
         }
         tagFilterViewModel = getTagFilterViewModel(tagFilterRepositoryIml)
-        tagFilterViewModel.loadTags(Settings.activeBooruUid).observe(
-            this,
-            Observer {
-                tagFilterAdapter.updateData(it)
-            }
-        )
+        tagFilterViewModel.loadTags().observe(this, Observer {
+            tagFilterAdapter.updateData(it, Settings.activeBooruUid, Settings.isShowAllTags)
+        })
         action_search.setOnClickListener {
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (!tagString.isBlank()) {
@@ -685,6 +681,7 @@ class PostFragment : ListFragment() {
             activity.removeNavigationListener(navigationListener)
             activity.sharedElement = null
         }
+        sp.unregisterOnSharedPreferenceChangeListener(this)
         activity.unregisterReceiver(broadcastReceiver)
         UserManager.listeners.remove(userListener)
     }
@@ -698,6 +695,14 @@ class PostFragment : ListFragment() {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.getBoolean(SHOW_SEARCH_LAYOUT_KEY, false)?.let {
             if (it) viewTransition.showView(1, true)
+        }
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            Settings.SHOW_ALL_TAGS -> {
+                tagFilterAdapter.updateData(Settings.activeBooruUid, Settings.isShowAllTags)
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ object Settings {
     const val GRID_WIDTH_LARGE = "large"
     private const val ACTIVE_MUZEI_UID_KEY = "settings_muzei_uid"
     const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
+    const val SHOW_ALL_TAGS = "settings_show_all_tags"
     const val CLEAR_CACHE_KEY = "settings_clear_cache"
     const val CLEAR_HISTORY_KEY = "settings_clear_history"
     const val LATEST_VERSION_CODE_KEY = "settings_latest_version_code"
@@ -109,6 +110,10 @@ object Settings {
     var showInfoBar: Boolean
         get() = sp.getBoolean(SHOW_INFO_BAR_KEY, false)
         set(value) = sp.edit().putBoolean(SHOW_INFO_BAR_KEY, value).apply()
+
+    var isShowAllTags: Boolean
+        get() = sp.getBoolean(SHOW_ALL_TAGS, false)
+        set(value) = sp.edit().putBoolean(SHOW_ALL_TAGS, value).apply()
 
     var downloadDirPath: String?
         get() = sp.getString(DOWNLOAD_PATH_KEY, "")

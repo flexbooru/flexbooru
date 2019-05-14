@@ -45,6 +45,14 @@
             android:summaryOff="@string/switch_no"
             app:iconSpaceReserved="true"/>
 
+    <SwitchPreference
+            android:key="settings_show_all_tags"
+            android:title="@string/settings_show_all_tags"
+            android:defaultValue="false"
+            android:summaryOn="@string/switch_yes"
+            android:summaryOff="@string/switch_no"
+            app:iconSpaceReserved="true"/>
+
     <com.takisoft.preferencex.SimpleMenuPreference
             android:key="settings_page_limit"
             android:entries="@array/settings_page_limit_entries"
