@@ -34,13 +34,16 @@ interface TagFilterDao {
     fun isNotEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(user: TagFilter): Long
+    fun insert(tag: TagFilter): Long
 
     @Update
-    fun update(user: TagFilter): Int
+    fun update(tag: TagFilter): Int
 
     @Query("DELETE FROM tags_filter WHERE uid = :uid")
     fun delete(uid: Long): Int
+
+    @Delete
+    fun delete(tags: MutableList<TagFilter>)
 
     @Query("DELETE FROM tags_filter")
     fun deleteAll(): Int

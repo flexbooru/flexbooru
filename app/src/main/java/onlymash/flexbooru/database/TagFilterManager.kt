@@ -25,38 +25,17 @@ import java.sql.SQLException
 
 object TagFilterManager {
 
-    interface Listener {
-        fun onAdd(tag: TagFilter)
-        fun onDelete(tag: TagFilter)
-        fun onUpdate(tag: TagFilter)
-    }
-
-    val listeners: MutableList<Listener> = mutableListOf()
-
     private val tagFilterDao: TagFilterDao by App.app.instance()
 
     @Throws(SQLException::class)
     fun createTagFilter(tag: TagFilter): TagFilter {
         tag.uid = 0
         tag.uid = tagFilterDao.insert(tag)
-        if (tag.uid >= 0) {
-            listeners.forEach {
-                it.onAdd(tag)
-            }
-        }
         return tag
     }
 
     @Throws(SQLException::class)
-    fun updateTagFilter(tag: TagFilter): Boolean {
-        val result = tagFilterDao.update(tag) == 1
-        if (result) {
-            listeners.forEach {
-                it.onUpdate(tag)
-            }
-        }
-        return result
-    }
+    fun updateTagFilter(tag: TagFilter): Boolean = tagFilterDao.update(tag) == 1
 
     @Throws(IOException::class)
     fun getTagFilterByBooruUid(booruUid: Long): MutableList<TagFilter>? = try {
@@ -80,11 +59,12 @@ object TagFilterManager {
 
     @Throws(SQLException::class)
     fun deleteTagFilter(tag: TagFilter) {
-        if (tagFilterDao.delete(tag.uid) == 1) {
-            listeners.forEach {
-                it.onDelete(tag)
-            }
-        }
+        tagFilterDao.delete(tag.uid)
+    }
+
+    @Throws(SQLException::class)
+    fun deleteTagsFilter(tags: MutableList<TagFilter>) {
+        tagFilterDao.delete(tags)
     }
 
     @Throws(SQLException::class)
