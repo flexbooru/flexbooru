@@ -48,6 +48,6 @@ interface TagFilterDao {
     @Query("SELECT * FROM tags_filter WHERE booru_uid = :booruUid")
     fun getTagByBooruUidLiveData(booruUid: Long): LiveData<MutableList<TagFilter>>
 
-    @Query("SELECT * FROM tags_filter ORDER BY uid ASC")
+    @Query("SELECT * FROM tags_filter ORDER BY name ASC")
     fun getAllLiveData(): LiveData<MutableList<TagFilter>>
 }
