@@ -410,10 +410,6 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        UserManager.listeners.add(userListener)
-        searchBar.setType(type)
-        searchBar.setSearchTag(searchTag)
-        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     private fun init() {
@@ -620,6 +616,10 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         tagBlacklistViewModel.loadTags(Settings.activeBooruUid).observe(this, Observer {
             postViewModel.show(search, it)
         })
+        UserManager.listeners.add(userListener)
+        searchBar.setType(type)
+        searchBar.setSearchTag(searchTag)
+        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     private fun initSwipeToRefreshDanOne() {

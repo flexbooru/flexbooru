@@ -36,10 +36,8 @@ import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
-import java.util.concurrent.Executor
 
 class SearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -71,8 +69,6 @@ class SearchBar @JvmOverloads constructor(
     }
 
     private var suggestionsOnline: MutableList<TagBase>? = null
-    private var suggestionsRepo: SuggestionRepository? = null
-    private var ioExecutor: Executor? = null
 
     private var suggestions: MutableList<Suggestion>
     private val suggestionAdapter: SuggestionAdapter
@@ -206,25 +202,17 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
-    fun setSuggestionsRepo(repo: SuggestionRepository) {
-        suggestionsRepo = repo
-    }
-
-    fun setExecutor(executor: Executor) {
-        ioExecutor = executor
-    }
-
     private fun fetchSuggestions() {
         searchTag?.let {
-            ioExecutor?.execute {
-                suggestionsOnline = suggestionsRepo?.fetchSuggestions(type, it)
-                handler?.post {
-                    showSuggestion()
-                    suggestionList.adapter = suggestionOnlineAdapter
-                    suggestionOnlineAdapter.notifyDataSetChanged()
-                }
-            }
+            helper?.onFetchSuggestionOnline(type, it)
         }
+    }
+
+    fun updateOnlineSuggestions(tags: MutableList<TagBase>) {
+        suggestionsOnline = tags
+        showSuggestion()
+        suggestionList.adapter = suggestionOnlineAdapter
+        suggestionOnlineAdapter.notifyDataSetChanged()
     }
 
     fun updateSuggestions(suggestions: MutableList<Suggestion>) {
@@ -393,6 +381,7 @@ class SearchBar @JvmOverloads constructor(
         fun onSearchEditTextClick()
         fun onApplySearch(query: String)
         fun onSearchEditTextBackPressed()
+        fun onFetchSuggestionOnline(type: Int, search: SearchTag)
     }
 
     /**

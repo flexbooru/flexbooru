@@ -19,11 +19,16 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
-import onlymash.flexbooru.extension.ioMain
+import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.entity.tag.TagBase
+import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 
-class SuggestionViewModel : ViewModel() {
+class SuggestionViewModel(private val repo: SuggestionRepository) : ViewModel() {
 
     private val _suggestions: MediatorLiveData<MutableList<Suggestion>> = MediatorLiveData()
+    val suggestionsOnline: MutableLiveData<MutableList<TagBase>> = MutableLiveData()
+
+    private var job: Job? = null
 
     fun loadSuggestions(booruUid: Long): LiveData<MutableList<Suggestion>> {
         viewModelScope.launch {
@@ -35,6 +40,16 @@ class SuggestionViewModel : ViewModel() {
             }
         }
         return _suggestions
+    }
+
+    fun fetchSuggestionsOnline(type: Int, searchTag: SearchTag) {
+        job?.cancel()
+        job = viewModelScope.launch {
+            val data = withContext(Dispatchers.IO) {
+                repo.fetchSuggestions(type, searchTag)
+            }
+            suggestionsOnline.postValue(data ?: mutableListOf())
+        }
     }
 
     @ExperimentalCoroutinesApi

@@ -34,6 +34,8 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.api.*
+import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.repository.suggestion.SuggestionRepositoryIml
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
@@ -69,6 +71,18 @@ abstract class ListFragment : Fragment(), KodeinAware {
 
     abstract val stateChangeListener: SearchBar.StateChangeListener
 
+    private val suggestionViewModel by lazy {
+        getSuggestionViewModel(
+            SuggestionRepositoryIml(
+                danbooruApi = danApi,
+                moebooruApi = moeApi,
+                danbooruOneApi = danOneApi,
+                gelbooruApi = gelApi,
+                sankakuApi = sankakuApi
+            )
+        )
+    }
+
     private val helper = object : SearchBar.Helper {
         override fun onLeftButtonClick() {
             val activity = requireActivity()
@@ -97,6 +111,10 @@ abstract class ListFragment : Fragment(), KodeinAware {
 
         override fun onSearchEditTextBackPressed() {
 
+        }
+
+        override fun onFetchSuggestionOnline(type: Int, search: SearchTag) {
+            suggestionViewModel.fetchSuggestionsOnline(type, search)
         }
     }
 
@@ -164,29 +182,21 @@ abstract class ListFragment : Fragment(), KodeinAware {
             setLeftDrawable(leftDrawable)
             setHelper(helper)
             setStateChangeListener(stateChangeListener)
-            setSuggestionsRepo(
-                SuggestionRepositoryIml(
-                    danbooruApi = danApi,
-                    moebooruApi = moeApi,
-                    danbooruOneApi = danOneApi,
-                    gelbooruApi = gelApi,
-                    sankakuApi = sankakuApi
-                )
-            )
-            setExecutor(ioExecutor)
         }
         searchBarMover = SearchBarMover(sbMoverHelper, searchBar, list)
-        val suggestionViewModel = getSuggestionViewModel()
         suggestionViewModel.loadSuggestions(Settings.activeBooruUid).observe(this, Observer {
             searchBar.updateSuggestions(it)
+        })
+        suggestionViewModel.suggestionsOnline.observe(this, Observer {
+            searchBar.updateOnlineSuggestions(it)
         })
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getSuggestionViewModel(): SuggestionViewModel {
+    private fun getSuggestionViewModel(repo: SuggestionRepository): SuggestionViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return SuggestionViewModel() as T
+                return SuggestionViewModel(repo) as T
             }
         })[SuggestionViewModel::class.java]
     }
