@@ -237,6 +237,6 @@
     <string name="purchase_pay_title">支付/恢复购买</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付宝</string>
-    <string name="tab_start_date">Start date</string>
-    <string name="tab_end_date">End date</string>
+    <string name="tab_start_date">起始日期</string>
+    <string name="tab_end_date">结束日期</string>
 </resources>
