@@ -44,7 +44,7 @@ import onlymash.flexbooru.ui.*
 import onlymash.flexbooru.ui.adapter.PoolAdapter
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
-import onlymash.flexbooru.util.DownloadUtil
+import onlymash.flexbooru.worker.DownloadWorker
 import onlymash.flexbooru.widget.search.SearchBar
 
 class PoolFragment : ListFragment() {
@@ -291,19 +291,19 @@ class PoolFragment : ListFragment() {
                         }
                         when (which) {
                             0 -> {
-                                DownloadUtil.downloadPool(
+                                DownloadWorker.downloadPool(
                                     activity = requireActivity(),
                                     pool = it,
-                                    type = DownloadUtil.POOL_DOWNLOAD_TYPE_JPGS,
+                                    type = DownloadWorker.POOL_DOWNLOAD_TYPE_JPGS,
                                     username = search.username,
                                     passwordHash = search.auth_key
                                     )
                             }
                             1 -> {
-                                DownloadUtil.downloadPool(
+                                DownloadWorker.downloadPool(
                                     activity = requireActivity(),
                                     pool = it,
-                                    type = DownloadUtil.POOL_DOWNLOAD_TYPE_PNGS,
+                                    type = DownloadWorker.POOL_DOWNLOAD_TYPE_PNGS,
                                     username = search.username,
                                     passwordHash = search.auth_key
                                 )

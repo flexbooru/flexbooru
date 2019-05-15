@@ -31,13 +31,13 @@ interface SuggestionDao {
     fun delete(uid: Long): Int
 
     @Query("SELECT * FROM suggestions WHERE booru_uid = :booruUid ORDER BY uid DESC")
-    fun getSuggestionsByBooruUid(booruUid: Long): MutableList<Suggestion>?
+    fun getSuggestionsByBooruUid(booruUid: Long): MutableList<Suggestion>
 
     @Query("SELECT * FROM suggestions WHERE booru_uid = :booruUid ORDER BY uid DESC")
-    fun getSuggestionsByBooruUidLiveData(booruUid: Long): LiveData<MutableList<Suggestion>>?
+    fun getSuggestionsByBooruUidLiveData(booruUid: Long): LiveData<MutableList<Suggestion>>
 
     @Query("SELECT * FROM suggestions ORDER BY uid ASC")
-    fun getAll(): MutableList<Suggestion>?
+    fun getAll(): MutableList<Suggestion>
 
     @Query("DELETE FROM suggestions")
     fun deleteAll(): Int

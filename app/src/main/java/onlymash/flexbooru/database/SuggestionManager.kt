@@ -53,12 +53,12 @@ object SuggestionManager {
     }
 
     @Throws(IOException::class)
-    fun getSuggestionsByBooruUidLiveData(booruUid: Long): LiveData<MutableList<Suggestion>>? = try {
+    fun getSuggestionsByBooruUidLiveData(booruUid: Long): LiveData<MutableList<Suggestion>> = try {
         suggestionDao.getSuggestionsByBooruUidLiveData(booruUid)
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
         Crashlytics.logException(ex)
-        null
+        throw IOException(ex)
     }
 }

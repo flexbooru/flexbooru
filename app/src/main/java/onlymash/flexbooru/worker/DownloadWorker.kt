@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util
+package onlymash.flexbooru.worker
 
 import android.app.Activity
 import android.app.NotificationChannel
@@ -45,13 +45,15 @@ import onlymash.flexbooru.extension.getDownloadUri
 import onlymash.flexbooru.extension.getFileUriByDocId
 import onlymash.flexbooru.extension.getPoolUri
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
+import onlymash.flexbooru.util.IOUtils
+import onlymash.flexbooru.util.fileName
 import onlymash.flexbooru.util.okhttp.OkHttp3Downloader
 import java.io.InputStream
 
-class DownloadUtil(
+class DownloadWorker(
     context: Context,
     workerParameters: WorkerParameters
-) : Worker(context, workerParameters) {
+) : CoroutineWorker(context, workerParameters) {
 
     companion object {
         private const val URL_KEY = "url"
@@ -87,7 +89,7 @@ class DownloadUtil(
             val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
-                OneTimeWorkRequestBuilder<DownloadUtil>()
+                OneTimeWorkRequestBuilder<DownloadWorker>()
                     .setInputData(
                         workDataOf(
                             URL_KEY to url,
@@ -113,7 +115,7 @@ class DownloadUtil(
             val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
-                OneTimeWorkRequestBuilder<DownloadUtil>()
+                OneTimeWorkRequestBuilder<DownloadWorker>()
                     .setInputData(
                         workDataOf(
                             URL_KEY to url,
@@ -154,7 +156,7 @@ class DownloadUtil(
             val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
-                OneTimeWorkRequestBuilder<DownloadUtil>()
+                OneTimeWorkRequestBuilder<DownloadWorker>()
                     .setInputData(
                         workDataOf(
                             SCHEME_KEY to scheme,
@@ -176,7 +178,7 @@ class DownloadUtil(
         }
     }
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         when (inputData.getString(TYPE_KEY)) {
             TYPE_POST -> {
                 val url = inputData.getString(URL_KEY)
@@ -255,7 +257,10 @@ class DownloadUtil(
                 val id = inputData.getInt(POOL_ID_KEY, -1)
                 val scheme = inputData.getString(SCHEME_KEY)
                 val host = inputData.getString(HOST_KEY)
-                val type = inputData.getInt(POOL_DOWNLOAD_TYPE_KEY, POOL_DOWNLOAD_TYPE_JPGS)
+                val type = inputData.getInt(
+                    POOL_DOWNLOAD_TYPE_KEY,
+                    POOL_DOWNLOAD_TYPE_JPGS
+                )
                 val username = inputData.getString(USERNAME_KEY)
                 val passwordHash = inputData.getString(PASSWORD_HASH_KEY)
                 val docId =  inputData.getString(DOC_ID_KEY)
@@ -294,7 +299,7 @@ class DownloadUtil(
                                 elapsedTime = System.currentTimeMillis() - startTime
                             }
                         }
-                })
+                    })
                 var `is`: InputStream? = null
                 val os = applicationContext.contentResolver.openOutputStream(desUri)
                 try {

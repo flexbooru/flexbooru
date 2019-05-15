@@ -65,6 +65,7 @@ import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
+import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.generic.instance
 
 class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -255,7 +256,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                     when (which) {
                         0 -> {
-                            DownloadUtil.downloadPost(post, requireActivity())
+                            DownloadWorker.downloadPost(post, requireActivity())
                         }
                         1 -> {
                             if (type == Constants.TYPE_GELBOORU) {

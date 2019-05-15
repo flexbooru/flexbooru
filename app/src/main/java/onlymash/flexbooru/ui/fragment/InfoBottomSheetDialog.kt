@@ -38,7 +38,7 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
-import onlymash.flexbooru.util.DownloadUtil
+import onlymash.flexbooru.worker.DownloadWorker
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
@@ -283,7 +283,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         view.findViewById<TextView>(R.id.url_larger_size).text = sizeLargerString
         view.findViewById<TextView>(R.id.url_origin_size).text = sizeOriginString
         view.findViewById<ImageView>(R.id.url_sample_download).setOnClickListener {
-            DownloadUtil.download(
+            DownloadWorker.download(
                 url = urlSampleString,
                 postId = postId,
                 host = host,
@@ -291,7 +291,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             )
         }
         view.findViewById<ImageView>(R.id.url_larger_download).setOnClickListener {
-            DownloadUtil.download(
+            DownloadWorker.download(
                 url = urlLargerString,
                 postId = postId,
                 host = host,
@@ -299,7 +299,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             )
         }
         view.findViewById<ImageView>(R.id.url_origin_download).setOnClickListener {
-            DownloadUtil.download(
+            DownloadWorker.download(
                 url = urlOriginString,
                 postId = postId,
                 host = host,

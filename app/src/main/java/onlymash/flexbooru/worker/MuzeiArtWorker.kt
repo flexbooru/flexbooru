@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.content.muzei
+package onlymash.flexbooru.worker
 
 import android.content.Context
 import androidx.core.net.toUri
@@ -31,21 +31,21 @@ import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.MuzeiManager
 import org.kodein.di.generic.instance
 
-class FlexArtWorker(
+class MuzeiArtWorker(
     context: Context,
     workerParameters: WorkerParameters
-) : Worker(context, workerParameters) {
+) : CoroutineWorker(context, workerParameters) {
     companion object {
         internal fun enqueueLoad() {
             val workManager = WorkManager.getInstance(App.app)
-            workManager.enqueue(OneTimeWorkRequestBuilder<FlexArtWorker>()
+            workManager.enqueue(OneTimeWorkRequestBuilder<MuzeiArtWorker>()
                 .setConstraints(Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build())
                 .build())
         }
     }
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         val uid = Settings.activeBooruUid
         val booru = BooruManager.getBooruByUid(uid) ?: return Result.failure()
         val user = UserManager.getUserByBooruUid(uid)

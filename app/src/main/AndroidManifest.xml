@@ -99,7 +99,7 @@
         </activity>
 
         <provider
-                android:name=".content.muzei.FlexArtProvider"
+                android:name=".content.MuzeiProvider"
                 android:authorities="${applicationId}.muzei"
                 android:description="@string/app_description"
                 android:exported="true"

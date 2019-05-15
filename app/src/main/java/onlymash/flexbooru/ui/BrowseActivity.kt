@@ -77,6 +77,7 @@ import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
 import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.DismissFrameLayout
+import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.generic.instance
 import java.io.*
 import java.util.concurrent.Executor
@@ -646,7 +647,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
 
     private fun checkAndAction(action: Int) {
         when (action) {
-            ACTION_DOWNLOAD -> DownloadUtil.downloadPost(getCurrentPost(), this)
+            ACTION_DOWNLOAD -> DownloadWorker.downloadPost(getCurrentPost(), this)
             else -> saveAndAction(action)
         }
     }

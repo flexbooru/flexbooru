@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.content.muzei
+package onlymash.flexbooru.content
 
 import android.content.Intent
 import com.google.android.apps.muzei.api.UserCommand
@@ -23,18 +23,19 @@ import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.worker.MuzeiArtWorker
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 
-class FlexArtProvider : MuzeiArtProvider() {
+class MuzeiProvider : MuzeiArtProvider() {
     companion object {
-        private const val TAG = "FlexArtProvider"
+        private const val TAG = "MuzeiProvider"
         private const val COMMAND_ID_VIEW_POST = 1
         private const val COMMAND_ID_SEARCH_POSTS = 2
     }
     override fun onLoadRequested(initial: Boolean) {
-        FlexArtWorker.enqueueLoad()
+        MuzeiArtWorker.enqueueLoad()
     }
 
     override fun getCommands(artwork: Artwork): MutableList<UserCommand> =

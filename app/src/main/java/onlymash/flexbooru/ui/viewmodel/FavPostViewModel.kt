@@ -19,23 +19,31 @@ import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 import onlymash.flexbooru.entity.post.*
-import onlymash.flexbooru.extension.ioMain
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 
 class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel() {
 
-    private val posts = MediatorLiveData<MutableList<PostBase>>()
+    private val _posts = MediatorLiveData<MutableList<PostBase>>()
 
     @UiThread
     fun load(host: String, keyword: String, type: Int): LiveData<MutableList<PostBase>> {
-        ioMain({
-            postLoader.loadPostsLiveData(host, keyword, type)
-        }) { data ->
-            posts.addSource(data) {
-                posts.postValue(it)
+        viewModelScope.launch {
+            val data = withContext(Dispatchers.IO) {
+                postLoader.loadPostsLiveData(host, keyword, type)
+            }
+            _posts.addSource(data) {
+                _posts.postValue(it ?: mutableListOf())
             }
         }
-        return posts
+        return _posts
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
     }
 }

@@ -55,7 +55,7 @@ import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
-import onlymash.flexbooru.util.DownloadUtil
+import onlymash.flexbooru.worker.DownloadWorker
 import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.DateRangePickerDialogFragment
@@ -187,7 +187,7 @@ class PopularFragment : ListFragment() {
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
                     when (which) {
                         0 -> {
-                            DownloadUtil.downloadPost(post, requireActivity())
+                            DownloadWorker.downloadPost(post, requireActivity())
                         }
                         1 -> {
                             if (popular.auth_key.isEmpty()) {

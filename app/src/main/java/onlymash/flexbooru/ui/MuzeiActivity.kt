@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.activity_muzei.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.content.muzei.FlexArtWorker
+import onlymash.flexbooru.worker.MuzeiArtWorker
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.database.dao.MuzeiDao
 import onlymash.flexbooru.entity.Muzei
@@ -88,7 +88,7 @@ class MuzeiActivity : BaseActivity() {
                         .create()
                         .show()
                 } else if (it.itemId == R.id.action_muzei_fetch) {
-                    FlexArtWorker.enqueueLoad()
+                    MuzeiArtWorker.enqueueLoad()
                 }
                 true
             }

@@ -18,24 +18,28 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.TagBlacklist
-import onlymash.flexbooru.extension.ioMain
 
 class TagBlacklistViewModel(private val tagBlacklistDao: TagBlacklistDao) : ViewModel() {
 
     private val tagOutcome: MediatorLiveData<MutableList<TagBlacklist>> = MediatorLiveData()
 
+    @ExperimentalCoroutinesApi
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
+    }
+
     fun loadTags(booruUid: Long): LiveData<MutableList<TagBlacklist>> {
-        ioMain({
-            tagBlacklistDao.getTagBlacklistByBooruUidLiveData(booruUid)
-        }) { data ->
+        viewModelScope.launch {
+            val data = withContext(Dispatchers.IO) {
+                tagBlacklistDao.getTagBlacklistByBooruUidLiveData(booruUid)
+            }
             tagOutcome.addSource(data) {
-                if (it != null) {
-                    tagOutcome.postValue(it)
-                } else {
-                    tagOutcome.postValue(mutableListOf())
-                }
+                tagOutcome.postValue(it ?: mutableListOf())
             }
         }
         return tagOutcome
