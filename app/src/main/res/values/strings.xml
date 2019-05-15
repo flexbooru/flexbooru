@@ -127,6 +127,7 @@
     <string name="browse_share_link">Share link</string>
     <string name="browse_tags">Tags</string>
     <string name="browse_info">Info</string>
+    <string name="browse_recommended">Recommended</string>
     <string name="browse_comment">Comment</string>
     <string name="browse_tag_exclude">Exclude</string>
     <string name="browse_tag_include">Include</string>

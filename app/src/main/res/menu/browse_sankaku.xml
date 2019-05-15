@@ -16,10 +16,17 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
             android:id="@+id/action_browse_comment"
             android:icon="@drawable/ic_mode_comment_outline_24dp"
             android:title="@string/browse_comment"
+            app:showAsAction="ifRoom"/>
+
+    <item
+            android:id="@+id/action_browse_recommended"
+            android:icon="@drawable/ic_photo_filter_24dp"
+            android:title="@string/browse_recommended"
             app:showAsAction="ifRoom"/>
 
     <item

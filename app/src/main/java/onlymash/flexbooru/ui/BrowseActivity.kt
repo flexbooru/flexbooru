@@ -308,11 +308,12 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
         pager_browse.background = colorDrawable
         postponeEnterTransition()
         setEnterSharedElementCallback(sharedElementCallback)
+        booru = BooruManager.getBooruByUid(Settings.activeBooruUid) ?: return
         toolbar.setTitle(R.string.browse_toolbar_title)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        toolbar.inflateMenu(R.menu.browse)
+        toolbar.inflateMenu(if (booru.type == Constants.TYPE_SANKAKU) R.menu.browse_sankaku else R.menu.browse)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_browse_comment -> {
@@ -331,6 +332,12 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                 R.id.action_browse_share -> {
                     shareLink()
                 }
+                R.id.action_browse_recommended -> {
+                    val id = getCurrentPostId()
+                    if (id > 0) {
+                        SearchActivity.startActivity(this, "recommended_for_post:$id")
+                    }
+                }
             }
             return@setOnMenuItemClickListener true
         }
@@ -347,7 +354,6 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
         }
         keyword = intent.getStringExtra(Constants.KEYWORD_KEY) ?: ""
         startId = intent.getIntExtra(Constants.ID_KEY, -1)
-        booru = BooruManager.getBooruByUid(Settings.activeBooruUid) ?: return
         user = UserManager.getUserByBooruUid(booruUid = booru.uid)
         user?.let {
             initFavViewModel()
