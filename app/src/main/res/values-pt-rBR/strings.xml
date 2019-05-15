@@ -115,7 +115,7 @@
     <string name="browse_share_link">Compartilhar link</string>
     <string name="browse_tags">Marcadores</string>
     <string name="browse_info">Informações</string>
-    <string name="browse_recommended">Recommended</string>
+    <string name="browse_recommended">Recomendado</string>
     <string name="browse_comment">Comente</string>
     <string name="browse_tag_exclude">Excluir</string>
     <string name="browse_tag_include">Incluir</string>
@@ -212,7 +212,7 @@
     <string name="a11y_filter_not_applied">%1s filtro não aplicado</string>
     <string name="order">Ordem</string>
     <string name="rating">Avaliação</string>
-    <string name="threshold">Threshold</string>
+    <string name="threshold">Limite</string>
     <string name="muzei_copy">Copiar</string>
     <string name="muzei_delete">Excluir</string>
     <string name="muzei_search">Pesquisar</string>
@@ -239,6 +239,6 @@
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
-    <string name="tab_start_date">Start date</string>
-    <string name="tab_end_date">End date</string>
+    <string name="tab_start_date">Data de início</string>
+    <string name="tab_end_date">Data de término</string>
 </resources>
