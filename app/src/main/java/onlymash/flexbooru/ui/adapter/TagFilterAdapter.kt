@@ -27,6 +27,7 @@ import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterAdapter(private val orders: Array<String>,
                        private val ratings: Array<String>,
+                       private val thresholds: Array<String>,
                        private val booruType: Int,
                        private val addSearchBarTextCallback: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -37,14 +38,18 @@ class TagFilterAdapter(private val orders: Array<String>,
         private const val VIEW_TYPE_ORDER = 4
         private const val VIEW_TYPE_RATING_HEAD = 5
         private const val VIEW_TYPE_RATING = 6
+        private const val VIEW_TYPE_THRESHOLD_HEAD = 7
+        private const val VIEW_TYPE_THRESHOLD = 8
     }
 
     private var orderSelected = ""
     private var ratingSelected = ""
+    private var thresholdSelected = ""
     private val tagsSelected: MutableList<String> = mutableListOf()
 
     private var refreshingOrder = false
     private var refreshingRating = false
+    private var refreshingThreshold = false
 
     private fun refreshOrder(order: String) {
         val index = orders.indexOfFirst { it == order }
@@ -56,6 +61,12 @@ class TagFilterAdapter(private val orders: Array<String>,
         val index = ratings.indexOfFirst { it == rating }
         refreshingRating = true
         notifyItemChanged(tags.size + orders.size + index + 3)
+    }
+
+    private fun refreshThreshold(threshold: String) {
+        val index = thresholds.indexOfFirst { it == threshold }
+        refreshingThreshold = true
+        notifyItemChanged(tags.size + orders.size + ratings.size + index + 4)
     }
 
     private var tags: MutableList<TagFilter> = mutableListOf()
@@ -94,15 +105,18 @@ class TagFilterAdapter(private val orders: Array<String>,
             str = String.format("%s %s", it, str)
         }
         str = str.trim()
-        if (!orderSelected.isBlank()) {
+        if (orderSelected.isNotEmpty()) {
             str = if (booruType == Constants.TYPE_GELBOORU) {
-                "sort:$orderSelected $str"
+                "$str sort:$orderSelected"
             } else {
-                "order:$orderSelected $str"
+                "$str order:$orderSelected"
             }
         }
-        if (!ratingSelected.isBlank()) {
-            str = "rating:$ratingSelected $str"
+        if (ratingSelected.isNotEmpty()) {
+            str = "$str rating:$ratingSelected"
+        }
+        if (thresholdSelected.isNotEmpty()) {
+            str = "$str threshold:$thresholdSelected"
         }
         return str.trim()
     }
@@ -112,23 +126,33 @@ class TagFilterAdapter(private val orders: Array<String>,
             VIEW_TYPE_NORMAL -> TagFilterViewHolder.create(parent)
             VIEW_TYPE_ORDER -> TagFilterOrderViewHolder.create(parent)
             VIEW_TYPE_RATING -> TagFilterRatingViewHolder.create(parent)
+            VIEW_TYPE_THRESHOLD -> TagFilterThresholdViewHolder.create(parent)
             else -> TagFilterSubheadViewHolder.create(parent)
         }
 
     override fun getItemViewType(position: Int): Int {
         val orderHeadPos = tags.size + 1
         val ratingHeadPos = orderHeadPos + orders.size + 1
+        val thresholdHeadPos = ratingHeadPos + ratings.size + 1
         return when (position) {
             0 -> VIEW_TYPE_ADD
             in 1 until orderHeadPos -> VIEW_TYPE_NORMAL
             orderHeadPos -> VIEW_TYPE_ORDER_HEAD
-            ratingHeadPos -> VIEW_TYPE_RATING_HEAD
             in (orderHeadPos + 1) until ratingHeadPos -> VIEW_TYPE_ORDER
-            else -> VIEW_TYPE_RATING
+            ratingHeadPos -> VIEW_TYPE_RATING_HEAD
+            in (ratingHeadPos + 1) until thresholdHeadPos -> VIEW_TYPE_RATING
+            thresholdHeadPos -> VIEW_TYPE_THRESHOLD_HEAD
+            else -> VIEW_TYPE_THRESHOLD
         }
     }
 
-    override fun getItemCount(): Int = tags.size + orders.size + ratings.size + 3
+    override fun getItemCount(): Int {
+        var count = tags.size + orders.size + ratings.size + 3
+        if (thresholds.isNotEmpty()) {
+            count += thresholds.size + 1
+        }
+        return count
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
@@ -169,10 +193,10 @@ class TagFilterAdapter(private val orders: Array<String>,
                 }
             }
             is TagFilterSubheadViewHolder -> {
-                if (position == tags.size + 1) {
-                    holder.bind(holder.itemView.context.getString(R.string.order))
-                } else {
-                    holder.bind(holder.itemView.context.getString(R.string.rating))
+                when (position) {
+                    tags.size + 1 -> holder.bind(holder.itemView.context.getString(R.string.order))
+                    tags.size + orders.size + 2 -> holder.bind(holder.itemView.context.getString(R.string.rating))
+                    else -> holder.bind(holder.itemView.context.getString(R.string.threshold))
                 }
             }
             is TagFilterOrderViewHolder -> {
@@ -214,6 +238,27 @@ class TagFilterAdapter(private val orders: Array<String>,
                         val oldSelected = ratingSelected
                         ratingSelected = if (checked) rating else ""
                         if (oldSelected.isNotEmpty()) refreshRating(oldSelected)
+                    }
+                }
+            }
+            is TagFilterThresholdViewHolder -> {
+                val threshold = thresholds[position - tags.size - orders.size - ratings.size - 4]
+                val checkedState = threshold == thresholdSelected
+                (holder.itemView as TagFilterView).apply {
+                    text = threshold
+                    tag = threshold
+                    if (refreshingThreshold) {
+                        refreshingThreshold = false
+                        animateCheckedAndInvoke(checkedState) {}
+                    } else {
+                        isChecked = checkedState
+                    }
+                    setOnClickListener {
+                        val checked = !isChecked
+                        animateCheckedAndInvoke(checked) {}
+                        val oldSelected = thresholdSelected
+                        thresholdSelected = if (checked) threshold else ""
+                        if (oldSelected.isNotEmpty()) refreshThreshold(oldSelected)
                     }
                 }
             }

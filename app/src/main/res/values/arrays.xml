@@ -130,6 +130,13 @@
         <item>questionable</item>
         <item>explicit</item>
     </string-array>
+    <string-array name="filter_threshold">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
     <string-array name="post_item_action">
         <item>@string/post_download</item>
         <item>@string/post_add_to_fav</item>

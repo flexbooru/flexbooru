@@ -526,10 +526,16 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             else
                 resources.getStringArray(R.array.filter_order)
         val ratings = resources.getStringArray(R.array.filter_rating)
+        val thresholds =
+            if (type == Constants.TYPE_SANKAKU)
+                resources.getStringArray(R.array.filter_threshold)
+            else arrayOf()
         tagFilterAdapter = TagFilterAdapter(
             orders = orders,
             ratings = ratings,
-            booruType = type) {
+            thresholds = thresholds,
+            booruType = type
+        ) {
             val text = searchBar.getEditTextText()
             if(text.isNotEmpty()) {
                 TagFilterManager.createTagFilter(TagFilter(booru_uid = Settings.activeBooruUid, name = text))
