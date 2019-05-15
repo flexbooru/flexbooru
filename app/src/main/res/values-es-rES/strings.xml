@@ -115,6 +115,7 @@
     <string name="browse_share_link">Compartir enlace</string>
     <string name="browse_tags">Etiquetas</string>
     <string name="browse_info">Información</string>
+    <string name="browse_recommended">Recommended</string>
     <string name="browse_comment">Comentario</string>
     <string name="browse_tag_exclude">Excluir</string>
     <string name="browse_tag_include">Incluir</string>
