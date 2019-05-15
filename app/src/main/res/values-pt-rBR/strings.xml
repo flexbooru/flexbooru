@@ -237,4 +237,6 @@
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
+    <string name="tab_start_date">Start date</string>
+    <string name="tab_end_date">End date</string>
 </resources>
