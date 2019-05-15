@@ -212,6 +212,7 @@
     <string name="a11y_filter_not_applied">%1s filtro não aplicado</string>
     <string name="order">Ordem</string>
     <string name="rating">Avaliação</string>
+    <string name="threshold">Threshold</string>
     <string name="muzei_copy">Copiar</string>
     <string name="muzei_delete">Excluir</string>
     <string name="muzei_search">Pesquisar</string>
