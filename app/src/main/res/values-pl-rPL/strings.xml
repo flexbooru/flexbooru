@@ -115,6 +115,7 @@
     <string name="browse_share_link">Udostępnij link</string>
     <string name="browse_tags">Tagi</string>
     <string name="browse_info">Informacje</string>
+    <string name="browse_recommended">Recommended</string>
     <string name="browse_comment">Komentuj</string>
     <string name="browse_tag_exclude">Wyklucz</string>
     <string name="browse_tag_include">Zawiera</string>
@@ -211,6 +212,7 @@
     <string name="a11y_filter_not_applied">nie zastosowano filtru %1s</string>
     <string name="order">Kolejność</string>
     <string name="rating">Ocena</string>
+    <string name="threshold">Threshold</string>
     <string name="muzei_copy">Kopiuj</string>
     <string name="muzei_delete">Usuń</string>
     <string name="muzei_search">Szukaj</string>

@@ -115,6 +115,7 @@
     <string name="browse_share_link">分享超連結</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
+    <string name="browse_recommended">Recommended</string>
     <string name="browse_comment">留言</string>
     <string name="browse_tag_exclude">排除</string>
     <string name="browse_tag_include">包括</string>
@@ -211,6 +212,7 @@
     <string name="a11y_filter_not_applied">%1s 過濾器已停用</string>
     <string name="order">排序</string>
     <string name="rating">評級</string>
+    <string name="threshold">Threshold</string>
     <string name="muzei_copy">複製</string>
     <string name="muzei_delete">刪除</string>
     <string name="muzei_search">搜尋</string>
