@@ -445,7 +445,9 @@ class PopularFragment : ListFragment() {
             val key = bundle.getString(BrowseActivity.EXT_POST_KEYWORD_KEY)
             if (pos >= 0 && keyword == key) {
                 currentPostId = bundle.getInt(BrowseActivity.EXT_POST_ID_KEY, currentPostId)
-                list.scrollToPosition(pos + 1)
+                if (postAdapter.itemCount > pos + 1) {
+                    list.scrollToPosition(pos + 1)
+                }
                 (requireActivity() as MainActivity).sharedElement =
                     list.findViewWithTag<View>(currentPostId)?.findViewById(R.id.preview)
             }
