@@ -115,7 +115,7 @@
     <string name="browse_share_link">分享链接</string>
     <string name="browse_tags">标签</string>
     <string name="browse_info">信息</string>
-    <string name="browse_recommended">Recommended</string>
+    <string name="browse_recommended">个性推荐</string>
     <string name="browse_comment">评论</string>
     <string name="browse_tag_exclude">排除</string>
     <string name="browse_tag_include">包括</string>
@@ -212,6 +212,7 @@
     <string name="a11y_filter_not_applied">%1s filter not applied</string>
     <string name="order">排序</string>
     <string name="rating">评级</string>
+    <string name="threshold">Threshold</string>
     <string name="muzei_copy">复制</string>
     <string name="muzei_delete">删除</string>
     <string name="muzei_search">搜索</string>
