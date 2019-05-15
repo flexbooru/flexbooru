@@ -115,6 +115,7 @@
     <string name="browse_share_link">分享超連結</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
+    <string name="browse_recommended">Recommended</string>
     <string name="browse_comment">留言</string>
     <string name="browse_tag_exclude">排除</string>
     <string name="browse_tag_include">包括</string>
