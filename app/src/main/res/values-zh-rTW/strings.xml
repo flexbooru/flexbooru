@@ -212,6 +212,7 @@
     <string name="a11y_filter_not_applied">未套用 %1s 篩選器</string>
     <string name="order">排序</string>
     <string name="rating">評級</string>
+    <string name="threshold">Threshold</string>
     <string name="muzei_copy">複製</string>
     <string name="muzei_delete">篩除</string>
     <string name="muzei_search">搜尋</string>
