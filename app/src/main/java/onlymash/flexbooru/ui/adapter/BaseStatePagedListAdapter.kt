@@ -53,7 +53,7 @@ abstract class BaseStatePagedListAdapter<T, VH : RecyclerView.ViewHolder>(
                 if (holder.itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams) {
                     (holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams).isFullSpan = true
                 }
-                (holder as NetworkStateViewHolder).bindTo(networkState)
+                (holder as NetworkStateViewHolder).bindTo(networkState, position)
             }
             else -> {
                 onBindDataViewHolder(holder, position)

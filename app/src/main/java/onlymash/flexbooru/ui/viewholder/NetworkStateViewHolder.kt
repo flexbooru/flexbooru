@@ -23,6 +23,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.Status
 
@@ -39,10 +40,19 @@ class NetworkStateViewHolder(itemView: View,
         }
     }
 
-    fun bindTo(networkState: NetworkState?) {
-        progressBar.visibility = toVisibility(networkState?.status == Status.RUNNING)
-        retry.visibility = toVisibility(networkState?.status == Status.FAILED)
-        errorMsg.visibility = toVisibility(networkState?.msg != null)
+    fun bindTo(networkState: NetworkState?, position: Int) {
+        val isNotEmpty = position != 1
+        progressBar.toVisibility(networkState?.status == Status.RUNNING && isNotEmpty)
+        retry.toVisibility(networkState?.status == Status.FAILED && isNotEmpty)
+        errorMsg.toVisibility(networkState?.msg != null && isNotEmpty)
+        errorMsg.text = networkState?.msg
+    }
+
+    fun bindToNotHeader(networkState: NetworkState?, position: Int) {
+        val isNotEmpty = position != 0
+        progressBar.toVisibility(networkState?.status == Status.RUNNING && isNotEmpty)
+        retry.toVisibility(networkState?.status == Status.FAILED && isNotEmpty)
+        errorMsg.toVisibility(networkState?.msg != null && isNotEmpty)
         errorMsg.text = networkState?.msg
     }
 
@@ -53,14 +63,6 @@ class NetworkStateViewHolder(itemView: View,
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_network_state, parent, false)
             return NetworkStateViewHolder(view, retryCallback)
-        }
-
-        fun toVisibility(constraint : Boolean): Int {
-            return if (constraint) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
         }
     }
 }

@@ -596,14 +596,7 @@ class PopularFragment : ListFragment() {
             listener = itemListener,
             showInfoBar = Settings.showInfoBar,
             pageType = Constants.PAGE_TYPE_POPULAR,
-            retryCallback = {
-                when (type) {
-                    Constants.TYPE_DANBOORU -> popularViewModel.retryDan()
-                    Constants.TYPE_MOEBOORU -> popularViewModel.retryMoe()
-                    Constants.TYPE_DANBOORU_ONE -> popularViewModel.retryDanOne()
-                    Constants.TYPE_SANKAKU -> popularViewModel.retrySankaku()
-                }
-            })
+            retryCallback = { retry() })
         list.apply {
             setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
@@ -618,6 +611,7 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateDan.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -629,6 +623,7 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -640,6 +635,7 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -651,11 +647,21 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateSankaku.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }
         }
         popularViewModel.show(popular)
+    }
+
+    override fun retry() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> popularViewModel.retryDan()
+            Constants.TYPE_MOEBOORU -> popularViewModel.retryMoe()
+            Constants.TYPE_DANBOORU_ONE -> popularViewModel.retryDanOne()
+            Constants.TYPE_SANKAKU -> popularViewModel.retrySankaku()
+        }
     }
 
     private fun initSwipeToRefreshDan() {

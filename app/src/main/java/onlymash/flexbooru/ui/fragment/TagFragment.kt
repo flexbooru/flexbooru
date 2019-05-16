@@ -405,15 +405,7 @@ class TagFragment : ListFragment() {
         )
         tagAdapter = TagAdapter(
             listener = itemListener,
-            retryCallback = {
-                when (type) {
-                    Constants.TYPE_DANBOORU -> tagViewModel.retryDan()
-                    Constants.TYPE_MOEBOORU -> tagViewModel.retryMoe()
-                    Constants.TYPE_DANBOORU_ONE -> tagViewModel.retryDanOne()
-                    Constants.TYPE_GELBOORU -> tagViewModel.retryGel()
-                    Constants.TYPE_SANKAKU -> tagViewModel.retrySankaku()
-                }
-            }
+            retryCallback = { retry() }
         )
         list.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -428,6 +420,7 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateDan.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -439,6 +432,7 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -450,6 +444,7 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -461,6 +456,7 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateGel.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshGel()
             }
@@ -472,6 +468,7 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateSankaku.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }
@@ -479,6 +476,16 @@ class TagFragment : ListFragment() {
         tagViewModel.show(search = search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
+    }
+
+    override fun retry() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> tagViewModel.retryDan()
+            Constants.TYPE_MOEBOORU -> tagViewModel.retryMoe()
+            Constants.TYPE_DANBOORU_ONE -> tagViewModel.retryDanOne()
+            Constants.TYPE_GELBOORU -> tagViewModel.retryGel()
+            Constants.TYPE_SANKAKU -> tagViewModel.retrySankaku()
+        }
     }
 
     private fun initSwipeToRefreshDan() {

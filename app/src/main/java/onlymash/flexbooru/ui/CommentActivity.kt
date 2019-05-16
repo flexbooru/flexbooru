@@ -31,6 +31,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.Constants
@@ -41,8 +42,10 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.comment.CommentBase
 import onlymash.flexbooru.entity.comment.CommentAction
+import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.repository.Status
 import onlymash.flexbooru.repository.comment.CommentRepositoryIml
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.comment.CommentState
@@ -228,13 +231,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
             toolbar.subtitle = commentAction.query
         }
         commentAdapter = CommentAdapter(GlideApp.with(this), user, commentListener) {
-            when (type) {
-                Constants.TYPE_DANBOORU -> commentViewModel.retryDan()
-                Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
-                Constants.TYPE_DANBOORU_ONE -> commentViewModel.retryDanOne()
-                Constants.TYPE_GELBOORU -> commentViewModel.retryGel()
-                Constants.TYPE_SANKAKU -> commentViewModel.retrySankaku()
-            }
+            retry()
         }
         list.apply {
             layoutManager = LinearLayoutManager(this@CommentActivity, RecyclerView.VERTICAL, false)
@@ -255,6 +252,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
                 })
                 commentViewModel.networkStateDan.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
+                    handleNetworkState(it, commentAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -265,6 +263,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
                 })
                 commentViewModel.networkStateMoe.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
+                    handleNetworkState(it, commentAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -275,6 +274,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
                 })
                 commentViewModel.networkStateDanOne.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
+                    handleNetworkState(it, commentAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -285,6 +285,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
                 })
                 commentViewModel.networkStateGel.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
+                    handleNetworkState(it, commentAdapter.itemCount)
                 })
                 initSwipeToRefreshGel()
             }
@@ -295,6 +296,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
                 })
                 commentViewModel.networkStateSankaku.observe(this, Observer {
                     commentAdapter.setNetworkState(it)
+                    handleNetworkState(it, commentAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }
@@ -312,6 +314,28 @@ class CommentActivity : BaseActivity(), KodeinAware {
             }
         })
         commentViewModel.show(commentAction)
+        retry_button_empty.setOnClickListener {
+            retry()
+        }
+    }
+
+    private fun retry() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> commentViewModel.retryDan()
+            Constants.TYPE_MOEBOORU -> commentViewModel.retryMoe()
+            Constants.TYPE_DANBOORU_ONE -> commentViewModel.retryDanOne()
+            Constants.TYPE_GELBOORU -> commentViewModel.retryGel()
+            Constants.TYPE_SANKAKU -> commentViewModel.retrySankaku()
+        }
+    }
+
+    private fun handleNetworkState(state: NetworkState, itemCount: Int) {
+        val isEmpty = itemCount == 1 && state != NetworkState.LOADED
+        progress_bar_container.toVisibility(isEmpty)
+        progress_bar_empty.toVisibility(state.status == Status.RUNNING && isEmpty)
+        retry_button_empty.toVisibility(state.status == Status.FAILED && isEmpty)
+        error_msg_empty.toVisibility(state.msg != null && isEmpty)
+        error_msg_empty.text = state.msg
     }
 
     private fun initSwipeToRefreshDan() {

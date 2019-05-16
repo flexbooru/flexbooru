@@ -31,6 +31,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import kotlinx.coroutines.GlobalScope
@@ -506,15 +507,8 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             listener = itemListener,
             showInfoBar = Settings.showInfoBar,
             pageType = Constants.PAGE_TYPE_POST,
-            retryCallback = {
-                when (type) {
-                    Constants.TYPE_DANBOORU -> postViewModel.retryDan()
-                    Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
-                    Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()
-                    Constants.TYPE_GELBOORU -> postViewModel.retryGel()
-                    Constants.TYPE_SANKAKU -> postViewModel.retrySankaku()
-                }
-            })
+            retryCallback = { retry() }
+        )
         list.apply {
             setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
@@ -571,6 +565,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 })
                 postViewModel.networkStateDan.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -581,6 +576,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 })
                 postViewModel.networkStateMoe.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -591,6 +587,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 })
                 postViewModel.networkStateDanOne.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -601,6 +598,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 })
                 postViewModel.networkStateGel.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshGel()
             }
@@ -611,6 +609,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 })
                 postViewModel.networkStateSankaku.observe(this, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }
@@ -628,6 +627,16 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         searchBar.setType(type)
         searchBar.setSearchTag(searchTag)
         sp.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun retry() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> postViewModel.retryDan()
+            Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
+            Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()
+            Constants.TYPE_GELBOORU -> postViewModel.retryGel()
+            Constants.TYPE_SANKAKU -> postViewModel.retrySankaku()
+        }
     }
 
     private fun initSwipeToRefreshDanOne() {

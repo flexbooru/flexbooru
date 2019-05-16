@@ -313,14 +313,7 @@ class PoolFragment : ListFragment() {
                     .create()
                     .show()
             },
-            retryCallback = {
-                when (type) {
-                    Constants.TYPE_DANBOORU -> poolViewModel.retryDan()
-                    Constants.TYPE_MOEBOORU -> poolViewModel.retryMoe()
-                    Constants.TYPE_DANBOORU_ONE -> poolViewModel.retryDanOne()
-                    Constants.TYPE_SANKAKU -> poolViewModel.retrySankaku()
-                }
-            }
+            retryCallback = { retry() }
         )
         list.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -334,6 +327,7 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateDan.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -344,6 +338,7 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -354,6 +349,7 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -364,6 +360,7 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateSankaku.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }
@@ -371,6 +368,15 @@ class PoolFragment : ListFragment() {
         poolViewModel.show(search = search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
+    }
+
+    override fun retry() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> poolViewModel.retryDan()
+            Constants.TYPE_MOEBOORU -> poolViewModel.retryMoe()
+            Constants.TYPE_DANBOORU_ONE -> poolViewModel.retryDanOne()
+            Constants.TYPE_SANKAKU -> poolViewModel.retrySankaku()
+        }
     }
 
     private fun initSwipeToRefreshDan() {

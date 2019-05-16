@@ -23,6 +23,14 @@
 
     <include layout="@layout/toolbar"/>
 
-    <include layout="@layout/refreshable_list"/>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/refreshable_list"/>
+
+        <include layout="@layout/empty_list_network_state"/>
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -282,13 +282,7 @@ class ArtistFragment : ListFragment() {
         )
         artistAdapter = ArtistAdapter(
             listener = itemListener,
-            retryCallback = {
-                when (type) {
-                    Constants.TYPE_DANBOORU -> artistViewModel.retryDan()
-                    Constants.TYPE_MOEBOORU -> artistViewModel.retryMoe()
-                    Constants.TYPE_DANBOORU_ONE -> artistViewModel.retryDanOne()
-                }
-            }
+            retryCallback = { retry() }
         )
         list.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -303,6 +297,7 @@ class ArtistFragment : ListFragment() {
                 })
                 artistViewModel.networkStateDan.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, artistAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -314,6 +309,7 @@ class ArtistFragment : ListFragment() {
                 })
                 artistViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, artistAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -325,6 +321,7 @@ class ArtistFragment : ListFragment() {
                 })
                 artistViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
+                    handleNetworkState(networkState, artistAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -332,6 +329,14 @@ class ArtistFragment : ListFragment() {
         artistViewModel.show(search = search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
+    }
+
+    override fun retry() {
+        when (type) {
+            Constants.TYPE_DANBOORU -> artistViewModel.retryDan()
+            Constants.TYPE_MOEBOORU -> artistViewModel.retryMoe()
+            Constants.TYPE_DANBOORU_ONE -> artistViewModel.retryDanOne()
+        }
     }
 
     private fun initSwipeToRefreshDan() {
