@@ -557,10 +557,6 @@ class PopularFragment : ListFragment() {
     }
 
     private fun init() {
-        (requireActivity() as MainActivity).apply {
-            addNavigationListener(navigationListener)
-            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
-        }
         searchBar.setTitle(R.string.title_popular)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         if (type < 0) {
@@ -568,6 +564,10 @@ class PopularFragment : ListFragment() {
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
             return
+        }
+        (requireActivity() as MainActivity).apply {
+            addNavigationListener(navigationListener)
+            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
         }
         when (type) {
             Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
@@ -598,7 +598,6 @@ class PopularFragment : ListFragment() {
             pageType = Constants.PAGE_TYPE_POPULAR,
             retryCallback = { retry() })
         list.apply {
-            setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
             adapter = postAdapter
         }
