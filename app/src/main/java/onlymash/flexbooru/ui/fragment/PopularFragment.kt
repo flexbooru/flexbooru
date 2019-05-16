@@ -554,6 +554,10 @@ class PopularFragment : ListFragment() {
         init()
         if (type < 0) return
         UserManager.listeners.add(userListener)
+        (requireActivity() as MainActivity).apply {
+            addNavigationListener(navigationListener)
+            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
+        }
     }
 
     private fun init() {
@@ -564,10 +568,6 @@ class PopularFragment : ListFragment() {
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
             return
-        }
-        (requireActivity() as MainActivity).apply {
-            addNavigationListener(navigationListener)
-            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
         }
         when (type) {
             Constants.TYPE_DANBOORU -> searchBar.setMenu(R.menu.popular_dan, requireActivity().menuInflater)
