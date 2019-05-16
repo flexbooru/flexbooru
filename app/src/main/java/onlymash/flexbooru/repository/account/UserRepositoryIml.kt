@@ -60,7 +60,7 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
     private suspend fun findMoeUser(username: String, booru: Booru): NetResult<User> {
         return try {
             val users = moebooruApi.getUsersAsync(MoeUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { it.name == username }
+            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
             if (index == -1) {
                 NetResult.Error("User not found!")
             } else {
@@ -74,7 +74,7 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
     private suspend fun findDanUser(username: String, booru: Booru): NetResult<User> {
         return try {
             val users = danbooruApi.getUsersAsync(DanUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { it.name == username }
+            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
             if (index == -1) {
                 NetResult.Error("User not found!")
             } else {
@@ -104,7 +104,7 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
     private suspend fun findDanOneUser(username: String, booru: Booru): NetResult<User> {
         return try {
             val users = danbooruOneApi.getUsersAsync(DanOneUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { it.name == username }
+            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
             if (index == -1) {
                 NetResult.Error("User not found!")
             } else {
@@ -118,7 +118,7 @@ class UserRepositoryIml(private val danbooruApi: DanbooruApi,
     private suspend fun findSankakuUser(username: String, booru: Booru): NetResult<User> {
         return try {
             val users = sankakuApi.getUsersAsync(SankakuUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { it.name == username }
+            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
             if (index == -1) {
                 NetResult.Error("User not found!")
             } else {
