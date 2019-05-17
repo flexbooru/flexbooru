@@ -32,8 +32,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.App
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
-import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
@@ -65,12 +63,14 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
 
         private const val POST_ID_KEY = "post_id"
         private const val HOST_KEY = "host"
+        private const val SCHEME_KEY = "scheme"
 
         fun create(post: Any?): InfoBottomSheetDialog {
             return InfoBottomSheetDialog().apply {
                 val bundle = Bundle()
                 if (post is PostBase) {
                     bundle.apply {
+                        putString(SCHEME_KEY, post.scheme)
                         putString(HOST_KEY, post.host)
                         putInt(POST_ID_KEY, post.getPostId())
                         putString(URL_SAMPLE_KEY, post.getSampleUrl())
@@ -154,6 +154,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     private var urlOriginString = ""
     private var postId = -1
     private var host = "save"
+    private var scheme = "http"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -208,6 +209,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             urlOriginString = getString(URL_ORIGIN_KEY, "")
             host = getString(HOST_KEY, host)
             postId = getInt(POST_ID_KEY, -1)
+            scheme = getString(SCHEME_KEY, "http")
         }
     }
     private lateinit var behavior: BottomSheetBehavior<View>
@@ -237,12 +239,10 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             view.findViewById<LinearLayout>(R.id.parent_container).visibility = View.GONE
         }
         if (type == Constants.TYPE_MOEBOORU  && userId > 0) {
-            BooruManager.getBooruByUid(Settings.activeBooruUid)?.let { booru ->
-                GlideApp.with(this)
-                    .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, userId))
-                    .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
-                    .into(view.findViewById<CircularImageView>(R.id.user_avatar))
-            }
+            GlideApp.with(this)
+                .load(String.format(getString(R.string.account_user_avatars), scheme, host, userId))
+                .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+                .into(view.findViewById<CircularImageView>(R.id.user_avatar))
         } else if (type == Constants.TYPE_SANKAKU && avatar.isNotEmpty()) {
             GlideApp.with(this)
                 .load(avatar)
