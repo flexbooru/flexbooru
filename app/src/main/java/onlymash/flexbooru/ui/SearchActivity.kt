@@ -20,8 +20,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.SharedElementCallback
+import androidx.fragment.app.commitNow
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.database.UserManager
+import onlymash.flexbooru.ui.fragment.PostFragment
 
 class SearchActivity : BaseActivity() {
 
@@ -33,13 +38,22 @@ class SearchActivity : BaseActivity() {
         }
     }
 
-    internal var keyword = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        keyword = intent?.extras?.getString(Constants.KEYWORD_KEY) ?: ""
         setContentView(R.layout.activity_search)
         setExitSharedElementCallback(sharedElementCallback)
+        val keyword = intent?.extras?.getString(Constants.KEYWORD_KEY) ?: ""
+        val uid = Settings.activeBooruUid
+        val booru = BooruManager.getBooruByUid(uid) ?: return
+        if (savedInstanceState != null) return
+        supportFragmentManager.commitNow(allowStateLoss = true) {
+            replace(R.id.fragment_post_container, PostFragment.newInstance(
+                booru = booru,
+                keyword = keyword,
+                user = UserManager.getUserByBooruUid(uid),
+                postType = PostFragment.POST_SEARCH
+            ))
+        }
     }
 
     internal var sharedElement: View? = null

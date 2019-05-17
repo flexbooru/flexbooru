@@ -82,57 +82,24 @@ class PopularFragment : ListFragment() {
         @JvmStatic
         fun newInstance(booru: Booru, user: User?) =
             PopularFragment().apply {
-                arguments = when (booru.type) {
-                    Constants.TYPE_DANBOORU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                        if (user != null) {
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.api_key)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    Constants.TYPE_MOEBOORU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                        if (user != null) {
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.password_hash)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
-                        if (user != null) {
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.password_hash)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    Constants.TYPE_SANKAKU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_SANKAKU)
-                        if (user != null) {
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.password_hash)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    else -> Bundle().apply {
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+                arguments = Bundle().apply {
+                    putString(Constants.SCHEME_KEY, booru.scheme)
+                    putString(Constants.HOST_KEY, booru.host)
+                    putInt(Constants.TYPE_KEY, booru.type)
+                    if (user != null) {
+                        putInt(Constants.USER_ID_KEY, user.id)
+                        putString(Constants.USERNAME_KEY, user.name)
+                        putString(
+                            Constants.AUTH_KEY,
+                            when (booru.type) {
+                                Constants.TYPE_DANBOORU,
+                                Constants.TYPE_GELBOORU-> user.api_key
+                                else -> user.password_hash
+                            }
+                        )
+                    } else {
+                        putString(Constants.USERNAME_KEY, "")
+                        putString(Constants.AUTH_KEY, "")
                     }
                 }
             }

@@ -31,7 +31,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import kotlinx.coroutines.GlobalScope
@@ -72,6 +71,10 @@ import org.kodein.di.generic.instance
 class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
+        private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
+        private const val POST_TYPE_KEY = "post_type"
+        const val POST_ALL = 0
+        const val POST_SEARCH = 1
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -82,83 +85,31 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
          * @return A new instance of fragment PostFragment.
          */
         @JvmStatic
-        fun newInstance(keyword: String = "", booru: Booru, user: User?) =
+        fun newInstance(keyword: String = "", booru: Booru, user: User?, postType: Int = POST_SEARCH) =
             PostFragment().apply {
-                arguments = when (booru.type) {
-                    Constants.TYPE_DANBOORU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU)
-                        putString(Constants.KEYWORD_KEY, keyword)
-                        if (user != null) {
-                            putInt(Constants.USER_ID_KEY, user.id)
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.api_key)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
+                arguments = Bundle().apply {
+                    putInt(POST_TYPE_KEY, postType)
+                    putString(Constants.SCHEME_KEY, booru.scheme)
+                    putString(Constants.HOST_KEY, booru.host)
+                    putInt(Constants.TYPE_KEY, booru.type)
+                    putString(Constants.KEYWORD_KEY, keyword)
+                    if (user != null) {
+                        putInt(Constants.USER_ID_KEY, user.id)
+                        putString(Constants.USERNAME_KEY, user.name)
+                        putString(
+                            Constants.AUTH_KEY,
+                            when (booru.type) {
+                                Constants.TYPE_DANBOORU,
+                                Constants.TYPE_GELBOORU-> user.api_key
+                                else -> user.password_hash
+                            }
+                            )
+                    } else {
+                        putString(Constants.USERNAME_KEY, "")
+                        putString(Constants.AUTH_KEY, "")
                     }
-                    Constants.TYPE_MOEBOORU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_MOEBOORU)
-                        putString(Constants.KEYWORD_KEY, keyword)
-                        if (user != null) {
-                            putInt(Constants.USER_ID_KEY, user.id)
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.password_hash)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    Constants.TYPE_DANBOORU_ONE -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_DANBOORU_ONE)
-                        putString(Constants.KEYWORD_KEY, keyword)
-                        if (user != null) {
-                            putInt(Constants.USER_ID_KEY, user.id)
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.password_hash)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    Constants.TYPE_GELBOORU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_GELBOORU)
-                        putString(Constants.KEYWORD_KEY, keyword)
-                        if (user != null) {
-                            putInt(Constants.USER_ID_KEY, user.id)
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.api_key)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    Constants.TYPE_SANKAKU -> Bundle().apply {
-                        putString(Constants.SCHEME_KEY, booru.scheme)
-                        putString(Constants.HOST_KEY, booru.host)
-                        putInt(Constants.TYPE_KEY, Constants.TYPE_SANKAKU)
-                        putString(Constants.KEYWORD_KEY, keyword)
-                        if (user != null) {
-                            putInt(Constants.USER_ID_KEY, user.id)
-                            putString(Constants.USERNAME_KEY, user.name)
-                            putString(Constants.AUTH_KEY, user.password_hash)
-                        } else {
-                            putString(Constants.USERNAME_KEY, "")
-                            putString(Constants.AUTH_KEY, "")
-                        }
-                    }
-                    else -> throw IllegalArgumentException("unknown booru type ${booru.type}")
                 }
             }
-        private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
     }
 
     private val db: FlexbooruDatabase by instance()
@@ -174,7 +125,8 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
 
     private lateinit var viewTransition: ViewTransition
 
-    private var type = -1
+    private var postType = -1
+    private var booruType = -1
     private lateinit var search: Search
     private lateinit var searchTag: SearchTag
     private lateinit var expandButton: View
@@ -260,7 +212,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                             DownloadWorker.downloadPost(post, requireActivity())
                         }
                         1 -> {
-                            if (type == Constants.TYPE_GELBOORU) {
+                            if (booruType == Constants.TYPE_GELBOORU) {
                                 Snackbar.make(list, getString(R.string.msg_not_supported), Snackbar.LENGTH_SHORT).show()
                                 return@setItems
                             }
@@ -327,7 +279,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             if (user.booru_uid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
-            when (type) {
+            when (booruType) {
                 Constants.TYPE_DANBOORU -> {
                     postViewModel.apply {
                         show(search, tagBlacklists)
@@ -366,7 +318,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun updateUserInfoAndRefresh(user: User) {
-        when (type) {
+        when (booruType) {
             Constants.TYPE_DANBOORU -> {
                 search.username = user.name
                 search.auth_key = user.api_key ?: ""
@@ -410,6 +362,22 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            postType = it.getInt(POST_TYPE_KEY, -1) ?: -1
+            booruType = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
+            search = Search(
+                scheme = it.getString(Constants.SCHEME_KEY, ""),
+                host = it.getString(Constants.HOST_KEY, ""),
+                keyword = it.getString(Constants.KEYWORD_KEY, ""),
+                user_id = it.getInt(Constants.USER_ID_KEY, -1),
+                username = it.getString(Constants.USERNAME_KEY, ""),
+                auth_key = it.getString(Constants.AUTH_KEY, ""),
+                limit = Settings.pageLimit)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -417,51 +385,16 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
 
     private fun init() {
         val activity = requireActivity()
-        when (activity) {
-            is MainActivity -> {
-                arguments?.let {
-                    type = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-                    search = Search(
-                        scheme = it.getString(Constants.SCHEME_KEY, ""),
-                        host = it.getString(Constants.HOST_KEY, ""),
-                        keyword = it.getString(Constants.KEYWORD_KEY, ""),
-                        user_id = it.getInt(Constants.USER_ID_KEY, -1),
-                        username = it.getString(Constants.USERNAME_KEY, ""),
-                        auth_key = it.getString(Constants.AUTH_KEY, ""),
-                        limit = Settings.pageLimit)
-                }
-                activity.addNavigationListener(navigationListener)
+        when (postType) {
+            POST_ALL -> (activity as MainActivity).addNavigationListener(navigationListener)
+            POST_SEARCH ->  searchBar.setTitleOnLongClickCallback {
+                MuzeiManager.createMuzei(Muzei(booru_uid = Settings.activeBooruUid, keyword = search.keyword))
+                Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
             }
-            is SearchActivity -> {
-                val uid = Settings.activeBooruUid
-                val booru = BooruManager.getBooruByUid(uid)
-                val user = UserManager.getUserByBooruUid(uid)
-                if (booru != null) {
-                    type = booru.type
-                    search = Search(
-                        scheme = booru.scheme,
-                        host = booru.host,
-                        keyword = activity.keyword,
-                        username = user?.name ?: "",
-                        auth_key = when (type) {
-                            Constants.TYPE_DANBOORU,
-                            Constants.TYPE_GELBOORU -> user?.api_key ?: ""
-                            Constants.TYPE_MOEBOORU,
-                            Constants.TYPE_DANBOORU_ONE,
-                            Constants.TYPE_SANKAKU -> user?.password_hash ?: ""
-                            else -> ""
-                        },
-                        limit = Settings.pageLimit
-                    )
-                    searchBar.setTitleOnLongClickCallback {
-                        MuzeiManager.createMuzei(Muzei(booru_uid = Settings.activeBooruUid, keyword = search.keyword))
-                        Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
-                    }
-                } else {
-                    activity.finish()
-                }
+            else -> {
+                activity.finish()
+                return
             }
-            else -> activity.finish()
         }
         activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
         searchTag = SearchTag(
@@ -515,20 +448,20 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             adapter = postAdapter
         }
         val orders =
-            if (type == Constants.TYPE_SANKAKU)
+            if (booruType == Constants.TYPE_SANKAKU)
                 resources.getStringArray(R.array.filter_order_sankaku)
             else
                 resources.getStringArray(R.array.filter_order)
         val ratings = resources.getStringArray(R.array.filter_rating)
         val thresholds =
-            if (type == Constants.TYPE_SANKAKU)
+            if (booruType == Constants.TYPE_SANKAKU)
                 resources.getStringArray(R.array.filter_threshold)
             else arrayOf()
         tagFilterAdapter = TagFilterAdapter(
             orders = orders,
             ratings = ratings,
             thresholds = thresholds,
-            booruType = type
+            booruType = booruType
         ) {
             val text = searchBar.getEditTextText()
             if(text.isNotEmpty()) {
@@ -557,7 +490,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 SearchActivity.startActivity(requireContext(), tagString)
             }
         }
-        when (type) {
+        when (booruType) {
             Constants.TYPE_DANBOORU -> {
                 postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
@@ -624,13 +557,13 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             postViewModel.show(search, it)
         })
         UserManager.listeners.add(userListener)
-        searchBar.setType(type)
+        searchBar.setType(booruType)
         searchBar.setSearchTag(searchTag)
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun retry() {
-        when (type) {
+        when (booruType) {
             Constants.TYPE_DANBOORU -> postViewModel.retryDan()
             Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
             Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()

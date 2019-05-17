@@ -21,10 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background"/>
-    <fragment
-            android:id="@+id/fragment_post"
-            android:name="onlymash.flexbooru.ui.fragment.PostFragment"
+    <FrameLayout
+            android:id="@+id/fragment_post_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="onlymash.flexbooru.ui.SearchActivity"/>
+            android:layout_height="match_parent"/>
 </merge>
