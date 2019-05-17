@@ -26,9 +26,9 @@
     <color name="background_quote">@color/grey_700</color>
     <color name="background_comment">@color/grey_800</color>
     <color name="item_line">@color/grey_800</color>
-    <color name="rating_e">#FF424242</color>
-    <color name="rating_q">#FF616161</color>
-    <color name="rating_s">#FF757575</color>
+    <color name="rating_e">@color/grey_900</color>
+    <color name="rating_q">@color/grey_850</color>
+    <color name="rating_s">@color/grey_800</color>
     <color name="muzei">@color/dark_level_1</color>
     <color name="account_action_background_tint">@color/dark_level_1</color>
     <color name="fast_scroll_bar">@color/grey_700</color>

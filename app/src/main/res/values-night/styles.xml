@@ -15,9 +15,6 @@
   -->
 
 <resources>
-    <style name="Base" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="preferenceTheme">@style/PreferenceTheme</item>
-    </style>
     <style name="BaseTheme" parent="Base">
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
@@ -46,10 +43,7 @@
         <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
         <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
     </style>
-    <style name="OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow.Dark">
-        <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
-        <item name="android:popupElevation">@dimen/elevation_size</item>
-    </style>
+    <style name="OverflowMenuStyle" parent="OverflowMenuStyle.Dark"/>
     <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="android:datePickerStyle">@style/DatePickerStyle</item>
         <item name="colorAccent">@color/pink</item>

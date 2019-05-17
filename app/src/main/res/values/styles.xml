@@ -31,7 +31,7 @@
         <item name="colorControlActivated">@color/colorControlActivated</item>
         <item name="alertDialogTheme">@style/CustomAlertDialog</item>
     </style>
-    <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
+    <style name="PopupWindow" parent="@style/Widget.AppCompat.PopupWindow">
         <item name="android:popupElevation">@dimen/elevation_size</item>
     </style>
     <style name="AppTheme.Main" parent="AppTheme">
@@ -64,7 +64,7 @@
         <item name="android:taskToBackEnterAnimation">@null</item>
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
-    <style name="Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
     <style name="BaseTheme" parent="Base">
@@ -73,14 +73,14 @@
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="android:tint">@color/pref_icon_tint</item>
     </style>
-    <style name="BrowseTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="BrowseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:popupWindowStyle">@style/PopupWindow</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="android:actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>
     <style name="CardViewTheme" parent="CardView.Light">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
@@ -136,7 +136,12 @@
         <item name="backgroundTint">@color/account_action_background_tint</item>
         <item name="android:padding">5dp</item>
     </style>
-    <style name="OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+    <style name="OverflowMenuStyle" parent="OverflowMenuStyle.Light"/>
+    <style name="OverflowMenuStyle.Light" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
+        <item name="android:popupElevation">@dimen/elevation_size</item>
+    </style>
+    <style name="OverflowMenuStyle.Dark" parent="Widget.MaterialComponents.PopupMenu.Overflow.Dark">
         <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
         <item name="android:popupElevation">@dimen/elevation_size</item>
     </style>

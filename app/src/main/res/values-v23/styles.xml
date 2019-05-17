@@ -19,7 +19,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/background_light</item>
     </style>
-    <style name="BrowseTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="BrowseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -30,5 +30,7 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:navigationBarColor">@color/transparent</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="android:actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>
 </resources>

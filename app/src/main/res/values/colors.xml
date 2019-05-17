@@ -68,9 +68,9 @@
     <color name="grey_850">#313131</color>
     <color name="grey_900">#212121</color>
 
-    <color name="dark_level_1">#3c4043</color>
-    <color name="dark_level_2">#303131</color>
-    <color name="dark_level_3">#202124</color>
+    <color name="dark_level_1">#313131</color>
+    <color name="dark_level_2">#272727</color>
+    <color name="dark_level_3">#171717</color>
 
     <color name="grey_5">#f2f2f2</color>
     <color name="grey_10">#e6e6e6</color>
