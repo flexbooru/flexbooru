@@ -222,105 +222,46 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun initDrawerHeader() {
+        val success = Settings.isOrderSuccess
         val size = boorus.size
-        if (Settings.isOrderSuccess || size <= BOORUS_LIMIT) {
-            normalInitDrawerHeader(size)
-        } else {
-            limitInitDrawerHeader(size)
-        }
-    }
-
-    private fun normalInitDrawerHeader(size: Int) {
-        if (size > 0) {
-            header.clear()
-            boorus.forEachIndexed { index, booru ->
-                var host = booru.host
-                if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
-                header.addProfile(
-                    ProfileDrawerItem()
-                        .withName(booru.name)
-                        .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
-                        .withEmail(String.format("%s://%s", booru.scheme, booru.host))
-                        .withIdentifier(booru.uid), index)
-            }
-            header.addProfile(profileSettingDrawerItem, boorus.size)
-        }
-        val uid = Settings.activeBooruUid
-        when {
-            uid < 0L && size > 0 -> {
-                Settings.activeBooruUid = boorus[0].uid
-                header.setActiveProfile(Settings.activeBooruUid)
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
-            }
-            uid >= 0L && size > 0 -> {
-                var i = -1
-                boorus.forEachIndexed { index, booru ->
-                    if (uid == booru.uid) {
-                        i = index
-                        return@forEachIndexed
-                    }
-                }
-                if (i >= 0) {
-                    header.setActiveProfile(uid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i], getCurrentUser())
-                } else {
-                    Settings.activeBooruUid = boorus[0].uid
-                    header.setActiveProfile(Settings.activeBooruUid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
-                }
-            }
-            else -> {
-                startActivity(Intent(this, BooruActivity::class.java))
-            }
-        }
-    }
-
-    private fun limitInitDrawerHeader(size: Int) {
+        var uid = Settings.activeBooruUid
+        var i = -1
         header.clear()
         boorus.forEachIndexed { index, booru ->
-            if (index >= BOORUS_LIMIT) return@forEachIndexed
+            if (!success && index >= BOORUS_LIMIT) {
+                return@forEachIndexed
+            }
+            if (i == -1 && booru.uid == uid) {
+                i = index
+            }
             var host = booru.host
-            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
+            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) {
+                host = host.replaceFirst("capi-v2.", "beta.")
+            }
             header.addProfile(
                 ProfileDrawerItem()
                     .withName(booru.name)
                     .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
                     .withEmail(String.format("%s://%s", booru.scheme, booru.host))
-                    .withIdentifier(booru.uid), index)
+                    .withIdentifier(booru.uid),
+                index
+            )
         }
-        header.addProfile(profileSettingDrawerItem, BOORUS_LIMIT)
-        var uid = Settings.activeBooruUid
-        if (uid > boorus[BOORUS_LIMIT - 1].uid) {
-            uid = boorus[0].uid
+        header.addProfile(
+            profileSettingDrawerItem,
+            if (success || size < BOORUS_LIMIT) boorus.size else BOORUS_LIMIT
+        )
+        if (size == 0) return
+        val booru: Booru
+        if (i == -1) {
+            booru = boorus[0]
+            uid = booru.uid
             Settings.activeBooruUid = uid
+        } else {
+            booru = boorus[i]
         }
-        when {
-            uid < 0L && size > 0 -> {
-                Settings.activeBooruUid = boorus[0].uid
-                header.setActiveProfile(Settings.activeBooruUid)
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
-            }
-            uid >= 0L && size > 0 -> {
-                var i = -1
-                boorus.forEachIndexed { index, booru ->
-                    if (uid == booru.uid) {
-                        i = index
-                        return@forEachIndexed
-                    }
-                }
-                if (i >= 0) {
-                    header.setActiveProfile(uid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[i], getCurrentUser())
-                } else {
-                    Settings.activeBooruUid = boorus[0].uid
-                    header.setActiveProfile(Settings.activeBooruUid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, boorus[0], getCurrentUser())
-                }
-            }
-            else -> {
-                startActivity(Intent(this, BooruActivity::class.java))
-            }
-        }
+        header.setActiveProfile(uid)
+        pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
     }
 
     private val booruListener = object : BooruManager.Listener {
