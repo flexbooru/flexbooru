@@ -19,8 +19,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="450dp">
+        android:layout_height="match_parent">
     <include layout="@layout/toolbar_bottom_sheet_dialog"/>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -81,15 +80,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+            android:paddingTop="@dimen/spacing_normal"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="50dp">
 
         <TextView
                 android:text="@string/browse_info_source"
                 android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
                 android:layout_width="wrap_content"
@@ -98,14 +97,16 @@
                 android:id="@+id/source"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
-                android:gravity="center_vertical|end"
+                android:gravity="end"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:autoLink="web"
                 android:maxLines="2"
-                android:layout_height="match_parent"/>
+                android:textColorLink="@android:color/secondary_text_dark"
+                android:ellipsize="end"/>
     </LinearLayout>
 
     <LinearLayout
@@ -117,7 +118,6 @@
         <TextView
                 android:text="@string/browse_info_rating"
                 android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
                 android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
                 android:layout_width="0dp"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
-                android:gravity="center_vertical|end"
+                android:gravity="end"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_height="match_parent"/>
@@ -143,7 +143,6 @@
         <TextView
                 android:text="@string/browse_info_score"
                 android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
                 android:layout_width="wrap_content"
@@ -152,7 +151,7 @@
                 android:id="@+id/score"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:gravity="center_vertical|end"
+                android:gravity="end"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
                 android:layout_marginStart="10dp"
@@ -170,7 +169,6 @@
         <TextView
                 android:text="@string/browse_info_parent"
                 android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
@@ -179,7 +177,7 @@
                 android:id="@+id/parent"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:gravity="center_vertical|end"
+                android:gravity="end"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="@android:color/secondary_text_dark"
                 android:layout_marginStart="10dp"

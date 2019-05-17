@@ -338,7 +338,6 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         }
         dialog.setContentView(view)
         behavior = BottomSheetBehavior.from(view.parent as View)
-        behavior.peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
         behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
@@ -354,6 +353,6 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     }
     override fun onStart() {
         super.onStart()
-        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 }
