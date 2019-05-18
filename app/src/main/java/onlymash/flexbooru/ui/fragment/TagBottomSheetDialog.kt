@@ -91,7 +91,7 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                             putString(TAG_META_KEY, post.getTagString(9))
                         }
                     }
-                    else -> throw IllegalStateException("unknown post type or post is null")
+                    else -> null
                 }
             }
         }
@@ -105,6 +105,7 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             return tag.trim()
         }
     }
+
     private lateinit var behavior: BottomSheetBehavior<View>
     private var tags: MutableList<TagFilter> = mutableListOf()
     private val itemListener = object : TagBrowseViewHolder.ItemListener {
@@ -119,7 +120,11 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val booruUid = Settings.activeBooruUid
-        val arg = arguments ?: throw RuntimeException("arg is null")
+        val arg = arguments
+        if (arg == null) {
+            dismiss()
+            return
+        }
         postType = arg.getInt(POST_TYPE)
         when (postType) {
             Constants.TYPE_DANBOORU -> {
