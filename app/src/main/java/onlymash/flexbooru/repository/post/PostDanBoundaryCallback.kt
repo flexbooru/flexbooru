@@ -18,6 +18,8 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import onlymash.flexbooru.App
+import onlymash.flexbooru.R
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.post.PostDan
@@ -76,7 +78,7 @@ class PostDanBoundaryCallback(
                 response: Response<MutableList<PostDan>>
             ) {
                 if (response.code() == 401) {
-                    it.recordFailure(Throwable("Your Api Key is wrong."))
+                    it.recordFailure(Throwable(App.app.getString(R.string.msg_your_api_key_is_wrong)))
                 } else {
                     insertItemsIntoDb(response, it)
                 }
