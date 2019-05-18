@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryIml
+import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.ui.PurchaseActivity
 import onlymash.flexbooru.util.getSignMd5
 import org.kodein.di.Kodein
@@ -72,7 +72,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { GelbooruApi() }
         bind() from singleton { SankakuApi() }
         bind() from singleton { Executors.newSingleThreadExecutor() }
-        bind() from singleton { TagFilterRepositoryIml(instance()) }
+        bind() from singleton { TagFilterRepositoryImpl(instance()) }
     }
     val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {

@@ -69,8 +69,8 @@ import onlymash.flexbooru.extension.getMimeType
 import onlymash.flexbooru.extension.getSaveUri
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
-import onlymash.flexbooru.repository.browse.PostLoaderRepositoryIml
-import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
+import onlymash.flexbooru.repository.browse.PostLoaderRepositoryImpl
+import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
@@ -137,7 +137,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
     private var user: User? = null
     private var currentPosition = -1
     private var canTransition = true
-    private val postLoader by lazy { PostLoaderRepositoryIml(db) }
+    private val postLoader by lazy { PostLoaderRepositoryImpl(db) }
 
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
@@ -268,7 +268,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
     }
 
     private val voteRepository by lazy {
-        VoteRepositoryIml(
+        VoteRepositoryImpl(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,

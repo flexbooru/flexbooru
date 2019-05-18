@@ -40,7 +40,7 @@ import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.Status
 import onlymash.flexbooru.repository.suggestion.SuggestionRepository
-import onlymash.flexbooru.repository.suggestion.SuggestionRepositoryIml
+import onlymash.flexbooru.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.ui.MainActivity
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.widget.search.SearchBar
@@ -77,7 +77,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
 
     private val suggestionViewModel by lazy {
         getSuggestionViewModel(
-            SuggestionRepositoryIml(
+            SuggestionRepositoryImpl(
                 danbooruApi = danApi,
                 moebooruApi = moeApi,
                 danbooruOneApi = danOneApi,

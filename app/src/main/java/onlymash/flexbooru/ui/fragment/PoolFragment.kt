@@ -38,7 +38,7 @@ import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.pool.PoolRepositoryIml
+import onlymash.flexbooru.repository.pool.PoolRepositoryImpl
 import onlymash.flexbooru.repository.pool.PoolRepository
 import onlymash.flexbooru.ui.*
 import onlymash.flexbooru.ui.adapter.PoolAdapter
@@ -231,7 +231,7 @@ class PoolFragment : ListFragment() {
             return
         }
         poolViewModel = getPoolViewModel(
-            PoolRepositoryIml(
+            PoolRepositoryImpl(
                 danbooruApi = danApi,
                 danbooruOneApi = danOneApi,
                 moebooruApi = moeApi,

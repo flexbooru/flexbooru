@@ -23,7 +23,7 @@ import onlymash.flexbooru.entity.post.PostBase
 /**
  *Load posts from database
  */
-class PostLoaderRepositoryIml(private val db: FlexbooruDatabase) : PostLoaderRepository {
+class PostLoaderRepositoryImpl(private val db: FlexbooruDatabase) : PostLoaderRepository {
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun loadPosts(host: String, keyword: String, type: Int): MutableList<PostBase> {

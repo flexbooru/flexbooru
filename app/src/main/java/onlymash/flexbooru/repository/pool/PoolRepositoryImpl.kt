@@ -13,42 +13,48 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.tag
+package onlymash.flexbooru.repository.pool
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import onlymash.flexbooru.api.*
-import onlymash.flexbooru.entity.tag.*
+import onlymash.flexbooru.api.DanbooruApi
+import onlymash.flexbooru.api.DanbooruOneApi
+import onlymash.flexbooru.api.MoebooruApi
+import onlymash.flexbooru.api.SankakuApi
+import onlymash.flexbooru.entity.pool.PoolDan
+import onlymash.flexbooru.entity.pool.PoolDanOne
+import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
-//tags repo
-class TagRepositoryIml(private val danbooruApi: DanbooruApi,
-                       private val danbooruOneApi: DanbooruOneApi,
-                       private val moebooruApi: MoebooruApi,
-                       private val gelbooruApi: GelbooruApi,
-                       private val sankakuApi: SankakuApi,
-                       private val networkExecutor: Executor
-) : TagRepository {
+//pools data source
+class PoolRepositoryImpl(private val danbooruApi: DanbooruApi,
+                         private val danbooruOneApi: DanbooruOneApi,
+                         private val moebooruApi: MoebooruApi,
+                         private val sankakuApi: SankakuApi,
+                         private val networkExecutor: Executor
+) : PoolRepository {
 
     @MainThread
-    override fun getDanTags(search: SearchTag): Listing<TagDan> {
-        val sourceFactory = TagDanDataSourceFactory(danbooruApi = danbooruApi, search = search, retryExecutor = networkExecutor)
+    override fun getDanPools(search: Search): Listing<PoolDan> {
+        val sourceFactory = PoolDanDataSourceFactory(danbooruApi = danbooruApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = search.limit,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { tagDanDataSource ->
-            tagDanDataSource.initialLoad
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolDanDataSource ->
+            poolDanDataSource.initialLoad
         }
         return Listing(
             pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { tagDanDataSource ->
-                tagDanDataSource.networkState
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolDanDataSource ->
+                poolDanDataSource.networkState
             },
             retry = {
                 sourceFactory.sourceLiveData.value?.retryAllFailed()
@@ -61,21 +67,21 @@ class TagRepositoryIml(private val danbooruApi: DanbooruApi,
     }
 
     @MainThread
-    override fun getMoeTags(search: SearchTag): Listing<TagMoe> {
-        val sourceFactory = TagMoeDataSourceFactory(moebooruApi = moebooruApi, search = search, retryExecutor = networkExecutor)
+    override fun getMoePools(search: Search): Listing<PoolMoe> {
+        val sourceFactory = PoolMoeDataSourceFactory(moebooruApi = moebooruApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = search.limit,
+                pageSize = 20,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { tagMoeDataSource ->
-            tagMoeDataSource.initialLoad
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolMoeDataSource ->
+            poolMoeDataSource.initialLoad
         }
         return Listing(
             pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { tagMoeDataSource ->
-                tagMoeDataSource.networkState
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { poolMoeDataSource ->
+                poolMoeDataSource.networkState
             },
             retry = {
                 sourceFactory.sourceLiveData.value?.retryAllFailed()
@@ -88,16 +94,15 @@ class TagRepositoryIml(private val danbooruApi: DanbooruApi,
     }
 
     @MainThread
-    override fun getDanOneTags(search: SearchTag): Listing<TagDanOne> {
-        val sourceFactory = TagDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi, search = search, retryExecutor = networkExecutor)
+    override fun getDanOnePools(search: Search): Listing<PoolDanOne> {
+        val sourceFactory = PoolDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = search.limit,
+                pageSize = PoolDanOneDataSource.PAGE_SIZE,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState =
-            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
         return Listing(
             pagedList = livePagedList,
             networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
@@ -108,28 +113,8 @@ class TagRepositoryIml(private val danbooruApi: DanbooruApi,
     }
 
     @MainThread
-    override fun getGelTags(search: SearchTag): Listing<TagGel> {
-        val sourceFactory = TagGelDataSourceFactory(gelbooruApi = gelbooruApi, search = search, retryExecutor = networkExecutor)
-        val livePagedList = sourceFactory.toLiveData(
-            config = Config(
-                pageSize = search.limit,
-                enablePlaceholders = true
-            ),
-            fetchExecutor = networkExecutor)
-        val refreshState =
-            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
-        return Listing(
-            pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
-            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
-            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
-            refreshState = refreshState
-        )
-    }
-
-    @MainThread
-    override fun getSankakuTags(search: SearchTag): Listing<TagSankaku> {
-        val sourceFactory = TagSankakuDataSourceFactory(sankakuApi = sankakuApi, search = search, retryExecutor = networkExecutor)
+    override fun getSankakuPools(search: Search): Listing<PoolSankaku> {
+        val sourceFactory = PoolSankakuDataSourceFactory(sankakuApi = sankakuApi, search = search, retryExecutor = networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = search.limit,

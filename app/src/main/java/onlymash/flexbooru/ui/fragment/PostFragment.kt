@@ -47,10 +47,10 @@ import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
-import onlymash.flexbooru.repository.post.PostRepositoryIml
+import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
+import onlymash.flexbooru.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.repository.post.PostRepository
-import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryIml
+import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.ui.AccountConfigActivity
 import onlymash.flexbooru.ui.BrowseActivity
@@ -113,7 +113,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private val db: FlexbooruDatabase by instance()
-    private val tagFilterRepositoryIml: TagFilterRepositoryIml by instance()
+    private val tagFilterRepositoryImpl: TagFilterRepositoryImpl by instance()
     private val tagBlacklistDao: TagBlacklistDao by instance()
     private val sp: SharedPreferences by instance()
 
@@ -174,7 +174,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         }
 
     private val voteRepo by lazy {
-        VoteRepositoryIml(
+        VoteRepositoryImpl(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
@@ -419,7 +419,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         searchBar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
         expandButton = searchBar.findViewById<View>(R.id.action_expand_tag_filter)
         postViewModel = getPostViewModel(
-            PostRepositoryIml(
+            PostRepositoryImpl(
                 db = db,
                 danbooruApi = danApi,
                 danbooruOneApi = danOneApi,
@@ -476,7 +476,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             }
             adapter = tagFilterAdapter
         }
-        tagFilterViewModel = getTagFilterViewModel(tagFilterRepositoryIml)
+        tagFilterViewModel = getTagFilterViewModel(tagFilterRepositoryImpl)
         tagFilterViewModel.loadTags().observe(this, Observer {
             tagFilterAdapter.updateData(it, Settings.activeBooruUid, Settings.isShowAllTags)
         })

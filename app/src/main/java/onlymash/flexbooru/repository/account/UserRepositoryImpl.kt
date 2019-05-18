@@ -31,10 +31,10 @@ import onlymash.flexbooru.extension.NetResult
 /**
  *user repo
  * */
-class UserRepositoryIml(private val danbooruApi: DanbooruApi,
-                        private val danbooruOneApi: DanbooruOneApi,
-                        private val moebooruApi: MoebooruApi,
-                        private val sankakuApi: SankakuApi) : UserRepository {
+class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
+                         private val danbooruOneApi: DanbooruOneApi,
+                         private val moebooruApi: MoebooruApi,
+                         private val sankakuApi: SankakuApi) : UserRepository {
 
     /**
      *search user

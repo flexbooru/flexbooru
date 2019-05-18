@@ -20,7 +20,7 @@ import onlymash.flexbooru.database.dao.TagFilterDao
 import onlymash.flexbooru.entity.TagFilter
 
 //tags filter data source
-class TagFilterRepositoryIml(private val dao: TagFilterDao) : TagFilterRepository {
+class TagFilterRepositoryImpl(private val dao: TagFilterDao) : TagFilterRepository {
 
     override fun loadTagsFilter(): LiveData<MutableList<TagFilter>> {
         return dao.getAllLiveData()

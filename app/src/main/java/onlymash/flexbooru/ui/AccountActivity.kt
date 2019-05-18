@@ -35,7 +35,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.repository.account.UserRepositoryIml
+import onlymash.flexbooru.repository.account.UserRepositoryImpl
 import org.kodein.di.generic.instance
 import kotlin.coroutines.CoroutineContext
 
@@ -56,7 +56,7 @@ class AccountActivity : BaseActivity(), CoroutineScope {
     private lateinit var user: User
 
     private val userRepository by lazy {
-        UserRepositoryIml(
+        UserRepositoryImpl(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,

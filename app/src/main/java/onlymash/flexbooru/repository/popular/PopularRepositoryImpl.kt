@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.artist
+package onlymash.flexbooru.repository.popular
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
@@ -22,38 +22,38 @@ import androidx.paging.toLiveData
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.artist.ArtistDan
-import onlymash.flexbooru.entity.artist.ArtistDanOne
-import onlymash.flexbooru.entity.artist.ArtistMoe
-import onlymash.flexbooru.entity.artist.SearchArtist
+import onlymash.flexbooru.api.SankakuApi
+import onlymash.flexbooru.database.FlexbooruDatabase
+import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 import java.util.concurrent.Executor
 
-/**
- *Artists data repository
- * */
-class ArtistRepositoryIml(private val danbooruApi: DanbooruApi,
-                          private val danbooruOneApi: DanbooruOneApi,
-                          private val moebooruApi: MoebooruApi,
-                          private val networkExecutor: Executor
-) : ArtistRepository {
+//popular posts data source
+class PopularRepositoryImpl(
+    private val danbooruApi: DanbooruApi,
+    private val danbooruOneApi: DanbooruOneApi,
+    private val moebooruApi: MoebooruApi,
+    private val sankakuApi: SankakuApi,
+    private val db: FlexbooruDatabase,
+    private val networkExecutor: Executor) : PopularRepository {
+
 
     @MainThread
-    override fun getDanArtists(search: SearchArtist): Listing<ArtistDan> {
-        val sourceFactory = ArtistDanDataSourceFactory(danbooruApi = danbooruApi, search = search, retryExecutor = networkExecutor)
+    override fun getDanPopular(popular: SearchPopular): Listing<PostDan> {
+        val sourceFactory = PopularDanDataSourceFactory(danbooruApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = search.limit,
+                pageSize = 20,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { artistDanDataSource ->
-            artistDanDataSource.initialLoad
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularMoeDataSource ->
+            popularMoeDataSource.initialLoad
         }
         return Listing(
             pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { artistDanDataSource ->
-                artistDanDataSource.networkState
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularDanDataSource ->
+                popularDanDataSource.networkState
             },
             retry = {
                 sourceFactory.sourceLiveData.value?.retryAllFailed()
@@ -66,21 +66,21 @@ class ArtistRepositoryIml(private val danbooruApi: DanbooruApi,
     }
 
     @MainThread
-    override fun getMoeArtists(search: SearchArtist): Listing<ArtistMoe> {
-        val sourceFactory = ArtistMoeDataSourceFactory(moebooruApi = moebooruApi, search = search, retryExecutor = networkExecutor)
+    override fun getMoePopular(popular: SearchPopular): Listing<PostMoe> {
+        val sourceFactory = PopularMoeDataSourceFactory(moebooruApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = 25,
+                pageSize = 40,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { artistMoeDataSource ->
-            artistMoeDataSource.initialLoad
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularMoeDataSource ->
+            popularMoeDataSource.initialLoad
         }
         return Listing(
             pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { artistMoeDataSource ->
-                artistMoeDataSource.networkState
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { popularMoeDataSource ->
+                popularMoeDataSource.networkState
             },
             retry = {
                 sourceFactory.sourceLiveData.value?.retryAllFailed()
@@ -93,16 +93,34 @@ class ArtistRepositoryIml(private val danbooruApi: DanbooruApi,
     }
 
     @MainThread
-    override fun getDanOneArtists(search: SearchArtist): Listing<ArtistDanOne> {
-        val sourceFactory = ArtistDanOneDataSourceFactory(danbooruOneApi = danbooruOneApi , search = search, retryExecutor = networkExecutor)
+    override fun getDanOnePopular(popular: SearchPopular): Listing<PostDanOne> {
+        val sourceFactory = PopularDanOneDataSourceFactory(danbooruOneApi, db, popular, networkExecutor)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
-                pageSize = 25,
+                pageSize = 20,
                 enablePlaceholders = true
             ),
             fetchExecutor = networkExecutor)
-        val refreshState =
-            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
+        return Listing(
+            pagedList = livePagedList,
+            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
+            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
+            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
+            refreshState = refreshState
+        )
+    }
+
+    @MainThread
+    override fun getSankakuPopular(popular: SearchPopular): Listing<PostSankaku> {
+        val sourceFactory = PopularSankakuDataSourceFactory(sankakuApi, db, popular, networkExecutor)
+        val livePagedList = sourceFactory.toLiveData(
+            config = Config(
+                pageSize = 30,
+                enablePlaceholders = true
+            ),
+            fetchExecutor = networkExecutor)
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
         return Listing(
             pagedList = livePagedList,
             networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },

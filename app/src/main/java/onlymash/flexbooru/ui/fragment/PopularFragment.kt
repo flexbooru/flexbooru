@@ -45,8 +45,8 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.favorite.VoteRepositoryIml
-import onlymash.flexbooru.repository.popular.PopularRepositoryIml
+import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
+import onlymash.flexbooru.repository.popular.PopularRepositoryImpl
 import onlymash.flexbooru.repository.popular.PopularRepository
 import onlymash.flexbooru.ui.AccountConfigActivity
 import onlymash.flexbooru.ui.BrowseActivity
@@ -128,7 +128,7 @@ class PopularFragment : ListFragment() {
     private var currentDayEnd = -1
 
     private val voteRepo by lazy {
-        VoteRepositoryIml(
+        VoteRepositoryImpl(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
@@ -543,7 +543,7 @@ class PopularFragment : ListFragment() {
             Constants.TYPE_SANKAKU -> searchBar.setMenu(R.menu.popular_sankaku, requireActivity().menuInflater)
         }
         popularViewModel = getPopularViewModel(
-            PopularRepositoryIml(
+            PopularRepositoryImpl(
                 danbooruApi = danApi,
                 danbooruOneApi = danOneApi,
                 moebooruApi = moeApi,

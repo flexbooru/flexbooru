@@ -35,11 +35,11 @@ import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.extension.NetResult
 import retrofit2.HttpException
 
-class VoteRepositoryIml(private val danbooruApi: DanbooruApi,
-                        private val danbooruOneApi: DanbooruOneApi,
-                        private val moebooruApi: MoebooruApi,
-                        private val sankakuApi: SankakuApi,
-                        private val db: FlexbooruDatabase): VoteRepository {
+class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
+                         private val danbooruOneApi: DanbooruOneApi,
+                         private val moebooruApi: MoebooruApi,
+                         private val sankakuApi: SankakuApi,
+                         private val db: FlexbooruDatabase): VoteRepository {
 
     override suspend fun voteMoePost(vote: Vote): NetResult<VoteMoe> {
         return withContext(Dispatchers.IO) {

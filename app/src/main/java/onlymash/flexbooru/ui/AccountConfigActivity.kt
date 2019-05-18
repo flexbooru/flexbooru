@@ -32,7 +32,7 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.repository.account.UserRepositoryIml
+import onlymash.flexbooru.repository.account.UserRepositoryImpl
 import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
@@ -56,7 +56,7 @@ class AccountConfigActivity : BaseActivity(), CoroutineScope {
     private var requesting = false
 
     private val userRepository: UserRepository by lazy {
-        UserRepositoryIml(
+        UserRepositoryImpl(
             danbooruApi = danApi,
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
