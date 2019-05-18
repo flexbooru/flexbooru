@@ -25,6 +25,7 @@ import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
@@ -56,6 +57,7 @@ class BooruViewHolder(itemView: View,
                     (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
                 }
                 R.id.action_booru_edit -> startConfig(booru)
+                R.id.action_booru_delete -> BooruManager.deleteBooru(booru.uid)
             }
             true
         }

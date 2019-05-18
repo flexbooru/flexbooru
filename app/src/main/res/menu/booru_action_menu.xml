@@ -24,4 +24,8 @@
     <item
             android:id="@+id/action_booru_edit"
             android:title="@string/booru_edit"/>
+
+    <item
+        android:id="@+id/action_booru_delete"
+        android:title="@string/booru_delete"/>
 </menu>
