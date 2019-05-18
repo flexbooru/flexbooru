@@ -80,6 +80,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+            android:id="@+id/source_container"
             android:paddingTop="@dimen/spacing_normal"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
@@ -103,9 +104,7 @@
                 android:gravity="end"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:autoLink="web"
                 android:maxLines="2"
-                android:textColorLink="@android:color/secondary_text_dark"
                 android:ellipsize="end"/>
     </LinearLayout>
 

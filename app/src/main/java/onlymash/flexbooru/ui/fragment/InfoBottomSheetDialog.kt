@@ -36,6 +36,7 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.worker.DownloadWorker
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
@@ -222,6 +223,19 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         view.findViewById<TextView>(R.id.source).apply {
             text = source
             transformationMethod = LinkTransformationMethod()
+        }
+        view.findViewById<View>(R.id.source_container).apply {
+            setOnClickListener {
+                if (source.isNotEmpty()) {
+                    context?.launchUrl(source)
+                }
+            }
+            setOnLongClickListener {
+                if (source.isNotEmpty()) {
+                    App.app.clipboard.primaryClip = ClipData.newPlainText("source", source)
+                }
+                true
+            }
         }
         view.findViewById<TextView>(R.id.rating).text =
             when (rating) {
