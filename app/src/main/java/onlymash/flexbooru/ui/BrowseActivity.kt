@@ -338,6 +338,12 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                         SearchActivity.startActivity(this, "recommended_for_post:$id")
                     }
                 }
+                R.id.action_browse_open_browser -> {
+                    val url = getLink()
+                    if (!url.isNullOrEmpty()) {
+                        launchUrl(url)
+                    }
+                }
             }
             return@setOnMenuItemClickListener true
         }
@@ -525,15 +531,8 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
     }
 
     private fun shareLink() {
-        val url = when (val post = getCurrentPost()) {
-            is PostDan -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
-            is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
-            is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
-            is PostGel -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
-            is PostSankaku -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
-            else -> ""
-        }
-        if (url.isNotEmpty()) {
+        val url = getLink()
+        if (!url.isNullOrEmpty()) {
             startActivity(Intent.createChooser(
                 Intent().apply {
                     action = Intent.ACTION_SEND
@@ -543,6 +542,15 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                 getString(R.string.share_via)
             ))
         }
+    }
+
+    private fun getLink(): String? = when (val post = getCurrentPost()) {
+        is PostDan -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
+        is PostDanOne -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+        is PostMoe -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+        is PostGel -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
+        is PostSankaku -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
+        else -> null
     }
 
     private fun initFavViewModel() {
