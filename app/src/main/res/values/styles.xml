@@ -15,7 +15,16 @@
 
 <resources>
 
-    <style name="AppTheme" parent="BaseTheme">
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+
+    <style name="AppTheme.Bar" parent="AppTheme.Base">
+        <item name="android:statusBarColor">#33000000</item>
+    </style>
+
+    <style name="AppTheme.Preference" parent="AppTheme.Bar">
+        <item name="preferenceTheme">@style/PreferenceTheme</item>
+    </style>
+    <style name="AppTheme.App" parent="AppTheme.Preference">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorPrimary</item>
         <item name="colorOnBackground">@color/background</item>
@@ -31,10 +40,10 @@
         <item name="colorControlActivated">@color/colorControlActivated</item>
         <item name="alertDialogTheme">@style/CustomAlertDialog</item>
     </style>
-    <style name="PopupWindow" parent="@style/Widget.AppCompat.PopupWindow">
-        <item name="android:popupElevation">@dimen/elevation_size</item>
+    <style name="AppTheme.App.Sliding" parent="AppTheme.App">
+        <item name="android:windowAnimationStyle">@style/RightInRightOutAnim</item>
     </style>
-    <style name="AppTheme.Main" parent="AppTheme">
+    <style name="AppTheme.Main" parent="AppTheme.App">
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/background_light</item>
         <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
@@ -47,10 +56,7 @@
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
         <item name="material_drawer_header_selection_subtext">@color/material_drawer_header_selection_subtext</item>
     </style>
-    <style name="BaseTheme.Launcher" parent="BaseTheme">
-        <item name="android:windowBackground">@drawable/background_launcher</item>
-    </style>
-    <style name="AppTheme.Search" parent="AppTheme">
+    <style name="AppTheme.Search" parent="AppTheme.App">
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
         <item name="android:activityCloseEnterAnimation">@null</item>
@@ -64,16 +70,10 @@
         <item name="android:taskToBackEnterAnimation">@null</item>
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
-    <style name="Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="preferenceTheme">@style/PreferenceTheme</item>
+    <style name="AppTheme.Launcher" parent="AppTheme.Bar">
+        <item name="android:windowBackground">@drawable/background_launcher</item>
     </style>
-    <style name="BaseTheme" parent="Base">
-        <item name="android:statusBarColor">#33000000</item>
-    </style>
-    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="android:tint">@color/pref_icon_tint</item>
-    </style>
-    <style name="BrowseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme.Browse" parent="AppTheme.Base">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -81,6 +81,12 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
         <item name="android:actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+    </style>
+    <style name="PopupWindow" parent="@style/Widget.AppCompat.PopupWindow">
+        <item name="android:popupElevation">@dimen/elevation_size</item>
+    </style>
+    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="android:tint">@color/pref_icon_tint</item>
     </style>
     <style name="CardViewTheme" parent="CardView.Light">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
@@ -118,9 +124,6 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
-    </style>
-    <style name="AppTheme.Sliding" parent="AppTheme">
-        <item name="android:windowAnimationStyle">@style/RightInRightOutAnim</item>
     </style>
     <style name="Widget.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/button_text</item>

@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <style name="BaseTheme" parent="Base">
+    <style name="AppTheme.Bar" parent="AppTheme.Base">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:statusBarColor">@color/background_light</item>

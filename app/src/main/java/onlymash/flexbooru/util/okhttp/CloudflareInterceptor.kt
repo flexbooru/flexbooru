@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.api
+package onlymash.flexbooru.util.okhttp
 
 import android.annotation.SuppressLint
 import android.os.Handler

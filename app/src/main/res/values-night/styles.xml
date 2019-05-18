@@ -15,22 +15,11 @@
   -->
 
 <resources>
-    <style name="BaseTheme" parent="Base">
+    <style name="AppTheme.Bar" parent="AppTheme.Base">
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
     </style>
-    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
-    <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Dark"/>
-    <style name="CardViewTheme" parent="CardView.Dark">
-        <item name="cardCornerRadius">@dimen/corner_radius</item>
-        <item name="cardUseCompatPadding">true</item>
-        <item name="cardElevation">@dimen/card_item_elevation_size</item>
-        <item name="cardMaxElevation">@dimen/card_item_elevation_size</item>
-        <item name="cardPreventCornerOverlap">true</item>
-        <item name="contentPadding">0dp</item>
-        <item name="cardBackgroundColor">@color/background_card_dark</item>
-    </style>
-    <style name="AppTheme.Main" parent="AppTheme">
+    <style name="AppTheme.Main" parent="AppTheme.App">
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/background_dark</item>
         <item name="material_drawer_primary_text">@color/material_drawer_dark_primary_text</item>
@@ -42,6 +31,17 @@
         <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
         <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
+    </style>
+    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Dark"/>
+    <style name="CardViewTheme" parent="CardView.Dark">
+        <item name="cardCornerRadius">@dimen/corner_radius</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardElevation">@dimen/card_item_elevation_size</item>
+        <item name="cardMaxElevation">@dimen/card_item_elevation_size</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="contentPadding">0dp</item>
+        <item name="cardBackgroundColor">@color/background_card_dark</item>
     </style>
     <style name="OverflowMenuStyle" parent="OverflowMenuStyle.Dark"/>
     <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Dialog">
