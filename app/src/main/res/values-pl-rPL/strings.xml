@@ -55,6 +55,7 @@
     <string name="msg_not_supported">Nieobsługiwany</string>
     <string name="msg_press_twice_to_exit">Naciśnij ponownie, aby wyjść.</string>
     <string name="msg_file_save_success">Plik został zapisany jako %s</string>
+    <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
     <string name="post_expand_tag_filter">Poszerz filtr tagów</string>
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
     <string name="post_download">Pobierz</string>
@@ -87,6 +88,7 @@
     <string name="booru_share_by_qr_code">Kod QR</string>
     <string name="booru_share_by_clipboard">Skopiuj do schowka</string>
     <string name="booru_edit">Edytuj</string>
+    <string name="booru_delete">Delete</string>
     <string name="booru_backup_or_restore">Kopia zapasowa</string>
     <string name="booru_backup_to_file">Stwórz kopię</string>
     <string name="booru_restore_from_file">Przywróć kopię</string>
@@ -113,6 +115,7 @@
     <string name="browse_send_file">Wyślij plik</string>
     <string name="browse_save_file">Zapisz plik</string>
     <string name="browse_share_link">Udostępnij link</string>
+    <string name="browse_open_in_browser">Open in browser</string>
     <string name="browse_tags">Tagi</string>
     <string name="browse_info">Informacje</string>
     <string name="browse_recommended">Polecane</string>

@@ -55,6 +55,7 @@
     <string name="msg_not_supported">不支援</string>
     <string name="msg_press_twice_to_exit">再按一次以離開。</string>
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
+    <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
     <string name="post_expand_tag_filter">展開標籤過濾器</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
     <string name="post_download">Download post</string>
@@ -87,6 +88,7 @@
     <string name="booru_share_by_qr_code">QR Code</string>
     <string name="booru_share_by_clipboard">匯出到剪貼板</string>
     <string name="booru_edit">編輯</string>
+    <string name="booru_delete">Delete</string>
     <string name="booru_backup_or_restore">Backup or Restore</string>
     <string name="booru_backup_to_file">Backup to file</string>
     <string name="booru_restore_from_file">Restore from file</string>
@@ -113,6 +115,7 @@
     <string name="browse_send_file">傳送檔案</string>
     <string name="browse_save_file">儲存檔案</string>
     <string name="browse_share_link">分享超連結</string>
+    <string name="browse_open_in_browser">Open in browser</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
     <string name="browse_recommended">Recommended</string>
