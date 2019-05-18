@@ -55,7 +55,7 @@
     <string name="msg_not_supported">不支持</string>
     <string name="msg_press_twice_to_exit">按两次退出。</string>
     <string name="msg_file_save_success">文件已存为 %s</string>
-    <string name="msg_your_api_key_is_wrong">You Api Key is wrong!</string>
+    <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
     <string name="post_expand_tag_filter">展开标签过滤器</string>
     <string name="post_add_search_to_muzei">` %s ` 已添加到 Muzei。</string>
     <string name="post_download">下载投稿</string>
