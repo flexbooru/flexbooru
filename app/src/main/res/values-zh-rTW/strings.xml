@@ -87,6 +87,7 @@
     <string name="booru_share_by_qr_code">QR Code</string>
     <string name="booru_share_by_clipboard">匯出至剪貼簿</string>
     <string name="booru_edit">Edit</string>
+    <string name="booru_delete">Delete</string>
     <string name="booru_backup_or_restore">Backup or Restore</string>
     <string name="booru_backup_to_file">Backup to file</string>
     <string name="booru_restore_from_file">Restore from file</string>
@@ -113,6 +114,7 @@
     <string name="browse_send_file">傳送</string>
     <string name="browse_save_file">下載</string>
     <string name="browse_share_link">分享</string>
+    <string name="browse_open_in_browser">Open in browser</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
     <string name="browse_recommended">Recommended</string>
