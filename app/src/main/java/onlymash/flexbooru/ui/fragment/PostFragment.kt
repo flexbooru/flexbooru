@@ -365,7 +365,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            postType = it.getInt(POST_TYPE_KEY, -1) ?: -1
+            postType = it.getInt(POST_TYPE_KEY, -1)
             booruType = it.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
             search = Search(
                 scheme = it.getString(Constants.SCHEME_KEY, ""),
