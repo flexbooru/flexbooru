@@ -74,7 +74,6 @@ interface MoebooruApi {
                 writeTimeout(15, TimeUnit.SECONDS)
                     .addInterceptor(interceptor)
                     .addInterceptor(logger)
-                    .addInterceptor(CloudflareInterceptor())
             }
                 .build()
 
