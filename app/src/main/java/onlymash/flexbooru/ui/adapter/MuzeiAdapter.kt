@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
@@ -41,7 +42,10 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * Update adapter data set
      * */
     fun updateData(data: MutableList<Muzei>) {
-        this.data = data
+        val tmpData: MutableList<Muzei> = mutableListOf()
+        tmpData.addAll(this.data)
+        this.data.clear()
+        this.data.addAll(data)
         var isExist = false
         data.forEachIndexed { _, muzei ->
             if (muzei.uid == activeUid) {
@@ -54,7 +58,8 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             activeUid = uid
             Settings.activeMuzeiUid = uid
         }
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(MuzeiAdapterDiffCallback(tmpData, this.data))
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -78,5 +83,19 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
         }
+    }
+
+    inner class MuzeiAdapterDiffCallback(private val oldMuzeis: MutableList<Muzei>,
+                                         private val newMuzeis: MutableList<Muzei>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldMuzeis[oldItemPosition].uid == newMuzeis[newItemPosition].uid
+
+        override fun getOldListSize(): Int = oldMuzeis.size
+
+        override fun getNewListSize(): Int = newMuzeis.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldMuzeis[oldItemPosition] == newMuzeis[newItemPosition]
+
     }
 }

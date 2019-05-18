@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.TagBlacklist
@@ -26,8 +27,11 @@ class TagBlacklistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data: MutableList<TagBlacklist> = mutableListOf()
 
     fun updateData(data: MutableList<TagBlacklist>) {
+        val tmpData: MutableList<TagBlacklist> = mutableListOf()
+        tmpData.addAll(this.data)
         this.data = data
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(TagBlacklistAdapterDiffCallback(tmpData, this.data))
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -38,5 +42,19 @@ class TagBlacklistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as TagBlacklistViewHolder).bind(data[position])
+    }
+
+    inner class TagBlacklistAdapterDiffCallback(private val oldTagBlacklists: MutableList<TagBlacklist>,
+                                         private val newTagBlacklists: MutableList<TagBlacklist>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldTagBlacklists[oldItemPosition].uid == newTagBlacklists[newItemPosition].uid
+
+        override fun getOldListSize(): Int = oldTagBlacklists.size
+
+        override fun getNewListSize(): Int = newTagBlacklists.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldTagBlacklists[oldItemPosition] == newTagBlacklists[newItemPosition]
+
     }
 }

@@ -23,24 +23,22 @@ import androidx.recyclerview.widget.*
 abstract class BaseHeaderPagedListAdapter<T, VH : RecyclerView.ViewHolder>(
     diffCallback: DiffUtil.ItemCallback<T>) : PagedListAdapter<T, VH>(diffCallback) {
 
-    @Suppress("LeakingThis")
-    private val adapterCallback = AdapterListUpdateCallback(this)
     private val listUpdateCallback = object : ListUpdateCallback {
 
         override fun onChanged(position: Int, count: Int, payload: Any?) {
-            adapterCallback.onChanged(position + 1, count, payload)
+            notifyItemRangeChanged(position + 1, count, payload)
         }
 
         override fun onMoved(fromPosition: Int, toPosition: Int) {
-            adapterCallback.onMoved(fromPosition + 1, toPosition + 1)
+            notifyItemMoved(fromPosition + 1, toPosition + 1)
         }
 
         override fun onInserted(position: Int, count: Int) {
-            adapterCallback.onInserted(position + 1, count)
+            notifyItemRangeInserted(position + 1, count)
         }
 
         override fun onRemoved(position: Int, count: Int) {
-            adapterCallback.onRemoved(position + 1, count)
+            notifyItemRangeRemoved(position + 1, count)
         }
     }
 

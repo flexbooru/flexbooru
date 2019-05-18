@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
@@ -63,8 +64,26 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruV
         }
     }
 
-    override fun onChanged() {
-        boorus = BooruManager.getAllBoorus()?.toMutableList() ?: mutableListOf()
-        notifyDataSetChanged()
+    override fun onChanged(boorus: MutableList<Booru>) {
+        val tmpBoorus: MutableList<Booru> = mutableListOf()
+        tmpBoorus.addAll(this.boorus)
+        this.boorus.clear()
+        this.boorus.addAll(boorus)
+        val diffResult = DiffUtil.calculateDiff(BooruAdapterDiffCallback(tmpBoorus, this.boorus))
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    inner class BooruAdapterDiffCallback(private val oldBoorus: MutableList<Booru>,
+                                         private val newBoorus: MutableList<Booru>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldBoorus[oldItemPosition].uid == newBoorus[newItemPosition].uid
+
+        override fun getOldListSize(): Int = oldBoorus.size
+
+        override fun getNewListSize(): Int = newBoorus.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldBoorus[oldItemPosition] == newBoorus[newItemPosition]
+
     }
 }

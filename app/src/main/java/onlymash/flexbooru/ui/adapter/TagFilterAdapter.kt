@@ -17,6 +17,8 @@ package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
@@ -51,6 +53,28 @@ class TagFilterAdapter(private val orders: Array<String>,
     private var refreshingRating = false
     private var refreshingThreshold = false
 
+    private var tags: MutableList<TagFilter> = mutableListOf()
+    private var allTags: MutableList<TagFilter> = mutableListOf()
+
+    private val listUpdateCallback = object : ListUpdateCallback {
+
+        override fun onChanged(position: Int, count: Int, payload: Any?) {
+            notifyItemRangeChanged(position + 1, count, payload)
+        }
+
+        override fun onMoved(fromPosition: Int, toPosition: Int) {
+            notifyItemMoved(fromPosition + 1, toPosition + 1)
+        }
+
+        override fun onInserted(position: Int, count: Int) {
+            notifyItemRangeInserted(position + 1, count)
+        }
+
+        override fun onRemoved(position: Int, count: Int) {
+            notifyItemRangeRemoved(position + 1, count)
+        }
+    }
+
     private fun refreshOrder(order: String) {
         val index = orders.indexOfFirst { it == order }
         refreshingOrder = true
@@ -69,36 +93,41 @@ class TagFilterAdapter(private val orders: Array<String>,
         notifyItemChanged(tags.size + orders.size + ratings.size + index + 4)
     }
 
-    private var tags: MutableList<TagFilter> = mutableListOf()
-    private var allTags: MutableList<TagFilter> = mutableListOf()
-    fun updateData(tags: MutableList<TagFilter>, booruUid: Long, showAll: Boolean) {
-        allTags = tags
-        this.tags.clear()
+    fun updateData(newTags: MutableList<TagFilter>, booruUid: Long, showAll: Boolean) {
+        allTags = newTags
+        val oldTags: MutableList<TagFilter> = mutableListOf()
+        oldTags.addAll(tags)
+        tags.clear()
         if (showAll) {
-            this.tags.addAll(tags)
+            tags.addAll(newTags)
         } else {
-            allTags.forEach {
+            newTags.forEach {
                 if (it.booru_uid == booruUid) {
-                    this.tags.add(it)
+                    tags.add(it)
                 }
             }
         }
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(TagFilterAdapterDiffCallback(oldTags, tags))
+        diffResult.dispatchUpdatesTo(listUpdateCallback)
     }
     fun updateData(booruUid: Long, showAll: Boolean) {
         tagsSelected.clear()
-        this.tags.clear()
+        val oldTags: MutableList<TagFilter> = mutableListOf()
+        oldTags.addAll(tags)
+        tags.clear()
         if (showAll) {
-            this.tags.addAll(allTags)
+            tags.addAll(allTags)
         } else {
             allTags.forEach {
                 if (it.booru_uid == booruUid) {
-                    this.tags.add(it)
+                    tags.add(it)
                 }
             }
         }
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(TagFilterAdapterDiffCallback(oldTags, tags))
+        diffResult.dispatchUpdatesTo(listUpdateCallback)
     }
+
     fun getSelectedTagsString(): String {
         var str = ""
         tagsSelected.forEach {
@@ -263,5 +292,18 @@ class TagFilterAdapter(private val orders: Array<String>,
                 }
             }
         }
+    }
+
+    inner class TagFilterAdapterDiffCallback(private val oldTags: MutableList<TagFilter>,
+                                             private val newTags: MutableList<TagFilter>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldTags[oldItemPosition].uid == newTags[newItemPosition].uid
+
+        override fun getOldListSize(): Int = oldTags.size
+
+        override fun getNewListSize(): Int = newTags.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldTags[oldItemPosition].name == newTags[newItemPosition].name
     }
 }

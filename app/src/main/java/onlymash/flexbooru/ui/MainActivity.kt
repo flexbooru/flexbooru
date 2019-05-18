@@ -266,8 +266,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private val booruListener = object : BooruManager.Listener {
-        override fun onChanged() {
-            boorus = BooruManager.getAllBoorus() ?: mutableListOf()
+        override fun onChanged(boorus: MutableList<Booru>) {
+            this@MainActivity.boorus.apply {
+                clear()
+                addAll(boorus)
+            }
             initDrawerHeader()
         }
 
