@@ -55,7 +55,7 @@
     <string name="msg_not_supported">No soportado</string>
     <string name="msg_press_twice_to_exit">Presiona dos veces para salir.</string>
     <string name="msg_file_save_success">El archivo se ha guardado como %s</string>
-    <string name="msg_your_api_key_is_wrong">You Api Key is wrong!</string>
+    <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
     <string name="post_expand_tag_filter">Expandir filtro de etiquetas</string>
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Download post</string>
