@@ -87,6 +87,7 @@
     <string name="booru_share_by_qr_code">Código QR</string>
     <string name="booru_share_by_clipboard">Exportar para a Área de Transferência</string>
     <string name="booru_edit">Editar</string>
+    <string name="booru_delete">Delete</string>
     <string name="booru_backup_or_restore">Restauração e Backup</string>
     <string name="booru_backup_to_file">Backup para arquivo</string>
     <string name="booru_restore_from_file">Restaurar do arquivo</string>
@@ -113,6 +114,7 @@
     <string name="browse_send_file">Enviar arquivo</string>
     <string name="browse_save_file">Salvar arquivo</string>
     <string name="browse_share_link">Compartilhar link</string>
+    <string name="browse_open_in_browser">Open in browser</string>
     <string name="browse_tags">Marcadores</string>
     <string name="browse_info">Informações</string>
     <string name="browse_recommended">Recomendado</string>
