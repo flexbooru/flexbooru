@@ -22,6 +22,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
@@ -271,26 +272,12 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
 
         override fun onAdd(booru: Booru) {
-            if (!Settings.isOrderSuccess && boorus.size >= BOORUS_LIMIT) {
-                boorus.add(booru)
+            boorus.add(booru)
+            if (!Settings.isOrderSuccess &&
+                header.profiles.size == BOORUS_LIMIT + 1) {
                 return
             }
-            header.removeProfile(profileSettingDrawerItem)
-            boorus.add(booru)
-            var host = booru.host
-            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
-            header.addProfile(
-                ProfileDrawerItem()
-                    .withName(booru.name)
-                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
-                    .withEmail(String.format("%s://%s", booru.scheme, booru.host))
-                    .withIdentifier(booru.uid), boorus.size - 1)
-            header.addProfile(profileSettingDrawerItem, boorus.size)
-            if (boorus.size == 1) {
-                Settings.activeBooruUid = booru.uid
-                header.setActiveProfile(Settings.activeBooruUid)
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
-            }
+            initDrawerHeader()
         }
 
         override fun onDelete(booruUid: Long) {
