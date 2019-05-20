@@ -210,7 +210,8 @@ class TagFilterAdapter(private val orders: Array<String>,
                     setOnLongClickListener {
                         val context = holder.itemView.context ?: return@setOnLongClickListener true
                         AlertDialog.Builder(context)
-                            .setTitle(String.format(context.getString(R.string.tag_delete_title), name))
+                            .setTitle(context.getString(R.string.tag_delete_title))
+                            .setMessage(String.format(context.getString(R.string.tag_delete_content), name))
                             .setPositiveButton(R.string.dialog_yes) { _, _ ->
                                 TagFilterManager.deleteTagFilter(tag)
                             }
