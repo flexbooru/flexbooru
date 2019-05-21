@@ -91,7 +91,7 @@ class PoolFragment : ListFragment() {
         get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {}
             override fun onApplySearch(query: String) {
-                if (type < 0) return
+                if (isUnsupported) return
                 search.keyword = query
                 poolViewModel.show(search)
                 swipe_refresh.isRefreshing = true
@@ -210,7 +210,7 @@ class PoolFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-        if (type < 0) return
+        if (isUnsupported) return
         search = Search(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -224,7 +224,7 @@ class PoolFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setTitle(R.string.title_pools)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
-        if (type in intArrayOf(-1, Constants.TYPE_GELBOORU)) {
+        if (isUnsupported) {
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -393,8 +393,11 @@ class PoolFragment : ListFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (type < 0) return
+        if (isUnsupported) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
     }
+
+    override val isUnsupported: Boolean
+        get() = type in intArrayOf(-1, Constants.TYPE_GELBOORU)
 }

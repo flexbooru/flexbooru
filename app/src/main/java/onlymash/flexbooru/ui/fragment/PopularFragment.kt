@@ -492,7 +492,7 @@ class PopularFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, -1)
-        if (type < 0) return
+        if (isUnsupported) return
         popular = SearchPopular(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -520,18 +520,12 @@ class PopularFragment : ListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        if (type < 0) return
-        UserManager.listeners.add(userListener)
-        (requireActivity() as MainActivity).apply {
-            addNavigationListener(navigationListener)
-            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
-        }
     }
 
     private fun init() {
         searchBar.setTitle(R.string.title_popular)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
-        if (type in intArrayOf(-1, Constants.TYPE_GELBOORU)) {
+        if (isUnsupported) {
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -620,6 +614,11 @@ class PopularFragment : ListFragment() {
             }
         }
         popularViewModel.show(popular)
+        UserManager.listeners.add(userListener)
+        (requireActivity() as MainActivity).apply {
+            addNavigationListener(navigationListener)
+            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
+        }
     }
 
     override fun retry() {
@@ -678,7 +677,7 @@ class PopularFragment : ListFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (type < 0) return
+        if (isUnsupported) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).apply {
             unregisterReceiver(broadcastReceiver)
@@ -686,4 +685,8 @@ class PopularFragment : ListFragment() {
             sharedElement = null
         }
     }
+
+    override val isUnsupported: Boolean
+        get() = type in intArrayOf(-1, Constants.TYPE_GELBOORU)
+    
 }

@@ -326,7 +326,7 @@ class TagFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-        if (type < 0) return
+        if (isUnsupported) return
         search = SearchTag(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -343,7 +343,7 @@ class TagFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setTitle(R.string.title_tags)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_tags))
-        if (type < 0) {
+        if (isUnsupported) {
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -499,8 +499,11 @@ class TagFragment : ListFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (type < 0) return
+        if (isUnsupported) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
     }
+
+    override val isUnsupported: Boolean
+        get() = type == -1
 }

@@ -84,6 +84,9 @@ class ArtistFragment : ListFragment() {
     private var type = -1
     private lateinit var search: SearchArtist
 
+    override val isUnsupported: Boolean
+        get() = type in intArrayOf(-1, Constants.TYPE_GELBOORU, Constants.TYPE_SANKAKU)
+
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
             override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
@@ -119,7 +122,7 @@ class ArtistFragment : ListFragment() {
             }
 
             override fun onApplySearch(query: String) {
-                if (type < 0) return
+                if (isUnsupported) return
                 search.name = query
                 refresh()
             }
@@ -229,7 +232,7 @@ class ArtistFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, Constants.TYPE_UNKNOWN)
-        if (type < 0) return
+        if (isUnsupported) return
         search = SearchArtist(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
@@ -245,7 +248,7 @@ class ArtistFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setTitle(R.string.title_artists)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
-        if (type in intArrayOf(-1, Constants.TYPE_GELBOORU, Constants.TYPE_SANKAKU)) {
+        if (isUnsupported) {
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -356,7 +359,7 @@ class ArtistFragment : ListFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (type < 0) return
+        if (isUnsupported) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).removeNavigationListener(navigationListener)
     }

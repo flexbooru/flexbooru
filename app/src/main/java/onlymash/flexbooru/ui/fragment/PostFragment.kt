@@ -669,4 +669,8 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             }
         }
     }
+
+    override val isUnsupported: Boolean
+        get() = booruType == -1
+
 }

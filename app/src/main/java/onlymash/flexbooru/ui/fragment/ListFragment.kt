@@ -222,4 +222,6 @@ abstract class ListFragment : Fragment(), KodeinAware {
     }
 
     abstract fun retry()
+
+    abstract val isUnsupported: Boolean
 }
