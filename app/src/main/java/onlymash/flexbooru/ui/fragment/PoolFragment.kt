@@ -224,7 +224,7 @@ class PoolFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setTitle(R.string.title_pools)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
-        if (type < 0) {
+        if (type in intArrayOf(-1, Constants.TYPE_GELBOORU)) {
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE

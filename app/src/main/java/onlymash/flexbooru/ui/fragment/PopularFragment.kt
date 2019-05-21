@@ -531,7 +531,7 @@ class PopularFragment : ListFragment() {
     private fun init() {
         searchBar.setTitle(R.string.title_popular)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
-        if (type < 0) {
+        if (type in intArrayOf(-1, Constants.TYPE_GELBOORU)) {
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
