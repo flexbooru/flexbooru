@@ -23,8 +23,11 @@ import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
+import onlymash.flexbooru.Settings
+import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.comment.CommentGelResponse
 import onlymash.flexbooru.entity.post.PostGelResponse
 import onlymash.flexbooru.entity.tag.TagGelResponse
@@ -50,11 +53,14 @@ interface GelbooruApi {
             }
 
             val interceptor = Interceptor { chain ->
-                val requests =  chain.request().newBuilder()
+                val builder =  chain.request().newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
                     .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-                    .build()
-                chain.proceed(requests)
+                val cookie = CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie
+                if (!cookie.isNullOrEmpty()) {
+                    builder.addHeader("cookie", cookie)
+                }
+                chain.proceed(builder.build())
             }
 
             val client = OkHttpClient.Builder().apply {
@@ -70,11 +76,13 @@ interface GelbooruApi {
                 .baseUrl(Constants.BASE_URL)
                 .client(client)
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .addConverterFactory(TikXmlConverterFactory.create(
-                    TikXml.Builder()
-                        .exceptionOnUnreadXml(false)
-                        .build()
-                ))
+                .addConverterFactory(
+                    TikXmlConverterFactory.create(
+                        TikXml.Builder()
+                            .exceptionOnUnreadXml(false)
+                            .build()
+                    )
+                )
                 .build()
                 .create(GelbooruApi::class.java)
         }
@@ -88,4 +96,7 @@ interface GelbooruApi {
 
     @GET
     fun getComments(@Url httpUrl: HttpUrl): Call<CommentGelResponse>
+
+    @GET
+    fun favPost(@Url httpUrl: HttpUrl): Call<ResponseBody>
 }

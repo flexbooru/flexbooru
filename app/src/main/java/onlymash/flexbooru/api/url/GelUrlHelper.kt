@@ -17,6 +17,7 @@ package onlymash.flexbooru.api.url
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.entity.tag.SearchTag
 
@@ -75,6 +76,27 @@ object GelUrlHelper {
             .addQueryParameter("q", "index")
             .addQueryParameter("limit", action.limit.toString())
             .addQueryParameter("pid", page.toString())
+            .build()
+    }
+
+    fun getAddFavUrl(vote: Vote): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(vote.scheme)
+            .host(vote.host)
+            .addPathSegment("public")
+            .addPathSegment("addfav.php")
+            .addQueryParameter("id", vote.post_id.toString())
+            .build()
+    }
+
+    fun getRemoveFavUrl(vote: Vote): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(vote.scheme)
+            .host(vote.host)
+            .addPathSegment("index.php")
+            .addQueryParameter("page", "favorites")
+            .addQueryParameter("s", "delete")
+            .addQueryParameter("id", vote.post_id.toString())
             .build()
     }
 }

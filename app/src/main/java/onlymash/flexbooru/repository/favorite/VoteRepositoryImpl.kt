@@ -19,18 +19,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.SankakuApi
-import onlymash.flexbooru.api.url.DanOneUrlHelper
-import onlymash.flexbooru.api.url.DanUrlHelper
-import onlymash.flexbooru.api.url.MoeUrlHelper
-import onlymash.flexbooru.api.url.SankakuUrlHelper
+import onlymash.flexbooru.api.*
+import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
+import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.extension.NetResult
 import retrofit2.HttpException
@@ -39,7 +34,27 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                          private val danbooruOneApi: DanbooruOneApi,
                          private val moebooruApi: MoebooruApi,
                          private val sankakuApi: SankakuApi,
+                         private val gelbooruApi: GelbooruApi,
                          private val db: FlexbooruDatabase): VoteRepository {
+
+    override suspend fun addGelFav(vote: Vote, post: PostGel): NetResult<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = gelbooruApi.favPost(GelUrlHelper.getAddFavUrl(vote)).execute()
+                if (response.isSuccessful) {
+                    NetResult.Success(true)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    override suspend fun removeGelFav(vote: Vote, postFav: PostGel): NetResult<Boolean> {
+        return NetResult.Error("Not supported")
+    }
 
     override suspend fun voteMoePost(vote: Vote): NetResult<VoteMoe> {
         return withContext(Dispatchers.IO) {

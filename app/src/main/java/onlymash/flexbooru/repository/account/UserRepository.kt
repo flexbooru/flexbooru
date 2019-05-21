@@ -22,4 +22,5 @@ import onlymash.flexbooru.extension.NetResult
 interface UserRepository {
     suspend fun findUserByName(username: String, booru: Booru): NetResult<User>
     suspend fun findUserById(id: Int, booru: Booru): NetResult<User>
+    suspend fun gelLogin(username: String, password: String, booru: Booru): NetResult<User>
 }

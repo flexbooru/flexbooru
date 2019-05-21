@@ -28,4 +28,7 @@ interface CookieDao {
 
     @Query("SELECT * FROM cookies WHERE booru_uid = :booruUid")
     fun getCookieByBooruUid(booruUid: Long): Cookie?
+
+    @Query("DELETE FROM cookies WHERE booru_uid = :booruUid")
+    fun deleteByBooruUid(booruUid: Long)
 }

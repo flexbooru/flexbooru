@@ -127,9 +127,16 @@ class AccountConfigActivity : BaseActivity(), CoroutineScope {
         }
         set_account.visibility = View.INVISIBLE
         progress_bar.visibility = View.VISIBLE
-        launch {
-            val result = userRepository.findUserByName(username, booru)
-            handlerResult(result)
+        if (booru.type == Constants.TYPE_GELBOORU) {
+            launch {
+                val result = userRepository.gelLogin(username, pass, booru)
+                handlerResult(result)
+            }
+        } else {
+            launch {
+                val result = userRepository.findUserByName(username, booru)
+                handlerResult(result)
+            }
         }
     }
 
@@ -152,6 +159,9 @@ class AccountConfigActivity : BaseActivity(), CoroutineScope {
                             booru_uid = booru.uid
                             password_hash = pass
                         }
+                        UserManager.createUser(user)
+                    }
+                    Constants.TYPE_GELBOORU -> {
                         UserManager.createUser(user)
                     }
                 }

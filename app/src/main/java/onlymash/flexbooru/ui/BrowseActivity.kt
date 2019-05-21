@@ -24,6 +24,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -52,10 +53,7 @@ import kotlinx.coroutines.*
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.SankakuApi
+import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.database.UserManager
@@ -124,6 +122,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
     private val danOneApi: DanbooruOneApi by instance()
     private val moeApi: MoebooruApi by instance()
     private val sankakuApi: SankakuApi by instance()
+    private val gelApi: GelbooruApi by instance()
     private val db: FlexbooruDatabase by instance()
     private val ioExecutor: Executor by instance()
 
@@ -273,6 +272,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
             sankakuApi = sankakuApi,
+            gelbooruApi = gelApi,
             db = db
         )
     }
@@ -398,12 +398,6 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
             InfoBottomSheetDialog.create(getCurrentPost()).show(supportFragmentManager, "info")
         }
         post_fav.setOnClickListener {
-            val type = booru.type
-            if (type == Constants.TYPE_GELBOORU) {
-                Toast.makeText(this@BrowseActivity,
-                    getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
             val post = getCurrentPost() ?: return@setOnClickListener
             user?.let { user ->
                 when (post) {
@@ -503,6 +497,25 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                                 val result = voteRepository.addSankakuFav(vote, post)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+                    }
+                    is PostGel -> {
+                        val vote = Vote(
+                            scheme = booru.scheme,
+                            host = booru.host,
+                            post_id = post.getPostId(),
+                            username = user.name,
+                            auth_key = user.password_hash ?: ""
+                        )
+                        launch {
+                            when (val result = voteRepository.addGelFav(vote, post)) {
+                                is NetResult.Success -> {
+                                    Toast.makeText(this@BrowseActivity, "Success", Toast.LENGTH_SHORT).show()
+                                }
+                                is NetResult.Error -> {
+                                    Toast.makeText(this@BrowseActivity, "Error: ${result.errorMsg}", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }

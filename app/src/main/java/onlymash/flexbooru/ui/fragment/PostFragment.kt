@@ -99,8 +99,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                         putString(
                             Constants.AUTH_KEY,
                             when (booru.type) {
-                                Constants.TYPE_DANBOORU,
-                                Constants.TYPE_GELBOORU-> user.api_key
+                                Constants.TYPE_DANBOORU -> user.api_key
                                 else -> user.password_hash
                             }
                             )
@@ -179,6 +178,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
             sankakuApi = sankakuApi,
+            gelbooruApi = gelApi,
             db = db
         )
     }
@@ -212,8 +212,21 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                             DownloadWorker.downloadPost(post, requireActivity())
                         }
                         1 -> {
-                            if (booruType == Constants.TYPE_GELBOORU) {
-                                Snackbar.make(list, getString(R.string.msg_not_supported), Snackbar.LENGTH_SHORT).show()
+                            if (post is PostGel) {
+                                if (search.username.isEmpty()) {
+                                    requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
+                                } else {
+                                    val vote = Vote(
+                                        scheme = search.scheme,
+                                        host = search.host,
+                                        post_id = id,
+                                        username = search.username,
+                                        auth_key = search.auth_key
+                                    )
+                                    GlobalScope.launch {
+                                        voteRepo.addGelFav(vote, post)
+                                    }
+                                }
                                 return@setItems
                             }
                             if (search.auth_key.isEmpty()) {

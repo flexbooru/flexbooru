@@ -133,6 +133,7 @@ class PopularFragment : ListFragment() {
             danbooruOneApi = danOneApi,
             moebooruApi = moeApi,
             sankakuApi = sankakuApi,
+            gelbooruApi = gelApi,
             db = db
         )
     }

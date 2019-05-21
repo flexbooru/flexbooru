@@ -383,11 +383,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             when (drawerItem?.identifier) {
                 DRAWER_ITEM_ID_ACCOUNT -> {
                     val booru = getCurrentBooru()
-                    if (booru?.type == Constants.TYPE_GELBOORU) {
-                        Toast.makeText(this@MainActivity,
-                            getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
-                        return true
-                    }
                     val user = getCurrentUser()
                     if (user != null && booru != null) {
                         startActivity(Intent(this@MainActivity, AccountActivity::class.java))

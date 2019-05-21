@@ -43,4 +43,9 @@ object CookieManager {
         Crashlytics.logException(ex)
         null
     }
+
+    @Throws(SQLException::class)
+    fun deleteByBooruUid(booruUid: Long) {
+        cookieDao.deleteByBooruUid(booruUid)
+    }
 }

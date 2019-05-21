@@ -30,12 +30,14 @@ import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.account.UserRepositoryImpl
+import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
 import kotlin.coroutines.CoroutineContext
 
@@ -134,6 +136,9 @@ class AccountActivity : BaseActivity(), CoroutineScope {
                     .setTitle(R.string.account_user_dialog_title_remove)
                     .setPositiveButton(R.string.dialog_yes) {_, _ ->
                         UserManager.deleteUser(user)
+                        if (booru.type == Constants.TYPE_GELBOORU) {
+                            CookieManager.deleteByBooruUid(booru.uid)
+                        }
                         finish()
                     }
                     .setNegativeButton(R.string.dialog_no, null)
@@ -158,6 +163,11 @@ class AccountActivity : BaseActivity(), CoroutineScope {
                 .into(user_avatar)
         }
         fav_action_button.setOnClickListener {
+            if (booru.type == Constants.TYPE_GELBOORU) {
+                val url = "${booru.scheme}://${booru.host}/index.php?page=favorites&s=view&id=${user.id}"
+                launchUrl(url)
+                return@setOnClickListener
+            }
             val keyword = when (booru.type) {
                 Constants.TYPE_DANBOORU,
                 Constants.TYPE_DANBOORU_ONE,
@@ -168,10 +178,18 @@ class AccountActivity : BaseActivity(), CoroutineScope {
             SearchActivity.startActivity(this, keyword)
         }
         posts_action_button.setOnClickListener {
+            if (booru.type == Constants.TYPE_GELBOORU) {
+                Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             val keyword = String.format("user:%s", user.name)
             SearchActivity.startActivity(this, keyword)
         }
         comments_action_button.setOnClickListener {
+            if (booru.type == Constants.TYPE_GELBOORU) {
+                Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             CommentActivity.startActivity(this, username = user.name)
         }
         if (booru.type == Constants.TYPE_SANKAKU) {

@@ -21,6 +21,7 @@ import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.VoteDan
 import onlymash.flexbooru.entity.VoteMoe
 import onlymash.flexbooru.entity.VoteSankaku
+import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.extension.NetResult
 
@@ -32,4 +33,6 @@ interface VoteRepository {
     suspend fun removeDanOneFav(vote: Vote, postFav: PostDanOne): NetResult<VoteDan>
     suspend fun addSankakuFav(vote: Vote, post: PostSankaku): NetResult<VoteSankaku>
     suspend fun removeSankakuFav(vote: Vote, postFav: PostSankaku): NetResult<VoteSankaku>
+    suspend fun addGelFav(vote: Vote, post: PostGel): NetResult<Boolean>
+    suspend fun removeGelFav(vote: Vote, postFav: PostGel): NetResult<Boolean>
 }
