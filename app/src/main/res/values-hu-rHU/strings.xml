@@ -198,7 +198,8 @@
     <string name="tag_order_date">Dátum</string>
     <string name="tag_order_name">Név</string>
     <string name="tag_order_count">Szám</string>
-    <string name="tag_delete_title">Címke törlése: %s?</string>
+    <string name="tag_delete_title">Delete tag</string>
+    <string name="tag_delete_content">`%s` will be deleted.</string>
     <string name="artist_urls_is_empty">Az Url üres.</string>
     <string name="artist_order">Sorrend</string>
     <string name="artist_order_date">Dátum</string>

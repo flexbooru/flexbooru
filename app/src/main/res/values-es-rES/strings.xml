@@ -198,7 +198,8 @@
     <string name="tag_order_date">Fecha</string>
     <string name="tag_order_name">Nombre</string>
     <string name="tag_order_count">Contador</string>
-    <string name="tag_delete_title">Eliminar etiqueta: %s ?</string>
+    <string name="tag_delete_title">Delete tag</string>
+    <string name="tag_delete_content">`%s` will be deleted.</string>
     <string name="artist_urls_is_empty">URL está vacía.</string>
     <string name="artist_order">Orden</string>
     <string name="artist_order_date">Fecha</string>
