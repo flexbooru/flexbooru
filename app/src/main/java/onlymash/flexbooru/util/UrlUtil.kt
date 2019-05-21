@@ -59,11 +59,11 @@ object UrlUtil {
 fun String.isImage(): Boolean {
     val ext = ext()
     return ext == "jpg" || ext == "png" || ext == "gif" ||
-            ext == "webp"
+            ext == "webp" || ext == "jpeg"
 }
 fun String.isStillImage(): Boolean {
     val ext = ext()
-    return ext == "jpg" || ext == "png"
+    return ext == "jpg" || ext == "png" || ext == "jpeg"
 }
 fun String.isGifImage(): Boolean = ext() == "gif"
 fun String.isImageNotWebp(): Boolean {
