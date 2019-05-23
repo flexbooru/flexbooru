@@ -260,6 +260,7 @@
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_order_code" translatable="false">兑换码</string>
     <string name="purchase_pay_order_code_hint" translatable="false">输入兑换码</string>
+    <string name="purchase_pay_order_code_active_success" translatable="false">激活成功</string>
     <string name="purchase_pay_order_code_summit" translatable="false">提交</string>
     <string name="purchase_pay_order_code_summit_success" translatable="false">提交成功</string>
     <string name="purchase_pay_order_code_summit_failed" translatable="false">提交失败，请检查你的网络状况</string>

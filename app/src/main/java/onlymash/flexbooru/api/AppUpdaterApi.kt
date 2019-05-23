@@ -17,14 +17,15 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.util.UserAgent
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -66,20 +67,24 @@ interface AppUpdaterApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AppUpdaterApi::class.java)
         }
 
         suspend fun checkUpdate() {
-            try {
-                val data = AppUpdaterApi().checkUpdateAsync().await()
-                Settings.latestVersionUrl = data.url
-                Settings.latestVersionName = data.version_name
-                Settings.latestVersionCode = data.version_code
-                Settings.isAvailableOnStore = data.is_available_store
-            } catch (_: Exception) {}
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = AppUpdaterApi().checkUpdate().execute()
+                    val data = response.body()
+                    if (response.isSuccessful && data != null) {
+                        Settings.latestVersionUrl = data.url
+                        Settings.latestVersionName = data.version_name
+                        Settings.latestVersionCode = data.version_code
+                        Settings.isAvailableOnStore = data.is_available_store
+                    }
+                } catch (_: Exception) {}
+            }
         }
     }
 
@@ -87,7 +92,7 @@ interface AppUpdaterApi {
      * check app new version
      * */
     @GET("/flexbooru/flexbooru/master/app/update.json")
-    fun checkUpdateAsync(): Deferred<UpdateInfo>
+    fun checkUpdate(): Call<UpdateInfo>
 }
 
 /**

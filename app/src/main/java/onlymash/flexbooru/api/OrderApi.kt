@@ -17,14 +17,16 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Settings
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.util.UserAgent
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -41,7 +43,7 @@ data class OrderResponse(
 interface OrderApi {
     companion object {
         private const val BASE_URL = "https://flexbooru-pay.fiepi.com"
-        private fun create(): OrderApi {
+        operator fun invoke(): OrderApi {
 
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
                 Log.d("OrderApi", log)
@@ -69,48 +71,51 @@ interface OrderApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(OrderApi::class.java)
         }
 
         suspend fun orderChecker(orderId: String, deviceId: String) {
-            try {
-                val data = create().checkerAsync(orderId, deviceId).await()
-                if (data.success) {
-                    Settings.isOrderSuccess = data.activated
-                } else {
-                    Settings.isOrderSuccess = false
-                    Settings.orderId = ""
-                }
-            } catch (_: Exception) {}
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = OrderApi().checker(orderId, deviceId).execute()
+                    val data = response.body()
+                    if (response.isSuccessful && data != null) {
+                        if (data.success) {
+                            Settings.isOrderSuccess = data.activated
+                        } else {
+                            Settings.isOrderSuccess = false
+                            Settings.orderId = ""
+                        }
+                    }
+                } catch (_: Exception) {}
+            }
         }
-        suspend fun orderRegister(orderId: String, deviceId: String, success: (Boolean) -> Unit) {
-            try {
-                val data = create().registerAsync(orderId, deviceId).await()
-                if (data.success) {
-                    success(true)
-                    Settings.isOrderSuccess = data.activated
-                    Settings.orderId = orderId
-                } else {
-                    success(false)
-                    Settings.isOrderSuccess = false
-                    Settings.orderId = ""
+        suspend fun orderRegister(orderId: String, deviceId: String): NetResult<OrderResponse> {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val response = OrderApi().register(orderId, deviceId).execute()
+                    val data = response.body()
+                    if (response.isSuccessful && data != null) {
+                        NetResult.Success(data)
+                    } else {
+                        NetResult.Error("code: ${response.code()}")
+                    }
+                } catch (e: Exception) {
+                    NetResult.Error(e.toString())
                 }
-            } catch (_: Exception) {
-                success(false)
             }
         }
     }
 
     @GET("/order/checker.json")
-    fun checkerAsync(
+    fun checker(
         @Query("order_id") orderId: String,
-        @Query("device_id") deviceId: String): Deferred<OrderResponse>
+        @Query("device_id") deviceId: String): Call<OrderResponse>
 
     @GET("/order/register.json")
-    fun registerAsync(
+    fun register(
         @Query("order_id") orderId: String,
-        @Query("device_id") deviceId: String): Deferred<OrderResponse>
+        @Query("device_id") deviceId: String): Call<OrderResponse>
 }

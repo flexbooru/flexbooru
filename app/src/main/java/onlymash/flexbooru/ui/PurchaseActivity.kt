@@ -35,6 +35,7 @@ import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.Settings
 import onlymash.flexbooru.api.OrderApi
+import onlymash.flexbooru.extension.NetResult
 
 class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
 
@@ -134,21 +135,43 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                         val orderId = (editText.text ?: "").toString().trim()
                         if (orderId.isNotEmpty()) {
                             GlobalScope.launch(Dispatchers.Main) {
-                                OrderApi.orderRegister(orderId, Settings.orderDeviceId) { success ->
-                                    if (!isFinishing) {
-                                        if (success) {
-                                            Toast.makeText(
-                                                this@PurchaseActivity,
-                                                getString(R.string.purchase_pay_order_code_summit_success),
-                                                Toast.LENGTH_LONG
-                                            ).show()
+                                when (val result = OrderApi.orderRegister(orderId, Settings.orderDeviceId)) {
+                                    is NetResult.Success -> {
+                                        val data = result.data
+                                        if (data.success) {
+                                            if (data.activated) {
+                                                Toast.makeText(
+                                                    this@PurchaseActivity,
+                                                    getString(R.string.purchase_pay_order_code_active_success),
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            } else {
+                                                Toast.makeText(
+                                                    this@PurchaseActivity,
+                                                    getString(R.string.purchase_pay_order_code_summit_success),
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                            Settings.isOrderSuccess = data.activated
+                                            Settings.orderId = orderId
                                         } else {
                                             Toast.makeText(
                                                 this@PurchaseActivity,
                                                 getString(R.string.purchase_pay_order_code_summit_failed),
                                                 Toast.LENGTH_LONG
                                             ).show()
+                                            Settings.isOrderSuccess = false
+                                            Settings.orderId = ""
                                         }
+                                    }
+                                    is NetResult.Error -> {
+                                        Toast.makeText(
+                                            this@PurchaseActivity,
+                                            getString(R.string.purchase_pay_order_code_summit_failed),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        Settings.isOrderSuccess = false
+                                        Settings.orderId = ""
                                     }
                                 }
                             }

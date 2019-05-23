@@ -22,10 +22,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
@@ -41,7 +39,6 @@ import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.*
@@ -196,7 +193,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun checkUpdate() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch {
             AppUpdaterApi.checkUpdate()
         }
         if (BuildConfig.VERSION_CODE < Settings.latestVersionCode) {
