@@ -17,11 +17,10 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Deferred
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.Constants
 import onlymash.flexbooru.Constants.BASE_URL
@@ -75,7 +74,6 @@ interface DanbooruApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(DanbooruApi::class.java)
@@ -86,7 +84,7 @@ interface DanbooruApi {
     fun getPosts(@Url httpUrl: HttpUrl): Call<MutableList<PostDan>>
 
     @GET
-    fun getUsersAsync(@Url httpUrl: HttpUrl): Deferred<MutableList<User>>
+    fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
 
     @GET
     fun getPools(@Url httpUrl: HttpUrl): Call<MutableList<PoolDan>>
@@ -99,13 +97,13 @@ interface DanbooruApi {
 
     @FormUrlEncoded
     @POST
-    fun favPostAsync(@Url url: String,
+    fun favPost(@Url url: String,
                 @Field("post_id") id: Int,
                 @Field("login") username: String,
-                @Field("api_key") apiKey: String): Deferred<VoteDan>
+                @Field("api_key") apiKey: String): Call<VoteDan>
 
     @DELETE
-    fun removeFavPostAsync(@Url httpUrl: HttpUrl): Deferred<VoteDan>
+    fun removeFavPost(@Url httpUrl: HttpUrl): Call<ResponseBody>
 
     @GET
     fun getComments(@Url httpUrl: HttpUrl): Call<MutableList<CommentDan>>

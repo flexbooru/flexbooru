@@ -28,7 +28,7 @@ import onlymash.flexbooru.extension.NetResult
 interface VoteRepository {
     suspend fun voteMoePost(vote: Vote): NetResult<VoteMoe>
     suspend fun addDanFav(vote: Vote, post: PostDan): NetResult<VoteDan>
-    suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<VoteDan>
+    suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<Boolean>
     suspend fun addDanOneFav(vote: Vote, post: PostDanOne): NetResult<VoteDan>
     suspend fun removeDanOneFav(vote: Vote, postFav: PostDanOne): NetResult<VoteDan>
     suspend fun addSankakuFav(vote: Vote, post: PostSankaku): NetResult<VoteSankaku>

@@ -17,8 +17,6 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Deferred
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -80,7 +78,6 @@ interface MoebooruApi {
             return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .client(client)
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MoebooruApi::class.java)
@@ -91,7 +88,7 @@ interface MoebooruApi {
     fun getPosts(@Url httpUrl: HttpUrl): Call<MutableList<PostMoe>>
 
     @GET
-    fun getUsersAsync(@Url httpUrl: HttpUrl): Deferred<MutableList<User>>
+    fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
 
     @GET
     fun getPools(@Url httpUrl: HttpUrl): Call<MutableList<PoolMoe>>
@@ -104,11 +101,11 @@ interface MoebooruApi {
 
     @FormUrlEncoded
     @POST
-    fun votePostAsync(@Url url: String,
+    fun votePost(@Url url: String,
                       @Field("id") id: Int,
                       @Field("score") score: Int = 3, //0-3
                       @Field("login") username: String,
-                      @Field("password_hash") passwordHash: String): Deferred<VoteMoe>
+                      @Field("password_hash") passwordHash: String): Call<VoteMoe>
 
     /* comment/create.json
      */

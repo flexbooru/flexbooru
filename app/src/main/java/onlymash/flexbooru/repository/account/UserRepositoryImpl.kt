@@ -146,30 +146,44 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     }
 
     private suspend fun findMoeUser(username: String, booru: Booru): NetResult<User> {
-        return try {
-            val users = moebooruApi.getUsersAsync(MoeUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
-            if (index == -1) {
-                NetResult.Error("User not found!")
-            } else {
-                NetResult.Success(users[index])
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = moebooruApi.getUsers(MoeUrlHelper.getUserUrl(username, booru)).execute()
+                val users = response.body()
+                if (response.isSuccessful && users != null) {
+                    val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
+                    if (index == -1) {
+                        NetResult.Error("User not found!")
+                    } else {
+                        NetResult.Success(users[index])
+                    }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
             }
-        } catch (e: Exception) {
-            NetResult.Error(e.toString())
         }
     }
 
     private suspend fun findDanUser(username: String, booru: Booru): NetResult<User> {
-        return try {
-            val users = danbooruApi.getUsersAsync(DanUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
-            if (index == -1) {
-                NetResult.Error("User not found!")
-            } else {
-                NetResult.Success(users[index])
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = danbooruApi.getUsers(DanUrlHelper.getUserUrl(username, booru)).execute()
+                val users = response.body()
+                if (response.isSuccessful && users != null) {
+                    val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
+                    if (index == -1) {
+                        NetResult.Error("User not found!")
+                    } else {
+                        NetResult.Success(users[index])
+                    }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
             }
-        } catch (e: Exception) {
-            NetResult.Error(e.toString())
         }
     }
 
@@ -177,43 +191,64 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
      *search moebooru user by id
      * */
     private suspend fun findMoeUserById(id: Int, booru: Booru): NetResult<User> {
-        return try {
-            val users = moebooruApi.getUsersAsync(MoeUrlHelper.getUserUrlById(id, booru)).await()
-            if (users.size == 1) {
-                NetResult.Success(users[0])
-            } else {
-                NetResult.Error("User not found!")
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = moebooruApi.getUsers(MoeUrlHelper.getUserUrlById(id, booru)).execute()
+                val users = response.body()
+                if (response.isSuccessful && users != null) {
+                    if (users.size == 1) {
+                        NetResult.Success(users[0])
+                    } else {
+                        NetResult.Error("User not found!")
+                    }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
             }
-        } catch (e: Exception) {
-            NetResult.Error(e.toString())
         }
     }
 
     private suspend fun findDanOneUser(username: String, booru: Booru): NetResult<User> {
-        return try {
-            val users = danbooruOneApi.getUsersAsync(DanOneUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
-            if (index == -1) {
-                NetResult.Error("User not found!")
-            } else {
-                NetResult.Success(users[index])
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrl(username, booru)).execute()
+                val users = response.body()
+                if (response.isSuccessful && users != null) {
+                    val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
+                    if (index == -1) {
+                        NetResult.Error("User not found!")
+                    } else {
+                        NetResult.Success(users[index])
+                    }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
             }
-        } catch (e: Exception) {
-            NetResult.Error(e.toString())
         }
     }
 
     private suspend fun findSankakuUser(username: String, booru: Booru): NetResult<User> {
-        return try {
-            val users = sankakuApi.getUsersAsync(SankakuUrlHelper.getUserUrl(username, booru)).await()
-            val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
-            if (index == -1) {
-                NetResult.Error("User not found!")
-            } else {
-                NetResult.Success(users[index])
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = sankakuApi.getUsers(SankakuUrlHelper.getUserUrl(username, booru)).execute()
+                val users = response.body()
+                if (response.isSuccessful && users != null) {
+                    val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
+                    if (index == -1) {
+                        NetResult.Error("User not found!")
+                    } else {
+                        NetResult.Success(users[index])
+                    }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
             }
-        } catch (e: Exception) {
-            NetResult.Error(e.toString())
         }
     }
 
@@ -221,15 +256,22 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
      *search danbooru1.x user by id
      * */
     private suspend fun findDanOneUserById(id: Int, booru: Booru): NetResult<User> {
-        return try {
-            val users = danbooruOneApi.getUsersAsync(DanOneUrlHelper.getUserUrlById(id, booru)).await()
-            if (users.size == 1) {
-                NetResult.Success(users[0])
-            } else {
-                NetResult.Error("User not found!")
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrlById(id, booru)).execute()
+                val users = response.body()
+                if (response.isSuccessful && users != null) {
+                    if (users.size == 1) {
+                        NetResult.Success(users[0])
+                    } else {
+                        NetResult.Error("User not found!")
+                    }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
             }
-        } catch (e: Exception) {
-            NetResult.Error(e.toString())
         }
     }
 }

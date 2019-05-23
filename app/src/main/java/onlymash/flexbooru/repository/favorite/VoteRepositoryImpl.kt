@@ -59,13 +59,14 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun voteMoePost(vote: Vote): NetResult<VoteMoe> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = moebooruApi.votePostAsync(
+                val response = moebooruApi.votePost(
                     url = MoeUrlHelper.getVoteUrl(vote),
                     id = vote.post_id,
                     score = vote.score,
                     username = vote.username,
-                    passwordHash = vote.auth_key).await()
-                if (data.success) {
+                    passwordHash = vote.auth_key).execute()
+                val data = response.body()
+                if (response.isSuccessful && data != null && data.success) {
                     if (vote.score == 0) {
                         db.runInTransaction {
                             db.postMoeDao().deletePost(
@@ -93,7 +94,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                         db.postMoeDao().insert(post)
                     }
                     NetResult.Success(data)
-                } else NetResult.Error(data.message)
+                } else NetResult.Error("code: ${response.code()}")
             } catch (e: Exception) {
                 if (e is HttpException) {
                     val code = e.code()
@@ -110,17 +111,22 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun addDanFav(vote: Vote, post: PostDan): NetResult<VoteDan> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = danbooruApi.favPostAsync(
+                val response = danbooruApi.favPost(
                     url = DanUrlHelper.getAddFavUrl(vote),
                     id = vote.post_id,
                     username = vote.username,
                     apiKey = vote.auth_key
-                ).await()
-                post.scheme = vote.scheme
-                post.keyword = "fav:${vote.username}"
-                post.uid = 0L
-                db.postDanDao().insert(post)
-                NetResult.Success(data)
+                ).execute()
+                val body = response.body()
+                if (body != null) {
+                    post.scheme = vote.scheme
+                    post.keyword = "fav:${vote.username}"
+                    post.uid = 0L
+                    db.postDanDao().insert(post)
+                    NetResult.Success(body)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
             } catch (e: Exception) {
                 if (e is HttpException) {
                     val code = e.code()
@@ -139,12 +145,17 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
         }
     }
 
-    override suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<VoteDan> {
+    override suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = danbooruApi.removeFavPostAsync(DanUrlHelper.getRemoveFavUrl(vote)).await()
-                db.postDanDao().deletePost(postFav)
-                NetResult.Success(data)
+                val response = danbooruApi.removeFavPost(DanUrlHelper.getRemoveFavUrl(vote)).execute()
+                if (response.isSuccessful) {
+                    postFav.keyword = "fav:${vote.username}"
+                    db.postDanDao().deletePost(postFav)
+                    NetResult.Success(true)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
             } catch (e: Exception) {
                 if (e is HttpException)
                     NetResult.Error("code: ${e.code()}")
@@ -157,17 +168,22 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun addDanOneFav(vote: Vote, post: PostDanOne): NetResult<VoteDan> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = danbooruOneApi.favPostAsync(
+                val response = danbooruOneApi.favPost(
                     url = DanOneUrlHelper.getAddFavUrl(vote),
                     id = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).await()
-                post.scheme = vote.scheme
-                post.keyword = "fav:${vote.username}"
-                post.uid = 0L
-                db.postDanOneDao().insert(post)
-                NetResult.Success(data)
+                ).execute()
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
+                    post.scheme = vote.scheme
+                    post.keyword = "fav:${vote.username}"
+                    post.uid = 0L
+                    db.postDanOneDao().insert(post)
+                    NetResult.Success(data)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
             } catch (e: Exception) {
                 if (e is HttpException)
                     NetResult.Error("code: ${e.code()}")
@@ -180,14 +196,19 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun removeDanOneFav(vote: Vote, postFav: PostDanOne): NetResult<VoteDan> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = danbooruOneApi.removeFavPostAsync(
+                val response = danbooruOneApi.removeFavPost(
                     url = DanOneUrlHelper.getRemoveFavUrl(vote),
                     postId = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).await()
-                db.postDanOneDao().deletePost(postFav)
-                NetResult.Success(data)
+                ).execute()
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
+                    db.postDanOneDao().deletePost(postFav)
+                    NetResult.Success(data)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
             } catch (e: Exception) {
                 if (e is HttpException)
                     NetResult.Error("code: ${e.code()}")
@@ -200,19 +221,24 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun addSankakuFav(vote: Vote, post: PostSankaku): NetResult<VoteSankaku> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = sankakuApi.favPostAsync(
+                val response = sankakuApi.favPost(
                     url = SankakuUrlHelper.getAddFavUrl(vote),
                     postId = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).await()
-                if (data.post_id == post.id) {
-                    post.scheme = vote.scheme
-                    post.keyword = "fav:${vote.username}"
-                    post.uid = 0L
-                    db.postSankakuDao().insert(post)
-                    NetResult.Success(data)
-                } else NetResult.Error(data.toString())
+                ).execute()
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
+                    if (data.post_id == post.id) {
+                        post.scheme = vote.scheme
+                        post.keyword = "fav:${vote.username}"
+                        post.uid = 0L
+                        db.postSankakuDao().insert(post)
+                        NetResult.Success(data)
+                    } else NetResult.Error(data.toString())
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
             } catch (e: Exception) {
                 if (e is HttpException)
                     NetResult.Error("code: ${e.code()}")
@@ -225,16 +251,21 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun removeSankakuFav(vote: Vote, postFav: PostSankaku): NetResult<VoteSankaku> {
         return withContext(Dispatchers.IO) {
             try {
-                val data = sankakuApi.removeFavPostAsync(
+                val response = sankakuApi.removeFavPost(
                     url = SankakuUrlHelper.getRemoveFavUrl(vote),
                     postId = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).await()
-                if (data.post_id == postFav.id) {
-                    db.postSankakuDao().deletePost(postFav)
-                    NetResult.Success(data)
-                } else NetResult.Error(data.toString())
+                ).execute()
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
+                    if (data.post_id == postFav.id) {
+                        db.postSankakuDao().deletePost(postFav)
+                        NetResult.Success(data)
+                    } else NetResult.Error(data.toString())
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
             } catch (e: Exception) {
                 if (e is HttpException)
                     NetResult.Error("code: ${e.code()}")
