@@ -134,7 +134,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
-    implementation 'com.google.android.gms:play-services-ads:17.2.0'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
     implementation 'com.android.billingclient:billing:2.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.0-alpha05'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'

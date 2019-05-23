@@ -10,7 +10,7 @@ buildscript {
         work_version = '2.1.0-alpha02'
         room_version = '2.1.0-beta01'
         glide_version = '4.10.0-SNAPSHOT'
-        exoplayer_version = '2.10.0'
+        exoplayer_version = '2.10.1'
         tikxml_version = '0.8.13'
         coroutines_version = '1.2.1'
         kodein_version = '6.2.0'
