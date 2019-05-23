@@ -23,7 +23,7 @@
     <color name="white">@android:color/white</color>
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="translucent">#55000000</color>
+    <color name="translucent">#52000000</color>
 
     <color name="icon_tint">@color/grey_600</color>
     <color name="pref_icon_tint">@color/grey_600</color>

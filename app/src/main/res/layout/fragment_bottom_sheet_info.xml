@@ -46,7 +46,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="15dp"
                 android:textAppearance="?android:attr/textAppearanceListItem"
-                android:textColor="@android:color/primary_text_dark"
+                android:textColor="@color/primary_text_dark"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/user_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="15dp"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 app:layout_constraintTop_toBottomOf="@+id/user_name"
                 app:layout_constraintStart_toEndOf="@id/user_avatar"
                 app:layout_constraintEnd_toStartOf="@id/created_date"
@@ -72,7 +72,7 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="10dp"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 app:layout_constraintTop_toTopOf="@+id/user_id"
                 app:layout_constraintStart_toEndOf="@id/user_id"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
                 android:text="@string/browse_info_source"
                 android:layout_marginStart="10dp"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         <TextView
@@ -100,7 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:gravity="end"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -118,7 +118,7 @@
                 android:text="@string/browse_info_rating"
                 android:layout_marginStart="10dp"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         <TextView
@@ -126,7 +126,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:gravity="end"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -143,7 +143,7 @@
                 android:text="@string/browse_info_score"
                 android:layout_marginStart="10dp"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         <TextView
@@ -152,7 +152,7 @@
                 android:layout_width="0dp"
                 android:gravity="end"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_height="match_parent"/>
@@ -170,7 +170,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:layout_height="match_parent"/>
         <TextView
                 android:id="@+id/parent"
@@ -178,7 +178,7 @@
                 android:layout_width="0dp"
                 android:gravity="end"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/secondary_text_dark"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_height="match_parent"/>
@@ -198,7 +198,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@color/secondary_text_dark"/>
         <ImageView
                 android:id="@+id/url_sample_download"
                 android:layout_width="wrap_content"
@@ -238,7 +238,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@color/secondary_text_dark"/>
         <ImageView
                 android:id="@+id/url_larger_download"
                 android:layout_width="wrap_content"
@@ -278,7 +278,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearance"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@color/secondary_text_dark"/>
         <ImageView
                 android:id="@+id/url_origin_download"
                 android:layout_width="wrap_content"

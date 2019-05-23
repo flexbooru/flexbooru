@@ -19,8 +19,8 @@ import android.content.ClipData
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +40,7 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
     private val dot: AppCompatImageView = itemView.findViewById(R.id.dot)
-    private val tagName: TextView = itemView.findViewById(R.id.tag_name)
+    private val tagName: AppCompatTextView = itemView.findViewById(R.id.tag_name)
     private val tagExclude: AppCompatImageView = itemView.findViewById(R.id.tag_exclude)
     private val tagInclude: AppCompatImageView = itemView.findViewById(R.id.tag_include)
 

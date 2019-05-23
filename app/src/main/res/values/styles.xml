@@ -103,7 +103,7 @@
     </style>
     <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
     <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Light"/>
-    <style name="TransparentBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+    <style name="TransparentBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
     </style>
     <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
