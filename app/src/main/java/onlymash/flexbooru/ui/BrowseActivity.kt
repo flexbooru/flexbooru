@@ -155,7 +155,7 @@ class BrowseActivity : BaseActivity() {
         toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].getPostId())
         pagerAdapter.updateData(posts)
         pager_browse.adapter = pagerAdapter
-        pager_browse.currentItem = if (currentPosition >= 0) currentPosition else position
+        pager_browse.setCurrentItem(if (currentPosition >= 0) currentPosition else position, false)
         if (canTransition) startPostponedEnterTransition()
         if (url.isNotEmpty() && !url.isImage()) {
             Handler().postDelayed({
@@ -596,7 +596,7 @@ class BrowseActivity : BaseActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         currentPosition = savedInstanceState?.getInt(PAGER_CURRENT_POSITION_KEY) ?: -1
         super.onRestoreInstanceState(savedInstanceState)
-        if (currentPosition >= 0) pager_browse.currentItem = currentPosition
+        if (currentPosition >= 0) pager_browse.setCurrentItem(currentPosition, false)
     }
 
     private fun saveAndAction(action: Int) {

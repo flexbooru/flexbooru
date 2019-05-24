@@ -367,7 +367,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     boorus.forEach { booru ->
                         if (booru.uid == uid) {
                             pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
-                            pager_container.currentItem = currentNavItem
+                            pager_container.setCurrentItem(currentNavItem, false)
                             return@forEach
                         }
                     }
@@ -485,7 +485,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private fun onNavPosition(position: Int) {
         if (pager_container.currentItem != position) {
-            pager_container.currentItem = position
+            pager_container.setCurrentItem(position, false)
         } else if (currentNavItem == position){
             navigationListeners.forEach {
                 it.onClickPosition(position)
@@ -574,7 +574,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             Settings.SHOW_INFO_BAR_KEY -> {
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
-                pager_container.currentItem = currentNavItem
+                pager_container.setCurrentItem(currentNavItem, false)
             }
             Settings.NIGHT_MODE_KEY -> {
                 AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
