@@ -19,11 +19,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.comment.CommentState
 
-class CommentViewModel(private val repo: CommentRepository) : ScopeViewModel() {
+class CommentViewModel(private val repo: CommentRepository) : ViewModel() {
 
     private val commentAction = MutableLiveData<CommentAction>()
     private val moeRepoResult = map(commentAction) {

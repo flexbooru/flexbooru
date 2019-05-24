@@ -18,10 +18,11 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.repository.tag.TagRepository
 
-class TagViewModel(private val repo: TagRepository) : ScopeViewModel() {
+class TagViewModel(private val repo: TagRepository) : ViewModel() {
 
     private val searchData = MutableLiveData<SearchTag>()
     private val danRepoResult = map(searchData) {
