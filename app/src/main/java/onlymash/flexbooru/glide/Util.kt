@@ -17,7 +17,7 @@ package onlymash.flexbooru.glide
 
 import com.bumptech.glide.load.model.Headers
 import com.bumptech.glide.load.model.LazyHeaders
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.util.UserAgent
 
 //Glide url header

@@ -23,9 +23,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi

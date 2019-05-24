@@ -43,6 +43,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.*
 import onlymash.flexbooru.api.AppUpdaterApi
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru

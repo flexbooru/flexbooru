@@ -41,9 +41,9 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.image.CustomDecoder

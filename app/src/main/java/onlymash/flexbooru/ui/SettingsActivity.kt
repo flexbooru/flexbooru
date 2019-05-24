@@ -21,9 +21,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
 import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 
 class SettingsActivity : BaseActivity() {
 

@@ -25,7 +25,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.util.UserAgent
 
 /** A [Downloader] which uses OkHttp to download images.  */

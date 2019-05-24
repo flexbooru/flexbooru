@@ -25,9 +25,9 @@ import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.util.ext
 import java.util.*
 

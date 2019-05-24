@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.database
 
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.TagBlacklist
 import org.kodein.di.generic.instance

@@ -33,7 +33,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_muzei.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.database.dao.MuzeiDao

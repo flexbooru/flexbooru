@@ -17,7 +17,7 @@ package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
 import com.crashlytics.android.Crashlytics
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.CookieDao
 import onlymash.flexbooru.entity.Cookie
 import org.kodein.di.generic.instance

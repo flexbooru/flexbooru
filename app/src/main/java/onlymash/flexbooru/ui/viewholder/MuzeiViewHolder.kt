@@ -21,7 +21,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.entity.Muzei

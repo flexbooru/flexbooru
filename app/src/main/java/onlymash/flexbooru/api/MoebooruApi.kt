@@ -21,8 +21,8 @@ import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.VoteMoe

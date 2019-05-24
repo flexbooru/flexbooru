@@ -21,9 +21,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.commitNow
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.ui.fragment.PostFragment

@@ -16,7 +16,7 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.UserDao
 import onlymash.flexbooru.entity.User
 import org.kodein.di.generic.instance

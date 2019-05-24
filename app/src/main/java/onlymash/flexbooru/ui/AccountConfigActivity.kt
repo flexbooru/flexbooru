@@ -24,9 +24,9 @@ import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_account_config.*
 import kotlinx.coroutines.*
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
@@ -38,7 +38,6 @@ import onlymash.flexbooru.repository.account.UserRepository
 import onlymash.flexbooru.util.HashUtil
 import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
-import kotlin.coroutines.CoroutineContext
 
 class AccountConfigActivity : BaseActivity() {
 

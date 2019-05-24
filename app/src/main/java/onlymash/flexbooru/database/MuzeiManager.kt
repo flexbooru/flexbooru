@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.database
 
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.MuzeiDao
 import onlymash.flexbooru.entity.Muzei
 import org.kodein.di.generic.instance

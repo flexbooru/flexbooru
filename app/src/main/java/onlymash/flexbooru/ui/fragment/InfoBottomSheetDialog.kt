@@ -29,8 +29,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import onlymash.flexbooru.App
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.App
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideApp

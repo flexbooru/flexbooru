@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru
+package onlymash.flexbooru.common
 
 object Constants {
     const val DB_FILE_NAME = "Flexbooru.db"

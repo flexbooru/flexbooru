@@ -19,8 +19,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import onlymash.flexbooru.App
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.App
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.Booru
 import org.kodein.di.generic.instance

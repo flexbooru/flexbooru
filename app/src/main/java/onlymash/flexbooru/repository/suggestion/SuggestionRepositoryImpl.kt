@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.repository.suggestion
 
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.entity.tag.TagBase

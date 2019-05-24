@@ -17,7 +17,7 @@ package onlymash.flexbooru.repository.favorite
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*

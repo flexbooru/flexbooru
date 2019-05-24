@@ -30,8 +30,8 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import onlymash.flexbooru.App
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.App
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.util.okhttp.ProgressInterceptor

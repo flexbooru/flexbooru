@@ -20,7 +20,6 @@ import androidx.core.net.toUri
 import androidx.work.*
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
-import onlymash.flexbooru.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
@@ -28,6 +27,9 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Search
 import java.io.IOException
 import onlymash.flexbooru.api.url.*
+import onlymash.flexbooru.common.App
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.MuzeiManager
 import org.kodein.di.generic.instance
 

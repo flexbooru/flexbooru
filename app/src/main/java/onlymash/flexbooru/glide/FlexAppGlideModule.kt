@@ -31,8 +31,8 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.util.UserAgent
 import onlymash.flexbooru.util.okhttp.ProgressInterceptor

@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.util.trimCache

@@ -18,7 +18,7 @@ package onlymash.flexbooru.entity.post
 import android.text.format.Formatter
 import androidx.room.Entity
 import androidx.room.Index
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.entity.DanOneDate
 import onlymash.flexbooru.entity.SankakuAuthor
 import onlymash.flexbooru.entity.SankakuTag

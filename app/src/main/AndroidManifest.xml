@@ -19,7 +19,7 @@
             android:required="false"/>
 
     <application
-            android:name=".App"
+            android:name=".common.App"
             android:allowBackup="true"
             android:fullBackupContent="@xml/backup_descriptor"
             android:fullBackupOnly="true"

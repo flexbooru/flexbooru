@@ -23,7 +23,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru

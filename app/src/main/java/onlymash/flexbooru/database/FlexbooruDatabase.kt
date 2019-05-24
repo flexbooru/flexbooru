@@ -22,7 +22,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import onlymash.flexbooru.Constants
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.database.dao.*
 import onlymash.flexbooru.entity.*
 import onlymash.flexbooru.entity.post.*

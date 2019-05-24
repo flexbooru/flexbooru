@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import onlymash.flexbooru.App.Companion.app
+import onlymash.flexbooru.common.App.Companion.app
 import onlymash.flexbooru.util.UserAgent
 import java.io.File
 

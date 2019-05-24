@@ -18,7 +18,7 @@ package onlymash.flexbooru.entity.post
 import android.text.format.Formatter
 import androidx.room.Entity
 import androidx.room.Index
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.util.formatDate
 import java.text.SimpleDateFormat
 import java.util.*

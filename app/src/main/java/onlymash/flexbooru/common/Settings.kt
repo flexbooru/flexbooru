@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru
+package onlymash.flexbooru.common
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
@@ -75,15 +75,24 @@ object Settings {
         set(value) = sp.edit().putString(MUZEI_LIMIT_KEY, value.toString()).apply()
 
     var browseSize: String
-        get() = sp.getString(BROWSE_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_SAMPLE
+        get() = sp.getString(
+            BROWSE_SIZE_KEY,
+            POST_SIZE_SAMPLE
+        ) ?: POST_SIZE_SAMPLE
         set(value) = sp.edit().putString(BROWSE_SIZE_KEY, value).apply()
 
     var downloadSize: String
-        get() = sp.getString(DOWNLOAD_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_LARGER
+        get() = sp.getString(
+            DOWNLOAD_SIZE_KEY,
+            POST_SIZE_SAMPLE
+        ) ?: POST_SIZE_LARGER
         set(value) = sp.edit().putString(DOWNLOAD_SIZE_KEY, value).apply()
 
     var muzeiSize: String
-        get() = sp.getString(MUZEI_SIZE_KEY, POST_SIZE_SAMPLE) ?: POST_SIZE_LARGER
+        get() = sp.getString(
+            MUZEI_SIZE_KEY,
+            POST_SIZE_SAMPLE
+        ) ?: POST_SIZE_LARGER
         set(value) = sp.edit().putString(MUZEI_SIZE_KEY, value).apply()
 
     var isNightMode: Boolean
@@ -100,7 +109,10 @@ object Settings {
 
 
     var gridWidth: String
-        get() = sp.getString(GRID_WIDTH_KEY, GRID_WIDTH_NORMAL) ?: GRID_WIDTH_NORMAL
+        get() = sp.getString(
+            GRID_WIDTH_KEY,
+            GRID_WIDTH_NORMAL
+        ) ?: GRID_WIDTH_NORMAL
         set(value) = sp.edit().putString(GRID_WIDTH_KEY, value).apply()
 
     var activeMuzeiUid: Long

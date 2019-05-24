@@ -22,8 +22,8 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.Constants
-import onlymash.flexbooru.Constants.BASE_URL
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Constants.BASE_URL
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.VoteDan
 import onlymash.flexbooru.entity.artist.ArtistDan

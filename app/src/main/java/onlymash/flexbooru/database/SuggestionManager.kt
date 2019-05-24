@@ -19,7 +19,7 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteCantOpenDatabaseException
 import androidx.lifecycle.LiveData
 import com.crashlytics.android.Crashlytics
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.SuggestionDao
 import onlymash.flexbooru.entity.Suggestion
 import org.kodein.di.generic.instance

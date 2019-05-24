@@ -22,8 +22,8 @@ import android.webkit.*
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import onlymash.flexbooru.App
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.App
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.Cookie
 import java.io.IOException
 import java.util.concurrent.CountDownLatch

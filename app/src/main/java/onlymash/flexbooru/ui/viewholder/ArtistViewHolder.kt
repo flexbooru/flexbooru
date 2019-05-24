@@ -24,7 +24,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.artist.ArtistBase
 import onlymash.flexbooru.util.ViewAnimation

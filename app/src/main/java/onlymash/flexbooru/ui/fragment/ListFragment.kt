@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.Settings
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.extension.toVisibility

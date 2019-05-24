@@ -19,7 +19,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.exoplayer2.database.DatabaseProvider
-import onlymash.flexbooru.App
+import onlymash.flexbooru.common.App
 
 class DefaultDatabaseProvider(context: Context) : SQLiteOpenHelper(context, "ExoPlayer", null, 1), DatabaseProvider {
 
