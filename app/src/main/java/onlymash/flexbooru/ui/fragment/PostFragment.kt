@@ -71,6 +71,8 @@ import org.kodein.di.generic.instance
 class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
+        private const val TAG = "PostFragment"
+
         private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
         private const val POST_TYPE_KEY = "post_type"
         const val POST_ALL = 0

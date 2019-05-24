@@ -24,7 +24,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -34,10 +33,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -79,9 +75,8 @@ import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.generic.instance
 import java.io.*
 import java.util.concurrent.Executor
-import kotlin.coroutines.CoroutineContext
 
-class BrowseActivity : BaseActivity(), CoroutineScope {
+class BrowseActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "BrowseActivity"
@@ -137,10 +132,6 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
     private var currentPosition = -1
     private var canTransition = true
     private val postLoader by lazy { PostLoaderRepositoryImpl(db) }
-
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
 
     @Suppress("UNCHECKED_CAST")
     private fun handleResult(data: MutableList<PostBase>) {
@@ -302,7 +293,6 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         initWindow()
         setContentView(R.layout.activity_browse)
-        job = Job()
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         pager_browse.background = colorDrawable
@@ -372,7 +362,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
             ioExecutor = ioExecutor)
         pagerAdapter.setPhotoViewListener(photoViewListener)
         pager_browse.addOnPageChangeListener(pagerChangeListener)
-        launch {
+        lifecycleScope.launch {
             val data = withContext(Dispatchers.IO) {
                 postLoader.loadPosts(
                     host = booru.host,
@@ -410,14 +400,14 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             auth_key = user.api_key ?: return@let)
                         val postFav = getCurrentPostFav()
                         if (postFav is PostDan) {
-                            launch {
+                            lifecycleScope.launch {
                                 val result = voteRepository.removeDanFav(vote, postFav)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
                                 }
                             }
                         } else {
-                            launch {
+                            lifecycleScope.launch {
                                 val result = voteRepository.addDanFav(vote, post)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
@@ -446,7 +436,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                                     auth_key = user.password_hash ?: return@let)
                             }
                         }
-                        launch {
+                        lifecycleScope.launch {
                             val result = voteRepository.voteMoePost(vote)
                             if (result is NetResult.Error) {
                                 Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
@@ -462,14 +452,14 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             username = user.name,
                             auth_key = user.password_hash ?: return@let)
                         if (postFav is PostDanOne) {
-                            launch {
+                            lifecycleScope.launch {
                                 val result = voteRepository.removeDanOneFav(vote, postFav)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
                                 }
                             }
                         } else {
-                            launch {
+                            lifecycleScope.launch {
                                 val result = voteRepository.addDanOneFav(vote, post)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
@@ -486,14 +476,14 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             username = user.name,
                             auth_key = user.password_hash ?: return@let)
                         if (postFav is PostSankaku) {
-                            launch {
+                            lifecycleScope.launch {
                                 val result = voteRepository.removeSankakuFav(vote, postFav)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
                                 }
                             }
                         } else {
-                            launch {
+                            lifecycleScope.launch {
                                 val result = voteRepository.addSankakuFav(vote, post)
                                 if (result is NetResult.Error) {
                                     Toast.makeText(this@BrowseActivity, result.errorMsg, Toast.LENGTH_LONG).show()
@@ -509,7 +499,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                             username = user.name,
                             auth_key = user.password_hash ?: ""
                         )
-                        launch {
+                        lifecycleScope.launch {
                             when (val result = voteRepository.addGelFav(vote, post)) {
                                 is NetResult.Success -> {
                                     Toast.makeText(this@BrowseActivity, "Success", Toast.LENGTH_SHORT).show()
@@ -622,7 +612,7 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     val fileName = url.fileName()
                     val uri = getSaveUri(fileName) ?: return
-                    launch {
+                    lifecycleScope.launch {
                         val success = withContext(Dispatchers.IO) {
                             var `is`: InputStream? = null
                             var os: OutputStream? = null
@@ -749,7 +739,6 @@ class BrowseActivity : BaseActivity(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
         playerHolder.release()
     }
 

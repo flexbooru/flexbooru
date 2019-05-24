@@ -98,7 +98,7 @@ class App : Application(), KodeinAware {
         } else {
             val orderId = Settings.orderId
             if (orderId.isNotEmpty()) {
-                GlobalScope.launch(Dispatchers.IO) {
+                GlobalScope.launch {
                     OrderApi.orderChecker(orderId, Settings.orderDeviceId)
                 }
             } else {

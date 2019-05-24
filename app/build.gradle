@@ -116,6 +116,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

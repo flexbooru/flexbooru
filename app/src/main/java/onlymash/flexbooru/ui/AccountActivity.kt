@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -39,9 +40,8 @@ import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.account.UserRepositoryImpl
 import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
-import kotlin.coroutines.CoroutineContext
 
-class AccountActivity : BaseActivity(), CoroutineScope {
+class AccountActivity : BaseActivity() {
 
     companion object {
         const val USER_ID_KEY = "user_id"
@@ -64,21 +64,6 @@ class AccountActivity : BaseActivity(), CoroutineScope {
             moebooruApi = moeApi,
             sankakuApi = sankakuApi
         )
-    }
-
-    private var job: Job? = null
-
-    override val coroutineContext: CoroutineContext
-        get() {
-            if (job == null) {
-                job = Job()
-            }
-            return job!! + Dispatchers.Main
-        }
-
-    override fun onDestroy() {
-        job?.cancel()
-        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,7 +93,7 @@ class AccountActivity : BaseActivity(), CoroutineScope {
                 if (id > 0) {
                     u = User(id = id, name = name)
                     if (name.isBlank()) {
-                        launch {
+                        lifecycleScope.launch {
                             val result = userRepository.findUserById(id, booru)
                             handlerResult(result)
                         }

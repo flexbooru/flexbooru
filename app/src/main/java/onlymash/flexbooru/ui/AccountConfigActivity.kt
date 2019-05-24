@@ -19,6 +19,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_account_config.*
@@ -39,7 +40,7 @@ import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
 import kotlin.coroutines.CoroutineContext
 
-class AccountConfigActivity : BaseActivity(), CoroutineScope {
+class AccountConfigActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "AccountConfigActivity"
@@ -64,20 +65,9 @@ class AccountConfigActivity : BaseActivity(), CoroutineScope {
         )
     }
 
-    private lateinit var job: Job
-
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    override fun onDestroy() {
-        job.cancel()
-        super.onDestroy()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_config)
-        job = Job()
         val b = BooruManager.getBooruByUid(Settings.activeBooruUid)
         if (b == null) {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
@@ -128,12 +118,12 @@ class AccountConfigActivity : BaseActivity(), CoroutineScope {
         set_account.visibility = View.INVISIBLE
         progress_bar.visibility = View.VISIBLE
         if (booru.type == Constants.TYPE_GELBOORU) {
-            launch {
+            lifecycleScope.launch {
                 val result = userRepository.gelLogin(username, pass, booru)
                 handlerResult(result)
             }
         } else {
-            launch {
+            lifecycleScope.launch {
                 val result = userRepository.findUserByName(username, booru)
                 handlerResult(result)
             }
