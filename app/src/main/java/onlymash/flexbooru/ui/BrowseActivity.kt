@@ -80,7 +80,8 @@ class BrowseActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "BrowseActivity"
-        const val ACTION = "current_browse_id"
+        const val ACTION_NORMAL = "current_browse_normal_id"
+        const val ACTION_POPULAR = "current_browse_popular_id"
         const val EXT_POST_ID_KEY = "post_id"
         const val EXT_POST_POSITION_KEY = "post_position"
         const val EXT_POST_KEYWORD_KEY = "post_keyword"
@@ -192,7 +193,11 @@ class BrowseActivity : BaseActivity() {
                 id = it.getPostId()
             }
             if (id > 0) toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), id)
-            val intent = Intent(ACTION).apply {
+            val action = if (pageType == Constants.PAGE_TYPE_POST)
+                ACTION_NORMAL
+            else
+                ACTION_POPULAR
+            val intent = Intent(action).apply {
                 putExtra(EXT_POST_ID_KEY, id)
                 putExtra(EXT_POST_POSITION_KEY, position)
                 putExtra(EXT_POST_KEYWORD_KEY, keyword)

@@ -411,7 +411,6 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                 return
             }
         }
-        activity.registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
         searchTag = SearchTag(
             scheme = search.scheme,
             host = search.host,
@@ -648,8 +647,20 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
             activity.sharedElement = null
         }
         sp.unregisterOnSharedPreferenceChangeListener(this)
-        activity.unregisterReceiver(broadcastReceiver)
         UserManager.listeners.remove(userListener)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireActivity().registerReceiver(
+            broadcastReceiver,
+            IntentFilter(BrowseActivity.ACTION_NORMAL)
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        requireActivity().unregisterReceiver(broadcastReceiver)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

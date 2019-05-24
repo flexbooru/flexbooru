@@ -615,10 +615,7 @@ class PopularFragment : ListFragment() {
         }
         popularViewModel.show(popular)
         UserManager.listeners.add(userListener)
-        (requireActivity() as MainActivity).apply {
-            addNavigationListener(navigationListener)
-            registerReceiver(broadcastReceiver, IntentFilter(BrowseActivity.ACTION))
-        }
+        (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }
 
     override fun retry() {
@@ -680,10 +677,24 @@ class PopularFragment : ListFragment() {
         if (isUnsupported) return
         UserManager.listeners.remove(userListener)
         (requireActivity() as MainActivity).apply {
-            unregisterReceiver(broadcastReceiver)
             removeNavigationListener(navigationListener)
             sharedElement = null
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isUnsupported) return
+        requireActivity().registerReceiver(
+            broadcastReceiver,
+            IntentFilter(BrowseActivity.ACTION_POPULAR)
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isUnsupported) return
+        requireActivity().unregisterReceiver(broadcastReceiver)
     }
 
     override val isUnsupported: Boolean
