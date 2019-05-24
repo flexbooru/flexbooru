@@ -18,14 +18,17 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -38,11 +41,12 @@ import java.util.concurrent.Executor
  * rate limiting using the PagingRequestHelper class.
  */
 class PostMoeBoundaryCallback(
+    private val scope: CoroutineScope,
     private val moebooruApi: MoebooruApi,
     private val handleResponse: (Search, MutableList<PostMoe>?) -> Unit,
-    private val ioExecutor: Executor,
     private val search: Search,
-    tagBlacklists: MutableList<TagBlacklist>
+    tagBlacklists: MutableList<TagBlacklist>,
+    ioExecutor: Executor
 ) : PagedList.BoundaryCallback<PostMoe>() {
 
     var tags = ""
@@ -62,8 +66,8 @@ class PostMoeBoundaryCallback(
     //last response posts size
     var lastResponseSize = search.limit
 
-    private fun insertItemsIntoDb(response: Response<MutableList<PostMoe>>, it: PagingRequestHelper.Request.Callback) {
-        ioExecutor.execute {
+    private suspend fun insertItemsIntoDb(response: Response<MutableList<PostMoe>>, it: PagingRequestHelper.Request.Callback) {
+        withContext(Dispatchers.IO) {
             val data = response.body()
             lastResponseSize = data?.size ?: 0
             handleResponse(search, data)
@@ -71,20 +75,22 @@ class PostMoeBoundaryCallback(
         }
     }
 
-    private fun createMoebooruCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<MutableList<PostMoe>> {
-        return object : Callback<MutableList<PostMoe>> {
-            override fun onFailure(
-                call: Call<MutableList<PostMoe>>,
-                t: Throwable) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<MutableList<PostMoe>>,
-                response: Response<MutableList<PostMoe>>
-            ) {
-                insertItemsIntoDb(response, it)
+    private fun createCallback(page: Int, it: PagingRequestHelper.Request.Callback) {
+        scope.launch {
+            when (val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, page, tags)).execute()
+                    NetResult.Success(response)
+                } catch (e: Exception) {
+                    NetResult.Error(e.message.toString())
+                }
+            }) {
+                is NetResult.Success -> {
+                    insertItemsIntoDb(result.data, it)
+                }
+                is NetResult.Error -> {
+                    it.recordFailure(Throwable(result.errorMsg))
+                }
             }
         }
     }
@@ -95,7 +101,7 @@ class PostMoeBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags)).enqueue(createMoebooruCallback(it))
+            createCallback(1, it)
         }
     }
 
@@ -105,8 +111,7 @@ class PostMoeBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, indexInNext/limit + 1, tags))
-                    .enqueue(createMoebooruCallback(it))
+                createCallback(indexInNext/limit + 1, it)
             }
         }
     }

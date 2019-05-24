@@ -21,17 +21,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.entity.post.*
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.Listing
 import onlymash.flexbooru.repository.NetworkState
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.concurrent.Executor
 
 //posts repo
@@ -175,10 +177,12 @@ class PostRepositoryImpl(
 
     @MainThread
     override fun getDanOnePosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostDanOne> {
         danOneBoundaryCallback = PostDanOneBoundaryCallback(
+            scope = scope,
             danbooruOneApi = danbooruOneApi,
             handleResponse = this::insertDanbooruOneResultIntoDb,
             ioExecutor = ioExecutor,
@@ -187,7 +191,7 @@ class PostRepositoryImpl(
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshDanbooruOne(search, tagBlacklists)
+            refreshDanbooruOne(scope, search, tagBlacklists)
         }
         val livePagedList = db.postDanOneDao()
             .getPosts(search.host, search.keyword)
@@ -213,10 +217,12 @@ class PostRepositoryImpl(
 
     @MainThread
     override fun getDanPosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostDan> {
         danBoundaryCallback = PostDanBoundaryCallback(
+            scope = scope,
             danbooruApi = danbooruApi,
             handleResponse = this::insertDanbooruResultIntoDb,
             ioExecutor = ioExecutor,
@@ -225,7 +231,7 @@ class PostRepositoryImpl(
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshDanbooru(search, tagBlacklists)
+            refreshDanbooru(scope, search, tagBlacklists)
         }
         val livePagedList = db.postDanDao()
             .getPosts(search.host, search.keyword)
@@ -251,10 +257,12 @@ class PostRepositoryImpl(
 
     @MainThread
     override fun getMoePosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostMoe> {
         moeBoundaryCallback = PostMoeBoundaryCallback(
+            scope = scope,
             moebooruApi = moebooruApi,
             handleResponse = this::insertMoebooruResultIntoDb,
             ioExecutor = ioExecutor,
@@ -263,7 +271,7 @@ class PostRepositoryImpl(
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshMoebooru(search, tagBlacklists)
+            refreshMoebooru(scope, search, tagBlacklists)
         }
         val livePagedList = db.postMoeDao()
             .getPosts(host = search.host, keyword = search.keyword)
@@ -290,10 +298,12 @@ class PostRepositoryImpl(
 
     @MainThread
     override fun getGelPosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostGel> {
         gelBoundaryCallback = PostGelBoundaryCallback(
+            scope = scope,
             gelbooruApi = gelbooruApi,
             handleResponse = this::insertGelbooruResultIntoDb,
             ioExecutor = ioExecutor,
@@ -302,7 +312,7 @@ class PostRepositoryImpl(
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshGelbooru(search, tagBlacklists)
+            refreshGelbooru(scope, search, tagBlacklists)
         }
         val livePagedList = db.postGelDao()
             .getPosts(host = search.host, keyword = search.keyword)
@@ -329,64 +339,67 @@ class PostRepositoryImpl(
 
     @MainThread
     private fun refreshDanbooruOne(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): LiveData<NetworkState> {
         danOneBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1)).enqueue(
-            object : Callback<MutableList<PostDanOne>> {
-                override fun onFailure(call: Call<MutableList<PostDanOne>>, t: Throwable) {
-                    networkState.value = NetworkState.error(t.message)
-                }
-                override fun onResponse(call: Call<MutableList<PostDanOne>>,
-                                        response: Response<MutableList<PostDanOne>>) {
-                    ioExecutor.execute {
-                        db.runInTransaction {
-                            val posts = response.body()
-                            db.postDanOneDao().deletePosts(host = search.host, keyword = search.keyword)
-                            insertDanbooruOneResultIntoDb(search, posts, tagBlacklists)
-                        }
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1)).execute()
+                    db.runInTransaction {
+                        db.postDanOneDao().deletePosts(host = search.host, keyword = search.keyword)
+                        insertDanbooruOneResultIntoDb(search, response.body(), tagBlacklists)
                     }
-                    networkState.postValue(NetworkState.LOADED)
+                    NetResult.Success(NetworkState.LOADED)
+                } catch (e: Exception) {
+                    NetResult.Success(NetworkState.error(e.message))
                 }
             }
-        )
+            when (val data = result.data) {
+                NetworkState.LOADED -> networkState.postValue(data)
+                else -> networkState.value = data
+            }
+        }
         return networkState
     }
 
     @MainThread
     private fun refreshDanbooru(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): LiveData<NetworkState> {
         danBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1)).enqueue(
-            object : Callback<MutableList<PostDan>> {
-                override fun onFailure(call: Call<MutableList<PostDan>>, t: Throwable) {
-                    networkState.value = NetworkState.error(t.message)
-                }
-
-                override fun onResponse(call: Call<MutableList<PostDan>>, response: Response<MutableList<PostDan>>) {
-                    ioExecutor.execute {
-                        db.runInTransaction {
-                            val posts = response.body()
-                            db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
-                            insertDanbooruResultIntoDb(search, posts, tagBlacklists)
-                        }
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1)).execute()
+                    db.runInTransaction {
+                        db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
+                        insertDanbooruResultIntoDb(search, response.body(), tagBlacklists)
                     }
-                    networkState.postValue(NetworkState.LOADED)
+                    NetResult.Success(NetworkState.LOADED)
+                } catch (e: Exception) {
+                    NetResult.Success(NetworkState.error(e.message))
                 }
             }
-        )
+            when (val data = result.data) {
+                NetworkState.LOADED -> networkState.postValue(data)
+                else -> networkState.value = data
+            }
+        }
         return networkState
     }
 
     @MainThread
     private fun refreshMoebooru(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): LiveData<NetworkState> {
@@ -398,60 +411,65 @@ class PostRepositoryImpl(
             tags = "$tags -${tagBlacklist.tag}"
         }
         tags = "${search.keyword}$tags".trim()
-        moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags)).enqueue(
-            object : Callback<MutableList<PostMoe>> {
-                override fun onFailure(call: Call<MutableList<PostMoe>>, t: Throwable) {
-                    networkState.value = NetworkState.error(t.message)
-                }
-                override fun onResponse(call: Call<MutableList<PostMoe>>, response: Response<MutableList<PostMoe>>) {
-                    ioExecutor.execute {
-                        db.runInTransaction {
-                            val posts = response.body()
-                            db.postMoeDao().deletePosts(search.host, search.keyword)
-                            insertMoebooruResultIntoDb(search, posts)
-                        }
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags)).execute()
+                    db.runInTransaction {
+                        db.postMoeDao().deletePosts(host = search.host, keyword = search.keyword)
+                        insertMoebooruResultIntoDb(search, response.body())
                     }
-                    networkState.postValue(NetworkState.LOADED)
+                    NetResult.Success(NetworkState.LOADED)
+                } catch (e: Exception) {
+                    NetResult.Success(NetworkState.error(e.message))
                 }
             }
-        )
+            when (val data = result.data) {
+                NetworkState.LOADED -> networkState.postValue(data)
+                else -> networkState.value = data
+            }
+        }
         return networkState
     }
 
     @MainThread
     private fun refreshGelbooru(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): LiveData<NetworkState> {
         gelBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1)).enqueue(
-            object : Callback<PostGelResponse> {
-                override fun onFailure(call: Call<PostGelResponse>, t: Throwable) {
-                    networkState.value = NetworkState.error(t.message)
-                }
-                override fun onResponse(call: Call<PostGelResponse>, response: Response<PostGelResponse>) {
-                    ioExecutor.execute {
-                        db.runInTransaction {
-                            val posts = response.body()?.posts
-                            db.postGelDao().deletePosts(search.host, search.keyword)
-                            insertGelbooruResultIntoDb(search, posts, tagBlacklists)
-                        }
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1)).execute()
+                    db.runInTransaction {
+                        db.postGelDao().deletePosts(search.host, search.keyword)
+                        insertGelbooruResultIntoDb(search, response.body()?.posts, tagBlacklists)
                     }
-                    networkState.postValue(NetworkState.LOADED)
+                    NetResult.Success(NetworkState.LOADED)
+                } catch (e: Exception) {
+                    NetResult.Success(NetworkState.error(e.message))
                 }
             }
-        )
+            when (val data = result.data) {
+                NetworkState.LOADED -> networkState.postValue(data)
+                else -> networkState.value = data
+            }
+        }
         return networkState
     }
 
     @MainThread
     override fun getSankakuPosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostSankaku> {
         sankakuBoundaryCallback = PostSankakuBoundaryCallback(
+            scope = scope,
             sankakuApi = sankakuApi,
             handleResponse = this::insertSankakuResultIntoDb,
             ioExecutor = ioExecutor,
@@ -460,7 +478,7 @@ class PostRepositoryImpl(
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
-            refreshSankaku(search, tagBlacklists)
+            refreshSankaku(scope, search, tagBlacklists)
         }
         val livePagedList = db.postSankakuDao()
             .getPosts(host = search.host, keyword = search.keyword)
@@ -487,29 +505,31 @@ class PostRepositoryImpl(
 
     @MainThread
     private fun refreshSankaku(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): LiveData<NetworkState> {
         sankakuBoundaryCallback?.lastResponseSize = search.limit
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1)).enqueue(
-            object : Callback<MutableList<PostSankaku>> {
-                override fun onFailure(call: Call<MutableList<PostSankaku>>, t: Throwable) {
-                    networkState.value = NetworkState.error(t.message)
-                }
-                override fun onResponse(call: Call<MutableList<PostSankaku>>, response: Response<MutableList<PostSankaku>>) {
-                    ioExecutor.execute {
-                        db.runInTransaction {
-                            val posts = response.body()
-                            db.postSankakuDao().deletePosts(search.host, search.keyword)
-                            insertSankakuResultIntoDb(search, posts, tagBlacklists)
-                        }
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1)).execute()
+                    db.runInTransaction {
+                        db.postSankakuDao().deletePosts(search.host, search.keyword)
+                        insertSankakuResultIntoDb(search, response.body(), tagBlacklists)
                     }
-                    networkState.postValue(NetworkState.LOADED)
+                    NetResult.Success(NetworkState.LOADED)
+                } catch (e: Exception) {
+                    NetResult.Success(NetworkState.error(e.message))
                 }
             }
-        )
+            when (val data = result.data) {
+                NetworkState.LOADED -> networkState.postValue(data)
+                else -> networkState.value = data
+            }
+        }
         return networkState
     }
 }

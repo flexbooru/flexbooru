@@ -18,14 +18,17 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -38,11 +41,12 @@ import java.util.concurrent.Executor
  * rate limiting using the PagingRequestHelper class.
  */
 class PostDanOneBoundaryCallback(
+    private val scope: CoroutineScope,
     private val danbooruOneApi: DanbooruOneApi,
     private val handleResponse: (Search, MutableList<PostDanOne>?, MutableList<TagBlacklist>) -> Unit,
-    private val ioExecutor: Executor,
     private val search: Search,
-    private val tagBlacklists: MutableList<TagBlacklist>
+    private val tagBlacklists: MutableList<TagBlacklist>,
+    ioExecutor: Executor
 ) : PagedList.BoundaryCallback<PostDanOne>() {
 
     //PagingRequestHelper
@@ -53,8 +57,8 @@ class PostDanOneBoundaryCallback(
     //last response posts size
     var lastResponseSize = search.limit
 
-    private fun insertItemsIntoDb(response: Response<MutableList<PostDanOne>>, it: PagingRequestHelper.Request.Callback) {
-        ioExecutor.execute {
+    private suspend fun insertItemsIntoDb(response: Response<MutableList<PostDanOne>>, it: PagingRequestHelper.Request.Callback) {
+        withContext(Dispatchers.IO) {
             val data = response.body()
             lastResponseSize = data?.size ?: 0
             handleResponse(search, data, tagBlacklists)
@@ -62,20 +66,23 @@ class PostDanOneBoundaryCallback(
         }
     }
 
-    private fun createDanbooruCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<MutableList<PostDanOne>> {
-        return object : Callback<MutableList<PostDanOne>> {
-            override fun onFailure(
-                call: Call<MutableList<PostDanOne>>,
-                t: Throwable) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<MutableList<PostDanOne>>,
-                response: Response<MutableList<PostDanOne>>
-            ) {
-                insertItemsIntoDb(response, it)
+    private fun createCallback(page: Int, it: PagingRequestHelper.Request.Callback) {
+        scope.launch {
+            when (val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = danbooruOneApi.getPosts(
+                        DanOneUrlHelper.getPostUrl(search, page)).execute()
+                    NetResult.Success(response)
+                } catch (e: Exception) {
+                    NetResult.Error(e.message.toString())
+                }
+            }) {
+                is NetResult.Success -> {
+                    insertItemsIntoDb(result.data, it)
+                }
+                is NetResult.Error -> {
+                    it.recordFailure(Throwable(result.errorMsg))
+                }
             }
         }
     }
@@ -86,7 +93,7 @@ class PostDanOneBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1)).enqueue(createDanbooruCallback(it))
+            createCallback(1, it)
         }
     }
 
@@ -99,8 +106,7 @@ class PostDanOneBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, indexInNext/limit + 1))
-                    .enqueue(createDanbooruCallback(it))
+                createCallback(indexInNext/limit + 1, it)
             }
         }
     }

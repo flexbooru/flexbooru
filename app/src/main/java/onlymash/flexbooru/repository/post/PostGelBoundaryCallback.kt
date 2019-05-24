@@ -18,15 +18,18 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.api.url.GelUrlHelper
 import onlymash.flexbooru.api.GelbooruApi
 import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.entity.post.PostGelResponse
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -39,11 +42,12 @@ import java.util.concurrent.Executor
  * rate limiting using the PagingRequestHelper class.
  */
 class PostGelBoundaryCallback(
+    private val scope: CoroutineScope,
     private val gelbooruApi: GelbooruApi,
     private val handleResponse: (Search, MutableList<PostGel>?, MutableList<TagBlacklist>) -> Unit,
-    private val ioExecutor: Executor,
     private val search: Search,
-    private val tagBlacklists: MutableList<TagBlacklist>
+    private val tagBlacklists: MutableList<TagBlacklist>,
+    ioExecutor: Executor
 ) : PagedList.BoundaryCallback<PostGel>() {
 
     //paging request helper
@@ -54,8 +58,8 @@ class PostGelBoundaryCallback(
     //last response posts size
     var lastResponseSize = search.limit
 
-    private fun insertItemsIntoDb(response: Response<PostGelResponse>, it: PagingRequestHelper.Request.Callback) {
-        ioExecutor.execute {
+    private suspend fun insertItemsIntoDb(response: Response<PostGelResponse>, it: PagingRequestHelper.Request.Callback) {
+        withContext(Dispatchers.IO) {
             val data = response.body()?.posts
             lastResponseSize = data?.size ?: 0
             handleResponse(search, data, tagBlacklists)
@@ -63,20 +67,22 @@ class PostGelBoundaryCallback(
         }
     }
 
-    private fun createGelbooruCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<PostGelResponse> {
-        return object : Callback<PostGelResponse> {
-            override fun onFailure(
-                call: Call<PostGelResponse>,
-                t: Throwable) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<PostGelResponse>,
-                response: Response<PostGelResponse>
-            ) {
-                insertItemsIntoDb(response, it)
+    private fun createCallback(page: Int, it: PagingRequestHelper.Request.Callback) {
+        scope.launch {
+            when (val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, page)).execute()
+                    NetResult.Success(response)
+                } catch (e: Exception) {
+                    NetResult.Error(e.message.toString())
+                }
+            }) {
+                is NetResult.Success -> {
+                    insertItemsIntoDb(result.data, it)
+                }
+                is NetResult.Error -> {
+                    it.recordFailure(Throwable(result.errorMsg))
+                }
             }
         }
     }
@@ -87,7 +93,7 @@ class PostGelBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1)).enqueue(createGelbooruCallback(it))
+            createCallback(1, it)
         }
     }
 
@@ -97,8 +103,7 @@ class PostGelBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, indexInNext/limit + 1))
-                    .enqueue(createGelbooruCallback(it))
+                createCallback(indexInNext/limit + 1, it)
             }
         }
     }

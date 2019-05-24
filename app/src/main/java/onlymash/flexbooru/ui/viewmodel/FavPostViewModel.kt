@@ -18,13 +18,12 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 
-class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel() {
+class FavPostViewModel(private val postLoader: PostLoaderRepository) : ScopeViewModel() {
 
     private val _posts = MediatorLiveData<MutableList<PostBase>>()
 
@@ -39,11 +38,5 @@ class FavPostViewModel(private val postLoader: PostLoaderRepository) : ViewModel
             }
         }
         return _posts
-    }
-
-    @ExperimentalCoroutinesApi
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.cancel()
     }
 }

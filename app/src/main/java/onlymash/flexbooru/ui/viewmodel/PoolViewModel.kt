@@ -18,11 +18,11 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.repository.pool.PoolRepository
 
-class PoolViewModel(private val repo: PoolRepository) : ViewModel() {
+class PoolViewModel(private val repo: PoolRepository) : ScopeViewModel() {
+
     private val searchData = MutableLiveData<Search>()
     private val danRepoResult = map(searchData) {
         repo.getDanPools(it)

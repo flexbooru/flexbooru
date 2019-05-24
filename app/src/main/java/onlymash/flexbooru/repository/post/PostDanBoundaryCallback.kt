@@ -18,6 +18,10 @@ package onlymash.flexbooru.repository.post
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.DanbooruApi
@@ -25,9 +29,8 @@ import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -40,11 +43,12 @@ import java.util.concurrent.Executor
  * rate limiting using the PagingRequestHelper class.
  */
 class PostDanBoundaryCallback(
+    private val scope: CoroutineScope,
     private val danbooruApi: DanbooruApi,
     private val handleResponse: (Search, MutableList<PostDan>?, MutableList<TagBlacklist>) -> Unit,
-    private val ioExecutor: Executor,
     private val search: Search,
-    private val tagBlacklists: MutableList<TagBlacklist>
+    private val tagBlacklists: MutableList<TagBlacklist>,
+    ioExecutor: Executor
 ) : PagedList.BoundaryCallback<PostDan>() {
 
     //PagingRequestHelper
@@ -55,8 +59,8 @@ class PostDanBoundaryCallback(
     //last response posts size
     var lastResponseSize = search.limit
 
-    private fun insertItemsIntoDb(response: Response<MutableList<PostDan>>, it: PagingRequestHelper.Request.Callback) {
-        ioExecutor.execute {
+    private suspend fun insertItemsIntoDb(response: Response<MutableList<PostDan>>, it: PagingRequestHelper.Request.Callback) {
+        withContext(Dispatchers.IO) {
             val data = response.body()
             lastResponseSize = data?.size ?: 0
             handleResponse(search, data, tagBlacklists)
@@ -64,23 +68,26 @@ class PostDanBoundaryCallback(
         }
     }
 
-    private fun createDanbooruCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<MutableList<PostDan>> {
-        return object : Callback<MutableList<PostDan>> {
-            override fun onFailure(
-                call: Call<MutableList<PostDan>>,
-                t: Throwable) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<MutableList<PostDan>>,
-                response: Response<MutableList<PostDan>>
-            ) {
-                if (response.code() == 401) {
-                    it.recordFailure(Throwable(App.app.getString(R.string.msg_your_api_key_is_wrong)))
-                } else {
-                    insertItemsIntoDb(response, it)
+    private fun createCallback(page: Int, it: PagingRequestHelper.Request.Callback) {
+        scope.launch {
+            when (val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, page)).execute()
+                    NetResult.Success(response)
+                } catch (e: Exception) {
+                    NetResult.Error(e.message.toString())
+                }
+            }) {
+                is NetResult.Success -> {
+                    val response = result.data
+                    if (response.code() == 401) {
+                        it.recordFailure(Throwable(App.app.getString(R.string.msg_your_api_key_is_wrong)))
+                    } else {
+                        insertItemsIntoDb(response, it)
+                    }
+                }
+                is NetResult.Error -> {
+                    it.recordFailure(Throwable(result.errorMsg))
                 }
             }
         }
@@ -92,7 +99,7 @@ class PostDanBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1)).enqueue(createDanbooruCallback(it))
+            createCallback(1, it)
         }
     }
 
@@ -105,8 +112,7 @@ class PostDanBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, indexInNext/limit + 1))
-                    .enqueue(createDanbooruCallback(it))
+                createCallback(indexInNext/limit + 1, it)
             }
         }
     }

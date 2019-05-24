@@ -18,11 +18,11 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.ViewModel
 import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.repository.artist.ArtistRepository
 
-class ArtistViewModel(private val repo: ArtistRepository) : ViewModel() {
+class ArtistViewModel(private val repo: ArtistRepository) : ScopeViewModel() {
+
     private val searchData = MutableLiveData<SearchArtist>()
     private val danRepoResult = map(searchData) {
         repo.getDanArtists(it)

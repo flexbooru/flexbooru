@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.repository.post
 
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.entity.post.*
@@ -23,26 +24,31 @@ import onlymash.flexbooru.repository.Listing
 interface PostRepository {
 
     fun getDanOnePosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostDanOne>
 
     fun getDanPosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostDan>
 
     fun getMoePosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostMoe>
 
     fun getGelPosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostGel>
 
     fun getSankakuPosts(
+        scope: CoroutineScope,
         search: Search,
         tagBlacklists: MutableList<TagBlacklist>
     ): Listing<PostSankaku>

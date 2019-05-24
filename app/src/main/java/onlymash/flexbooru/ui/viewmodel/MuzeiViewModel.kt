@@ -17,13 +17,12 @@ package onlymash.flexbooru.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import onlymash.flexbooru.database.dao.MuzeiDao
 import onlymash.flexbooru.entity.Muzei
 
-class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ViewModel() {
+class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ScopeViewModel() {
 
     private val _muzeiOutcome: MediatorLiveData<MutableList<Muzei>> = MediatorLiveData()
 
@@ -39,9 +38,4 @@ class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ViewModel() {
         return _muzeiOutcome
     }
 
-    @ExperimentalCoroutinesApi
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.cancel()
-    }
 }

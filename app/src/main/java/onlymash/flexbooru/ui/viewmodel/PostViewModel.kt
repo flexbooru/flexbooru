@@ -18,7 +18,7 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.repository.post.PostRepository
@@ -28,35 +28,35 @@ data class SearchData(
     val tagBlacklists: MutableList<TagBlacklist>
 )
 
-class PostViewModel(private val repo: PostRepository): ViewModel() {
+class PostViewModel(private val repo: PostRepository): ScopeViewModel() {
 
     private val searchData = MutableLiveData<SearchData>()
     private val danOneRepoResult = map(searchData) { search ->
-        repo.getDanOnePosts(search.search, search.tagBlacklists)
+        repo.getDanOnePosts(viewModelScope, search.search, search.tagBlacklists)
     }
     val postsDanOne = switchMap(danOneRepoResult) { it.pagedList }
     val networkStateDanOne = switchMap(danOneRepoResult) { it.networkState }
     val refreshStateDanOne = switchMap(danOneRepoResult) { it.refreshState }
     private val danRepoResult = map(searchData) { search ->
-        repo.getDanPosts(search.search, search.tagBlacklists)
+        repo.getDanPosts(viewModelScope, search.search, search.tagBlacklists)
     }
     val postsDan = switchMap(danRepoResult) { it.pagedList }
     val networkStateDan = switchMap(danRepoResult) { it.networkState }
     val refreshStateDan = switchMap(danRepoResult) { it.refreshState }
     private val moeRepoResult = map(searchData) { search ->
-        repo.getMoePosts(search.search, search.tagBlacklists)
+        repo.getMoePosts(viewModelScope, search.search, search.tagBlacklists)
     }
     val postsMoe = switchMap(moeRepoResult) { it.pagedList }
     val networkStateMoe = switchMap(moeRepoResult) { it.networkState }
     val refreshStateMoe = switchMap(moeRepoResult) { it.refreshState }
     private val gelRepoResult = map(searchData) { search ->
-        repo.getGelPosts(search.search, search.tagBlacklists)
+        repo.getGelPosts(viewModelScope, search.search, search.tagBlacklists)
     }
     val postsGel = switchMap(gelRepoResult) { it.pagedList }
     val networkStateGel = switchMap(gelRepoResult) { it.networkState }
     val refreshStateGel = switchMap(gelRepoResult) { it.refreshState }
     private val sankakuRepoResult = map(searchData) { search ->
-        repo.getSankakuPosts(search.search, search.tagBlacklists)
+        repo.getSankakuPosts(viewModelScope, search.search, search.tagBlacklists)
     }
     val postsSankaku = switchMap(sankakuRepoResult) { it.pagedList }
     val networkStateSankaku = switchMap(sankakuRepoResult) { it.networkState }

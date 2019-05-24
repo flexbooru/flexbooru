@@ -23,7 +23,7 @@ import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 
-class SuggestionViewModel(private val repo: SuggestionRepository) : ViewModel() {
+class SuggestionViewModel(private val repo: SuggestionRepository) : ScopeViewModel() {
 
     private val _suggestions: MediatorLiveData<MutableList<Suggestion>> = MediatorLiveData()
     val suggestionsOnline: MutableLiveData<MutableList<TagBase>> = MutableLiveData()
@@ -50,11 +50,5 @@ class SuggestionViewModel(private val repo: SuggestionRepository) : ViewModel() 
             }
             suggestionsOnline.postValue(data ?: mutableListOf())
         }
-    }
-
-    @ExperimentalCoroutinesApi
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.cancel()
     }
 }
