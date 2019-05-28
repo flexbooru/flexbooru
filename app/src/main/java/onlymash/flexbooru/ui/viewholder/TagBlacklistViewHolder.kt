@@ -15,16 +15,15 @@
 
 package onlymash.flexbooru.ui.viewholder
 
-import android.content.ClipData
 import android.view.MenuInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.TagBlacklistManager
 import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.extension.copyText
 
 class TagBlacklistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val tagTextView = itemView.findViewById<TextView>(R.id.tag_blacklist)
@@ -35,7 +34,7 @@ class TagBlacklistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         actionMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_tag_blacklist_item_copy -> {
-                    App.app.clipboard.primaryClip = ClipData.newPlainText("tag", tag.tag)
+                    itemView.context.copyText(tag.tag)
                 }
                 R.id.action_tag_blacklist_item_delete -> {
                     TagBlacklistManager.deleteTagBlacklist(tag)

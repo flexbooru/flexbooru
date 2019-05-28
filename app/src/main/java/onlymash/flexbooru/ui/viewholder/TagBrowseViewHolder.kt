@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.ui.viewholder
 
-import android.content.ClipData
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +23,12 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.TagFilterManager
 import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.extension.copyText
 
 class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
@@ -63,7 +62,7 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemListener?.onClickItem(tagName.text.toString())
         }
         itemView.setOnLongClickListener {
-            App.app.clipboard.primaryClip = ClipData.newPlainText("Tag", tagName.text)
+            itemView.context.copyText(tagName.text)
             true
         }
         tagExclude.setOnClickListener {

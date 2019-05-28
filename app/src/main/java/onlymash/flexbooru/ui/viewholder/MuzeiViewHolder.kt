@@ -15,16 +15,15 @@
 
 package onlymash.flexbooru.ui.viewholder
 
-import android.content.ClipData
 import android.view.MenuInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.entity.Muzei
+import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.SearchActivity
 
 class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,7 +40,7 @@ class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     SearchActivity.startActivity(itemView.context, muzei.keyword)
                 }
                 R.id.action_muzei_item_copy -> {
-                    App.app.clipboard.primaryClip = ClipData.newPlainText("keyword", muzei.keyword)
+                    itemView.context.copyText(muzei.keyword)
                 }
                 R.id.action_muzei_item_delete -> {
                     MuzeiManager.deleteMuzei(muzei)

@@ -15,15 +15,14 @@
 
 package onlymash.flexbooru.ui.viewholder
 
-import android.content.ClipData
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.tag.*
+import onlymash.flexbooru.extension.copyText
 
 class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
@@ -70,10 +69,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
         }
         itemView.setOnLongClickListener {
-            val text = tagName.text
-            if (!text.isNullOrBlank()) {
-                App.app.clipboard.primaryClip = ClipData.newPlainText("Tag", text)
-            }
+            itemView.context.copyText(tagName.text)
             true
         }
     }

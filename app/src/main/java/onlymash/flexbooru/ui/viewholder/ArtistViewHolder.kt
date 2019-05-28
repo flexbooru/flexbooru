@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.ui.viewholder
 
-import android.content.ClipData
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +23,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.artist.ArtistBase
+import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
@@ -55,10 +54,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
         }
         itemView.setOnLongClickListener {
-            val text = artistName.text
-            if (!text.isNullOrBlank()) {
-                App.app.clipboard.primaryClip = ClipData.newPlainText("Artist", text)
-            }
+            itemView.context.copyText(artistName.text)
             true
         }
         btExpand.setOnClickListener {

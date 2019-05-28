@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.fragment
 
 import android.app.Dialog
 import android.content.ActivityNotFoundException
-import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -29,10 +28,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.post.*
+import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
@@ -232,7 +231,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             }
             setOnLongClickListener {
                 if (source.isNotEmpty()) {
-                    App.app.clipboard.primaryClip = ClipData.newPlainText("source", source)
+                    context?.copyText(source)
                 }
                 true
             }
@@ -282,15 +281,15 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             }
         }
         view.findViewById<LinearLayout>(R.id.url_sample_container).setOnLongClickListener {
-            App.app.clipboard.primaryClip = ClipData.newPlainText("url", urlSampleString)
+            context?.copyText(urlSampleString)
             true
         }
         view.findViewById<LinearLayout>(R.id.url_larger_container).setOnLongClickListener {
-            App.app.clipboard.primaryClip = ClipData.newPlainText("url", urlLargerString)
+            context?.copyText(urlLargerString)
             true
         }
         view.findViewById<LinearLayout>(R.id.url_origin_container).setOnLongClickListener {
-            App.app.clipboard.primaryClip = ClipData.newPlainText("url", urlOriginString)
+            context?.copyText(urlOriginString)
             true
         }
         view.findViewById<TextView>(R.id.url_sample_size).text = sizeSampleString

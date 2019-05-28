@@ -32,3 +32,8 @@ fun Context.copyText(text: String?) {
     val cm = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return
     cm.primaryClip = ClipData.newPlainText("text", text ?: "")
 }
+
+fun Context.copyText(text: CharSequence?) {
+    val cm = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return
+    cm.primaryClip = ClipData.newPlainText("text", text ?: "")
+}

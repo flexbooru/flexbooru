@@ -15,16 +15,15 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
+import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.CopyrightActivity
@@ -65,12 +64,12 @@ class AboutFragment : PreferenceFragmentCompat() {
             }
             "about_donation_alipay" -> {
                 val text = "im@fiepi.com"
-                App.app.clipboard.primaryClip = ClipData.newPlainText("alipay", text)
+                context?.copyText(text)
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_donation_btc" -> {
                 val text = "bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
-                App.app.clipboard.primaryClip = ClipData.newPlainText("btc", text)
+                context?.copyText(text)
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_app_rate" -> {

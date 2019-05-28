@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui
 
 import android.content.ActivityNotFoundException
-import android.content.ClipData
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
@@ -31,11 +30,11 @@ import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.api.OrderApi
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.extension.copyText
 
 class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
 
@@ -103,7 +102,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                     .setTitle(R.string.purchase_pay_alipay_title)
                     .setMessage(R.string.purchase_pay_alipay_info)
                     .setPositiveButton(R.string.purchase_pay_alipay_dialog_positive) { _, _ ->
-                        App.app.clipboard.primaryClip = ClipData.newPlainText("alipay", "im@fiepi.com")
+                        copyText("im@fiepi.com")
                         val alipayPackageName = "com.eg.android.AlipayGphone"
                         try {
                             val intent = packageManager.getLaunchIntentForPackage(alipayPackageName)

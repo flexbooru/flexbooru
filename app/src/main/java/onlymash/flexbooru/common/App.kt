@@ -75,7 +75,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { Executors.newSingleThreadExecutor() }
         bind() from singleton { TagFilterRepositoryImpl(instance()) }
     }
-    val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
+
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
             GlideApp.with(imageView.context)
@@ -87,11 +87,13 @@ class App : Application(), KodeinAware {
             Glide.with(imageView.context).clear(imageView)
         }
     }
+
     override fun onCreate() {
         super.onCreate()
         app = this
         initial()
     }
+
     private fun initial() {
         val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
         Settings.isGoogleSign = isGoogleSign
@@ -110,6 +112,7 @@ class App : Application(), KodeinAware {
             }
         }
     }
+
     private fun checkOrderFromCache() {
         val billingClient = BillingClient
             .newBuilder(this)
