@@ -167,6 +167,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (!Settings.isOrderSuccess) {
             drawer.addItemAtPosition(
                 PrimaryDrawerItem()
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_payment_24dp))
                     .withName(R.string.purchase_title)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
@@ -589,6 +590,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     if (index < 0) {
                         drawer.addItemAtPosition(
                             PrimaryDrawerItem()
+                                .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_payment_24dp))
                                 .withName(R.string.purchase_title)
                                 .withSelectable(false)
                                 .withIconTintingEnabled(true)
