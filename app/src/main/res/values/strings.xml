@@ -268,8 +268,8 @@
     <string name="purchase_pay_alipay_dialog_positive" translatable="false">购买</string>
     <string name="purchase_pay_alipay_title" translatable="false">使用支付宝付款</string>
     <string name="purchase_pay_alipay_info" translatable="false">
-        点击“购买”后将会复制支付宝帐号（im@fiepi.com）至剪贴板并尝试打开支付宝，你需自行完成需转帐 30 元（人民币）。\n\n
-        在支付宝“我的”-“账单”找到“订单号”，长按复制粘贴到“兑换码”中并提交。\n\n
+        点击“购买”后将会<b>复制</b>支付宝帐号（<b>im@fiepi.com</b>）至剪贴板并尝试打开支付宝，你需自行完成需<b>转帐 30 元（人民币）</b>。\n\n
+        在支付宝“我的”-“账单”找到“<b>订单号</b>”，长按<b>复制粘贴</b>到“<b>兑换码</b>”中并提交。\n\n
         由于需要人工确认订单，需要等待数小时或隔日之后你提交的订单号才会被激活。人工处理难免有疏忽，如若几天还不能使用，请发送电子邮件联系处理。\n\n
         订单号不限制使用次数，但是在一台设备使用时其它设备的激活状态将会失效。
     </string>
