@@ -31,7 +31,7 @@
     <string name="title_night_mode">Sötét mód</string>
     <string name="title_copyright">Szerzői jogok</string>
     <string name="title_about">Rólunk</string>
-    <string name="title_tag_blacklist">Tag blacklist</string>
+    <string name="title_tag_blacklist">Címke blacklist</string>
     <string name="about_app_version">Verzió</string>
     <string name="about_app_rate">Értékelje az alkalmazást</string>
     <string name="about_app_translation">Fordítás</string>
@@ -55,12 +55,12 @@
     <string name="msg_not_supported">Nem támogatott</string>
     <string name="msg_press_twice_to_exit">Nyomja meg mégegyszer a kilépéshez.</string>
     <string name="msg_file_save_success">A fáljt elmentettük mint: %s</string>
-    <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
+    <string name="msg_your_api_key_is_wrong">Az API kulcsod helytelen!</string>
     <string name="post_expand_tag_filter">Expand tag filter</string>
     <string name="post_add_search_to_muzei">` %s ` mentésre került a Muzei-ben.</string>
-    <string name="post_download">Download post</string>
+    <string name="post_download">Poszt letöltése</string>
     <string name="post_add_to_fav">Hozzáadás a kedvencekhez</string>
-    <string name="msg_download_must_enable">Download Manager is needed.</string>
+    <string name="msg_download_must_enable">A Download Managerre szükség van.</string>
     <string name="msg_path_denied">Mentés nem sikerült! Nem érhető el a mentés helye.</string>
     <string name="msg_download_failed">A letöltés sikertelen</string>
     <string name="msg_download_complete">Letöltés kész</string>
