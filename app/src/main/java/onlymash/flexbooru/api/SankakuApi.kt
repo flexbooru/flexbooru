@@ -49,8 +49,8 @@ interface SankakuApi {
                 level = HttpLoggingInterceptor.Level.BASIC
             }
             val interceptor = Interceptor {
-                val scheme = it.request().url().scheme()
-                var host = it.request().url().host()
+                val scheme = it.request().url.scheme
+                var host = it.request().url.host
                 if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "chan.")
                 it.proceed(it.request()
                     .newBuilder()

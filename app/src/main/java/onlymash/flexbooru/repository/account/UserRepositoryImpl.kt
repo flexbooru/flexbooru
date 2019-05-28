@@ -92,13 +92,13 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
                         var userId = -1
                         var passHash = ""
                         cookies.forEach {
-                            when (it.name()) {
-                                "user_id" -> userId = it.value().toInt()
-                                "pass_hash" -> passHash = it.value()
+                            when (it.name) {
+                                "user_id" -> userId = it.value.toInt()
+                                "pass_hash" -> passHash = it.value
                             }
                         }
                         if (userId < 0 || passHash.isEmpty()) {
-                            NetResult.Error(response.message())
+                            NetResult.Error(response.message)
                         } else {
                             val user = User(
                                 booru_uid = booru.uid,
@@ -116,7 +116,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
                         NetResult.Error("Error")
                     }
                 } else {
-                    NetResult.Error("code: ${response.code()}")
+                    NetResult.Error("code: ${response.code}")
                 }
             } catch (ex: Exception) {
                 NetResult.Error(ex.message.toString())

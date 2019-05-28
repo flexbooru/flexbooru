@@ -46,8 +46,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.util.image.CustomDecoder
-import onlymash.flexbooru.util.image.CustomRegionDecoder
+import onlymash.flexbooru.decoder.CustomDecoder
+import onlymash.flexbooru.decoder.CustomRegionDecoder
 import onlymash.flexbooru.util.isGifImage
 import onlymash.flexbooru.util.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout

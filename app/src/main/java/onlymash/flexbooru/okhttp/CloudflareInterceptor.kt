@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util.okhttp
+package onlymash.flexbooru.okhttp
 
 import android.annotation.SuppressLint
 import android.os.Handler
@@ -39,7 +39,7 @@ class CloudflareInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         // Check if Cloudflare anti-bot is on
-        if (response.code() == 503 && response.header("Server") in serverCheck) {
+        if (response.code == 503 && response.header("Server") in serverCheck) {
             try {
                 response.close()
                 val solutionRequest = resolveWithWebView(chain.request())
@@ -61,7 +61,7 @@ class CloudflareInterceptor : Interceptor {
         val latch = CountDownLatch(1)
         var webView: WebView? = null
         var cookie = ""
-        val headers = request.headers().toMultimap().mapValues { it.value.getOrNull(0) ?: "" }
+        val headers = request.headers.toMultimap().mapValues { it.value.getOrNull(0) ?: "" }
         handler.post {
             webView = WebView(App.app).apply {
                 settings.javaScriptEnabled = true
@@ -77,7 +77,7 @@ class CloudflareInterceptor : Interceptor {
                     removeAllCookies {}
                     flush()
                 }
-                loadUrl(request.url().toString(), headers)
+                loadUrl(request.url.toString(), headers)
             }
         }
 

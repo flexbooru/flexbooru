@@ -35,7 +35,7 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.util.UserAgent
-import onlymash.flexbooru.util.okhttp.ProgressInterceptor
+import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
@@ -55,9 +55,9 @@ class FlexAppGlideModule : AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         super.registerComponents(context, glide, registry)
         val interceptor = Interceptor {
-            val url = it.request().url()
-            val scheme = url.scheme()
-            var host = url.host()
+            val url = it.request().url
+            val scheme = url.scheme
+            var host = url.host
             if (host.startsWith("cs.")) host = host.replaceFirst("cs.", "beta.")
             val builder = it.request()
                 .newBuilder()

@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util.okhttp
+package onlymash.flexbooru.okhttp
 
 interface ProgressListener {
     fun onProgress(progress: Int)

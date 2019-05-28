@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util.image
+package onlymash.flexbooru.decoder
 
 import android.content.Context
 import android.graphics.Bitmap

@@ -34,8 +34,8 @@ import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.util.okhttp.ProgressInterceptor
-import onlymash.flexbooru.util.okhttp.ProgressListener
+import onlymash.flexbooru.okhttp.ProgressInterceptor
+import onlymash.flexbooru.okhttp.ProgressListener
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -47,7 +47,7 @@ import onlymash.flexbooru.extension.getPoolUri
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 import onlymash.flexbooru.util.IOUtils
 import onlymash.flexbooru.util.fileName
-import onlymash.flexbooru.util.okhttp.OkHttp3Downloader
+import onlymash.flexbooru.okhttp.OkHttp3Downloader
 import java.io.InputStream
 
 class DownloadWorker(
@@ -305,7 +305,7 @@ class DownloadWorker(
                 try {
                     `is` = OkHttp3Downloader(applicationContext)
                         .load(url)
-                        .body()?.source()?.inputStream()
+                        .body?.source()?.inputStream()
                     IOUtils.copy(`is`, os)
                 } catch (_: IOException) {
                     return Result.failure()

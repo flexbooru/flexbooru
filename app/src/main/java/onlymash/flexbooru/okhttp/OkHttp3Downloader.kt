@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util.okhttp
+package onlymash.flexbooru.okhttp
 
 import android.content.Context
 import android.net.Uri
@@ -70,7 +70,7 @@ class OkHttp3Downloader : Downloader {
      */
     constructor(client: OkHttpClient) {
         this.client = client
-        this.cache = client.cache()
+        this.cache = client.cache
     }
 
     /** Create a new downloader that uses the specified [Call.Factory] instance.  */
@@ -146,9 +146,9 @@ class OkHttp3Downloader : Downloader {
                 level = HttpLoggingInterceptor.Level.BASIC
             }
             val interceptor = Interceptor {
-                val url = it.request().url()
-                val scheme = url.scheme()
-                val host = url.host()
+                val url = it.request().url
+                val scheme = url.scheme
+                val host = url.host
                 it.proceed(it.request()
                     .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
