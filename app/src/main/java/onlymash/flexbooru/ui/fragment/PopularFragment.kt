@@ -42,6 +42,7 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
+import onlymash.flexbooru.extension.gridWidth
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
@@ -56,7 +57,6 @@ import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel
 import onlymash.flexbooru.worker.DownloadWorker
-import onlymash.flexbooru.util.gridWidth
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.search.SearchBar

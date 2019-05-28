@@ -22,7 +22,7 @@ import onlymash.flexbooru.common.App
 import onlymash.flexbooru.entity.DanOneDate
 import onlymash.flexbooru.entity.SankakuAuthor
 import onlymash.flexbooru.entity.SankakuTag
-import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.extension.formatDate
 
 @Entity(tableName = "posts_sankaku", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostSankaku(
@@ -85,8 +85,8 @@ data class PostSankaku(
 
     override fun getOriginUrl(): String = checkUrl(file_url)
 
-    override fun getCreatedDate(): String = formatDate(created_at.s * 1000L).toString()
+    override fun getCreatedDate(): String = (created_at.s * 1000L).formatDate().toString()
 
-    override fun getUpdatedDate(): String = formatDate(change * 1000L).toString()
+    override fun getUpdatedDate(): String = (change * 1000L).formatDate().toString()
 
 }

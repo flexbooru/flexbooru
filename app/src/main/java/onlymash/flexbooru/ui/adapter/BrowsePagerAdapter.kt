@@ -48,8 +48,8 @@ import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.decoder.CustomDecoder
 import onlymash.flexbooru.decoder.CustomRegionDecoder
-import onlymash.flexbooru.util.isGifImage
-import onlymash.flexbooru.util.isStillImage
+import onlymash.flexbooru.extension.isGifImage
+import onlymash.flexbooru.extension.isStillImage
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.util.concurrent.Executor

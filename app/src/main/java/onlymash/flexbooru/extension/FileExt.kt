@@ -15,7 +15,22 @@
 
 package onlymash.flexbooru.extension
 
-sealed class NetResult<out T : Any> {
-    data class Success<out T : Any>(val data: T) : NetResult<T>()
-    data class Error(val errorMsg: String): NetResult<Nothing>()
+import android.content.Context
+import java.io.File
+import java.io.IOException
+
+fun Context.trimCache() {
+    try {
+        cacheDir?.deleteAll()
+    } catch (_: IOException) {}
+}
+
+private fun File.deleteAll() {
+    if (isDirectory) {
+        list().forEach {
+            File(this, it).deleteAll()
+        }
+    } else {
+        delete()
+    }
 }

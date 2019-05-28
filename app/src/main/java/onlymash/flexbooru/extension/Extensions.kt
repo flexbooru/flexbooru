@@ -16,12 +16,30 @@
 package onlymash.flexbooru.extension
 
 import android.app.Activity
+import android.app.DownloadManager
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
+import android.net.Uri
 import android.net.wifi.WifiConfiguration
 import android.text.StaticLayout
+import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.DimenRes
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
+import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.database.CookieManager
+import onlymash.flexbooru.entity.post.PostBase
 
 /**
  * An extension to `postponeEnterTransition` which will resume after a timeout.
@@ -104,4 +122,119 @@ fun String.unwrapQuotes(): String {
         } else ""
     }
     return formattedConfigString
+}
+
+fun Window.initFullTransparentBar() {
+    addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or
+            WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+    statusBarColor = Color.TRANSPARENT
+    navigationBarColor = Color.TRANSPARENT
+    showBar()
+}
+
+fun Window.showBar() {
+    val uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+    decorView.systemUiVisibility = uiFlags
+}
+
+fun Window.hideBar() {
+    val uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_IMMERSIVE
+    decorView.systemUiVisibility = uiFlags
+}
+
+fun Activity.getWindowWidth(): Int {
+    val outMetrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(outMetrics)
+    return outMetrics.widthPixels
+}
+
+fun Context.safeOpenIntent(intent: Intent) {
+    try {
+        startActivity(intent)
+    } catch (_: ActivityNotFoundException) {}
+}
+
+private fun getCustomTabsIntent(context: Context): CustomTabsIntent {
+    return CustomTabsIntent.Builder()
+        .setToolbarColor(ContextCompat.getColor(context, R.color.background))
+        .build()
+}
+
+fun Context.launchUrl(uri: Uri) = try {
+    getCustomTabsIntent(this).launchUrl(this, uri)
+} catch (e: ActivityNotFoundException) { e.printStackTrace() }
+
+fun Context.launchUrl(url: String) = this.launchUrl(Uri.parse(url))
+
+fun Resources.gridWidth() = when (Settings.gridWidth) {
+    Settings.GRID_WIDTH_SMALL -> getDimensionPixelSize(R.dimen.post_item_width_small)
+    Settings.GRID_WIDTH_NORMAL -> getDimensionPixelSize(R.dimen.post_item_width_normal)
+    else -> getDimensionPixelSize(R.dimen.post_item_width_large)
+}
+
+fun Activity.downloadPost(post: PostBase?) {
+    if (post == null) return
+    var host = post.host
+    val id = post.getPostId()
+    val url = when (Settings.downloadSize) {
+        Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
+        Settings.POST_SIZE_LARGER -> post.getLargerUrl()
+        else -> post.getOriginUrl()
+    }
+    if (url.isEmpty()) return
+    var fileName = url.fileName()
+    if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
+    val uri = getDownloadUri(host, fileName)
+    val request = DownloadManager.Request(Uri.parse(url)).apply {
+        setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        setTitle(String.format("%s - %d", host, id))
+        setDescription(fileName)
+        setDestinationUri(uri)
+        addRequestHeader(Constants.USER_AGENT_KEY, getUserAgent())
+        if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
+        addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")
+        CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
+            addRequestHeader("Cookie", cookie)
+        }
+    }
+    try {
+        (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+    } catch (ex: Exception) {
+        redirectToDownloadManagerSettings()
+    }
+}
+
+fun Context.redirectToDownloadManagerSettings() {
+    try {
+        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.data = Uri.parse("package:com.android.providers.downloads")
+        startActivity(intent)
+        Toast.makeText(this, getString(R.string.msg_download_must_enable), Toast.LENGTH_LONG).show()
+    } catch (ex: ActivityNotFoundException) {
+        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        startActivity(intent)
+        Toast.makeText(this, getString(R.string.msg_download_must_enable), Toast.LENGTH_LONG).show()
+    }
+}
+
+fun Activity.getWidth(): Int {
+    val outMetrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(outMetrics)
+    return outMetrics.widthPixels
+}
+
+fun Activity.openAppInMarket(packageName: String) {
+    try {
+        startActivity(
+            Intent.createChooser(
+                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")),
+                getString(R.string.share_via)))
+    } catch (_: ActivityNotFoundException) { }
 }

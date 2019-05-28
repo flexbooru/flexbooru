@@ -19,7 +19,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
-import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -96,10 +96,10 @@ data class PostGel(
     override fun getOriginUrl(): String = checkUrl(file_url)
 
     override fun getCreatedDate(): String =
-        formatDate(SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at).time).toString()
+        SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at).time.formatDate().toString()
 
     override fun getUpdatedDate(): String =
-        formatDate(change * 1000L).toString()
+        (change * 1000L).formatDate().toString()
 
     companion object {
         private const val PATTERN = "EEE MMM dd HH:mm:ss Z yyyy"

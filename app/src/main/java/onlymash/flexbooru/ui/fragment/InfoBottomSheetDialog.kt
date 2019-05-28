@@ -33,10 +33,10 @@ import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.post.*
+import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
-import onlymash.flexbooru.util.launchUrl
 import onlymash.flexbooru.worker.DownloadWorker
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod

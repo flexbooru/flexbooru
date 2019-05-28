@@ -18,13 +18,16 @@ package onlymash.flexbooru.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.extension.openDocumentTree
-import onlymash.flexbooru.util.trimCache
+import onlymash.flexbooru.extension.trimCache
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -78,7 +81,11 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
                     .setMessage(R.string.settings_clear_cache_dialog_content)
                     .setNegativeButton(R.string.dialog_cancel, null)
                     .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                        requireContext().trimCache()
+                        context?.let {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                it.trimCache()
+                            }
+                        }
                     }
                     .show()
             }

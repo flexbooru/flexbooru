@@ -28,9 +28,9 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.pool.PoolSankaku
+import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
-import onlymash.flexbooru.util.toggleArrow
 import onlymash.flexbooru.widget.AutoCollapseTextView
 import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod

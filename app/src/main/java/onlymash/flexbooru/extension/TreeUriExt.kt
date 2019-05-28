@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.extension
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ContentResolver
@@ -28,8 +29,13 @@ import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.util.ext
 import java.util.*
+
+fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
+
+fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getUri(host, fileName)
+
+fun Activity.getPoolUri(fileName: String): Uri? = getUri("pools", fileName)
 
 fun getFileUriByDocId(docId: String): Uri? {
     val treeId = Settings.downloadDirPathTreeId ?: return null
@@ -91,21 +97,7 @@ private fun Activity.getUri(dirName: String, fileName: String): Uri? {
     return fileDocUri
 }
 
-fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
-
-fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getUri(host, fileName)
-
-fun Activity.getPoolUri(fileName: String): Uri? = getUri("pools", fileName)
-
-private fun closeQuietly(closeable: AutoCloseable?) {
-    closeable ?: return
-    try {
-        closeable.close()
-    } catch (rethrown: RuntimeException) {
-        throw rethrown
-    } catch (_: Exception) { }
-}
-
+@SuppressLint("Recycle")
 private fun Context.findChildrenDocIdByFilename(treeUri: Uri, filename: String): String? {
     var docId: String? = null
     val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
@@ -132,13 +124,13 @@ private fun Context.findChildrenDocIdByFilename(treeUri: Uri, filename: String):
             }
         }
     } finally {
-        closeQuietly(childrenCursor)
+        childrenCursor?.safeCloseQuietly()
     }
     return docId
 }
 
 fun String.getMimeType(): String {
-    var extension = this.ext()
+    var extension = fileExt()
     // Convert the URI string to lower case to ensure compatibility with MimeTypeMap (see CB-2185).
     extension = extension.toLowerCase(Locale.getDefault())
     if (extension == "3ga") {
@@ -149,3 +141,46 @@ fun String.getMimeType(): String {
     }
     return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: ""
 }
+
+fun String.fileExt(): String {
+    val start = lastIndexOf('.') + 1
+    val end = indexOfFirst { it == '?' }
+    return if (end > start) {
+        substring(start, end)
+    } else {
+        substring(start)
+    }
+}
+
+fun String.fileName(): String {
+    val start = lastIndexOf('/') + 1
+    val end = indexOfFirst { it == '?' }
+    val encodeFileName = if (end > start) {
+        substring(start, end)
+    } else {
+        substring(start)
+    }
+    return Uri.decode(encodeFileName)
+        .replace("?", "")
+        .replace("!", "")
+        .replace(":", "_")
+        .replace("\"","_")
+}
+
+fun String.isImage(): Boolean {
+    val ext = fileExt()
+    return ext == "jpg" || ext == "png" || ext == "gif" ||
+            ext == "webp" || ext == "jpeg"
+}
+fun String.isStillImage(): Boolean {
+    val ext = fileExt()
+    return ext == "jpg" || ext == "png" || ext == "jpeg"
+}
+fun String.isGifImage(): Boolean = fileExt() == "gif"
+
+fun String.isImageNotWebp(): Boolean {
+    val ext = fileExt()
+    return ext == "jpg" || ext == "png" || ext == "gif"
+}
+
+fun String.isWebp(): Boolean = fileExt() == "webp"

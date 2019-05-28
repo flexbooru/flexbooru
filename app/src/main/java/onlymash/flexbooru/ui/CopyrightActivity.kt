@@ -28,7 +28,7 @@ import androidx.core.text.parseAsHtml
 import kotlinx.android.synthetic.main.activity_copyright.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.util.launchUrl
+import onlymash.flexbooru.extension.launchUrl
 
 class CopyrightActivity : BaseActivity() {
 
@@ -50,7 +50,7 @@ class CopyrightActivity : BaseActivity() {
                                     action = Intent.ACTION_SENDTO
                                     data = span.url.toUri()
                                 }, getString(R.string.share_via)))
-                            } else this@CopyrightActivity.launchUrl(span.url)
+                            } else launchUrl(span.url)
                         }
                     }, getSpanStart(span), getSpanEnd(span), getSpanFlags(span))
                     removeSpan(span)

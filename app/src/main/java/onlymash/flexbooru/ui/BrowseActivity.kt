@@ -58,9 +58,7 @@ import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
-import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.extension.getMimeType
-import onlymash.flexbooru.extension.getSaveUri
+import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.browse.PostLoaderRepositoryImpl
@@ -69,7 +67,6 @@ import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
-import onlymash.flexbooru.util.*
 import onlymash.flexbooru.widget.DismissFrameLayout
 import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.generic.instance
@@ -624,13 +621,13 @@ class BrowseActivity : BaseActivity() {
                             try {
                                 `is` = FileInputStream(resource)
                                 os = contentResolver.openOutputStream(uri)
-                                IOUtils.copy(`is`, os)
+                                `is`.copyToOS(os)
                                 return@withContext true
                             } catch (_: IOException) {
                                 return@withContext false
                             } finally {
-                                IOUtils.closeQuietly(`is`)
-                                IOUtils.closeQuietly(os)
+                                `is`?.safeCloseQuietly()
+                                os?.safeCloseQuietly()
                             }
                         }
                         if (success) {

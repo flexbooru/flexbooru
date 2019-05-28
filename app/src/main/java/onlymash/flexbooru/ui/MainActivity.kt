@@ -49,10 +49,10 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.extension.getWidth
+import onlymash.flexbooru.extension.launchUrl
+import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
-import onlymash.flexbooru.util.getWidth
-import onlymash.flexbooru.util.launchUrl
-import onlymash.flexbooru.util.openAppInMarket
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 import org.kodein.di.generic.instance
 

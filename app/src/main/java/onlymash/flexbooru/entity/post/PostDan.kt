@@ -19,7 +19,7 @@ import android.text.format.Formatter
 import androidx.room.Entity
 import androidx.room.Index
 import onlymash.flexbooru.common.App
-import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -114,10 +114,14 @@ data class PostDan(
     override fun getOriginUrl(): String = if (file_url.isNullOrBlank()) getLargerUrl() else checkUrl(file_url)
 
     override fun getCreatedDate(): String =
-        formatDate(SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at).time).toString()
+        SimpleDateFormat(PATTERN, Locale.ENGLISH)
+            .parse(created_at)
+            .time.formatDate().toString()
 
     override fun getUpdatedDate(): String =
-        formatDate(SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(updated_at ?: created_at).time).toString()
+        SimpleDateFormat(PATTERN, Locale.ENGLISH)
+            .parse(updated_at ?: created_at)
+            .time.formatDate().toString()
 
     companion object {
         private const val PATTERN = "yyyy-MM-dd'T'HH:mm:ss.sss"

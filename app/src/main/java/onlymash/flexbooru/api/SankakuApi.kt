@@ -29,7 +29,7 @@ import onlymash.flexbooru.entity.comment.CommentSankaku
 import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.entity.tag.TagSankaku
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -57,7 +57,7 @@ interface SankakuApi {
                     .addHeader("Origin", "$scheme://$host")
                     .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                     .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
                     .build())
             }
             val client = OkHttpClient.Builder().apply {

@@ -31,7 +31,7 @@ import onlymash.flexbooru.entity.comment.CommentResponse
 import onlymash.flexbooru.entity.pool.PoolDanOne
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.tag.TagDanOne
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -55,7 +55,7 @@ interface DanbooruOneApi {
                 it.proceed(it.request()
                     .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
                     .build())
             }
             val client = OkHttpClient.Builder().apply {

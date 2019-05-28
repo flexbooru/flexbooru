@@ -32,7 +32,7 @@ import onlymash.flexbooru.entity.comment.CommentResponse
 import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.tag.TagMoe
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -58,7 +58,7 @@ interface MoebooruApi {
                 val builder =  chain.request()
                     .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
                 CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let {
                     builder.addHeader("Cookie", it)
                 }

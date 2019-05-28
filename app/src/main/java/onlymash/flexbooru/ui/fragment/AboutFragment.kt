@@ -25,9 +25,10 @@ import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
+import onlymash.flexbooru.extension.launchUrl
+import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.CopyrightActivity
-import onlymash.flexbooru.util.launchUrl
-import onlymash.flexbooru.util.openAppInMarket
+
 
 class AboutFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -37,30 +38,30 @@ class AboutFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "about_author_website" -> {
-                requireContext().launchUrl("https://blog.fiepi.com")
+                context?.launchUrl("https://blog.fiepi.com")
             }
             "about_author_email" -> {
                 val email = "mailto:im@fiepi.me"
-                requireContext().startActivity(Intent.createChooser(Intent().apply {
+                context?.startActivity(Intent.createChooser(Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = email.toUri()
                 }, getString(R.string.share_via)))
             }
             "about_feedback_github" -> {
-                requireContext().launchUrl("https://github.com/flexbooru/flexbooru/issues")
+                context?.launchUrl("https://github.com/flexbooru/flexbooru/issues")
             }
             "about_feedback_telegram" -> {
-                requireContext().launchUrl("https://t.me/Flexbooru")
+                context?.launchUrl("https://t.me/Flexbooru")
             }
             "about_feedback_email" -> {
                 val email = "mailto:feedback@fiepi.me"
-                requireContext().startActivity(Intent.createChooser(Intent().apply {
+                context?.startActivity(Intent.createChooser(Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = email.toUri()
                 }, getString(R.string.share_via)))
             }
             "about_donation_paypal" -> {
-                requireContext().launchUrl("https://www.paypal.me/fiepi")
+                context?.launchUrl("https://www.paypal.me/fiepi")
             }
             "about_donation_alipay" -> {
                 val text = "im@fiepi.com"
@@ -73,13 +74,15 @@ class AboutFragment : PreferenceFragmentCompat() {
                 view?.let { Snackbar.make(it, getString(R.string.snackbar_copy_text, text), Snackbar.LENGTH_LONG).show() }
             }
             "about_app_rate" -> {
-                requireActivity().openAppInMarket(requireContext().applicationContext.packageName)
+                activity?.run {
+                    openAppInMarket(applicationContext.packageName)
+                }
             }
             "about_app_translation" -> {
-                requireContext().launchUrl("https://crowdin.com/project/flexbooru")
+                context?.launchUrl("https://crowdin.com/project/flexbooru")
             }
             "about_licenses" -> {
-                requireActivity().run {
+                context?.run {
                     startActivity(Intent(this, CopyrightActivity::class.java))
                 }
             }

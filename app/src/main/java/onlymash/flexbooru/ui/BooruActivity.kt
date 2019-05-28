@@ -47,9 +47,10 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.extension.copyToOS
+import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
-import onlymash.flexbooru.util.IOUtils
 import java.io.IOException
 
 class BooruActivity : BaseActivity() {
@@ -206,12 +207,12 @@ class BooruActivity : BaseActivity() {
                         val `is` = jsonString.byteInputStream()
                         val os = contentResolver.openOutputStream(uri)
                         try {
-                            IOUtils.copy(`is` = `is`, os = os)
+                            `is`.copyToOS(os)
                         } catch (_:IOException) {
                             return@withContext false
                         } finally {
-                            IOUtils.closeQuietly(`is`)
-                            IOUtils.closeQuietly(os)
+                            `is`.safeCloseQuietly()
+                            os?.safeCloseQuietly()
                         }
                         return@withContext true
                     }

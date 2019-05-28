@@ -41,12 +41,8 @@ import java.io.FileInputStream
 import java.io.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.pool.PoolMoe
-import onlymash.flexbooru.extension.getDownloadUri
-import onlymash.flexbooru.extension.getFileUriByDocId
-import onlymash.flexbooru.extension.getPoolUri
+import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
-import onlymash.flexbooru.util.IOUtils
-import onlymash.flexbooru.util.fileName
 import onlymash.flexbooru.okhttp.OkHttp3Downloader
 import java.io.InputStream
 
@@ -243,12 +239,12 @@ class DownloadWorker(
                 val `is` = FileInputStream(file)
                 val os = applicationContext.contentResolver.openOutputStream(desUri)
                 try {
-                    IOUtils.copy(`is`, os)
+                    `is`.copyToOS(os)
                 } catch (_: IOException) {
                     return Result.failure()
                 } finally {
-                    IOUtils.closeQuietly(`is`)
-                    IOUtils.closeQuietly(os)
+                    `is`.safeCloseQuietly()
+                    os?.safeCloseQuietly()
                 }
                 notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, desUri = desUri).build())
                 return Result.success()
@@ -306,13 +302,13 @@ class DownloadWorker(
                     `is` = OkHttp3Downloader(applicationContext)
                         .load(url)
                         .body?.source()?.inputStream()
-                    IOUtils.copy(`is`, os)
+                    `is`?.copyToOS(os)
                 } catch (_: IOException) {
                     return Result.failure()
                 } finally {
                     ProgressInterceptor.removeListener(url)
-                    IOUtils.closeQuietly(`is`)
-                    IOUtils.closeQuietly(os)
+                    `is`?.safeCloseQuietly()
+                    os?.safeCloseQuietly()
                 }
                 notificationManager.notify(
                     id,

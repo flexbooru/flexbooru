@@ -13,25 +13,13 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity.pool
+package onlymash.flexbooru.extension
 
-import onlymash.flexbooru.entity.DanOneDate
-import onlymash.flexbooru.extension.formatDate
+import android.text.format.DateFormat
+import java.util.*
 
-data class PoolDanOne(
-    val user_id: Int,
-    val is_public: Boolean,
-    val post_count: Int,
-    val name: String,
-    val updated_at: DanOneDate,
-    val id: Int,
-    val created_at: DanOneDate
-) : PoolBase() {
-    override fun getPoolId(): Int = id
-    override fun getPoolName(): String = name
-    override fun getPostCount(): Int = post_count
-    override fun getPoolDate(): CharSequence = (updated_at.s * 1000L).formatDate()
-    override fun getPoolDescription(): String = ""
-    override fun getCreatorId(): Int = user_id
-    override fun getCreatorName(): String? = null
+fun Long.formatDate(): CharSequence {
+    val cal = Calendar.getInstance(Locale.getDefault())
+    cal.timeInMillis = this
+    return DateFormat.format("yyyy-MM-dd HH:mm", cal)
 }

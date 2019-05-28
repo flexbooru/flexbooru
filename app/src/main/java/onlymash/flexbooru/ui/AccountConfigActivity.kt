@@ -33,10 +33,10 @@ import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.extension.launchUrl
+import onlymash.flexbooru.extension.sha1
 import onlymash.flexbooru.repository.account.UserRepositoryImpl
 import onlymash.flexbooru.repository.account.UserRepository
-import onlymash.flexbooru.util.HashUtil
-import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
 
 class AccountConfigActivity : BaseActivity() {
@@ -112,7 +112,7 @@ class AccountConfigActivity : BaseActivity() {
         if ((booru.type == Constants.TYPE_MOEBOORU
                     || booru.type == Constants.TYPE_DANBOORU_ONE
                     || booru.type == Constants.TYPE_SANKAKU) && hashSalt.isNotBlank()) {
-            pass = HashUtil.sha1(hashSalt.replace(Constants.HASH_SALT_CONTAINED, pass))
+            pass = hashSalt.replace(Constants.HASH_SALT_CONTAINED, pass).sha1()
         }
         set_account.visibility = View.INVISIBLE
         progress_bar.visibility = View.VISIBLE

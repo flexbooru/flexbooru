@@ -22,7 +22,7 @@ import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.View
 import android.widget.TextView
-import onlymash.flexbooru.util.launchUrl
+import onlymash.flexbooru.extension.launchUrl
 
 class LinkTransformationMethod : TransformationMethod {
 

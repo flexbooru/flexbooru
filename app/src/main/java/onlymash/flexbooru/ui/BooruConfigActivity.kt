@@ -23,8 +23,8 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
-import onlymash.flexbooru.util.TextMatchesUtil
 
 class BooruConfigActivity : BaseActivity() {
 
@@ -68,7 +68,7 @@ class BooruConfigActivity : BaseActivity() {
                     when {
                         booru.name.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_name_cant_empty, Snackbar.LENGTH_LONG).show()
                         booru.host.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_host_cant_empty, Snackbar.LENGTH_LONG).show()
-                        !TextMatchesUtil.isHost(booru.host) -> {
+                        !booru.host.isHost() -> {
                             Snackbar.make(toolbar, getString(R.string.booru_config_host_invalid), Snackbar.LENGTH_LONG).show()
                         }
                         booru.type in hashBoorus && booru.hash_salt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()

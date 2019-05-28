@@ -34,7 +34,7 @@ import okhttp3.OkHttpClient
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
@@ -63,7 +63,7 @@ class FlexAppGlideModule : AppGlideModule() {
                 .newBuilder()
                 .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                 .removeHeader(Constants.USER_AGENT_KEY)
-                .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
             CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
                 builder.addHeader("Cookie", cookie)
             }

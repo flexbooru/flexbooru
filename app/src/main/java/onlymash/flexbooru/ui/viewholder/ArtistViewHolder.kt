@@ -27,8 +27,8 @@ import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.artist.ArtistBase
+import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.util.ViewAnimation
-import onlymash.flexbooru.util.toggleArrow
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

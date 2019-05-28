@@ -32,7 +32,7 @@ import onlymash.flexbooru.entity.comment.CommentResponse
 import onlymash.flexbooru.entity.pool.PoolDan
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.tag.TagDan
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -57,7 +57,7 @@ interface DanbooruApi {
             val interceptor = Interceptor { chain ->
                 val requests =  chain.request().newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
                     .build()
                 chain.proceed(requests)
             }

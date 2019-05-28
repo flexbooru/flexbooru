@@ -16,7 +16,7 @@
 package onlymash.flexbooru.entity.comment
 
 import com.crashlytics.android.Crashlytics
-import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +45,7 @@ data class CommentMoe(
                 throw IllegalStateException("Unknown date format: $created_at")
             }
         } ?: return ""
-        return formatDate(date.time)
+        return date.time.formatDate()
     }
     override fun getCreatorId(): Int = creator_id
     override fun getCreatorName(): String = creator

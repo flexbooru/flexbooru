@@ -26,7 +26,7 @@ import androidx.annotation.VisibleForTesting
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 
 /** A [Downloader] which uses OkHttp to download images.  */
 class OkHttp3Downloader : Downloader {
@@ -152,7 +152,7 @@ class OkHttp3Downloader : Downloader {
                 it.proceed(it.request()
                     .newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
                     .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
                     .build())
             }

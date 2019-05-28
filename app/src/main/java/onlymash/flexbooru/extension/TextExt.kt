@@ -13,15 +13,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.glide
+package onlymash.flexbooru.extension
 
-import com.bumptech.glide.load.model.Headers
-import com.bumptech.glide.load.model.LazyHeaders
-import onlymash.flexbooru.common.Constants
-import onlymash.flexbooru.util.UserAgent
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 
-//Glide url header
-val glideHeader: Headers
-    get() = LazyHeaders.Builder()
-        .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
-        .build()
+
+private val REGEX_HOST = "^(?=.{1,255}\$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?)*\\.?\$".toRegex()
+
+private val REGEX_NUMBER = "-?\\d+(\\.\\d+)?".toRegex()
+
+fun String.isHost(): Boolean = matches(REGEX_HOST)
+
+fun String.isNumber(): Boolean = matches(REGEX_NUMBER)
+
+fun Context.copyText(text: String?) {
+    val cm = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return
+    cm.primaryClip = ClipData.newPlainText("text", text ?: "")
+}

@@ -37,8 +37,8 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.repository.account.UserRepositoryImpl
-import onlymash.flexbooru.util.launchUrl
 import org.kodein.di.generic.instance
 
 class AccountActivity : BaseActivity() {

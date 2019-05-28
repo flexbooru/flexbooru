@@ -15,7 +15,7 @@
 
 package onlymash.flexbooru.entity.pool
 
-import onlymash.flexbooru.util.formatDate
+import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +37,7 @@ data class PoolDan(
     override fun getPostCount(): Int = post_count
     override fun getPoolDate(): CharSequence {
         val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updated_at) ?: return ""
-        return formatDate(date.time)
+        return date.time.formatDate()
     }
     override fun getPoolDescription(): String = description
     override fun getCreatorId(): Int = creator_id

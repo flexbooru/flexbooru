@@ -38,9 +38,9 @@ import onlymash.flexbooru.worker.MuzeiArtWorker
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.database.dao.MuzeiDao
 import onlymash.flexbooru.entity.Muzei
+import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
-import onlymash.flexbooru.util.openAppInMarket
 import org.kodein.di.generic.instance
 
 class MuzeiActivity : BaseActivity() {

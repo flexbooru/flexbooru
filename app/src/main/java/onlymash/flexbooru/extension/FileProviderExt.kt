@@ -13,16 +13,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.util
+package onlymash.flexbooru.extension
 
-object TextMatchesUtil {
+import android.content.Context
+import android.net.Uri
+import androidx.core.content.FileProvider
+import java.io.File
 
-    private val REGEX_HOST = "^(?=.{1,255}\$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?)*\\.?\$".toRegex()
+private const val AUTHORITY = "onlymash.flexbooru.play.fileprovider"
 
-    private val REGEX_NUMBER = "-?\\d+(\\.\\d+)?".toRegex()
-
-    fun isHost(host: String): Boolean = host.matches(REGEX_HOST)
-
-    fun isNumber(number: String): Boolean = number.matches(REGEX_NUMBER)
-
+fun Context.getUriForFile(file: File): Uri {
+    return FileProvider.getUriForFile(this, AUTHORITY, file)
 }

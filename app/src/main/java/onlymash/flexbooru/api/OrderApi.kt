@@ -25,7 +25,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.util.UserAgent
+import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -54,7 +54,7 @@ interface OrderApi {
             val interceptor = Interceptor { chain ->
                 val requests =  chain.request().newBuilder()
                     .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, UserAgent.get())
+                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
                     .build()
                 chain.proceed(requests)
             }
