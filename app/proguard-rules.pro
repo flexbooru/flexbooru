@@ -37,26 +37,20 @@
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
--dontnote com.crashlytics.**
 -dontwarn io.fabric.sdk.android.**
--dontnote io.fabric.sdk.android.**
 
 ### Exoplayer2
 -dontwarn com.google.android.exoplayer2.**
--dontnote com.google.android.exoplayer2.**
 
 ### Kotlin Coroutine
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
 
--dontwarn android.arch.util.paging.CountedDataSource
--dontwarn android.arch.persistence.room.paging.LimitOffsetDataSource
+-dontwarn androidx.room.paging.LimitOffsetDataSource
 
 -keep class com.google.android.gms.** { *; }
 -dontwarn com.google.android.gms.**
--dontnote com.google.android.gms.**
--dontnote com.google.firebase.**
 
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
@@ -71,10 +65,8 @@
 -dontwarn javax.annotation.**
 
 -dontwarn okhttp3.**
--dontnote okhttp3.**
 -dontwarn okio.**
 -dontwarn org.conscrypt.**
--dontnote retrofit2.Platform
 -dontwarn retrofit2.Platform$Java8
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
@@ -84,21 +76,12 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.*
 
 -keep class sun.misc.Unsafe { *; }
--dontnote sun.misc.Unsafe
 -keep class com.google.gson.stream.** { *; }
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
 
 -dontwarn com.google.android.material.**
--dontnote com.google.android.material.**
-
--dontnote android.widget.Space
--dontnote xyz.belvi.mobilevisionbarcodescanner.BarcodeFragment
-
--dontnote kotlin.**
--dontnote com.mikepenz.**
--dontnote com.github.chrisbanes.photoview.**
 
 -keep class onlymash.flexbooru.entity.** { *; }
 -keep class onlymash.flexbooru.respository.** { *; }
@@ -114,6 +97,5 @@
     @com.tickaroo.tikxml.* <methods>;
 }
 -dontwarn com.tickaroo.tikxml.**
--dontnote com.tickaroo.tikxml.**
 
 -keep class com.android.vending.billing.**
