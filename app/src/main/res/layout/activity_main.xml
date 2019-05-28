@@ -35,16 +35,11 @@
             android:layout_height="58dp"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
-            android:background="@color/background"
+            android:background="@drawable/background"
             app:menu="@menu/navigation"
             app:layout_anchorGravity="bottom"
             app:labelVisibilityMode="labeled"
             app:itemHorizontalTranslationEnabled="false"
-            app:backgroundTint="@color/background"
-            app:itemTextAppearanceActive="?android:attr/textAppearance"
-            app:itemTextAppearanceInactive="?android:attr/textAppearance"
-            app:itemTextColor="@color/navbar_text_color"
-            app:itemIconTint="@color/navbar_text_color"
             app:layout_behavior="onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

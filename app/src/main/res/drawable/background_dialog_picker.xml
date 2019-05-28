@@ -21,6 +21,6 @@
        android:insetRight="54dp">
     <shape android:shape="rectangle">
         <corners android:radius="2dp" />
-        <solid android:color="@color/background" />
+        <solid android:color="@color/colorCardBackground" />
     </shape>
 </inset>

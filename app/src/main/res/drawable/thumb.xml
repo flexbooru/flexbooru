@@ -23,5 +23,5 @@
     <padding
             android:paddingLeft="24dp"
             android:paddingRight="24dp" />
-    <solid android:color="@color/fast_scroll_bar" />
+    <solid android:color="@color/colorFastScrollBar" />
 </shape>

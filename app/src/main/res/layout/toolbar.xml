@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="@dimen/elevation_size"
-        android:theme="@style/Toolbar"
-        android:background="@color/background"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="@color/colorBackground"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
-        app:popupTheme="@style/PopupTheme"/>
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>

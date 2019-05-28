@@ -24,4 +24,4 @@
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         android:background="@color/transparent"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
-        app:popupTheme="@style/PopupTheme"/>
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>

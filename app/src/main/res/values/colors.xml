@@ -15,34 +15,35 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#FF623AB2</color>
-    <color name="colorPrimaryDark">@color/colorPrimary</color>
-    <color name="colorAccent">@color/pink</color>
-    <color name="colorControlActivated">@color/colorAccent</color>
-    <color name="pink">#F06292</color>
-    <color name="white">@android:color/white</color>
-    <color name="black">@android:color/black</color>
-    <color name="transparent">@android:color/transparent</color>
-    <color name="translucent">#52000000</color>
+    <color name="colorPrimary">@color/color_light_primary</color>
+    <color name="colorPrimaryDark">@color/color_light_primary_dark</color>
+    <color name="colorSecondary">@color/color_light_secondary</color>
+    <color name="colorAccent">@color/color_light_accent</color>
+    <color name="colorBackground">@color/color_light_background</color>
+    <color name="colorError">@color/color_light_error</color>
+    <color name="colorPrimaryVariant">@color/color_light_primary_variant</color>
+    <color name="colorSecondaryVariant">@color/color_light_secondary_variant</color>
+    <color name="colorSurface">@color/color_light_surface</color>
+    <color name="colorOnPrimary">@color/color_light_on_primary</color>
+    <color name="colorOnSecondary">@color/color_light_on_secondary</color>
+    <color name="colorOnBackground">@color/color_light_on_background</color>
+    <color name="colorOnError">@color/color_light_on_error</color>
+    <color name="colorOnSurface">@color/color_light_on_surface</color>
+    <color name="scrimBackground">@color/color_light_scrim</color>
 
-    <color name="icon_tint">@color/grey_600</color>
-    <color name="pref_icon_tint">@color/grey_600</color>
-    <color name="toolbar_icon_tint">@color/black</color>
-    <color name="bar_tint">@color/grey_600</color>
-    <color name="account_action_background_tint">@color/colorPrimary</color>
+    <color name="colorIconTint">@color/grey_600</color>
+    <color name="colorIconTintToolbar">@color/black</color>
+    <color name="colorFastScrollBar">@color/grey_300</color>
+    <color name="colorDividerItem">@color/grey_300</color>
+    <color name="colorButtonText">@color/colorPrimary</color>
 
-    <color name="fast_scroll_bar">@color/grey_300</color>
+    <color name="colorCardBackground">@color/background_card_light</color>
 
-    <color name="item_line">@color/grey_300</color>
+    <color name="background_tint_account_action">@color/colorPrimary</color>
 
-    <color name="button_text">@color/colorPrimary</color>
-
-    <color name="background">@color/background_light</color>
-    <color name="background_light">@color/md_light_background</color>
-    <color name="background_dark">@color/dark_level_3</color>
-    <color name="background_card">@color/background_card_light</color>
     <color name="background_card_light">@color/white</color>
-    <color name="background_card_dark">@color/dark_level_2</color>
+    <color name="background_card_dark">@color/grey</color>
+
     <color name="background_text_info">@color/grey_5</color>
     <color name="background_button">@color/colorPrimary</color>
     <color name="background_button_pressed">@color/purple</color>
@@ -95,4 +96,60 @@
     <color name="tag_type_unknown">#ccffffff</color>
 
     <color name="muzei">#3C6CAF</color>
+
+    <color name="grey">@color/grey_900</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="scrim">#52000000</color>
+    <color name="dark">#121212</color>
+    <color name="transparent">@android:color/transparent</color>
+
+    <color name="color_primary">#673AB7</color>
+    <color name="color_primary_light">#9A67EA</color>
+    <color name="color_primary_dark">#320B86</color>
+    <color name="color_accent">#EC407A</color>
+
+
+    <color name="color_light_primary">@color/color_primary</color>
+    <color name="color_light_primary_dark">@color/color_primary_dark</color>
+    <color name="color_light_secondary">@color/color_accent</color>
+    <color name="color_light_accent">@color/color_light_secondary</color>
+    <color name="color_light_background">@color/white</color>
+    <color name="color_light_error">#B00020</color>
+    <color name="color_light_primary_variant">@color/color_light_primary_dark</color>
+    <color name="color_light_secondary_variant">#018786</color>
+    <color name="color_light_surface">@color/white</color>
+    <color name="color_light_on_primary">@color/white</color>
+    <color name="color_light_on_secondary">@color/black</color>
+    <color name="color_light_on_background">@color/black</color>
+    <color name="color_light_on_error">@color/white</color>
+    <color name="color_light_on_surface">@color/black</color>
+    <color name="color_light_scrim">@color/scrim</color>
+
+    <color name="color_dark_primary">@color/color_primary_light</color>
+    <color name="color_dark_primary_dark">@color/grey_900</color>
+    <color name="color_dark_secondary">@color/color_accent</color>
+    <color name="color_dark_accent">@color/color_dark_secondary</color>
+    <color name="color_dark_background">@color/dark</color>
+    <color name="color_dark_error">#CF6679</color>
+    <color name="color_dark_primary_variant">@color/color_light_primary_dark</color>
+    <color name="color_dark_secondary_variant">@color/color_dark_secondary</color>
+    <color name="color_dark_surface">@color/dark</color>
+    <color name="color_dark_on_primary">@color/black</color>
+    <color name="color_dark_on_secondary">@color/black</color>
+    <color name="color_dark_on_background">@color/white</color>
+    <color name="color_dark_on_error">@color/black</color>
+    <color name="color_dark_on_surface">@color/white</color>
+    <color name="color_dark_scrim">@color/scrim</color>
+
+    <color name="colorDrawerBackground">@color/color_light_background</color>
+    <color name="colorDrawerPrimaryText">@color/material_drawer_primary_text</color>
+    <color name="colorDrawerPrimaryIcon">@color/material_drawer_primary_icon</color>
+    <color name="colorDrawerSecondaryText">@color/material_drawer_secondary_text</color>
+    <color name="colorDrawerHintText">@color/material_drawer_hint_text</color>
+    <color name="colorDrawerDivider">@color/material_drawer_divider</color>
+    <color name="colorDrawerSelected">@color/material_drawer_selected</color>
+    <color name="colorDrawerSelectedText">@color/material_drawer_selected_text</color>
+    <color name="colorDrawerHeaderSelectionText">@color/material_drawer_header_selection_text</color>
+    <color name="colorDrawerHeaderSelectionSubtext">@color/material_drawer_header_selection_subtext</color>
 </resources>

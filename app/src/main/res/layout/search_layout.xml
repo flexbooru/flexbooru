@@ -33,7 +33,7 @@
             android:layout_marginStart="@dimen/search_bar_horizontal_margin"
             android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
             android:touchscreenBlocksFocus="false"
-            style="@style/CardViewTheme.SearchBar">
+            style="@style/AppTheme.CardView.SearchBar">
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tags_filter_list"

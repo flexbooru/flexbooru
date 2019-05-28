@@ -15,21 +15,45 @@
   -->
 
 <resources>
-    <color name="colorControlActivated">@color/white</color>
-    <color name="toolbar_icon_tint">@color/white</color>
-    <color name="bar_tint">@color/grey_400</color>
-    <color name="button_text">@color/md_white_1000</color>
-    <color name="pref_icon_tint">@color/grey_400</color>
-    <color name="background">@color/background_dark</color>
-    <color name="background_card">@color/background_card_dark</color>
+    <color name="colorPrimary">@color/color_dark_primary</color>
+    <color name="colorPrimaryDark">@color/color_dark_primary_dark</color>
+    <color name="colorSecondary">@color/color_dark_secondary</color>
+    <color name="colorAccent">@color/color_dark_accent</color>
+    <color name="colorBackground">@color/color_dark_background</color>
+    <color name="colorError">@color/color_dark_error</color>
+    <color name="colorPrimaryVariant">@color/color_dark_primary_variant</color>
+    <color name="colorSecondaryVariant">@color/color_dark_secondary_variant</color>
+    <color name="colorSurface">@color/color_dark_surface</color>
+    <color name="colorOnPrimary">@color/color_dark_on_primary</color>
+    <color name="colorOnSecondary">@color/color_dark_on_secondary</color>
+    <color name="colorOnBackground">@color/color_dark_on_background</color>
+    <color name="colorOnError">@color/color_dark_on_error</color>
+    <color name="colorOnSurface">@color/color_dark_on_surface</color>
+    <color name="scrimBackground">@color/color_dark_scrim</color>
+
+    <color name="colorIconTint">@color/grey_400</color>
+    <color name="colorIconTintToolbar">@color/white</color>
+    <color name="colorFastScrollBar">@color/grey_700</color>
+    <color name="colorButtonText">@color/md_white_1000</color>
+    <color name="colorDividerItem">@color/grey_800</color>
+    <color name="colorCardBackground">@color/background_card_dark</color>
     <color name="background_text_info">@color/background_card_dark</color>
     <color name="background_quote">@color/grey_700</color>
     <color name="background_comment">@color/grey_800</color>
-    <color name="item_line">@color/grey_800</color>
+    <color name="background_tint_account_action">@color/dark_level_1</color>
     <color name="rating_e">@color/grey_900</color>
     <color name="rating_q">@color/grey_850</color>
     <color name="rating_s">@color/grey_800</color>
     <color name="muzei">@color/dark_level_1</color>
-    <color name="account_action_background_tint">@color/dark_level_1</color>
-    <color name="fast_scroll_bar">@color/grey_700</color>
+
+    <color name="colorDrawerBackground">@color/color_dark_background</color>
+    <color name="colorDrawerPrimaryText">@color/material_drawer_dark_primary_text</color>
+    <color name="colorDrawerPrimaryIcon">@color/material_drawer_dark_primary_icon</color>
+    <color name="colorDrawerSecondaryText">@color/material_drawer_dark_secondary_text</color>
+    <color name="colorDrawerHintText">@color/material_drawer_dark_hint_text</color>
+    <color name="colorDrawerDivider">@color/material_drawer_dark_divider</color>
+    <color name="colorDrawerSelected">@color/material_drawer_dark_selected</color>
+    <color name="colorDrawerSelectedText">@color/material_drawer_dark_selected_text</color>
+    <color name="colorDrawerHeaderSelectionText">@color/material_drawer_dark_header_selection_text</color>
+    <color name="colorDrawerHeaderSelectionSubtext">@color/material_drawer_dark_header_selection_subtext</color>
 </resources>

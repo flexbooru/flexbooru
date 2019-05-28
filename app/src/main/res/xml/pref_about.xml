@@ -15,94 +15,76 @@
   -->
 
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:key="about_screen"
+        app:key="about_screen"
         app:initialExpandedChildrenCount="4">
     <PreferenceCategory
-            android:key="flexbooru"
-            android:title="@string/about_app"
-            app:iconSpaceReserved="true">
+            app:key="flexbooru"
+            app:title="@string/about_app">
         <Preference
-                android:key="about_app_version"
-                android:title="@string/about_app_version"
-                android:summary="%s"
-                app:iconSpaceReserved="true"/>
+                app:key="about_app_version"
+                app:title="@string/about_app_version"
+                app:summary="%s"/>
         <Preference
-                android:key="about_app_translation"
-                android:title="@string/about_app_translation"
-                android:summary="@string/about_app_translation_summary"
-                app:iconSpaceReserved="true"/>
+                app:key="about_app_translation"
+                app:title="@string/about_app_translation"
+                app:summary="@string/about_app_translation_summary"/>
         <Preference
-                android:key="about_app_rate"
-                android:title="@string/about_app_rate"
-                app:iconSpaceReserved="true"/>
+                app:key="about_app_rate"
+                app:title="@string/about_app_rate"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:key="author"
-            android:title="@string/about_author"
-            app:iconSpaceReserved="true">
+            app:key="author"
+            app:title="@string/about_author">
         <Preference
-                android:key="about_author_website"
-                android:title="@string/about_author_website"
-                android:summary="https://blog.fiepi.com"
-                app:iconSpaceReserved="true"/>
+                app:key="about_author_website"
+                app:title="@string/about_author_website"
+                app:summary="https://blog.fiepi.com"/>
         <Preference
-                android:key="about_author_email"
-                android:title="@string/about_author_email"
-                android:summary="im@fiepi.me"
-                app:iconSpaceReserved="true"/>
+                app:key="about_author_email"
+                app:title="@string/about_author_email"
+                app:summary="im@fiepi.me"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:key="feedback"
-            android:title="@string/about_feedback"
-            app:iconSpaceReserved="true">
+            app:key="feedback"
+            app:title="@string/about_feedback">
         <Preference
-                android:key="about_feedback_github"
-                android:title="@string/about_feedback_github"
-                android:summary="https://github.com/flexbooru/flexbooru/issues"
-                app:iconSpaceReserved="true"/>
+                app:key="about_feedback_github"
+                app:title="@string/about_feedback_github"
+                app:summary="https://github.com/flexbooru/flexbooru/issues"/>
         <Preference
-                android:key="about_feedback_telegram"
-                android:title="@string/about_feedback_telegram"
-                android:summary="https://t.me/Flexbooru"
-                app:iconSpaceReserved="true"/>
+                app:key="about_feedback_telegram"
+                app:title="@string/about_feedback_telegram"
+                app:summary="https://t.me/Flexbooru"/>
         <Preference
-                android:key="about_feedback_email"
-                android:title="@string/about_feedback_email"
-                android:summary="feedback@fiepi.me"
-                app:iconSpaceReserved="true"/>
+                app:key="about_feedback_email"
+                app:title="@string/about_feedback_email"
+                app:summary="feedback@fiepi.me"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:key="donation"
-            android:title="@string/about_donation"
-            app:iconSpaceReserved="true">
+            app:key="donation"
+            app:title="@string/about_donation">
         <Preference
-                android:key="about_donation_paypal"
-                android:title="@string/about_donation_paypal"
-                android:summary="https://www.paypal.me/fiepi"
-                app:iconSpaceReserved="true"/>
+                app:key="about_donation_paypal"
+                app:title="@string/about_donation_paypal"
+                app:summary="https://www.paypal.me/fiepi"/>
         <Preference
-                android:key="about_donation_alipay"
-                android:title="@string/about_donation_alipay"
-                android:summary="im@fiepi.com"
-                app:iconSpaceReserved="true"/>
+                app:key="about_donation_alipay"
+                app:title="@string/about_donation_alipay"
+                app:summary="im@fiepi.com"/>
         <Preference
-                android:key="about_donation_btc"
-                android:title="@string/about_donation_btc"
-                android:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"
-                app:iconSpaceReserved="true"/>
+                app:key="about_donation_btc"
+                app:title="@string/about_donation_btc"
+                app:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:key="copyright"
-            android:title="@string/about_copyright"
-            app:iconSpaceReserved="true">
+            app:key="copyright"
+            app:title="@string/about_copyright">
         <Preference
-                android:key="about_licenses"
-                android:title="@string/about_licenses"
-                android:summary="@string/about_open_source_licenses"
-                android:icon="@drawable/ic_copyright_24dp"
-                app:iconSpaceReserved="true"/>
+                app:key="about_licenses"
+                app:title="@string/about_licenses"
+                app:summary="@string/about_open_source_licenses"
+                app:icon="@drawable/ic_copyright_24dp"/>
     </PreferenceCategory>
 </PreferenceScreen>

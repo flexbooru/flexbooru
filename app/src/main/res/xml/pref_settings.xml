@@ -15,104 +15,91 @@
   -->
 
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:key="settings_screen"
+        app:key="settings_screen"
         app:initialExpandedChildrenCount="5">
 
     <SwitchPreference
-            android:key="settings_safe_mode"
-            android:title="@string/settings_safe_mode"
-            android:defaultValue="true"
-            android:summaryOn="@string/switch_on"
-            android:summaryOff="@string/switch_off"
-            app:iconSpaceReserved="true"/>
+            app:key="settings_safe_mode"
+            app:title="@string/settings_safe_mode"
+            app:defaultValue="true"
+            app:summaryOn="@string/switch_on"
+            app:summaryOff="@string/switch_off"/>
     
     <com.takisoft.preferencex.SimpleMenuPreference
-            android:key="settings_grid_width"
-            android:entries="@array/settings_grid_width_entries"
-            android:entryValues="@array/settings_grid_width_entries_values"
-            android:defaultValue="normal"
-            android:title="@string/settings_grid_width"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="true" />
+            app:key="settings_grid_width"
+            app:entries="@array/settings_grid_width_entries"
+            app:entryValues="@array/settings_grid_width_entries_values"
+            app:defaultValue="normal"
+            app:title="@string/settings_grid_width"
+            app:useSimpleSummaryProvider="true" />
 
     <SwitchPreference
-            android:key="settings_show_info_bar"
-            android:title="@string/settings_show_info_bar"
-            android:defaultValue="false"
-            android:summaryOn="@string/switch_yes"
-            android:summaryOff="@string/switch_no"
-            app:iconSpaceReserved="true"/>
+            app:key="settings_show_info_bar"
+            app:title="@string/settings_show_info_bar"
+            app:defaultValue="false"
+            app:summaryOn="@string/switch_yes"
+            app:summaryOff="@string/switch_no"/>
 
     <SwitchPreference
-            android:key="settings_show_all_tags"
-            android:title="@string/settings_show_all_tags"
-            android:defaultValue="false"
-            android:summaryOn="@string/switch_yes"
-            android:summaryOff="@string/switch_no"
-            app:iconSpaceReserved="true"/>
+            app:key="settings_show_all_tags"
+            app:title="@string/settings_show_all_tags"
+            app:defaultValue="false"
+            app:summaryOn="@string/switch_yes"
+            app:summaryOff="@string/switch_no"/>
 
     <com.takisoft.preferencex.SimpleMenuPreference
-            android:key="settings_page_limit"
-            android:entries="@array/settings_page_limit_entries"
-            android:entryValues="@array/settings_page_limit_entries_values"
-            android:defaultValue="10"
-            android:title="@string/settings_page_limit"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="true" />
+            app:key="settings_page_limit"
+            app:entries="@array/settings_page_limit_entries"
+            app:entryValues="@array/settings_page_limit_entries_values"
+            app:defaultValue="10"
+            app:title="@string/settings_page_limit"
+            app:useSimpleSummaryProvider="true"/>
     
     <com.takisoft.preferencex.SimpleMenuPreference
-            android:key="settings_browse_size"
-            android:entries="@array/settings_post_size_entries"
-            android:entryValues="@array/settings_post_size_entries_values"
-            android:defaultValue="sample"
-            android:title="@string/settings_browse_size"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="true" />
+            app:key="settings_browse_size"
+            app:entries="@array/settings_post_size_entries"
+            app:entryValues="@array/settings_post_size_entries_values"
+            app:defaultValue="sample"
+            app:title="@string/settings_browse_size"
+            app:useSimpleSummaryProvider="true"/>
 
     <com.takisoft.preferencex.SimpleMenuPreference
-            android:key="settings_download_size"
-            android:entries="@array/settings_post_size_entries"
-            android:entryValues="@array/settings_post_size_entries_values"
-            android:defaultValue="larger"
-            android:title="@string/settings_download_size"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="true" />
+            app:key="settings_download_size"
+            app:entries="@array/settings_post_size_entries"
+            app:entryValues="@array/settings_post_size_entries_values"
+            app:defaultValue="larger"
+            app:title="@string/settings_download_size"
+            app:useSimpleSummaryProvider="true"/>
 
     <Preference
-            android:key="settings_download_path"
-            android:title="@string/settings_download_path"
-            app:iconSpaceReserved="true"/>
+            app:key="settings_download_path"
+            app:title="@string/settings_download_path"/>
 
     <com.takisoft.preferencex.SimpleMenuPreference
-            android:key="settings_muzei_limit"
-            android:entries="@array/settings_muzei_limit_entries"
-            android:entryValues="@array/settings_muzei_limit_entries_values"
-            android:defaultValue="10"
-            android:title="@string/settings_muzei_limit"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="true" />
+            app:key="settings_muzei_limit"
+            app:entries="@array/settings_muzei_limit_entries"
+            app:entryValues="@array/settings_muzei_limit_entries_values"
+            app:defaultValue="10"
+            app:title="@string/settings_muzei_limit"
+            app:useSimpleSummaryProvider="true"/>
 
     <com.takisoft.preferencex.SimpleMenuPreference
-            android:key="settings_muzei_size"
-            android:entries="@array/settings_post_size_entries"
-            android:entryValues="@array/settings_post_size_entries_values"
-            android:defaultValue="larger"
-            android:title="@string/settings_muzei_size"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="true" />
+            app:key="settings_muzei_size"
+            app:entries="@array/settings_post_size_entries"
+            app:entryValues="@array/settings_post_size_entries_values"
+            app:defaultValue="larger"
+            app:title="@string/settings_muzei_size"
+            app:useSimpleSummaryProvider="true"/>
 
     <Preference
-            android:key="settings_clear_history"
-            android:title="@string/settings_clear_history"
-            android:summary="@string/settings_clear_history_summery"
-            app:iconSpaceReserved="true"/>
+            app:key="settings_clear_history"
+            app:title="@string/settings_clear_history"
+            app:summary="@string/settings_clear_history_summery"/>
 
     <Preference
-            android:key="settings_clear_cache"
-            android:title="@string/settings_clear_cache"
-            android:summary="@string/settings_clear_cache_summery"
-            app:iconSpaceReserved="true"/>
+            app:key="settings_clear_cache"
+            app:title="@string/settings_clear_cache"
+            app:summary="@string/settings_clear_cache_summery"/>
 
 </PreferenceScreen>

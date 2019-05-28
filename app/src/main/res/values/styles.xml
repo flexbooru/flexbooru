@@ -15,48 +15,52 @@
 
 <resources>
 
-    <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
 
-    <style name="AppTheme.Bar" parent="AppTheme.Base">
+    <style name="BaseTheme.SystemBar" parent="BaseTheme">
         <item name="android:statusBarColor">#33000000</item>
     </style>
 
-    <style name="AppTheme.Preference" parent="AppTheme.Bar">
-        <item name="preferenceTheme">@style/PreferenceTheme</item>
-    </style>
-    <style name="AppTheme.App" parent="AppTheme.Preference">
+    <style name="AppTheme" parent="BaseTheme.SystemBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorOnPrimary">@color/colorPrimary</item>
-        <item name="colorOnBackground">@color/background</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorOnSecondary">@color/background</item>
-        <item name="android:colorBackground">@color/background</item>
-        <item name="android:popupWindowStyle">@style/PopupWindow</item>
-        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
-        <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSecondaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="scrimBackground">@color/scrimBackground</item>
+        <item name="preferenceTheme">@style/PreferenceTheme</item>
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog.DayNight</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.OverflowMenuStyle.DayNight</item>
+        <item name="android:actionOverflowMenuStyle">@style/Widget.OverflowMenuStyle.DayNight</item>
+        <item name="android:popupWindowStyle">@style/Widget.PopupWindowStyle</item>
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
-        <item name="colorControlActivated">@color/colorControlActivated</item>
-        <item name="alertDialogTheme">@style/CustomAlertDialog</item>
+        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
     </style>
-    <style name="AppTheme.App.Sliding" parent="AppTheme.App">
-        <item name="android:windowAnimationStyle">@style/RightInRightOutAnim</item>
-    </style>
-    <style name="AppTheme.Main" parent="AppTheme.App">
+
+    <style name="AppTheme.Main">
         <!-- MaterialDrawer specific values -->
-        <item name="material_drawer_background">@color/background_light</item>
-        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
-        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
-        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
-        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
-        <item name="material_drawer_divider">@color/material_drawer_divider</item>
-        <item name="material_drawer_selected">@color/material_drawer_selected</item>
-        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
-        <item name="material_drawer_header_selection_subtext">@color/material_drawer_header_selection_subtext</item>
+        <item name="material_drawer_background">@color/colorDrawerBackground</item>
+        <item name="material_drawer_primary_text">@color/colorDrawerPrimaryText</item>
+        <item name="material_drawer_primary_icon">@color/colorDrawerPrimaryIcon</item>
+        <item name="material_drawer_secondary_text">@color/colorDrawerSecondaryText</item>
+        <item name="material_drawer_hint_text">@color/colorDrawerHintText</item>
+        <item name="material_drawer_divider">@color/colorDrawerDivider</item>
+        <item name="material_drawer_selected">@color/colorDrawerSelected</item>
+        <item name="material_drawer_selected_text">@color/colorDrawerSecondaryText</item>
+        <item name="material_drawer_header_selection_text">@color/colorDrawerHeaderSelectionText</item>
+        <item name="material_drawer_header_selection_subtext">@color/colorDrawerHeaderSelectionSubtext</item>
     </style>
-    <style name="AppTheme.Search" parent="AppTheme.App">
+
+    <style name="AppTheme.Search">
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
         <item name="android:activityCloseEnterAnimation">@null</item>
@@ -70,45 +74,102 @@
         <item name="android:taskToBackEnterAnimation">@null</item>
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
-    <style name="AppTheme.Launcher" parent="AppTheme.Bar">
+
+    <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/background_launcher</item>
     </style>
-    <style name="AppTheme.Browse" parent="AppTheme.Base">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <style name="AppTheme.Browse">
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
-        <item name="android:actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>
-    <style name="PopupWindow" parent="@style/Widget.AppCompat.PopupWindow">
-        <item name="android:popupElevation">@dimen/elevation_size</item>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="AppTheme.AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert"/>
+
+    <style name="AppTheme.AlertDialog.DayNight" parent="AppTheme.AlertDialog">
+        <item name="android:windowBackground">@drawable/background_dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Button.TextButton.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
-    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="android:tint">@color/pref_icon_tint</item>
-    </style>
-    <style name="CardViewTheme" parent="CardView.Light">
+
+    <style name="AppTheme.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
-        <item name="cardUseCompatPadding">true</item>
-        <item name="cardElevation">@dimen/card_item_elevation_size</item>
-        <item name="cardMaxElevation">@dimen/card_item_elevation_size</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardElevation">@dimen/elevation_card_item_size</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="contentPadding">0dp</item>
-        <item name="cardBackgroundColor">@color/background_card_light</item>
+        <item name="cardBackgroundColor">@color/colorCardBackground</item>
     </style>
-    <style name="CardViewTheme.SearchBar" parent="CardViewTheme">
-        <item name="cardUseCompatPadding">false</item>
+
+    <style name="AppTheme.CardView.SearchBar" parent="AppTheme.CardView">
         <item name="cardElevation">@dimen/elevation_size</item>
     </style>
-    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
-    <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Light"/>
+
     <style name="TransparentBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
     </style>
+
     <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/translucent</item>
+        <item name="android:background">@color/transparent</item>
     </style>
+
+    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="preferenceStyle">@style/PreferenceStyle</item>
+    </style>
+
+    <style name="PreferenceStyle" parent="Preference.Material">
+        <item name="iconSpaceReserved">true</item>
+    </style>
+
+    <style name="Widget.PopupWindowStyle" parent="@style/Widget.AppCompat.PopupWindow">
+        <item name="android:popupElevation">@dimen/elevation_size</item>
+    </style>
+
+    <style name="Widget.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="elevation">@dimen/elevation_size</item>
+    </style>
+
+    <style name="Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="cornerRadius">@dimen/corner_radius</item>
+    </style>
+
+    <style name="Widget.Button.TextButton.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="cornerRadius">@dimen/corner_radius</item>
+    </style>
+
+    <style name="Widget.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/corner_radius</item>
+    </style>
+
+    <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/white</item>
+        <item name="elevation">@dimen/elevation_size</item>
+    </style>
+
+    <style name="Widget.Account.FloatingActionButton" parent="@style/Widget.FloatingActionButton">
+        <item name="backgroundTint">@color/background_tint_account_action</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="Widget.OverflowMenuStyle.DayNight" parent="Widget.OverflowMenuStyle">
+        <item name="android:dropDownVerticalOffset">@dimen/popup_drop_down_offset</item>
+        <item name="android:popupElevation">@dimen/elevation_size</item>
+    </style>
+
+    <style name="Widget.OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow"/>
+
+    <style name="Animation.RightInRightOutAnim" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
     <style name="TagFilters">
         <item name="android:padding">@dimen/spacing_normal</item>
         <item name="android:strokeColor">?android:attr/textColorTertiary</item>
@@ -118,51 +179,5 @@
         <item name="foreground">?selectableItemBackground</item>
         <item name="actionIcon">@drawable/tag_dot</item>
         <item name="showIcon">true</item>
-    </style>
-    <style name="RightInRightOutAnim" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
-    </style>
-    <style name="Widget.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:textColor">@color/button_text</item>
-    </style>
-    <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="tint">@color/white</item>
-        <item name="elevation">@dimen/elevation_size</item>
-    </style>
-    <style name="Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-    <style name="Widget.Account.FloatingActionButton" parent="@style/Widget.FloatingActionButton">
-        <item name="backgroundTint">@color/account_action_background_tint</item>
-        <item name="android:padding">5dp</item>
-    </style>
-    <style name="OverflowMenuStyle" parent="OverflowMenuStyle.Light"/>
-    <style name="OverflowMenuStyle.Light" parent="Widget.MaterialComponents.PopupMenu.Overflow">
-        <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
-        <item name="android:popupElevation">@dimen/elevation_size</item>
-    </style>
-    <style name="OverflowMenuStyle.Dark" parent="Widget.MaterialComponents.PopupMenu.Overflow.Dark">
-        <item name="android:dropDownVerticalOffset">@dimen/drop_down_offset</item>
-        <item name="android:popupElevation">@dimen/elevation_size</item>
-    </style>
-    <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="android:datePickerStyle">@style/DatePickerStyle</item>
-        <item name="colorAccent">@color/pink</item>
-        <item name="colorPrimary">@color/pink</item>
-        <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
-    </style>
-    <style name="DatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
-        <item name="android:background">@color/white</item>
-    </style>
-    <style name="Widget.Button" parent="Widget.MaterialComponents.Button">
-        <item name="elevation">@dimen/elevation_size</item>
-    </style>
-    <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/background_dialog</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
 </resources>

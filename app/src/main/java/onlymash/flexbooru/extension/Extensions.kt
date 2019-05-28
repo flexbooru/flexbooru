@@ -163,7 +163,7 @@ fun Context.safeOpenIntent(intent: Intent) {
 
 private fun getCustomTabsIntent(context: Context): CustomTabsIntent {
     return CustomTabsIntent.Builder()
-        .setToolbarColor(ContextCompat.getColor(context, R.color.background))
+        .setToolbarColor(ContextCompat.getColor(context, R.color.colorBackground))
         .build()
 }
 

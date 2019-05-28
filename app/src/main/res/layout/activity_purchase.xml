@@ -33,7 +33,7 @@
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/CardViewTheme">
+                style="@style/AppTheme.CardView">
 
             <LinearLayout
                     android:paddingTop="@dimen/spacing_middle"
@@ -73,7 +73,7 @@
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/CardViewTheme">
+                style="@style/AppTheme.CardView">
 
             <LinearLayout
                     android:paddingTop="@dimen/spacing_middle"

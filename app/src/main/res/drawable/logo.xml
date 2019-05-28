@@ -56,28 +56,28 @@
             android:pathData="M560 2054 l0 -205 33 3 32 3 3 148 3 147 154 0 155 0 0 55 0 55 -190 0 -190 0 0 -206z" />
         <!--b-->
         <path
-                android:fillColor="@color/pref_icon_tint"
+                android:fillColor="@color/colorIconTint"
                 android:strokeWidth="1"
                 android:pathData="M2160 2646 l0 -205 153 -3 152 -3 0 -85 0 -85 -152 -3 -153 -3 0 -54 0 -55 161 0 161 0 29 29 29 29 0 142 0 142 -29 29 c-29 29 -30 29 -155 29 l-125 0 -3 148 -3 147 -32 3 -33 3 0 -205z" />
         <!--o1-->
         <path
-                android:fillColor="@color/pref_icon_tint"
+                android:fillColor="@color/colorIconTint"
                 android:strokeWidth="1"
                 android:pathData="M2669 2521 l-29 -29 0 -142 0 -142 29 -29 29 -29 132 0 132 0 29 29 29 29 0 142 0 142 -29 29 -29 29 -132 0 -132 0 -29 -29z m276 -171 l0 -85 -115 0 -115 0 -3 74 c-2 41 -1 80 2 88 4 11 30 13 118 11 l113 -3 0 -85z" />
 
         <!--o2-->
         <path
-                android:fillColor="@color/pref_icon_tint"
+                android:fillColor="@color/colorIconTint"
                 android:strokeWidth="1"
                 android:pathData="M3149 2521 l-29 -29 0 -142 0 -142 29 -29 29 -29 132 0 132 0 29 29 29 29 0 142 0 142 -29 29 -29 29 -132 0 -132 0 -29 -29z m276 -171 l0 -85 -115 0 -115 0 -3 74 c-2 41 -1 80 2 88 4 11 30 13 118 11 l113 -3 0 -85z" />
         <!--r-->
         <path
-                android:fillColor="@color/pref_icon_tint"
+                android:fillColor="@color/colorIconTint"
                 android:strokeWidth="1"
                 android:pathData="M3629 2521 l-29 -29 0 -171 0 -171 35 0 34 0 3 143 3 142 153 3 152 3 0 54 0 55 -161 0 -161 0 -29 -29z" />
         <!--u-->
         <path
-                android:fillColor="@color/pref_icon_tint"
+                android:fillColor="@color/colorIconTint"
                 android:strokeWidth="1"
                 android:pathData="M4080 2379 l0 -171 29 -29 29 -29 132 0 132 0 29 29 29 29 0 171 0 171 -35 0 -34 0 -3 -142 -3 -143 -115 0 -115 0 -3 143 -3 142 -34 0 -35 0 0 -171z" />
     </group>

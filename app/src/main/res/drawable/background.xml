@@ -14,15 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <style name="BaseTheme.SystemBar" parent="BaseTheme">
-        <item name="android:statusBarColor">@color/color_dark_background</item>
-        <item name="android:navigationBarColor">@color/color_dark_background</item>
-    </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark"/>
-
-    <style name="AppTheme.AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert"/>
-
-    <style name="Widget.OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow.Dark"/>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <solid android:color="@color/colorBackground"/>
+</shape>

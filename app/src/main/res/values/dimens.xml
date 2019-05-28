@@ -17,13 +17,17 @@
     <dimen name="search_bar_horizontal_margin">9dp</dimen>
     <dimen name="search_bar_vertical_margin">6dp</dimen>
     <dimen name="search_bar_height">54dp</dimen>
-    <dimen name="corner_radius">6dp</dimen>
+
+    <dimen name="corner_radius">8dp</dimen>
+
     <dimen name="elevation_size">2dp</dimen>
-    <dimen name="card_item_elevation_size">1dp</dimen>
+    <dimen name="elevation_card_item_size">1dp</dimen>
     <dimen name="post_item_width_small">130dp</dimen>
     <dimen name="post_item_width_normal">190dp</dimen>
     <dimen name="post_item_width_large">260dp</dimen>
-    <dimen name="list_padding_horizontal">4dp</dimen>
+    <dimen name="post_item_margin">@dimen/list_padding_horizontal</dimen>
+
+    <dimen name="list_padding_horizontal">4.5dp</dimen>
     <dimen name="swipe_refresh_layout_offset_start">10dp</dimen>
     <dimen name="swipe_refresh_layout_offset_end">90dp</dimen>
     <dimen name="header_item_height">64dp</dimen>
@@ -44,6 +48,6 @@
 
     <dimen name="margin_normal">16dp</dimen>
 
-    <dimen name="drop_down_offset">38dp</dimen>
+    <dimen name="popup_drop_down_offset">38dp</dimen>
 
 </resources>

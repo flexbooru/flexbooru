@@ -95,7 +95,7 @@
                 android:id="@+id/divider_header"
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
-                android:background="@color/item_line"/>
+                android:background="@color/colorDividerItem"/>
         <ListView
                 android:id="@+id/suggestion_list"
                 android:layout_width="match_parent"

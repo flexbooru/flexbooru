@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -33,6 +34,7 @@ import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import onlymash.flexbooru.R
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.extension.getSignMd5
@@ -76,7 +78,10 @@ class App : Application(), KodeinAware {
     val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-            GlideApp.with(imageView.context).load(uri).placeholder(placeholder).into(imageView)
+            GlideApp.with(imageView.context)
+                .load(uri)
+                .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.avatar_account))
+                .into(imageView)
         }
         override fun cancel(imageView: ImageView) {
             Glide.with(imageView.context).clear(imageView)
