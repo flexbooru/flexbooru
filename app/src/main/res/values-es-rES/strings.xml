@@ -20,7 +20,7 @@
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Administrar boorus</string>
     <string name="title_settings">Ajustes</string>
-    <string name="title_booru_config">Configuración Booru</string>
+    <string name="title_booru_config">Configuración de Booru</string>
     <string name="title_account">Cuenta</string>
     <string name="title_account_and_booru">Cuenta - %s</string>
     <string name="title_artists">Artistas</string>
@@ -239,10 +239,10 @@
     <string name="purchase_info_title">Quitar anuncios y desbloquear características</string>
     <string name="purchase_info_remove_ads">Eliminar anuncios</string>
     <string name="purchase_info_unlock_full_features">* Desbloquear todas las características</string>
-    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.</string>
-    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="purchase_info_features">1. Desbloquea el límite de boorus disponible.\n2. Descarga el archivo zip de pool de moebooru.\n3. Copiar y Restaurar boorus desde archivo.</string>
+    <string name="purchase_pay_title">Pagar/Restaurar compra</string>
     <string name="purchase_pay_google_play">Google Play</string>
-    <string name="purchase_pay_alipay">Alipay</string>
-    <string name="tab_start_date">Start date</string>
-    <string name="tab_end_date">End date</string>
+    <string name="purchase_pay_alipay">AliPay</string>
+    <string name="tab_start_date">Fecha de inicio</string>
+    <string name="tab_end_date">Fecha fin</string>
 </resources>
