@@ -25,10 +25,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.*
 import com.bumptech.glide.Glide
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
@@ -129,7 +126,18 @@ class App : Application(), KodeinAware {
                         val index = purchases.indexOfFirst {
                             it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
                         }
-                        Settings.isOrderSuccess = index >= 0
+                        if (index >= 0) {
+                            val purchase = purchases[index]
+                            if (!purchase.isAcknowledged) {
+                                val ackParams = AcknowledgePurchaseParams.newBuilder()
+                                    .setPurchaseToken(purchase.purchaseToken)
+                                    .build()
+                                billingClient.acknowledgePurchase(ackParams){}
+                            }
+                            Settings.isOrderSuccess = true
+                        } else {
+                            Settings.isOrderSuccess = false
+                        }
                     } else {
                         Settings.isOrderSuccess = false
                     }

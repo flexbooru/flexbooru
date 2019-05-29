@@ -185,13 +185,16 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
 
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
         val responseCode = billingResult?.responseCode ?: return
-        if (responseCode == BillingClient.BillingResponseCode.OK ||
-            responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Settings.isOrderSuccess = true
-            if (purchases == null) return
+        if ((responseCode == BillingClient.BillingResponseCode.OK ||
+                    responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) && !purchases.isNullOrEmpty()) {
             val index = purchases.indexOfFirst { it.sku == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
             if (index >= 0) {
                 val purchase = purchases[index]
+                val ackParams = AcknowledgePurchaseParams.newBuilder()
+                    .setPurchaseToken(purchase.purchaseToken)
+                    .build()
+                billingClient?.acknowledgePurchase(ackParams){}
+                Settings.isOrderSuccess = true
                 Settings.orderId = purchase.orderId
                 Settings.orderTime = purchase.purchaseTime
                 Settings.orderToken = purchase.purchaseToken
