@@ -84,7 +84,7 @@
     <string name="booru_add_from_manual_settings">Ajustes manuales</string>
     <string name="booru_add_error">ERROR: datos no válidos</string>
     <string name="booru_add_title_dialog">¿Añadir este booru?</string>
-    <string name="booru_name">Nombre booru</string>
+    <string name="booru_name">Nombre de booru</string>
     <string name="booru_share_by_qr_code">Código QR</string>
     <string name="booru_share_by_clipboard">Exportar al portapapeles</string>
     <string name="booru_edit">Editar</string>
