@@ -27,14 +27,13 @@
             android:id="@+id/user_container"
             android:background="?android:attr/selectableItemBackground">
 
-        <onlymash.flexbooru.widget.CircularImageView
+        <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
                 app:srcCompat="@drawable/avatar_account"
-                app:civ_border="true"
                 app:civ_border_color="@color/grey_10"
                 app:civ_border_width="2dp"
                 app:layout_constraintTop_toTopOf="parent"

@@ -23,7 +23,7 @@
         android:minHeight="68dp"
         android:foreground="?android:attr/selectableItemBackground">
 
-    <onlymash.flexbooru.widget.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -31,7 +31,6 @@
             android:layout_marginTop="@dimen/spacing_middle"
             android:layout_marginStart="@dimen/spacing_middle"
             app:srcCompat="@drawable/avatar_account"
-            app:civ_border="true"
             app:civ_border_color="@color/grey_10"
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"

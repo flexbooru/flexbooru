@@ -24,13 +24,13 @@ import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
-import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.CommentView
 
 class CommentViewHolder(itemView: View,
@@ -45,7 +45,7 @@ class CommentViewHolder(itemView: View,
         }
     }
 
-    private val avatar: CircularImageView = itemView.findViewById(R.id.user_avatar)
+    private val avatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
     private val userName: TextView = itemView.findViewById(R.id.user_name)
     private val postIdView: TextView = itemView.findViewById(R.id.post_id)
     private val commentDate: TextView = itemView.findViewById(R.id.comment_date)

@@ -37,7 +37,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.AccountActivity
 import onlymash.flexbooru.ui.SearchActivity
 import onlymash.flexbooru.worker.DownloadWorker
-import onlymash.flexbooru.widget.CircularImageView
+import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
@@ -255,12 +255,12 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             GlideApp.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), scheme, host, userId))
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
-                .into(view.findViewById<CircularImageView>(R.id.user_avatar))
+                .into(view.findViewById<CircleImageView>(R.id.user_avatar))
         } else if (type == Constants.TYPE_SANKAKU && avatar.isNotEmpty()) {
             GlideApp.with(this)
                 .load(avatar)
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
-                .into(view.findViewById<CircularImageView>(R.id.user_avatar))
+                .into(view.findViewById<CircleImageView>(R.id.user_avatar))
         }
         view.findViewById<Toolbar>(R.id.toolbar).apply {
             setTitle(R.string.browse_info_title)

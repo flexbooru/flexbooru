@@ -24,6 +24,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.pool.PoolBase
 import onlymash.flexbooru.entity.pool.PoolMoe
@@ -32,7 +33,6 @@ import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.AutoCollapseTextView
-import onlymash.flexbooru.widget.CircularImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class PoolViewHolder(itemView: View,
@@ -47,7 +47,7 @@ class PoolViewHolder(itemView: View,
         }
     }
     private val container: ConstraintLayout = itemView.findViewById(R.id.container)
-    private val userAvatar: CircularImageView = itemView.findViewById(R.id.user_avatar)
+    private val userAvatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
     private val poolName: TextView = itemView.findViewById(R.id.pool_name)
     private val poolIdCount: TextView = itemView.findViewById(R.id.pool_id_and_count)
     private val poolDescription: AutoCollapseTextView = itemView.findViewById(R.id.pool_description)
