@@ -209,7 +209,7 @@ class PostRepositoryImpl(
                         boundaryCallback = danOneBoundaryCallback)
             }
             livePagedList.addSource(data) {
-                livePagedList.value = it
+                livePagedList.postValue(it)
             }
         }
         return Listing(
@@ -257,7 +257,7 @@ class PostRepositoryImpl(
                         boundaryCallback = danBoundaryCallback)
             }
             livePagedList.addSource(data) {
-                livePagedList.value = it
+                livePagedList.postValue(it)
             }
         }
         return Listing(
@@ -306,7 +306,7 @@ class PostRepositoryImpl(
                     )
             }
             livePagedList.addSource(data) {
-                livePagedList.value = it
+                livePagedList.postValue(it)
             }
         }
         return Listing(
@@ -355,7 +355,7 @@ class PostRepositoryImpl(
                     )
             }
             livePagedList.addSource(data) {
-                livePagedList.value = it
+                livePagedList.postValue(it)
             }
         }
         return Listing(
@@ -529,7 +529,7 @@ class PostRepositoryImpl(
                     )
             }
             livePagedList.addSource(data) {
-                livePagedList.value = it
+                livePagedList.postValue(it)
             }
         }
         return Listing(
