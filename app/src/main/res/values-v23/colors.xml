@@ -15,11 +15,5 @@
   -->
 
 <resources>
-    <style name="BaseTheme.SystemBar" parent="BaseTheme">
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:statusBarColor">@color/color_light_background</item>
-        <item name="android:navigationBarColor">@color/color_light_background</item>
-        <item name="android:navigationBarDividerColor">@color/grey_300</item>
-    </style>
+    <color name="colorStatusBar">@color/color_light_background</color>
 </resources>

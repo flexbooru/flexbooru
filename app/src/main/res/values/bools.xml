@@ -15,9 +15,6 @@
   -->
 
 <resources>
-    <style name="BaseTheme.SystemBar" parent="BaseTheme">
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">@color/color_dark_background</item>
-        <item name="android:navigationBarColor">@color/color_dark_background</item>
-    </style>
+    <bool name="is_light_status_bar">true</bool>
+    <bool name="is_light_navigation_bar">true</bool>
 </resources>

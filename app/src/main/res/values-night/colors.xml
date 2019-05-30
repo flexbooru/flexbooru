@@ -37,6 +37,10 @@
     <color name="colorButtonText">@color/md_white_1000</color>
     <color name="colorDividerItem">@color/grey_800</color>
     <color name="colorCardBackground">@color/background_card_dark</color>
+    <color name="colorStatusBar">@color/color_dark_background</color>
+    <color name="colorNavigationBar">@color/color_dark_background</color>
+    <color name="colorNavigationBarDivider">@color/color_dark_background</color>
+
     <color name="background_text_info">@color/background_card_dark</color>
     <color name="background_quote">@color/grey_700</color>
     <color name="background_comment">@color/grey_800</color>

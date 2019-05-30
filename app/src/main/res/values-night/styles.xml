@@ -15,10 +15,6 @@
   -->
 
 <resources>
-    <style name="BaseTheme.SystemBar" parent="BaseTheme">
-        <item name="android:statusBarColor">@color/color_dark_background</item>
-        <item name="android:navigationBarColor">@color/color_dark_background</item>
-    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark"/>
 
