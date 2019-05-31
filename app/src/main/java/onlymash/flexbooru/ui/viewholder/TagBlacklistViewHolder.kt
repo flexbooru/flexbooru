@@ -17,8 +17,8 @@ package onlymash.flexbooru.ui.viewholder
 
 import android.view.MenuInflater
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.TagBlacklistManager
@@ -26,7 +26,7 @@ import onlymash.flexbooru.entity.TagBlacklist
 import onlymash.flexbooru.extension.copyText
 
 class TagBlacklistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val tagTextView = itemView.findViewById<TextView>(R.id.tag_blacklist)
+    private val tagTextView = itemView.findViewById<AppCompatTextView>(R.id.tag_blacklist)
     private val actionMenu = itemView.findViewById<ActionMenuView>(R.id.action_menu)
     private lateinit var tag: TagBlacklist
     init {

@@ -17,8 +17,8 @@ package onlymash.flexbooru.ui.viewholder
 
 import android.view.MenuInflater
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.MuzeiManager
@@ -28,7 +28,7 @@ import onlymash.flexbooru.ui.SearchActivity
 
 class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val keyword = itemView.findViewById<TextView>(R.id.muzei_keyword)
+    private val keyword = itemView.findViewById<AppCompatTextView>(R.id.muzei_keyword)
     private val actionMenu = itemView.findViewById<ActionMenuView>(R.id.action_menu)
     private lateinit var muzei: Muzei
 

@@ -18,7 +18,7 @@ package onlymash.flexbooru.ui.viewholder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.tag.*
@@ -46,9 +46,9 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         const val META_SANKAKU = 9
     }
 
-    private val tagName: TextView = itemView.findViewById(R.id.tag_name)
-    private val tagType: TextView = itemView.findViewById(R.id.tag_type)
-    private val count: TextView = itemView.findViewById(R.id.post_count)
+    private val tagName: AppCompatTextView = itemView.findViewById(R.id.tag_name)
+    private val tagType: AppCompatTextView = itemView.findViewById(R.id.tag_type)
+    private val count: AppCompatTextView = itemView.findViewById(R.id.post_count)
 
     private var tag: TagBase? = null
 

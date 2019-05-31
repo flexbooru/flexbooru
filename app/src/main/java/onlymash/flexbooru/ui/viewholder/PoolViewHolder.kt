@@ -20,7 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -32,7 +32,6 @@ import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.util.ViewAnimation
-import onlymash.flexbooru.widget.AutoCollapseTextView
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class PoolViewHolder(itemView: View,
@@ -48,10 +47,10 @@ class PoolViewHolder(itemView: View,
     }
     private val container: ConstraintLayout = itemView.findViewById(R.id.container)
     private val userAvatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
-    private val poolName: TextView = itemView.findViewById(R.id.pool_name)
-    private val poolIdCount: TextView = itemView.findViewById(R.id.pool_id_and_count)
-    private val poolDescription: AutoCollapseTextView = itemView.findViewById(R.id.pool_description)
-    private val poolDate: TextView = itemView.findViewById(R.id.pool_date)
+    private val poolName: AppCompatTextView = itemView.findViewById(R.id.pool_name)
+    private val poolIdCount: AppCompatTextView = itemView.findViewById(R.id.pool_id_and_count)
+    private val poolDescription: AppCompatTextView = itemView.findViewById(R.id.pool_description)
+    private val poolDate: AppCompatTextView = itemView.findViewById(R.id.pool_date)
     private val expandBottom: ImageButton = itemView.findViewById(R.id.bt_expand)
     private val descriptionContainer: LinearLayout = itemView.findViewById(R.id.description_container)
     private var pool: PoolBase? = null

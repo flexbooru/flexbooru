@@ -18,7 +18,7 @@ package onlymash.flexbooru.ui.viewholder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 
@@ -30,7 +30,7 @@ class TagFilterSubheadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
             return TagFilterSubheadViewHolder(view)
         }
     }
-    private val subhead = itemView.findViewById<TextView>(R.id.subhead)
+    private val subhead = itemView.findViewById<AppCompatTextView>(R.id.subhead)
     fun bind(name: String) {
         subhead.text = name
     }

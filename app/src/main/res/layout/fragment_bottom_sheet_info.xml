@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:id="@+id/user_container"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="?attr/selectableItemBackground">
 
         <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_avatar"
@@ -33,44 +33,44 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
-                app:srcCompat="@drawable/avatar_account"
+                android:src="@drawable/avatar_account"
                 app:civ_border_color="@color/grey_10"
                 app:civ_border_width="2dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/user_name"
                 android:gravity="center_vertical|start"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="15dp"
-                android:textAppearance="?android:attr/textAppearanceListItem"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:textColor="@color/primary_text_dark"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/user_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/user_id"/>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/user_id"
                 android:gravity="center_vertical|start"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="15dp"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 app:layout_constraintTop_toBottomOf="@+id/user_name"
                 app:layout_constraintStart_toEndOf="@id/user_avatar"
                 app:layout_constraintEnd_toStartOf="@id/created_date"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/created_date"
                 android:gravity="center_vertical|end"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="10dp"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 app:layout_constraintTop_toTopOf="@+id/user_id"
                 app:layout_constraintStart_toEndOf="@id/user_id"
@@ -81,24 +81,24 @@
     <LinearLayout
             android:id="@+id/source_container"
             android:paddingTop="@dimen/spacing_normal"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="?attr/listPreferredItemHeight">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/browse_info_source"
                 android:layout_marginStart="10dp"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/source"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:gravity="end"
                 android:layout_marginStart="10dp"
@@ -108,23 +108,23 @@
     </LinearLayout>
 
     <LinearLayout
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="?attr/listPreferredItemHeight">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/browse_info_rating"
                 android:layout_marginStart="10dp"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/rating"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:gravity="end"
                 android:layout_marginStart="10dp"
@@ -136,21 +136,21 @@
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="?attr/listPreferredItemHeight">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/browse_info_score"
                 android:layout_marginStart="10dp"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/score"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:gravity="end"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -159,24 +159,24 @@
 
     <LinearLayout
             android:id="@+id/parent_container"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="?attr/listPreferredItemHeight">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/browse_info_parent"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_height="match_parent"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/parent"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:gravity="end"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -188,17 +188,17 @@
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
-        <TextView
+            android:layout_height="?attr/listPreferredItemHeight">
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/url_sample_size"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/url_sample_download"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -207,9 +207,9 @@
                 android:paddingEnd="15dp"
                 android:contentDescription="@string/browse_info_url_download"
                 android:tint="@color/white"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_file_download_24dp"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/url_sample_open"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -218,27 +218,27 @@
                 android:paddingEnd="15dp"
                 android:contentDescription="@string/browse_info_url_open"
                 android:tint="@color/white"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_open_in_browser_24dp"/>
     </LinearLayout>
 
     <LinearLayout
             android:id="@+id/url_larger_container"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="?attr/listPreferredItemHeight">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/url_larger_size"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/url_larger_download"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -249,7 +249,7 @@
                 android:tint="@color/white"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_file_download_24dp"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/url_larger_open"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -264,21 +264,21 @@
 
     <LinearLayout
             android:id="@+id/url_origin_container"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="?attr/listPreferredItemHeight">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/url_origin_size"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearance"
+                android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/secondary_text_dark"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/url_origin_download"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -289,7 +289,7 @@
                 android:tint="@color/white"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_file_download_24dp"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/url_origin_open"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -304,6 +304,6 @@
 
     <Space
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="40dp"/>
 
 </LinearLayout>

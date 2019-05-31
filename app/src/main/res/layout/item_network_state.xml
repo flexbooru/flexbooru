@@ -19,7 +19,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:padding="8dp">
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/error_msg"
         android:maxWidth="256dp"
         android:paddingTop="30dp"
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>
+        android:textAppearance="?attr/textAppearanceBody2"/>
     <ProgressBar
         android:id="@+id/progress_bar"
         android:paddingTop="30dp"

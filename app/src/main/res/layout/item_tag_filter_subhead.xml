@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<TextView
+<androidx.appcompat.widget.AppCompatTextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/subhead"
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:paddingBottom="@dimen/spacing_medium"
         android:paddingStart="@dimen/spacing_middle"
         android:paddingEnd="@dimen/spacing_middle"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="?attr/textAppearanceBody1"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorSecondary"
         android:textAllCaps="true"/>

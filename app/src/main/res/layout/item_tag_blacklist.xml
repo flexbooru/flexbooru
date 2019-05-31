@@ -19,7 +19,7 @@
               android:layout_width="match_parent"
               android:layout_height="60dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tag_blacklist"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="?android:attr/textColorPrimary"/>
 
     <androidx.appcompat.widget.ActionMenuView

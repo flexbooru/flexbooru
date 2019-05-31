@@ -22,7 +22,7 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:visibility="gone">
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/error_msg_empty"
             android:maxWidth="256dp"
             android:paddingTop="0dp"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>
+            android:textAppearance="?attr/textAppearanceBody2"/>
     <ProgressBar
             android:id="@+id/progress_bar_empty"
             android:layout_width="wrap_content"

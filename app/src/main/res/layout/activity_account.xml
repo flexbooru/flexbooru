@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="onlymash.flexbooru.ui.AccountActivity"
+        tools:context=".ui.AccountActivity"
         tools:ignore="Overdraw">
 
     <include layout="@layout/toolbar"/>
@@ -37,7 +37,7 @@
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
@@ -48,20 +48,20 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginTop="-45dp"
-                    app:srcCompat="@drawable/avatar_account"
+                    android:src="@drawable/avatar_account"
                     app:civ_border_color="@color/grey_10"
                     app:civ_border_width="2dp" />
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_middle"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-            <TextView
+                    android:textAppearance="?attr/textAppearanceHeadline6"/>
+            <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:textColor="?android:attr/textColorSecondary"/>
             <View
                     android:layout_width="0dp"
@@ -90,12 +90,12 @@
                             app:srcCompat="@drawable/ic_favorite_24dp"
                             style="@style/Widget.Account.FloatingActionButton"/>
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/account_favorites"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                            android:textAppearance="?attr/textAppearanceBody2" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -115,12 +115,12 @@
                             app:srcCompat="@drawable/ic_photo_24dp"
                             style="@style/Widget.Account.FloatingActionButton"/>
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/account_posts"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                            android:textAppearance="?attr/textAppearanceBody2" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -140,12 +140,12 @@
                             app:srcCompat="@drawable/ic_comment_24dp"
                             style="@style/Widget.Account.FloatingActionButton"/>
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/account_comments"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                            android:textAppearance="?attr/textAppearanceBody2" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -170,12 +170,12 @@
                         app:srcCompat="@drawable/ic_sentiment_very_satisfied_24dp"
                         style="@style/Widget.Account.FloatingActionButton"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_medium"
                         android:text="@string/account_recommended"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                        android:textAppearance="?attr/textAppearanceBody2" />
 
             </LinearLayout>
         </LinearLayout>

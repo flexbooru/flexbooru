@@ -20,8 +20,8 @@ import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -46,9 +46,9 @@ class CommentViewHolder(itemView: View,
     }
 
     private val avatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
-    private val userName: TextView = itemView.findViewById(R.id.user_name)
-    private val postIdView: TextView = itemView.findViewById(R.id.post_id)
-    private val commentDate: TextView = itemView.findViewById(R.id.comment_date)
+    private val userName: AppCompatTextView = itemView.findViewById(R.id.user_name)
+    private val postIdView: AppCompatTextView = itemView.findViewById(R.id.post_id)
+    private val commentDate: AppCompatTextView = itemView.findViewById(R.id.comment_date)
     private val commentView: CommentView = itemView.findViewById(R.id.comment_view)
     private val menuView: ActionMenuView = itemView.findViewById(R.id.menu_view)
 

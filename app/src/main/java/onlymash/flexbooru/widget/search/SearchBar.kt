@@ -28,6 +28,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
@@ -78,7 +79,7 @@ class SearchBar @JvmOverloads constructor(
     private val editText: SearchEditText
     private val menuView: ActionMenuView
     private val leftButton: ImageButton
-    private val title: TextView
+    private val title: AppCompatTextView
     private val suggestionList: ListView
     private val dividerHeader: View
     

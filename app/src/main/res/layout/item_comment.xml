@@ -20,8 +20,8 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="68dp"
-        android:background="?android:attr/selectableItemBackground">
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:background="?attr/selectableItemBackground">
 
     <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"
@@ -30,18 +30,18 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="@dimen/spacing_middle"
             android:layout_marginStart="@dimen/spacing_middle"
-            app:srcCompat="@drawable/avatar_account"
+            android:src="@drawable/avatar_account"
             app:civ_border_color="@color/grey_10"
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/user_name"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="bottom"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:layout_marginStart="@dimen/spacing_middle"
             android:layout_marginEnd="@dimen/spacing_middle"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
@@ -54,25 +54,25 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/post_id"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/spacing_middle"
             android:gravity="bottom"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
             app:layout_constraintEnd_toStartOf="@id/comment_date"
             app:layout_constraintBottom_toBottomOf="@id/user_avatar"/>
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/comment_date"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/spacing_middle"
             android:gravity="bottom|end"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
             app:layout_constraintEnd_toEndOf="parent"

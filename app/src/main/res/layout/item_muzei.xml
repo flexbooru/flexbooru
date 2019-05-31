@@ -20,7 +20,7 @@
               android:background="@drawable/background_muzei"
               android:layout_height="60dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/muzei_keyword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,8 +31,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:textColor="?android:attr/textColorPrimary"/>
+            android:textAppearance="?attr/textAppearanceBody1"/>
 
     <androidx.appcompat.widget.ActionMenuView
             android:id="@+id/action_menu"

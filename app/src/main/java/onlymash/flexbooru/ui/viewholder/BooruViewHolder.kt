@@ -20,8 +20,8 @@ import android.content.ClipData
 import android.content.Intent
 import android.view.MenuInflater
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
@@ -31,17 +31,16 @@ import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 import onlymash.flexbooru.ui.fragment.QRCodeDialog
-import onlymash.flexbooru.widget.AutoCollapseTextView
 
 class BooruViewHolder(itemView: View,
                       private val activity: Activity) : RecyclerView.ViewHolder(itemView) {
 
     lateinit var booru: Booru
 
-    private val booruName: TextView = itemView.findViewById(R.id.booru_name)
+    private val booruName: AppCompatTextView = itemView.findViewById(R.id.booru_name)
     private val booruActionMenuView: ActionMenuView = itemView.findViewById(R.id.booru_action_menu)
-    private val booruUrl: AutoCollapseTextView = itemView.findViewById(R.id.booru_url)
-    private val booruType: AutoCollapseTextView = itemView.findViewById(R.id.booru_type)
+    private val booruUrl: AppCompatTextView = itemView.findViewById(R.id.booru_url)
+    private val booruType: AppCompatTextView = itemView.findViewById(R.id.booru_type)
 
     init {
         MenuInflater(itemView.context).inflate(R.menu.booru_action_menu, booruActionMenuView.menu)

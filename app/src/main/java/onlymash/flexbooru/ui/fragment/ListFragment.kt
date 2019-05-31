@@ -22,8 +22,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import android.widget.TextView
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -63,7 +63,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
 
     internal lateinit var searchBar: SearchBar
     internal lateinit var leftDrawable: DrawerArrowDrawable
-    internal lateinit var notSupported: TextView
+    internal lateinit var notSupported: AppCompatTextView
     private lateinit var searchBarMover: SearchBarMover
 
     interface SearchBarHelper {

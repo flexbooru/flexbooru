@@ -42,31 +42,31 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/purchase_info_title"
                         android:padding="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
-                <TextView
+                        android:textAppearance="?attr/textAppearanceCaption"/>
+                <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/purchase_info_remove_ads"
                         android:padding="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
-                <TextView
+                        android:textAppearance="?attr/textAppearanceBody1"/>
+                <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/purchase_info_unlock_full_features"
                         android:padding="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
-                <TextView
+                        android:textAppearance="?attr/textAppearanceBody1"/>
+                <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/purchase_info_features"
                         android:paddingStart="@dimen/spacing_large"
                         android:paddingEnd="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
+                        android:textAppearance="?attr/textAppearanceCaption"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -83,13 +83,13 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/purchase_pay_title"
                         android:padding="@dimen/spacing_middle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
-                <TextView
+                        android:textAppearance="?attr/textAppearanceCaption"/>
+                <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/pay_google_play"
                         android:text="@string/purchase_pay_google_play"
                         android:padding="@dimen/spacing_middle"
@@ -98,8 +98,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
-                <TextView
+                        android:textAppearance="?attr/textAppearanceBody1"/>
+                <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/pay_alipay"
                         android:text="@string/purchase_pay_alipay"
                         android:padding="@dimen/spacing_middle"
@@ -108,8 +108,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
-                <TextView
+                        android:textAppearance="?attr/textAppearanceBody1"/>
+                <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/pay_redeem_code"
                         android:text="@string/purchase_pay_order_code"
                         android:padding="@dimen/spacing_middle"
@@ -118,7 +118,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+                        android:textAppearance="?attr/textAppearanceBody1"/>
 
             </LinearLayout>
 

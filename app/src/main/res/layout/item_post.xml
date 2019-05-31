@@ -26,7 +26,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/preview"
                 android:transitionName="post_img"
                 android:layout_width="0dp"
@@ -47,23 +47,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/preview">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/post_id"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_medium"
                     android:layout_marginEnd="@dimen/spacing_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearance"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"/>
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/post_size"
                     android:layout_marginBottom="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_medium"
                     android:layout_marginEnd="@dimen/spacing_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearance"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

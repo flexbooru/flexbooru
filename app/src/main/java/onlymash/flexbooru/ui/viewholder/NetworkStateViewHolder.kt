@@ -20,7 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.toVisibility
@@ -32,7 +32,7 @@ class NetworkStateViewHolder(itemView: View,
 
     private val progressBar: ProgressBar = itemView.findViewById(R.id.progress_bar)
     private val retry: Button = itemView.findViewById(R.id.retry_button)
-    private val errorMsg: TextView = itemView.findViewById(R.id.error_msg)
+    private val errorMsg: AppCompatTextView = itemView.findViewById(R.id.error_msg)
 
     init {
         retry.setOnClickListener {

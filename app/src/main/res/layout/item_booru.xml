@@ -21,7 +21,7 @@
         android:padding="@dimen/booru_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/booru_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/booru_name"/>
-    <onlymash.flexbooru.widget.AutoCollapseTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/booru_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,11 +55,11 @@
             android:paddingEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/booru_name"/>
-    <onlymash.flexbooru.widget.AutoCollapseTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/booru_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:ellipsize="end"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/booru_url"/>

@@ -23,7 +23,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -216,10 +216,10 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         val view = View.inflate(requireContext(), R.layout.fragment_bottom_sheet_info, null)
-        view.findViewById<TextView>(R.id.user_name).text = name
-        view.findViewById<TextView>(R.id.user_id).text = userId.toString()
-        view.findViewById<TextView>(R.id.created_date).text = date
-        view.findViewById<TextView>(R.id.source).apply {
+        view.findViewById<AppCompatTextView>(R.id.user_name).text = name
+        view.findViewById<AppCompatTextView>(R.id.user_id).text = userId.toString()
+        view.findViewById<AppCompatTextView>(R.id.created_date).text = date
+        view.findViewById<AppCompatTextView>(R.id.source).apply {
             text = source
             transformationMethod = LinkTransformationMethod()
         }
@@ -236,15 +236,15 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 true
             }
         }
-        view.findViewById<TextView>(R.id.rating).text =
+        view.findViewById<AppCompatTextView>(R.id.rating).text =
             when (rating) {
                 "s" -> getString(R.string.browse_info_rating_safe)
                 "q" -> getString(R.string.browse_info_rating_questionable)
                 else -> getString(R.string.browse_info_rating_explicit)
             }
-        view.findViewById<TextView>(R.id.score).text = score.toString()
+        view.findViewById<AppCompatTextView>(R.id.score).text = score.toString()
         if (parent > 0) {
-            view.findViewById<TextView>(R.id.parent).text = parent.toString()
+            view.findViewById<AppCompatTextView>(R.id.parent).text = parent.toString()
             view.findViewById<LinearLayout>(R.id.parent_container).setOnClickListener {
                 SearchActivity.startActivity(requireContext(), "parent:$parent")
             }
@@ -292,9 +292,9 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             context?.copyText(urlOriginString)
             true
         }
-        view.findViewById<TextView>(R.id.url_sample_size).text = sizeSampleString
-        view.findViewById<TextView>(R.id.url_larger_size).text = sizeLargerString
-        view.findViewById<TextView>(R.id.url_origin_size).text = sizeOriginString
+        view.findViewById<AppCompatTextView>(R.id.url_sample_size).text = sizeSampleString
+        view.findViewById<AppCompatTextView>(R.id.url_larger_size).text = sizeLargerString
+        view.findViewById<AppCompatTextView>(R.id.url_origin_size).text = sizeOriginString
         view.findViewById<ImageView>(R.id.url_sample_download).setOnClickListener {
             DownloadWorker.download(
                 url = urlSampleString,

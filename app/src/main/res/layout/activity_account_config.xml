@@ -31,7 +31,7 @@
         <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_xlarge" />
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/account_config_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:layout_marginStart="@dimen/spacing_medium"
                 android:text="@string/title_account_config"
                 android:textColor="?attr/colorPrimary"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textStyle="bold" />
         <View
                 android:layout_width="60dp"
@@ -106,7 +106,7 @@
                 <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/spacing_middle" />
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/forgot_auth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                         android:background="?attr/selectableItemBackground"
                         android:text="@string/account_forgot_password"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                        android:textAppearance="?attr/textAppearanceOverline"
                         android:textStyle="bold"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -145,13 +145,14 @@
                     android:visibility="invisible"
                     style="@style/Widget.AppCompat.ProgressBar"/>
         </FrameLayout>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:paddingTop="15dp"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
                 android:id="@+id/error_msg"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody2"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
