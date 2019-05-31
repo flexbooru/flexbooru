@@ -20,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:visibility="gone">
+        android:layout_gravity="center">
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/error_msg_empty"
             android:maxWidth="256dp"
@@ -30,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textAppearance="?attr/textAppearanceBody2"/>
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:visibility="gone"/>
     <ProgressBar
             android:id="@+id/progress_bar_empty"
             android:layout_width="wrap_content"
@@ -43,5 +43,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/retry"
+            android:visibility="gone"
             style="@style/Widget.Button.OutlinedButton"/>
 </LinearLayout>

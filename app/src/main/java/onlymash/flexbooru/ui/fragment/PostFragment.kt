@@ -31,6 +31,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import kotlinx.coroutines.GlobalScope
@@ -47,6 +48,7 @@ import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.extension.getViewModel
 import onlymash.flexbooru.extension.gridWidth
 import onlymash.flexbooru.extension.rotate
+import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
@@ -435,6 +437,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         searchBar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
         expandButton = searchBar.findViewById<View>(R.id.action_expand_tag_filter)
+        progress_bar_empty.toVisibility(false)
         postViewModel = getPostViewModel(
             PostRepositoryImpl(
                 db = db,

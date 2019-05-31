@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
@@ -34,6 +35,7 @@ import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.artist.ArtistBase
+import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.artist.ArtistRepositoryImpl
 import onlymash.flexbooru.repository.artist.ArtistRepository
@@ -249,6 +251,7 @@ class ArtistFragment : ListFragment() {
         searchBar.setTitle(R.string.title_artists)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
         if (isUnsupported) {
+            progress_bar_empty.toVisibility(false)
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
