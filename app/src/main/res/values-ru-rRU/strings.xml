@@ -150,7 +150,7 @@
     <string name="account_recommended">Рекомендуемое</string>
     <string name="settings_safe_mode">Безопасный режим</string>
     <string name="settings_page_limit">Лимит страниц</string>
-    <string name="settings_muzei_limit">Muzei limit</string>
+    <string name="settings_muzei_limit">Лимит Muzei</string>
     <string name="settings_browse_size">Browse size</string>
     <string name="settings_download_size">Download size</string>
     <string name="settings_download_path">Download path</string>
