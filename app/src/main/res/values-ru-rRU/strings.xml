@@ -181,8 +181,8 @@
     <string name="pool_download_pngs">Скачать PNG</string>
     <string name="tag_type">Тип</string>
     <string name="tag_type_all">Все типы</string>
-    <string name="tag_type_general">General</string>
-    <string name="tag_type_artist">Artist</string>
+    <string name="tag_type_general">Общее</string>
+    <string name="tag_type_artist">Исполнитель</string>
     <string name="tag_type_copyright">Copyright</string>
     <string name="tag_type_character">Character</string>
     <string name="tag_type_circle">Circle</string>
@@ -193,7 +193,7 @@
     <string name="tag_type_genre">Genre</string>
     <string name="tag_type_studio">Studio</string>
     <string name="tag_type_medium">Medium</string>
-    <string name="tag_type_unknown">Unknown</string>
+    <string name="tag_type_unknown">Неизвестно</string>
     <string name="tag_order">Order</string>
     <string name="tag_order_date">Date</string>
     <string name="tag_order_name">Name</string>
@@ -233,16 +233,16 @@
     <string name="comment_quote">Quote</string>
     <string name="comment_delete">Delete</string>
     <string name="comment_send">Send</string>
-    <string name="comment_cancel">Cancel</string>
-    <string name="comment_hint">Input comment</string>
-    <string name="purchase_title">Remove ads &amp; feature unlock</string>
-    <string name="purchase_info_title">Remove ads and unlock full features</string>
-    <string name="purchase_info_remove_ads">* Remove ads</string>
-    <string name="purchase_info_unlock_full_features">* Unlock full features</string>
-    <string name="purchase_info_features">1. Unlock the available boorus limit.\n2. Download pool\'s zip archive of moebooru.\n3. Backup &amp; Restore boorus from file.</string>
-    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="comment_cancel">Отмена</string>
+    <string name="comment_hint">Введите комментарий</string>
+    <string name="purchase_title">Удалить рекламу &amp; разблокировать новые возможности</string>
+    <string name="purchase_info_title">Удалить рекламу и разблокировать все возможности</string>
+    <string name="purchase_info_remove_ads">* Удалить рекламу</string>
+    <string name="purchase_info_unlock_full_features">* Разблокировать все возможности</string>
+    <string name="purchase_info_features">1. Возможность убрать лимит booru.\n2. Скачивание Zip-архива пула moebooru.\n3. Резервное копирование &amp; Восстановление всех booru из файла.</string>
+    <string name="purchase_pay_title">Оплатить / Восстановить покупку</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
-    <string name="tab_start_date">Start date</string>
-    <string name="tab_end_date">End date</string>
+    <string name="tab_start_date">Дата старта</string>
+    <string name="tab_end_date">Дата окончания</string>
 </resources>
