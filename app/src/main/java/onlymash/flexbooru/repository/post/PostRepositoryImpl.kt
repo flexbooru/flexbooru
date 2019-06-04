@@ -17,11 +17,9 @@ package onlymash.flexbooru.repository.post
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
-import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -195,23 +193,16 @@ class PostRepositoryImpl(
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refreshDanbooruOne(scope, search, tagBlacklists)
         }
-        val livePagedList = MediatorLiveData<PagedList<PostDanOne>>()
-        scope.launch {
-            val data = withContext(Dispatchers.IO) {
-                db.postDanOneDao()
-                    .getPosts(search.host, search.keyword)
-                    .toLiveData(
-                        config = Config(
-                            pageSize = search.limit,
-                            enablePlaceholders = true,
-                            maxSize = 150
-                        ),
-                        boundaryCallback = danOneBoundaryCallback)
-            }
-            livePagedList.addSource(data) {
-                livePagedList.postValue(it)
-            }
-        }
+        val livePagedList = db.postDanOneDao()
+            .getPosts(search.host, search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 150
+                ),
+                boundaryCallback = danOneBoundaryCallback
+            )
         return Listing(
             pagedList = livePagedList,
             networkState = danOneBoundaryCallback!!.networkState,
@@ -243,23 +234,16 @@ class PostRepositoryImpl(
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refreshDanbooru(scope, search, tagBlacklists)
         }
-        val livePagedList = MediatorLiveData<PagedList<PostDan>>()
-        scope.launch {
-            val data = withContext(Dispatchers.IO) {
-                db.postDanDao()
-                    .getPosts(search.host, search.keyword)
-                    .toLiveData(
-                        config = Config(
-                            pageSize = search.limit,
-                            enablePlaceholders = true,
-                            maxSize = 150
-                        ),
-                        boundaryCallback = danBoundaryCallback)
-            }
-            livePagedList.addSource(data) {
-                livePagedList.postValue(it)
-            }
-        }
+        val livePagedList = db.postDanDao()
+            .getPosts(search.host, search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 150
+                ),
+                boundaryCallback = danBoundaryCallback
+            )
         return Listing(
             pagedList = livePagedList,
             networkState = danBoundaryCallback!!.networkState,
@@ -291,24 +275,16 @@ class PostRepositoryImpl(
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refreshMoebooru(scope, search, tagBlacklists)
         }
-        val livePagedList = MediatorLiveData<PagedList<PostMoe>>()
-        scope.launch {
-            val data = withContext(Dispatchers.IO) {
-                db.postMoeDao()
-                    .getPosts(host = search.host, keyword = search.keyword)
-                    .toLiveData(
-                        config = Config(
-                            pageSize = search.limit,
-                            enablePlaceholders = true,
-                            maxSize = 150
-                        ),
-                        boundaryCallback = moeBoundaryCallback
-                    )
-            }
-            livePagedList.addSource(data) {
-                livePagedList.postValue(it)
-            }
-        }
+        val livePagedList = db.postMoeDao()
+            .getPosts(host = search.host, keyword = search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 150
+                ),
+                boundaryCallback = moeBoundaryCallback
+            )
         return Listing(
             pagedList = livePagedList,
             networkState = moeBoundaryCallback!!.networkState,
@@ -340,24 +316,16 @@ class PostRepositoryImpl(
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refreshGelbooru(scope, search, tagBlacklists)
         }
-        val livePagedList = MediatorLiveData<PagedList<PostGel>>()
-        scope.launch {
-            val data = withContext(Dispatchers.IO) {
-                db.postGelDao()
-                    .getPosts(host = search.host, keyword = search.keyword)
-                    .toLiveData(
-                        config = Config(
-                            pageSize = search.limit,
-                            enablePlaceholders = true,
-                            maxSize = 150
-                        ),
-                        boundaryCallback = gelBoundaryCallback
-                    )
-            }
-            livePagedList.addSource(data) {
-                livePagedList.postValue(it)
-            }
-        }
+        val livePagedList = db.postGelDao()
+            .getPosts(host = search.host, keyword = search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 150
+                ),
+                boundaryCallback = gelBoundaryCallback
+            )
         return Listing(
             pagedList = livePagedList,
             networkState = gelBoundaryCallback!!.networkState,
@@ -514,24 +482,16 @@ class PostRepositoryImpl(
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refreshSankaku(scope, search, tagBlacklists)
         }
-        val livePagedList = MediatorLiveData<PagedList<PostSankaku>>()
-        scope.launch {
-            val data = withContext(Dispatchers.IO) {
-                db.postSankakuDao()
-                    .getPosts(host = search.host, keyword = search.keyword)
-                    .toLiveData(
-                        config = Config(
-                            pageSize = search.limit,
-                            enablePlaceholders = true,
-                            maxSize = 150
-                        ),
-                        boundaryCallback = sankakuBoundaryCallback
-                    )
-            }
-            livePagedList.addSource(data) {
-                livePagedList.postValue(it)
-            }
-        }
+        val livePagedList = db.postSankakuDao()
+            .getPosts(host = search.host, keyword = search.keyword)
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 150
+                ),
+                boundaryCallback = sankakuBoundaryCallback
+            )
         return Listing(
             pagedList = livePagedList,
             networkState = sankakuBoundaryCallback!!.networkState,
