@@ -184,4 +184,5 @@
         <item name="actionIcon">@drawable/tag_dot</item>
         <item name="showIcon">true</item>
     </style>
+    <style name="AppTheme.Text" parent="TextAppearance.MaterialComponents.Body1"/>
 </resources>

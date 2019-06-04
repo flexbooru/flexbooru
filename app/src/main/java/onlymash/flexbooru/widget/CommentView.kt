@@ -84,9 +84,10 @@ class CommentView @JvmOverloads constructor(
             autoLinkMask = Linkify.WEB_URLS
             linksClickable = true
             transformationMethod = LinkTransformationMethod()
-            text = comment
+            text = comment.trim()
         }
-        TextViewCompat.setTextAppearance(textView, android.R.style.TextAppearance_Material_Body1)
+        TextViewCompat.setTextAppearance(textView,
+            com.google.android.material.R.style.TextAppearance_MaterialComponents_Body2)
         addView(textView)
     }
 
@@ -108,9 +109,10 @@ class CommentView @JvmOverloads constructor(
             autoLinkMask = Linkify.WEB_URLS
             linksClickable = true
             transformationMethod = LinkTransformationMethod()
-            text = quote
+            text = quote.trim()
         }
-        TextViewCompat.setTextAppearance(textView, android.R.style.TextAppearance_Material_Body1)
+        TextViewCompat.setTextAppearance(textView,
+            com.google.android.material.R.style.TextAppearance_MaterialComponents_Body2)
         layout.addView(textView)
         addView(layout)
     }

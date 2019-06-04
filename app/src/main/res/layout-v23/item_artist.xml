@@ -83,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:textIsSelectable="true"
-                android:layout_margin="@dimen/spacing_large"
+                android:layout_margin="@dimen/spacing_middle"
+                android:lineSpacingMultiplier="1.2"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="?android:attr/textColorSecondary"/>
     </LinearLayout>
