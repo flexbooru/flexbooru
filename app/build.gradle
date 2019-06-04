@@ -51,7 +51,7 @@ android {
         versionName '0.9.23'
         versionNameSuffix '.c' + verCode
         multiDexEnabled true
-        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU'
+        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121", backupApiKey: "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"]
     }
