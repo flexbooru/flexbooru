@@ -97,5 +97,5 @@ interface GelbooruApi {
     fun getComments(@Url httpUrl: HttpUrl): Call<CommentGelResponse>
 
     @GET
-    fun favPost(@Url httpUrl: HttpUrl): Call<ResponseBody>
+    suspend fun favPost(@Url httpUrl: HttpUrl): Response<ResponseBody>
 }

@@ -64,7 +64,7 @@ class PopularMoeDataSource(
         val keyword = popular.scale
 
         scope.launch {
-            val result = withContext(Dispatchers.IO) {
+            when (val result = withContext(Dispatchers.IO) {
                 try {
                     val response = moebooruApi.getPosts(MoeUrlHelper.getPopularUrl(popular))
                     var data = response.body() ?: mutableListOf()
@@ -91,8 +91,7 @@ class PopularMoeDataSource(
                 } catch (e: Exception) {
                     NetResult.Error(e.message ?: "unknown error")
                 }
-            }
-            when (result) {
+            }) {
                 is NetResult.Error -> {
                     retry = {
                         loadInitial(params, callback)

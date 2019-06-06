@@ -93,17 +93,17 @@ interface DanbooruOneApi {
 
     @FormUrlEncoded
     @POST
-    fun favPost(@Url url: String,
+    suspend fun favPost(@Url url: String,
                      @Field("id") id: Int,
                      @Field("login") username: String,
-                     @Field("password_hash") passwordHash: String): Call<VoteDan>
+                     @Field("password_hash") passwordHash: String): Response<VoteDan>
 
     @FormUrlEncoded
     @HTTP(method = "POST", hasBody = true)
-    fun removeFavPost(@Url url: String,
+    suspend fun removeFavPost(@Url url: String,
                            @Field("id") postId: Int,
                            @Field("login") username: String,
-                           @Field("password_hash") passwordHash: String): Call<VoteDan>
+                           @Field("password_hash") passwordHash: String): Response<VoteDan>
 
     /* comment/create.json
      */

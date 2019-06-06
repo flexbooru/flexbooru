@@ -40,7 +40,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun addGelFav(vote: Vote, post: PostGel): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = gelbooruApi.favPost(GelUrlHelper.getAddFavUrl(vote)).execute()
+                val response = gelbooruApi.favPost(GelUrlHelper.getAddFavUrl(vote))
                 if (response.isSuccessful) {
                     NetResult.Success(true)
                 } else {
@@ -64,7 +64,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                     id = vote.post_id,
                     score = vote.score,
                     username = vote.username,
-                    passwordHash = vote.auth_key).execute()
+                    passwordHash = vote.auth_key)
                 val data = response.body()
                 if (response.isSuccessful && data != null && data.success) {
                     if (vote.score == 0) {
@@ -116,7 +116,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                     id = vote.post_id,
                     username = vote.username,
                     apiKey = vote.auth_key
-                ).execute()
+                )
                 val body = response.body()
                 if (body != null) {
                     post.scheme = vote.scheme
@@ -148,7 +148,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun removeDanFav(vote: Vote, postFav: PostDan): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = danbooruApi.removeFavPost(DanUrlHelper.getRemoveFavUrl(vote)).execute()
+                val response = danbooruApi.removeFavPost(DanUrlHelper.getRemoveFavUrl(vote))
                 if (response.isSuccessful) {
                     postFav.keyword = "fav:${vote.username}"
                     db.postDanDao().deletePost(postFav)
@@ -173,7 +173,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                     id = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).execute()
+                )
                 val data = response.body()
                 if (response.isSuccessful && data != null) {
                     post.scheme = vote.scheme
@@ -201,7 +201,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                     postId = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).execute()
+                )
                 val data = response.body()
                 if (response.isSuccessful && data != null) {
                     db.postDanOneDao().deletePost(postFav)
@@ -226,7 +226,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                     postId = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).execute()
+                )
                 val data = response.body()
                 if (response.isSuccessful && data != null) {
                     if (data.post_id == post.id) {
@@ -256,7 +256,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                     postId = vote.post_id,
                     username = vote.username,
                     passwordHash = vote.auth_key
-                ).execute()
+                )
                 val data = response.body()
                 if (response.isSuccessful && data != null) {
                     if (data.post_id == postFav.id) {

@@ -98,13 +98,13 @@ interface DanbooruApi {
 
     @FormUrlEncoded
     @POST
-    fun favPost(@Url url: String,
+    suspend fun favPost(@Url url: String,
                 @Field("post_id") id: Int,
                 @Field("login") username: String,
-                @Field("api_key") apiKey: String): Call<VoteDan>
+                @Field("api_key") apiKey: String): Response<VoteDan>
 
     @DELETE
-    fun removeFavPost(@Url httpUrl: HttpUrl): Call<ResponseBody>
+    suspend fun removeFavPost(@Url httpUrl: HttpUrl): Response<ResponseBody>
 
     @GET
     fun getComments(@Url httpUrl: HttpUrl): Call<MutableList<CommentDan>>
