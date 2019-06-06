@@ -18,24 +18,24 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.repository.popular.PopularRepository
 
-class PopularViewModel(private val repo: PopularRepository) : ViewModel() {
+class PopularViewModel(private val repo: PopularRepository) : ScopeViewModel() {
 
     private val popularData = MutableLiveData<SearchPopular>()
     private val danRepoResult = map(popularData) { popular ->
-        repo.getDanPopular(popular)
+        repo.getDanPopular(viewModelScope, popular)
     }
     private val danOneRepoResult = map(popularData) { popular ->
-        repo.getDanOnePopular(popular)
+        repo.getDanOnePopular(viewModelScope, popular)
     }
     private val moeRepoResult = map(popularData) { popular ->
-        repo.getMoePopular(popular)
+        repo.getMoePopular(viewModelScope, popular)
     }
     private val sankakuRepoResult = map(popularData) {
-        repo.getSankakuPopular(it)
+        repo.getSankakuPopular(viewModelScope, it)
     }
     val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }
     val networkStateDan = Transformations.switchMap(danRepoResult) { it.networkState }

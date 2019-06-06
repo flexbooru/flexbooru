@@ -351,7 +351,7 @@ class PostRepositoryImpl(
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1)).execute()
+                    val response = danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1))
                     db.runInTransaction {
                         db.postDanOneDao().deletePosts(host = search.host, keyword = search.keyword)
                         insertDanbooruOneResultIntoDb(search, response.body(), tagBlacklists)
@@ -381,7 +381,7 @@ class PostRepositoryImpl(
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1)).execute()
+                    val response = danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1))
                     db.runInTransaction {
                         db.postDanDao().deletePosts(host = search.host, keyword = search.keyword)
                         insertDanbooruResultIntoDb(search, response.body(), tagBlacklists)
@@ -416,7 +416,7 @@ class PostRepositoryImpl(
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags)).execute()
+                    val response = moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, tags))
                     db.runInTransaction {
                         db.postMoeDao().deletePosts(host = search.host, keyword = search.keyword)
                         insertMoebooruResultIntoDb(search, response.body())
@@ -446,7 +446,7 @@ class PostRepositoryImpl(
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1)).execute()
+                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1))
                     db.runInTransaction {
                         db.postGelDao().deletePosts(search.host, search.keyword)
                         insertGelbooruResultIntoDb(search, response.body()?.posts, tagBlacklists)
@@ -517,7 +517,7 @@ class PostRepositoryImpl(
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1)).execute()
+                    val response = sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1))
                     db.runInTransaction {
                         db.postSankakuDao().deletePosts(search.host, search.keyword)
                         insertSankakuResultIntoDb(search, response.body(), tagBlacklists)

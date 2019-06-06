@@ -17,11 +17,11 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.entity.post.PostMoe
-import java.util.concurrent.Executor
 
 /**
  * Moebooru popular posts data source factory which also provides a way to observe the last created data source.
@@ -29,14 +29,14 @@ import java.util.concurrent.Executor
  * in the Repository class.
  */
 class PopularMoeDataSourceFactory(
+    private val scope: CoroutineScope,
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,
-    private val popular: SearchPopular,
-    private val retryExecutor: Executor) : DataSource.Factory<Int, PostMoe>(){
+    private val popular: SearchPopular) : DataSource.Factory<Int, PostMoe>(){
     //source livedata
     val sourceLiveData = MutableLiveData<PopularMoeDataSource>()
     override fun create(): DataSource<Int, PostMoe> {
-        val source = PopularMoeDataSource(moebooruApi, db, popular, retryExecutor)
+        val source = PopularMoeDataSource(scope, moebooruApi, db, popular)
         sourceLiveData.postValue(source)
         return source
     }

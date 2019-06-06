@@ -34,6 +34,7 @@ import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.tag.TagMoe
 import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -85,10 +86,10 @@ interface MoebooruApi {
     }
 
     @GET
-    fun getPosts(@Url httpUrl: HttpUrl): Call<MutableList<PostMoe>>
+    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<MutableList<PostMoe>>
 
     @GET
-    fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
+    suspend fun getUsers(@Url httpUrl: HttpUrl): Response<MutableList<User>>
 
     @GET
     fun getPools(@Url httpUrl: HttpUrl): Call<MutableList<PoolMoe>>

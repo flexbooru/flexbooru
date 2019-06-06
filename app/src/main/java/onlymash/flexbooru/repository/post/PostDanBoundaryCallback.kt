@@ -72,7 +72,7 @@ class PostDanBoundaryCallback(
         scope.launch {
             when (val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, page)).execute()
+                    val response = danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, page))
                     NetResult.Success(response)
                 } catch (e: Exception) {
                     NetResult.Error(e.message.toString())

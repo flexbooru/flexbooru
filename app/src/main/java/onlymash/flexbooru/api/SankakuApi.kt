@@ -31,6 +31,7 @@ import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.entity.tag.TagSankaku
 import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -78,10 +79,10 @@ interface SankakuApi {
     }
 
     @GET
-    fun getPosts(@Url httpUrl: HttpUrl): Call<MutableList<PostSankaku>>
+    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<MutableList<PostSankaku>>
 
     @GET
-    fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
+    suspend fun getUsers(@Url httpUrl: HttpUrl): Response<MutableList<User>>
 
     @GET
     fun getPools(@Url httpUrl: HttpUrl): Call<MutableList<PoolSankaku>>

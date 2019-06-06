@@ -70,7 +70,7 @@ class PostSankakuBoundaryCallback(
         scope.launch {
             when (val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, page)).execute()
+                    val response = sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, page))
                     NetResult.Success(response)
                 } catch (e: Exception) {
                     NetResult.Error(e.message.toString())

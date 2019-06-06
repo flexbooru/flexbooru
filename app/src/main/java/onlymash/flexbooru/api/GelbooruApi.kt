@@ -32,6 +32,7 @@ import onlymash.flexbooru.entity.post.PostGelResponse
 import onlymash.flexbooru.entity.tag.TagGelResponse
 import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Url
@@ -87,7 +88,7 @@ interface GelbooruApi {
     }
 
     @GET
-    fun getPosts(@Url httpUrl: HttpUrl): Call<PostGelResponse>
+    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<PostGelResponse>
 
     @GET
     fun getTags(@Url httpUrl: HttpUrl): Call<TagGelResponse>

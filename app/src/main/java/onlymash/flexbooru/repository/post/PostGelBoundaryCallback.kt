@@ -71,7 +71,7 @@ class PostGelBoundaryCallback(
         scope.launch {
             when (val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, page)).execute()
+                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, page))
                     NetResult.Success(response)
                 } catch (e: Exception) {
                     NetResult.Error(e.message.toString())

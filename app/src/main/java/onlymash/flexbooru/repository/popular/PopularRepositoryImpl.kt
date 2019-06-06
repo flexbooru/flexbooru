@@ -19,6 +19,7 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.api.MoebooruApi
@@ -39,8 +40,8 @@ class PopularRepositoryImpl(
 
 
     @MainThread
-    override fun getDanPopular(popular: SearchPopular): Listing<PostDan> {
-        val sourceFactory = PopularDanDataSourceFactory(danbooruApi, db, popular, networkExecutor)
+    override fun getDanPopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostDan> {
+        val sourceFactory = PopularDanDataSourceFactory(scope, danbooruApi, db, popular)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = 20,
@@ -66,8 +67,8 @@ class PopularRepositoryImpl(
     }
 
     @MainThread
-    override fun getMoePopular(popular: SearchPopular): Listing<PostMoe> {
-        val sourceFactory = PopularMoeDataSourceFactory(moebooruApi, db, popular, networkExecutor)
+    override fun getMoePopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostMoe> {
+        val sourceFactory = PopularMoeDataSourceFactory(scope, moebooruApi, db, popular)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = 40,
@@ -93,8 +94,8 @@ class PopularRepositoryImpl(
     }
 
     @MainThread
-    override fun getDanOnePopular(popular: SearchPopular): Listing<PostDanOne> {
-        val sourceFactory = PopularDanOneDataSourceFactory(danbooruOneApi, db, popular, networkExecutor)
+    override fun getDanOnePopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostDanOne> {
+        val sourceFactory = PopularDanOneDataSourceFactory(scope, danbooruOneApi, db, popular)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = 20,
@@ -112,8 +113,8 @@ class PopularRepositoryImpl(
     }
 
     @MainThread
-    override fun getSankakuPopular(popular: SearchPopular): Listing<PostSankaku> {
-        val sourceFactory = PopularSankakuDataSourceFactory(sankakuApi, db, popular, networkExecutor)
+    override fun getSankakuPopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostSankaku> {
+        val sourceFactory = PopularSankakuDataSourceFactory(scope, sankakuApi, db, popular)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(
                 pageSize = 30,

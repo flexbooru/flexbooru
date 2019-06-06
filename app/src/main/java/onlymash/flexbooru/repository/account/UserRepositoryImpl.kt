@@ -148,7 +148,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     private suspend fun findMoeUser(username: String, booru: Booru): NetResult<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = moebooruApi.getUsers(MoeUrlHelper.getUserUrl(username, booru)).execute()
+                val response = moebooruApi.getUsers(MoeUrlHelper.getUserUrl(username, booru))
                 val users = response.body()
                 if (response.isSuccessful && users != null) {
                     val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
@@ -169,7 +169,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     private suspend fun findDanUser(username: String, booru: Booru): NetResult<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = danbooruApi.getUsers(DanUrlHelper.getUserUrl(username, booru)).execute()
+                val response = danbooruApi.getUsers(DanUrlHelper.getUserUrl(username, booru))
                 val users = response.body()
                 if (response.isSuccessful && users != null) {
                     val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
@@ -193,7 +193,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     private suspend fun findMoeUserById(id: Int, booru: Booru): NetResult<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = moebooruApi.getUsers(MoeUrlHelper.getUserUrlById(id, booru)).execute()
+                val response = moebooruApi.getUsers(MoeUrlHelper.getUserUrlById(id, booru))
                 val users = response.body()
                 if (response.isSuccessful && users != null) {
                     if (users.size == 1) {
@@ -213,7 +213,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     private suspend fun findDanOneUser(username: String, booru: Booru): NetResult<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrl(username, booru)).execute()
+                val response = danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrl(username, booru))
                 val users = response.body()
                 if (response.isSuccessful && users != null) {
                     val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
@@ -234,7 +234,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     private suspend fun findSankakuUser(username: String, booru: Booru): NetResult<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = sankakuApi.getUsers(SankakuUrlHelper.getUserUrl(username, booru)).execute()
+                val response = sankakuApi.getUsers(SankakuUrlHelper.getUserUrl(username, booru))
                 val users = response.body()
                 if (response.isSuccessful && users != null) {
                     val index = users.indexOfFirst { username.equals(other = it.name, ignoreCase = true) }
@@ -258,7 +258,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     private suspend fun findDanOneUserById(id: Int, booru: Booru): NetResult<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrlById(id, booru)).execute()
+                val response = danbooruOneApi.getUsers(DanOneUrlHelper.getUserUrlById(id, booru))
                 val users = response.body()
                 if (response.isSuccessful && users != null) {
                     if (users.size == 1) {

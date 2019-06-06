@@ -34,6 +34,7 @@ import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.tag.TagDan
 import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -81,10 +82,10 @@ interface DanbooruApi {
     }
 
     @GET
-    fun getPosts(@Url httpUrl: HttpUrl): Call<MutableList<PostDan>>
+    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<MutableList<PostDan>>
 
     @GET
-    fun getUsers(@Url httpUrl: HttpUrl): Call<MutableList<User>>
+    suspend fun getUsers(@Url httpUrl: HttpUrl): Response<MutableList<User>>
 
     @GET
     fun getPools(@Url httpUrl: HttpUrl): Call<MutableList<PoolDan>>

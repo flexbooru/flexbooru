@@ -26,7 +26,7 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.getUserAgent
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -79,7 +79,7 @@ interface OrderApi {
         suspend fun orderChecker(orderId: String, deviceId: String) {
             withContext(Dispatchers.IO) {
                 try {
-                    val response = OrderApi().checker(orderId, deviceId).execute()
+                    val response = OrderApi().checker(orderId, deviceId)
                     val data = response.body()
                     if (response.isSuccessful && data != null) {
                         if (data.success) {
@@ -95,7 +95,7 @@ interface OrderApi {
         suspend fun orderRegister(orderId: String, deviceId: String): NetResult<OrderResponse> {
             return withContext(Dispatchers.IO) {
                 try {
-                    val response = OrderApi().register(orderId, deviceId).execute()
+                    val response = OrderApi().register(orderId, deviceId)
                     val data = response.body()
                     if (response.isSuccessful && data != null) {
                         NetResult.Success(data)
@@ -110,12 +110,12 @@ interface OrderApi {
     }
 
     @GET("/order/checker.json")
-    fun checker(
+    suspend fun checker(
         @Query("order_id") orderId: String,
-        @Query("device_id") deviceId: String): Call<OrderResponse>
+        @Query("device_id") deviceId: String): Response<OrderResponse>
 
     @GET("/order/register.json")
-    fun register(
+    suspend fun register(
         @Query("order_id") orderId: String,
-        @Query("device_id") deviceId: String): Call<OrderResponse>
+        @Query("device_id") deviceId: String): Response<OrderResponse>
 }

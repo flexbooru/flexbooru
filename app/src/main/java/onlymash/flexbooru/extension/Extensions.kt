@@ -22,12 +22,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
-import android.os.Build
 import android.text.StaticLayout
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -64,13 +62,6 @@ fun StaticLayout.textWidth(): Int {
  */
 fun lerp(a: Float, b: Float, t: Float): Float {
     return a + (b - a) * t
-}
-
-fun Window.initFullTransparentBar() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        addFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER)
-    }
-    showBar()
 }
 
 fun Window.showBar() {

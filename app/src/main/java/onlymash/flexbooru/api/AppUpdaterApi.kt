@@ -25,7 +25,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.getUserAgent
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -75,7 +75,7 @@ interface AppUpdaterApi {
         suspend fun checkUpdate() {
             withContext(Dispatchers.IO) {
                 try {
-                    val response = AppUpdaterApi().checkUpdate().execute()
+                    val response = AppUpdaterApi().checkUpdate()
                     val data = response.body()
                     if (response.isSuccessful && data != null) {
                         Settings.latestVersionUrl = data.url
@@ -92,7 +92,7 @@ interface AppUpdaterApi {
      * check app new version
      * */
     @GET("/flexbooru/flexbooru/master/app/update.json")
-    fun checkUpdate(): Call<UpdateInfo>
+    suspend fun checkUpdate(): Response<UpdateInfo>
 }
 
 /**

@@ -17,21 +17,24 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.api.url.MoeUrlHelper
 import onlymash.flexbooru.api.MoebooruApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.entity.post.PostMoe
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.NetworkState
-import java.io.IOException
-import java.util.concurrent.Executor
 
 //moebooru popular posts data source
 class PopularMoeDataSource(
+    private val scope: CoroutineScope,
     private val moebooruApi: MoebooruApi,
     private val db: FlexbooruDatabase,
-    private val popular: SearchPopular,
-    private val retryExecutor: Executor) : PageKeyedDataSource<Int, PostMoe>() {
+    private val popular: SearchPopular) : PageKeyedDataSource<Int, PostMoe>() {
 
     // keep a function reference for the retry event
     private var retry: (() -> Any)? = null
@@ -48,16 +51,11 @@ class PopularMoeDataSource(
     fun retryAllFailed() {
         val prevRetry = retry
         retry = null
-        prevRetry?.let {
-            retryExecutor.execute {
-                it.invoke()
-            }
-        }
+        prevRetry?.invoke()
     }
 
     override fun loadInitial(params: LoadInitialParams<Int>,
                              callback: LoadInitialCallback<Int, PostMoe>) {
-        val request = moebooruApi.getPosts(MoeUrlHelper.getPopularUrl(popular))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
@@ -65,40 +63,51 @@ class PopularMoeDataSource(
         val host = popular.host
         val keyword = popular.scale
 
-        // triggered by a refresh, we better execute sync
-        try {
-            val response = request.execute()
-            var data = response.body()?: mutableListOf()
-            if (popular.safe_mode) {
-                val tmp: MutableList<PostMoe> = mutableListOf()
-                data.forEach {
-                    if (it.rating == "s") {
-                        tmp.add(it)
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = moebooruApi.getPosts(MoeUrlHelper.getPopularUrl(popular))
+                    var data = response.body() ?: mutableListOf()
+                    if (popular.safe_mode && data.isNotEmpty()) {
+                        val tmp: MutableList<PostMoe> = mutableListOf()
+                        data.forEach {
+                            if (it.rating == "s") {
+                                tmp.add(it)
+                            }
+                        }
+                        data = tmp
                     }
+                    db.postMoeDao().deletePosts(host, keyword)
+                    val start = db.postMoeDao().getNextIndex(host, keyword)
+                    val items = data.mapIndexed { index, post ->
+                        post.scheme = scheme
+                        post.host = host
+                        post.keyword = keyword
+                        post.indexInResponse = start + index
+                        post
+                    }
+                    db.postMoeDao().insert(items)
+                    NetResult.Success(items)
+                } catch (e: Exception) {
+                    NetResult.Error(e.message ?: "unknown error")
                 }
-                data = tmp
             }
-            db.postMoeDao().deletePosts(host, keyword)
-            val start = db.postMoeDao().getNextIndex(host, keyword)
-            val items = data.mapIndexed { index, post ->
-                post.scheme = scheme
-                post.host = host
-                post.keyword = keyword
-                post.indexInResponse = start + index
-                post
+            when (result) {
+                is NetResult.Error -> {
+                    retry = {
+                        loadInitial(params, callback)
+                    }
+                    val error = NetworkState.error(result.errorMsg)
+                    networkState.postValue(error)
+                    initialLoad.postValue(error)
+                }
+                is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
+                    callback.onResult(result.data, null, null)
+                }
             }
-            db.postMoeDao().insert(items)
-            retry = null
-            networkState.postValue(NetworkState.LOADED)
-            initialLoad.postValue(NetworkState.LOADED)
-            callback.onResult(items, null, null)
-        } catch (ioException: IOException) {
-            retry = {
-                loadInitial(params, callback)
-            }
-            val error = NetworkState.error(ioException.message ?: "unknown error")
-            networkState.postValue(error)
-            initialLoad.postValue(error)
         }
     }
 

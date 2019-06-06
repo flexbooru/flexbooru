@@ -15,12 +15,13 @@
 
 package onlymash.flexbooru.repository.popular
 
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 
 interface PopularRepository {
-    fun getDanPopular(popular: SearchPopular): Listing<PostDan>
-    fun getMoePopular(popular: SearchPopular): Listing<PostMoe>
-    fun getDanOnePopular(popular: SearchPopular): Listing<PostDanOne>
-    fun getSankakuPopular(popular: SearchPopular): Listing<PostSankaku>
+    fun getDanPopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostDan>
+    fun getMoePopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostMoe>
+    fun getDanOnePopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostDanOne>
+    fun getSankakuPopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostSankaku>
 }

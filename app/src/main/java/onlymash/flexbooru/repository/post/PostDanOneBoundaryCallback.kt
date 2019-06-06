@@ -71,7 +71,7 @@ class PostDanOneBoundaryCallback(
             when (val result = withContext(Dispatchers.IO) {
                 try {
                     val response = danbooruOneApi.getPosts(
-                        DanOneUrlHelper.getPostUrl(search, page)).execute()
+                        DanOneUrlHelper.getPostUrl(search, page))
                     NetResult.Success(response)
                 } catch (e: Exception) {
                     NetResult.Error(e.message.toString())

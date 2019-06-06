@@ -291,7 +291,7 @@ class BrowseActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.initFullTransparentBar()
+        window.showBar()
         setContentView(R.layout.activity_browse)
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))

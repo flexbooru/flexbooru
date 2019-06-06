@@ -79,7 +79,7 @@ class PostMoeBoundaryCallback(
         scope.launch {
             when (val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, page, tags)).execute()
+                    val response = moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, page, tags))
                     NetResult.Success(response)
                 } catch (e: Exception) {
                     NetResult.Error(e.message.toString())

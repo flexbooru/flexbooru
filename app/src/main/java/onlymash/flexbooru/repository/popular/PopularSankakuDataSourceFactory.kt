@@ -17,11 +17,11 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.api.SankakuApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.entity.post.PostSankaku
-import java.util.concurrent.Executor
 
 /**
  * Sankaku popular posts data source factory which also provides a way to observe the last created data source.
@@ -29,14 +29,14 @@ import java.util.concurrent.Executor
  * in the Repository class.
  */
 class PopularSankakuDataSourceFactory(
+    private val scope: CoroutineScope,
     private val sankakuApi: SankakuApi,
     private val db: FlexbooruDatabase,
-    private val popular: SearchPopular,
-    private val retryExecutor: Executor) : DataSource.Factory<Int, PostSankaku>(){
+    private val popular: SearchPopular) : DataSource.Factory<Int, PostSankaku>(){
     //source livedata
     val sourceLiveData = MutableLiveData<PopularSankakuDataSource>()
     override fun create(): DataSource<Int, PostSankaku> {
-        val source = PopularSankakuDataSource(sankakuApi, db, popular, retryExecutor)
+        val source = PopularSankakuDataSource(scope, sankakuApi, db, popular)
         sourceLiveData.postValue(source)
         return source
     }

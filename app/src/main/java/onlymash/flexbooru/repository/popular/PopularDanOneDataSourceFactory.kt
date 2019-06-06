@@ -17,6 +17,7 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.api.DanbooruOneApi
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.post.PostDanOne
@@ -29,15 +30,15 @@ import java.util.concurrent.Executor
  * in the Repository class.
  */
 class PopularDanOneDataSourceFactory(
+    private val scope: CoroutineScope,
     private val danbooruOneApi: DanbooruOneApi,
     private val db: FlexbooruDatabase,
-    private val popular: SearchPopular,
-    private val retryExecutor: Executor
+    private val popular: SearchPopular
 ) : DataSource.Factory<Int, PostDanOne>(){
     //source livedata
     val sourceLiveData = MutableLiveData<PopularDanOneDataSource>()
     override fun create(): DataSource<Int, PostDanOne> {
-        val source = PopularDanOneDataSource(danbooruOneApi, db, popular, retryExecutor)
+        val source = PopularDanOneDataSource(scope, danbooruOneApi, db, popular)
         sourceLiveData.postValue(source)
         return source
     }

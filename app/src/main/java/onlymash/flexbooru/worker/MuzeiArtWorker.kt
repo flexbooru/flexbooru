@@ -20,6 +20,7 @@ import androidx.core.net.toUri
 import androidx.work.*
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
+import kotlinx.coroutines.GlobalScope
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
@@ -80,8 +81,7 @@ class MuzeiArtWorker(
                 }
                 val danbooruApi: DanbooruApi by App.app.instance()
                 val posts = try {
-                    danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1))
-                        .execute().body() ?: throw IOException("Response was null")
+                    danbooruApi.getPosts(DanUrlHelper.getPostUrl(search, 1)).body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
                 }
@@ -119,8 +119,7 @@ class MuzeiArtWorker(
                 }
                 val moebooruApi: MoebooruApi by App.app.instance()
                 val posts = try {
-                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, search.keyword))
-                        .execute().body() ?: throw IOException("Response was null")
+                    moebooruApi.getPosts(MoeUrlHelper.getPostUrl(search, 1, search.keyword)).body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
                 }
@@ -155,8 +154,7 @@ class MuzeiArtWorker(
                 }
                 val danbooruOneApi: DanbooruOneApi by App.app.instance()
                 val posts = try {
-                    danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1))
-                        .execute().body() ?: throw IOException("Response was null")
+                    danbooruOneApi.getPosts(DanOneUrlHelper.getPostUrl(search, 1)).body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
                 }
@@ -187,8 +185,7 @@ class MuzeiArtWorker(
                 )
                 val gelbooruApi: GelbooruApi by App.app.instance()
                 val posts = try {
-                    gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1))
-                        .execute().body()?.posts ?: throw IOException("Response was null")
+                    gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1)).body()?.posts ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
                 }
@@ -226,8 +223,7 @@ class MuzeiArtWorker(
                 }
                 val sankakuApi: SankakuApi by App.app.instance()
                 val posts = try {
-                    sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1))
-                        .execute().body() ?: throw IOException("Response was null")
+                    sankakuApi.getPosts(SankakuUrlHelper.getPostUrl(search, 1)).body() ?: throw IOException("Response was null")
                 } catch (ex: IOException) {
                     return Result.retry()
                 }

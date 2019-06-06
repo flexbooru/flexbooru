@@ -17,21 +17,24 @@ package onlymash.flexbooru.repository.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.entity.post.PostDan
+import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.NetworkState
-import java.io.IOException
-import java.util.concurrent.Executor
 
 //danbooru popular posts data source
 class PopularDanDataSource(
+    private val scope: CoroutineScope,
     private val danbooruApi: DanbooruApi,
     private val db: FlexbooruDatabase,
-    private val popular: SearchPopular,
-    private val retryExecutor: Executor) : PageKeyedDataSource<Int, PostDan>() {
+    private val popular: SearchPopular) : PageKeyedDataSource<Int, PostDan>() {
 
     // keep a function reference for the retry event
     private var retry: (() -> Any)? = null
@@ -48,16 +51,11 @@ class PopularDanDataSource(
     fun retryAllFailed() {
         val prevRetry = retry
         retry = null
-        prevRetry?.let {
-            retryExecutor.execute {
-                it.invoke()
-            }
-        }
+        prevRetry?.invoke()
     }
 
     override fun loadInitial(params: LoadInitialParams<Int>,
                              callback: LoadInitialCallback<Int, PostDan>) {
-        val request = danbooruApi.getPosts(DanUrlHelper.getPopularUrl(popular))
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
@@ -65,55 +63,63 @@ class PopularDanDataSource(
         val host = popular.host
         val keyword = popular.scale
 
-        // triggered by a refresh, we better execute sync
-        try {
-            val response = request.execute()
-            if (response.code() == 401) {
-                retry = {
-                    loadInitial(params, callback)
-                }
-                val error = NetworkState.error("Your Api Key is wrong.")
-                networkState.postValue(error)
-                initialLoad.postValue(error)
-                return
-            }
-            val data = response.body()?: mutableListOf()
-            var posts: MutableList<PostDan> = mutableListOf()
-            data.forEach { post ->
-                if (!post.preview_file_url.isNullOrBlank()) {
-                    posts.add(post)
-                }
-            }
-            if (popular.safe_mode) {
-                val tmp: MutableList<PostDan> = mutableListOf()
-                posts.forEach {
-                    if (it.rating == "s") {
-                        tmp.add(it)
+        scope.launch {
+            when (val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = danbooruApi.getPosts(DanUrlHelper.getPopularUrl(popular))
+                    if (response.code() == 401) {
+                        NetResult.Error("Your Api Key is wrong.")
+                    } else {
+                        val data = response.body()
+                        if (data != null) {
+                            val posts: MutableList<PostDan> = mutableListOf()
+                            if (popular.safe_mode) {
+                                data.forEach { post ->
+                                    if (!post.preview_file_url.isNullOrBlank() && post.rating == "s") {
+                                        posts.add(post)
+                                    }
+                                }
+                            } else {
+                                data.forEach { post ->
+                                    if (!post.preview_file_url.isNullOrBlank()) {
+                                        posts.add(post)
+                                    }
+                                }
+                            }
+                            db.postDanDao().deletePosts(host, keyword)
+                            val start = db.postDanDao().getNextIndex(host = host, keyword = keyword)
+                            val items = posts.mapIndexed { index, post ->
+                                post.scheme = scheme
+                                post.host = host
+                                post.keyword = keyword
+                                post.indexInResponse = start + index
+                                post
+                            }
+                            db.postDanDao().insert(items)
+                            NetResult.Success(items)
+                        } else {
+                            NetResult.Error("Not result")
+                        }
                     }
+                } catch (e: Exception) {
+                    NetResult.Error(e.message ?: "unknown error")
                 }
-                posts = tmp
+            }) {
+                is NetResult.Error -> {
+                    retry = {
+                        loadInitial(params, callback)
+                    }
+                    val error = NetworkState.error(result.errorMsg)
+                    networkState.postValue(error)
+                    initialLoad.postValue(error)
+                }
+                is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
+                    callback.onResult(result.data, null, null)
+                }
             }
-            db.postDanDao().deletePosts(host, keyword)
-            val start = db.postDanDao().getNextIndex(host = host, keyword = keyword)
-            val items = posts.mapIndexed { index, post ->
-                post.scheme = scheme
-                post.host = host
-                post.keyword = keyword
-                post.indexInResponse = start + index
-                post
-            }
-            db.postDanDao().insert(items)
-            retry = null
-            networkState.postValue(NetworkState.LOADED)
-            initialLoad.postValue(NetworkState.LOADED)
-            callback.onResult(items, null, null)
-        } catch (ioException: IOException) {
-            retry = {
-                loadInitial(params, callback)
-            }
-            val error = NetworkState.error(ioException.message ?: "unknown error")
-            networkState.postValue(error)
-            initialLoad.postValue(error)
         }
     }
 
