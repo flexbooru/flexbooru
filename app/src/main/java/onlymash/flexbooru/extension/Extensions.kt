@@ -21,17 +21,14 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
 import android.net.Uri
-import android.net.wifi.WifiConfiguration
+import android.os.Build
 import android.text.StaticLayout
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.DimenRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
@@ -69,67 +66,10 @@ fun lerp(a: Float, b: Float, t: Float): Float {
     return a + (b - a) * t
 }
 
-/**
- * Alternative to Resources.getDimension() for values that are TYPE_FLOAT.
- */
-fun Resources.getFloat(@DimenRes resId: Int): Float {
-    val outValue = TypedValue()
-    getValue(resId, outValue, true)
-    return outValue.float
-}
-
-/**
- * Return the Wifi config wrapped in quotes.
- */
-fun WifiConfiguration.quoteSsidAndPassword(): WifiConfiguration {
-    return WifiConfiguration().apply {
-        SSID = this@quoteSsidAndPassword.SSID.wrapInQuotes()
-        preSharedKey = this@quoteSsidAndPassword.preSharedKey.wrapInQuotes()
-    }
-}
-
-/**
- * Return the Wifi config without quotes.
- */
-fun WifiConfiguration.unquoteSsidAndPassword(): WifiConfiguration {
-    return WifiConfiguration().apply {
-        SSID = this@unquoteSsidAndPassword.SSID.unwrapQuotes()
-        preSharedKey = this@unquoteSsidAndPassword.preSharedKey.unwrapQuotes()
-    }
-}
-
-fun String.wrapInQuotes(): String {
-    var formattedConfigString: String = this
-    if (!startsWith("\"")) {
-        formattedConfigString = "\"$formattedConfigString"
-    }
-    if (!endsWith("\"")) {
-        formattedConfigString = "$formattedConfigString\""
-    }
-    return formattedConfigString
-}
-
-fun String.unwrapQuotes(): String {
-    var formattedConfigString: String = this
-    if (formattedConfigString.startsWith("\"")) {
-        formattedConfigString = if (formattedConfigString.length > 1) {
-            formattedConfigString.substring(1)
-        } else ""
-    }
-    if (formattedConfigString.endsWith("\"")) {
-        formattedConfigString = if (formattedConfigString.length > 1) {
-            formattedConfigString.substring(0, formattedConfigString.length - 1)
-        } else ""
-    }
-    return formattedConfigString
-}
-
 fun Window.initFullTransparentBar() {
-    addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or
-            WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-    statusBarColor = Color.TRANSPARENT
-    navigationBarColor = Color.TRANSPARENT
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        addFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER)
+    }
     showBar()
 }
 
