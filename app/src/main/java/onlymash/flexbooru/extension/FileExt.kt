@@ -27,7 +27,7 @@ fun Context.trimCache() {
 
 private fun File.deleteAll() {
     if (isDirectory) {
-        list().forEach {
+        list()?.forEach {
             File(this, it).deleteAll()
         }
     } else {

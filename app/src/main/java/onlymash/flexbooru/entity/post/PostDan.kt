@@ -115,13 +115,11 @@ data class PostDan(
 
     override fun getCreatedDate(): String =
         SimpleDateFormat(PATTERN, Locale.ENGLISH)
-            .parse(created_at)
-            .time.formatDate().toString()
+            .parse(created_at)?.time?.formatDate().toString()
 
     override fun getUpdatedDate(): String =
         SimpleDateFormat(PATTERN, Locale.ENGLISH)
-            .parse(updated_at ?: created_at)
-            .time.formatDate().toString()
+            .parse(updated_at ?: created_at)?.time?.formatDate().toString()
 
     companion object {
         private const val PATTERN = "yyyy-MM-dd'T'HH:mm:ss.sss"

@@ -588,8 +588,8 @@ class BrowseActivity : BaseActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        currentPosition = savedInstanceState?.getInt(PAGER_CURRENT_POSITION_KEY) ?: -1
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        currentPosition = savedInstanceState.getInt(PAGER_CURRENT_POSITION_KEY, -1)
         super.onRestoreInstanceState(savedInstanceState)
         if (currentPosition >= 0) pager_browse.setCurrentItem(currentPosition, false)
     }

@@ -16,8 +16,7 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.PorterDuff
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -108,12 +107,21 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                         setBitmapDecoderFactory { CustomDecoder(picasso) }
                         setRegionDecoderFactory { CustomRegionDecoder() }
                     }
+                    val colorMatrix = ColorMatrix().apply {
+                        setSaturation(0f)
+                        set(floatArrayOf(
+                            1f, 0f, 0f, 0f, 0f, // R
+                            0f, 1f, 0f, 0f, 0f, // G
+                            0f, 0f, 1f, 0f, 0f, // B
+                            0f, 0f, 0f, 1f, 0f  // A
+                        ))
+                    }
                     val progressBar = ProgressBar(container.context).apply {
                         layoutParams = FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             Gravity.CENTER)
-                        indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
+                        indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
                     }
                     layout.apply {
                         removeAllViewsInLayout()
@@ -147,12 +155,21 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             photoViewListener?.onClickPhotoView()
                         }
                     }
+                    val colorMatrix = ColorMatrix().apply {
+                        setSaturation(0f)
+                        set(floatArrayOf(
+                            1f, 0f, 0f, 0f, 0f, // R
+                            0f, 1f, 0f, 0f, 0f, // G
+                            0f, 0f, 1f, 0f, 0f, // B
+                            0f, 0f, 0f, 1f, 0f  // A
+                        ))
+                    }
                     val progressBar = ProgressBar(container.context).apply {
                         layoutParams = FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             Gravity.CENTER)
-                        indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
+                        indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
                     }
                     layout.apply {
                         removeAllViewsInLayout()

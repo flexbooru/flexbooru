@@ -96,7 +96,7 @@ data class PostGel(
     override fun getOriginUrl(): String = checkUrl(file_url)
 
     override fun getCreatedDate(): String =
-        SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at).time.formatDate().toString()
+        SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at)?.time?.formatDate().toString()
 
     override fun getUpdatedDate(): String =
         (change * 1000L).formatDate().toString()
