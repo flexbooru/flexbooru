@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.viewholder
 
 import android.app.Activity
-import android.content.ClipData
 import android.content.Intent
 import android.view.MenuInflater
 import android.view.View
@@ -27,6 +26,7 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.BooruActivity
 import onlymash.flexbooru.ui.BooruConfigActivity
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
@@ -53,7 +53,7 @@ class BooruViewHolder(itemView: View,
                         .commitAllowingStateLoss()
                 }
                 R.id.action_booru_share_clipboard -> {
-                    (activity as BooruActivity).clipboard.primaryClip = ClipData.newPlainText(booru.name, booru.toString())
+                    itemView.context.copyText(booru.toString())
                 }
                 R.id.action_booru_edit -> startConfig(booru)
                 R.id.action_booru_delete -> BooruManager.deleteBooru(booru.uid)
