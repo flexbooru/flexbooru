@@ -15,28 +15,46 @@
 
 package onlymash.flexbooru
 
-import onlymash.flexbooru.util.UrlUtil
+import onlymash.flexbooru.extension.fileExt
+import onlymash.flexbooru.extension.isHost
+import onlymash.flexbooru.extension.isImage
+import onlymash.flexbooru.extension.isNumber
 import org.junit.Assert
 import org.junit.Test
 
-class UrlUtilUnitTest {
+class TextExtUnitTest {
 
     private val url = "https://fiepi.me/ooxx.mp4"
     private val url2 = "https://fiepi.me/ooxx.jpg"
 
     @Test
-    fun verifySuffix() {
-        Assert.assertEquals("mp4", UrlUtil.parseSuffix(url))
+    fun isValidHost() {
+        Assert.assertTrue("fiepi.me".isHost())
     }
 
     @Test
-    fun verifyMp4() {
-        Assert.assertTrue(UrlUtil.isMP4(url))
+    fun isInvalidHost() {
+        Assert.assertFalse("https://fiepi.me".isHost())
+    }
+
+    @Test
+    fun isValidNumber() {
+        Assert.assertTrue("101".isNumber())
+    }
+
+    @Test
+    fun isInvalidNumber() {
+        Assert.assertFalse("abc".isNumber())
+    }
+
+    @Test
+    fun verifySuffix() {
+        Assert.assertEquals("mp4", url.fileExt())
     }
 
     @Test
     fun verifyImage() {
-        Assert.assertFalse(UrlUtil.isImage(url))
-        Assert.assertTrue(UrlUtil.isImage(url2))
+        Assert.assertFalse(url.isImage())
+        Assert.assertTrue(url2.isImage())
     }
 }
