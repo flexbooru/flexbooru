@@ -17,7 +17,7 @@
 <resources>
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">Posts</string>
-    <string name="title_popular">Popular</string>
+    <string name="title_popular">人気</string>
     <string name="title_manage_boorus">Manage boorus</string>
     <string name="title_settings">Settings</string>
     <string name="title_booru_config">Booru config</string>
