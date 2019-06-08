@@ -171,6 +171,10 @@
     <string name="settings_clear_history">Borrar historial de búsqueda</string>
     <string name="settings_clear_history_summery">Eliminar todo el historial de búsqueda.</string>
     <string name="settings_clear_history_dialog_content">Todo el historial será eliminado.</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">Activado</string>
     <string name="switch_off">Desactivado</string>
     <string name="switch_yes">Sí</string>
