@@ -171,6 +171,10 @@
     <string name="settings_clear_history">Keresési előzmények törlése</string>
     <string name="settings_clear_history_summery">Minden keresési előzmény törlése.</string>
     <string name="settings_clear_history_dialog_content">Minden keresési előzmény törlésre került.</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">Be</string>
     <string name="switch_off">Ki</string>
     <string name="switch_yes">Igen</string>
