@@ -171,6 +171,10 @@
     <string name="settings_clear_history">Clear search history</string>
     <string name="settings_clear_history_summery">Remove all search history.</string>
     <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
     <string name="switch_yes">Yes</string>
