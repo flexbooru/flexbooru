@@ -171,6 +171,10 @@
     <string name="settings_clear_history">検索履歴を削除</string>
     <string name="settings_clear_history_summery">すべての検索履歴を削除する</string>
     <string name="settings_clear_history_dialog_content">全ての履歴がクリアされます。</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">オン</string>
     <string name="switch_off">オフ</string>
     <string name="switch_yes">はい</string>
