@@ -47,7 +47,7 @@
     <string name="about_donation_paypal">PayPal</string>
     <string name="about_donation_alipay">Alipay</string>
     <string name="about_donation_btc">ビットコイン</string>
-    <string name="about_copyright">著作権</string>
+    <string name="about_copyright">コピーライト</string>
     <string name="about_licenses">ライセンス</string>
     <string name="about_open_source_licenses">オープンソースライセンス</string>
     <string name="snackbar_copy_text">` %s ` がクリップボードにコピーされました</string>
@@ -72,7 +72,7 @@
     <string name="popular_date_range">日付範囲</string>
     <string name="dialog_yes">はい</string>
     <string name="dialog_no">いいえ</string>
-    <string name="dialog_ok">OK</string>
+    <string name="dialog_ok">はい</string>
     <string name="dialog_cancel">キャンセル</string>
     <string name="dialog_exit">終了</string>
     <string name="dialog_update">アップデート</string>
@@ -82,7 +82,7 @@
     <string name="booru_add_from_qr_code">QRコードをスキャン</string>
     <string name="booru_add_from_clipboard">クリップボードからインポート</string>
     <string name="booru_add_from_manual_settings">手動設定</string>
-    <string name="booru_add_error">エラー: 不正な日期</string>
+    <string name="booru_add_error">エラー: 不正なデータ</string>
     <string name="booru_add_title_dialog">このbooruを追加?</string>
     <string name="booru_name">Booru名</string>
     <string name="booru_share_by_qr_code">QR コード</string>
@@ -90,7 +90,7 @@
     <string name="booru_edit">編集</string>
     <string name="booru_delete">削除</string>
     <string name="booru_backup_or_restore">バックアップと復元</string>
-    <string name="booru_backup_to_file">ファイルにバックアップする</string>
+    <string name="booru_backup_to_file">ファイルにバックアップ</string>
     <string name="booru_restore_from_file">ファイルから復元</string>
     <string name="booru_config_delete">削除</string>
     <string name="booru_config_apply">適用</string>
@@ -100,10 +100,10 @@
     <string name="booru_config_host">ホスト</string>
     <string name="booru_config_type">タイプ</string>
     <string name="booru_config_hash_salt">Hash salt</string>
-    <string name="booru_config_name_cant_empty">名前は空にできません。</string>
-    <string name="booru_config_host_cant_empty">Hostは空にできません。</string>
+    <string name="booru_config_name_cant_empty">名前は空欄にできません。</string>
+    <string name="booru_config_host_cant_empty">Hostは空欄にできません。</string>
     <string name="booru_config_host_invalid">無効なhost</string>
-    <string name="booru_config_hash_salt_cant_empty">Hash saltは空にできません。</string>
+    <string name="booru_config_hash_salt_cant_empty">Hash saltは空欄にできません。</string>
     <string name="booru_config_dialog_title_delete">このbooruを削除してよろしいですか？</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash saltには \'your-password\' が必要です</string>
     <string name="scaner_scan_qr_code">QRコードをスキャン</string>
@@ -172,9 +172,9 @@
     <string name="settings_clear_history_summery">すべての検索履歴を削除する</string>
     <string name="settings_clear_history_dialog_content">全ての履歴がクリアされます。</string>
     <string name="settings_muzei">Muzei</string>
-    <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
-    <string name="settings_storage">Storage</string>
+    <string name="settings_display">ディスプレイ</string>
+    <string name="settings_options">オプション</string>
+    <string name="settings_storage">ストレージ</string>
     <string name="switch_on">オン</string>
     <string name="switch_off">オフ</string>
     <string name="switch_yes">はい</string>
