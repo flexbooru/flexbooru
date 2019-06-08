@@ -171,6 +171,10 @@
     <string name="settings_clear_history">清除搜索记录</string>
     <string name="settings_clear_history_summery">删除所有搜索记录。</string>
     <string name="settings_clear_history_dialog_content">所有的搜索记录都将被清除。</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">显示</string>
+    <string name="settings_options">选项</string>
+    <string name="settings_storage">存储</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="switch_yes">是</string>

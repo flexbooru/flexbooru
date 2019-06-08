@@ -171,6 +171,10 @@
     <string name="settings_clear_history">清除搜尋記錄</string>
     <string name="settings_clear_history_summery">移除所有搜尋記錄</string>
     <string name="settings_clear_history_dialog_content">所有搜尋記錄將會被清除</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
     <string name="switch_yes">是</string>
