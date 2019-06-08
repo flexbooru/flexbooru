@@ -171,6 +171,10 @@
     <string name="settings_clear_history">Удалить историю поиска</string>
     <string name="settings_clear_history_summery">Удалить всю историю поиска.</string>
     <string name="settings_clear_history_dialog_content">Вся история поиска будет удалена.</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">Включить</string>
     <string name="switch_off">Выключить</string>
     <string name="switch_yes">Да</string>
