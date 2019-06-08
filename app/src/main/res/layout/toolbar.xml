@@ -20,7 +20,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="@dimen/elevation_size"
+        android:elevation="@dimen/toolbar_elevation_size"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:background="@color/colorBackground"
         app:navigationIcon="?android:attr/homeAsUpIndicator"

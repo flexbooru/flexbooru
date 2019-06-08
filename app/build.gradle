@@ -51,7 +51,7 @@ android {
         versionName '0.9.23'
         versionNameSuffix '.c' + verCode
         multiDexEnabled true
-        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU'
+        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU', 'ja-rJP'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121", backupApiKey: "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"]
     }
@@ -138,7 +138,7 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     implementation 'com.google.android.gms:play-services-ads:17.2.1'
-    implementation 'com.android.billingclient:billing:2.0.0'
+    implementation 'com.android.billingclient:billing:2.0.1'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"

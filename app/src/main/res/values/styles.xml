@@ -105,7 +105,7 @@
     <style name="AppTheme.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
         <item name="cardUseCompatPadding">false</item>
-        <item name="cardElevation">@dimen/elevation_card_item_size</item>
+        <item name="cardElevation">@dimen/elevation_size</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="contentPadding">0dp</item>
         <item name="cardBackgroundColor">@color/colorCardBackground</item>

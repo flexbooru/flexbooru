@@ -20,7 +20,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="@dimen/elevation_size"
+        android:elevation="0dp"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         android:background="@color/transparent"
         app:navigationIcon="@drawable/ic_close_white_24dp"
