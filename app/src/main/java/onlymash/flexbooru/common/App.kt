@@ -16,7 +16,6 @@
 package onlymash.flexbooru.common
 
 import android.app.Application
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
@@ -33,6 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.*
+import onlymash.flexbooru.crash.CrashHandler
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
@@ -92,6 +92,7 @@ class App : Application(), KodeinAware {
     }
 
     private fun initial() {
+        CrashHandler.getInstance().init(this)
         val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
         Settings.isGoogleSign = isGoogleSign
         AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
