@@ -111,7 +111,7 @@
     <string name="browse_toolbar_title">Post</string>
     <string name="browse_add_to_fav">お気に入りに追加</string>
     <string name="browse_download">ダウンロード</string>
-    <string name="browse_set_as">として設定します</string>
+    <string name="browse_set_as">設定</string>
     <string name="browse_send_file">ファイルを送信</string>
     <string name="browse_save_file">ファイルを保存</string>
     <string name="browse_share_link">リンクをシェア</string>
@@ -146,7 +146,7 @@
     <string name="account_favorites">お気に入り</string>
     <string name="account_posts">Posts</string>
     <string name="account_comments">コメント</string>
-    <string name="account_config_msg_tip_empty">ユーザー名またはパスワード/Api Keyは空にできません</string>
+    <string name="account_config_msg_tip_empty">ユーザー名またはパスワード/Api Keyは空欄にできません</string>
     <string name="account_recommended">おすすめ</string>
     <string name="settings_safe_mode">セーフモード</string>
     <string name="settings_page_limit">ページ制限</string>
@@ -170,7 +170,7 @@
     <string name="settings_clear_cache_dialog_content">キャッシュされたファイルがクリアされます</string>
     <string name="settings_clear_history">検索履歴を削除</string>
     <string name="settings_clear_history_summery">すべての検索履歴を削除する</string>
-    <string name="settings_clear_history_dialog_content">全ての履歴がクリアされます。</string>
+    <string name="settings_clear_history_dialog_content">全ての検索履歴がクリアされます。</string>
     <string name="settings_muzei">Muzei</string>
     <string name="settings_display">ディスプレイ</string>
     <string name="settings_options">オプション</string>
@@ -179,7 +179,7 @@
     <string name="switch_off">オフ</string>
     <string name="switch_yes">はい</string>
     <string name="switch_no">いいえ</string>
-    <string name="pool_description_is_empty">説明が空です</string>
+    <string name="pool_description_is_empty">説明が入力されていません</string>
     <string name="pool_download">Poolをダウンロード</string>
     <string name="pool_download_jpgs">JPGs をダウンロード</string>
     <string name="pool_download_pngs">PNGs をダウンロード</string>
@@ -187,7 +187,7 @@
     <string name="tag_type_all">すべてのタイプ</string>
     <string name="tag_type_general">一般</string>
     <string name="tag_type_artist">アーティスト</string>
-    <string name="tag_type_copyright">著作権</string>
+    <string name="tag_type_copyright">コピーライト</string>
     <string name="tag_type_character">キャラクター</string>
     <string name="tag_type_circle">サークル</string>
     <string name="tag_type_faults">失敗</string>
