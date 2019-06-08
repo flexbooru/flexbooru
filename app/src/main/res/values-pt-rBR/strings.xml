@@ -171,6 +171,10 @@
     <string name="settings_clear_history">Limpar histórico de pesquisa</string>
     <string name="settings_clear_history_summery">Remover todo o histórico de pesquisa.</string>
     <string name="settings_clear_history_dialog_content">O histórico de pesquisa será apagado.</string>
+    <string name="settings_muzei">Muzei</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_options">Options</string>
+    <string name="settings_storage">Storage</string>
     <string name="switch_on">Ligado</string>
     <string name="switch_off">Desligado</string>
     <string name="switch_yes">Sim</string>
