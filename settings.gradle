@@ -1,1 +1,5 @@
-include ':app'
+rootProject.name = 'flexbooru'
+
+include ':android', ':common'
+
+enableFeaturePreview('GRADLE_METADATA')
