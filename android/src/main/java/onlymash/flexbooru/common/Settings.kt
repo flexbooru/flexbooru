@@ -56,6 +56,8 @@ object Settings {
     private const val GOOGLE_SIGN_KEY = "google_sign"
     private const val IS_AVAILABLE_STORE = "is_available_store"
 
+    private const val SAUCE_NAO_API_KEY_KEY = "sauce_nao_api_key"
+
     private val sp: SharedPreferences by App.app.instance()
 
     var activeBooruUid: Long
@@ -185,4 +187,8 @@ object Settings {
     var isGoogleSign: Boolean
         get() = sp.getBoolean(GOOGLE_SIGN_KEY, false)
         set(value) = sp.edit().putBoolean(GOOGLE_SIGN_KEY, value).apply()
+
+    var sauceNaoApiKey: String
+        get() = sp.getString(SAUCE_NAO_API_KEY_KEY, "") ?: ""
+        set(value) = sp.edit().putString(SAUCE_NAO_API_KEY_KEY, value).apply()
 }

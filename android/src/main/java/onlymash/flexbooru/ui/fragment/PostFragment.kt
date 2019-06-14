@@ -57,10 +57,7 @@ import onlymash.flexbooru.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.repository.post.PostRepository
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
-import onlymash.flexbooru.ui.AccountConfigActivity
-import onlymash.flexbooru.ui.BrowseActivity
-import onlymash.flexbooru.ui.MainActivity
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.*
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
@@ -209,8 +206,8 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
 
         override fun onLongClickItem(post: PostBase?) {
             if (post == null) return
+            val context = context ?: return
             val id = post.getPostId()
-            val context = requireContext()
             AlertDialog.Builder(context)
                 .setTitle("Post $id")
                 .setItems(context.resources.getTextArray(R.array.post_item_action)) { _, which ->
@@ -256,6 +253,9 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
                                     }
                                 }
                             }
+                        }
+                        2 -> {
+                            SauceNaoActivity.startSearch(context, post.getSampleUrl())
                         }
                     }
                 }

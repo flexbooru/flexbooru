@@ -158,7 +158,6 @@ dependencies {
     implementation "com.tickaroo.tikxml:annotation:$tikxml_version"
     implementation "com.tickaroo.tikxml:core:$tikxml_version"
     implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
     kapt "com.tickaroo.tikxml:processor:$tikxml_version"
     kapt "androidx.room:room-compiler:$room_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"

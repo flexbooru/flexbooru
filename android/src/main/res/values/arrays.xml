@@ -140,6 +140,7 @@
     <string-array name="post_item_action">
         <item>@string/post_download</item>
         <item>@string/post_add_to_fav</item>
+        <item>@string/post_search_by_sauce_nao</item>
     </string-array>
     <string-array name="pool_item_action">
         <item>@string/pool_download_jpgs</item>
