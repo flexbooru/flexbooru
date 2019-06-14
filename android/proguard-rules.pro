@@ -24,6 +24,7 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -keepattributes EnclosingMethod
+-keepattributes InnerClasses
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -99,3 +100,12 @@
 -dontwarn com.tickaroo.tikxml.**
 
 -keep class com.android.vending.billing.**
+
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class onlymash.flexbooru.saucenao.**$$serializer { *; } # <-- change package name to your app's
+-keepclassmembers class onlymash.flexbooru.saucenao.** { # <-- change package name to your app's
+    *** Companion;
+}
+-keepclasseswithmembers class onlymash.flexbooru.saucenao.** { # <-- change package name to your app's
+    kotlinx.serialization.KSerializer serializer(...);
+}
