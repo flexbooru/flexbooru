@@ -91,7 +91,7 @@ interface AppUpdaterApi {
     /**
      * check app new version
      * */
-    @GET("/flexbooru/flexbooru/master/app/update.json")
+    @GET("/flexbooru/flexbooru/master/update.json")
     suspend fun checkUpdate(): Response<UpdateInfo>
 }
 
