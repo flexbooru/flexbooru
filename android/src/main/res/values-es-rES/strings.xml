@@ -32,6 +32,7 @@
     <string name="title_copyright">Copyright</string>
     <string name="title_about">Acerca de</string>
     <string name="title_tag_blacklist">Etiquetar lista negra</string>
+    <string name="title_sauce_nao">SauceNao</string>
     <string name="about_app_version">Versión</string>
     <string name="about_app_rate">Calificar esta aplicación</string>
     <string name="about_app_translation">Traducción</string>
@@ -60,6 +61,7 @@
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Descargar publicación</string>
     <string name="post_add_to_fav">Añadir a favoritos</string>
+    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
     <string name="msg_download_must_enable">Se requiere Gestor de Descargas.</string>
     <string name="msg_path_denied">¡Error al guardar! No hay acceso a la ruta actual.</string>
     <string name="msg_download_failed">Descarga fallida</string>
@@ -249,4 +251,12 @@
     <string name="purchase_pay_alipay">AliPay</string>
     <string name="tab_start_date">Fecha de inicio</string>
     <string name="tab_end_date">Fecha fin</string>
+    <string name="sauce_nao_help">Help</string>
+    <string name="sauce_nao_change_api_key">Change api key</string>
+    <string name="sauce_nao_get_api_key">Get api key</string>
+    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
+    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
+    <string name="sauce_nao_image_url">Image url</string>
+    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
+    <string name="sauce_nao_source">Source</string>
 </resources>

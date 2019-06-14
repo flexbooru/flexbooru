@@ -32,6 +32,7 @@
     <string name="title_copyright">版权</string>
     <string name="title_about">关于</string>
     <string name="title_tag_blacklist">标签黑名单</string>
+    <string name="title_sauce_nao">SauceNao</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">给此应用评分</string>
     <string name="about_app_translation">翻译</string>
@@ -60,6 +61,7 @@
     <string name="post_add_search_to_muzei">` %s ` 已添加到 Muzei。</string>
     <string name="post_download">下载投稿</string>
     <string name="post_add_to_fav">添加到收藏</string>
+    <string name="post_search_by_sauce_nao">在 SaucenNao 搜索</string>
     <string name="msg_download_must_enable">请启用系统下载管理器。</string>
     <string name="msg_path_denied">保存失败！ 没有权限访问当前路径。</string>
     <string name="msg_download_failed">下载失败</string>
@@ -249,4 +251,12 @@
     <string name="purchase_pay_alipay">支付宝</string>
     <string name="tab_start_date">起始日期</string>
     <string name="tab_end_date">结束日期</string>
+    <string name="sauce_nao_help">帮助</string>
+    <string name="sauce_nao_change_api_key">修改 Api key</string>
+    <string name="sauce_nao_get_api_key">获取 Api key</string>
+    <string name="sauce_nao_remaining_times_today">今日剩余次数：%01$d</string>
+    <string name="sauce_nao_api_key_unset">SauceNao 的 Api key 未设置。</string>
+    <string name="sauce_nao_image_url">图片链接</string>
+    <string name="sauce_nao_invalid_image_url">无效的图片链接。</string>
+    <string name="sauce_nao_source">来源</string>
 </resources>
