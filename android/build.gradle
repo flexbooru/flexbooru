@@ -103,7 +103,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':common')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.6"
+    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.1.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
@@ -113,12 +113,12 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidx_base"
     implementation "androidx.fragment:fragment-ktx:$androidx_base"
     implementation "androidx.preference:preference-ktx:$androidx_base"
-    implementation 'androidx.core:core-ktx:1.2.0-alpha01'
+    implementation 'androidx.core:core-ktx:1.2.0-alpha02'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha01'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha02'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'

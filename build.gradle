@@ -8,7 +8,7 @@ buildscript {
         okhttp_version = '4.0.0-alpha02'
         lifecycle_version = '2.2.0-alpha01'
         work_version = '2.1.0-alpha03'
-        room_version = '2.1.0-rc01'
+        room_version = '2.1.0'
         glide_version = '4.10.0-SNAPSHOT'
         exoplayer_version = '2.10.1'
         tikxml_version = '0.8.13'
