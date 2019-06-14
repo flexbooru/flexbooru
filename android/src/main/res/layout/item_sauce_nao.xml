@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_middle"
+        android:foreground="?selectableItemBackground"
+        style="@style/AppTheme.CardView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="H, 1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:maxLines="2"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/spacing_middle"
+                android:paddingEnd="@dimen/spacing_middle"
+                app:layout_constraintStart_toEndOf="@+id/thumbnail"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/similarity"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/similarity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="?android:attr/textColorSecondary"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/spacing_middle"
+                android:paddingEnd="@dimen/spacing_middle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/title"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/info_1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:maxLines="2"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/spacing_middle"
+                android:paddingEnd="@dimen/spacing_middle"
+                app:layout_constraintStart_toEndOf="@+id/thumbnail"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintBottom_toTopOf="@+id/info_2"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/info_2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:maxLines="2"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/spacing_middle"
+                android:paddingEnd="@dimen/spacing_middle"
+                app:layout_constraintStart_toEndOf="@+id/thumbnail"
+                app:layout_constraintTop_toBottomOf="@+id/info_1"
+                app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+                app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

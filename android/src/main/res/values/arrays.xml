@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free Software
+  ~ Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with
+  ~ this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string-array name="booru_type_entries">
+        <item>@string/booru_type_danbooru</item>
+        <item>@string/booru_type_moebooru</item>
+        <item>@string/booru_type_danbooru_one</item>
+        <item>@string/booru_type_gelbooru</item>
+        <item>@string/booru_type_sankaku</item>
+    </string-array>
+    <string-array name="booru_type_entries_values">
+        <item>danbooru</item>
+        <item>moebooru</item>
+        <item>danbooru_one</item>
+        <item>gelbooru</item>
+        <item>sankaku</item>
+    </string-array>
+    <string-array name="booru_scheme_entries">
+        <item>@string/booru_config_scheme_http</item>
+        <item>@string/booru_config_scheme_https</item>
+    </string-array>
+    <string-array name="booru_scheme_entries_values">
+        <item>http</item>
+        <item>https</item>
+    </string-array>
+    <string-array name="settings_page_limit_entries">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="settings_page_limit_entries_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="settings_muzei_limit_entries">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="settings_muzei_limit_entries_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="settings_post_size_entries">
+        <item>@string/settings_post_size_sample</item>
+        <item>@string/settings_post_size_larger</item>
+        <item>@string/settings_post_size_origin</item>
+    </string-array>
+    <string-array name="settings_post_size_entries_values">
+        <item>sample</item>
+        <item>larger</item>
+        <item>origin</item>
+    </string-array>
+    <string-array name="settings_grid_width_entries">
+        <item>@string/settings_grid_width_small</item>
+        <item>@string/settings_grid_width_normal</item>
+        <item>@string/settings_grid_width_large</item>
+    </string-array>
+    <string-array name="settings_grid_width_entries_values">
+        <item>small</item>
+        <item>normal</item>
+        <item>large</item>
+    </string-array>
+    <string-array name="filter_order">
+        <item>id</item>
+        <item>id_desc</item>
+        <item>fav</item>
+        <item>wide</item>
+        <item>nonwide</item>
+        <item>score</item>
+        <item>score_asc</item>
+        <item>mpixels</item>
+        <item>mpixels_asc</item>
+        <item>landscape</item>
+        <item>portrait</item>
+        <item>vote</item>
+        <item>favcount</item>
+    </string-array>
+    <string-array name="filter_order_sankaku">
+        <item>id</item>
+        <item>id_desc</item>
+        <item>random</item>
+        <item>popular</item>
+        <item>quality</item>
+        <item>fav</item>
+        <item>wide</item>
+        <item>nonwide</item>
+        <item>mpixels</item>
+        <item>mpixels_asc</item>
+        <item>landscape</item>
+        <item>portrait</item>
+        <item>vote</item>
+        <item>favcount</item>
+        <item>viewcount</item>
+        <item>tagcount</item>
+        <item>tagcount_asc</item>
+        <item>filesize</item>
+        <item>filesize_asc</item>
+        <item>recently_favorited</item>
+        <item>recently_voted</item>
+        <item>recently_commented</item>
+        <item>recently_noted</item>
+    </string-array>
+    <string-array name="filter_rating">
+        <item>safe</item>
+        <item>questionable</item>
+        <item>explicit</item>
+    </string-array>
+    <string-array name="filter_threshold">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="post_item_action">
+        <item>@string/post_download</item>
+        <item>@string/post_add_to_fav</item>
+        <item>@string/post_search_by_sauce_nao</item>
+    </string-array>
+    <string-array name="pool_item_action">
+        <item>@string/pool_download_jpgs</item>
+        <item>@string/pool_download_pngs</item>
+    </string-array>
+</resources>

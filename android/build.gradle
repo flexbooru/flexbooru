@@ -1,0 +1,170 @@
+/*
+ * Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('.gradle/keystore.properties').newDataInputStream())
+Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
+
+android {
+    signingConfigs {
+        github {
+            storeFile file('../.gradle/flexbooru.jks')
+            keyAlias properties.getProperty('KEY_ALIAS')
+            keyPassword properties.getProperty('KEY_PASS')
+            storePassword properties.getProperty('STORE_PASS')
+        }
+        play {
+            storeFile file('../.gradle/flexbooru_play.jks')
+            keyAlias properties.getProperty('KEY_ALIAS')
+            keyPassword properties.getProperty('KEY_PASS')
+            storePassword properties.getProperty('STORE_PASS')
+        }
+    }
+    compileSdkVersion 29
+    buildToolsVersion '29.0.0'
+    defaultConfig {
+        applicationId "onlymash.flexbooru.play"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode verCode
+        versionName '0.9.24'
+        versionNameSuffix '.c' + verCode
+        multiDexEnabled true
+        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU', 'ja-rJP'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121", backupApiKey: "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"]
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "flexbooru_${defaultConfig.versionName}${defaultConfig.versionNameSuffix}.apk"
+        }
+    }
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.play
+        }
+        debug {
+            applicationIdSuffix '.debug'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kapt {
+        useBuildCache = true
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+    lintOptions {
+        abortOnError true
+    }
+    packagingOptions {
+        exclude 'META-INF/*.kotlin_module'
+    }
+}
+
+File jsonFile = file('../update.json')
+def builder = new JsonBuilder(new JsonSlurper().parseText(jsonFile.text))
+builder.content.version_code = android.defaultConfig.versionCode
+builder.content.version_name = android.defaultConfig.versionName + android.defaultConfig.versionNameSuffix
+jsonFile.write(builder.toPrettyString())
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':common')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.0.6"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
+    implementation "org.kodein.di:kodein-di-erased-jvm:$kodein_version"
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation "androidx.appcompat:appcompat:$androidx_base"
+    implementation "androidx.fragment:fragment-ktx:$androidx_base"
+    implementation "androidx.preference:preference-ktx:$androidx_base"
+    implementation 'androidx.core:core-ktx:1.2.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha01'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android:flexbox:1.1.0'
+    implementation 'com.google.android.apps.muzei:muzei-api:3.1.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.github.onlymash:subsampling-scale-image-view:3.10.1'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.mikepenz:materialdrawer:6.1.2'
+    implementation 'com.github.kenglxn.QRGen:android:2.5.0'
+    implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.android.gms:play-services-vision:17.0.2'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
+    implementation 'com.android.billingclient:billing:2.0.1'
+    implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation 'com.squareup.okio:okio:2.2.2'
+    implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    implementation "com.tickaroo.tikxml:annotation:$tikxml_version"
+    implementation "com.tickaroo.tikxml:core:$tikxml_version"
+    implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml_version"
+    kapt "com.tickaroo.tikxml:processor:$tikxml_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    testImplementation 'junit:junit:5.0-SNAPSHOT'
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+apply plugin: 'com.google.gms.google-services'
