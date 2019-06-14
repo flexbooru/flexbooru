@@ -21,6 +21,7 @@ Click on this [link](https://crowdin.com/project/flexbooru) and you can translat
 ## Thanks to
 
 - [OkHttp:](https://github.com/square/okhttp) An HTTP+HTTP/2 client for Android and Java applications. 
+- [Ktor:](https://github.com/ktorio/ktor) A framework for quickly creating web applications in Kotlin with minimal effort.
 - [Retrofit:](https://github.com/square/retrofit) Type-safe HTTP client for Android and Java by Square.
 - [Gson:](https://github.com/google/gson) A Java serialization/deserialization library to convert Java Objects into JSON and back.
 - [TikXml:](https://github.com/Tickaroo/tikxml) Modern XML Parser for Android.
