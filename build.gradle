@@ -9,7 +9,7 @@ buildscript {
         lifecycle_version = '2.2.0-alpha01'
         work_version = '2.1.0-beta01'
         room_version = '2.1.0'
-        glide_version = '4.10.0-SNAPSHOT'
+        glide_version = '4.9.0'
         exoplayer_version = '2.10.1'
         tikxml_version = '0.8.13'
         coroutines_version = '1.3.0-M1'

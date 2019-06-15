@@ -29,7 +29,6 @@ kotlin {
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
                 implementation "org.kodein.di:kodein-di-erased-jvm:$kodein_version"
-                implementation "io.ktor:ktor-client-core:$ktor_version"
                 implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
                 implementation "io.ktor:ktor-client-json-jvm:$ktor_version"
                 implementation "io.ktor:ktor-client-serialization-jvm:$ktor_version"
@@ -49,6 +48,4 @@ configurations {
 }
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlin.Experimental"]
-}
-dependencies {
 }

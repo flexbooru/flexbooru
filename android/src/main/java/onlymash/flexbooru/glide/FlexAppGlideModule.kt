@@ -65,7 +65,7 @@ class FlexAppGlideModule : AppGlideModule() {
                 .removeHeader(HttpHeaders.UserAgent)
                 .addHeader(HttpHeaders.UserAgent, getUserAgent())
             CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
-                builder.addHeader("Cookie", cookie)
+                builder.addHeader(HttpHeaders.Cookie, cookie)
             }
             it.proceed(builder.build())
         }
