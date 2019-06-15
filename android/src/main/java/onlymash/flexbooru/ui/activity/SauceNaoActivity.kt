@@ -164,11 +164,11 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
     }
 
     private fun search(imageUri: Uri) {
-        progress_bar.toVisibility(true)
         val apiKey = Settings.sauceNaoApiKey
         if (apiKey.isNotEmpty()) {
+            progress_bar.toVisibility(true)
             lifecycleScope.launch {
-                val os = withContext(Dispatchers.IO) {
+                val byteArray = withContext(Dispatchers.IO) {
                     try {
                         val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageUri))
@@ -178,14 +178,15 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
                         }
                         val os = ByteArrayOutputStream()
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)
-                        os
+                        os.toByteArray()
                     } catch (_: IOException) {
-                        progress_bar.toVisibility(false)
                         null
                     }
                 }
-                if (os != null) {
-                    actions.onRequestData(apiKey = apiKey, byteArray = os.toByteArray())
+                if (byteArray != null) {
+                    actions.onRequestData(apiKey = apiKey, byteArray = byteArray)
+                } else {
+                    progress_bar.toVisibility(false)
                 }
             }
         } else {
