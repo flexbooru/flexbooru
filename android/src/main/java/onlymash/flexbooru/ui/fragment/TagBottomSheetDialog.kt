@@ -27,7 +27,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.TagFilter
 import onlymash.flexbooru.entity.post.*
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagBrowseAdapter
 import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
 import onlymash.flexbooru.ui.viewholder.TagViewHolder

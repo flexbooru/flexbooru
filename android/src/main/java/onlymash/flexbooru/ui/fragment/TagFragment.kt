@@ -37,8 +37,8 @@ import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.tag.TagRepositoryImpl
 import onlymash.flexbooru.repository.tag.TagRepository
-import onlymash.flexbooru.ui.MainActivity
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.activity.MainActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagAdapter
 import onlymash.flexbooru.ui.viewholder.TagViewHolder
 import onlymash.flexbooru.ui.viewmodel.TagViewModel

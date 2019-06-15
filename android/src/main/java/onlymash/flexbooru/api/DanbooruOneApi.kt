@@ -17,11 +17,11 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
+import io.ktor.http.HttpHeaders
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Constants.BASE_URL
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.VoteDan
@@ -55,8 +55,8 @@ interface DanbooruOneApi {
             val interceptor = Interceptor {
                 it.proceed(it.request()
                     .newBuilder()
-                    .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
+                    .removeHeader(HttpHeaders.UserAgent)
+                    .addHeader(HttpHeaders.UserAgent, getUserAgent())
                     .build())
             }
             val client = OkHttpClient.Builder().apply {

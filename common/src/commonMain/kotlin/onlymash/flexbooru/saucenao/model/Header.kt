@@ -35,17 +35,17 @@ data class Header(
 //    val index: List<HeaderIndex>,
 
     @SerialName("search_depth")
-    val searchDepth: String,
+    var searchDepth: String? = null,
 
     @SerialName("minimum_similarity")
-    val minimumSimilarity: Double,
+    var minimumSimilarity: Double = 0.0,
 
     @SerialName("query_image_display")
-    val queryImageDisplay: String,
+    var queryImageDisplay: String? = null,
 
     @SerialName("query_image")
-    val queryImage: String,
+    val queryImage: String? = null,
 
     @SerialName("results_returned")
-    val resultsReturned: Int
+    var resultsReturned: Int = 0
 )

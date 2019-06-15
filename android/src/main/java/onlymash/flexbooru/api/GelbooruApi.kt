@@ -19,6 +19,7 @@ import android.util.Log
 import androidx.annotation.Keep
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import io.ktor.http.HttpHeaders
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -54,8 +55,8 @@ interface GelbooruApi {
 
             val interceptor = Interceptor { chain ->
                 val builder =  chain.request().newBuilder()
-                    .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
+                    .removeHeader(HttpHeaders.UserAgent)
+                    .addHeader(HttpHeaders.UserAgent, getUserAgent())
                 val cookie = CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie
                 if (!cookie.isNullOrEmpty()) {
                     builder.addHeader("cookie", cookie)

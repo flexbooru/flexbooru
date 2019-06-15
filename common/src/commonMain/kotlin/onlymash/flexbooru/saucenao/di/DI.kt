@@ -16,7 +16,7 @@ import org.kodein.di.erased.provider
 
 @UnstableDefault
 val kodein = Kodein {
-    bind<String>("SauceNaoHost") with provider { "https://saucenao.com" }
+    bind<String>("SauceNaoBaseUrl") with provider { "https://saucenao.com" }
     bind<HttpClient>() with provider {
         HttpClient {
             install(JsonFeature) {
@@ -29,7 +29,7 @@ val kodein = Kodein {
     }
     bind<SauceNaoApi>("SauceNaoApi") with provider {
         val client by kodein.instance<HttpClient>()
-        val host by kodein.instance<String>("SauceNaoHost")
-        SauceNaoApiService(client = client, host = host)
+        val baseUrl by kodein.instance<String>("SauceNaoBaseUrl")
+        SauceNaoApiService(client = client, baseUrl = baseUrl)
     }
 }

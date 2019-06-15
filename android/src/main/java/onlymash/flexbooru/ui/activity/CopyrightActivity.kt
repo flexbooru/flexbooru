@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
 import android.content.Intent
 import android.os.Bundle

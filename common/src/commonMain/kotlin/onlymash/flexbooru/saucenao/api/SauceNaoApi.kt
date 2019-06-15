@@ -7,4 +7,9 @@ interface SauceNaoApi {
     suspend fun searchByUrl(
         url: String,
         apiKey: String): SauceNaoResponse
+
+    suspend fun searchByImage(
+        apiKey: String,
+        byteArray: ByteArray
+    ): SauceNaoResponse
 }

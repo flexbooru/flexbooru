@@ -34,8 +34,8 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.ui.AccountActivity
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.activity.AccountActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.worker.DownloadWorker
 import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod

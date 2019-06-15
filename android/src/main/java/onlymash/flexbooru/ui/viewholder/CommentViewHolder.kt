@@ -29,8 +29,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.ui.AccountActivity
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.activity.AccountActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.widget.CommentView
 
 class CommentViewHolder(itemView: View,

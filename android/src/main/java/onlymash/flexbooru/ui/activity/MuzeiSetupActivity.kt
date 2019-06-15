@@ -13,12 +13,23 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
+import android.content.Intent
+import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
+import onlymash.flexbooru.database.BooruManager
 
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-    override val kodein by kodein()
+class MuzeiSetupActivity : FragmentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val boorus = BooruManager.getAllBoorus() ?: mutableListOf()
+        if (boorus.size == 0) {
+            startActivity(Intent(this, BooruActivity::class.java))
+        } else {
+            setResult(RESULT_OK)
+        }
+        finish()
+    }
 }

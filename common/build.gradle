@@ -1,6 +1,5 @@
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlinx-serialization'
-
 kotlin {
     targets {
         fromPreset(presets.jvm, 'jvm')
@@ -44,12 +43,12 @@ kotlin {
         }
     }
 }
-
 // Workaround for https://youtrack.jetbrains.com/issue/KT-27170
 configurations {
     compileClasspath
 }
-
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlin.Experimental"]
+}
+dependencies {
 }

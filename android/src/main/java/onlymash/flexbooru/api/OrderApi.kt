@@ -17,12 +17,12 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
+import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.getUserAgent
@@ -53,8 +53,8 @@ interface OrderApi {
 
             val interceptor = Interceptor { chain ->
                 val requests =  chain.request().newBuilder()
-                    .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
+                    .removeHeader(HttpHeaders.UserAgent)
+                    .addHeader(HttpHeaders.UserAgent, getUserAgent())
                     .build()
                 chain.proceed(requests)
             }

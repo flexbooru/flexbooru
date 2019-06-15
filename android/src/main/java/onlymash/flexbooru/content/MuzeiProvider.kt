@@ -22,7 +22,7 @@ import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import java.io.FileInputStream
 import java.io.IOException

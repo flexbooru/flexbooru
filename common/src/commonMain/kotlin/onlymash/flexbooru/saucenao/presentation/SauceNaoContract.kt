@@ -9,5 +9,6 @@ interface SauceNaoView : BaseView {
 }
 
 interface SauceNaoActions {
-    fun onRequestData(imageUrl: String, apiKey: String)
+    fun onRequestData(apiKey: String, imageUrl: String)
+    fun onRequestData(apiKey: String, byteArray: ByteArray)
 }

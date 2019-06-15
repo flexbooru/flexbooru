@@ -31,55 +31,55 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".ui.SauceNaoActivity">
+        <activity android:name=".ui.activity.SauceNaoActivity">
         </activity>
-        <activity android:name=".ui.TagBlacklistActivity">
+        <activity android:name=".ui.activity.TagBlacklistActivity">
         </activity>
-        <activity android:name=".ui.PurchaseActivity">
+        <activity android:name=".ui.activity.PurchaseActivity">
         </activity>
         <activity
-                android:name=".ui.MuzeiSetupActivity"
+                android:name=".ui.activity.MuzeiSetupActivity"
                 android:exported="true"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
-        <activity android:name=".ui.AboutActivity">
+        <activity android:name=".ui.activity.AboutActivity">
         </activity>
-        <activity android:name=".ui.CopyrightActivity">
+        <activity android:name=".ui.activity.CopyrightActivity">
         </activity>
         <activity
-                android:name=".ui.MuzeiActivity"
+                android:name=".ui.activity.MuzeiActivity"
                 android:exported="true">
         </activity>
-        <activity android:name=".ui.CommentActivity"/>
+        <activity android:name=".ui.activity.CommentActivity"/>
         <activity
-                android:name=".ui.SearchActivity"
+                android:name=".ui.activity.SearchActivity"
                 android:theme="@style/AppTheme.Search">
         </activity>
-        <activity android:name=".ui.SettingsActivity">
+        <activity android:name=".ui.activity.SettingsActivity">
         </activity>
         <activity
-                android:name=".ui.AccountActivity"
-                android:parentActivityName=".ui.MainActivity">
+                android:name=".ui.activity.AccountActivity"
+                android:parentActivityName=".ui.activity.MainActivity">
         </activity>
         <activity
-                android:name=".ui.AccountConfigActivity"
+                android:name=".ui.activity.AccountConfigActivity"
                 android:label="@string/title_account_config"
-                android:parentActivityName=".ui.MainActivity">
+                android:parentActivityName=".ui.activity.MainActivity">
         </activity>
         <activity
-                android:name=".ui.BrowseActivity"
+                android:name=".ui.activity.BrowseActivity"
                 android:theme="@style/AppTheme.Browse">
         </activity>
         <activity
-                android:name=".ui.ScannerActivity"
+                android:name=".ui.activity.ScannerActivity"
                 android:excludeFromRecents="true"
-                android:parentActivityName=".ui.BooruActivity">
+                android:parentActivityName=".ui.activity.BooruActivity">
         </activity>
         <activity
-                android:name=".ui.BooruConfigActivity"
-                android:parentActivityName=".ui.BooruActivity">
+                android:name=".ui.activity.BooruConfigActivity"
+                android:parentActivityName=".ui.activity.BooruActivity">
         </activity>
-        <activity android:name=".ui.BooruActivity">
+        <activity android:name=".ui.activity.BooruActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -90,7 +90,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.MainActivity"
+                android:name=".ui.activity.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.Launcher">
             <intent-filter>
@@ -113,10 +113,10 @@
 
             <meta-data
                     android:name="settingsActivity"
-                    android:value="onlymash.flexbooru.ui.MuzeiActivity"/>
+                    android:value="onlymash.flexbooru.ui.activity.MuzeiActivity"/>
             <meta-data
                     android:name="setupActivity"
-                    android:value="onlymash.flexbooru.ui.MuzeiSetupActivity"/>
+                    android:value="onlymash.flexbooru.ui.activity.MuzeiSetupActivity"/>
         </provider>
 
         <receiver android:name=".receiver.DownloadNotificationClickReceiver"/>

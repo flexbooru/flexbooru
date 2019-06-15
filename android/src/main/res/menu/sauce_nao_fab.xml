@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:title=""
+            android:id="@+id/option_main"
+            android:icon="@drawable/ic_add_long_white_24dp"/>
+
+    <item
+            android:title="@string/sauce_nao_search_from_url"
+            android:id="@+id/option_url"
+            android:icon="@drawable/ic_link_24dp"/>
+
+    <item
+            android:title="@string/sauce_nao_search_from_file"
+            android:id="@+id/option_file"
+            android:icon="@drawable/ic_attach_file_24dp"/>
+</menu>

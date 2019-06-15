@@ -17,6 +17,7 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
+import io.ktor.http.HttpHeaders
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -58,10 +59,10 @@ interface MoebooruApi {
             val interceptor = Interceptor { chain ->
                 val builder =  chain.request()
                     .newBuilder()
-                    .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
+                    .removeHeader(HttpHeaders.UserAgent)
+                    .addHeader(HttpHeaders.UserAgent, getUserAgent())
                 CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let {
-                    builder.addHeader("Cookie", it)
+                    builder.addHeader(HttpHeaders.Cookie, it)
                 }
 
                 chain.proceed(builder.build())

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.AccountActivity"
+        tools:context=".ui.activity.AccountActivity"
         tools:ignore="Overdraw">
 
     <include layout="@layout/toolbar"/>

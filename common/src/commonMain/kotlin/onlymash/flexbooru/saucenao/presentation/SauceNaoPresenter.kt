@@ -16,12 +16,24 @@ class SauceNaoPresenter(
 
     val api: SauceNaoApi by kodein.instance("SauceNaoApi")
 
-    override fun onRequestData(imageUrl: String, apiKey: String) {
+    override fun onRequestData(apiKey: String, imageUrl: String) {
 
         view.isUpdating = true
 
         GlobalScope.launch(coroutineContext) {
             val response = api.searchByUrl(imageUrl, apiKey)
+            view.onUpdate(response)
+        }.invokeOnCompletion {
+            view.isUpdating = false
+        }
+    }
+
+    override fun onRequestData(apiKey: String, byteArray: ByteArray) {
+
+        view.isUpdating = true
+
+        GlobalScope.launch(coroutineContext) {
+            val response = api.searchByImage(apiKey, byteArray)
             view.onUpdate(response)
         }.invokeOnCompletion {
             view.isUpdating = false

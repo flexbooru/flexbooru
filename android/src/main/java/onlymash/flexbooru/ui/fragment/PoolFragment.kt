@@ -42,7 +42,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepositoryImpl
 import onlymash.flexbooru.repository.pool.PoolRepository
-import onlymash.flexbooru.ui.*
+import onlymash.flexbooru.ui.activity.*
 import onlymash.flexbooru.ui.adapter.PoolAdapter
 import onlymash.flexbooru.ui.viewholder.PoolViewHolder
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel

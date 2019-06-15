@@ -1,23 +1,35 @@
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_sauce_nao.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.io.errors.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.launchUrl
@@ -28,9 +40,12 @@ import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.saucenao.presentation.SauceNaoActions
 import onlymash.flexbooru.saucenao.presentation.SauceNaoPresenter
 import onlymash.flexbooru.saucenao.presentation.SauceNaoView
+import java.io.ByteArrayOutputStream
 import kotlin.properties.Delegates
 
 const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
+
+private const val READ_IMAGE_REQUEST_CODE = 147
 
 class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
 
@@ -84,22 +99,27 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
         if (!url.isNullOrEmpty()) {
             search(url)
         }
-        sauce_nao_search.setOnClickListener {
-            showSearchDialog()
-        }
+        sauce_nao_search_fab.setOptionsClick(object : OneMoreFabMenu.OptionsClick {
+            override fun onOptionClick(optionId: Int?) {
+                when (optionId) {
+                    R.id.option_url -> searchByUrl()
+                    R.id.option_file -> searchByFile()
+                }
+            }
+        })
     }
 
     private fun search(url: String) {
         val apiKey = Settings.sauceNaoApiKey
         if (apiKey.isNotEmpty()) {
-            actions.onRequestData(imageUrl = url, apiKey = apiKey)
+            actions.onRequestData(apiKey = apiKey, imageUrl = url)
         } else {
             error_msg.toVisibility(true)
             error_msg.setText(R.string.sauce_nao_api_key_unset)
         }
     }
 
-    private fun showSearchDialog() {
+    private fun searchByUrl() {
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
         val layout = FrameLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -121,6 +141,57 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()
             .show()
+    }
+
+    private fun searchByFile() {
+        try {
+            startActivityForResult(
+                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "image/*"
+                },
+                READ_IMAGE_REQUEST_CODE)
+        } catch (_: ActivityNotFoundException) {}
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == READ_IMAGE_REQUEST_CODE) {
+            data?.data?.also {
+                search(it)
+            }
+        }
+    }
+
+    private fun search(imageUri: Uri) {
+        progress_bar.toVisibility(true)
+        val apiKey = Settings.sauceNaoApiKey
+        if (apiKey.isNotEmpty()) {
+            lifecycleScope.launch {
+                val os = withContext(Dispatchers.IO) {
+                    try {
+                        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageUri))
+                        } else {
+                            @Suppress("DEPRECATION")
+                            MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                        }
+                        val os = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)
+                        os
+                    } catch (_: IOException) {
+                        progress_bar.toVisibility(false)
+                        null
+                    }
+                }
+                if (os != null) {
+                    actions.onRequestData(apiKey = apiKey, byteArray = os.toByteArray())
+                }
+            }
+        } else {
+            error_msg.toVisibility(true)
+            error_msg.setText(R.string.sauce_nao_api_key_unset)
+        }
     }
 
     private fun changeApiKey() {
@@ -195,28 +266,28 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
                 title.text = result.header.indexName
                 when {
                     !result.data.characters.isNullOrEmpty() -> {
-                        info1.text = String.format("Material: %s", result.data.material)
+                        info1.text = String.format("Material: %s", result.data.material ?: "")
                         info2.text = String.format("Characters: %s", result.data.characters)
                     }
                     result.data.pixivId != null -> {
                         info1.text = String.format("Pixiv ID: %d", result.data.pixivId)
-                        info2.text = String.format("Title: %s", result.data.title)
+                        info2.text = String.format("Title: %s", result.data.title ?: "")
                     }
                     result.data.anidbAid != null -> {
                         info1.text = String.format("Anidb aid: %d", result.data.anidbAid)
-                        info2.text = String.format("Source: %s", result.data.source)
+                        info2.text = String.format("Source: %s", result.data.source ?: "")
                     }
                     result.data.seigaId != null -> {
-                        info1.text = String.format("Seiga ID: %e", result.data.seigaId)
-                        info2.text = String.format("Title: %s", result.data.title)
+                        info1.text = String.format("Seiga ID: %d", result.data.seigaId)
+                        info2.text = String.format("Title: %s", result.data.title ?: "")
                     }
                     result.data.daId != null -> {
                         info1.text = String.format("Da ID: %d", result.data.daId)
-                        info2.text = String.format("Title: %s", result.data.title)
+                        info2.text = String.format("Title: %s", result.data.title ?: "")
                     }
                     result.data.engName != null -> {
                         info1.text = String.format("Eng name: %s", result.data.engName)
-                        info2.text = String.format("Jp name: %s", result.data.jpName)
+                        info2.text = String.format("Jp name: %s", result.data.jpName ?: "")
                     }
                 }
                 GlideApp.with(itemView.context)

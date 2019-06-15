@@ -39,8 +39,8 @@ import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.artist.ArtistRepositoryImpl
 import onlymash.flexbooru.repository.artist.ArtistRepository
-import onlymash.flexbooru.ui.MainActivity
-import onlymash.flexbooru.ui.SearchActivity
+import onlymash.flexbooru.ui.activity.MainActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.ArtistAdapter
 import onlymash.flexbooru.ui.viewholder.ArtistViewHolder
 import onlymash.flexbooru.ui.viewmodel.ArtistViewModel

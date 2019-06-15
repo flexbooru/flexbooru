@@ -30,8 +30,8 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
+import io.ktor.http.HttpHeaders
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.post.PostBase
@@ -128,9 +128,9 @@ fun Activity.downloadPost(post: PostBase?) {
         setTitle(String.format("%s - %d", host, id))
         setDescription(fileName)
         setDestinationUri(uri)
-        addRequestHeader(Constants.USER_AGENT_KEY, getUserAgent())
+        addRequestHeader(HttpHeaders.UserAgent, getUserAgent())
         if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
-        addRequestHeader(Constants.REFERER_KEY, "${post.scheme}://$host/post")
+        addRequestHeader(HttpHeaders.Referrer, "${post.scheme}://$host/post")
         CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
             addRequestHeader("Cookie", cookie)
         }

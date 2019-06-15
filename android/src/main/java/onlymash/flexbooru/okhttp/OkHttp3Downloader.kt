@@ -23,9 +23,9 @@ import java.io.IOException
 import android.os.StatFs
 import android.util.Log
 import androidx.annotation.VisibleForTesting
+import io.ktor.http.HttpHeaders
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.extension.getUserAgent
 
 /** A [Downloader] which uses OkHttp to download images.  */
@@ -151,9 +151,9 @@ class OkHttp3Downloader : Downloader {
                 val host = url.host
                 it.proceed(it.request()
                     .newBuilder()
-                    .removeHeader(Constants.USER_AGENT_KEY)
-                    .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
-                    .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
+                    .removeHeader(HttpHeaders.UserAgent)
+                    .addHeader(HttpHeaders.UserAgent, getUserAgent())
+                    .addHeader(HttpHeaders.Referrer, "$scheme://$host/post")
                     .build())
             }
             return OkHttpClient.Builder()

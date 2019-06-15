@@ -11,7 +11,7 @@ data class HeaderIndex(
     @SerialName("parent_id")
     val parentId: Int,
     @SerialName("results")
-    val results: Int,
+    var results: Int = 0,
     @SerialName("status")
     val status: Int
 )

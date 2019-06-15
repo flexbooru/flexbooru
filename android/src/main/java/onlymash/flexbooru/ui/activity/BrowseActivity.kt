@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -308,7 +308,10 @@ class BrowseActivity : BaseActivity() {
             when (menuItem.itemId) {
                 R.id.action_browse_comment -> {
                     val id = getCurrentPostId()
-                    if (id > 0) CommentActivity.startActivity(context = this, postId = id)
+                    if (id > 0) CommentActivity.startActivity(
+                        context = this,
+                        postId = id
+                    )
                 }
                 R.id.action_browse_download -> {
                     checkAndAction(ACTION_DOWNLOAD)
@@ -325,7 +328,10 @@ class BrowseActivity : BaseActivity() {
                 R.id.action_browse_recommended -> {
                     val id = getCurrentPostId()
                     if (id > 0) {
-                        SearchActivity.startActivity(this, "recommended_for_post:$id")
+                        SearchActivity.startActivity(
+                            this,
+                            "recommended_for_post:$id"
+                        )
                     }
                 }
                 R.id.action_browse_open_browser -> {

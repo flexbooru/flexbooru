@@ -51,7 +51,7 @@ import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.repository.popular.PopularRepositoryImpl
 import onlymash.flexbooru.repository.popular.PopularRepository
-import onlymash.flexbooru.ui.*
+import onlymash.flexbooru.ui.activity.*
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PopularViewModel

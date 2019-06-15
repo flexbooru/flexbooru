@@ -13,23 +13,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import onlymash.flexbooru.database.BooruManager
+import kotlinx.android.synthetic.main.toolbar.*
+import onlymash.flexbooru.R
 
-class MuzeiSetupActivity : FragmentActivity() {
+class AboutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val boorus = BooruManager.getAllBoorus() ?: mutableListOf()
-        if (boorus.size == 0) {
-            startActivity(Intent(this, BooruActivity::class.java))
-        } else {
-            setResult(RESULT_OK)
+        setContentView(R.layout.activity_about)
+        toolbar.setTitle(R.string.title_about)
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
-        finish()
     }
 }

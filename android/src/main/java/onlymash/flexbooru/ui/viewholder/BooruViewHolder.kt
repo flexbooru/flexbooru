@@ -27,8 +27,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.extension.copyText
-import onlymash.flexbooru.ui.BooruActivity
-import onlymash.flexbooru.ui.BooruConfigActivity
+import onlymash.flexbooru.ui.activity.BooruActivity
+import onlymash.flexbooru.ui.activity.BooruConfigActivity
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 import onlymash.flexbooru.ui.fragment.QRCodeDialog
 

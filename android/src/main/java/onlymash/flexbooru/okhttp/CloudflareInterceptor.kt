@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.webkit.*
+import io.ktor.http.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -95,8 +96,8 @@ class CloudflareInterceptor : Interceptor {
         onlymash.flexbooru.database.CookieManager.createCookie(Cookie(booru_uid = Settings.activeBooruUid, cookie = cookie))
 
         return request.newBuilder()
-            .removeHeader("Cookie")
-            .addHeader("Cookie", cookie)
+            .removeHeader(HttpHeaders.Cookie)
+            .addHeader(HttpHeaders.Cookie, cookie)
             .build()
     }
 

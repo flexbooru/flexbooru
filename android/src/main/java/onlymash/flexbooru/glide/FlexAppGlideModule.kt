@@ -29,9 +29,9 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.resource.bitmap.ExifInterfaceImageHeaderParser
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
+import io.ktor.http.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.extension.getUserAgent
@@ -61,9 +61,9 @@ class FlexAppGlideModule : AppGlideModule() {
             if (host.startsWith("cs.")) host = host.replaceFirst("cs.", "beta.")
             val builder = it.request()
                 .newBuilder()
-                .addHeader(Constants.REFERER_KEY, "$scheme://$host/post")
-                .removeHeader(Constants.USER_AGENT_KEY)
-                .addHeader(Constants.USER_AGENT_KEY, getUserAgent())
+                .addHeader(HttpHeaders.Referrer, "$scheme://$host/post")
+                .removeHeader(HttpHeaders.UserAgent)
+                .addHeader(HttpHeaders.UserAgent, getUserAgent())
             CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
                 builder.addHeader("Cookie", cookie)
             }

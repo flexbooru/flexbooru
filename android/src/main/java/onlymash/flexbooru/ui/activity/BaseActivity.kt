@@ -13,20 +13,12 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
-import android.os.Bundle
-import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.R
+import androidx.appcompat.app.AppCompatActivity
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
 
-class AboutActivity : BaseActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about)
-        toolbar.setTitle(R.string.title_about)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-    }
+abstract class BaseActivity : AppCompatActivity(), KodeinAware {
+    override val kodein by kodein()
 }

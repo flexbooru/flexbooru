@@ -37,7 +37,7 @@ import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
-import onlymash.flexbooru.ui.PurchaseActivity
+import onlymash.flexbooru.ui.activity.PurchaseActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.*

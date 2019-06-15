@@ -9,5 +9,5 @@ data class SauceNaoResponse(
     @SerialName("header")
     val header: Header,
     @SerialName("results")
-    val results: List<Result>
+    var results: List<Result> = emptyList()
 )

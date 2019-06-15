@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -148,7 +148,9 @@ class BooruActivity : BaseActivity() {
             putExtra(Intent.EXTRA_TITLE, "boorus.json")
         }
         try {
-            startActivityForResult(intent, REQUEST_CODE_BACKUP_TO_FILE)
+            startActivityForResult(intent,
+                REQUEST_CODE_BACKUP_TO_FILE
+            )
         } catch (_: ActivityNotFoundException) {}
     }
 
@@ -163,7 +165,9 @@ class BooruActivity : BaseActivity() {
             type = "application/octet-stream"
         }
         try {
-            startActivityForResult(intent, REQUEST_CODE_RESTORE_FROM_FILE)
+            startActivityForResult(intent,
+                REQUEST_CODE_RESTORE_FROM_FILE
+            )
         } catch (_: ActivityNotFoundException) {}
     }
 

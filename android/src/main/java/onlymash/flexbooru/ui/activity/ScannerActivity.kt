@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui
+package onlymash.flexbooru.ui.activity
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -62,7 +62,8 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
         if (!detector.isOperational) {
             val availability = GoogleApiAvailability.getInstance()
             val dialog = availability.getErrorDialog(this, availability.isGooglePlayServicesAvailable(this),
-                REQUEST_GOOGLE_API)
+                REQUEST_GOOGLE_API
+            )
             if (dialog == null) {
                 Toast.makeText(this, R.string.common_google_play_services_notification_ticker, Toast.LENGTH_SHORT)
                     .show()
