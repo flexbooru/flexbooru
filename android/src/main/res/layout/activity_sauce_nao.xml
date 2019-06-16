@@ -6,7 +6,7 @@
         android:id="@+id/root_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="onlymash.flexbooru.ui.activity.SauceNaoActivity">
+        tools:context=".ui.activity.SauceNaoActivity">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -57,14 +57,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_normal"
-            app:content_options="@menu/sauce_nao_fab"
-            app:close_on_click="true"
             app:color_main_button="@color/colorAccent"
             app:color_secondary_buttons="@color/colorPrimary"
             app:label_background_color="@color/colorCardBackground"
-            app:rotate_main_button="true"
             app:label_text_color="@color/colorPrimary"
-            app:enable_main_as_action="true"
+            app:content_options="@menu/sauce_nao_fab"
+            app:close_on_click="true"
+            app:rotate_main_button="true"
+            app:enable_main_as_action="false"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

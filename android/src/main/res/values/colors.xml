@@ -122,7 +122,7 @@
     <color name="color_light_secondary_variant">#018786</color>
     <color name="color_light_surface">@color/white</color>
     <color name="color_light_on_primary">@color/white</color>
-    <color name="color_light_on_secondary">@color/black</color>
+    <color name="color_light_on_secondary">@color/white</color>
     <color name="color_light_on_background">@color/black</color>
     <color name="color_light_on_error">@color/white</color>
     <color name="color_light_on_surface">@color/black</color>
@@ -138,7 +138,7 @@
     <color name="color_dark_secondary_variant">@color/color_dark_secondary</color>
     <color name="color_dark_surface">@color/dark</color>
     <color name="color_dark_on_primary">@color/black</color>
-    <color name="color_dark_on_secondary">@color/black</color>
+    <color name="color_dark_on_secondary">@color/white</color>
     <color name="color_dark_on_background">@color/white</color>
     <color name="color_dark_on_error">@color/black</color>
     <color name="color_dark_on_surface">@color/white</color>
