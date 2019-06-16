@@ -245,7 +245,9 @@
     <string name="purchase_info_title">Usuń wszystkie reklamy i odblokuj wszystkie funkcje</string>
     <string name="purchase_info_remove_ads">Usuń reklamy</string>
     <string name="purchase_info_unlock_full_features">Odblokuj wszystkie funkcje</string>
-    <string name="purchase_info_features">1. Znieś limit liczby boorów.\n2. Pobieraj pulę jako zip z moebooru.\n3. Zapisz &amp; odzyskaj boory z pliku.</string>
+    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
+        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
+    </string>
     <string name="purchase_pay_title">Zapłać/Przywróć zakup</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
