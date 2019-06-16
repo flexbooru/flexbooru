@@ -245,7 +245,9 @@
     <string name="purchase_info_title">Quitar anuncios y desbloquear características</string>
     <string name="purchase_info_remove_ads">Eliminar anuncios</string>
     <string name="purchase_info_unlock_full_features">* Desbloquear todas las características</string>
-    <string name="purchase_info_features">1. Desbloquea el límite de boorus disponible.\n2. Descarga el archivo zip de pool de moebooru.\n3. Copiar y Restaurar boorus desde archivo.</string>
+    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
+        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
+    </string>
     <string name="purchase_pay_title">Pagar/Restaurar compra</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">AliPay</string>
