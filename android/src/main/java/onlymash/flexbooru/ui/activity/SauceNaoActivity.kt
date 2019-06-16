@@ -169,6 +169,14 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
         }
     }
 
+    override fun onBackPressed() {
+        if (sauce_nao_search_fab.isExpanded()) {
+            sauce_nao_search_fab.collapse()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun search(imageUri: Uri) {
         val apiKey = Settings.sauceNaoApiKey
         if (apiKey.isNotEmpty()) {
