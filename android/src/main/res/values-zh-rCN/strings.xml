@@ -245,9 +245,7 @@
     <string name="purchase_info_title">删除广告并解锁完整功能</string>
     <string name="purchase_info_remove_ads">移除广告</string>
     <string name="purchase_info_unlock_full_features">解锁所有功能</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
+    <string name="purchase_info_features">1、解除可用的图站数量限制。\n2、支持下载图集压缩文档。\n3、从文件批量备份和恢复图站。\n4、SauceNao 以图搜图。</string>
     <string name="purchase_pay_title">支付/恢复购买</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付宝</string>
