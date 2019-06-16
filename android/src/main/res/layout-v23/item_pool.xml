@@ -108,8 +108,8 @@
                 android:autoLink="web"
                 android:textIsSelectable="true"
                 android:layout_margin="@dimen/spacing_middle"
-                android:lineSpacingMultiplier="1.2"
-                android:textAppearance="?attr/textAppearanceBody1"
+                android:lineSpacingMultiplier="1.1"
+                android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"/>
     </LinearLayout>
 
