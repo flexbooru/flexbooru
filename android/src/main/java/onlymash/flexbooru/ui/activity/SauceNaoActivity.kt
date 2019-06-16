@@ -71,19 +71,24 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sauce_nao)
-        toolbar.setTitle(R.string.title_sauce_nao)
-        toolbar.inflateMenu(R.menu.sauce_nao)
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_sauce_nao_change_api_key -> {
-                    changeApiKey()
+        toolbar.apply {
+            setTitle(R.string.title_sauce_nao)
+            inflateMenu(R.menu.sauce_nao)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_sauce_nao_change_api_key -> {
+                        changeApiKey()
+                    }
+                    R.id.action_sauce_nao_get_api_key -> {
+                        val url = "https://saucenao.com/user.php"
+                        launchUrl(url)
+                    }
                 }
-                R.id.action_sauce_nao_get_api_key -> {
-                    val url = "https://saucenao.com/user.php"
-                    launchUrl(url)
-                }
+                true
             }
-            true
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
         }
         sauceNaoAdapter = SauceNaoAdapter()
         sauce_nao_list.apply {
@@ -150,7 +155,8 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "image/*"
                 },
-                READ_IMAGE_REQUEST_CODE)
+                READ_IMAGE_REQUEST_CODE
+            )
         } catch (_: ActivityNotFoundException) {}
     }
 
