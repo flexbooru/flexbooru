@@ -1,116 +1,34 @@
 {
   "project_info": {
-    "project_number": "600642066117",
-    "firebase_url": "https://flexbooru.firebaseio.com",
-    "project_id": "flexbooru",
-    "storage_bucket": "flexbooru.appspot.com"
+    "project_number": "820702431864",
+    "firebase_url": "https://flexbooru-client.firebaseio.com",
+    "project_id": "flexbooru-client",
+    "storage_bucket": "flexbooru-client.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:600642066117:android:7891aa7dcf1e072f",
-        "android_client_info": {
-          "package_name": "onlymash.flexbooru"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "600642066117-f8fe50jpd3so84ru0o4o8orng33mq00j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "onlymash.flexbooru",
-            "certificate_hash": "fa64b480e2d301b93d80d73b0be37dfc4cb7ac00"
-          }
-        },
-        {
-          "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCG1ToE5YhzGBNFAejd7gojBmvn7IAPiSg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:600642066117:android:40ef1c0ef2a8f50e",
-        "android_client_info": {
-          "package_name": "onlymash.flexbooru.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "600642066117-jh2richnud2d5dru77orskmdg8v1ioc1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "onlymash.flexbooru.debug",
-            "certificate_hash": "de67bb7a43a01ad200c9d05fb31c6409bbdab729"
-          }
-        },
-        {
-          "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCG1ToE5YhzGBNFAejd7gojBmvn7IAPiSg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:600642066117:android:5eeb5ff54943f2c7",
+        "mobilesdk_app_id": "1:820702431864:android:5eeb5ff54943f2c7",
         "android_client_info": {
           "package_name": "onlymash.flexbooru.play"
         }
       },
       "oauth_client": [
         {
-          "client_id": "600642066117-1onfhfvg8jqje5vopt21hc1g6v3o08uc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "onlymash.flexbooru.play",
-            "certificate_hash": "c0b2ef28bd76208e824f15240675060b3144f0c3"
-          }
-        },
-        {
-          "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+          "client_id": "820702431864-e04q4930osm9nnaage4b57a9timatm3m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCG1ToE5YhzGBNFAejd7gojBmvn7IAPiSg"
+          "current_key": "AIzaSyAL6Nt9x07ci5xyAsEHl_J4YyXQEH3ZQr8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+              "client_id": "820702431864-e04q4930osm9nnaage4b57a9timatm3m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -119,35 +37,27 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:600642066117:android:1fa1a558a16adaa8",
+        "mobilesdk_app_id": "1:820702431864:android:1fa1a558a16adaa8",
         "android_client_info": {
           "package_name": "onlymash.flexbooru.play.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "600642066117-ugtiin09s9bj9a926u7t52g7nrq2np1e.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "onlymash.flexbooru.play.debug",
-            "certificate_hash": "de67bb7a43a01ad200c9d05fb31c6409bbdab729"
-          }
-        },
-        {
-          "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+          "client_id": "820702431864-e04q4930osm9nnaage4b57a9timatm3m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCG1ToE5YhzGBNFAejd7gojBmvn7IAPiSg"
+          "current_key": "AIzaSyAL6Nt9x07ci5xyAsEHl_J4YyXQEH3ZQr8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "600642066117-ukr24fd3p45e7ne91759j5pasrb0ga1p.apps.googleusercontent.com",
+              "client_id": "820702431864-e04q4930osm9nnaage4b57a9timatm3m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

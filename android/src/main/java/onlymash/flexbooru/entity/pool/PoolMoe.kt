@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.entity.pool
 
-import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,7 +37,6 @@ data class PoolMoe(
             updated_at.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(updated_at)
             updated_at.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updated_at)
             else -> {
-                Crashlytics.log("Unknown date format: $updated_at. Host: $host")
                 throw IllegalStateException("Unknown date format: $updated_at")
             }
         } ?: return ""

@@ -18,7 +18,6 @@ package onlymash.flexbooru.database
 import android.database.SQLException
 import android.database.sqlite.SQLiteCantOpenDatabaseException
 import androidx.lifecycle.LiveData
-import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.SuggestionDao
 import onlymash.flexbooru.entity.Suggestion
@@ -48,7 +47,6 @@ object SuggestionManager {
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
-        Crashlytics.logException(ex)
         null
     }
 
@@ -58,7 +56,6 @@ object SuggestionManager {
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
-        Crashlytics.logException(ex)
         throw IOException(ex)
     }
 }

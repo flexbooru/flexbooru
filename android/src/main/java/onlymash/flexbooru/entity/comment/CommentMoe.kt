@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.entity.comment
 
-import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,10 +39,7 @@ data class CommentMoe(
         val date =  when {
             created_at.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(created_at)
             created_at.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(created_at)
-            else -> {
-                Crashlytics.log("Unknown date format: $created_at. Host: $host")
-                throw IllegalStateException("Unknown date format: $created_at")
-            }
+            else -> throw IllegalStateException("Unknown date format: $created_at")
         } ?: return ""
         return date.time.formatDate()
     }

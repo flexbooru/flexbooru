@@ -16,7 +16,6 @@
 package onlymash.flexbooru.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
-import com.crashlytics.android.Crashlytics
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.CookieDao
 import onlymash.flexbooru.entity.Cookie
@@ -40,7 +39,6 @@ object CookieManager {
     } catch (ex: SQLiteCantOpenDatabaseException) {
         throw IOException(ex)
     } catch (ex: SQLException) {
-        Crashlytics.logException(ex)
         null
     }
 

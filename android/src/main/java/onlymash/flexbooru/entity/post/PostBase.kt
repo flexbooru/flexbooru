@@ -16,7 +16,6 @@
 package onlymash.flexbooru.entity.post
 
 import androidx.room.PrimaryKey
-import com.crashlytics.android.Crashlytics
 
 abstract class PostBase {
     @PrimaryKey(autoGenerate = true)
@@ -36,10 +35,7 @@ abstract class PostBase {
             u.startsWith("http") -> u
             u.startsWith("//") -> "$scheme:$u"
             u.startsWith("/") -> "$scheme://$host$u"
-            else -> {
-                Crashlytics.log("Unknown url: $u")
-                u
-            }
+            else -> u
         }
     }
 
