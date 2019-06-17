@@ -24,6 +24,7 @@ import android.os.Handler
 import android.provider.DocumentsContract
 import android.view.KeyEvent
 import android.view.View
+import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
@@ -35,6 +36,7 @@ import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
@@ -152,10 +154,16 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withIconTintingEnabled(true)
                     .withIdentifier(DRAWER_ITEM_ID_NIGHT_MODE)
                     .withChecked(Settings.isNightMode)
-                    .withOnCheckedChangeListener { _, _, isChecked ->
-                        drawer.closeDrawer()
-                        Settings.isNightMode = isChecked
-                    },
+                    .withOnCheckedChangeListener(object : OnCheckedChangeListener {
+                        override fun onCheckedChanged(
+                            drawerItem: IDrawerItem<*>,
+                            buttonView: CompoundButton,
+                            isChecked: Boolean
+                        ) {
+                            drawer.closeDrawer()
+                            Settings.isNightMode = isChecked
+                        }
+                    }),
                 PrimaryDrawerItem()
                     .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_info_outline_24dp))
                     .withName(R.string.title_about)
@@ -284,7 +292,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         override fun onAdd(booru: Booru) {
             boorus.add(booru)
             if (!Settings.isOrderSuccess &&
-                header.profiles.size == BOORUS_LIMIT + 1) {
+                header.profiles?.size ?: 0 == BOORUS_LIMIT + 1) {
                 return
             }
             initDrawerHeader()
@@ -386,8 +394,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private val drawerItemClickListener = object : Drawer.OnDrawerItemClickListener {
-        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*, *>?): Boolean {
-            when (drawerItem?.identifier) {
+        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
+            when (drawerItem.identifier) {
                 DRAWER_ITEM_ID_ACCOUNT -> {
                     val booru = getCurrentBooru()
                     val user = getCurrentUser()
