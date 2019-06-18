@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
+    <string name="app_description">Um cliente booru para Android, com suporte a Danbooru, Moebooru, Gelbooru, Sankaku, etc.    </string>
     <string name="title_posts">Postagens</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Gerenciar boorus</string>
@@ -61,7 +61,7 @@
     <string name="post_add_search_to_muzei">` %s ` foram salvos no Muzei.</string>
     <string name="post_download">Baixar Postagem</string>
     <string name="post_add_to_fav">Adicionar aos favoritos</string>
-    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
+    <string name="post_search_by_sauce_nao">Pesquisa por SauceNao</string>
     <string name="msg_download_must_enable">Gerenciador de downloads é necessário.</string>
     <string name="msg_path_denied">Falha ao salvar! Nenhum acesso ao caminho atual.</string>
     <string name="msg_download_failed">Falha no download</string>
@@ -174,9 +174,9 @@
     <string name="settings_clear_history_summery">Remover todo o histórico de pesquisa.</string>
     <string name="settings_clear_history_dialog_content">O histórico de pesquisa será apagado.</string>
     <string name="settings_muzei">Muzei</string>
-    <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
-    <string name="settings_storage">Storage</string>
+    <string name="settings_display">Exibição</string>
+    <string name="settings_options">Opções</string>
+    <string name="settings_storage">Armazenamento</string>
     <string name="switch_on">Ligado</string>
     <string name="switch_off">Desligado</string>
     <string name="switch_yes">Sim</string>
@@ -245,22 +245,22 @@
     <string name="purchase_info_title">Remover anúncios e desbloquear todas as funcionalidades</string>
     <string name="purchase_info_remove_ads">* Remover anúncios</string>
     <string name="purchase_info_unlock_full_features">Desbloquear todas as funcionalidades</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
+    <string name="purchase_info_features">1. Remova o limite do buru disponível.\n2. Baixe o arquivo zip do pool de
+        moebooru.\n. Backup de &amp; Restaure o boorus do arquivo.\n. Reverte a pesquisa por SauceNao.
     </string>
     <string name="purchase_pay_title">Restaurar compras</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
     <string name="tab_start_date">Data de início</string>
     <string name="tab_end_date">Data de término</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
+    <string name="sauce_nao_help">Ajuda</string>
+    <string name="sauce_nao_change_api_key">Alterar a chave api</string>
+    <string name="sauce_nao_get_api_key">Obter chave da api</string>
+    <string name="sauce_nao_remaining_times_today">Tempo restante hoje: %01$d</string>
+    <string name="sauce_nao_api_key_unset">A chave Api de SauceNao não está definida.</string>
+    <string name="sauce_nao_image_url">Url da imagem</string>
+    <string name="sauce_nao_invalid_image_url">Url da Imagem inválida.</string>
+    <string name="sauce_nao_source">Fonte</string>
     <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
+    <string name="sauce_nao_search_from_file">Arquivo</string>
 </resources>
