@@ -239,7 +239,7 @@ class DownloadWorker(
                 val `is` = FileInputStream(file)
                 val os = applicationContext.contentResolver.openOutputStream(desUri)
                 try {
-                    `is`.copyToOS(os)
+                    `is`.copyTo(os)
                 } catch (_: IOException) {
                     return Result.failure()
                 } finally {
@@ -302,7 +302,7 @@ class DownloadWorker(
                     `is` = OkHttp3Downloader(applicationContext)
                         .load(url)
                         .body?.source()?.inputStream()
-                    `is`?.copyToOS(os)
+                    `is`?.copyTo(os)
                 } catch (_: IOException) {
                     return Result.failure()
                 } finally {

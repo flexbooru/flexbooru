@@ -625,7 +625,7 @@ class BrowseActivity : BaseActivity() {
                             try {
                                 `is` = FileInputStream(resource)
                                 os = contentResolver.openOutputStream(uri)
-                                `is`.copyToOS(os)
+                                `is`.copyTo(os)
                                 return@withContext true
                             } catch (_: IOException) {
                                 return@withContext false
