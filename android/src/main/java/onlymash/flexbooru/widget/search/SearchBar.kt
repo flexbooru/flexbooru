@@ -363,9 +363,9 @@ class SearchBar @JvmOverloads constructor(
                 stateChangeListener?.onStateChange(state, oldState, animation)
             }
             STATE_SEARCH -> {
+                viewTransition.showView(0, animation)
                 hideIME()
                 hideSuggestion()
-                viewTransition.showView(0, animation)
                 stateChangeListener?.onStateChange(state, oldState, animation)
             }
         }

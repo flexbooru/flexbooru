@@ -16,75 +16,69 @@
 
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:layout_height="@dimen/search_bar_height">
 
         <ImageButton
                 android:id="@+id/menu_button"
-                android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="7dp"
+                android:layout_width="40dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/search_bar_horizontal_margin"
                 android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@null"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:contentDescription="@null"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/search_title"
+
+        <FrameLayout
+                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:layout_marginStart="@dimen/search_bar_horizontal_margin"
-                android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
-                android:text="@string/app_name"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textColor="?android:attr/textColorSecondary"
-                android:singleLine="true"
-                android:maxLines="1"
-                app:layout_constraintStart_toEndOf="@id/menu_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/search_bar_menu_view"/>
+                android:layout_height="match_parent">
+
+            <onlymash.flexbooru.widget.search.SearchEditText
+                    android:id="@+id/search_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/search_bar_horizontal_margin"
+                    android:layout_marginEnd="0dp"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:background="@null"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:visibility="gone"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/search_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/search_bar_horizontal_margin"
+                    android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
+                    android:text="@string/app_name"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:singleLine="true"
+                    android:maxLines="1"/>
+        </FrameLayout>
 
         <androidx.appcompat.widget.ActionMenuView
                 android:id="@+id/search_bar_menu_view"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center_vertical|end"
-                android:paddingStart="@dimen/spacing_medium"
-                android:paddingEnd="@dimen/spacing_small"
-                style="@style/ThemeOverlay.MaterialComponents.ActionBar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <onlymash.flexbooru.widget.search.SearchEditText
-                android:id="@+id/search_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/search_bar_horizontal_margin"
-                android:layout_marginEnd="0dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textColor="?android:attr/textColorSecondary"
-                android:background="@null"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:visibility="gone"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                app:layout_constraintStart_toEndOf="@id/menu_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/search_bar_menu_view"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                style="@style/ThemeOverlay.MaterialComponents.ActionBar"/>
+    </LinearLayout>
+
     <LinearLayout
             android:id="@+id/list_container"
             android:layout_width="match_parent"
