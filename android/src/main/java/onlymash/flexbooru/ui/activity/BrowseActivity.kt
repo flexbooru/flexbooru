@@ -732,19 +732,4 @@ class BrowseActivity : BaseActivity() {
             }
         })[FavPostViewModel::class.java]
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data ?: return
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(
-                uri,
-                takeFlags
-            )
-            Settings.downloadDirPath = Uri.decode(uri.toString())
-            Settings.downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
-            Settings.downloadDirPathAuthority = uri.authority
-        }
-    }
 }

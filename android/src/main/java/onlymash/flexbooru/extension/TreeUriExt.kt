@@ -160,7 +160,7 @@ fun String.fileName(): String {
     } else {
         substring(start)
     }
-    return Uri.decode(encodeFileName)
+    return encodeFileName.toDecodedString()
         .replace("?", "")
         .replace("!", "")
         .replace(":", "_")
@@ -184,3 +184,7 @@ fun String.isImageNotWebp(): Boolean {
 }
 
 fun String.isWebp(): Boolean = fileExt() == "webp"
+
+fun Uri.toDecodedString(): String = toString().toDecodedString()
+
+fun String.toDecodedString(): String = Uri.decode(this)

@@ -15,13 +15,11 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.DocumentsContract
 import android.view.KeyEvent
 import android.view.View
 import android.widget.CompoundButton
@@ -51,9 +49,7 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.extension.getWidth
-import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.extension.openAppInMarket
+import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 import org.kodein.di.erased.instance
@@ -641,20 +637,5 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             return false
         }
         return super.onKeyDown(keyCode, event)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data ?: return
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(
-                uri,
-                takeFlags
-            )
-            Settings.downloadDirPath = Uri.decode(uri.toString())
-            Settings.downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
-            Settings.downloadDirPathAuthority = uri.authority
-        }
     }
 }
