@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileFilter
@@ -120,12 +118,6 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
 
             if (throwable == null)
                 return false
-
-            Thread(Runnable {
-                Looper.prepare()
-                Toast.makeText(context, "Crash", Toast.LENGTH_SHORT).show()
-                Looper.loop()
-            }).start()
 
             /**
              * 应用信息
