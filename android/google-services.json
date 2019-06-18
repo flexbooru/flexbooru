@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "820702431864-n6ku5lidcafrqr33948v5rpjfi5fln0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "onlymash.flexbooru.play",
+            "certificate_hash": "27d6efe1bf40cccbc8c2d1059a5391313c746989"
+          }
+        },
+        {
+          "client_id": "820702431864-2bhm02t59c41c57f07c0qica27km51po.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "onlymash.flexbooru.play",
+            "certificate_hash": "c0b2ef28bd76208e824f15240675060b3144f0c3"
+          }
+        },
+        {
           "client_id": "820702431864-e04q4930osm9nnaage4b57a9timatm3m.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -33,7 +49,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-1547571472841615~2418349121"
     },
     {
       "client_info": {
