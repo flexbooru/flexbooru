@@ -28,12 +28,20 @@ class SauceNaoPresenter(
         }
     }
 
-    override fun onRequestData(apiKey: String, byteArray: ByteArray) {
+    override fun onRequestData(
+        apiKey: String,
+        byteArray: ByteArray,
+        fileExt: String
+    ) {
 
         view.isUpdating = true
 
         GlobalScope.launch(coroutineContext) {
-            val response = api.searchByImage(apiKey, byteArray)
+            val response = api.searchByImage(
+                apiKey = apiKey,
+                byteArray = byteArray,
+                fileExt = fileExt
+            )
             view.onUpdate(response)
         }.invokeOnCompletion {
             view.isUpdating = false

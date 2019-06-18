@@ -10,6 +10,7 @@ interface SauceNaoApi {
 
     suspend fun searchByImage(
         apiKey: String,
-        byteArray: ByteArray
+        byteArray: ByteArray,
+        fileExt: String
     ): SauceNaoResponse
 }

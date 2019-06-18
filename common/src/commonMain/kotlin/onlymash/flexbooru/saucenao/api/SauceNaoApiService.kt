@@ -28,7 +28,8 @@ class SauceNaoApiService(
 
     override suspend fun searchByImage(
         apiKey: String,
-        byteArray: ByteArray
+        byteArray: ByteArray,
+        fileExt: String
     ): SauceNaoResponse =
         client.submitForm {
             body = MultiPartFormDataContent(
@@ -37,8 +38,8 @@ class SauceNaoApiService(
                         "file",
                         byteArray,
                         Headers.build {
-                            append(HttpHeaders.ContentType, "image/png")
-                            append(HttpHeaders.ContentDisposition, "filename=image.png")
+                            append(HttpHeaders.ContentType, "image/$fileExt")
+                            append(HttpHeaders.ContentDisposition, "filename=image.$fileExt")
                         }
                     )
                 }

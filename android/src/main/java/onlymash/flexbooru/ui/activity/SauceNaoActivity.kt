@@ -4,12 +4,8 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,15 +28,13 @@ import kotlinx.coroutines.withContext
 import kotlinx.io.errors.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.extension.toVisibility
+import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.saucenao.model.Result
 import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.saucenao.presentation.SauceNaoActions
 import onlymash.flexbooru.saucenao.presentation.SauceNaoPresenter
 import onlymash.flexbooru.saucenao.presentation.SauceNaoView
-import java.io.ByteArrayOutputStream
 import kotlin.properties.Delegates
 
 const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
@@ -184,21 +178,16 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             lifecycleScope.launch {
                 val byteArray = withContext(Dispatchers.IO) {
                     try {
-                        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageUri))
-                        } else {
-                            @Suppress("DEPRECATION")
-                            MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                        }
-                        val os = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)
-                        os.toByteArray()
+                        contentResolver.openInputStream(imageUri)?.readBytes()
                     } catch (_: IOException) {
                         null
                     }
                 }
                 if (byteArray != null) {
-                    actions.onRequestData(apiKey = apiKey, byteArray = byteArray)
+                    actions.onRequestData(
+                        apiKey = apiKey,
+                        byteArray = byteArray,
+                        fileExt = imageUri.toDecodedString().fileExt())
                 } else {
                     progress_bar.toVisibility(false)
                 }
