@@ -19,7 +19,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +41,7 @@ class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val artistName: AppCompatTextView = itemView.findViewById(R.id.artist_name)
     private val artistId: AppCompatTextView = itemView.findViewById(R.id.artist_id)
     private val btExpand: ImageButton = itemView.findViewById(R.id.bt_expand)
-    private val urlsContainer: LinearLayout = itemView.findViewById(R.id.urls_container)
+    private val urlsContainer: View = itemView.findViewById(R.id.urls_container)
     private val artistUrls: AppCompatTextView = itemView.findViewById(R.id.artist_urls)
     private var isShowing = false
     private var artist: ArtistBase? = null
