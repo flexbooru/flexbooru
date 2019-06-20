@@ -33,7 +33,7 @@
     <string name="title_about">O programie</string>
     <string name="title_tag_blacklist">Blokowane tagi</string>
     <string name="title_sauce_nao">SauceNao</string>
-    <string name="title_what_anime">What Anime</string>
+    <string name="title_what_anime">Jakie Anime</string>
     <string name="about_app_version">Wersja</string>
     <string name="about_app_rate">Oceń aplikację</string>
     <string name="about_app_translation">Tłumaczenie</string>
@@ -62,7 +62,7 @@
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
     <string name="post_download">Pobierz</string>
     <string name="post_add_to_fav">Dodaj do ulubionych</string>
-    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
+    <string name="post_search_by_sauce_nao">Szukaj poprzez SauceNao</string>
     <string name="msg_download_must_enable">Wymagany jest menedżer pobierania.</string>
     <string name="msg_path_denied">Zapisywanie nie powiodło się! Brak dostępu do wybranej ścieżki.</string>
     <string name="msg_download_failed">Pobieranie nie powiodło się</string>
@@ -153,7 +153,7 @@
     <string name="account_recommended">Polecane</string>
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
-    <string name="settings_muzei_limit">Muzei limit</string>
+    <string name="settings_muzei_limit">Limit Muzei</string>
     <string name="settings_browse_size">Rozmiar przy przeglądaniu</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
     <string name="settings_download_path">Ścieżka pobierania</string>
@@ -175,9 +175,9 @@
     <string name="settings_clear_history_summery">Wyczyść historię wyszukiwania.</string>
     <string name="settings_clear_history_dialog_content">Cała historia zostanie usunięta.</string>
     <string name="settings_muzei">Muzei</string>
-    <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
-    <string name="settings_storage">Storage</string>
+    <string name="settings_display">Wyświetlanie</string>
+    <string name="settings_options">Opcje</string>
+    <string name="settings_storage">Pamięć</string>
     <string name="switch_on">Wł</string>
     <string name="switch_off">Wył</string>
     <string name="switch_yes">Tak</string>
@@ -199,7 +199,7 @@
     <string name="tag_type_photo_set">Zestaw zdjęć</string>
     <string name="tag_type_genre">Gatunek</string>
     <string name="tag_type_studio">Studio</string>
-    <string name="tag_type_medium">Medium</string>
+    <string name="tag_type_medium">Średni</string>
     <string name="tag_type_unknown">Nieznany</string>
     <string name="tag_order">Kolejność</string>
     <string name="tag_order_date">Data</string>
