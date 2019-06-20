@@ -21,12 +21,12 @@ import java.io.File
 import java.io.IOException
 
 import android.os.StatFs
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import onlymash.flexbooru.common.HttpHeaders
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.util.Logger
 
 /** A [Downloader] which uses OkHttp to download images.  */
 class OkHttp3Downloader : Downloader {
@@ -142,7 +142,7 @@ class OkHttp3Downloader : Downloader {
         private fun createOkHttpClient(cacheDir: File, maxSize: Long): OkHttpClient {
             val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Log.d("OkHttp3Downloader", message)
+                    Logger.d("OkHttp3Downloader", message)
                 }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC

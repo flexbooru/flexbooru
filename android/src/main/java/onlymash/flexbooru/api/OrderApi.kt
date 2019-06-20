@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import android.util.Log
 import androidx.annotation.Keep
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,6 +25,7 @@ import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -47,7 +47,7 @@ interface OrderApi {
 
             val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Log.d("OrderApi", message)
+                    Logger.d("OrderApi", message)
                 }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC

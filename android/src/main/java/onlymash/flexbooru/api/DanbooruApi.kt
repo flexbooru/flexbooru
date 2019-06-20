@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import android.util.Log
 import androidx.annotation.Keep
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
@@ -33,6 +32,7 @@ import onlymash.flexbooru.entity.pool.PoolDan
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.tag.TagDan
 import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.util.Logger
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -51,7 +51,7 @@ interface DanbooruApi {
 
             val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Log.d("DanbooruApi", message)
+                    Logger.d("DanbooruApi", message)
                 }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
+import onlymash.flexbooru.util.Logger
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileFilter
@@ -70,7 +70,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
             Thread.setDefaultUncaughtExceptionHandler(this)
 
         } catch (e: Exception) {
-            Log.e(TAG, "init - " + e.message)
+            Logger.e(TAG, "init - " + e.message)
         }
 
     }
@@ -102,7 +102,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
                 System.exit(1)
             }
         } catch (e: Exception) {
-            Log.e(TAG, "uncaughtException - " + e.message)
+            Logger.e(TAG, "uncaughtException - " + e.message)
         }
 
     }
@@ -135,7 +135,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
             limitLogCount(crashLogLimit)
 
         } catch (e: Exception) {
-            Log.e(TAG, "handlerException - " + e.message)
+            Logger.e(TAG, "handlerException - " + e.message)
         }
 
         return false
@@ -170,7 +170,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
             }
 
         } catch (e: Exception) {
-            Log.e(TAG, "limitLogCount - " + e.message)
+            Logger.e(TAG, "limitLogCount - " + e.message)
         }
 
     }
@@ -226,7 +226,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
             writerToFile(buffer.toString())
 
         } catch (e: Exception) {
-            Log.e(TAG, "writerCrashLogToFile - " + e.message)
+            Logger.e(TAG, "writerCrashLogToFile - " + e.message)
         }
 
     }
@@ -271,7 +271,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
             bufferedWriter.close()
             sendCrashLog(context, folder, file)
         } catch (e: Exception) {
-            Log.e(TAG, "writerToFile - " + e.message)
+            Logger.e(TAG, "writerToFile - " + e.message)
         }
     }
 
@@ -321,7 +321,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
             }
 
         } catch (e: Exception) {
-            Log.e(TAG, "collectDeviceInfo - " + e.message)
+            Logger.e(TAG, "collectDeviceInfo - " + e.message)
         }
     }
 }

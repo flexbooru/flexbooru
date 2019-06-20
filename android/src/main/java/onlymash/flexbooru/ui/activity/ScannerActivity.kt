@@ -23,7 +23,6 @@ import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import android.widget.Toast
 import androidx.core.content.getSystemService
@@ -37,6 +36,7 @@ import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.util.Logger
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt
 class ScannerActivity : BaseActivity(), BarcodeRetriever {
@@ -104,7 +104,7 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
     override fun onRetrievedMultiple(closetToClick: Barcode?, barcode: MutableList<BarcodeGraphic>?) = check(false)
     override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) { }
     override fun onRetrievedFailed(reason: String?) {
-        Log.e(TAG, reason.toString())
+        Logger.e(TAG, reason.toString())
     }
     override fun onPermissionRequestDenied() {
         Toast.makeText(this, R.string.scaner_add_booru_permission_required, Toast.LENGTH_SHORT).show()

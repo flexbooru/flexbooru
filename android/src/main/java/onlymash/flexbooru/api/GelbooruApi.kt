@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import android.util.Log
 import androidx.annotation.Keep
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
@@ -32,6 +31,7 @@ import onlymash.flexbooru.entity.comment.CommentGelResponse
 import onlymash.flexbooru.entity.post.PostGelResponse
 import onlymash.flexbooru.entity.tag.TagGelResponse
 import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.util.Logger
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -49,7 +49,7 @@ interface GelbooruApi {
 
             val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Log.d("GelbooruApi", message)
+                    Logger.d("GelbooruApi", message)
                 }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC

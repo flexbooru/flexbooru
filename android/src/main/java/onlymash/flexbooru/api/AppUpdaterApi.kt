@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import android.util.Log
 import androidx.annotation.Keep
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,6 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,7 +43,7 @@ interface AppUpdaterApi {
 
             val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Log.d("AppUpdaterApi", message)
+                    Logger.d("AppUpdaterApi", message)
                 }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC

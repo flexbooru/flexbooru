@@ -34,6 +34,7 @@ import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.post.PostMoe
 import onlymash.flexbooru.entity.tag.TagMoe
 import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.util.Logger
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -52,7 +53,7 @@ interface MoebooruApi {
 
             val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Log.d("MoebooruApi", message)
+                    Logger.d("MoebooruApi", message)
                 }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC

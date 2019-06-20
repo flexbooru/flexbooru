@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.repository.account
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
@@ -33,6 +32,7 @@ import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.Booru
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.util.Logger
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
@@ -50,7 +50,7 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
         booru: Booru): NetResult<User> {
         val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
-                Log.d("GelbooruLogin", message)
+                Logger.d("GelbooruLogin", message)
             }
         }).apply {
             level = HttpLoggingInterceptor.Level.BASIC
