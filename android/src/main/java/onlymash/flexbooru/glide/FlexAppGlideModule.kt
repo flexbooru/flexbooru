@@ -29,9 +29,9 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.resource.bitmap.ExifInterfaceImageHeaderParser
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
-import io.ktor.http.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.extension.getUserAgent

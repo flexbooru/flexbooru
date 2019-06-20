@@ -17,12 +17,12 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.getUserAgent
@@ -45,8 +45,10 @@ interface OrderApi {
         private const val BASE_URL = "https://flexbooru-pay.fiepi.com"
         operator fun invoke(): OrderApi {
 
-            val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
-                Log.d("OrderApi", log)
+            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Log.d("OrderApi", message)
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             }

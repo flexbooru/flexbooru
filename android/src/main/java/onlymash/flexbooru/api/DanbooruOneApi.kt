@@ -17,12 +17,12 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import io.ktor.http.HttpHeaders
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants.BASE_URL
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.VoteDan
 import onlymash.flexbooru.entity.artist.ArtistDanOne
@@ -47,8 +47,10 @@ interface DanbooruOneApi {
          * return [DanbooruOneApi]
          * */
         operator fun invoke(): DanbooruOneApi {
-            val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
-                Log.d("DanbooruOneApi", log)
+            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Log.d("DanbooruOneApi", message)
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             }

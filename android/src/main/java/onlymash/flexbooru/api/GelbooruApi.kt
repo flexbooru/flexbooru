@@ -19,13 +19,13 @@ import android.util.Log
 import androidx.annotation.Keep
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
-import io.ktor.http.HttpHeaders
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.entity.comment.CommentGelResponse
@@ -47,8 +47,10 @@ interface GelbooruApi {
          * */
         operator fun invoke(): GelbooruApi {
 
-            val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
-                Log.d("GelbooruApi", log)
+            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Log.d("GelbooruApi", message)
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             }

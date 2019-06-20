@@ -1,4 +1,4 @@
-package onlymash.flexbooru.saucenao.presentation
+package onlymash.flexbooru.common
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

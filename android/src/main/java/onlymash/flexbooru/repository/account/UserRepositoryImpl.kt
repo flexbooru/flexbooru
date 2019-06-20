@@ -48,8 +48,10 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
         username: String,
         password: String,
         booru: Booru): NetResult<User> {
-        val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
-            Log.d("GelbooruLogin", log)
+        val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                Log.d("GelbooruLogin", message)
+            }
         }).apply {
             level = HttpLoggingInterceptor.Level.BASIC
         }

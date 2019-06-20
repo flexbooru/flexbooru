@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.io.errors.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.*
@@ -35,6 +34,7 @@ import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.saucenao.presentation.SauceNaoActions
 import onlymash.flexbooru.saucenao.presentation.SauceNaoPresenter
 import onlymash.flexbooru.saucenao.presentation.SauceNaoView
+import java.io.IOException
 import kotlin.properties.Delegates
 
 const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"

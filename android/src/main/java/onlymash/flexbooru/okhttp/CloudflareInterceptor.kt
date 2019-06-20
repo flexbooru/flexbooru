@@ -19,11 +19,11 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.webkit.*
-import io.ktor.http.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import onlymash.flexbooru.common.App
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.Cookie
 import java.io.IOException

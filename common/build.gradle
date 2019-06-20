@@ -30,6 +30,7 @@ kotlin {
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
                 implementation "org.kodein.di:kodein-di-erased-jvm:$kodein_version"
                 implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
+                implementation "io.ktor:ktor-client-okhttp:$ktor_version"
                 implementation "io.ktor:ktor-client-json-jvm:$ktor_version"
                 implementation "io.ktor:ktor-client-serialization-jvm:$ktor_version"
             }

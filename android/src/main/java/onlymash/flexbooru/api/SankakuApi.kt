@@ -17,12 +17,12 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import io.ktor.http.HttpHeaders
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.entity.User
 import onlymash.flexbooru.entity.VoteSankaku
 import onlymash.flexbooru.entity.comment.CommentResponse
@@ -45,8 +45,10 @@ interface SankakuApi {
          * return [SankakuApi]
          * */
         operator fun invoke(): SankakuApi {
-            val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
-                Log.d("SankakuApi", log)
+            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Log.d("SankakuApi", message)
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             }

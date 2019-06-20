@@ -3,8 +3,9 @@ package onlymash.flexbooru.saucenao.presentation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
+import onlymash.flexbooru.common.CoroutinePresenter
 import onlymash.flexbooru.saucenao.api.SauceNaoApi
-import onlymash.flexbooru.saucenao.di.kodein
+import onlymash.flexbooru.saucenao.di.kodeinSauceNao
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
@@ -14,7 +15,7 @@ class SauceNaoPresenter(
     val view: SauceNaoView
 ) : CoroutinePresenter(uiContext, view), SauceNaoActions {
 
-    val api: SauceNaoApi by kodein.instance("SauceNaoApi")
+    val api: SauceNaoApi by kodeinSauceNao.instance("SauceNaoApi")
 
     override fun onRequestData(apiKey: String, imageUrl: String) {
 

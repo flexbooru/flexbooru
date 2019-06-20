@@ -17,12 +17,12 @@ package onlymash.flexbooru.api
 
 import android.util.Log
 import androidx.annotation.Keep
-import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.extension.getUserAgent
 import retrofit2.Response
@@ -41,8 +41,10 @@ interface AppUpdaterApi {
         private const val BASE_URL = "https://raw.githubusercontent.com"
         operator fun invoke(): AppUpdaterApi {
 
-            val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log ->
-                Log.d("AppUpdaterApi", log)
+            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Log.d("AppUpdaterApi", message)
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             }

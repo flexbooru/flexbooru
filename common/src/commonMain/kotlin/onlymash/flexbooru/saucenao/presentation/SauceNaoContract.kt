@@ -1,5 +1,6 @@
 package onlymash.flexbooru.saucenao.presentation
 
+import onlymash.flexbooru.common.BaseView
 import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 
 

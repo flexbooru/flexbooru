@@ -15,7 +15,7 @@ import org.kodein.di.erased.instance
 import org.kodein.di.erased.provider
 
 @UnstableDefault
-val kodein = Kodein {
+val kodeinSauceNao = Kodein {
     bind<String>("SauceNaoBaseUrl") with provider { "https://saucenao.com" }
     bind<HttpClient>() with provider {
         HttpClient {
