@@ -5,7 +5,6 @@ import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 
 
 interface SauceNaoView : BaseView {
-    var isUpdating: Boolean
     fun onUpdate(data: SauceNaoResponse)
 }
 

@@ -8,48 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.SauceNaoActivity">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        <include layout="@layout/toolbar"/>
-
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/sauce_nao_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    app:fastScrollEnabled="true"
-                    app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-                    app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
-                    app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-                    app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
-
-            <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/error_msg"
-                    android:textAppearance="?textAppearanceBody1"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_margin="40dp"
-                    android:visibility="visible"/>
-
-        </FrameLayout>
-
-    </LinearLayout>
+    <include layout="@layout/common_toolbar_list"/>
 
     <com.dekoservidoni.omfm.OneMoreFabMenu
             android:id="@+id/sauce_nao_search_fab"

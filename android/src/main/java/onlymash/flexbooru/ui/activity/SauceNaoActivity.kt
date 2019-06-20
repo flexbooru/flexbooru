@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_sauce_nao.*
+import kotlinx.android.synthetic.main.common_toolbar_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,7 +58,6 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
 
     private lateinit var sauceNaoAdapter: SauceNaoAdapter
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     private val actions: SauceNaoActions by lazy {
         SauceNaoPresenter(Dispatchers.Main, this)
     }
@@ -85,7 +85,7 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             }
         }
         sauceNaoAdapter = SauceNaoAdapter()
-        sauce_nao_list.apply {
+        list.apply {
             layoutManager = LinearLayoutManager(this@SauceNaoActivity, RecyclerView.VERTICAL, false)
             adapter = sauceNaoAdapter
         }

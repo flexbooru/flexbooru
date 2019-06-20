@@ -31,6 +31,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".ui.activity.WhatAnimeActivity">
+        </activity>
         <activity android:name=".ui.activity.SauceNaoActivity">
         </activity>
         <activity android:name=".ui.activity.TagBlacklistActivity">
@@ -118,7 +120,6 @@
                     android:name="setupActivity"
                     android:value="onlymash.flexbooru.ui.activity.MuzeiSetupActivity"/>
         </provider>
-
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="${applicationId}.fileprovider"

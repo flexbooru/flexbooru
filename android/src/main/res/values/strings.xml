@@ -34,6 +34,7 @@
     <string name="title_about">About</string>
     <string name="title_tag_blacklist">Tag blacklist</string>
     <string name="title_sauce_nao">SauceNao</string>
+    <string name="title_what_anime">What Anime</string>
     <string name="about_app" translatable="false">Flexbooru</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Rate this app</string>

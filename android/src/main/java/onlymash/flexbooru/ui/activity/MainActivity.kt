@@ -66,10 +66,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val DRAWER_ITEM_ID_MUZEI = 4L
         private const val DRAWER_ITEM_ID_SETTINGS = 5L
         private const val DRAWER_ITEM_ID_SAUCE_NAO = 6L
-        private const val DRAWER_ITEM_ID_NIGHT_MODE = 7L
-        private const val DRAWER_ITEM_ID_ABOUT = 8L
-        private const val DRAWER_ITEM_ID_PURCHASE = 9L
-        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 7
+        private const val DRAWER_ITEM_ID_WHAT_ANIME = 7L
+        private const val DRAWER_ITEM_ID_NIGHT_MODE = 8L
+        private const val DRAWER_ITEM_ID_ABOUT = 9L
+        private const val DRAWER_ITEM_ID_PURCHASE = 10L
+        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 8
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -140,7 +141,13 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     .withName(R.string.title_sauce_nao)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_SAUCE_NAO)
+                    .withIdentifier(DRAWER_ITEM_ID_SAUCE_NAO),
+                PrimaryDrawerItem()
+                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_youtube_searched_for_24dp))
+                    .withName(R.string.title_what_anime)
+                    .withSelectable(false)
+                    .withIconTintingEnabled(true)
+                    .withIdentifier(DRAWER_ITEM_ID_WHAT_ANIME)
             )
             .addStickyDrawerItems(
                 SwitchDrawerItem()
@@ -424,18 +431,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                         startActivity(Intent(this@MainActivity, BooruActivity::class.java))
                     }
                 }
-                DRAWER_ITEM_ID_SETTINGS -> {
-                    startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                }
-                DRAWER_ITEM_ID_SAUCE_NAO -> {
-                    startActivity(Intent(this@MainActivity, SauceNaoActivity::class.java))
-                }
-                DRAWER_ITEM_ID_ABOUT -> {
-                    startActivity(Intent(this@MainActivity, AboutActivity::class.java))
-                }
-                DRAWER_ITEM_ID_PURCHASE -> {
-                    startActivity(Intent(this@MainActivity, PurchaseActivity::class.java))
-                }
+                DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this@MainActivity, SauceNaoActivity::class.java))
+                DRAWER_ITEM_ID_WHAT_ANIME -> startActivity(Intent(this@MainActivity, WhatAnimeActivity::class.java))
+                DRAWER_ITEM_ID_ABOUT -> startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+                DRAWER_ITEM_ID_PURCHASE -> startActivity(Intent(this@MainActivity, PurchaseActivity::class.java))
                 DRAWER_ITEM_ID_NIGHT_MODE -> return false
             }
             return false
