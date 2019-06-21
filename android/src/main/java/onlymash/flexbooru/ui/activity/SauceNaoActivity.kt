@@ -58,6 +58,7 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
 
     private lateinit var sauceNaoAdapter: SauceNaoAdapter
 
+    @Suppress("EXPERIMENTAL_API_USAGE")
     private val actions: SauceNaoActions by lazy {
         SauceNaoPresenter(Dispatchers.Main, this)
     }

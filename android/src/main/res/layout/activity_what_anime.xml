@@ -10,20 +10,14 @@
 
     <include layout="@layout/common_toolbar_list"/>
 
-    <com.dekoservidoni.omfm.OneMoreFabMenu
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/what_anime_search_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_normal"
-            app:color_main_button="@color/colorAccent"
-            app:color_secondary_buttons="@color/colorPrimary"
-            app:label_background_color="@color/colorCardBackground"
-            app:label_text_color="@color/colorPrimary"
-            app:content_options="@menu/sauce_nao_fab"
-            app:close_on_click="true"
-            app:rotate_main_button="true"
-            app:enable_main_as_action="false"
+            android:src="@drawable/ic_add_long_24dp"
+            style="@style/Widget.FloatingActionButton"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
