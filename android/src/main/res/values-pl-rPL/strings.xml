@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
+    <string name="app_description">Klient booru dla Androida, obsługuje Danbooru, Moebooru, Gelbooru, Sankaku, itd.</string>
     <string name="title_posts">Posty</string>
     <string name="title_popular">Popularne</string>
     <string name="title_manage_boorus">Zarządzaj boorami</string>
@@ -33,6 +33,7 @@
     <string name="title_about">O programie</string>
     <string name="title_tag_blacklist">Blokowane tagi</string>
     <string name="title_sauce_nao">SauceNao</string>
+    <string name="title_what_anime">Jakie Anime</string>
     <string name="about_app_version">Wersja</string>
     <string name="about_app_rate">Oceń aplikację</string>
     <string name="about_app_translation">Tłumaczenie</string>
@@ -61,7 +62,7 @@
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
     <string name="post_download">Pobierz</string>
     <string name="post_add_to_fav">Dodaj do ulubionych</string>
-    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
+    <string name="post_search_by_sauce_nao">Szukaj poprzez SauceNao</string>
     <string name="msg_download_must_enable">Wymagany jest menedżer pobierania.</string>
     <string name="msg_path_denied">Zapisywanie nie powiodło się! Brak dostępu do wybranej ścieżki.</string>
     <string name="msg_download_failed">Pobieranie nie powiodło się</string>
@@ -152,7 +153,7 @@
     <string name="account_recommended">Polecane</string>
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
-    <string name="settings_muzei_limit">Muzei limit</string>
+    <string name="settings_muzei_limit">Limit Muzei</string>
     <string name="settings_browse_size">Rozmiar przy przeglądaniu</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
     <string name="settings_download_path">Ścieżka pobierania</string>
@@ -174,9 +175,9 @@
     <string name="settings_clear_history_summery">Wyczyść historię wyszukiwania.</string>
     <string name="settings_clear_history_dialog_content">Cała historia zostanie usunięta.</string>
     <string name="settings_muzei">Muzei</string>
-    <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
-    <string name="settings_storage">Storage</string>
+    <string name="settings_display">Wyświetlanie</string>
+    <string name="settings_options">Opcje</string>
+    <string name="settings_storage">Pamięć</string>
     <string name="switch_on">Wł</string>
     <string name="switch_off">Wył</string>
     <string name="switch_yes">Tak</string>
@@ -198,7 +199,7 @@
     <string name="tag_type_photo_set">Zestaw zdjęć</string>
     <string name="tag_type_genre">Gatunek</string>
     <string name="tag_type_studio">Studio</string>
-    <string name="tag_type_medium">Medium</string>
+    <string name="tag_type_medium">Średni</string>
     <string name="tag_type_unknown">Nieznany</string>
     <string name="tag_order">Kolejność</string>
     <string name="tag_order_date">Data</string>
@@ -245,22 +246,21 @@
     <string name="purchase_info_title">Usuń wszystkie reklamy i odblokuj wszystkie funkcje</string>
     <string name="purchase_info_remove_ads">Usuń reklamy</string>
     <string name="purchase_info_unlock_full_features">Odblokuj wszystkie funkcje</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
+    <string name="purchase_info_features">1. Znieś limit dostępnych Boorów.\n2. Pobieraj pulę jako zip.\n3. Zapisz &amp; Przywróć boory z pliku.\n4. Szukaj poprzez SauceNao.
     </string>
     <string name="purchase_pay_title">Zapłać/Przywróć zakup</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
     <string name="tab_start_date">Data rozpoczęcia</string>
     <string name="tab_end_date">Data zakończenia</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
+    <string name="sauce_nao_help">Pomoc</string>
+    <string name="sauce_nao_change_api_key">Zmień klucz Api</string>
+    <string name="sauce_nao_get_api_key">Uzyskaj klucz Api</string>
+    <string name="sauce_nao_remaining_times_today">Pozostałe szukania dzisiaj: %01$d</string>
+    <string name="sauce_nao_api_key_unset">Nie ustawione Api SauceNao.</string>
+    <string name="sauce_nao_image_url">Adres url obrazka</string>
+    <string name="sauce_nao_invalid_image_url">Nieprawidłowy adres Url obrazu.</string>
+    <string name="sauce_nao_source">Źródło</string>
     <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
+    <string name="sauce_nao_search_from_file">Plik</string>
 </resources>
