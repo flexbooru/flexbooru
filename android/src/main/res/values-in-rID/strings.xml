@@ -164,7 +164,7 @@
     <string name="settings_post_size_larger">Lebih besar</string>
     <string name="settings_post_size_origin">Sesuai Asli</string>
     <string name="settings_grid_width">Grid width</string>
-    <string name="settings_grid_width_small">Small</string>
+    <string name="settings_grid_width_small">Kecil</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Large</string>
     <string name="settings_show_info_bar">Show info bar</string>
