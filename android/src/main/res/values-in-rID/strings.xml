@@ -19,17 +19,17 @@
     </string>
     <string name="title_posts">Posts</string>
     <string name="title_popular">Popular</string>
-    <string name="title_manage_boorus">Manage boorus</string>
+    <string name="title_manage_boorus">Kelola Booru</string>
     <string name="title_settings">Pengaturan</string>
-    <string name="title_booru_config">Booru config</string>
+    <string name="title_booru_config">Setelan Booru</string>
     <string name="title_account">Akun</string>
-    <string name="title_account_and_booru">Account - %s</string>
-    <string name="title_artists">Artists</string>
+    <string name="title_account_and_booru">Akun - %s</string>
+    <string name="title_artists">Artis</string>
     <string name="title_pools">Pools</string>
     <string name="title_tags">Tags</string>
     <string name="title_comments">Komentar</string>
     <string name="title_muzei">Muzei</string>
-    <string name="title_night_mode">Night mode</string>
+    <string name="title_night_mode">Mode Gelap</string>
     <string name="title_copyright">Copyright</string>
     <string name="title_about">About</string>
     <string name="title_tag_blacklist">Tag blacklist</string>
