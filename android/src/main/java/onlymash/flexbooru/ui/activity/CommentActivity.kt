@@ -120,7 +120,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
         val layout = FrameLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            setPadding(padding, padding, padding, 0)
+            setPadding(padding, padding / 2, padding, 0)
         }
         val editText = EditText(this).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
