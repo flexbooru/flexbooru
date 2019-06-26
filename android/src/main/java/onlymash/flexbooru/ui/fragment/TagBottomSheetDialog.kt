@@ -129,14 +129,6 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         when (postType) {
             Constants.TYPE_DANBOORU -> {
                 arg.apply {
-                    getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booru_uid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.GENERAL))
-                        }
-                    }
                     getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
@@ -169,6 +161,14 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                                 type = TagViewHolder.META))
                         }
                     }
+                    getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.GENERAL))
+                        }
+                    }
                 }
             }
             Constants.TYPE_MOEBOORU,
@@ -180,14 +180,6 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             }
             Constants.TYPE_SANKAKU -> {
                 arg.apply {
-                    getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
-                        if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booru_uid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.GENERAL))
-                        }
-                    }
                     getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
                             tags.add(TagFilter(
@@ -242,6 +234,14 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                                 booru_uid = booruUid,
                                 name = tag,
                                 type = TagViewHolder.STUDIO))
+                        }
+                    }
+                    getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
+                        if (tag.isNotEmpty()) {
+                            tags.add(TagFilter(
+                                booru_uid = booruUid,
+                                name = tag,
+                                type = TagViewHolder.GENERAL))
                         }
                     }
                 }
