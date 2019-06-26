@@ -1,9 +1,7 @@
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlinx-serialization'
 kotlin {
-    targets {
-        fromPreset(presets.jvm, 'jvm')
-    }
+    jvm()
     sourceSets {
         commonMain {
             dependencies {
