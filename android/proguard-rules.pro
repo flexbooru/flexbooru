@@ -102,10 +102,17 @@
 -keep class com.android.vending.billing.**
 
 -dontnote kotlinx.serialization.SerializationKt
--keep,includedescriptorclasses class onlymash.flexbooru.saucenao.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class onlymash.flexbooru.saucenao.** { # <-- change package name to your app's
+-keep,includedescriptorclasses class onlymash.flexbooru.saucenao.model.**$$serializer { *; }
+-keepclassmembers class onlymash.flexbooru.saucenao.model.** {
     *** Companion;
 }
--keepclasseswithmembers class onlymash.flexbooru.saucenao.** { # <-- change package name to your app's
+-keepclasseswithmembers class onlymash.flexbooru.saucenao.model.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keep,includedescriptorclasses class onlymash.flexbooru.trecemoe.model.**$$serializer { *; }
+-keepclassmembers class onlymash.flexbooru.trecemoe.model.** {
+    *** Companion;
+}
+-keepclasseswithmembers class onlymash.flexbooru.trecemoe.model.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
