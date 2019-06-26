@@ -58,9 +58,13 @@
     <color name="orange">#FFFFBB33</color>
     <color name="red">#FFFF4444</color>
 
-    <color name="rating_e">#FFC9D7D2</color>
-    <color name="rating_q">#FFCEC8C3</color>
-    <color name="rating_s">#FFD7DBDF</color>
+    <color name="light_green_50">#F1F8E9</color>
+    <color name="brown_50">#EFEBE9</color>
+    <color name="blue_grey_50">#ECEFF1</color>
+
+    <color name="rating_e">@color/brown_50</color>
+    <color name="rating_q">@color/blue_grey_50</color>
+    <color name="rating_s">@color/light_green_50</color>
 
     <color name="grey_200">#EEEEEE</color>
     <color name="grey_300">#E0E0E0</color>
