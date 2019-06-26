@@ -19,9 +19,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
-
 Properties properties = new Properties()
 properties.load(project.rootProject.file('.gradle/keystore.properties').newDataInputStream())
 Integer verCode = 'git rev-list HEAD --first-parent --count'.execute().text.trim().toInteger()
@@ -88,12 +85,6 @@ android {
         exclude 'META-INF/*.kotlin_module'
     }
 }
-
-File jsonFile = file('../update.json')
-def builder = new JsonBuilder(new JsonSlurper().parseText(jsonFile.text))
-builder.content.version_code = android.defaultConfig.versionCode
-builder.content.version_name = android.defaultConfig.versionName + android.defaultConfig.versionNameSuffix
-jsonFile.write(builder.toPrettyString())
 
 androidExtensions {
     experimental = true
