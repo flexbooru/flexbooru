@@ -29,6 +29,9 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideRequests
 
+private const val MAX_ASPECT_RATIO = 18.0 / 9.0
+private const val MIN_ASPECT_RATIO = 9.0 / 18.0
+
 class PostViewHolder(itemView: View,
                      showInfoBar: Boolean,
                      private val glide: GlideRequests): RecyclerView.ViewHolder(itemView){
@@ -82,14 +85,14 @@ class PostViewHolder(itemView: View,
         val lp = preview.layoutParams as ConstraintLayout.LayoutParams
         val ratio = post.getPostWidth().toFloat()/post.getPostHeight().toFloat()
         when {
-            ratio > Constants.MAX_ITEM_ASPECT_RATIO -> {
-                lp.dimensionRatio = "H, ${Constants.MAX_ITEM_ASPECT_RATIO}:1"
+            ratio > MAX_ASPECT_RATIO -> {
+                lp.dimensionRatio = "H, 2:1"
             }
-            ratio < Constants.MIN_ITEM_ASPECT_RATIO -> {
-                lp.dimensionRatio = "H, ${Constants.MIN_ITEM_ASPECT_RATIO}:1"
+            ratio < MIN_ASPECT_RATIO -> {
+                lp.dimensionRatio = "H, 1:2"
             }
             else -> {
-                lp.dimensionRatio = "H, $ratio:1"
+                lp.dimensionRatio = "H, ${post.getPostWidth()}:${post.getPostHeight()}"
             }
         }
         preview.layoutParams = lp

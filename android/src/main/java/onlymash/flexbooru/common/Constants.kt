@@ -36,9 +36,6 @@ object Constants {
     const val TYPE_SANKAKU = 4
     const val TYPE_UNKNOWN = -1
 
-    const val MAX_ITEM_ASPECT_RATIO = 1.3333f
-    const val MIN_ITEM_ASPECT_RATIO = 0.5625f
-
     const val REQUEST_EDIT_CODE = 0
     const val REQUEST_ADD_CODE = 1
     const val EXTRA_RESULT_KEY = "activity_result"
