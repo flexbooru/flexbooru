@@ -249,19 +249,19 @@
     <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
         moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
     </string>
-    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="purchase_pay_title">購買／恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
-    <string name="purchase_pay_alipay">Alipay</string>
-    <string name="tab_start_date">Start date</string>
-    <string name="tab_end_date">End date</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
-    <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
+    <string name="purchase_pay_alipay">支付寶</string>
+    <string name="tab_start_date">開始日期</string>
+    <string name="tab_end_date">結束日期</string>
+    <string name="sauce_nao_help">幫助</string>
+    <string name="sauce_nao_change_api_key">更改 API Key</string>
+    <string name="sauce_nao_get_api_key">取得 API Key</string>
+    <string name="sauce_nao_remaining_times_today">今日剩餘的次數：%01$d</string>
+    <string name="sauce_nao_api_key_unset">SauceNAO 的 API Key 還未設置</string>
+    <string name="sauce_nao_image_url">圖片超連結</string>
+    <string name="sauce_nao_invalid_image_url">無效的圖片超連結。</string>
+    <string name="sauce_nao_source">來源</string>
+    <string name="sauce_nao_search_from_url">超連結</string>
+    <string name="sauce_nao_search_from_file">檔案</string>
 </resources>
