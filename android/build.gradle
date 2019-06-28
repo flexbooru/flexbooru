@@ -69,7 +69,7 @@ android {
         }
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
