@@ -54,7 +54,7 @@ import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 import org.kodein.di.erased.instance
 
-class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -79,9 +79,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var header: AccountHeader
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
-    private var currentNavItem = 0
-
     private val sp: SharedPreferences by instance()
+
+    override var currentNavItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_Main)
@@ -620,22 +620,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private var isExit = false
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (drawer.isDrawerOpen) {
-                drawer.closeDrawer()
-            } else if (!isExit) {
-                isExit = true
-                Snackbar.make(navigation, getString(R.string.msg_press_twice_to_exit), Snackbar.LENGTH_LONG).show()
-                Handler().postDelayed({
-                    isExit = false
-                }, 2000L)
-            } else {
-                finish()
-            }
-            return false
+    override fun onBackPressed() {
+        when {
+            drawer.isDrawerOpen -> drawer.closeDrawer()
+            currentNavItem != 0 -> pager_container.setCurrentItem(0, false)
+            else -> super.onBackPressed()
         }
-        return super.onKeyDown(keyCode, event)
     }
 }

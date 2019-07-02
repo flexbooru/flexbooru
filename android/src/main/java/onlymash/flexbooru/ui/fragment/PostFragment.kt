@@ -70,10 +70,11 @@ import onlymash.flexbooru.widget.search.SearchBar
 import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.erased.instance
 
-class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class PostFragment : ListFragment(),
+    OnBackPressedListener,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
-        private const val TAG = "PostFragment"
 
         private const val SHOW_SEARCH_LAYOUT_KEY = "show_search_layout"
         private const val POST_TYPE_KEY = "post_type"
@@ -686,5 +687,20 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
 
     override val isUnsupported: Boolean
         get() = booruType == -1
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is PostActivity) {
+            context.setOnBackPressedListener(this)
+        }
+    }
+
+    override fun canBack(): Boolean {
+        if (searchBar.isExpandState()) {
+            searchBar.toNormalState()
+            return false
+        }
+        return true
+    }
 
 }

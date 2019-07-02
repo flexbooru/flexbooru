@@ -28,7 +28,7 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.ui.fragment.PostFragment
 
-class SearchActivity : BaseActivity() {
+class SearchActivity : PostActivity() {
 
     companion object {
         fun startActivity(context: Context, keyword: String) {
@@ -37,6 +37,8 @@ class SearchActivity : BaseActivity() {
                     .putExtra(Constants.KEYWORD_KEY, keyword))
         }
     }
+
+    override var currentNavItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
