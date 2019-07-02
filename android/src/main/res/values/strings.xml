@@ -62,7 +62,7 @@
     <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
     <string name="post_transition_name" translatable="false">post_img_%d</string>
     <string name="post_popular_transition_name" translatable="false">post_popular_img_%d</string>
-    <string name="post_expand_tag_filter">Expand tag filter</string>
+    <string name="post_expand_or_clear">Expand or clear</string>
     <string name="post_add_search_to_muzei">` %s ` have been saved to Muzei.</string>
     <string name="post_download">Download post</string>
     <string name="post_add_to_fav">Add to favorites</string>

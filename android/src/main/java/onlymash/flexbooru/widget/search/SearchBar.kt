@@ -37,6 +37,7 @@ import onlymash.flexbooru.database.SuggestionManager
 import onlymash.flexbooru.entity.Suggestion
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
+import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
 
@@ -51,6 +52,7 @@ class SearchBar @JvmOverloads constructor(
 
         const val STATE_NORMAL = 0
         const val STATE_SEARCH = 1
+        const val STATE_EXPAND = 2
     }
     private var state = STATE_NORMAL
 
@@ -69,9 +71,9 @@ class SearchBar @JvmOverloads constructor(
         searchTag = search
     }
 
-    private var suggestionsOnline: MutableList<TagBase>? = null
+    private val suggestions: MutableList<Suggestion> = mutableListOf()
+    private val suggestionsOnline: MutableList<TagBase> = mutableListOf()
 
-    private var suggestions: MutableList<Suggestion>
     private val suggestionAdapter: SuggestionAdapter
     private val suggestionOnlineAdapter: SuggestionOnlineAdapter
 
@@ -86,20 +88,6 @@ class SearchBar @JvmOverloads constructor(
     private val booruUid: Long
 
     private val inputMethodManager by lazy { this@SearchBar.context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager }
-
-    private val searchEditTextListener = object :
-        SearchEditText.SearchEditTextListener {
-        override fun onClick() {
-            helper?.onSearchEditTextClick()
-        }
-
-        override fun onBackPressed() {
-            if (state == STATE_SEARCH) {
-                setState(STATE_NORMAL)
-            }
-            helper?.onSearchEditTextBackPressed()
-        }
-    }
 
     private val editorActionListener: TextView.OnEditorActionListener
 
@@ -129,14 +117,33 @@ class SearchBar @JvmOverloads constructor(
             true
         }
         leftButton.setOnClickListener {
-            if (state == STATE_SEARCH) {
-                hideIME()
+            if (state == STATE_SEARCH || state == STATE_EXPAND) {
+                changeIMEState(false)
                 setState(STATE_NORMAL)
             } else {
                 helper?.onLeftButtonClick()
             }
         }
         title.setOnClickListener(this)
+        val searchEditTextListener =
+            object : SearchEditText.SearchEditTextListener {
+                override fun onClick() {
+                    helper?.onSearchEditTextClick()
+                }
+                override fun onBackPressed() {
+                    when (state) {
+                        STATE_SEARCH -> setState(STATE_NORMAL)
+                        STATE_EXPAND -> {
+                            if (inputMethodManager.isActive(editText)) {
+                                hideIME()
+                            } else {
+                                setState(STATE_NORMAL)
+                            }
+                        }
+                    }
+                    helper?.onSearchEditTextBackPressed()
+                }
+            }
         editText.apply {
             setSearchEditTextListener(searchEditTextListener)
             setOnEditorActionListener(editorActionListener)
@@ -144,17 +151,15 @@ class SearchBar @JvmOverloads constructor(
         }
         viewTransition = ViewTransition(title, editText)
         booruUid = Settings.activeBooruUid
-        suggestions = mutableListOf()
         val inflater = LayoutInflater.from(context)
         suggestionAdapter = SuggestionAdapter(inflater)
         suggestionOnlineAdapter = SuggestionOnlineAdapter(inflater)
         suggestionList.apply {
             adapter = suggestionAdapter
             onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                if (adapter == suggestionAdapter) {
-                    setText(suggestions[position].keyword)
-                } else {
-                    setText(suggestionsOnline!![position].getTagName())
+                when (adapter) {
+                    suggestionAdapter -> setText(suggestions[position].keyword)
+                    suggestionOnlineAdapter -> setText(suggestionsOnline[position].getTagName())
                 }
             }
             onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
@@ -166,15 +171,17 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
-    private fun hideIME() {
-        if (inputMethodManager.isActive(editText)) {
-            inputMethodManager.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-            editText.clearFocus()
+    private fun changeIMEState(show: Boolean) {
+        if (show) {
+            inputMethodManager.showSoftInput(editText, 0)
+        } else if (inputMethodManager.isActive(editText)) {
+            hideIME()
         }
     }
 
-    private fun showIME() {
-        inputMethodManager.showSoftInput(editText, 0)
+    private fun hideIME() {
+        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        editText.clearFocus()
     }
 
     override fun afterTextChanged(s: Editable?) {}
@@ -185,10 +192,19 @@ class SearchBar @JvmOverloads constructor(
         if (state == STATE_SEARCH) {
             when {
                 s.isNullOrEmpty() -> {
-                    suggestionList.adapter = suggestionAdapter
-                    showSuggestion()
+                    if (suggestionList.adapter != suggestionAdapter) {
+                        suggestionList.adapter = suggestionAdapter
+                    }
                 }
                 s.isNotBlank() && type > -1 && searchTag != null -> {
+                    if (suggestionList.adapter != suggestionOnlineAdapter) {
+                        suggestionContainer.toVisibility(false)
+                        if (suggestionsOnline.isNotEmpty()) {
+                            suggestionsOnline.clear()
+                            suggestionOnlineAdapter.notifyDataSetChanged()
+                        }
+                        suggestionList.adapter = suggestionOnlineAdapter
+                    }
                     if (type == Constants.TYPE_GELBOORU || type == Constants.TYPE_SANKAKU) {
                         searchTag?.name = s.toString()
                     } else {
@@ -196,11 +212,9 @@ class SearchBar @JvmOverloads constructor(
                     }
                     fetchSuggestions()
                 }
-                else -> hideSuggestion()
             }
-        } else {
-            hideSuggestion()
         }
+        syncSuggestionVisibility()
     }
 
     private fun fetchSuggestions() {
@@ -210,26 +224,29 @@ class SearchBar @JvmOverloads constructor(
     }
 
     fun updateOnlineSuggestions(tags: MutableList<TagBase>) {
-        suggestionsOnline = tags
-        showSuggestion()
-        suggestionList.adapter = suggestionOnlineAdapter
+        suggestionsOnline.clear()
+        suggestionsOnline.addAll(tags)
+        syncSuggestionVisibility()
         suggestionOnlineAdapter.notifyDataSetChanged()
     }
 
     fun updateSuggestions(suggestions: MutableList<Suggestion>) {
-        this.suggestions = suggestions
-        suggestionAdapter.notifyDataSetChanged()
-        if (suggestions.size > 0) {
-            dividerHeader.visibility = View.VISIBLE
-        } else {
-            dividerHeader.visibility = View.GONE
+        this.suggestions.apply {
+            clear()
+            addAll(suggestions)
         }
+        syncSuggestionVisibility()
+        suggestionAdapter.notifyDataSetChanged()
     }
 
     fun isSearchState(): Boolean = state == STATE_SEARCH
 
+    fun isExpandState(): Boolean = state == STATE_EXPAND
+
+    private fun getQuery(): String = (editText.text ?: "").toString().trim()
+
     fun applySearch() {
-        val query = (editText.text ?: "").toString().trim()
+        val query = getQuery()
         if (query.isNotEmpty()) {
             SuggestionManager.createSuggestion(Suggestion(booru_uid = booruUid, keyword = query))
         }
@@ -283,10 +300,10 @@ class SearchBar @JvmOverloads constructor(
     override fun onClick(v: View) {
         when (v) {
             title -> {
+                helper?.onClickTitle()
                 if (state == STATE_NORMAL) {
                     setState(STATE_SEARCH)
                 }
-                helper?.onClickTitle()
             }
         }
     }
@@ -300,75 +317,77 @@ class SearchBar @JvmOverloads constructor(
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is Bundle) {
             super.onRestoreInstanceState(state.getParcelable(STATE_KEY_SUPER))
-            setState(state = state.getInt(STATE_KEY_STATE, STATE_NORMAL), animation = false, showIME = false, showSuggestion = false)
+            setState(state = state.getInt(STATE_KEY_STATE, STATE_NORMAL), animation = false, showIME = false)
         }
     }
 
     fun getState(): Int = state
 
-    fun setState(state: Int) {
-        setState(state = state, animation = true, showIME = true, showSuggestion = true)
+    fun toExpandState(showIME: Boolean) {
+        setState(STATE_EXPAND, showIME)
     }
 
-    private fun setState(state: Int, showIME: Boolean) {
-        setState(state = state, animation = true, showIME = showIME, showSuggestion = true)
-    }
-
-    private fun setState(state: Int, showIME: Boolean, showSuggestion: Boolean) {
-        setState(state = state, animation = true, showIME = showIME, showSuggestion = showSuggestion)
-    }
-
-    fun enableSearchState(showIME: Boolean) {
+    fun toSearchState(showIME: Boolean) {
         setState(STATE_SEARCH, showIME)
     }
 
-    fun enableSearchState(showIME: Boolean, showSuggestion: Boolean) {
-        setState(STATE_SEARCH, showIME, showSuggestion)
-    }
-
-    fun enableSearchState() {
-        setState(STATE_SEARCH)
-    }
-
-    fun disableSearchState() {
+    fun toNormalState() {
         setState(STATE_NORMAL)
     }
 
-    private fun showSuggestion() {
-        if (suggestionContainer.visibility == View.VISIBLE) return
-        ViewAnimation.expand(suggestionContainer)
+    private fun syncSuggestionVisibility(currentState: Int = state) {
+        when (currentState) {
+            STATE_SEARCH -> {
+                val query = getQuery()
+                when {
+                    query.isBlank() && suggestions.isEmpty() -> hideSuggestion()
+                    query.isNotBlank() && suggestionsOnline.isEmpty() -> hideSuggestion()
+                    else -> showSuggestion()
+                }
+            }
+            else -> hideSuggestion()
+        }
     }
 
     private fun hideSuggestion() {
-        if (suggestionContainer.visibility == View.GONE) return
-        ViewAnimation.collapse(suggestionContainer)
+        if (suggestionContainer.visibility != View.GONE) {
+            ViewAnimation.collapse(suggestionContainer)
+        }
     }
 
-    private fun setState(
-        state: Int,
-        animation: Boolean,
-        showIME: Boolean,
-        showSuggestion: Boolean) {
+    private fun showSuggestion() {
+        if (suggestionContainer.visibility != View.VISIBLE) {
+            ViewAnimation.expand(suggestionContainer)
+        }
+    }
+
+    fun setState(state: Int) {
+        setState(state = state, animation = true, showIME = true)
+    }
+
+    private fun setState(state: Int, showIME: Boolean) {
+        setState(state = state, animation = true, showIME = showIME)
+    }
+
+    private fun setState(state: Int, animation: Boolean, showIME: Boolean) {
         if (this.state == state) return
         val oldState = this.state
         this.state = state
+        syncSuggestionVisibility(state)
         when (oldState) {
             STATE_NORMAL -> {
                 viewTransition.showView(1, animation)
                 editText.requestFocus()
-                if (showIME) showIME()
-                if (state == STATE_SEARCH && showSuggestion && editText.text.isNullOrEmpty()) {
-                    showSuggestion()
-                } else hideSuggestion()
-                stateChangeListener?.onStateChange(state, oldState, animation)
+                changeIMEState(showIME)
             }
-            STATE_SEARCH -> {
-                viewTransition.showView(0, animation)
-                hideIME()
-                hideSuggestion()
-                stateChangeListener?.onStateChange(state, oldState, animation)
+            STATE_SEARCH, STATE_EXPAND -> {
+                if (state == STATE_NORMAL) {
+                    viewTransition.showView(0, animation)
+                    changeIMEState(false)
+                }
             }
         }
+        stateChangeListener?.onStateChange(state, oldState, animation)
     }
 
     fun setHelper(helper: Helper) {
@@ -415,18 +434,19 @@ class SearchBar @JvmOverloads constructor(
     }
 
     private inner class SuggestionOnlineAdapter(private val inflater: LayoutInflater) : BaseAdapter() {
+
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val textView = (convertView as? TextView) ?:
             (inflater.inflate(R.layout.item_suggestion_online, parent, false)) as TextView
-            textView.text = suggestionsOnline?.get(position)?.getTagName() ?: ""
+            textView.text = suggestionsOnline[position].getTagName()
             return textView
         }
 
-        override fun getItem(position: Int): Any = suggestionsOnline!![position]
+        override fun getItem(position: Int): Any = suggestionsOnline[position]
 
         override fun getItemId(position: Int): Long = position.toLong()
 
-        override fun getCount(): Int = suggestionsOnline?.size ?: 0
+        override fun getCount(): Int = suggestionsOnline.size
 
     }
 }

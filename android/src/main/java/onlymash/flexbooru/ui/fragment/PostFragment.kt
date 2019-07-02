@@ -132,24 +132,19 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
     private var booruType = -1
     private lateinit var search: Search
     private lateinit var searchTag: SearchTag
-    private lateinit var expandButton: View
+    private lateinit var rightButton: View
     private var tagBlacklists: MutableList<TagBlacklist> = mutableListOf()
 
     override val stateChangeListener: SearchBar.StateChangeListener
         get() = object : SearchBar.StateChangeListener {
             override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
-                expandButton.rotate(135f)
-                if (requireActivity() is MainActivity) toggleArrowLeftDrawable()
-                when (newState) {
-                    SearchBar.STATE_NORMAL -> {
-                        if (search_layout.visibility == View.VISIBLE) {
-                            RippleAnimation.create(searchBar.getLeftButton()).setDuration(300).start()
-                            viewTransition.showView(0, false)
-                        }
-                    }
-                    SearchBar.STATE_SEARCH -> {
-
-                    }
+                rightButton.rotate(135f)
+                if (requireActivity() is MainActivity) {
+                    toggleArrowLeftDrawable()
+                }
+                if (newState == SearchBar.STATE_NORMAL && search_layout.visibility == View.VISIBLE) {
+                    RippleAnimation.create(searchBar.getLeftButton()).setDuration(300).start()
+                    viewTransition.showView(0, false)
                 }
             }
         }
@@ -160,11 +155,11 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
     override val searchBarHelper: SearchBarHelper
         get() = object : SearchBarHelper {
             override fun onMenuItemClick(menuItem: MenuItem) {
-                if (menuItem.itemId == R.id.action_expand_tag_filter) {
+                if (menuItem.itemId == R.id.action_expand_or_clear) {
                     when {
                         !searchBar.isSearchState() && search_layout.visibility != View.VISIBLE -> {
-                            searchBar.enableSearchState(showIME = false, showSuggestion = false)
-                            RippleAnimation.create(expandButton).setDuration(300).start()
+                            searchBar.toExpandState(false)
+                            RippleAnimation.create(rightButton).setDuration(300).start()
                             viewTransition.showView(1, false)
                         }
                         else -> searchBar.setText("")
@@ -436,7 +431,7 @@ class PostFragment : ListFragment(), SharedPreferences.OnSharedPreferenceChangeL
         }
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         searchBar.setMenu(menuId = R.menu.post, menuInflater = requireActivity().menuInflater)
-        expandButton = searchBar.findViewById<View>(R.id.action_expand_tag_filter)
+        rightButton = searchBar.findViewById<View>(R.id.action_expand_or_clear)
         progress_bar_empty.toVisibility(false)
         postViewModel = getPostViewModel(
             PostRepositoryImpl(

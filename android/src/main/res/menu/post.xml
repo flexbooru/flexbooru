@@ -15,8 +15,8 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="@string/post_expand_tag_filter"
+    <item android:title="@string/post_expand_or_clear"
           android:icon="@drawable/ic_add_long_24dp"
-          android:id="@+id/action_expand_tag_filter"
+          android:id="@+id/action_expand_or_clear"
           app:showAsAction="always"/>
 </menu>
