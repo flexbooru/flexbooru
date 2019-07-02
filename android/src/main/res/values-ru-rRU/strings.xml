@@ -55,10 +55,9 @@
     <string name="snackbar_copy_text">` %s ` скопировано в буфер обмена.</string>
     <string name="retry">Повторить</string>
     <string name="msg_not_supported">Не поддерживается</string>
-    <string name="msg_press_twice_to_exit">Нажмите дважды, чтобы выйти.</string>
     <string name="msg_file_save_success">Файл был сохранён как %s</string>
     <string name="msg_your_api_key_is_wrong">Неправильный ключ API!</string>
-    <string name="post_expand_tag_filter">Развернуть фильтр тегов</string>
+    <string name="post_expand_or_clear">Expand or clear</string>
     <string name="post_add_search_to_muzei">` %s ` было сохранено в Muzei.</string>
     <string name="post_download">Скачать</string>
     <string name="post_add_to_fav">Добавить в избранные</string>

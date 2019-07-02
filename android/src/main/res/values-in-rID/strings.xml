@@ -56,10 +56,9 @@
     <string name="snackbar_copy_text">` %s ` berhasil disalin</string>
     <string name="retry">Coba Lagi</string>
     <string name="msg_not_supported">Tidak Didukung</string>
-    <string name="msg_press_twice_to_exit">Tekan lagi untuk keluar.</string>
     <string name="msg_file_save_success">File telah disimpan dengan nama %s</string>
     <string name="msg_your_api_key_is_wrong">Api Key anda salah!</string>
-    <string name="post_expand_tag_filter">Expand tag filter</string>
+    <string name="post_expand_or_clear">Expand or clear</string>
     <string name="post_add_search_to_muzei">` %s ` berhasil disimpan ke Muzei</string>
     <string name="post_download">Unduh postingan</string>
     <string name="post_add_to_fav">Tambahkan ke Favorit</string>
