@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Insets;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -830,7 +831,7 @@ public class FullDrawerLayout extends DrawerLayout {
         super.onAttachedToWindow();
         mFirstLayout = true;
     }
-    @SuppressLint("WrongConstant")
+    @SuppressLint({"WrongConstant", "DrawAllocation"})
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -873,25 +874,41 @@ public class FullDrawerLayout extends DrawerLayout {
                 if (ViewCompat.getFitsSystemWindows(child)) {
                     WindowInsets wi = (WindowInsets) mLastInsets;
                     if (cgrav == Gravity.LEFT) {
-                        wi = wi.replaceSystemWindowInsets(wi.getSystemWindowInsetLeft(),
-                                wi.getSystemWindowInsetTop(), 0,
-                                wi.getSystemWindowInsetBottom());
+                        wi = new WindowInsets.Builder(wi)
+                                .setSystemWindowInsets(Insets.of(
+                                        wi.getSystemWindowInsetLeft(),
+                                        wi.getSystemWindowInsetTop(),
+                                        0,
+                                        wi.getSystemWindowInsetBottom()))
+                                .build();
                     } else if (cgrav == Gravity.RIGHT) {
-                        wi = wi.replaceSystemWindowInsets(0, wi.getSystemWindowInsetTop(),
-                                wi.getSystemWindowInsetRight(),
-                                wi.getSystemWindowInsetBottom());
+                        wi = new WindowInsets.Builder(wi)
+                                .setSystemWindowInsets(Insets.of(
+                                        0,
+                                        wi.getSystemWindowInsetTop(),
+                                        wi.getSystemWindowInsetRight(),
+                                        wi.getSystemWindowInsetBottom()))
+                                .build();
                     }
                     child.dispatchApplyWindowInsets(wi);
                 } else {
                     WindowInsets wi = (WindowInsets) mLastInsets;
                     if (cgrav == Gravity.LEFT) {
-                        wi = wi.replaceSystemWindowInsets(wi.getSystemWindowInsetLeft(),
-                                wi.getSystemWindowInsetTop(), 0,
-                                wi.getSystemWindowInsetBottom());
+                        wi = new WindowInsets.Builder(wi)
+                                .setSystemWindowInsets(Insets.of(
+                                        wi.getSystemWindowInsetLeft(),
+                                        wi.getSystemWindowInsetTop(),
+                                        0,
+                                        wi.getSystemWindowInsetBottom()))
+                                .build();
                     } else if (cgrav == Gravity.RIGHT) {
-                        wi = wi.replaceSystemWindowInsets(0, wi.getSystemWindowInsetTop(),
-                                wi.getSystemWindowInsetRight(),
-                                wi.getSystemWindowInsetBottom());
+                        wi = new WindowInsets.Builder(wi)
+                                .setSystemWindowInsets(Insets.of(
+                                        0,
+                                        wi.getSystemWindowInsetTop(),
+                                        wi.getSystemWindowInsetRight(),
+                                        wi.getSystemWindowInsetBottom()))
+                                .build();
                     }
                     lp.leftMargin = wi.getSystemWindowInsetLeft();
                     lp.topMargin = wi.getSystemWindowInsetTop();
