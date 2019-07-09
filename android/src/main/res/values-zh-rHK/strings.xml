@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
+    <string name="app_description">一個支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 的 Android 用戶端。</string>
     <string name="title_posts">帖子</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
@@ -57,7 +57,7 @@
     <string name="msg_not_supported">不支援</string>
     <string name="msg_file_save_success">檔案已儲存為 %s</string>
     <string name="msg_your_api_key_is_wrong">您的 API Key 是錯誤的！</string>
-    <string name="post_expand_or_clear">Expand or clear</string>
+    <string name="post_expand_or_clear">展開或清除</string>
     <string name="post_add_search_to_muzei">` %s ` 已儲存到 Muzei。</string>
     <string name="post_download">下載帖子</string>
     <string name="post_add_to_fav">新增到收藏</string>
@@ -78,7 +78,7 @@
     <string name="dialog_cancel">取消</string>
     <string name="dialog_exit">離開</string>
     <string name="dialog_update">更新</string>
-    <string name="update_found_update">新的更新現已可供使用</string>
+    <string name="update_found_update">新的更新現已用</string>
     <string name="update_version">版本: %s</string>
     <string name="booru_add">新增 Booru</string>
     <string name="booru_add_from_qr_code">掃描 QR Code</string>
@@ -245,9 +245,7 @@
     <string name="purchase_info_title">移除廣告並解鎖所有功能</string>
     <string name="purchase_info_remove_ads">移除廣告</string>
     <string name="purchase_info_unlock_full_features">解鎖所有功能</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
+    <string name="purchase_info_features">1. 移除可用的 Booru 限制。\n2. 下載畫集為壓縮檔。\n3. 從檔案備份和還原 Boorus。\n4. 透過 SauceNAO 以圖搜圖。</string>
     <string name="purchase_pay_title">購買／恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付寶</string>
