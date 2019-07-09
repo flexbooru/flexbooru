@@ -51,7 +51,7 @@
     <string name="about_donation_btc">比特幣</string>
     <string name="about_copyright">版權</string>
     <string name="about_licenses">授權</string>
-    <string name="about_open_source_licenses">開放源碼授權</string>
+    <string name="about_open_source_licenses">開放原始碼授權</string>
     <string name="snackbar_copy_text">` %s ` 已複製到剪貼板。</string>
     <string name="retry">重試</string>
     <string name="msg_not_supported">不支援</string>
