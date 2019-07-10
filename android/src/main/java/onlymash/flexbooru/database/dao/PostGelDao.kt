@@ -54,4 +54,7 @@ interface PostGelDao {
 
     @Query("DELETE FROM posts_gelbooru WHERE host = :host AND keyword = :keyword AND id = :id")
     fun deletePost(host: String, keyword: String, id: Int)
+
+    @Query("DELETE FROM posts_gelbooru")
+    fun deleteAll()
 }

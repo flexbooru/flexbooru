@@ -54,4 +54,7 @@ interface PostSankakuDao {
 
     @Query("DELETE FROM posts_sankaku WHERE host = :host AND keyword = :keyword AND id = :id")
     fun deletePost(host: String, keyword: String, id: Int)
+
+    @Query("DELETE FROM posts_sankaku")
+    fun deleteAll()
 }

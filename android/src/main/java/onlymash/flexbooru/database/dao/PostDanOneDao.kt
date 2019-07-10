@@ -55,4 +55,7 @@ interface PostDanOneDao {
 
     @Query("DELETE FROM posts_danbooru_one WHERE host = :host AND keyword = :keyword AND id = :id")
     fun deletePost(host: String, keyword: String, id: Int)
+
+    @Query("DELETE FROM posts_danbooru_one")
+    fun deleteAll()
 }

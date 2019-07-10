@@ -55,4 +55,7 @@ interface PostMoeDao {
 
     @Query("DELETE FROM posts_moebooru WHERE host = :host AND keyword = :keyword AND id = :id")
     fun deletePost(host: String, keyword: String, id: Int)
+
+    @Query("DELETE FROM posts_moebooru")
+    fun deleteAll()
 }
