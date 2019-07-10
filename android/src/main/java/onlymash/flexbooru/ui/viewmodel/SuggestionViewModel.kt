@@ -18,7 +18,7 @@ package onlymash.flexbooru.ui.viewmodel
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import onlymash.flexbooru.database.SuggestionManager
-import onlymash.flexbooru.entity.Suggestion
+import onlymash.flexbooru.entity.common.Suggestion
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.suggestion.SuggestionRepository

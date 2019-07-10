@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.TagFilterManager
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 import onlymash.flexbooru.ui.viewholder.*
 import onlymash.flexbooru.widget.TagFilterView
 

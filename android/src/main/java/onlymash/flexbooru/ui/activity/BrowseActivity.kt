@@ -51,8 +51,8 @@ import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.Booru
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder

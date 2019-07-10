@@ -25,7 +25,7 @@ import okhttp3.Response
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.entity.Cookie
+import onlymash.flexbooru.entity.common.Cookie
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -93,7 +93,12 @@ class CloudflareInterceptor : Interceptor {
             }
         }
 
-        onlymash.flexbooru.database.CookieManager.createCookie(Cookie(booruUid = Settings.activeBooruUid, cookie = cookie))
+        onlymash.flexbooru.database.CookieManager.createCookie(
+            Cookie(
+                booruUid = Settings.activeBooruUid,
+                cookie = cookie
+            )
+        )
 
         return request.newBuilder()
             .removeHeader(HttpHeaders.Cookie)

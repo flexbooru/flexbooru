@@ -13,20 +13,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.*
 
-/**
- * Vote Danbooru post response
- * */
-data class VoteDan(
-    @SerializedName("success")
-    val success: Boolean = true,
-    @SerializedName("message")
-    val message: String = "",
-    @SerializedName("id")
-    val id: Int = -1,
-    @SerializedName("score")
-    val score: Int = -1
+@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
+    foreignKeys = [(ForeignKey(
+        entity = Booru::class,
+        parentColumns = ["uid"],
+        childColumns = ["booru_uid"],
+        onDelete = ForeignKey.CASCADE))])
+data class Muzei(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
+    var uid: Long = 0L,
+    @ColumnInfo(name = "booru_uid")
+    val booruUid: Long,
+    @ColumnInfo(name = "keyword")
+    var keyword: String
 )

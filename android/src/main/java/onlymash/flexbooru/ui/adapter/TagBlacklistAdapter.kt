@@ -20,7 +20,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.ui.viewholder.TagBlacklistViewHolder
 
 class TagBlacklistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -45,7 +45,7 @@ class TagBlacklistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class TagBlacklistAdapterDiffCallback(private val oldTagBlacklists: MutableList<TagBlacklist>,
-                                         private val newTagBlacklists: MutableList<TagBlacklist>) : DiffUtil.Callback() {
+                                                private val newTagBlacklists: MutableList<TagBlacklist>) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldTagBlacklists[oldItemPosition].uid == newTagBlacklists[newItemPosition].uid
 

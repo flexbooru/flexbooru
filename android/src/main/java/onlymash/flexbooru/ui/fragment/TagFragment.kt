@@ -30,9 +30,9 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.tag.TagRepositoryImpl

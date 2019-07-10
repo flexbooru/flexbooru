@@ -34,7 +34,7 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.SuggestionManager
-import onlymash.flexbooru.entity.Suggestion
+import onlymash.flexbooru.entity.common.Suggestion
 import onlymash.flexbooru.entity.tag.TagBase
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.extension.toVisibility
@@ -248,7 +248,12 @@ class SearchBar @JvmOverloads constructor(
     fun applySearch() {
         val query = getQuery()
         if (query.isNotEmpty()) {
-            SuggestionManager.createSuggestion(Suggestion(booruUid = booruUid, keyword = query))
+            SuggestionManager.createSuggestion(
+                Suggestion(
+                    booruUid = booruUid,
+                    keyword = query
+                )
+            )
         }
         setState(STATE_NORMAL)
         helper?.onApplySearch(query)

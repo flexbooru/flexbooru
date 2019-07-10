@@ -15,8 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -24,6 +22,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.entity.common.UpdateInfo
 import onlymash.flexbooru.extension.getUserAgent
 import onlymash.flexbooru.util.Logger
 import retrofit2.Response
@@ -35,7 +34,6 @@ import java.util.concurrent.TimeUnit
 /**
  * App update api
  * */
-@Keep
 interface AppUpdaterApi {
 
     companion object {
@@ -97,18 +95,3 @@ interface AppUpdaterApi {
     @GET("/flexbooru/flexbooru/master/update.json")
     suspend fun checkUpdate(): Response<UpdateInfo>
 }
-
-/**
- * data class for app/update.json
- * */
-@Keep
-data class UpdateInfo(
-    @SerializedName("version_code")
-    val version_code: Long,
-    @SerializedName("version_name")
-    val version_name: String,
-    @SerializedName("url")
-    val url: String,
-    @SerializedName("is_available_store")
-    var is_available_store: Boolean = true
-)

@@ -21,7 +21,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.common.App
-import onlymash.flexbooru.entity.DanOneDate
+import onlymash.flexbooru.entity.common.DanOneDate
 import onlymash.flexbooru.extension.formatDate
 
 @Entity(tableName = "posts_danbooru_one", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])

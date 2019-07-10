@@ -20,7 +20,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import onlymash.flexbooru.database.dao.MuzeiDao
-import onlymash.flexbooru.entity.Muzei
+import onlymash.flexbooru.entity.common.Muzei
 
 class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ScopeViewModel() {
 

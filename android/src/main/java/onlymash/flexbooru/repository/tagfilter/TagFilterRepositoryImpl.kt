@@ -17,7 +17,7 @@ package onlymash.flexbooru.repository.tagfilter
 
 import androidx.lifecycle.LiveData
 import onlymash.flexbooru.database.dao.TagFilterDao
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 
 //tags filter data source
 class TagFilterRepositoryImpl(private val dao: TagFilterDao) : TagFilterRepository {

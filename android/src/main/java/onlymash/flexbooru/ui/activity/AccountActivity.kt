@@ -34,8 +34,8 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.CookieManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.Booru
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.repository.account.UserRepositoryImpl

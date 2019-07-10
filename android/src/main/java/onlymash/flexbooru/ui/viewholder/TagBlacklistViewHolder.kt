@@ -22,7 +22,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.TagBlacklistManager
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.extension.copyText
 
 class TagBlacklistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

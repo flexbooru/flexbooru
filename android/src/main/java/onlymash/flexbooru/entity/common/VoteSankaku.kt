@@ -13,19 +13,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
 import com.google.gson.annotations.SerializedName
-import onlymash.flexbooru.entity.post.PostMoe
 
-/**
- * Vote Moebooru post response
- * */
-data class VoteMoe(
+
+data class VoteSankaku(
     @SerializedName("success")
-    val success: Boolean,
-    @SerializedName("posts")
-    val posts: MutableList<PostMoe> = mutableListOf(),
-    @SerializedName("message")
-    val message: String = ""
+    val success: Boolean = false,
+    @SerializedName("post_id")
+    var postId: Int = -1
 )

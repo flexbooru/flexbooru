@@ -13,30 +13,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
 import androidx.room.*
 
-@Entity(tableName = "users", indices = [(Index(value = ["booru_uid"], unique = true))],
+@Entity(tableName = "tag_blacklist", indices = [(Index(value = ["booru_uid", "tag"], unique = true))],
     foreignKeys = [(ForeignKey(
-            entity = Booru::class,
-            parentColumns = ["uid"],
-            childColumns = ["booru_uid"],
-            onDelete = ForeignKey.CASCADE))])
-data class User(
+        entity = Booru::class,
+        parentColumns = ["uid"],
+        childColumns = ["booru_uid"],
+        onDelete = ForeignKey.CASCADE))])
+data class TagBlacklist(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
     var uid: Long = 0L,
     @ColumnInfo(name = "booru_uid")
-    var booruUid: Long = -1L,
-    @ColumnInfo(name = "name")
-    var name: String,
-    @ColumnInfo(name = "id")
-    var id: Int,
-    @ColumnInfo(name = "password_hash")
-    var passwordHash: String? = null,
-    @ColumnInfo(name = "api_key")
-    var apiKey: String? = null,
-    @ColumnInfo(name = "avatar_url")
-    var avatarUrl: String? = null
+    var booruUid: Long,
+    @ColumnInfo(name = "tag")
+    var tag: String
 )

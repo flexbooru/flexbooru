@@ -29,7 +29,7 @@ import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.repository.Listing

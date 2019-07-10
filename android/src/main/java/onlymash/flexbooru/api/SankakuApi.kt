@@ -15,15 +15,14 @@
 
 package onlymash.flexbooru.api
 
-import androidx.annotation.Keep
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.HttpHeaders
-import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.VoteSankaku
+import onlymash.flexbooru.entity.common.User
+import onlymash.flexbooru.entity.common.VoteSankaku
 import onlymash.flexbooru.entity.comment.CommentResponse
 import onlymash.flexbooru.entity.comment.CommentSankaku
 import onlymash.flexbooru.entity.pool.PoolSankaku
@@ -38,7 +37,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
-@Keep
 interface SankakuApi {
     companion object {
         /**

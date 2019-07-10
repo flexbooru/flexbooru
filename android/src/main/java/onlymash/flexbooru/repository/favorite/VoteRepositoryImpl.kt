@@ -23,6 +23,9 @@ import onlymash.flexbooru.api.*
 import onlymash.flexbooru.api.url.*
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.common.VoteDan
+import onlymash.flexbooru.entity.common.VoteMoe
+import onlymash.flexbooru.entity.common.VoteSankaku
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.post.PostGel
@@ -135,10 +138,12 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                         post.keyword = "fav:${vote.username}"
                         post.uid = 0L
                         db.postDanDao().insert(post)
-                        NetResult.Success(VoteDan(
-                            success = true,
-                            id = post.id
-                        ))
+                        NetResult.Success(
+                            VoteDan(
+                                success = true,
+                                id = post.id
+                            )
+                        )
                     } else NetResult.Error("code: ${e.code()}")
                 } else NetResult.Error(e.message.toString())
             }

@@ -13,14 +13,24 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.*
 
-
-data class VoteSankaku(
-    @SerializedName("success")
-    val success: Boolean = false,
-    @SerializedName("post_id")
-    var postId: Int = -1
+@Entity(tableName = "tags_filter", indices = [(Index(value = ["booru_uid", "name"], unique = true))],
+    foreignKeys = [(ForeignKey(
+        entity = Booru::class,
+        parentColumns = ["uid"],
+        childColumns = ["booru_uid"],
+        onDelete = ForeignKey.CASCADE))])
+data class TagFilter(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
+    var uid: Long = 0L,
+    @ColumnInfo(name = "booru_uid")
+    var booruUid: Long = -1L,
+    @ColumnInfo(name = "name")
+    var name: String,
+    @ColumnInfo(name = "type")
+    var type: Int = -1
 )

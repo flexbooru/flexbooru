@@ -17,7 +17,7 @@ package onlymash.flexbooru.database
 
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.TagBlacklistDao
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import org.kodein.di.erased.instance
 import java.io.IOException
 import java.sql.SQLException

@@ -25,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.TagBrowseAdapter
@@ -131,42 +131,57 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 arg.apply {
                     getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.ARTIST))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.ARTIST
+                                )
+                            )
                         }
                     }
                     getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.COPYRIGHT))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.COPYRIGHT
+                                )
+                            )
                         }
                     }
                     getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.CHARACTER))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.CHARACTER
+                                )
+                            )
                         }
                     }
                     getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.META))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.META
+                                )
+                            )
                         }
                     }
                     getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.GENERAL))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.GENERAL
+                                )
+                            )
                         }
                     }
                 }
@@ -175,73 +190,102 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             Constants.TYPE_DANBOORU_ONE,
             Constants.TYPE_GELBOORU -> {
                 arg.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
-                    if (tag.isNotEmpty()) tags.add(TagFilter(booruUid = booruUid, name = tag))
+                    if (tag.isNotEmpty()) tags.add(
+                        TagFilter(
+                            booruUid = booruUid,
+                            name = tag
+                        )
+                    )
                 }
             }
             Constants.TYPE_SANKAKU -> {
                 arg.apply {
                     getString(TAG_ARTIST_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.ARTIST))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.ARTIST
+                                )
+                            )
                         }
                     }
                     getString(TAG_COPYRIGHT_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.COPYRIGHT))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.COPYRIGHT
+                                )
+                            )
                         }
                     }
                     getString(TAG_CHARACTER_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.CHARACTER))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.CHARACTER
+                                )
+                            )
                         }
                     }
                     getString(TAG_META_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.META_SANKAKU))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.META_SANKAKU
+                                )
+                            )
                         }
                     }
                     getString(TAG_GENRE_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.GENRE))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.GENRE
+                                )
+                            )
                         }
                     }
                     getString(TAG_MEDIUM_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.MEDIUM))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.MEDIUM
+                                )
+                            )
                         }
                     }
                     getString(TAG_STUDIO_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.STUDIO))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.STUDIO
+                                )
+                            )
                         }
                     }
                     getString(TAG_GENERAL_KEY)?.trim()?.split(" ")?.forEach { tag ->
                         if (tag.isNotEmpty()) {
-                            tags.add(TagFilter(
-                                booruUid = booruUid,
-                                name = tag,
-                                type = TagViewHolder.GENERAL))
+                            tags.add(
+                                TagFilter(
+                                    booruUid = booruUid,
+                                    name = tag,
+                                    type = TagViewHolder.GENERAL
+                                )
+                            )
                         }
                     }
                 }

@@ -20,7 +20,7 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException
 import androidx.lifecycle.LiveData
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.database.dao.SuggestionDao
-import onlymash.flexbooru.entity.Suggestion
+import onlymash.flexbooru.entity.common.Suggestion
 import org.kodein.di.erased.instance
 import java.io.IOException
 

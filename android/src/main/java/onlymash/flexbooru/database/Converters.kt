@@ -19,9 +19,9 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import onlymash.flexbooru.entity.artist.ArtistUrlDan
-import onlymash.flexbooru.entity.DanOneDate
-import onlymash.flexbooru.entity.SankakuAuthor
-import onlymash.flexbooru.entity.SankakuTag
+import onlymash.flexbooru.entity.common.DanOneDate
+import onlymash.flexbooru.entity.common.SankakuAuthor
+import onlymash.flexbooru.entity.common.SankakuTag
 
 /**
  * room database TypeConverter

@@ -18,9 +18,9 @@ package onlymash.flexbooru.repository.favorite
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.post.PostDanOne
 import onlymash.flexbooru.entity.Vote
-import onlymash.flexbooru.entity.VoteDan
-import onlymash.flexbooru.entity.VoteMoe
-import onlymash.flexbooru.entity.VoteSankaku
+import onlymash.flexbooru.entity.common.VoteDan
+import onlymash.flexbooru.entity.common.VoteMoe
+import onlymash.flexbooru.entity.common.VoteSankaku
 import onlymash.flexbooru.entity.post.PostGel
 import onlymash.flexbooru.entity.post.PostSankaku
 import onlymash.flexbooru.extension.NetResult

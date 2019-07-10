@@ -39,8 +39,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.FlexbooruDatabase
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.Booru
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.extension.gridWidth

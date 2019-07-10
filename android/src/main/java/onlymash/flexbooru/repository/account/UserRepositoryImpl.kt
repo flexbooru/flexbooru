@@ -29,8 +29,8 @@ import onlymash.flexbooru.api.url.DanOneUrlHelper
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.api.url.SankakuUrlHelper
 import onlymash.flexbooru.database.CookieManager
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.Booru
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.util.Logger
 import java.util.HashMap
@@ -47,7 +47,8 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
     override suspend fun gelLogin(
         username: String,
         password: String,
-        booru: Booru): NetResult<User> {
+        booru: Booru
+    ): NetResult<User> {
         val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
                 Logger.d("GelbooruLogin", message)
@@ -108,10 +109,12 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
                                 id = userId,
                                 passwordHash = passHash
                             )
-                            CookieManager.createCookie(onlymash.flexbooru.entity.Cookie(
-                                booruUid = booru.uid,
-                                cookie = "user_id=$userId; pass_hash=$passHash"
-                            ))
+                            CookieManager.createCookie(
+                                onlymash.flexbooru.entity.common.Cookie(
+                                    booruUid = booru.uid,
+                                    cookie = "user_id=$userId; pass_hash=$passHash"
+                                )
+                            )
                             NetResult.Success(user)
                         }
                     } else {

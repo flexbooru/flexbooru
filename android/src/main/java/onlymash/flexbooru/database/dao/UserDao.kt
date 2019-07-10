@@ -16,7 +16,7 @@
 package onlymash.flexbooru.database.dao
 
 import androidx.room.*
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.User
 
 @Dao
 interface UserDao {

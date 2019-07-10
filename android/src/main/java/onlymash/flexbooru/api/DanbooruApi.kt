@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import androidx.annotation.Keep
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -23,8 +22,8 @@ import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Constants.BASE_URL
 import onlymash.flexbooru.common.HttpHeaders
-import onlymash.flexbooru.entity.User
-import onlymash.flexbooru.entity.VoteDan
+import onlymash.flexbooru.entity.common.User
+import onlymash.flexbooru.entity.common.VoteDan
 import onlymash.flexbooru.entity.artist.ArtistDan
 import onlymash.flexbooru.entity.comment.CommentDan
 import onlymash.flexbooru.entity.comment.CommentResponse
@@ -40,7 +39,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
-@Keep
 interface DanbooruApi {
 
     companion object {

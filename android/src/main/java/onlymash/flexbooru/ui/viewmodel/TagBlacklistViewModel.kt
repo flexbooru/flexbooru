@@ -20,7 +20,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import onlymash.flexbooru.database.dao.TagBlacklistDao
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 
 class TagBlacklistViewModel(private val tagBlacklistDao: TagBlacklistDao) : ScopeViewModel() {
 

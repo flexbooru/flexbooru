@@ -34,7 +34,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.TagBlacklistManager
 import onlymash.flexbooru.database.dao.TagBlacklistDao
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
 import onlymash.flexbooru.ui.viewmodel.TagBlacklistViewModel
 import org.kodein.di.erased.instance
@@ -81,7 +81,10 @@ class TagBlacklistActivity : BaseActivity() {
                     val text = (editText.text ?: "").toString().trim()
                     if (!text.isBlank()) {
                         TagBlacklistManager.createTagBlacklist(
-                            TagBlacklist(booruUid = uid, tag = text)
+                            TagBlacklist(
+                                booruUid = uid,
+                                tag = text
+                            )
                         )
                     } else {
                         Snackbar.make(

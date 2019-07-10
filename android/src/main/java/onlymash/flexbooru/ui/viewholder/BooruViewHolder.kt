@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.BooruActivity
 import onlymash.flexbooru.ui.activity.BooruConfigActivity

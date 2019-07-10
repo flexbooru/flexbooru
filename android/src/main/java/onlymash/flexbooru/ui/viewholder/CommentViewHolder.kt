@@ -26,7 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.comment.*
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity

@@ -13,23 +13,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
-import androidx.room.*
+import com.google.gson.annotations.SerializedName
 
-
-@Entity(tableName = "cookies", indices = [(Index(value = ["booru_uid"], unique = true))],
-    foreignKeys = [(ForeignKey(
-        entity = Booru::class,
-        parentColumns = ["uid"],
-        childColumns = ["booru_uid"],
-        onDelete = ForeignKey.CASCADE))])
-data class Cookie(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "uid")
-    var uid: Long = 0L,
-    @ColumnInfo(name = "booru_uid")
-    var booruUid: Long,
-    @ColumnInfo(name = "cookie")
-    var cookie: String?
+data class SankakuAuthor(
+    @SerializedName("avatar")
+    val avatar: String,
+    @SerializedName("avatar_rating")
+    val avatar_rating: String,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("name")
+    val name: String
 )

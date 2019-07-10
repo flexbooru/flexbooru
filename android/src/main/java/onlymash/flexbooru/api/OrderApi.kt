@@ -15,8 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -24,6 +22,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.HttpHeaders
 import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.entity.common.OrderResponse
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.getUserAgent
 import onlymash.flexbooru.util.Logger
@@ -34,15 +33,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-@Keep
-data class OrderResponse(
-    @SerializedName("success")
-    val success: Boolean,
-    @SerializedName("activated")
-    val activated: Boolean
-)
-
-@Keep
 interface OrderApi {
     companion object {
         private const val BASE_URL = "https://flexbooru-pay.fiepi.com"

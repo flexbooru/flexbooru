@@ -17,7 +17,7 @@ package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 import onlymash.flexbooru.ui.viewholder.TagBrowseViewHolder
 
 class TagBrowseAdapter(private val tags: MutableList<TagFilter>,

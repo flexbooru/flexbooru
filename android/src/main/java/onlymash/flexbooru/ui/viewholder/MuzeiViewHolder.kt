@@ -22,7 +22,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.database.MuzeiManager
-import onlymash.flexbooru.entity.Muzei
+import onlymash.flexbooru.entity.common.Muzei
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
 

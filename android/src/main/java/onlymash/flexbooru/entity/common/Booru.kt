@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
 import android.net.Uri
 import android.util.Base64
@@ -69,8 +69,10 @@ data class Booru(
                     Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)
                 val dataList = String(dataByte).split("@@@")
                 if (dataList.size == 5) {
-                    Booru(uid = -1, name = dataList[0], scheme = dataList[1],
-                        host = dataList[2], type = dataList[3].toInt(), hashSalt = dataList[4])
+                    Booru(
+                        uid = -1, name = dataList[0], scheme = dataList[1],
+                        host = dataList[2], type = dataList[3].toInt(), hashSalt = dataList[4]
+                    )
                 } else {
                     null
                 }

@@ -17,7 +17,7 @@ package onlymash.flexbooru.repository.post
 
 import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 

@@ -43,6 +43,7 @@ import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.database.*
 import onlymash.flexbooru.database.dao.TagBlacklistDao
 import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.common.*
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.entity.tag.SearchTag
 import onlymash.flexbooru.extension.getViewModel
@@ -404,7 +405,12 @@ class PostFragment : ListFragment(),
         when (postType) {
             POST_ALL -> (activity as MainActivity).addNavigationListener(navigationListener)
             POST_SEARCH ->  searchBar.setTitleOnLongClickCallback {
-                MuzeiManager.createMuzei(Muzei(booruUid = Settings.activeBooruUid, keyword = search.keyword))
+                MuzeiManager.createMuzei(
+                    Muzei(
+                        booruUid = Settings.activeBooruUid,
+                        keyword = search.keyword
+                    )
+                )
                 Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
             }
             else -> {
@@ -481,7 +487,12 @@ class PostFragment : ListFragment(),
         ) {
             val text = searchBar.getEditTextText()
             if(text.isNotEmpty()) {
-                TagFilterManager.createTagFilter(TagFilter(booruUid = Settings.activeBooruUid, name = text))
+                TagFilterManager.createTagFilter(
+                    TagFilter(
+                        booruUid = Settings.activeBooruUid,
+                        name = text
+                    )
+                )
             }
         }
         tags_filter_list.apply {
@@ -500,9 +511,12 @@ class PostFragment : ListFragment(),
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (!tagString.isBlank()) {
 //                searchBar.disableSearchState()
-                SuggestionManager.createSuggestion(Suggestion(
-                    booruUid = Settings.activeBooruUid,
-                    keyword = tagString))
+                SuggestionManager.createSuggestion(
+                    Suggestion(
+                        booruUid = Settings.activeBooruUid,
+                        keyword = tagString
+                    )
+                )
                 SearchActivity.startActivity(requireContext(), tagString)
             }
         }

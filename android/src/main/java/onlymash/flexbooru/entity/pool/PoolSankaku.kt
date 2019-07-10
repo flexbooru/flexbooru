@@ -16,8 +16,8 @@
 package onlymash.flexbooru.entity.pool
 
 import com.google.gson.annotations.SerializedName
-import onlymash.flexbooru.entity.SankakuAuthor
-import onlymash.flexbooru.entity.SankakuTag
+import onlymash.flexbooru.entity.common.SankakuAuthor
+import onlymash.flexbooru.entity.common.SankakuTag
 
 data class PoolSankaku(
     @SerializedName("artist_tags")

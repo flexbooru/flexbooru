@@ -24,7 +24,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.database.dao.*
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.common.*
 import onlymash.flexbooru.entity.post.*
 
 @Database(entities = [

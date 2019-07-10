@@ -27,7 +27,7 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.TagFilterManager
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 import onlymash.flexbooru.extension.copyText
 
 class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -68,12 +68,24 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         tagExclude.setOnClickListener {
             val name = tagName.text?:return@setOnClickListener
             val booruUid = Settings.activeBooruUid
-            TagFilterManager.createTagFilter(TagFilter(booruUid = booruUid, name = "-$name", type = type))
+            TagFilterManager.createTagFilter(
+                TagFilter(
+                    booruUid = booruUid,
+                    name = "-$name",
+                    type = type
+                )
+            )
         }
         tagInclude.setOnClickListener {
             val name = tagName.text?:return@setOnClickListener
             val booruUid = Settings.activeBooruUid
-            TagFilterManager.createTagFilter(TagFilter(booruUid = booruUid, name = name.toString(), type = type))
+            TagFilterManager.createTagFilter(
+                TagFilter(
+                    booruUid = booruUid,
+                    name = name.toString(),
+                    type = type
+                )
+            )
         }
     }
 

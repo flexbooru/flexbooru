@@ -15,8 +15,8 @@
 
 package onlymash.flexbooru.repository.account
 
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.Booru
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.extension.NetResult
 
 interface UserRepository {

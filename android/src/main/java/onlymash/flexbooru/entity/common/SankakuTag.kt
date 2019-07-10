@@ -13,22 +13,25 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
-import androidx.room.*
+import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
-    foreignKeys = [(ForeignKey(
-        entity = Booru::class,
-        parentColumns = ["uid"],
-        childColumns = ["booru_uid"],
-        onDelete = ForeignKey.CASCADE))])
-data class Muzei(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "uid")
-    var uid: Long = 0L,
-    @ColumnInfo(name = "booru_uid")
-    val booruUid: Long,
-    @ColumnInfo(name = "keyword")
-    var keyword: String
+data class SankakuTag(
+    @SerializedName("count")
+    val count: Int,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("locale")
+    val locale: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("name_en")
+    val name_en: String,
+    @SerializedName("name_ja")
+    val name_ja: String?,
+    @SerializedName("rating")
+    val rating: String?,
+    @SerializedName("type")
+    val type: Int
 )

@@ -28,7 +28,7 @@ import onlymash.flexbooru.api.DanbooruApi
 import onlymash.flexbooru.api.url.DanUrlHelper
 import onlymash.flexbooru.entity.post.PostDan
 import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
 import retrofit2.Response

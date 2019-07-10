@@ -17,7 +17,7 @@ package onlymash.flexbooru.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 
 @Dao
 interface TagFilterDao {

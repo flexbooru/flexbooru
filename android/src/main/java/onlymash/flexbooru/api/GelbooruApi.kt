@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.api
 
-import androidx.annotation.Keep
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
@@ -39,7 +38,6 @@ import retrofit2.http.GET
 import retrofit2.http.Url
 import java.util.concurrent.TimeUnit
 
-@Keep
 interface GelbooruApi {
     companion object {
         /**

@@ -19,7 +19,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import onlymash.flexbooru.entity.Cookie
+import onlymash.flexbooru.entity.common.Cookie
 
 @Dao
 interface CookieDao {

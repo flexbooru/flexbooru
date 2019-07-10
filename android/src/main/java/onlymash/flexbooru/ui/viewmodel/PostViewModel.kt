@@ -20,7 +20,7 @@ import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.viewModelScope
 import onlymash.flexbooru.entity.Search
-import onlymash.flexbooru.entity.TagBlacklist
+import onlymash.flexbooru.entity.common.TagBlacklist
 import onlymash.flexbooru.repository.post.PostRepository
 
 data class SearchData(

@@ -46,7 +46,7 @@ import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.extension.copyTo
 import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter

@@ -16,7 +16,7 @@
 package onlymash.flexbooru.entity.pool
 
 import com.google.gson.annotations.SerializedName
-import onlymash.flexbooru.entity.DanOneDate
+import onlymash.flexbooru.entity.common.DanOneDate
 import onlymash.flexbooru.extension.formatDate
 
 data class PoolDanOne(

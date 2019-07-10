@@ -37,7 +37,7 @@ import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import onlymash.flexbooru.database.MuzeiManager
 import onlymash.flexbooru.database.dao.MuzeiDao
-import onlymash.flexbooru.entity.Muzei
+import onlymash.flexbooru.entity.common.Muzei
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
@@ -79,7 +79,12 @@ class MuzeiActivity : BaseActivity() {
                         .setPositiveButton(R.string.dialog_yes) { _, _ ->
                             val text = (editText.text ?: "").toString().trim()
                             if (!text.isBlank()) {
-                                MuzeiManager.createMuzei(Muzei(booruUid = uid, keyword = text))
+                                MuzeiManager.createMuzei(
+                                    Muzei(
+                                        booruUid = uid,
+                                        keyword = text
+                                    )
+                                )
                             } else {
                                 Snackbar.make(toolbar, getString(R.string.muzei_input_cant_be_empty), Snackbar.LENGTH_LONG).show()
                             }

@@ -44,8 +44,8 @@ import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.Booru
-import onlymash.flexbooru.entity.User
+import onlymash.flexbooru.entity.common.Booru
+import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
 import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
@@ -199,7 +199,9 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     scheme = "https",
                     host = "moe.fiepi.com",
                     hashSalt = "onlymash--your-password--",
-                    type = Constants.TYPE_MOEBOORU))
+                    type = Constants.TYPE_MOEBOORU
+                )
+            )
         }
         boorus = BooruManager.getAllBoorus() ?: mutableListOf()
         users = UserManager.getAllUsers() ?: mutableListOf()

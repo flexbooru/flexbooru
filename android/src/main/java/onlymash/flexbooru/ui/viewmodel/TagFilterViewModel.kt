@@ -19,7 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import onlymash.flexbooru.entity.TagFilter
+import onlymash.flexbooru.entity.common.TagFilter
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
 
 class TagFilterViewModel(private val repo: TagFilterRepository) : ScopeViewModel() {

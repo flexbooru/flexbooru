@@ -13,24 +13,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.entity
+package onlymash.flexbooru.entity.common
 
-import androidx.room.*
+import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "tags_filter", indices = [(Index(value = ["booru_uid", "name"], unique = true))],
-    foreignKeys = [(ForeignKey(
-        entity = Booru::class,
-        parentColumns = ["uid"],
-        childColumns = ["booru_uid"],
-        onDelete = ForeignKey.CASCADE))])
-data class TagFilter(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "uid")
-    var uid: Long = 0L,
-    @ColumnInfo(name = "booru_uid")
-    var booruUid: Long = -1L,
-    @ColumnInfo(name = "name")
-    var name: String,
-    @ColumnInfo(name = "type")
-    var type: Int = -1
+data class DanOneDate(
+    @SerializedName("n")
+    val n: Long,
+    @SerializedName("s")
+    val s: Long,
+    @SerializedName("json_class")
+    val json_class: String
 )

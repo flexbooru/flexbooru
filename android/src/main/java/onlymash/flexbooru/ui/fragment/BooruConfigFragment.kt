@@ -22,7 +22,7 @@ import androidx.preference.PreferenceFragmentCompat
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.common.Booru
 import org.kodein.di.erased.instance
 
 class BooruConfigFragment : PreferenceFragmentCompat(),

@@ -16,7 +16,7 @@
 package onlymash.flexbooru.api.url
 
 import okhttp3.HttpUrl
-import onlymash.flexbooru.entity.Booru
+import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.comment.CommentAction
