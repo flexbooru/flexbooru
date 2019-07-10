@@ -15,8 +15,12 @@
 
 package onlymash.flexbooru.entity
 
+import com.google.gson.annotations.SerializedName
+
 
 data class VoteSankaku(
-    var success: Boolean = false,
-    var post_id: Int = -1
+    @SerializedName("success")
+    val success: Boolean = false,
+    @SerializedName("post_id")
+    var postId: Int = -1
 )

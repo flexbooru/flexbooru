@@ -71,8 +71,8 @@ class ArtistFragment : ListFragment() {
                             Constants.AUTH_KEY,
                             when (booru.type) {
                                 Constants.TYPE_DANBOORU,
-                                Constants.TYPE_GELBOORU-> user.api_key
-                                else -> user.password_hash
+                                Constants.TYPE_GELBOORU-> user.apiKey
+                                else -> user.passwordHash
                             }
                         )
                     } else {
@@ -164,7 +164,7 @@ class ArtistFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.activeBooruUid) return
+            if (user.booruUid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -197,7 +197,7 @@ class ArtistFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 search.username = user.name
-                search.auth_key = user.api_key ?: ""
+                search.auth_key = user.apiKey ?: ""
                 artistViewModel.apply {
                     show(search)
                     refreshDan()
@@ -205,7 +205,7 @@ class ArtistFragment : ListFragment() {
             }
             Constants.TYPE_MOEBOORU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 artistViewModel.apply {
                     show(search)
                     refreshMoe()
@@ -213,7 +213,7 @@ class ArtistFragment : ListFragment() {
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 artistViewModel.apply {
                     show(search)
                     refreshDanOne()

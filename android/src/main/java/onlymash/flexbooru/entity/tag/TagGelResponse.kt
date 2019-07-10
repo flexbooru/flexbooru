@@ -21,7 +21,7 @@ import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "tags")
 data class TagGelResponse(
-    @Attribute
+    @Attribute(name = "type")
     val type: String,
     @Element
     val tags: MutableList<TagGel>?

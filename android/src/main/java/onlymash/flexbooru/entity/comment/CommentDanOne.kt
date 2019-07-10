@@ -15,19 +15,28 @@
 
 package onlymash.flexbooru.entity.comment
 
+import com.google.gson.annotations.SerializedName
+
 data class CommentDanOne(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("score")
     val score: Int,
-    val created_at: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("post_id")
     val post_id: Int,
+    @SerializedName("creator")
     val creator: String,
+    @SerializedName("creator_id")
     val creator_id: Int,
+    @SerializedName("body")
     val body: String
 ) : CommentBase() {
     override fun getPostId(): Int = post_id
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body
-    override fun getCommentDate(): CharSequence = created_at
+    override fun getCommentDate(): CharSequence = createdAt
     override fun getCreatorId(): Int = creator_id
     override fun getCreatorName(): String = creator
 }

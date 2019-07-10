@@ -21,7 +21,7 @@ import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "comments")
 data class CommentGelResponse(
-    @Attribute
+    @Attribute(name = "type")
     val type: String,
     @Element
     val comments: MutableList<CommentGel>?

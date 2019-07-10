@@ -21,9 +21,9 @@ import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "posts")
 data class PostGelResponse (
-    @Attribute
+    @Attribute(name = "count")
     val count: Int,
-    @Attribute
+    @Attribute(name = "offset")
     val offset: Int,
     @Element
     val posts: MutableList<PostGel>?

@@ -75,7 +75,7 @@ class MuzeiArtWorker(
                     keyword = keyword,
                     limit = Settings.muzeiLimit).apply {
                     user?.let {
-                        auth_key = it.api_key ?: ""
+                        auth_key = it.apiKey ?: ""
                         username = it.name
                     }
                 }
@@ -113,7 +113,7 @@ class MuzeiArtWorker(
                     keyword = keyword,
                     limit = Settings.muzeiLimit).apply {
                     user?.let {
-                        auth_key = it.password_hash ?: ""
+                        auth_key = it.passwordHash ?: ""
                         username = it.name
                     }
                 }
@@ -148,7 +148,7 @@ class MuzeiArtWorker(
                     keyword = keyword,
                     limit = Settings.muzeiLimit).apply {
                     user?.let {
-                        auth_key = it.password_hash ?: ""
+                        auth_key = it.passwordHash ?: ""
                         username = it.name
                     }
                 }
@@ -217,7 +217,7 @@ class MuzeiArtWorker(
                     keyword = keyword,
                     limit = Settings.muzeiLimit).apply {
                     user?.let {
-                        auth_key = it.password_hash ?: ""
+                        auth_key = it.passwordHash ?: ""
                         username = it.name
                     }
                 }

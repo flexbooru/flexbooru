@@ -16,6 +16,7 @@
 package onlymash.flexbooru.api
 
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -35,7 +36,9 @@ import java.util.concurrent.TimeUnit
 
 @Keep
 data class OrderResponse(
+    @SerializedName("success")
     val success: Boolean,
+    @SerializedName("activated")
     val activated: Boolean
 )
 

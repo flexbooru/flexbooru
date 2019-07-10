@@ -104,8 +104,8 @@ class PostFragment : ListFragment(),
                         putString(
                             Constants.AUTH_KEY,
                             when (booru.type) {
-                                Constants.TYPE_DANBOORU -> user.api_key
-                                else -> user.password_hash
+                                Constants.TYPE_DANBOORU -> user.apiKey
+                                else -> user.passwordHash
                             }
                             )
                     } else {
@@ -292,7 +292,7 @@ class PostFragment : ListFragment(),
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.activeBooruUid) return
+            if (user.booruUid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (booruType) {
@@ -337,7 +337,7 @@ class PostFragment : ListFragment(),
         when (booruType) {
             Constants.TYPE_DANBOORU -> {
                 search.username = user.name
-                search.auth_key = user.api_key ?: ""
+                search.auth_key = user.apiKey ?: ""
                 postViewModel.apply {
                     show(search, tagBlacklists)
                     refreshDan()
@@ -345,7 +345,7 @@ class PostFragment : ListFragment(),
             }
             Constants.TYPE_MOEBOORU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 postViewModel.apply {
                     show(search, tagBlacklists)
                     refreshMoe()
@@ -353,7 +353,7 @@ class PostFragment : ListFragment(),
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 postViewModel.apply {
                     show(search, tagBlacklists)
                     refreshDanOne()
@@ -361,7 +361,7 @@ class PostFragment : ListFragment(),
             }
             Constants.TYPE_GELBOORU -> {
                 search.username = user.name
-                search.auth_key = user.api_key ?: ""
+                search.auth_key = user.apiKey ?: ""
                 postViewModel.apply {
                     show(search, tagBlacklists)
                     refreshGel()
@@ -369,7 +369,7 @@ class PostFragment : ListFragment(),
             }
             Constants.TYPE_SANKAKU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 postViewModel.apply {
                     show(search, tagBlacklists)
                     refreshSankaku()
@@ -404,7 +404,7 @@ class PostFragment : ListFragment(),
         when (postType) {
             POST_ALL -> (activity as MainActivity).addNavigationListener(navigationListener)
             POST_SEARCH ->  searchBar.setTitleOnLongClickCallback {
-                MuzeiManager.createMuzei(Muzei(booru_uid = Settings.activeBooruUid, keyword = search.keyword))
+                MuzeiManager.createMuzei(Muzei(booruUid = Settings.activeBooruUid, keyword = search.keyword))
                 Snackbar.make(searchBar, getString(R.string.post_add_search_to_muzei, search.keyword), Snackbar.LENGTH_LONG).show()
             }
             else -> {
@@ -481,7 +481,7 @@ class PostFragment : ListFragment(),
         ) {
             val text = searchBar.getEditTextText()
             if(text.isNotEmpty()) {
-                TagFilterManager.createTagFilter(TagFilter(booru_uid = Settings.activeBooruUid, name = text))
+                TagFilterManager.createTagFilter(TagFilter(booruUid = Settings.activeBooruUid, name = text))
             }
         }
         tags_filter_list.apply {
@@ -501,7 +501,7 @@ class PostFragment : ListFragment(),
             if (!tagString.isBlank()) {
 //                searchBar.disableSearchState()
                 SuggestionManager.createSuggestion(Suggestion(
-                    booru_uid = Settings.activeBooruUid,
+                    booruUid = Settings.activeBooruUid,
                     keyword = tagString))
                 SearchActivity.startActivity(requireContext(), tagString)
             }

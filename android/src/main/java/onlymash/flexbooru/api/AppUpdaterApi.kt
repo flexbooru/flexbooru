@@ -16,6 +16,7 @@
 package onlymash.flexbooru.api
 
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -102,8 +103,12 @@ interface AppUpdaterApi {
  * */
 @Keep
 data class UpdateInfo(
+    @SerializedName("version_code")
     val version_code: Long,
+    @SerializedName("version_name")
     val version_name: String,
+    @SerializedName("url")
     val url: String,
+    @SerializedName("is_available_store")
     var is_available_store: Boolean = true
 )

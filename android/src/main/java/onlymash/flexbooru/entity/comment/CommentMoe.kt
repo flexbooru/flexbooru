@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.entity.comment
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,11 +26,17 @@ import java.util.*
 data class CommentMoe(
     var scheme: String = "http",
     var host: String = "",
+    @SerializedName("id")
     val id: Int,
-    val created_at: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("post_id")
     val post_id: Int,
+    @SerializedName("creator")
     val creator: String,
+    @SerializedName("creator_id")
     val creator_id: Int,
+    @SerializedName("body")
     val body: String
 ) : CommentBase() {
     override fun getPostId(): Int = post_id
@@ -37,9 +44,9 @@ data class CommentMoe(
     override fun getCommentBody(): String = body
     override fun getCommentDate(): CharSequence {
         val date =  when {
-            created_at.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(created_at)
-            created_at.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(created_at)
-            else -> throw IllegalStateException("Unknown date format: $created_at")
+            createdAt.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(createdAt)
+            createdAt.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(createdAt)
+            else -> throw IllegalStateException("Unknown date format: $createdAt")
         } ?: return ""
         return date.time.formatDate()
     }

@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.entity.comment
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,25 +24,38 @@ import java.util.*
  * Danbooru response data class
  * */
 data class CommentDan(
+    @SerializedName("id")
     val id: Int,
-    val created_at: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("post_id")
     val post_id: Int,
+    @SerializedName("creator_id")
     val creator_id: Int,
+    @SerializedName("body")
     val body: String,
+    @SerializedName("score")
     val score: Int,
-    val updated_at: String,
-    val updater_id: Int,
-    val do_not_bump_post: Boolean,
-    val is_deleted: Boolean,
-    val is_sticky: Boolean,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+    @SerializedName("updater_id")
+    val updaterId: Int,
+    @SerializedName("do_not_bump_post")
+    val doNotBumpPost: Boolean,
+    @SerializedName("is_deleted")
+    val isDeleted: Boolean,
+    @SerializedName("is_sticky")
+    val isSticky: Boolean,
+    @SerializedName("creator_name")
     val creator_name: String,
-    val updater_name: String
+    @SerializedName("updater_name")
+    val updaterName: String
 ) : CommentBase() {
     override fun getPostId(): Int = post_id
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body
     override fun getCommentDate(): CharSequence {
-        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updated_at) ?: return ""
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updatedAt) ?: return ""
         return date.time.formatDate()
     }
     override fun getCreatorId(): Int = creator_id

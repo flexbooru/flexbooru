@@ -56,7 +56,7 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruV
                 b.name = booru.name
                 b.scheme = booru.scheme
                 b.host = booru.host
-                b.hash_salt = booru.hash_salt
+                b.hashSalt = booru.hashSalt
                 b.type = booru.type
                 notifyItemChanged(i)
                 return@forEachIndexed

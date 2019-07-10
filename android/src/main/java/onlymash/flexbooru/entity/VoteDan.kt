@@ -15,12 +15,18 @@
 
 package onlymash.flexbooru.entity
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Vote Danbooru post response
  * */
 data class VoteDan(
-    var success: Boolean = true,
-    var message: String = "",
-    var id: Int = -1,
-    var score: Int = -1
+    @SerializedName("success")
+    val success: Boolean = true,
+    @SerializedName("message")
+    val message: String = "",
+    @SerializedName("id")
+    val id: Int = -1,
+    @SerializedName("score")
+    val score: Int = -1
 )

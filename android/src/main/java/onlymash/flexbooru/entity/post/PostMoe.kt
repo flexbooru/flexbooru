@@ -16,45 +16,113 @@
 package onlymash.flexbooru.entity.post
 
 import android.text.format.Formatter
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.extension.formatDate
 
 @Entity(tableName = "posts_moebooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostMoe(
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
     val id: Int,
+    @ColumnInfo(name = "tags")
+    @SerializedName("tags")
     val tags: String?,
+    @ColumnInfo(name = "created_at")
+    @SerializedName("created_at")
     val created_at: Int,
+    @ColumnInfo(name = "creator_id")
+    @SerializedName("creator_id")
     val creator_id: Int,
+    @ColumnInfo(name = "author")
+    @SerializedName("author")
     val author: String,
+    @ColumnInfo(name = "change")
+    @SerializedName("change")
     val change: Int,
+    @ColumnInfo(name = "source")
+    @SerializedName("source")
     val source: String?,
+    @ColumnInfo(name = "score")
+    @SerializedName("score")
     val score: Int,
+    @ColumnInfo(name = "md5")
+    @SerializedName("md5")
     val md5: String,
+    @ColumnInfo(name = "file_size")
+    @SerializedName("file_size")
     val file_size: Int = 0,
+    @ColumnInfo(name = "file_url")
+    @SerializedName("file_url")
     val file_url: String?,
+    @ColumnInfo(name = "file_ext")
+    @SerializedName("file_ext")
     val file_ext: String?,
+    @ColumnInfo(name = "is_shown_in_index")
+    @SerializedName("is_shown_in_index")
     val is_shown_in_index: Boolean,
+    @ColumnInfo(name = "preview_url")
+    @SerializedName("preview_url")
     val preview_url: String,
+    @ColumnInfo(name = "preview_width")
+    @SerializedName("preview_width")
     val preview_width: Int,
+    @ColumnInfo(name = "preview_height")
+    @SerializedName("preview_height")
     val preview_height: Int,
+    @ColumnInfo(name = "actual_preview_width")
+    @SerializedName("actual_preview_width")
     val actual_preview_width: Int,
+    @ColumnInfo(name = "actual_preview_height")
+    @SerializedName("actual_preview_height")
     val actual_preview_height: Int,
+    @ColumnInfo(name = "sample_url")
+    @SerializedName("sample_url")
     val sample_url: String?,
+    @ColumnInfo(name = "sample_width")
+    @SerializedName("sample_width")
     val sample_width: Int,
+    @ColumnInfo(name = "sample_height")
+    @SerializedName("sample_height")
     val sample_height: Int,
+    @ColumnInfo(name = "sample_file_size")
+    @SerializedName("sample_file_size")
     val sample_file_size: Int = 0,
+    @ColumnInfo(name = "jpeg_url")
+    @SerializedName("jpeg_url")
     val jpeg_url: String?,
+    @ColumnInfo(name = "jpeg_width")
+    @SerializedName("jpeg_width")
     val jpeg_width: Int = 0,
+    @ColumnInfo(name = "jpeg_height")
+    @SerializedName("jpeg_height")
     val jpeg_height: Int = 0,
+    @ColumnInfo(name = "jpeg_file_size")
+    @SerializedName("jpeg_file_size")
     val jpeg_file_size: Int = 0,
+    @ColumnInfo(name = "rating")
+    @SerializedName("rating")
     val rating: String,
+    @ColumnInfo(name = "has_children")
+    @SerializedName("has_children")
     val has_children: Boolean,
+    @ColumnInfo(name = "parent_id")
+    @SerializedName("parent_id")
     val parent_id: Int?,
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
     val status: String,
+    @ColumnInfo(name = "width")
+    @SerializedName("width")
     val width: Int,
+    @ColumnInfo(name = "height")
+    @SerializedName("height")
     val height: Int,
+    @ColumnInfo(name = "is_held")
+    @SerializedName("is_held")
     val is_held: Boolean
 ) : PostBase() {
     override fun getSampleSize(): String =

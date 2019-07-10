@@ -15,15 +15,26 @@
 
 package onlymash.flexbooru.entity.artist
 
+import com.google.gson.annotations.SerializedName
+
 data class ArtistDan(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
-    val created_at: String,
-    val updated_at: String,
-    val creator_id: Int,
-    val is_active: Boolean,
-    val group_name: String,
-    val is_banned: Boolean,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+    @SerializedName("creator_id")
+    val creatorId: Int,
+    @SerializedName("is_active")
+    val isActive: Boolean,
+    @SerializedName("group_name")
+    val groupName: String,
+    @SerializedName("is_banned")
+    val isBanned: Boolean,
+    @SerializedName("urls")
     val urls: MutableList<ArtistUrlDan>?
 ) : ArtistBase() {
     override fun getArtistId(): Int = id
@@ -38,11 +49,18 @@ data class ArtistDan(
 }
 
 data class ArtistUrlDan(
+    @SerializedName("id")
     val id: Int,
-    val artist_id: Int,
+    @SerializedName("artist_id")
+    val artistId: Int,
+    @SerializedName("url")
     val url: String,
-    val normalized_url: String,
-    val created_at: String,
-    val updated_at: String,
-    val is_active: Boolean
+    @SerializedName("normalized_url")
+    val normalizedUrl: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+    @SerializedName("is_active")
+    val isActive: Boolean
 )

@@ -15,28 +15,40 @@
 
 package onlymash.flexbooru.entity.pool
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
 
 data class PoolDan(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
-    val created_at: String,
-    val updated_at: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+    @SerializedName("creator_id")
     val creator_id: Int,
+    @SerializedName("description")
     val description: String,
-    val is_active: Boolean,
-    val is_deleted: Boolean,
+    @SerializedName("is_active")
+    val isActive: Boolean,
+    @SerializedName("is_deleted")
+    val isDeleted: Boolean,
+    @SerializedName("category")
     val category: String,
+    @SerializedName("creator_name")
     val creator_name: String,
+    @SerializedName("post_count")
     val post_count: Int
 ) : PoolBase() {
     override fun getPoolId(): Int = id
     override fun getPoolName(): String = name
     override fun getPostCount(): Int = post_count
     override fun getPoolDate(): CharSequence {
-        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updated_at) ?: return ""
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updatedAt) ?: return ""
         return date.time.formatDate()
     }
     override fun getPoolDescription(): String = description

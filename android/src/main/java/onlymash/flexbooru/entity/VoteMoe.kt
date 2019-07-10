@@ -15,13 +15,17 @@
 
 package onlymash.flexbooru.entity
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.entity.post.PostMoe
 
 /**
  * Vote Moebooru post response
  * */
 data class VoteMoe(
+    @SerializedName("success")
     val success: Boolean,
-    var posts: MutableList<PostMoe> = mutableListOf(),
-    var message: String = ""
+    @SerializedName("posts")
+    val posts: MutableList<PostMoe> = mutableListOf(),
+    @SerializedName("message")
+    val message: String = ""
 )

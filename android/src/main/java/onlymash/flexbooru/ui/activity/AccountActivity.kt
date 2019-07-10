@@ -83,7 +83,7 @@ class AccountActivity : BaseActivity() {
                 if (id > 0 && !name.isNullOrBlank()) {
                     u = User(name = name, id = id)
                     if (type == Constants.TYPE_SANKAKU) {
-                        u.avatar_url = extras.getString(USER_AVATAR_KEY)
+                        u.avatarUrl = extras.getString(USER_AVATAR_KEY)
                     }
                 }
             }
@@ -141,9 +141,9 @@ class AccountActivity : BaseActivity() {
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
-        } else if (booru.type == Constants.TYPE_SANKAKU && !user.avatar_url.isNullOrEmpty()) {
+        } else if (booru.type == Constants.TYPE_SANKAKU && !user.avatarUrl.isNullOrEmpty()) {
             GlideApp.with(this)
-                .load(user.avatar_url)
+                .load(user.avatarUrl)
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
         }

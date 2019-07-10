@@ -198,7 +198,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     name = "Sample",
                     scheme = "https",
                     host = "moe.fiepi.com",
-                    hash_salt = "onlymash--your-password--",
+                    hashSalt = "onlymash--your-password--",
                     type = Constants.TYPE_MOEBOORU))
         }
         boorus = BooruManager.getAllBoorus() ?: mutableListOf()
@@ -321,7 +321,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     it.name = booru.name
                     it.scheme = booru.scheme
                     it.host = booru.host
-                    it.hash_salt = booru.hash_salt
+                    it.hashSalt = booru.hashSalt
                     it.type = booru.type
                     if (Settings.activeBooruUid == booru.uid) {
                         pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
@@ -363,9 +363,9 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 if (it.uid == user.uid) {
                     it.name = user.name
                     it.id = user.id
-                    it.booru_uid
-                    it.password_hash = user.password_hash
-                    it.api_key = user.api_key
+                    it.booruUid
+                    it.passwordHash = user.passwordHash
+                    it.apiKey = user.apiKey
                     return@forEach
                 }
             }
@@ -570,7 +570,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         var user: User? = null
         val booruUid = Settings.activeBooruUid
         users.forEach {
-            if (it.booru_uid == booruUid) {
+            if (it.booruUid == booruUid) {
                 user = it
                 return@forEach
             }

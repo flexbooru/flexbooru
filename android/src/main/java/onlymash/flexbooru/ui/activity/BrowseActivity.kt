@@ -403,7 +403,7 @@ class BrowseActivity : BaseActivity() {
                             host = booru.host,
                             post_id = post.id,
                             username = user.name,
-                            auth_key = user.api_key ?: return@let)
+                            auth_key = user.apiKey ?: return@let)
                         val postFav = getCurrentPostFav()
                         if (postFav is PostDan) {
                             lifecycleScope.launch {
@@ -430,7 +430,7 @@ class BrowseActivity : BaseActivity() {
                                     score = 0,
                                     post_id = post.id,
                                     username = user.name,
-                                    auth_key = user.password_hash ?: return@let)
+                                    auth_key = user.passwordHash ?: return@let)
                             }
                             else -> {
                                 Vote(
@@ -439,7 +439,7 @@ class BrowseActivity : BaseActivity() {
                                     score = 3,
                                     post_id = post.id,
                                     username = user.name,
-                                    auth_key = user.password_hash ?: return@let)
+                                    auth_key = user.passwordHash ?: return@let)
                             }
                         }
                         lifecycleScope.launch {
@@ -456,7 +456,7 @@ class BrowseActivity : BaseActivity() {
                             host = booru.host,
                             post_id = post.id,
                             username = user.name,
-                            auth_key = user.password_hash ?: return@let)
+                            auth_key = user.passwordHash ?: return@let)
                         if (postFav is PostDanOne) {
                             lifecycleScope.launch {
                                 val result = voteRepository.removeDanOneFav(vote, postFav)
@@ -480,7 +480,7 @@ class BrowseActivity : BaseActivity() {
                             host = booru.host,
                             post_id = post.id,
                             username = user.name,
-                            auth_key = user.password_hash ?: return@let)
+                            auth_key = user.passwordHash ?: return@let)
                         if (postFav is PostSankaku) {
                             lifecycleScope.launch {
                                 val result = voteRepository.removeSankakuFav(vote, postFav)
@@ -503,7 +503,7 @@ class BrowseActivity : BaseActivity() {
                             host = booru.host,
                             post_id = post.getPostId(),
                             username = user.name,
-                            auth_key = user.password_hash ?: ""
+                            auth_key = user.passwordHash ?: ""
                         )
                         lifecycleScope.launch {
                             when (val result = voteRepository.addGelFav(vote, post)) {

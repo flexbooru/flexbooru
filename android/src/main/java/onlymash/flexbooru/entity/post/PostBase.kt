@@ -15,15 +15,21 @@
 
 package onlymash.flexbooru.entity.post
 
+import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 
 abstract class PostBase {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     var uid: Long = 0L
     // to be consistent w/ changing backend order, we need to keep a data like this
+    @ColumnInfo(name = "indexInResponse")
     var indexInResponse: Int = -1
+    @ColumnInfo(name = "scheme")
     var scheme: String = "http"
+    @ColumnInfo(name = "host")
     var host: String = ""
+    @ColumnInfo(name = "keyword")
     var keyword: String = ""
 
     internal fun checkUrl(url: String): String {

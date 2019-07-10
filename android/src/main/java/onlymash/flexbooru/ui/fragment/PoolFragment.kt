@@ -68,8 +68,8 @@ class PoolFragment : ListFragment() {
                             Constants.AUTH_KEY,
                             when (booru.type) {
                                 Constants.TYPE_DANBOORU,
-                                Constants.TYPE_GELBOORU-> user.api_key
-                                else -> user.password_hash
+                                Constants.TYPE_GELBOORU-> user.apiKey
+                                else -> user.passwordHash
                             }
                         )
                     } else {
@@ -128,7 +128,7 @@ class PoolFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.activeBooruUid) return
+            if (user.booruUid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -167,7 +167,7 @@ class PoolFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 search.username = user.name
-                search.auth_key = user.api_key ?: ""
+                search.auth_key = user.apiKey ?: ""
                 poolViewModel.apply {
                     show(search)
                     refreshDan()
@@ -175,7 +175,7 @@ class PoolFragment : ListFragment() {
             }
             Constants.TYPE_MOEBOORU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 poolViewModel.apply {
                     show(search)
                     refreshMoe()
@@ -183,7 +183,7 @@ class PoolFragment : ListFragment() {
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 poolViewModel.apply {
                     show(search)
                     refreshDanOne()
@@ -191,7 +191,7 @@ class PoolFragment : ListFragment() {
             }
             Constants.TYPE_SANKAKU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 poolViewModel.apply {
                     show(search)
                     refreshSankaku()

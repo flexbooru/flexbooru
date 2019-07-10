@@ -15,15 +15,26 @@
 
 package onlymash.flexbooru.entity.tag
 
+import com.google.gson.annotations.SerializedName
+
 data class TagDan(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("post_count")
     val post_count: Int,
+    @SerializedName("related_tags")
     val related_tags: String,
+    @SerializedName("related_tags_updated_at")
     val related_tags_updated_at: String,
+    @SerializedName("category")
     val category: Int,
+    @SerializedName("created_at")
     val created_at: String,
+    @SerializedName("updated_at")
     val updated_at: String,
+    @SerializedName("is_locked")
     val is_locked: Boolean
 ) : TagBase() {
     override fun getTagId(): Int = id

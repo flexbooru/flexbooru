@@ -15,7 +15,12 @@
 
 package onlymash.flexbooru.entity.comment
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Comment response
  * */
-data class CommentResponse(val success: Boolean)
+data class CommentResponse(
+    @SerializedName("success")
+    val success: Boolean
+)

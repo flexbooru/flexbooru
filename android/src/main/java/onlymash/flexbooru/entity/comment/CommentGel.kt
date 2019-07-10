@@ -20,23 +20,23 @@ import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "comment")
 data class CommentGel(
-    @Attribute
+    @Attribute(name = "id")
     val id: Int,
-    @Attribute
-    val created_at: String,
-    @Attribute
+    @Attribute(name = "created_at")
+    val createdAt: String,
+    @Attribute(name = "post_id")
     val post_id: Int,
-    @Attribute
+    @Attribute(name = "creator")
     val creator: String,
-    @Attribute
+    @Attribute(name = "creator_id")
     val creator_id: Int,
-    @Attribute
+    @Attribute(name = "body")
     val body: String
 ) : CommentBase() {
     override fun getPostId(): Int = post_id
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body
-    override fun getCommentDate(): CharSequence = created_at
+    override fun getCommentDate(): CharSequence = createdAt
     override fun getCreatorId(): Int = creator_id
     override fun getCreatorName(): String = creator
 }

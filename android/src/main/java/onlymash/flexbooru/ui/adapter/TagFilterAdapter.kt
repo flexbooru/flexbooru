@@ -102,7 +102,7 @@ class TagFilterAdapter(private val orders: Array<String>,
             tags.addAll(newTags)
         } else {
             newTags.forEach {
-                if (it.booru_uid == booruUid) {
+                if (it.booruUid == booruUid) {
                     tags.add(it)
                 }
             }
@@ -119,7 +119,7 @@ class TagFilterAdapter(private val orders: Array<String>,
             tags.addAll(allTags)
         } else {
             allTags.forEach {
-                if (it.booru_uid == booruUid) {
+                if (it.booruUid == booruUid) {
                     tags.add(it)
                 }
             }

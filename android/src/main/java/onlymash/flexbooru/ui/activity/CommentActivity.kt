@@ -195,8 +195,8 @@ class CommentActivity : BaseActivity(), KodeinAware {
             with(commentAction) {
                 username = it.name
                 auth_key = when (type) {
-                    Constants.TYPE_DANBOORU -> it.api_key ?: ""
-                    else -> it.password_hash ?: ""
+                    Constants.TYPE_DANBOORU -> it.apiKey ?: ""
+                    else -> it.passwordHash ?: ""
                 }
             }
         }

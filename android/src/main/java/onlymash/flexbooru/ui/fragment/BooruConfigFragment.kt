@@ -41,7 +41,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
         const val BOORU_CONFIG_SCHEME_HTTP = "http"
         const val BOORU_CONFIG_SCHEME_HTTPS = "https"
         const val BOORU_CONFIG_HOST_KEY = "booru_config_host"
-        const val BOORU_CONFIG_HASH_SALT_KEY = "booru_config_hash_salt"
+        const val BOORU_CONFIG_hashSalt_KEY = "booru_config_hashSalt"
         private val sp: SharedPreferences by App.app.instance()
         var booruUid = -1L
         fun reset() {
@@ -51,7 +51,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 putString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)
                 putString(BOORU_CONFIG_SCHEME_KEY, BOORU_CONFIG_SCHEME_HTTPS)
                 putString(BOORU_CONFIG_HOST_KEY, "")
-                putString(BOORU_CONFIG_HASH_SALT_KEY, "")
+                putString(BOORU_CONFIG_hashSalt_KEY, "")
             }.apply()
         }
         fun set(booru: Booru) {
@@ -59,21 +59,21 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
             val type = when (booru.type) {
                 Constants.TYPE_DANBOORU -> BOORU_CONFIG_TYPE_DANBOORU
                 Constants.TYPE_MOEBOORU -> {
-                    if (booru.hash_salt.isNotBlank()) {
-                        hashSalt = booru.hash_salt
+                    if (booru.hashSalt.isNotBlank()) {
+                        hashSalt = booru.hashSalt
                     }
                     BOORU_CONFIG_TYPE_MOEBOORU
                 }
                 Constants.TYPE_DANBOORU_ONE -> {
-                    if (booru.hash_salt.isNotBlank()) {
-                        hashSalt = booru.hash_salt
+                    if (booru.hashSalt.isNotBlank()) {
+                        hashSalt = booru.hashSalt
                     }
                     BOORU_CONFIG_TYPE_DANBOORU_ONE
                 }
                 Constants.TYPE_GELBOORU -> BOORU_CONFIG_TYPE_GELBOORU
                 Constants.TYPE_SANKAKU -> {
-                    if (booru.hash_salt.isNotBlank()) {
-                        hashSalt = booru.hash_salt
+                    if (booru.hashSalt.isNotBlank()) {
+                        hashSalt = booru.hashSalt
                     }
                     BOORU_CONFIG_TYPE_SANKAKU
                 }
@@ -84,7 +84,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 putString(BOORU_CONFIG_TYPE_KEY, type)
                 putString(BOORU_CONFIG_SCHEME_KEY, booru.scheme)
                 putString(BOORU_CONFIG_HOST_KEY, booru.host)
-                putString(BOORU_CONFIG_HASH_SALT_KEY, hashSalt)
+                putString(BOORU_CONFIG_hashSalt_KEY, hashSalt)
             }.apply()
         }
         fun get(): Booru {
@@ -93,7 +93,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 name = getName(sp),
                 scheme = getScheme(sp),
                 host = getHost(sp),
-                hash_salt = getHashSalt(sp),
+                hashSalt = getHashSalt(sp),
                 type = getTypeInt(sp)
             )
         }
@@ -125,7 +125,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 Constants.TYPE_DANBOORU,
                 Constants.TYPE_GELBOORU -> return ""
             }
-            val hashSalt = sp.getString(BOORU_CONFIG_HASH_SALT_KEY, "")
+            val hashSalt = sp.getString(BOORU_CONFIG_hashSalt_KEY, "")
             return if (hashSalt.isNullOrEmpty()) "" else hashSalt
         }
     }
@@ -135,7 +135,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         booruUid = requireActivity().intent.getLongExtra(EXTRA_BOORU_UID, -1L)
         addPreferencesFromResource(R.xml.pref_booru_config)
-        hashSaltPreferences = findPreference(BOORU_CONFIG_HASH_SALT_KEY)
+        hashSaltPreferences = findPreference(BOORU_CONFIG_hashSalt_KEY)
         when (sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
             BOORU_CONFIG_TYPE_DANBOORU,
             BOORU_CONFIG_TYPE_GELBOORU -> {

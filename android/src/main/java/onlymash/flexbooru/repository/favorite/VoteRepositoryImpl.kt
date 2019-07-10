@@ -229,7 +229,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                 )
                 val data = response.body()
                 if (response.isSuccessful && data != null) {
-                    if (data.post_id == post.id) {
+                    if (data.postId == post.id) {
                         post.scheme = vote.scheme
                         post.keyword = "fav:${vote.username}"
                         post.uid = 0L
@@ -259,7 +259,7 @@ class VoteRepositoryImpl(private val danbooruApi: DanbooruApi,
                 )
                 val data = response.body()
                 if (response.isSuccessful && data != null) {
-                    if (data.post_id == postFav.id) {
+                    if (data.postId == postFav.id) {
                         db.postSankakuDao().deletePost(postFav)
                         NetResult.Success(data)
                     } else NetResult.Error(data.toString())

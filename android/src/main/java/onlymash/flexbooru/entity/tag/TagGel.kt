@@ -20,15 +20,15 @@ import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "tag")
 data class TagGel(
-    @Attribute
+    @Attribute(name = "id")
     val id: Int,
-    @Attribute
+    @Attribute(name = "name")
     val name: String,
-    @Attribute
+    @Attribute(name = "count")
     val count: Int,
-    @Attribute
+    @Attribute(name = "type")
     val type: Int,
-    @Attribute
+    @Attribute(name = "ambiguous")
     val ambiguous: Boolean
 ) : TagBase() {
     override fun getTagId(): Int = id

@@ -15,15 +15,25 @@
 
 package onlymash.flexbooru.entity.artist
 
+import com.google.gson.annotations.SerializedName
+
 data class ArtistDanOne(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
-    val updater_id: Int,
+    @SerializedName("updater_id")
+    val updaterId: Int,
+    @SerializedName("version")
     val version: Int,
-    val is_active: Boolean,
-    val urls: MutableList<String>?,
-    val group_name: String?,
-    val other_name: String?
+    @SerializedName("is_active")
+    val isActive: Boolean,
+    @SerializedName("urls")
+    val urls: MutableList<String>? = null,
+    @SerializedName("group_name")
+    val groupName: String? = null,
+    @SerializedName("other_name")
+    val otherName: String? = null
 ) : ArtistBase() {
     override fun getArtistId(): Int = id
     override fun getArtistName(): String  = name

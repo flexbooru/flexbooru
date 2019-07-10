@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.entity.post
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import com.tickaroo.tikxml.annotation.Attribute
@@ -26,49 +27,71 @@ import java.util.*
 @Xml(name = "post")
 @Entity(tableName = "posts_gelbooru", indices = [(Index(value = ["host", "keyword", "id"], unique = true))])
 data class PostGel(
-    @Attribute
+    @Attribute(name = "id")
+    @ColumnInfo(name = "id")
     val id: Int,
-    @Attribute
+    @Attribute(name = "height")
+    @ColumnInfo(name = "height")
     val height: Int,
-    @Attribute
+    @ColumnInfo(name = "score")
+    @Attribute(name = "score")
     val score: String,
-    @Attribute
+    @ColumnInfo(name = "file_url")
+    @Attribute(name = "file_url")
     val file_url: String,
-    @Attribute
+    @ColumnInfo(name = "sample_url")
+    @Attribute(name = "sample_url")
     val sample_url: String,
-    @Attribute
+    @ColumnInfo(name = "sample_width")
+    @Attribute(name = "sample_width")
     val sample_width: Int,
-    @Attribute
+    @ColumnInfo(name = "sample_height")
+    @Attribute(name = "sample_height")
     val sample_height: Int,
-    @Attribute
+    @ColumnInfo(name = "preview_url")
+    @Attribute(name = "preview_url")
     val preview_url: String,
-    @Attribute
+    @ColumnInfo(name = "rating")
+    @Attribute(name = "rating")
     val rating: String,
-    @Attribute
+    @ColumnInfo(name = "tags")
+    @Attribute(name = "tags")
     val tags: String,
-    @Attribute
+    @ColumnInfo(name = "width")
+    @Attribute(name = "width")
     val width: Int,
-    @Attribute
+    @ColumnInfo(name = "change")
+    @Attribute(name = "change")
     val change: Long,
-    @Attribute
+    @ColumnInfo(name = "md5")
+    @Attribute(name = "md5")
     val md5: String,
-    @Attribute
+    @ColumnInfo(name = "creator_id")
+    @Attribute(name = "creator_id")
     val creator_id: Int,
-    @Attribute
+    @ColumnInfo(name = "has_children")
+    @Attribute(name = "has_children")
     val has_children: Boolean,
-    @Attribute
+    @ColumnInfo(name = "created_at")
+    @Attribute(name = "created_at")
     val created_at:	String,
-    @Attribute
+    @ColumnInfo(name = "status")
+    @Attribute(name = "status")
     val status: String,
-    @Attribute
+    @ColumnInfo(name = "source")
+    @Attribute(name = "source")
     val source: String,
-    @Attribute
+    @ColumnInfo(name = "has_notes")
+    @Attribute(name = "has_notes")
     val has_notes:	Boolean,
-    @Attribute
+    @ColumnInfo(name = "has_comments")
+    @Attribute(name = "has_comments")
     val has_comments: Boolean,
-    @Attribute
+    @ColumnInfo(name = "preview_width")
+    @Attribute(name = "preview_width")
     val preview_width: Int,
-    @Attribute
+    @ColumnInfo(name = "preview_height")
+    @Attribute(name = "preview_height")
     val preview_height: Int
 ) : PostBase() {
     override fun getSampleSize(): String = "$sample_width x $sample_height"

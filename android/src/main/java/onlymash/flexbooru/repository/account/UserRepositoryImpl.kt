@@ -103,13 +103,13 @@ class UserRepositoryImpl(private val danbooruApi: DanbooruApi,
                             NetResult.Error(response.message)
                         } else {
                             val user = User(
-                                booru_uid = booru.uid,
+                                booruUid = booru.uid,
                                 name = username,
                                 id = userId,
-                                password_hash = passHash
+                                passwordHash = passHash
                             )
                             CookieManager.createCookie(onlymash.flexbooru.entity.Cookie(
-                                booru_uid = booru.uid,
+                                booruUid = booru.uid,
                                 cookie = "user_id=$userId; pass_hash=$passHash"
                             ))
                             NetResult.Success(user)

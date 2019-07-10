@@ -81,7 +81,7 @@ class TagBlacklistActivity : BaseActivity() {
                     val text = (editText.text ?: "").toString().trim()
                     if (!text.isBlank()) {
                         TagBlacklistManager.createTagBlacklist(
-                            TagBlacklist(booru_uid = uid, tag = text)
+                            TagBlacklist(booruUid = uid, tag = text)
                         )
                     } else {
                         Snackbar.make(

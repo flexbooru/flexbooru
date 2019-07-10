@@ -248,7 +248,7 @@ class SearchBar @JvmOverloads constructor(
     fun applySearch() {
         val query = getQuery()
         if (query.isNotEmpty()) {
-            SuggestionManager.createSuggestion(Suggestion(booru_uid = booruUid, keyword = query))
+            SuggestionManager.createSuggestion(Suggestion(booruUid = booruUid, keyword = query))
         }
         setState(STATE_NORMAL)
         helper?.onApplySearch(query)

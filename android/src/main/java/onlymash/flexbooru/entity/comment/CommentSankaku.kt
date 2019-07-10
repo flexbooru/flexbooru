@@ -15,22 +15,33 @@
 
 package onlymash.flexbooru.entity.comment
 
+import com.google.gson.annotations.SerializedName
+
 data class CommentSankaku(
+    @SerializedName("body")
     val body: String,
-    val created_at: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("creator")
     val creator: String,
-    val creator_avatar: String?,
-    val creator_avatar_rating: String?,
+    @SerializedName("creator_avatar")
+    val creatorAvatar: String?,
+    @SerializedName("creator_avatar_rating")
+    val creatorAvatarRating: String?,
+    @SerializedName("creator_id")
     val creator_id: Int,
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("post_id")
     val post_id: Int,
+    @SerializedName("score")
     val score: Int
 ) : CommentBase() {
 
     var scheme = "https"
     var host = ""
 
-    fun getAvatarUrl() = checkUrl(creator_avatar ?: "")
+    fun getAvatarUrl() = checkUrl(creatorAvatar ?: "")
 
     private fun checkUrl(url: String): String {
         var u = url
@@ -51,7 +62,7 @@ data class CommentSankaku(
 
     override fun getCommentBody(): String = body
 
-    override fun getCommentDate(): CharSequence = created_at
+    override fun getCommentDate(): CharSequence = createdAt
 
     override fun getCreatorId(): Int = creator_id
 

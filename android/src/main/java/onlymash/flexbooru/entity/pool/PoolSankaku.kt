@@ -15,35 +15,61 @@
 
 package onlymash.flexbooru.entity.pool
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.entity.SankakuAuthor
 import onlymash.flexbooru.entity.SankakuTag
 
 data class PoolSankaku(
-    val artist_tags: List<SankakuTag>,
+    @SerializedName("artist_tags")
+    val artistTags: List<SankakuTag>,
+    @SerializedName("author")
     val author: SankakuAuthor,
-    val cover_url: String,
-    val created_at: String,
+    @SerializedName("cover_url")
+    val coverUrl: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("description")
     val description: String,
-    val description_en: String?,
-    val description_ja: String?,
-    val fav_count: Int,
+    @SerializedName("description_en")
+    val descriptionEn: String?,
+    @SerializedName("description_ja")
+    val descriptionJa: String?,
+    @SerializedName("fav_count")
+    val favCount: Int,
+    @SerializedName("id")
     val id: Int,
-    val is_active: Boolean,
-    val is_favorited: Boolean,
-    val is_public: Boolean,
-    val is_rating_locked: Boolean,
+    @SerializedName("is_active")
+    val isActive: Boolean,
+    @SerializedName("is_favorited")
+    val isFavorited: Boolean,
+    @SerializedName("is_public")
+    val isPublic: Boolean,
+    @SerializedName("is_rating_locked")
+    val isRatingLocked: Boolean,
+    @SerializedName("locale")
     val locale: String,
+    @SerializedName("name")
     val name: String,
-    val name_en: String?,
-    val name_ja: String?,
-    val parent_id: Int?,
+    @SerializedName("name_en")
+    val nameEn: String?,
+    @SerializedName("name_ja")
+    val nameJa: String?,
+    @SerializedName("parent_id")
+    val parentId: Int? = null,
+    @SerializedName("post_count")
     val post_count: Int,
+    @SerializedName("rating")
     val rating: String,
-    val tags: List<SankakuTag>?,
-    val total_score: Int,
-    val updated_at: String,
-    val visible_post_count: Int,
-    val vote_count: Int
+    @SerializedName("tags")
+    val tags: List<SankakuTag>? = null,
+    @SerializedName("total_score")
+    val totalScore: Int,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+    @SerializedName("visible_post_count")
+    val visiblePostCount: Int,
+    @SerializedName("vote_count")
+    val voteCount: Int
 ) : PoolBase() {
 
     override fun getPoolId(): Int = id
@@ -52,7 +78,7 @@ data class PoolSankaku(
 
     override fun getPostCount(): Int = post_count
 
-    override fun getPoolDate(): CharSequence = updated_at
+    override fun getPoolDate(): CharSequence = updatedAt
 
     override fun getPoolDescription(): String = description
 

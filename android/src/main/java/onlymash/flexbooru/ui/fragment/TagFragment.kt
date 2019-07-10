@@ -82,8 +82,8 @@ class TagFragment : ListFragment() {
                             Constants.AUTH_KEY,
                             when (booru.type) {
                                 Constants.TYPE_DANBOORU,
-                                Constants.TYPE_GELBOORU-> user.api_key
-                                else -> user.password_hash
+                                Constants.TYPE_GELBOORU-> user.apiKey
+                                else -> user.passwordHash
                             }
                         )
                     } else {
@@ -228,7 +228,7 @@ class TagFragment : ListFragment() {
             updateUserInfoAndRefresh(user)
         }
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.activeBooruUid) return
+            if (user.booruUid != Settings.activeBooruUid) return
             search.username = ""
             search.auth_key = ""
             when (type) {
@@ -273,7 +273,7 @@ class TagFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 search.username = user.name
-                search.auth_key = user.api_key ?: ""
+                search.auth_key = user.apiKey ?: ""
                 tagViewModel.apply {
                     show(search)
                     refreshDan()
@@ -281,7 +281,7 @@ class TagFragment : ListFragment() {
             }
             Constants.TYPE_MOEBOORU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 tagViewModel.apply {
                     show(search)
                     refreshMoe()
@@ -289,7 +289,7 @@ class TagFragment : ListFragment() {
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 tagViewModel.apply {
                     show(search)
                     refreshDanOne()
@@ -297,7 +297,7 @@ class TagFragment : ListFragment() {
             }
             Constants.TYPE_GELBOORU -> {
                 search.username = user.name
-                search.auth_key = user.api_key ?: ""
+                search.auth_key = user.apiKey ?: ""
                 tagViewModel.apply {
                     show(search)
                     refreshGel()
@@ -305,7 +305,7 @@ class TagFragment : ListFragment() {
             }
             Constants.TYPE_SANKAKU -> {
                 search.username = user.name
-                search.auth_key = user.password_hash ?: ""
+                search.auth_key = user.passwordHash ?: ""
                 tagViewModel.apply {
                     show(search)
                     refreshSankaku()

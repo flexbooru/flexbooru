@@ -18,20 +18,34 @@ package onlymash.flexbooru.entity
 import android.net.Uri
 import android.util.Base64
 import androidx.core.net.toUri
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 @Entity(tableName = "boorus", indices = [(Index(value = ["scheme", "host"], unique = true))])
 data class Booru(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
+    @SerializedName("uid")
     var uid: Long = 0L,
+    @ColumnInfo(name = "name")
+    @SerializedName("name")
     var name: String,
+    @ColumnInfo(name = "scheme")
+    @SerializedName("scheme")
     var scheme: String,
+    @ColumnInfo(name = "host")
+    @SerializedName("host")
     var host: String,
-    var hash_salt: String = "",
+    @ColumnInfo(name = "hash_salt")
+    @SerializedName("hash_salt")
+    var hashSalt: String = "",
     // 0: danbooru 1: moebooru
+    @ColumnInfo(name = "type")
+    @SerializedName("type")
     var type: Int
 ) {
     override fun toString(): String = toUri().toString()
@@ -40,7 +54,7 @@ data class Booru(
         return Uri.Builder()
             .scheme("booru")
             .encodedAuthority(String.format(Locale.ENGLISH, "%s",
-                Base64.encodeToString("$name@@@$scheme@@@$host@@@$type@@@$hash_salt".toByteArray(),
+                Base64.encodeToString("$name@@@$scheme@@@$host@@@$type@@@$hashSalt".toByteArray(),
                     Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)))
             .build()
     }
@@ -56,7 +70,7 @@ data class Booru(
                 val dataList = String(dataByte).split("@@@")
                 if (dataList.size == 5) {
                     Booru(uid = -1, name = dataList[0], scheme = dataList[1],
-                        host = dataList[2], type = dataList[3].toInt(), hash_salt = dataList[4])
+                        host = dataList[2], type = dataList[3].toInt(), hashSalt = dataList[4])
                 } else {
                     null
                 }

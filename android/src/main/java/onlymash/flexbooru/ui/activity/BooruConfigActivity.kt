@@ -71,8 +71,8 @@ class BooruConfigActivity : BaseActivity() {
                         !booru.host.isHost() -> {
                             Snackbar.make(toolbar, getString(R.string.booru_config_host_invalid), Snackbar.LENGTH_LONG).show()
                         }
-                        booru.type in hashBoorus && booru.hash_salt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
-                        booru.type in hashBoorus && !booru.hash_salt.contains(Constants.HASH_SALT_CONTAINED) -> {
+                        booru.type in hashBoorus && booru.hashSalt.isEmpty() -> Snackbar.make(toolbar, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
+                        booru.type in hashBoorus && !booru.hashSalt.contains(Constants.HASH_SALT_CONTAINED) -> {
                             Snackbar.make(toolbar, getString(R.string.booru_config_hash_salt_must_contain_yp), Snackbar.LENGTH_LONG).show()
                         }
                         booru.uid == -1L -> {

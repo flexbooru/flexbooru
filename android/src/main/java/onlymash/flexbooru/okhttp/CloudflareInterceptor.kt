@@ -93,7 +93,7 @@ class CloudflareInterceptor : Interceptor {
             }
         }
 
-        onlymash.flexbooru.database.CookieManager.createCookie(Cookie(booru_uid = Settings.activeBooruUid, cookie = cookie))
+        onlymash.flexbooru.database.CookieManager.createCookie(Cookie(booruUid = Settings.activeBooruUid, cookie = cookie))
 
         return request.newBuilder()
             .removeHeader(HttpHeaders.Cookie)

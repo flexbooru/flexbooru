@@ -15,8 +15,13 @@
 
 package onlymash.flexbooru.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class DanOneDate(
+    @SerializedName("n")
     val n: Long,
+    @SerializedName("s")
     val s: Long,
+    @SerializedName("json_class")
     val json_class: String
 )

@@ -15,10 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
     foreignKeys = [(ForeignKey(
@@ -28,7 +25,10 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE))])
 data class Muzei(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     var uid: Long = 0L,
-    val booru_uid: Long,
+    @ColumnInfo(name = "booru_uid")
+    val booruUid: Long,
+    @ColumnInfo(name = "keyword")
     var keyword: String
 )

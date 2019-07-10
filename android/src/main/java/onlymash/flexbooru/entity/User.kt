@@ -15,10 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "users", indices = [(Index(value = ["booru_uid"], unique = true))],
     foreignKeys = [(ForeignKey(
@@ -28,11 +25,18 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE))])
 data class User(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     var uid: Long = 0L,
-    var booru_uid: Long = -1L,
+    @ColumnInfo(name = "booru_uid")
+    var booruUid: Long = -1L,
+    @ColumnInfo(name = "name")
     var name: String,
+    @ColumnInfo(name = "id")
     var id: Int,
-    var password_hash: String? = null,
-    var api_key: String? = null,
-    var avatar_url: String? = null
+    @ColumnInfo(name = "password_hash")
+    var passwordHash: String? = null,
+    @ColumnInfo(name = "api_key")
+    var apiKey: String? = null,
+    @ColumnInfo(name = "avatar_url")
+    var avatarUrl: String? = null
 )

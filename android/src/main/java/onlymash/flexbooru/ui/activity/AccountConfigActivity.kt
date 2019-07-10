@@ -108,7 +108,7 @@ class AccountConfigActivity : BaseActivity() {
             Snackbar.make(account_config_title, getString(R.string.account_config_msg_tip_empty), Snackbar.LENGTH_LONG).show()
             return
         }
-        val hashSalt = booru.hash_salt
+        val hashSalt = booru.hashSalt
         if ((booru.type == Constants.TYPE_MOEBOORU
                     || booru.type == Constants.TYPE_DANBOORU_ONE
                     || booru.type == Constants.TYPE_SANKAKU) && hashSalt.isNotBlank()) {
@@ -136,8 +136,8 @@ class AccountConfigActivity : BaseActivity() {
                 when (booru.type) {
                     Constants.TYPE_DANBOORU -> {
                         user.apply {
-                            booru_uid = booru.uid
-                            api_key = pass
+                            booruUid = booru.uid
+                            apiKey = pass
                         }
                         UserManager.createUser(user)
                     }
@@ -145,8 +145,8 @@ class AccountConfigActivity : BaseActivity() {
                     Constants.TYPE_DANBOORU_ONE,
                     Constants.TYPE_SANKAKU -> {
                         user.apply {
-                            booru_uid = booru.uid
-                            password_hash = pass
+                            booruUid = booru.uid
+                            passwordHash = pass
                         }
                         UserManager.createUser(user)
                     }

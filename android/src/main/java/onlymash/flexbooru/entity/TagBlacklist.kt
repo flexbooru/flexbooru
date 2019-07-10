@@ -15,10 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "tag_blacklist", indices = [(Index(value = ["booru_uid", "tag"], unique = true))],
     foreignKeys = [(ForeignKey(
@@ -28,7 +25,10 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE))])
 data class TagBlacklist(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     var uid: Long = 0L,
-    var booru_uid: Long,
+    @ColumnInfo(name = "booru_uid")
+    var booruUid: Long,
+    @ColumnInfo(name = "tag")
     var tag: String
 )

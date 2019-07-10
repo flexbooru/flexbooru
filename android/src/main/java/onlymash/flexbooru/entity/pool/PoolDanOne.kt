@@ -15,23 +15,31 @@
 
 package onlymash.flexbooru.entity.pool
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.entity.DanOneDate
 import onlymash.flexbooru.extension.formatDate
 
 data class PoolDanOne(
-    val user_id: Int,
-    val is_public: Boolean,
+    @SerializedName("user_id")
+    val userId: Int,
+    @SerializedName("is_public")
+    val isPublic: Boolean,
+    @SerializedName("post_count")
     val post_count: Int,
+    @SerializedName("name")
     val name: String,
-    val updated_at: DanOneDate,
+    @SerializedName("updated_at")
+    val updatedAt: DanOneDate,
+    @SerializedName("id")
     val id: Int,
-    val created_at: DanOneDate
+    @SerializedName("created_at")
+    val createdAt: DanOneDate
 ) : PoolBase() {
     override fun getPoolId(): Int = id
     override fun getPoolName(): String = name
     override fun getPostCount(): Int = post_count
-    override fun getPoolDate(): CharSequence = (updated_at.s * 1000L).formatDate()
+    override fun getPoolDate(): CharSequence = (updatedAt.s * 1000L).formatDate()
     override fun getPoolDescription(): String = ""
-    override fun getCreatorId(): Int = user_id
+    override fun getCreatorId(): Int = userId
     override fun getCreatorName(): String? = null
 }

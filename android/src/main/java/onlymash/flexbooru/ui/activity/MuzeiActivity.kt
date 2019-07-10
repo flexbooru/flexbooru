@@ -79,7 +79,7 @@ class MuzeiActivity : BaseActivity() {
                         .setPositiveButton(R.string.dialog_yes) { _, _ ->
                             val text = (editText.text ?: "").toString().trim()
                             if (!text.isBlank()) {
-                                MuzeiManager.createMuzei(Muzei(booru_uid = uid, keyword = text))
+                                MuzeiManager.createMuzei(Muzei(booruUid = uid, keyword = text))
                             } else {
                                 Snackbar.make(toolbar, getString(R.string.muzei_input_cant_be_empty), Snackbar.LENGTH_LONG).show()
                             }

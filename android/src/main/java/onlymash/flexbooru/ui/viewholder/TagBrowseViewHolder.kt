@@ -68,12 +68,12 @@ class TagBrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         tagExclude.setOnClickListener {
             val name = tagName.text?:return@setOnClickListener
             val booruUid = Settings.activeBooruUid
-            TagFilterManager.createTagFilter(TagFilter(booru_uid = booruUid, name = "-$name", type = type))
+            TagFilterManager.createTagFilter(TagFilter(booruUid = booruUid, name = "-$name", type = type))
         }
         tagInclude.setOnClickListener {
             val name = tagName.text?:return@setOnClickListener
             val booruUid = Settings.activeBooruUid
-            TagFilterManager.createTagFilter(TagFilter(booru_uid = booruUid, name = name.toString(), type = type))
+            TagFilterManager.createTagFilter(TagFilter(booruUid = booruUid, name = name.toString(), type = type))
         }
     }
 

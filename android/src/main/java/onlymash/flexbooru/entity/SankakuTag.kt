@@ -15,13 +15,23 @@
 
 package onlymash.flexbooru.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class SankakuTag(
+    @SerializedName("count")
     val count: Int,
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("locale")
     val locale: String,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("name_en")
     val name_en: String,
+    @SerializedName("name_ja")
     val name_ja: String?,
+    @SerializedName("rating")
     val rating: String?,
+    @SerializedName("type")
     val type: Int
 )

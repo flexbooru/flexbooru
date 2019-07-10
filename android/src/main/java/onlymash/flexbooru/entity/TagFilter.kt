@@ -15,10 +15,7 @@
 
 package onlymash.flexbooru.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "tags_filter", indices = [(Index(value = ["booru_uid", "name"], unique = true))],
     foreignKeys = [(ForeignKey(
@@ -28,8 +25,12 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE))])
 data class TagFilter(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     var uid: Long = 0L,
-    var booru_uid: Long = -1L,
+    @ColumnInfo(name = "booru_uid")
+    var booruUid: Long = -1L,
+    @ColumnInfo(name = "name")
     var name: String,
+    @ColumnInfo(name = "type")
     var type: Int = -1
 )

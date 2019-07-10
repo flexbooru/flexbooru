@@ -15,9 +15,15 @@
 
 package onlymash.flexbooru.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class SankakuAuthor(
+    @SerializedName("avatar")
     val avatar: String,
+    @SerializedName("avatar_rating")
     val avatar_rating: String,
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String
 )

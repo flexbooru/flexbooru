@@ -92,8 +92,8 @@ class PopularFragment : ListFragment() {
                             Constants.AUTH_KEY,
                             when (booru.type) {
                                 Constants.TYPE_DANBOORU,
-                                Constants.TYPE_GELBOORU-> user.api_key
-                                else -> user.password_hash
+                                Constants.TYPE_GELBOORU-> user.apiKey
+                                else -> user.passwordHash
                             }
                         )
                     } else {
@@ -430,7 +430,7 @@ class PopularFragment : ListFragment() {
         }
 
         override fun onDelete(user: User) {
-            if (user.booru_uid != Settings.activeBooruUid) return
+            if (user.booruUid != Settings.activeBooruUid) return
             popular.username = ""
             popular.auth_key = ""
             when (type) {
@@ -465,7 +465,7 @@ class PopularFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 popular.username = user.name
-                popular.auth_key = user.api_key ?: ""
+                popular.auth_key = user.apiKey ?: ""
                 popularViewModel.apply {
                     show(popular)
                     refreshDan()
@@ -473,7 +473,7 @@ class PopularFragment : ListFragment() {
             }
             Constants.TYPE_MOEBOORU -> {
                 popular.username = user.name
-                popular.auth_key = user.password_hash ?: ""
+                popular.auth_key = user.passwordHash ?: ""
                 popularViewModel.apply {
                     show(popular)
                     refreshMoe()
@@ -481,7 +481,7 @@ class PopularFragment : ListFragment() {
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 popular.username = user.name
-                popular.auth_key = user.password_hash ?: ""
+                popular.auth_key = user.passwordHash ?: ""
                 popularViewModel.apply {
                     show(popular)
                     refreshDanOne()

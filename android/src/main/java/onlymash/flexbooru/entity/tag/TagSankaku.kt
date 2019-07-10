@@ -15,17 +15,30 @@
 
 package onlymash.flexbooru.entity.tag
 
+import com.google.gson.annotations.SerializedName
+
 data class TagSankaku(
+    @SerializedName("child_tags")
     val child_tags: String?,
+    @SerializedName("count")
     val count: Int,
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("locale")
     val locale: String,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("name_en")
     val name_en: String,
+    @SerializedName("name_ja")
     val name_ja: String,
+    @SerializedName("parent_tags")
     val parent_tags: String?,
+    @SerializedName("rating")
     val rating: String?,
+    @SerializedName("related_tags")
     val related_tags: String?,
+    @SerializedName("type")
     val type: Int
 ) : TagBase() {
     override fun getTagId(): Int = id

@@ -15,18 +15,27 @@
 
 package onlymash.flexbooru.entity.pool
 
+import com.google.gson.annotations.SerializedName
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*
 
 data class PoolMoe(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
-    val created_at: String,
-    val updated_at: String,
-    val user_id: Int,
-    val is_public: Boolean,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+    @SerializedName("user_id")
+    val userId: Int,
+    @SerializedName("is_public")
+    val isPublic: Boolean,
+    @SerializedName("post_count")
     val post_count: Int,
+    @SerializedName("description")
     val description: String
 ) : PoolBase() {
     override fun getPoolId(): Int = id
@@ -34,15 +43,15 @@ data class PoolMoe(
     override fun getPostCount(): Int = post_count
     override fun getPoolDate(): CharSequence {
         val date =  when {
-            updated_at.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(updated_at)
-            updated_at.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updated_at)
+            updatedAt.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(updatedAt)
+            updatedAt.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updatedAt)
             else -> {
-                throw IllegalStateException("Unknown date format: $updated_at")
+                throw IllegalStateException("Unknown date format: $updatedAt")
             }
         } ?: return ""
         return date.time.formatDate()
     }
     override fun getPoolDescription(): String = description
-    override fun getCreatorId(): Int = user_id
+    override fun getCreatorId(): Int = userId
     override fun getCreatorName(): String? = null
 }
