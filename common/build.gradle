@@ -35,7 +35,6 @@ dependencies {
     commonMainImplementation "io.ktor:ktor-client-core:$ktor_version"
     commonMainImplementation "io.ktor:ktor-client-json:$ktor_version"
     commonMainImplementation "io.ktor:ktor-client-serialization:$ktor_version"
-
     jvmMainImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     jvmMainImplementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
     jvmMainImplementation "org.kodein.di:kodein-di-erased-jvm:$kodein_version"

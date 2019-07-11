@@ -39,7 +39,7 @@ android {
         }
     }
     compileSdkVersion 29
-    buildToolsVersion '29.0.0'
+    buildToolsVersion '29.0.1'
     defaultConfig {
         applicationId "onlymash.flexbooru.play"
         minSdkVersion 21
@@ -104,7 +104,7 @@ dependencies {
     implementation "org.kodein.di:kodein-di-erased-jvm:$kodein_version"
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation "androidx.appcompat:appcompat:$androidx_base"
-    implementation "androidx.fragment:fragment-ktx:1.2.0-alpha01"
+    implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha01'
     implementation "androidx.preference:preference-ktx:$androidx_base"
     implementation 'androidx.core:core-ktx:1.2.0-alpha02'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
