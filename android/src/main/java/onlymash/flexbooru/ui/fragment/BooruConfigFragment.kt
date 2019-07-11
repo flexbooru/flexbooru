@@ -30,18 +30,18 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
 
     companion object {
         const val EXTRA_BOORU_UID = "booru_uid"
-        const val BOORU_CONFIG_NAME_KEY = "booru_config_name"
-        const val BOORU_CONFIG_TYPE_KEY = "booru_config_type"
-        const val BOORU_CONFIG_TYPE_DANBOORU = "danbooru"
-        const val BOORU_CONFIG_TYPE_DANBOORU_ONE = "danbooru_one"
-        const val BOORU_CONFIG_TYPE_MOEBOORU = "moebooru"
-        const val BOORU_CONFIG_TYPE_GELBOORU = "gelbooru"
-        const val BOORU_CONFIG_TYPE_SANKAKU = "sankaku"
-        const val BOORU_CONFIG_SCHEME_KEY = "booru_config_scheme"
-        const val BOORU_CONFIG_SCHEME_HTTP = "http"
-        const val BOORU_CONFIG_SCHEME_HTTPS = "https"
-        const val BOORU_CONFIG_HOST_KEY = "booru_config_host"
-        const val BOORU_CONFIG_hashSalt_KEY = "booru_config_hashSalt"
+        private const val BOORU_CONFIG_NAME_KEY = "booru_config_name"
+        private const val BOORU_CONFIG_TYPE_KEY = "booru_config_type"
+        private const val BOORU_CONFIG_TYPE_DANBOORU = "danbooru"
+        private const val BOORU_CONFIG_TYPE_DANBOORU_ONE = "danbooru_one"
+        private const val BOORU_CONFIG_TYPE_MOEBOORU = "moebooru"
+        private const val BOORU_CONFIG_TYPE_GELBOORU = "gelbooru"
+        private const val BOORU_CONFIG_TYPE_SANKAKU = "sankaku"
+        private const val BOORU_CONFIG_SCHEME_KEY = "booru_config_scheme"
+        private const val BOORU_CONFIG_SCHEME_HTTP = "http"
+        private const val BOORU_CONFIG_SCHEME_HTTPS = "https"
+        private const val BOORU_CONFIG_HOST_KEY = "booru_config_host"
+        private const val BOORU_CONFIG_HASH_SALT_KEY = "booru_config_hash_salt"
         private val sp: SharedPreferences by App.app.instance()
         var booruUid = -1L
         fun reset() {
@@ -51,7 +51,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 putString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)
                 putString(BOORU_CONFIG_SCHEME_KEY, BOORU_CONFIG_SCHEME_HTTPS)
                 putString(BOORU_CONFIG_HOST_KEY, "")
-                putString(BOORU_CONFIG_hashSalt_KEY, "")
+                putString(BOORU_CONFIG_HASH_SALT_KEY, "")
             }.apply()
         }
         fun set(booru: Booru) {
@@ -84,7 +84,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 putString(BOORU_CONFIG_TYPE_KEY, type)
                 putString(BOORU_CONFIG_SCHEME_KEY, booru.scheme)
                 putString(BOORU_CONFIG_HOST_KEY, booru.host)
-                putString(BOORU_CONFIG_hashSalt_KEY, hashSalt)
+                putString(BOORU_CONFIG_HASH_SALT_KEY, hashSalt)
             }.apply()
         }
         fun get(): Booru {
@@ -125,7 +125,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
                 Constants.TYPE_DANBOORU,
                 Constants.TYPE_GELBOORU -> return ""
             }
-            val hashSalt = sp.getString(BOORU_CONFIG_hashSalt_KEY, "")
+            val hashSalt = sp.getString(BOORU_CONFIG_HASH_SALT_KEY, "")
             return if (hashSalt.isNullOrEmpty()) "" else hashSalt
         }
     }
@@ -135,7 +135,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(),
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         booruUid = requireActivity().intent.getLongExtra(EXTRA_BOORU_UID, -1L)
         addPreferencesFromResource(R.xml.pref_booru_config)
-        hashSaltPreferences = findPreference(BOORU_CONFIG_hashSalt_KEY)
+        hashSaltPreferences = findPreference(BOORU_CONFIG_HASH_SALT_KEY)
         when (sp.getString(BOORU_CONFIG_TYPE_KEY, BOORU_CONFIG_TYPE_DANBOORU)) {
             BOORU_CONFIG_TYPE_DANBOORU,
             BOORU_CONFIG_TYPE_GELBOORU -> {
