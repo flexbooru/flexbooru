@@ -20,8 +20,8 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.repository.Listing
 
 interface PopularRepository {
-    fun getDanPopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostDan>
-    fun getMoePopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostMoe>
-    fun getDanOnePopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostDanOne>
-    fun getSankakuPopular(scope: CoroutineScope, popular: SearchPopular): Listing<PostSankaku>
+    fun getDanPopular(scope: CoroutineScope, search: SearchPopular): Listing<PostDan>
+    fun getMoePopular(scope: CoroutineScope, search: SearchPopular): Listing<PostMoe>
+    fun getDanOnePopular(scope: CoroutineScope, search: SearchPopular): Listing<PostDanOne>
+    fun getSankakuPopular(scope: CoroutineScope, search: SearchPopular): Listing<PostSankaku>
 }

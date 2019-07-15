@@ -40,22 +40,12 @@ class NetworkStateViewHolder(itemView: View,
         }
     }
 
-    fun bindTo(networkState: NetworkState?, position: Int) {
-        val isNotEmpty = position != 1
-        progressBar.toVisibility(networkState?.status == Status.RUNNING && isNotEmpty)
-        retry.toVisibility(networkState?.status == Status.FAILED && isNotEmpty)
-        errorMsg.toVisibility(networkState?.msg != null && isNotEmpty)
+    fun bindTo(networkState: NetworkState?) {
+        progressBar.toVisibility(networkState?.status == Status.RUNNING)
+        retry.toVisibility(networkState?.status == Status.FAILED)
+        errorMsg.toVisibility(networkState?.msg != null)
         errorMsg.text = networkState?.msg
     }
-
-    fun bindToNotHeader(networkState: NetworkState?, position: Int) {
-        val isNotEmpty = position != 0
-        progressBar.toVisibility(networkState?.status == Status.RUNNING && isNotEmpty)
-        retry.toVisibility(networkState?.status == Status.FAILED && isNotEmpty)
-        errorMsg.toVisibility(networkState?.msg != null && isNotEmpty)
-        errorMsg.text = networkState?.msg
-    }
-
 
     companion object {
 

@@ -375,7 +375,6 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateDan.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -387,7 +386,6 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -399,7 +397,6 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -411,7 +408,6 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateGel.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshGel()
             }
@@ -423,7 +419,6 @@ class TagFragment : ListFragment() {
                 })
                 tagViewModel.networkStateSankaku.observe(this, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, tagAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }

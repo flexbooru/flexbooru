@@ -32,8 +32,6 @@
 
     <include layout="@layout/refreshable_list"/>
 
-    <include layout="@layout/empty_list_network_state"/>
-
     <include layout="@layout/search_layout"/>
 
     <onlymash.flexbooru.widget.search.SearchBar

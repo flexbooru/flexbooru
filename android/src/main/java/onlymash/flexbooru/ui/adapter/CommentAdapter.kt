@@ -56,7 +56,7 @@ class CommentAdapter(private val glide: GlideRequests,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == R.layout.item_network_state) {
-            (holder as NetworkStateViewHolder).bindToNotHeader(networkState, position)
+            (holder as NetworkStateViewHolder).bindTo(networkState)
         } else {
             (holder as CommentViewHolder).bind(getItem(position))
         }

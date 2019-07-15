@@ -27,7 +27,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
@@ -37,7 +36,6 @@ import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.entity.Search
 import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.pool.PoolBase
-import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.pool.PoolRepositoryImpl
@@ -227,7 +225,6 @@ class PoolFragment : ListFragment() {
         searchBar.setTitle(R.string.title_pools)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_pools))
         if (isUnsupported) {
-            progress_bar_empty.toVisibility(false)
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -297,7 +294,6 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateDan.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -308,7 +304,6 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -319,7 +314,6 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -330,7 +324,6 @@ class PoolFragment : ListFragment() {
                 })
                 poolViewModel.networkStateSankaku.observe(this, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, poolAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }

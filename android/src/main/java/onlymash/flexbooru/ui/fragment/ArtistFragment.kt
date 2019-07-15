@@ -25,7 +25,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
@@ -251,7 +250,6 @@ class ArtistFragment : ListFragment() {
         searchBar.setTitle(R.string.title_artists)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_artists))
         if (isUnsupported) {
-            progress_bar_empty.toVisibility(false)
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -282,7 +280,6 @@ class ArtistFragment : ListFragment() {
                 })
                 artistViewModel.networkStateDan.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, artistAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -294,7 +291,6 @@ class ArtistFragment : ListFragment() {
                 })
                 artistViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, artistAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -306,7 +302,6 @@ class ArtistFragment : ListFragment() {
                 })
                 artistViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, artistAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }

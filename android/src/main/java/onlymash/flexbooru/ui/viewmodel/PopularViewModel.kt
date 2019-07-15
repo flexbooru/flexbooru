@@ -24,17 +24,17 @@ import onlymash.flexbooru.repository.popular.PopularRepository
 
 class PopularViewModel(private val repo: PopularRepository) : ScopeViewModel() {
 
-    private val popularData = MutableLiveData<SearchPopular>()
-    private val danRepoResult = map(popularData) { popular ->
-        repo.getDanPopular(viewModelScope, popular)
+    private val _search = MutableLiveData<SearchPopular>()
+    private val danRepoResult = map(_search) {
+        repo.getDanPopular(viewModelScope, it)
     }
-    private val danOneRepoResult = map(popularData) { popular ->
-        repo.getDanOnePopular(viewModelScope, popular)
+    private val danOneRepoResult = map(_search) {
+        repo.getDanOnePopular(viewModelScope, it)
     }
-    private val moeRepoResult = map(popularData) { popular ->
-        repo.getMoePopular(viewModelScope, popular)
+    private val moeRepoResult = map(_search) {
+        repo.getMoePopular(viewModelScope, it)
     }
-    private val sankakuRepoResult = map(popularData) {
+    private val sankakuRepoResult = map(_search) {
         repo.getSankakuPopular(viewModelScope, it)
     }
     val postsDan = Transformations.switchMap(danRepoResult) { it.pagedList }
@@ -53,11 +53,11 @@ class PopularViewModel(private val repo: PopularRepository) : ScopeViewModel() {
     val networkStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.networkState }
     val refreshStateSankaku = Transformations.switchMap(sankakuRepoResult) { it.refreshState }
 
-    fun show(popular: SearchPopular): Boolean {
-        if (popularData.value == popular) {
+    fun show(search: SearchPopular): Boolean {
+        if (_search.value == search) {
             return false
         }
-        popularData.value = popular
+        _search.value = search
         return true
     }
 

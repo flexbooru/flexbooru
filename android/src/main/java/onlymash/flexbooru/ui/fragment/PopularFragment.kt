@@ -30,7 +30,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -49,8 +48,8 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
-import onlymash.flexbooru.repository.popular.PopularRepositoryImpl
 import onlymash.flexbooru.repository.popular.PopularRepository
+import onlymash.flexbooru.repository.popular.PopularRepositoryImpl
 import onlymash.flexbooru.ui.activity.*
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewholder.PostViewHolder
@@ -116,7 +115,7 @@ class PopularFragment : ListFragment() {
 
     private var type: Int = -1
 
-    private lateinit var popular: SearchPopular
+    private lateinit var search: SearchPopular
 
     private var currentYear = -1
     private var currentMonth = -1
@@ -157,16 +156,16 @@ class PopularFragment : ListFragment() {
                             DownloadWorker.downloadPost(post, requireActivity())
                         }
                         1 -> {
-                            if (popular.auth_key.isEmpty()) {
+                            if (search.auth_key.isEmpty()) {
                                 requireActivity().startActivity(Intent(requireActivity(), AccountConfigActivity::class.java))
                             } else {
                                 val vote = Vote(
-                                    scheme = popular.scheme,
-                                    host = popular.host,
+                                    scheme = search.scheme,
+                                    host = search.host,
                                     post_id = id,
                                     score = 3,
-                                    username = popular.username,
-                                    auth_key = popular.auth_key
+                                    username = search.username,
+                                    auth_key = search.auth_key
                                 )
                                 GlobalScope.launch {
                                     when (post) {
@@ -223,8 +222,8 @@ class PopularFragment : ListFragment() {
                                         val realMonth = month + 1
                                         val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
                                         val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-                                        popular.date = "$yearString-$monthString-$dayString"
-                                        popularViewModel.show(popular)
+                                        search.date = "$yearString-$monthString-$dayString"
+                                        popularViewModel.show(search)
                                         swipe_refresh.isRefreshing = true
                                         popularViewModel.refreshDan()
                                     },
@@ -238,25 +237,25 @@ class PopularFragment : ListFragment() {
                                     .show()
                             }
                             R.id.action_day -> {
-                                popular.scale = SCALE_DAY
-                                popularViewModel.show(popular)
+                                search.scale = SCALE_DAY
+                                popularViewModel.show(search)
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
                             R.id.action_week -> {
-                                popular.scale = SCALE_WEEK
-                                popularViewModel.show(popular)
+                                search.scale = SCALE_WEEK
+                                popularViewModel.show(search)
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
                             R.id.action_month -> {
-                                popular.scale = SCALE_MONTH
-                                popularViewModel.show(popular)
+                                search.scale = SCALE_MONTH
+                                popularViewModel.show(search)
                                 swipe_refresh.isRefreshing = true
                                 popularViewModel.refreshDan()
                             }
                         }
-                        keyword = popular.scale
+                        keyword = search.scale
                     }
                     Constants.TYPE_DANBOORU_ONE, Constants.TYPE_MOEBOORU -> {
                         when (menuItem.itemId) {
@@ -276,11 +275,11 @@ class PopularFragment : ListFragment() {
                                         val realMonth = month + 1
                                         val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
                                         val dayString = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
-                                        popular.date = "$yearString-$monthString-$dayString"
-                                        popular.day = dayString
-                                        popular.month = monthString
-                                        popular.year = yearString
-                                        popularViewModel.show(popular)
+                                        search.date = "$yearString-$monthString-$dayString"
+                                        search.day = dayString
+                                        search.month = monthString
+                                        search.year = yearString
+                                        popularViewModel.show(search)
                                         swipe_refresh.isRefreshing = true
                                         if (type == Constants.TYPE_DANBOORU_ONE) {
                                             popularViewModel.refreshDanOne()
@@ -298,8 +297,8 @@ class PopularFragment : ListFragment() {
                                     .show()
                             }
                             R.id.action_day -> {
-                                popular.scale = SCALE_DAY
-                                popularViewModel.show(popular)
+                                search.scale = SCALE_DAY
+                                popularViewModel.show(search)
                                 swipe_refresh.isRefreshing = true
                                 if (type == Constants.TYPE_DANBOORU_ONE) {
                                     popularViewModel.refreshDanOne()
@@ -308,8 +307,8 @@ class PopularFragment : ListFragment() {
                                 }
                             }
                             R.id.action_week -> {
-                                popular.scale = SCALE_WEEK
-                                popularViewModel.show(popular)
+                                search.scale = SCALE_WEEK
+                                popularViewModel.show(search)
                                 swipe_refresh.isRefreshing = true
                                 if (type == Constants.TYPE_DANBOORU_ONE) {
                                     popularViewModel.refreshDanOne()
@@ -318,8 +317,8 @@ class PopularFragment : ListFragment() {
                                 }
                             }
                             R.id.action_month -> {
-                                popular.scale = SCALE_MONTH
-                                popularViewModel.show(popular)
+                                search.scale = SCALE_MONTH
+                                popularViewModel.show(search)
                                 swipe_refresh.isRefreshing = true
                                 if (type == Constants.TYPE_DANBOORU_ONE) {
                                     popularViewModel.refreshDanOne()
@@ -328,7 +327,7 @@ class PopularFragment : ListFragment() {
                                 }
                             }
                         }
-                        keyword = popular.scale
+                        keyword = search.scale
                     }
                     Constants.TYPE_SANKAKU -> {
                         when (menuItem.itemId) {
@@ -368,8 +367,8 @@ class PopularFragment : ListFragment() {
                                         val realMonthEnd = endMonth + 1
                                         val monthStringEnd = if (realMonthEnd < 10) "0$realMonthEnd" else realMonthEnd.toString()
                                         val dayStringEnd = if (endDay < 10) "0$endDay" else endDay.toString()
-                                        popular.date = "$dayString.$monthString.$yearString..$dayStringEnd.$monthStringEnd.$yearStringEnd"
-                                        popularViewModel.show(popular)
+                                        search.date = "$dayString.$monthString.$yearString..$dayStringEnd.$monthStringEnd.$yearStringEnd"
+                                        popularViewModel.show(search)
                                         swipe_refresh.isRefreshing = true
                                         popularViewModel.refreshSankaku()
                                     }
@@ -431,24 +430,24 @@ class PopularFragment : ListFragment() {
 
         override fun onDelete(user: User) {
             if (user.booruUid != Settings.activeBooruUid) return
-            popular.username = ""
-            popular.auth_key = ""
+            search.username = ""
+            search.auth_key = ""
             when (type) {
                 Constants.TYPE_DANBOORU -> {
                     popularViewModel.apply {
-                        show(popular)
+                        show(search)
                         refreshDan()
                     }
                 }
                 Constants.TYPE_MOEBOORU -> {
                     popularViewModel.apply {
-                        show(popular)
+                        show(search)
                         refreshMoe()
                     }
                 }
                 Constants.TYPE_DANBOORU_ONE -> {
                     popularViewModel.apply {
-                        show(popular)
+                        show(search)
                         refreshDanOne()
                     }
                 }
@@ -464,26 +463,26 @@ class PopularFragment : ListFragment() {
     private fun updateUserInfoAndRefresh(user: User) {
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                popular.username = user.name
-                popular.auth_key = user.apiKey ?: ""
+                search.username = user.name
+                search.auth_key = user.apiKey ?: ""
                 popularViewModel.apply {
-                    show(popular)
+                    show(search)
                     refreshDan()
                 }
             }
             Constants.TYPE_MOEBOORU -> {
-                popular.username = user.name
-                popular.auth_key = user.passwordHash ?: ""
+                search.username = user.name
+                search.auth_key = user.passwordHash ?: ""
                 popularViewModel.apply {
-                    show(popular)
+                    show(search)
                     refreshMoe()
                 }
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                popular.username = user.name
-                popular.auth_key = user.passwordHash ?: ""
+                search.username = user.name
+                search.auth_key = user.passwordHash ?: ""
                 popularViewModel.apply {
-                    show(popular)
+                    show(search)
                     refreshDanOne()
                 }
             }
@@ -495,12 +494,13 @@ class PopularFragment : ListFragment() {
         val arg = arguments ?: throw RuntimeException("arg is null")
         type = arg.getInt(Constants.TYPE_KEY, -1)
         if (isUnsupported) return
-        popular = SearchPopular(
+        search = SearchPopular(
             scheme = arg.getString(Constants.SCHEME_KEY, ""),
             host = arg.getString(Constants.HOST_KEY, ""),
             username = arg.getString(Constants.USERNAME_KEY, ""),
             auth_key = arg.getString(Constants.AUTH_KEY, ""),
-            safe_mode = Settings.safeMode
+            safe_mode = Settings.safeMode,
+            limit = Settings.pageLimit
         )
         val currentTimeMillis = System.currentTimeMillis()
         val currentCalendar = Calendar.getInstance(Locale.getDefault()).apply {
@@ -513,10 +513,9 @@ class PopularFragment : ListFragment() {
         val realMonth = currentMonth + 1
         val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
         val dayString = if (currentDay < 10) "0$currentDay" else currentDay.toString()
-        popular.year = yearString
-        popular.month = monthString
-        popular.day = dayString
-        popular.limit = Settings.pageLimit
+        search.year = yearString
+        search.month = monthString
+        search.day = dayString
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -528,7 +527,6 @@ class PopularFragment : ListFragment() {
         searchBar.setTitle(R.string.title_popular)
         searchBar.setEditTextHint(getString(R.string.search_bar_hint_search_posts))
         if (isUnsupported) {
-            progress_bar_empty.toVisibility(false)
             list.visibility = View.GONE
             swipe_refresh.visibility = View.GONE
             notSupported.visibility = View.VISIBLE
@@ -575,7 +573,6 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateDan.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshDan()
             }
@@ -587,7 +584,6 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshMoe()
             }
@@ -599,7 +595,6 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateDanOne.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshDanOne()
             }
@@ -611,12 +606,11 @@ class PopularFragment : ListFragment() {
                 })
                 popularViewModel.networkStateSankaku.observe(this, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
-                    handleNetworkState(networkState, postAdapter.itemCount)
                 })
                 initSwipeToRefreshSankaku()
             }
         }
-        popularViewModel.show(popular)
+        popularViewModel.show(search)
         UserManager.listeners.add(userListener)
         (requireActivity() as MainActivity).addNavigationListener(navigationListener)
     }

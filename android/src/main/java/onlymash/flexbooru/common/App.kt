@@ -77,6 +77,7 @@ class App : Application(), KodeinAware {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
             GlideApp.with(imageView.context)
                 .load(uri)
+                .centerCrop()
                 .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.avatar_account))
                 .into(imageView)
         }

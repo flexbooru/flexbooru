@@ -30,7 +30,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.empty_list_network_state.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
@@ -164,9 +163,6 @@ abstract class ListFragment : Fragment(), KodeinAware {
         notSupported = view.findViewById(R.id.not_supported)
         initSwipeRefresh()
         initSearchBar()
-        retry_button_empty.setOnClickListener {
-            retry()
-        }
     }
 
     private fun initSwipeRefresh() {
@@ -210,15 +206,6 @@ abstract class ListFragment : Fragment(), KodeinAware {
 
     internal fun showSearchBar() {
         searchBarMover.showSearchBar(true)
-    }
-
-    internal fun handleNetworkState(state: NetworkState, itemCount: Int) {
-        val isEmpty = itemCount == 2 && state != NetworkState.LOADED
-        progress_bar_container.toVisibility(isEmpty)
-        progress_bar_empty.toVisibility(state.status == Status.RUNNING && isEmpty)
-        retry_button_empty.toVisibility(state.status == Status.FAILED && isEmpty)
-        error_msg_empty.toVisibility(state.msg != null && isEmpty)
-        error_msg_empty.text = state.msg
     }
 
     abstract fun retry()
