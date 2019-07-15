@@ -48,11 +48,20 @@ object SankakuUrlHelper {
             .addQueryParameter("limit", popular.limit.toString())
             .addQueryParameter("login", popular.username)
             .addQueryParameter("password_hash", popular.auth_key)
-        if (popular.date.isNotEmpty()) {
-            builder.addQueryParameter("tags", "order:popular date:${popular.date}")
+        val tags = if (popular.date.isNotEmpty()) {
+            if (popular.safe_mode) {
+                "order:popular date:${popular.date} rating:safe"
+            } else {
+                "order:popular date:${popular.date}"
+            }
         } else {
-            builder.addQueryParameter("tags", "order:popular")
+            if (popular.safe_mode) {
+                "order:popular rating:safe"
+            } else {
+                "order:popular"
+            }
         }
+        builder.addQueryParameter("tags", tags)
         return builder.build()
     }
 

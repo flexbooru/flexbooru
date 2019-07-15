@@ -41,6 +41,7 @@ import onlymash.flexbooru.repository.NetworkState
 import java.util.concurrent.Executor
 
 private const val POPULAR_QUERY = "popular"
+private const val POPULAR_QUERY_SAFE = "popular_safe"
 
 //popular posts data source
 class PopularRepositoryImpl(
@@ -56,20 +57,33 @@ class PopularRepositoryImpl(
     private var moeBoundaryCallback: PopularMoeBoundaryCallback? = null
     private var sankakuBoundaryCallback: PopularSankakuBoundaryCallback? = null
 
+    private fun getQuery(safe: Boolean): String = if (safe) POPULAR_QUERY_SAFE else POPULAR_QUERY
+
     private fun insertDanbooruOneResultIntoDb(
         search: SearchPopular,
         body: MutableList<PostDanOne>?
     ) {
         body?.let { postsDanOne ->
-            val start = db.postDanOneDao().getNextIndex(host = search.host, keyword = POPULAR_QUERY)
+            val query = getQuery(search.safe_mode)
+            val start = db.postDanOneDao().getNextIndex(host = search.host, keyword = query)
             val posts = postsDanOne.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
-                post.keyword = POPULAR_QUERY
+                post.keyword = query
                 post.indexInResponse = start + index
                 post
             }
-            db.postDanOneDao().insert(posts)
+            if (search.safe_mode) {
+                val safePosts = mutableListOf<PostDanOne>()
+                posts.forEach {
+                    if (it.rating == "s") {
+                        safePosts.add(it)
+                    }
+                }
+                db.postDanOneDao().insert(safePosts)
+            } else {
+                db.postDanOneDao().insert(posts)
+            }
         }
     }
 
@@ -78,15 +92,26 @@ class PopularRepositoryImpl(
         body: MutableList<PostDan>?
     ) {
         body?.let { postsDan ->
-            val start = db.postDanDao().getNextIndex(host = search.host, keyword = POPULAR_QUERY)
+            val query = getQuery(search.safe_mode)
+            val start = db.postDanDao().getNextIndex(host = search.host, keyword = query)
             val posts = postsDan.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
-                post.keyword = POPULAR_QUERY
+                post.keyword = query
                 post.indexInResponse = start + index
                 post
             }
-            db.postDanDao().insert(posts)
+            if (search.safe_mode) {
+                val safePosts = mutableListOf<PostDan>()
+                posts.forEach {
+                    if (it.rating == "s") {
+                        safePosts.add(it)
+                    }
+                }
+                db.postDanDao().insert(safePosts)
+            } else {
+                db.postDanDao().insert(posts)
+            }
         }
     }
 
@@ -94,16 +119,27 @@ class PopularRepositoryImpl(
         search: SearchPopular,
         body: MutableList<PostMoe>?
     ) {
-        body?.let { posts ->
-            val start = db.postMoeDao().getNextIndex(host = search.host, keyword = POPULAR_QUERY)
-            val items = posts.mapIndexed { index, post ->
+        body?.let { postsMoe ->
+            val query = getQuery(search.safe_mode)
+            val start = db.postMoeDao().getNextIndex(host = search.host, keyword = query)
+            val posts = postsMoe.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
-                post.keyword = POPULAR_QUERY
+                post.keyword = query
                 post.indexInResponse = start + index
                 post
             }
-            db.postMoeDao().insert(items)
+            if (search.safe_mode) {
+                val safePosts = mutableListOf<PostMoe>()
+                posts.forEach {
+                    if (it.rating == "s") {
+                        safePosts.add(it)
+                    }
+                }
+                db.postMoeDao().insert(safePosts)
+            } else {
+                db.postMoeDao().insert(posts)
+            }
         }
     }
 
@@ -112,11 +148,12 @@ class PopularRepositoryImpl(
         body: MutableList<PostSankaku>?
     ) {
         body?.let { data ->
-            val start = db.postSankakuDao().getNextIndex(host = search.host, keyword = POPULAR_QUERY)
+            val query = getQuery(search.safe_mode)
+            val start = db.postSankakuDao().getNextIndex(host = search.host, keyword = query)
             val posts = data.mapIndexed { index, post ->
                 post.scheme = search.scheme
                 post.host = search.host
-                post.keyword = POPULAR_QUERY
+                post.keyword = query
                 post.indexInResponse = start + index
                 post
             }
@@ -136,7 +173,7 @@ class PopularRepositoryImpl(
                 try {
                     val response = danbooruApi.getPosts(DanUrlHelper.getPopularUrl(search))
                     db.runInTransaction {
-                        db.postDanDao().deletePosts(host = search.host, keyword = POPULAR_QUERY)
+                        db.postDanDao().deletePosts(host = search.host, keyword = getQuery(search.safe_mode))
                         insertDanbooruResultIntoDb(search, response.body())
                     }
                     NetResult.Success(NetworkState.LOADED)
@@ -168,7 +205,7 @@ class PopularRepositoryImpl(
             refreshDanbooru(scope, search)
         }
         val livePagedList = db.postDanDao()
-            .getPosts(search.host, POPULAR_QUERY)
+            .getPosts(search.host, getQuery(search.safe_mode))
             .toLiveData(
                 config = Config(
                     pageSize = 20,
@@ -197,7 +234,7 @@ class PopularRepositoryImpl(
                 try {
                     val response = danbooruOneApi.getPosts(DanOneUrlHelper.getPopularUrl(search))
                     db.runInTransaction {
-                        db.postDanOneDao().deletePosts(host = search.host, keyword = POPULAR_QUERY)
+                        db.postDanOneDao().deletePosts(host = search.host, keyword = getQuery(search.safe_mode))
                         insertDanbooruOneResultIntoDb(search, response.body())
                     }
                     NetResult.Success(NetworkState.LOADED)
@@ -229,7 +266,7 @@ class PopularRepositoryImpl(
             refreshDanbooruOne(scope, search)
         }
         val livePagedList = db.postDanOneDao()
-            .getPosts(search.host, POPULAR_QUERY)
+            .getPosts(search.host, getQuery(search.safe_mode))
             .toLiveData(
                 config = Config(
                     pageSize = 20,
@@ -258,7 +295,7 @@ class PopularRepositoryImpl(
                 try {
                     val response = moebooruApi.getPosts(MoeUrlHelper.getPopularUrl(search))
                     db.runInTransaction {
-                        db.postMoeDao().deletePosts(host = search.host, keyword = POPULAR_QUERY)
+                        db.postMoeDao().deletePosts(host = search.host, keyword = getQuery(search.safe_mode))
                         insertMoebooruResultIntoDb(search, response.body())
                     }
                     NetResult.Success(NetworkState.LOADED)
@@ -287,7 +324,7 @@ class PopularRepositoryImpl(
             refreshMoebooru(scope, search)
         }
         val livePagedList = db.postMoeDao()
-            .getPosts(search.host, POPULAR_QUERY)
+            .getPosts(search.host, getQuery(search.safe_mode))
             .toLiveData(
                 config = Config(
                     pageSize = 40,
@@ -316,7 +353,7 @@ class PopularRepositoryImpl(
                 try {
                     val response = sankakuApi.getPosts(SankakuUrlHelper.getPopularUrl(search, 1))
                     db.runInTransaction {
-                        db.postSankakuDao().deletePosts(host = search.host, keyword = POPULAR_QUERY)
+                        db.postSankakuDao().deletePosts(host = search.host, keyword = getQuery(search.safe_mode))
                         insertSankakuResultIntoDb(search, response.body())
                     }
                     NetResult.Success(NetworkState.LOADED)
@@ -348,7 +385,7 @@ class PopularRepositoryImpl(
             refreshSankaku(scope, search)
         }
         val livePagedList = db.postSankakuDao()
-            .getPosts(search.host, POPULAR_QUERY)
+            .getPosts(search.host, getQuery(search.safe_mode))
             .toLiveData(
                 config = Config(
                     pageSize = search.limit,
