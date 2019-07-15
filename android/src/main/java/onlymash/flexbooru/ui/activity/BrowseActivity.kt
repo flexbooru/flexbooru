@@ -18,7 +18,6 @@ package onlymash.flexbooru.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -30,11 +29,11 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.*
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.load.engine.GlideException
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -58,6 +57,7 @@ import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.browse.PostLoaderRepositoryImpl
 import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
@@ -81,10 +81,9 @@ class BrowseActivity : BaseActivity() {
         const val EXT_POST_POSITION_KEY = "post_position"
         const val EXT_POST_KEYWORD_KEY = "post_keyword"
         private const val PAGER_CURRENT_POSITION_KEY = "current_position"
-        private const val ACTION_DOWNLOAD = 0
-        private const val ACTION_SAVE = 1
-        private const val ACTION_SAVE_SET_AS = 2
-        private const val ACTION_SAVE_SEND = 3
+        private const val ACTION_SAVE = 101
+        private const val ACTION_SET_AS = 102
+        private const val ACTION_SEND = 103
         private const val ALPHA_MAX = 0xFF
         private const val ALPHA_MIN = 0x00
         fun startActivity(activity: Activity,
@@ -169,6 +168,7 @@ class BrowseActivity : BaseActivity() {
     private var currentPlayerView: PlayerView? = null
     private var currentVideoUri: Uri? = null
 
+    private lateinit var glide: GlideRequests
     private lateinit var pagerAdapter: BrowsePagerAdapter
 
     private val pagerChangeListener = object : ViewPager.OnPageChangeListener {
@@ -313,18 +313,10 @@ class BrowseActivity : BaseActivity() {
                         postId = id
                     )
                 }
-                R.id.action_browse_download -> {
-                    checkAndAction(ACTION_DOWNLOAD)
-                }
-                R.id.action_browse_set_as -> {
-                    checkAndAction(ACTION_SAVE_SET_AS)
-                }
-                R.id.action_browse_send -> {
-                    checkAndAction(ACTION_SAVE_SEND)
-                }
-                R.id.action_browse_share -> {
-                    shareLink()
-                }
+                R.id.action_browse_download -> DownloadWorker.downloadPost(getCurrentPost(), this)
+                R.id.action_browse_set_as -> saveAndAction(ACTION_SET_AS)
+                R.id.action_browse_send -> saveAndAction(ACTION_SEND)
+                R.id.action_browse_share -> shareLink()
                 R.id.action_browse_recommended -> {
                     val id = getCurrentPostId()
                     if (id > 0) {
@@ -360,8 +352,9 @@ class BrowseActivity : BaseActivity() {
         user?.let {
             initFavViewModel()
         }
+        glide = GlideApp.with(this)
         pagerAdapter = BrowsePagerAdapter(
-            glideRequests = GlideApp.with(this),
+            glideRequests = glide,
             picasso = Picasso.Builder(this).build(),
             onDismissListener = onDismissListener,
             pageType = pageType,
@@ -520,7 +513,7 @@ class BrowseActivity : BaseActivity() {
             } ?: startAccountConfigAndFinish()
         }
         post_save.setOnClickListener {
-            checkAndAction(ACTION_SAVE)
+            saveAndAction(ACTION_SAVE)
         }
         TooltipCompat.setTooltipText(post_tags, post_tags.contentDescription)
         TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
@@ -600,6 +593,33 @@ class BrowseActivity : BaseActivity() {
         if (currentPosition >= 0) pager_browse.setCurrentItem(currentPosition, false)
     }
 
+    private suspend fun getFile(url: String): File? = withContext(Dispatchers.IO) {
+        try {
+            glide.downloadOnly()
+                .load(url)
+                .submit()
+                .get()
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private suspend fun copyFile(file: File, desUri: Uri): Boolean = withContext(Dispatchers.IO) {
+        var `is`: InputStream? = null
+        var os: OutputStream? = null
+        try {
+            `is` = FileInputStream(file)
+            os = contentResolver.openOutputStream(desUri)
+            `is`.copyTo(os)
+            return@withContext true
+        } catch (_: IOException) {
+            return@withContext false
+        } finally {
+            `is`?.safeCloseQuietly()
+            os?.safeCloseQuietly()
+        }
+    }
+
     private fun saveAndAction(action: Int) {
         val position = pager_browse.currentItem
         val url = when (Settings.browseSize) {
@@ -608,70 +628,45 @@ class BrowseActivity : BaseActivity() {
             else -> posts?.get(position)?.getOriginUrl()
         }
         if (url.isNullOrEmpty()) return
-        GlideApp.with(this)
-            .downloadOnly()
-            .load(url)
-            .into(object : CustomTarget<File>() {
-                override fun onLoadCleared(placeholder: Drawable?) {
-
-                }
-                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    val fileName = url.fileName()
-                    val uri = getSaveUri(fileName) ?: return
-                    lifecycleScope.launch {
-                        val success = withContext(Dispatchers.IO) {
-                            var `is`: InputStream? = null
-                            var os: OutputStream? = null
-                            try {
-                                `is` = FileInputStream(resource)
-                                os = contentResolver.openOutputStream(uri)
-                                `is`.copyTo(os)
-                                return@withContext true
-                            } catch (_: IOException) {
-                                return@withContext false
-                            } finally {
-                                `is`?.safeCloseQuietly()
-                                os?.safeCloseQuietly()
-                            }
-                        }
-                        if (success) {
-                            when (action) {
-                                ACTION_SAVE -> {
-                                    Toast.makeText(this@BrowseActivity,
-                                        getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
-                                        Toast.LENGTH_LONG).show()
-                                }
-                                ACTION_SAVE_SET_AS -> {
-                                    this@BrowseActivity.startActivity(Intent.createChooser(
-                                        Intent(Intent.ACTION_ATTACH_DATA).apply {
-                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                            putExtra(Intent.EXTRA_MIME_TYPES, fileName.getMimeType())
-                                            data = uri
-                                        },
-                                        getString(R.string.share_via)
-                                    ))
-                                }
-                                ACTION_SAVE_SEND -> {
-                                    this@BrowseActivity.startActivity(Intent.createChooser(
-                                        Intent(Intent.ACTION_SEND).apply {
-                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                            type = fileName.getMimeType()
-                                            putExtra(Intent.EXTRA_STREAM, uri)
-                                        },
-                                        getString(R.string.share_via)
-                                    ))
-                                }
-                            }
+        lifecycleScope.launch {
+            val file = getFile(url)
+            if (file != null) {
+                val fileName = url.fileName()
+                when (action) {
+                    ACTION_SAVE -> {
+                        val uri = getSaveUri(fileName) ?: return@launch
+                        if (copyFile(file, uri)) {
+                            Toast.makeText(this@BrowseActivity,
+                                getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
+                                Toast.LENGTH_LONG).show()
                         }
                     }
+                    ACTION_SET_AS -> {
+                        val cacheFile = File(externalCacheDir, fileName)
+                        val desUri = cacheFile.toUri()
+                        if (copyFile(file, desUri)) {
+                            this@BrowseActivity.startActivity(Intent.createChooser(
+                                Intent(Intent.ACTION_ATTACH_DATA).apply {
+                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    putExtra(Intent.EXTRA_MIME_TYPES, fileName.getMimeType())
+                                    data = getUriForFile(cacheFile)
+                                },
+                                getString(R.string.share_via)
+                            ))
+                        }
+                    }
+                    ACTION_SEND -> {
+                        this@BrowseActivity.startActivity(Intent.createChooser(
+                            Intent(Intent.ACTION_SEND).apply {
+                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                type = fileName.getMimeType()
+                                putExtra(Intent.EXTRA_STREAM, getUriForFile(file))
+                            },
+                            getString(R.string.share_via)
+                        ))
+                    }
                 }
-            })
-    }
-
-    private fun checkAndAction(action: Int) {
-        when (action) {
-            ACTION_DOWNLOAD -> DownloadWorker.downloadPost(getCurrentPost(), this)
-            else -> saveAndAction(action)
+            }
         }
     }
 

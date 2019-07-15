@@ -26,17 +26,12 @@ import android.os.Build
 import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import androidx.work.*
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import onlymash.flexbooru.okhttp.ProgressListener
-import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import onlymash.flexbooru.R
@@ -204,34 +199,16 @@ class DownloadWorker(
                         }
                     }
                 })
-                val file = GlideApp.with(applicationContext)
-                    .downloadOnly()
-                    .load(url)
-                    .listener(object : RequestListener<File> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<File>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            ProgressInterceptor.removeListener(url)
-                            notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
-                            return false
-                        }
-                        override fun onResourceReady(
-                            resource: File?,
-                            model: Any?,
-                            target: Target<File>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            ProgressInterceptor.removeListener(url)
-                            return false
-                        }
-
-                    })
-                    .submit()
-                    .get()
+                val file = try {
+                    GlideApp.with(applicationContext)
+                        .downloadOnly()
+                        .load(url)
+                        .submit()
+                        .get()
+                } catch (_: Exception) {
+                    null
+                }
+                ProgressInterceptor.removeListener(url)
                 if (file == null || !file.exists()) {
                     notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
                     return Result.failure()
