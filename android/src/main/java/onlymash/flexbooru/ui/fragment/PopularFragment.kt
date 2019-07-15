@@ -43,7 +43,6 @@ import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.extension.gridWidth
-import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
