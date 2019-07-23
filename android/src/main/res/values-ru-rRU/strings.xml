@@ -44,11 +44,8 @@
     <string name="about_feedback">Обратная связь</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
+    <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">Почта</string>
-    <string name="about_donation">Пожертвование</string>
-    <string name="about_donation_paypal">PayPal</string>
-    <string name="about_donation_alipay">Alipay</string>
-    <string name="about_donation_btc">Bitcoin</string>
     <string name="about_copyright">Авторские права</string>
     <string name="about_licenses">Лицензии</string>
     <string name="about_open_source_licenses">Лицензии открытого ПО</string>
