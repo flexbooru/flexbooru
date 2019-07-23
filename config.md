@@ -25,3 +25,7 @@ nav_order: 2
 * [hypnohub](booru://SHlwbm9odWJAQEBodHRwc0BAQGh5cG5vaHViLm5ldEBAQDFAQEB5b3VyLXBhc3N3b3Jk)
 
 * [e621](booru://ZTYyMUBAQGh0dHBzQEBAZTYyMS5uZXRAQEAxQEBAeW91ci1wYXNzd29yZA)
+
+* [lolibooru](booru://bG9saWJvb3J1Lm1vZUBAQGh0dHBzQEBAbG9saWJvb3J1Lm1vZUBAQDFAQEAtLXlvdXItcGFzc3dvcmQtLQ)
+
+* [rule34](booru://cnVsZTM0Lnh4eEBAQGh0dHBzQEBAcnVsZTM0Lnh4eEBAQDNAQEA)
