@@ -45,11 +45,8 @@
     <string name="about_feedback">Umpan Balik</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
+    <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">Email</string>
-    <string name="about_donation">Donasi</string>
-    <string name="about_donation_paypal">PayPal</string>
-    <string name="about_donation_alipay">Alipay</string>
-    <string name="about_donation_btc">Bitcoin</string>
     <string name="about_copyright">Hak Cipta</string>
     <string name="about_licenses">Lisensi</string>
     <string name="about_open_source_licenses">Lisensi Sumber Terbuka</string>

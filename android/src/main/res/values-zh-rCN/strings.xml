@@ -44,11 +44,8 @@
     <string name="about_feedback">反馈</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
+    <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">电子邮箱</string>
-    <string name="about_donation">捐赠</string>
-    <string name="about_donation_paypal">PayPal</string>
-    <string name="about_donation_alipay">支付宝</string>
-    <string name="about_donation_btc">比特币</string>
     <string name="about_copyright">版权</string>
     <string name="about_licenses">授权许可</string>
     <string name="about_open_source_licenses">开源许可</string>

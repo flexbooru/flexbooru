@@ -44,11 +44,8 @@
     <string name="about_feedback">意見回報</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
+    <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">電子郵件</string>
-    <string name="about_donation">捐助</string>
-    <string name="about_donation_paypal">PayPal</string>
-    <string name="about_donation_alipay">Alipay</string>
-    <string name="about_donation_btc">Bitcoin</string>
     <string name="about_copyright">版權</string>
     <string name="about_licenses">Licenses</string>
     <string name="about_open_source_licenses">Open Source Licenses</string>

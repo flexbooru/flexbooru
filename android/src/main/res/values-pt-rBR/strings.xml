@@ -44,11 +44,8 @@
     <string name="about_feedback">Dê sua opinião</string>
     <string name="about_feedback_github">GitHub</string>
     <string name="about_feedback_telegram">Telegram</string>
+    <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">E-mail</string>
-    <string name="about_donation">Doação</string>
-    <string name="about_donation_paypal">Paypal</string>
-    <string name="about_donation_alipay">Alipay</string>
-    <string name="about_donation_btc">Bitcoin</string>
     <string name="about_copyright">Direitos autorais</string>
     <string name="about_licenses">Licenças</string>
     <string name="about_open_source_licenses">Licenças de código aberto</string>
