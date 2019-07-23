@@ -18,9 +18,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:key="about_screen"
         app:initialExpandedChildrenCount="4">
+
     <PreferenceCategory
             app:key="flexbooru"
             app:title="@string/about_app">
+
         <Preference
                 app:key="about_app_version"
                 app:title="@string/about_app_version"
@@ -33,9 +35,11 @@
                 app:key="about_app_rate"
                 app:title="@string/about_app_rate"/>
     </PreferenceCategory>
+
     <PreferenceCategory
             app:key="author"
             app:title="@string/about_author">
+
         <Preference
                 app:key="about_author_website"
                 app:title="@string/about_author_website"
@@ -49,38 +53,29 @@
     <PreferenceCategory
             app:key="feedback"
             app:title="@string/about_feedback">
-        <Preference
-                app:key="about_feedback_github"
-                app:title="@string/about_feedback_github"
-                app:summary="https://github.com/flexbooru/flexbooru/issues"/>
+
         <Preference
                 app:key="about_feedback_telegram"
                 app:title="@string/about_feedback_telegram"
                 app:summary="https://t.me/Flexbooru"/>
         <Preference
+                app:key="about_feedback_discord"
+                app:title="@string/about_feedback_discord"
+                app:summary="https://discord.gg/zxAX5Jh"/>
+        <Preference
                 app:key="about_feedback_email"
                 app:title="@string/about_feedback_email"
                 app:summary="feedback@fiepi.me"/>
+        <Preference
+                app:key="about_feedback_github"
+                app:title="@string/about_feedback_github"
+                app:summary="https://github.com/flexbooru/flexbooru/issues"/>
     </PreferenceCategory>
-    <PreferenceCategory
-            app:key="donation"
-            app:title="@string/about_donation">
-        <Preference
-                app:key="about_donation_paypal"
-                app:title="@string/about_donation_paypal"
-                app:summary="https://www.paypal.me/fiepi"/>
-        <Preference
-                app:key="about_donation_alipay"
-                app:title="@string/about_donation_alipay"
-                app:summary="im@fiepi.com"/>
-        <Preference
-                app:key="about_donation_btc"
-                app:title="@string/about_donation_btc"
-                app:summary="bc1qxanfk3hc853787a9ctm28x9ff0pvcyy6vpmgpz"/>
-    </PreferenceCategory>
+
     <PreferenceCategory
             app:key="copyright"
             app:title="@string/about_copyright">
+
         <Preference
                 app:key="about_licenses"
                 app:title="@string/about_licenses"
