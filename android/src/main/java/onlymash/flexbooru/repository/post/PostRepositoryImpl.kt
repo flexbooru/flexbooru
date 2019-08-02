@@ -446,7 +446,7 @@ class PostRepositoryImpl(
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 1))
+                    val response = gelbooruApi.getPosts(GelUrlHelper.getPostUrl(search, 0))
                     db.runInTransaction {
                         db.postGelDao().deletePosts(search.host, search.keyword)
                         insertGelbooruResultIntoDb(search, response.body()?.posts, tagBlacklists)

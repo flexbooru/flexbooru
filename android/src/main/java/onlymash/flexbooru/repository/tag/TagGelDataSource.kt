@@ -34,14 +34,14 @@ class TagGelDataSource(private val gelbooruApi: GelbooruApi,
                        retryExecutor: Executor) : BasePageKeyedDataSource<Int, TagGel>(retryExecutor) {
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, TagGel>) {
-        val request = gelbooruApi.getTags(GelUrlHelper.getTagUrl(search = search, page = 1))
+        val request = gelbooruApi.getTags(GelUrlHelper.getTagUrl(search = search, page = 0))
         val response =  request.execute()
         val data = response.body()?.tags ?: mutableListOf()
         if (data.size < search.limit) {
             callback.onResult(data, null, null)
             onEnd()
         } else {
-            callback.onResult(data, null, 2)
+            callback.onResult(data, null, 1)
         }
     }
 

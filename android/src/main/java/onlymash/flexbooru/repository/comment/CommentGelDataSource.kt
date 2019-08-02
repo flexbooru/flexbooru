@@ -39,14 +39,14 @@ class CommentGelDataSource(private val gelbooruApi: GelbooruApi,
     }
 
     override fun loadInitialRequest(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CommentGel>) {
-        val url = getUrl(1)
+        val url = getUrl(0)
         val request = gelbooruApi.getComments(url)
         val response = request.execute()
         val data = response.body()?.comments ?: mutableListOf()
         if (data.size < commentAction.limit) {
             callback.onResult(data, null, null)
         } else {
-            callback.onResult(data, null, 2)
+            callback.onResult(data, null, 1)
         }
     }
 

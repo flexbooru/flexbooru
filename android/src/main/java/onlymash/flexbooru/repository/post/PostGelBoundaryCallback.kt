@@ -93,7 +93,7 @@ class PostGelBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            createCallback(1, it)
+            createCallback(0, it)
         }
     }
 
@@ -103,7 +103,7 @@ class PostGelBoundaryCallback(
         val limit = search.limit
         if (lastResponseSize == limit) {
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-                createCallback(indexInNext/limit + 1, it)
+                createCallback(indexInNext/limit, it)
             }
         }
     }
