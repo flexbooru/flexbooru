@@ -17,12 +17,10 @@ package onlymash.flexbooru.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 
 class BottomNavigationBehavior @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
