@@ -23,11 +23,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class BottomNavigationSnackbarBehavior : CoordinatorLayout.Behavior<BottomNavigationView> {
-
-    constructor(): super()
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+open class BottomNavigationSnackbarBehavior @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+): CoordinatorLayout.Behavior<BottomNavigationView>(context, attrs) {
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: BottomNavigationView,
                                  dependency: View): Boolean {
@@ -38,8 +36,8 @@ class BottomNavigationSnackbarBehavior : CoordinatorLayout.Behavior<BottomNaviga
     }
 
     private fun updateSnackbar(child: View, snackbarLayout: Snackbar.SnackbarLayout) {
-        if (snackbarLayout.layoutParams is CoordinatorLayout.LayoutParams) {
-            val params = snackbarLayout.layoutParams as CoordinatorLayout.LayoutParams
+        val params = snackbarLayout.layoutParams
+        if (params is CoordinatorLayout.LayoutParams) {
             params.anchorId = child.id
             params.anchorGravity = Gravity.TOP
             params.gravity = Gravity.TOP

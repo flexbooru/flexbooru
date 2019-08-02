@@ -26,26 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class BottomNavigationBehavior @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-): CoordinatorLayout.Behavior<BottomNavigationView>(context, attrs) {
-
-    override fun layoutDependsOn(parent: CoordinatorLayout, child: BottomNavigationView,
-                                 dependency: View): Boolean {
-        if (dependency is Snackbar.SnackbarLayout) {
-            updateSnackbar(child, dependency)
-        }
-        return super.layoutDependsOn(parent, child, dependency)
-    }
-
-    private fun updateSnackbar(child: View, snackbarLayout: Snackbar.SnackbarLayout) {
-        if (snackbarLayout.layoutParams is CoordinatorLayout.LayoutParams) {
-            val params = snackbarLayout.layoutParams as CoordinatorLayout.LayoutParams
-
-            params.anchorId = child.id
-            params.anchorGravity = Gravity.TOP
-            params.gravity = Gravity.TOP
-            snackbarLayout.layoutParams = params
-        }
-    }
+): BottomNavigationSnackbarBehavior(context, attrs) {
 
     override fun onStartNestedScroll(
         coordinatorLayout: CoordinatorLayout,
