@@ -15,8 +15,9 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
-    <string name="title_posts">Posts</string>
+    <string name="app_description">Un cliente booru para Android, soporte Danbooru, Moebooru, Gelbooru, Sankaku, etc.
+    </string>
+    <string name="title_posts">Publicaciones</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Administrar boorus</string>
     <string name="title_settings">Ajustes</string>
@@ -33,7 +34,7 @@
     <string name="title_about">Acerca de</string>
     <string name="title_tag_blacklist">Etiquetar lista negra</string>
     <string name="title_sauce_nao">SauceNao</string>
-    <string name="title_what_anime">What Anime</string>
+    <string name="title_what_anime">Qué Anime</string>
     <string name="about_app_version">Versión</string>
     <string name="about_app_rate">Calificar esta aplicación</string>
     <string name="about_app_translation">Traducción</string>
@@ -54,7 +55,7 @@
     <string name="msg_not_supported">No soportado</string>
     <string name="msg_file_save_success">El archivo se ha guardado como %s</string>
     <string name="msg_your_api_key_is_wrong">¡Tu Clave Api está equivocada!</string>
-    <string name="post_expand_or_clear">Expand or clear</string>
+    <string name="post_expand_or_clear">Expandir o borrar</string>
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Descargar publicación</string>
     <string name="post_add_to_fav">Añadir a favoritos</string>
@@ -107,7 +108,7 @@
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt debe contener el texto: su-contraseña</string>
     <string name="scaner_scan_qr_code">Leer código QR</string>
     <string name="scaner_add_booru_permission_required">Se requiere permiso de cámara para escanear código QR.</string>
-    <string name="browse_toolbar_title">Post</string>
+    <string name="browse_toolbar_title">Publicacion</string>
     <string name="browse_add_to_fav">Añadir a favoritos</string>
     <string name="browse_download">Descargar</string>
     <string name="browse_set_as">Establecer como</string>
@@ -143,7 +144,7 @@
     <string name="account_user_remove">Eliminar cuenta</string>
     <string name="account_user_dialog_title_remove">Está seguro de que quiere eliminar esta cuenta?</string>
     <string name="account_favorites">Favoritos</string>
-    <string name="account_posts">Posts</string>
+    <string name="account_posts">Publicaciones</string>
     <string name="account_comments">Comentarios</string>
     <string name="account_config_msg_tip_empty">Nombre de usuario o contraseña / La clave API no puede estar vacía.</string>
     <string name="account_recommended">Recomendado</string>
@@ -171,9 +172,9 @@
     <string name="settings_clear_history_summery">Eliminar todo el historial de búsqueda.</string>
     <string name="settings_clear_history_dialog_content">Todo el historial será eliminado.</string>
     <string name="settings_muzei">Muzei</string>
-    <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
-    <string name="settings_storage">Storage</string>
+    <string name="settings_display">Visualización</string>
+    <string name="settings_options">Opciones</string>
+    <string name="settings_storage">Almacenamiento</string>
     <string name="switch_on">Activado</string>
     <string name="switch_off">Desactivado</string>
     <string name="switch_yes">Sí</string>
@@ -242,22 +243,23 @@
     <string name="purchase_info_title">Quitar anuncios y desbloquear características</string>
     <string name="purchase_info_remove_ads">Eliminar anuncios</string>
     <string name="purchase_info_unlock_full_features">* Desbloquear todas las características</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
+    <string name="purchase_info_features">1. Quita el límite del booru disponible.\n2. Descarga el archivo zip del pool de
+        moebooru.\n3. Copia de seguridad &amp; Restaurar boorus desde el archivo.\n. Búsqueda invertida por SauceNao.
+    
     </string>
     <string name="purchase_pay_title">Pagar/Restaurar compra</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">AliPay</string>
     <string name="tab_start_date">Fecha de inicio</string>
     <string name="tab_end_date">Fecha fin</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
+    <string name="sauce_nao_help">Ayuda</string>
+    <string name="sauce_nao_change_api_key">Cambiar clave api</string>
+    <string name="sauce_nao_get_api_key">Obtener clave api</string>
+    <string name="sauce_nao_remaining_times_today">Tiempo restante hoy: %01$d</string>
+    <string name="sauce_nao_api_key_unset">La clave Api de SauceNao no está establecida.</string>
+    <string name="sauce_nao_image_url">Url de la imagen</string>
+    <string name="sauce_nao_invalid_image_url">Url de imagen no válida.</string>
+    <string name="sauce_nao_source">Fuente</string>
     <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
+    <string name="sauce_nao_search_from_file">Archivo</string>
 </resources>
