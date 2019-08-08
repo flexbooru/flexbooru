@@ -15,31 +15,32 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
-    <string name="title_posts">Posts</string>
+    <string name="app_description">Booru-клиент для Android с поддержкой Danbooru, Moebooru, Gelbooru, Sankaku и др.
+    </string>
+    <string name="title_posts">Посты</string>
     <string name="title_popular">Популярное</string>
-    <string name="title_manage_boorus">Управление booru</string>
+    <string name="title_manage_boorus">Управление booru-галереями</string>
     <string name="title_settings">Настройки</string>
-    <string name="title_booru_config">Настройки booru</string>
-    <string name="title_account">Aккаунт</string>
-    <string name="title_account_and_booru">Аккаунт - %s</string>
+    <string name="title_booru_config">-Настройки booru-галерей</string>
+    <string name="title_account">Учётная запись</string>
+    <string name="title_account_and_booru">Учётная запись - %s</string>
     <string name="title_artists">Художники</string>
     <string name="title_pools">Пулы</string>
     <string name="title_tags">Теги</string>
     <string name="title_comments">Комментарии</string>
-    <string name="title_muzei">Muzei</string>
+    <string name="title_muzei">Обои Muzei</string>
     <string name="title_night_mode">Ночной режим</string>
     <string name="title_copyright">Авторские права</string>
     <string name="title_about">О программе</string>
-    <string name="title_tag_blacklist">Черный список тегов</string>
+    <string name="title_tag_blacklist">Чёрный список тегов</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">What Anime</string>
     <string name="about_app_version">Версия</string>
-    <string name="about_app_rate">Оцените это приложение</string>
+    <string name="about_app_rate">Оцените приложение</string>
     <string name="about_app_translation">Перевод</string>
     <string name="about_app_translation_summary">Помочь с переводом</string>
     <string name="about_author">Автор</string>
-    <string name="about_author_email">Почта</string>
+    <string name="about_author_email">E-mail</string>
     <string name="about_author_website">Сайт</string>
     <string name="about_feedback">Обратная связь</string>
     <string name="about_feedback_github">Github</string>
@@ -54,11 +55,11 @@
     <string name="msg_not_supported">Не поддерживается</string>
     <string name="msg_file_save_success">Файл был сохранён как %s</string>
     <string name="msg_your_api_key_is_wrong">Неправильный ключ API!</string>
-    <string name="post_expand_or_clear">Expand or clear</string>
+    <string name="post_expand_or_clear">Развернуть или очистить</string>
     <string name="post_add_search_to_muzei">` %s ` было сохранено в Muzei.</string>
     <string name="post_download">Скачать</string>
     <string name="post_add_to_fav">Добавить в избранные</string>
-    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
+    <string name="post_search_by_sauce_nao">Поиск по SauceNao</string>
     <string name="msg_download_must_enable">Требуется Менеджер Загрузок.</string>
     <string name="msg_path_denied">Не удалось сохранить! Нет доступа к текущему пути.</string>
     <string name="msg_download_failed">Загрузка не удалась</string>
@@ -170,10 +171,10 @@
     <string name="settings_clear_history">Удалить историю поиска</string>
     <string name="settings_clear_history_summery">Удалить всю историю поиска.</string>
     <string name="settings_clear_history_dialog_content">Вся история поиска будет удалена.</string>
-    <string name="settings_muzei">Muzei</string>
-    <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
-    <string name="settings_storage">Storage</string>
+    <string name="settings_muzei">Обои Muzei</string>
+    <string name="settings_display">Экран</string>
+    <string name="settings_options">Настройки</string>
+    <string name="settings_storage">Хранилище</string>
     <string name="switch_on">Включить</string>
     <string name="switch_off">Выключить</string>
     <string name="switch_yes">Да</string>
@@ -242,22 +243,21 @@
     <string name="purchase_info_title">Удалить рекламу и разблокировать все возможности</string>
     <string name="purchase_info_remove_ads">* Удалить рекламу</string>
     <string name="purchase_info_unlock_full_features">* Разблокировать все возможности</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
+    <string name="purchase_info_features">1. Нет лимита доступных booru-галерей.\n2. Скачивание zip-архива пула с        moebooru.\n3. Резервное копирование и восстановление booru-галерей из файла.\n4. Поиск изображения по SauceNao.
+        </string>
     <string name="purchase_pay_title">Оплатить / Восстановить покупку</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
     <string name="tab_start_date">Дата старта</string>
     <string name="tab_end_date">Дата окончания</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
-    <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
+    <string name="sauce_nao_help">Справка</string>
+    <string name="sauce_nao_change_api_key">Изменить API-ключ</string>
+    <string name="sauce_nao_get_api_key">Получить API-ключ</string>
+    <string name="sauce_nao_remaining_times_today">Осталось на сегодня: %01$d раз</string>
+    <string name="sauce_nao_api_key_unset">API-ключ SauceNao не указан.</string>
+    <string name="sauce_nao_image_url">URL-адрес изображения</string>
+    <string name="sauce_nao_invalid_image_url">Неверный URL-адрес изображения.</string>
+    <string name="sauce_nao_source">Источник</string>
+    <string name="sauce_nao_search_from_url">URL-Адрес</string>
+    <string name="sauce_nao_search_from_file">Файл</string>
 </resources>
