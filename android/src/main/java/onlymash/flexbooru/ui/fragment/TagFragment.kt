@@ -21,7 +21,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -485,7 +484,7 @@ class TagFragment : ListFragment() {
 
     @Suppress("UNCHECKED_CAST")
     private fun getTagViewModel(repo: TagRepository): TagViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return TagViewModel(repo) as T
             }

@@ -23,7 +23,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.AlignItems
@@ -631,7 +630,7 @@ class PostFragment : ListFragment(),
 
     @Suppress("UNCHECKED_CAST")
     private fun getPostViewModel(repo: PostRepository): PostViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PostViewModel(repo) as T
             }
@@ -640,7 +639,7 @@ class PostFragment : ListFragment(),
 
     @Suppress("UNCHECKED_CAST")
     private fun getTagFilterViewModel(repo: TagFilterRepository): TagFilterViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return TagFilterViewModel(repo) as T
             }

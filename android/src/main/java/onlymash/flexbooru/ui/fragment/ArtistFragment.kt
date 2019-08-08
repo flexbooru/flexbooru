@@ -21,7 +21,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +33,6 @@ import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.entity.artist.SearchArtist
 import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.entity.artist.ArtistBase
-import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.artist.ArtistRepositoryImpl
 import onlymash.flexbooru.repository.artist.ArtistRepository
@@ -348,7 +346,7 @@ class ArtistFragment : ListFragment() {
 
     @Suppress("UNCHECKED_CAST")
     private fun getArtistViewModel(repo: ArtistRepository): ArtistViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ArtistViewModel(repo) as T
             }

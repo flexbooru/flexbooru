@@ -28,7 +28,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
@@ -197,7 +196,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
 
     @Suppress("UNCHECKED_CAST")
     private fun getSuggestionViewModel(repo: SuggestionRepository): SuggestionViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return SuggestionViewModel(repo) as T
             }

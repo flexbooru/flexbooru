@@ -721,7 +721,7 @@ class BrowseActivity : BaseActivity() {
 
     @Suppress("UNCHECKED_CAST")
     private fun getFavPostViewModel(loader: PostLoaderRepository): FavPostViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return FavPostViewModel(loader) as T
             }

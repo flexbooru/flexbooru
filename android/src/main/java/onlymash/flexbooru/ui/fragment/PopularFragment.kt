@@ -27,7 +27,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
@@ -661,7 +660,7 @@ class PopularFragment : ListFragment() {
 
     @Suppress("UNCHECKED_CAST")
     private fun getPopularViewModel(repo: PopularRepository): PopularViewModel {
-        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PopularViewModel(repo) as T
             }
