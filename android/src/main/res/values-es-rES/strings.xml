@@ -17,7 +17,7 @@
 <resources>
     <string name="app_description">Un cliente booru para Android, soporte Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
-    <string name="title_posts">Publicaciones</string>
+    <string name="title_posts">Posts</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Administrar boorus</string>
     <string name="title_settings">Ajustes</string>
@@ -49,7 +49,7 @@
     <string name="about_feedback_email">E-mail</string>
     <string name="about_copyright">Derechos de autor</string>
     <string name="about_licenses">Licencias</string>
-    <string name="about_open_source_licenses">Licencias de Código Abierto</string>
+    <string name="about_open_source_licenses">Licencias Open Source</string>
     <string name="snackbar_copy_text">` %s ` han sido copiados al portapapeles.</string>
     <string name="retry">Reintentar</string>
     <string name="msg_not_supported">No soportado</string>
@@ -59,7 +59,7 @@
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Descargar publicación</string>
     <string name="post_add_to_fav">Añadir a favoritos</string>
-    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
+    <string name="post_search_by_sauce_nao">Búsqueda por SauceNao</string>
     <string name="msg_download_must_enable">Se requiere Gestor de Descargas.</string>
     <string name="msg_path_denied">¡Error al guardar! No hay acceso a la ruta actual.</string>
     <string name="msg_download_failed">Descarga fallida</string>
