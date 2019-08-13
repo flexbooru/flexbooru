@@ -9,13 +9,13 @@ buildscript {
         work_version = '2.2.0-rc01'
         glide_version = '4.10.0-SNAPSHOT'
         lifecycle_version = '2.2.0-alpha03'
-        exoplayer_version = '2.10.3'
-        okhttp_version = '4.1.0-SNAPSHOT'
+        exoplayer_version = '2.10.4'
+        okhttp_version = '4.1.0'
         retrofit_version = '2.7.0-SNAPSHOT'
         tikxml_version = '0.8.13'
         ktor_version = '1.2.3'
         kodein_version = '6.3.3'
-        coroutines_version = '1.3.0-RC'
+        coroutines_version = '1.3.0-RC2'
         serialization_version = '0.11.1'
     }
     repositories {
@@ -24,7 +24,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-rc02'
+        classpath 'com.android.tools.build:gradle:3.5.0-rc03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.0'
