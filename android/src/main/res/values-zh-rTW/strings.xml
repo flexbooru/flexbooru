@@ -47,7 +47,7 @@
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">電子郵件</string>
     <string name="about_copyright">版權</string>
-    <string name="about_licenses">Licenses</string>
+    <string name="about_licenses">授權許可證</string>
     <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="snackbar_copy_text">已將 ` %s ` 複製到剪貼簿。</string>
     <string name="retry">重試</string>
@@ -130,7 +130,7 @@
     <string name="browse_info_parent">Parent</string>
     <string name="browse_info_title">資訊</string>
     <string name="browse_info_url_open">Open url</string>
-    <string name="browse_info_url_download">Download url</string>
+    <string name="browse_info_url_download">下載網址</string>
     <string name="title_account_config">帳戶設定</string>
     <string name="title_account_config_and_booru">帳戶設定 - %s</string>
     <string name="account_username">使用者名稱</string>
@@ -164,7 +164,7 @@
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">顯示影像資訊</string>
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
-    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache">清除快取</string>
     <string name="settings_clear_cache_summery">Remove all cached files.</string>
     <string name="settings_clear_cache_dialog_content">快取檔案將被清除。</string>
     <string name="settings_clear_history">Clear search history</string>
@@ -242,9 +242,7 @@
     <string name="purchase_info_title">移除廣告並解鎖所有功能</string>
     <string name="purchase_info_remove_ads">* Remove ads</string>
     <string name="purchase_info_unlock_full_features">* Unlock full features</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
+    <string name="purchase_info_features">1、移除可用booru的數量限制。\n2、可從moebooru圖集下載zip檔案。\n3、可於檔案中備份&amp; 還原boorus。\n4、可經由SauceNao進行反向搜尋。    </string>
     <string name="purchase_pay_title">支付/恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
@@ -254,7 +252,7 @@
     <string name="sauce_nao_change_api_key">更改api密鑰</string>
     <string name="sauce_nao_get_api_key">獲取api密鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘時間：%01$d</string>
-    <string name="sauce_nao_api_key_unset">沒有設定SauceNao的Api密鑰</string>
+    <string name="sauce_nao_api_key_unset">還沒有設定SauceNao的Api密鑰</string>
     <string name="sauce_nao_image_url">圖檔網址</string>
     <string name="sauce_nao_invalid_image_url">無效的圖檔網址</string>
     <string name="sauce_nao_source">Source</string>
