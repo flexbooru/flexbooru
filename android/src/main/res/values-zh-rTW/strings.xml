@@ -166,7 +166,7 @@
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_clear_cache_summery">Remove all cached files.</string>
-    <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
+    <string name="settings_clear_cache_dialog_content">快取檔案將被清除。</string>
     <string name="settings_clear_history">Clear search history</string>
     <string name="settings_clear_history_summery">Remove all search history.</string>
     <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
@@ -180,8 +180,8 @@
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">簡介空白。</string>
     <string name="pool_download">下載圖集</string>
-    <string name="pool_download_jpgs">Download JPGs</string>
-    <string name="pool_download_pngs">Download PNGs</string>
+    <string name="pool_download_jpgs">下載JPG圖集</string>
+    <string name="pool_download_pngs">下載PNG圖集</string>
     <string name="tag_type">標籤類型</string>
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">General</string>
