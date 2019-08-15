@@ -53,7 +53,7 @@
     <string name="retry">重試</string>
     <string name="msg_not_supported">暫不支持</string>
     <string name="msg_file_save_success">已將檔案存為 %s</string>
-    <string name="msg_your_api_key_is_wrong">您的API密鑰出錯</string>
+    <string name="msg_your_api_key_is_wrong">你的 Api 金鑰出錯！</string>
     <string name="post_expand_or_clear">展開或清除</string>
     <string name="post_add_search_to_muzei">已將 ` %s ` 存至 Muzei。</string>
     <string name="post_download">下載投稿</string>
