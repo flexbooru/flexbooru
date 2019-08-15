@@ -43,7 +43,7 @@
     <string name="about_author_website">網站</string>
     <string name="about_feedback">意見回報</string>
     <string name="about_feedback_github">Github</string>
-    <string name="about_feedback_telegram">Telegram</string>
+    <string name="about_feedback_telegram">電報</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">電子郵件</string>
     <string name="about_copyright">版權</string>
@@ -98,7 +98,7 @@
     <string name="booru_config_scheme">協議</string>
     <string name="booru_config_host">主機</string>
     <string name="booru_config_type">類型</string>
-    <string name="booru_config_hash_salt">Hash salt</string>
+    <string name="booru_config_hash_salt">哈希值</string>
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
     <string name="booru_config_host_cant_empty">主機不可為空白。</string>
     <string name="booru_config_host_invalid">Invalid host.</string>
@@ -153,7 +153,7 @@
     <string name="settings_browse_size">瀏覽影像大小</string>
     <string name="settings_download_size">下載影像大小</string>
     <string name="settings_download_path">Download path</string>
-    <string name="settings_download_path_not_set">Path not set</string>
+    <string name="settings_download_path_not_set">路徑暫未設定</string>
     <string name="settings_muzei_size">Muzei 影像大小</string>
     <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">較大</string>
@@ -163,7 +163,7 @@
     <string name="settings_grid_width_normal">正常</string>
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">顯示影像資訊</string>
-    <string name="settings_show_all_tags">Show tags for all sites</string>
+    <string name="settings_show_all_tags">顯示所有網站的標籤</string>
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_clear_cache_summery">Remove all cached files.</string>
     <string name="settings_clear_cache_dialog_content">Cached files will be cleared.</string>
@@ -179,13 +179,13 @@
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">簡介空白。</string>
-    <string name="pool_download">Download pool</string>
+    <string name="pool_download">下載圖集</string>
     <string name="pool_download_jpgs">Download JPGs</string>
     <string name="pool_download_pngs">Download PNGs</string>
     <string name="tag_type">標籤類型</string>
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">General</string>
-    <string name="tag_type_artist">Artist</string>
+    <string name="tag_type_artist">繪師</string>
     <string name="tag_type_copyright">Copyright</string>
     <string name="tag_type_character">Character</string>
     <string name="tag_type_circle">圈子</string>
@@ -238,22 +238,22 @@
     <string name="comment_send">發送</string>
     <string name="comment_cancel">取消</string>
     <string name="comment_hint">輸入留言</string>
-    <string name="purchase_title">Remove ads &amp; feature unlock</string>
-    <string name="purchase_info_title">Remove ads and unlock full features</string>
+    <string name="purchase_title">移除廣告 &amp; 功能解鎖</string>
+    <string name="purchase_info_title">移除廣告並解鎖所有功能</string>
     <string name="purchase_info_remove_ads">* Remove ads</string>
     <string name="purchase_info_unlock_full_features">* Unlock full features</string>
     <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
         moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
     </string>
-    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="purchase_pay_title">支付/恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
     <string name="tab_start_date">Start date</string>
     <string name="tab_end_date">End date</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
+    <string name="sauce_nao_help">援助</string>
+    <string name="sauce_nao_change_api_key">更改api密鑰</string>
+    <string name="sauce_nao_get_api_key">獲取api密鑰</string>
+    <string name="sauce_nao_remaining_times_today">今日剩餘時間：%01$d</string>
     <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
     <string name="sauce_nao_image_url">Image url</string>
     <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
