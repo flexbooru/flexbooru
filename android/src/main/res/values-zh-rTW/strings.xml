@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">一個booru安卓客戶端，支持Danbooru, Moebooru, Gelbooru, Sankaku, 之類的。    </string>
+    <string name="app_description">一個 Booru 安卓客戶端，支持Danbooru, Moebooru, Gelbooru, Sankaku, 之類的。    </string>
     <string name="title_posts">貼圖</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
@@ -84,7 +84,7 @@
     <string name="booru_add_error">錯誤: 無效的資料</string>
     <string name="booru_add_title_dialog">要新增這個 Booru 嗎？</string>
     <string name="booru_name">Booru 名稱</string>
-    <string name="booru_share_by_qr_code">QR Code</string>
+    <string name="booru_share_by_qr_code">QR 碼</string>
     <string name="booru_share_by_clipboard">匯出至剪貼簿</string>
     <string name="booru_edit">Edit</string>
     <string name="booru_delete">Delete</string>
@@ -112,8 +112,8 @@
     <string name="browse_download">下載</string>
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送</string>
-    <string name="browse_save_file">下載</string>
-    <string name="browse_share_link">分享</string>
+    <string name="browse_save_file">儲存檔案</string>
+    <string name="browse_share_link">分享鏈結</string>
     <string name="browse_open_in_browser">Open in browser</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
