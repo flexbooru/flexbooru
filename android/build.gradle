@@ -107,12 +107,12 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha02'
     implementation "androidx.preference:preference-ktx:$androidx_base"
     implementation 'androidx.core:core-ktx:1.2.0-alpha03'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.browser:browser:1.2.0-alpha07'
-    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha02'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha03'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
