@@ -84,7 +84,7 @@
     <string name="booru_add_error">錯誤: 無效的資料</string>
     <string name="booru_add_title_dialog">要新增這個 Booru 嗎？</string>
     <string name="booru_name">Booru 名稱</string>
-    <string name="booru_share_by_qr_code">QR 碼</string>
+    <string name="booru_share_by_qr_code">二維碼</string>
     <string name="booru_share_by_clipboard">匯出至剪貼簿</string>
     <string name="booru_edit">Edit</string>
     <string name="booru_delete">Delete</string>
@@ -102,11 +102,11 @@
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
     <string name="booru_config_host_cant_empty">主機不可為空白。</string>
     <string name="booru_config_host_invalid">Invalid host.</string>
-    <string name="booru_config_hash_salt_cant_empty">Hash salt 不可為空白。</string>
+    <string name="booru_config_hash_salt_cant_empty">哈希值不可為空。</string>
     <string name="booru_config_dialog_title_delete">你確定要移除這個 Booru 嗎？</string>
-    <string name="booru_config_hash_salt_must_contain_yp">Hash salt 必須包含文字： your-password</string>
-    <string name="scaner_scan_qr_code">掃描 QR Code</string>
-    <string name="scaner_add_booru_permission_required">掃描 QR Code 需要相機權限。</string>
+    <string name="booru_config_hash_salt_must_contain_yp">哈希值必須包含文字： 你的-密碼</string>
+    <string name="scaner_scan_qr_code">掃描二維碼</string>
+    <string name="scaner_add_booru_permission_required">掃描二維碼需要相機權限。</string>
     <string name="browse_toolbar_title">貼圖</string>
     <string name="browse_add_to_fav">加到收藏</string>
     <string name="browse_download">下載</string>
