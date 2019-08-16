@@ -48,7 +48,6 @@ import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.ui.adapter.NavPagerAdapter
-import onlymash.flexbooru.widget.drawerlayout.FullDrawerLayout
 import org.kodein.di.erased.instance
 
 class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -97,9 +96,6 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
         drawer = DrawerBuilder()
             .withActivity(this)
-            .withDrawerLayout(FullDrawerLayout(this).apply {
-                setLeftSwipeSize(this@MainActivity.getWidth())
-            })
             .withTranslucentStatusBar(false)
             .withAccountHeader(header, false)
             .addDrawerItems(
