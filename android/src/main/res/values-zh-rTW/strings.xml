@@ -102,7 +102,7 @@
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
     <string name="booru_config_host_cant_empty">主機不可為空白。</string>
     <string name="booru_config_host_invalid">Invalid host.</string>
-    <string name="booru_config_hash_salt_cant_empty">哈希值不可為空。</string>
+    <string name="booru_config_hash_salt_cant_empty">哈希值不可為空白。</string>
     <string name="booru_config_dialog_title_delete">你確定要移除這個 Booru 嗎？</string>
     <string name="booru_config_hash_salt_must_contain_yp">哈希值必須包含文字： 你的-密碼</string>
     <string name="scaner_scan_qr_code">掃描二維碼</string>
@@ -126,7 +126,7 @@
     <string name="browse_info_rating_safe">安全的</string>
     <string name="browse_info_rating_questionable">存疑的</string>
     <string name="browse_info_rating_explicit">露骨的</string>
-    <string name="browse_info_score">分數</string>
+    <string name="browse_info_score">評分</string>
     <string name="browse_info_parent">Parent</string>
     <string name="browse_info_title">資訊</string>
     <string name="browse_info_url_open">開啟網址</string>
