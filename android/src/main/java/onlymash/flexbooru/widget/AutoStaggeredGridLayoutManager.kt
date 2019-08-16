@@ -18,6 +18,8 @@ package onlymash.flexbooru.widget
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import kotlin.math.abs
+import kotlin.math.max
 
 class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : StaggeredGridLayoutManager(1, orientation) {
 
@@ -32,13 +34,13 @@ class AutoStaggeredGridLayoutManager(columnSize: Int, orientation: Int) : Stagge
                 return 1
             }
             val span2 = span + 1
-            val deviation = Math.abs(1 - total.toFloat() / span.toFloat() / single.toFloat())
-            val deviation2 = Math.abs(1 - total.toFloat() / span2.toFloat() / single.toFloat())
+            val deviation = abs(1 - total.toFloat() / span.toFloat() / single.toFloat())
+            val deviation2 = abs(1 - total.toFloat() / span2.toFloat() / single.toFloat())
             return if (deviation < deviation2) span else span2
         }
 
         fun getSpanCountForMinSize(total: Int, single: Int): Int {
-            return Math.max(1, total / single)
+            return max(1, total / single)
         }
     }
 

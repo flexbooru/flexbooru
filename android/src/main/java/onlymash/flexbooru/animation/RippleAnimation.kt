@@ -26,6 +26,9 @@ import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import kotlin.math.max
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 // https://github.com/Ifxcyr/RippleAnimation/
 @SuppressLint("ViewConstructor")
@@ -134,17 +137,17 @@ class RippleAnimation private constructor(
         val rightBottom = RectF(leftBottom.right, leftTop.bottom, root.right.toFloat(), leftBottom.bottom)
         //分别获取对角线长度
         val leftTopHypotenuse =
-            Math.sqrt(Math.pow(leftTop.width().toDouble(), 2.0) + Math.pow(leftTop.height().toDouble(), 2.0))
+            sqrt(leftTop.width().toDouble().pow(2.0) + leftTop.height().toDouble().pow(2.0))
         val rightTopHypotenuse =
-            Math.sqrt(Math.pow(rightTop.width().toDouble(), 2.0) + Math.pow(rightTop.height().toDouble(), 2.0))
+            sqrt(rightTop.width().toDouble().pow(2.0) + rightTop.height().toDouble().pow(2.0))
         val leftBottomHypotenuse =
-            Math.sqrt(Math.pow(leftBottom.width().toDouble(), 2.0) + Math.pow(leftBottom.height().toDouble(), 2.0))
+            sqrt(leftBottom.width().toDouble().pow(2.0) + leftBottom.height().toDouble().pow(2.0))
         val rightBottomHypotenuse =
-            Math.sqrt(Math.pow(rightBottom.width().toDouble(), 2.0) + Math.pow(rightBottom.height().toDouble(), 2.0))
+            sqrt(rightBottom.width().toDouble().pow(2.0) + rightBottom.height().toDouble().pow(2.0))
         //取最大值
-        maxRadius = Math.max(
-            Math.max(leftTopHypotenuse, rightTopHypotenuse),
-            Math.max(leftBottomHypotenuse, rightBottomHypotenuse)
+        maxRadius = max(
+            max(leftTopHypotenuse, rightTopHypotenuse),
+            max(leftBottomHypotenuse, rightBottomHypotenuse)
         ).toInt()
     }
 
@@ -220,7 +223,7 @@ class RippleAnimation private constructor(
             val startY = getAbsoluteY(onClickView) + newHeight
             //起始半径
             //因为我们要避免遮挡按钮
-            val radius = Math.max(newWidth, newHeight)
+            val radius = max(newWidth, newHeight)
             return RippleAnimation(context, startX, startY, radius)
         }
 

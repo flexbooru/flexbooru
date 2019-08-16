@@ -19,6 +19,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.viewpager.widget.ViewPager
+import kotlin.math.abs
 
 class FullDrawerViewPager : ViewPager {
     constructor(context: Context): super(context)
@@ -39,7 +40,7 @@ class FullDrawerViewPager : ViewPager {
                 val endY = ev.y
                 val dX = endX - startX
                 val dY = endY - startY
-                if(Math.abs(dX) > Math.abs(dY)) {
+                if(abs(dX) > abs(dY)) {
                     if (currentItem == 0 && dX > 0) {
                         parent.requestDisallowInterceptTouchEvent(false)
                     } else if (dX < 0) {

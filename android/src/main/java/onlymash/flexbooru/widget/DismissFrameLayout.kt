@@ -24,6 +24,7 @@ import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
+import kotlin.math.max
 
 class DismissFrameLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -72,7 +73,7 @@ class DismissFrameLayout @JvmOverloads constructor(
 
         override fun clampViewPositionHorizontal(child: View, left: Int, dx: Int): Int = 0
 
-        override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int = Math.max(0, top)
+        override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int = max(0, top)
 
         override fun getViewHorizontalDragRange(child: View): Int = 0
 
