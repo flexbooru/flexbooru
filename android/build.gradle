@@ -135,7 +135,7 @@ dependencies {
     implementation 'com.mikepenz:materialdrawer:7.0.0-rc05'
     implementation 'com.github.kenglxn.QRGen:android:2.6.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
-    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-core:17.1.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.gms:play-services-vision:18.0.0'
     implementation 'com.google.android.gms:play-services-ads:18.1.1'
