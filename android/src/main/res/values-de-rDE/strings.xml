@@ -15,7 +15,8 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
+    <string name="app_description">Ein Booru-Client für Android, unterstützt Danbooru, Moebooru, Gelbooru, Sankaku, etc.
+    </string>
     <string name="title_posts">Beiträge</string>
     <string name="title_popular">Beliebt</string>
     <string name="title_manage_boorus">Boorus verwalten</string>
@@ -138,7 +139,7 @@
     <string name="account_api_key">API-Schlüssel</string>
     <string name="account_forgot_password">Passwort vergessen?</string>
     <string name="account_forgot_api_key">Was ist mein Api-Schlüssel?</string>
-    <string name="account_set">Set account</string>
+    <string name="account_set">Konto festlegen</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">Konto entfernen</string>
     <string name="account_user_dialog_title_remove">Möchten Sie das Konto wirklich entfernen?</string>
@@ -148,12 +149,12 @@
     <string name="account_config_msg_tip_empty">Benutzername oder Passwort/Api-Schlüssel dürfen nicht leer sein.</string>
     <string name="account_recommended">Empfohlen</string>
     <string name="settings_safe_mode">Sicherer Modus</string>
-    <string name="settings_page_limit">Page limit</string>
+    <string name="settings_page_limit">Seitenlimit</string>
     <string name="settings_muzei_limit">Muzei limit</string>
     <string name="settings_browse_size">Browse size</string>
-    <string name="settings_download_size">Download size</string>
+    <string name="settings_download_size">Download-Größe</string>
     <string name="settings_download_path">Downloadpfad</string>
-    <string name="settings_download_path_not_set">Path not set</string>
+    <string name="settings_download_path_not_set">Pfad nicht gesetzt</string>
     <string name="settings_muzei_size">Muzei size</string>
     <string name="settings_post_size_sample">Beispiel</string>
     <string name="settings_post_size_larger">Größer</string>
@@ -221,14 +222,14 @@
     <string name="rating">Bewertung</string>
     <string name="threshold">Schwellenwert</string>
     <string name="muzei_copy">Copy</string>
-    <string name="muzei_delete">Delete</string>
-    <string name="muzei_search">Search</string>
-    <string name="muzei_add">Add keyword</string>
-    <string name="muzei_fetch">Fetch Artwork</string>
+    <string name="muzei_delete">Löschen</string>
+    <string name="muzei_search">Suche</string>
+    <string name="muzei_add">Label hinzufügen</string>
+    <string name="muzei_fetch">Artwork abrufen</string>
     <string name="muzei_input_cant_be_empty">Input can not be empty.</string>
     <string name="muzei_action_view_post">View post on Flexbooru</string>
     <string name="muzei_action_search_posts">Search posts on Flexbooru</string>
-    <string name="muzei_attribution">Post from Flexbooru</string>
+    <string name="muzei_attribution">Beitrag von Flexbooru</string>
     <string name="tag_blacklist_copy">Kopieren</string>
     <string name="tag_blacklist_delete">Löschen</string>
     <string name="tag_blacklist_add">Hinzufügen  </string>
