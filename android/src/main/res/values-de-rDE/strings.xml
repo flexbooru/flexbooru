@@ -16,24 +16,24 @@
   -->
 <resources>
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
-    <string name="title_posts">Posts</string>
+    <string name="title_posts">Beiträge</string>
     <string name="title_popular">Beliebt</string>
     <string name="title_manage_boorus">Boorus verwalten</string>
     <string name="title_settings">Einstellungen</string>
     <string name="title_booru_config">Booru Konfiguration</string>
     <string name="title_account">Profil</string>
-    <string name="title_account_and_booru">Account - %s</string>
+    <string name="title_account_and_booru">Konto - %s</string>
     <string name="title_artists">Künstler</string>
     <string name="title_pools">Pools</string>
     <string name="title_tags">Tags</string>
     <string name="title_comments">Kommentare</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_night_mode">Nacht Modus</string>
-    <string name="title_copyright">Copyright</string>
+    <string name="title_copyright">Urheberrecht</string>
     <string name="title_about">Über</string>
     <string name="title_tag_blacklist">Tag-Blacklist</string>
     <string name="title_sauce_nao">SauceNao</string>
-    <string name="title_what_anime">What Anime</string>
+    <string name="title_what_anime">Welcher Anime</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Diese App bewerten</string>
     <string name="about_app_translation">Übersetzung</string>
@@ -46,7 +46,7 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">E-mail</string>
-    <string name="about_copyright">Copyright</string>
+    <string name="about_copyright">Urheberrecht</string>
     <string name="about_licenses">Lizenz</string>
     <string name="about_open_source_licenses">Open Source Lizenz</string>
     <string name="snackbar_copy_text">` %s ` wurde in die Zwischenablage kopiert.</string>
@@ -54,12 +54,12 @@
     <string name="msg_not_supported">Nicht unterstützt</string>
     <string name="msg_file_save_success">Die Datei wurde als %s gespiechert</string>
     <string name="msg_your_api_key_is_wrong">Dein Api-Schlüssel ist falsch!</string>
-    <string name="post_expand_or_clear">Expand or clear</string>
-    <string name="post_add_search_to_muzei">` %s ` have been saved to Muzei.</string>
+    <string name="post_expand_or_clear">Erweitern oder löschen</string>
+    <string name="post_add_search_to_muzei">` %s ` wurden in Muzei gespeichert.</string>
     <string name="post_download">Bild herunterladen</string>
     <string name="post_add_to_fav">Zu Favoriten hinzufügen</string>
     <string name="post_search_by_sauce_nao">Search by SauceNao</string>
-    <string name="msg_download_must_enable">Download Manager is needed.</string>
+    <string name="msg_download_must_enable">Download Manager ist erforderlich.</string>
     <string name="msg_path_denied">Speichern fehlgeschlagen! Kein Zugriff auf den aktuellen Pfad.</string>
     <string name="msg_download_failed">Herunterladen fehlgeschlagen</string>
     <string name="msg_download_complete">Herunterladen abgeschlossen</string>
@@ -95,7 +95,7 @@
     <string name="booru_config_apply">Übernehmen</string>
     <string name="booru_config_name">Name</string>
     <string name="booru_config_info">Booru Info</string>
-    <string name="booru_config_scheme">Scheme</string>
+    <string name="booru_config_scheme">Schema</string>
     <string name="booru_config_host">Host</string>
     <string name="booru_config_type">Typ</string>
     <string name="booru_config_hash_salt">Hash salt</string>
