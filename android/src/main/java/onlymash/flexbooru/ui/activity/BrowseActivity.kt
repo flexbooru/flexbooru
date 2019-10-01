@@ -19,11 +19,13 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.DocumentsContract
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -291,6 +293,9 @@ class BrowseActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
         window.showBar()
         setContentView(R.layout.activity_browse)
         pageType = intent?.getIntExtra(Constants.PAGE_TYPE_KEY, Constants.PAGE_TYPE_POST) ?: Constants.PAGE_TYPE_POST
