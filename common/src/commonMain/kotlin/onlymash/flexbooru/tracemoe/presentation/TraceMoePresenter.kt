@@ -9,6 +9,7 @@ import onlymash.flexbooru.tracemoe.di.kodeinTraceMoe
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalStdlibApi
 @UnstableDefault
 class TraceMoePresenter(
     uiContext: CoroutineContext,

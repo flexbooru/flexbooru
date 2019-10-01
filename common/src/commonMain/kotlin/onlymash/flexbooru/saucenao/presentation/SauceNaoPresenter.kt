@@ -9,6 +9,7 @@ import onlymash.flexbooru.saucenao.di.kodeinSauceNao
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalStdlibApi
 @UnstableDefault
 class SauceNaoPresenter(
     uiContext: CoroutineContext,
