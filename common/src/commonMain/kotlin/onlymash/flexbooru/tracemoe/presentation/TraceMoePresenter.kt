@@ -9,15 +9,16 @@ import onlymash.flexbooru.tracemoe.di.kodeinTraceMoe
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalStdlibApi
 @UnstableDefault
 class TraceMoePresenter(
     uiContext: CoroutineContext,
     val view: TraceMoeView
 ) : CoroutinePresenter(uiContext, view), TraceMoeActions {
 
+    @ExperimentalStdlibApi
     val api: TraceMoeApi by kodeinTraceMoe.instance("TraceMoeApi")
 
+    @ExperimentalStdlibApi
     override fun onRequestData(base64Image: String) {
 
         view.isUpdating = true

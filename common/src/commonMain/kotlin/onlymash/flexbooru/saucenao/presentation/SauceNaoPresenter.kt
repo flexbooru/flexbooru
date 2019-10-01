@@ -9,15 +9,16 @@ import onlymash.flexbooru.saucenao.di.kodeinSauceNao
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalStdlibApi
 @UnstableDefault
 class SauceNaoPresenter(
     uiContext: CoroutineContext,
     val view: SauceNaoView
 ) : CoroutinePresenter(uiContext, view), SauceNaoActions {
 
+    @ExperimentalStdlibApi
     val api: SauceNaoApi by kodeinSauceNao.instance("SauceNaoApi")
 
+    @ExperimentalStdlibApi
     override fun onRequestData(apiKey: String, imageUrl: String) {
 
         view.isUpdating = true
@@ -30,6 +31,7 @@ class SauceNaoPresenter(
         }
     }
 
+    @ExperimentalStdlibApi
     override fun onRequestData(
         apiKey: String,
         byteArray: ByteArray,
