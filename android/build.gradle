@@ -45,7 +45,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode verCode
-        versionName '1.1.9'
+        versionName '1.1.10'
         versionNameSuffix '.c' + verCode
         multiDexEnabled true
         resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU', 'ja-rJP', 'in-rID'
