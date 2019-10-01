@@ -88,6 +88,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
