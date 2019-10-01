@@ -22,6 +22,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -162,7 +163,7 @@ class BooruActivity : BaseActivity() {
         val intent = Intent().apply {
             action = Intent.ACTION_OPEN_DOCUMENT
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/octet-stream"
+            type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) "application/json" else "application/octet-stream"
         }
         try {
             startActivityForResult(intent,
