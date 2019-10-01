@@ -1,7 +1,7 @@
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlinx-serialization'
 kotlin {
-    jvm()
+    jvm() // Create a JVM target with the default name 'jvm'
     sourceSets {
         commonMain {
             dependencies {
@@ -25,6 +25,10 @@ kotlin {
                 implementation kotlin('test-junit')
             }
         }
+    }
+    jvm().compilations.main.kotlinOptions {
+        // Setup the Kotlin compiler options for the 'main' compilation:
+        jvmTarget = "1.8"
     }
 }
 dependencies {
