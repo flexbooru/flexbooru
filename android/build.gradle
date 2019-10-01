@@ -48,7 +48,7 @@ android {
         versionName '1.1.10'
         versionNameSuffix '.c' + verCode
         multiDexEnabled true
-        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU', 'ja-rJP', 'in-rID'
+        resConfigs 'en', 'zh-rCN', 'zh-rHK', 'zh-rTW', 'nl-rNL', 'pt-rBR', 'es-rES', 'pl-rPL', 'fr-rFR', 'hu-rHU', 'ru-rRU', 'ja-rJP', 'in-rID', 'de-rDE'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [admobAppId: "ca-app-pub-1547571472841615~2418349121", backupApiKey: "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"]
     }
