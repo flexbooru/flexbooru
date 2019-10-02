@@ -382,7 +382,7 @@ class PopularFragment : ListFragment() {
                                     minDate = minCalendar.timeInMillis,
                                     maxDate = currentTimeMillis
                                 )
-                                    .show(requireFragmentManager(), "DateRangePicker")
+                                    .show(childFragmentManager, "DateRangePicker")
                             }
                         }
                     }
