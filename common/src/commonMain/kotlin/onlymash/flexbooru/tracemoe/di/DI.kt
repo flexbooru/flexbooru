@@ -13,17 +13,15 @@ import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.provider
-import kotlin.reflect.typeOf
 
 @UnstableDefault
-@ExperimentalStdlibApi
 val kodeinTraceMoe = Kodein {
     bind<String>("TraceMoeBaseUrl") with provider { "https://trace.moe" }
     bind<HttpClient>() with provider {
         HttpClient {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(Json.nonstrict).apply {
-                    typeOf<TraceResponse>()
+                    setMapper(TraceResponse::class, TraceResponse.serializer())
                 }
             }
             install(HttpCallValidator)

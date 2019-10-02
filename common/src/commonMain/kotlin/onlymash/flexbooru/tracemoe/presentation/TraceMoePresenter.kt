@@ -15,10 +15,8 @@ class TraceMoePresenter(
     val view: TraceMoeView
 ) : CoroutinePresenter(uiContext, view), TraceMoeActions {
 
-    @ExperimentalStdlibApi
     val api: TraceMoeApi by kodeinTraceMoe.instance("TraceMoeApi")
 
-    @ExperimentalStdlibApi
     override fun onRequestData(base64Image: String) {
 
         view.isUpdating = true

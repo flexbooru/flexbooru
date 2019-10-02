@@ -15,7 +15,6 @@ class SauceNaoPresenter(
     val view: SauceNaoView
 ) : CoroutinePresenter(uiContext, view), SauceNaoActions {
 
-    @ExperimentalStdlibApi
     val api: SauceNaoApi by kodeinSauceNao.instance("SauceNaoApi")
 
     @ExperimentalStdlibApi
@@ -31,7 +30,6 @@ class SauceNaoPresenter(
         }
     }
 
-    @ExperimentalStdlibApi
     override fun onRequestData(
         apiKey: String,
         byteArray: ByteArray,

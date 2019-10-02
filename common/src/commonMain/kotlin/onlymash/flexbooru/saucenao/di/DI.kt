@@ -13,17 +13,15 @@ import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.provider
-import kotlin.reflect.typeOf
 
 @UnstableDefault
-@ExperimentalStdlibApi
 val kodeinSauceNao = Kodein {
     bind<String>("SauceNaoBaseUrl") with provider { "https://saucenao.com" }
     bind<HttpClient>() with provider {
         HttpClient {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(Json.nonstrict).apply {
-                    typeOf<SauceNaoResponse>()
+                    setMapper(SauceNaoResponse::class, SauceNaoResponse.serializer())
                 }
             }
             install(HttpCallValidator)
