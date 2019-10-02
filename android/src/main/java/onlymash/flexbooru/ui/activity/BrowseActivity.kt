@@ -35,7 +35,6 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.*
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.load.engine.GlideException
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
