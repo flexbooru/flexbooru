@@ -351,7 +351,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
         }
         dialog.setContentView(view)
         behavior = BottomSheetBehavior.from(view.parent as View)
-        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
             }
