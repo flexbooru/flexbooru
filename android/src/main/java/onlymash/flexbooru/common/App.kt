@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.billingclient.api.*
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.MobileAds
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
@@ -95,6 +96,9 @@ class App : Application(), KodeinAware {
     private fun initial() {
         CrashHandler.getInstance().init(this)
         AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
+        MobileAds.initialize(this) {
+
+        }
         val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
         Settings.isGoogleSign = isGoogleSign
         DrawerImageLoader.init(drawerImageLoader)

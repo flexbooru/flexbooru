@@ -524,7 +524,7 @@ class BrowseActivity : BaseActivity() {
         TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
         TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
         if (!Settings.isOrderSuccess) {
-            val adBuilder = AdRequest.Builder().addTestDevice("10776CDFD3CAEC0AA6A8349F4298F209")
+            val adBuilder = AdRequest.Builder().addTestDevice("C82BDF14EB83BBBF0A82F44262DD9330")
             val adView = AdView(this)
             bottom_bar_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
             adView.apply {

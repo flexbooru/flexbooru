@@ -104,19 +104,19 @@ dependencies {
     implementation "org.kodein.di:kodein-di-erased-jvm:$kodein_version"
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation "androidx.appcompat:appcompat:$androidx_base"
-    implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha04'
+    implementation 'androidx.fragment:fragment-ktx:1.2.0-rc01'
     implementation "androidx.preference:preference-ktx:$androidx_base"
-    implementation 'androidx.core:core-ktx:1.2.0-alpha04'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta04'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+    implementation 'androidx.core:core-ktx:1.2.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.browser:browser:1.2.0-alpha08'
+    implementation 'androidx.browser:browser:1.2.0-alpha09'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha03'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -125,19 +125,19 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
     implementation "androidx.work:work-runtime-ktx:$work_version"
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'com.google.android:flexbox:1.1.1'
     implementation 'com.google.android.apps.muzei:muzei-api:3.2.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.github.onlymash:subsampling-scale-image-view:3.10.3'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.github.onlymash:OMFM:1.1.4'
-    implementation 'com.mikepenz:materialdrawer:7.0.0-rc07'
+    implementation 'com.mikepenz:materialdrawer:7.0.0-rc08'
     implementation 'com.github.kenglxn.QRGen:android:2.6.0'
     implementation 'xyz.belvi.mobilevision:barcodescanner:2.0.3'
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-    implementation 'com.google.android.gms:play-services-vision:18.0.0'
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'com.google.android.gms:play-services-ads:18.2.0'
     implementation 'com.android.billingclient:billing:2.0.3'
     implementation 'com.takisoft.preferencex:preferencex-simplemenu:1.1.0-alpha05'
@@ -145,7 +145,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation 'com.squareup.okio:okio:2.4.0'
+    implementation 'com.squareup.okio:okio:2.4.1'
     implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
