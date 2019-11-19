@@ -15,42 +15,72 @@
   -->
 
 <merge
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.activity.BrowseActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.BrowseActivity">
 
     <onlymash.flexbooru.widget.HackyViewPager
-            android:id="@+id/pager_browse"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        android:id="@+id/pager_browse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <FrameLayout
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <View
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_gravity="top"
-                android:background="@drawable/background_browse_top"/>
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_gravity="top"
+            android:background="@drawable/background_browse_top"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/background_browse_top"
+            android:weightSum="1">
+
+            <View
+                android:id="@+id/prevBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4" />
+
+            <View
+                android:id="@+id/nextBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+
+        </LinearLayout>
+
 
         <View
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/background_browse_bottom"/>
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/background_browse_bottom"/>
     </FrameLayout>
 
     <FrameLayout
-            android:id="@+id/toolbar_container"
-            android:layout_gravity="top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?android:attr/actionBarSize">
+        android:id="@+id/toolbar_container"
+        android:layout_gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/actionBarSize">
         <include layout="@layout/toolbar_transparent"/>
     </FrameLayout>
+
 
     <include layout="@layout/bottom_shortcut_bar"/>
 </merge>

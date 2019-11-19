@@ -378,6 +378,21 @@ class BrowseActivity : BaseActivity() {
             handleResult(data)
         }
         initBottomBar()
+        initSliderBar()
+    }
+/*
+*  using tag to swipe left and right
+* easier for larger screens
+* */
+    private fun initSliderBar() {
+        prevBtn.setOnClickListener {
+            if (pagePostion != 0)
+                pager_browse.setCurrentItem(pagePostion - 1)
+        }
+        nextBtn.setOnClickListener {
+            if (pagePostion < posts?.size!!)
+                pager_browse.setCurrentItem(pagePostion + 1)
+        }
     }
 
     private fun startAccountConfigAndFinish() {
