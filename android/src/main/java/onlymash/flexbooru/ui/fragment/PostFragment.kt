@@ -419,8 +419,8 @@ class PostFragment : ListFragment(),
             scheme = search.scheme,
             host = search.host,
             name = "",
-            order = "name",
-            limit = 6,
+            order = "count",
+            limit = 20,
             type = ""
         )
         if (Settings.safeMode) {
