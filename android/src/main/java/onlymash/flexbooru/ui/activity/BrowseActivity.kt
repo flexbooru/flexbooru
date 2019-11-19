@@ -150,6 +150,8 @@ class BrowseActivity : BaseActivity() {
         toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].getPostId())
         pagerAdapter.updateData(posts)
         pager_browse.adapter = pagerAdapter
+        //speed loading of posts, enable preloading
+        pager_browse.offscreenPageLimit = 5
         pager_browse.setCurrentItem(if (currentPosition >= 0) currentPosition else position, false)
         if (canTransition) startPostponedEnterTransition()
         if (url.isNotEmpty() && !url.isImage()) {
