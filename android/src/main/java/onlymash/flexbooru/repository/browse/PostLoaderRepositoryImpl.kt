@@ -32,6 +32,7 @@ class PostLoaderRepositoryImpl(private val db: FlexbooruDatabase) : PostLoaderRe
             Constants.TYPE_MOEBOORU -> db.postMoeDao().getPostsRaw(host, keyword) as MutableList<PostBase>
             Constants.TYPE_DANBOORU_ONE -> db.postDanOneDao().getPostsRaw(host, keyword) as MutableList<PostBase>
             Constants.TYPE_GELBOORU -> db.postGelDao().getPostsRaw(host, keyword) as MutableList<PostBase>
+            Constants.TYPE_HYDRUS -> db.postHydrusDao().getPostsRaw(host, keyword) as MutableList<PostBase>
             else -> db.postSankakuDao().getPostsRaw(host, keyword) as MutableList<PostBase>
         }
     }
@@ -43,6 +44,7 @@ class PostLoaderRepositoryImpl(private val db: FlexbooruDatabase) : PostLoaderRe
             Constants.TYPE_MOEBOORU -> db.postMoeDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
             Constants.TYPE_DANBOORU_ONE -> db.postDanOneDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
             Constants.TYPE_SANKAKU -> db.postSankakuDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
+            Constants.TYPE_HYDRUS -> db.postHydrusDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
             else -> db.postGelDao().getPostsLiveData(host, keyword) as LiveData<MutableList<PostBase>>
         }
     }

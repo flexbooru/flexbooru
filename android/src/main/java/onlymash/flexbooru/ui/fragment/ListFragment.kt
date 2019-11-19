@@ -31,12 +31,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.api.*
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.extension.toVisibility
-import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.Status
 import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.ui.activity.MainActivity
@@ -57,6 +54,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
     internal val moeApi: MoebooruApi by instance()
     internal val gelApi: GelbooruApi by instance()
     internal val sankakuApi: SankakuApi by instance()
+    internal val hydrusApi: HydrusApi by instance()
     internal val ioExecutor: Executor by instance()
 
     internal lateinit var searchBar: SearchBar
@@ -125,17 +123,17 @@ abstract class ListFragment : Fragment(), KodeinAware {
     }
 
     private fun toggleArrow(drawerArrow: DrawerArrowDrawable) {
-         if (drawerArrow.progress == 0f) {
+        if (drawerArrow.progress == 0f) {
             ValueAnimator.ofFloat(0f, 1f)
         } else {
             ValueAnimator.ofFloat(1f, 0f)
         }.apply {
-             addUpdateListener { animation ->
-                 drawerArrow.progress = animation.animatedValue as Float
-             }
-             interpolator = DecelerateInterpolator()
-             duration = 300
-             start()
+            addUpdateListener { animation ->
+                drawerArrow.progress = animation.animatedValue as Float
+            }
+            interpolator = DecelerateInterpolator()
+            duration = 300
+            start()
         }
     }
 

@@ -26,8 +26,8 @@ import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import java.util.*
 
@@ -152,6 +152,12 @@ fun String.fileExt(): String {
     }
 }
 
+fun String.fileExtHydrus(): String {
+
+    return substring(0, lastIndex)
+
+}
+
 fun String.fileName(): String {
     val start = lastIndexOf('/') + 1
     val end = indexOfFirst { it == '?' }
@@ -175,6 +181,11 @@ fun String.isImage(): Boolean {
 fun String.isStillImage(): Boolean {
     val ext = fileExt()
     return ext == "jpg" || ext == "png" || ext == "jpeg"
+}
+fun String.isHydrus(): Boolean {
+    val ext = fileExtHydrus()
+
+    return ext.contains("Hydrus-Client-API-Access-Key")
 }
 fun String.isGifImage(): Boolean = fileExt() == "gif"
 

@@ -97,12 +97,14 @@
     <string name="booru_restore_from_file">Restore from file</string>
     <string name="booru_type_danbooru" translatable="false">Danbooru</string>
     <string name="booru_type_danbooru_one" translatable="false">Danbooru 1.x</string>
+    <string name="booru_type_hydrus" translatable="false">Hydrus</string>
     <string name="booru_type_moebooru" translatable="false">Moebooru</string>
     <string name="booru_type_gelbooru" translatable="false">Gelbooru</string>
     <string name="booru_type_sankaku" translatable="false">Sankaku</string>
     <string name="booru_type_unknown" translatable="false">Unknown</string>
     <string name="booru_config_delete">Delete</string>
     <string name="booru_config_apply">Apply</string>
+    <string name="booru_config_hydrus_key">Get key</string>
     <string name="booru_config_name">Name</string>
     <string name="booru_config_info">Booru info</string>
     <string name="booru_config_scheme">Scheme</string>
@@ -116,6 +118,7 @@
     <string name="booru_config_host_invalid">Invalid host.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
     <string name="booru_config_dialog_title_delete">Are you sure you want to remove this booru?</string>
+    <string name="booru_config_dialog_hydrus_key">Get access key from hydrus client?Go to review services->client api->add->from api request first!</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hash salt must contain text: your-password</string>
     <string name="scaner_scan_qr_code">Scan QR code</string>
     <string name="scaner_add_booru_permission_required">Camera permission is required for scanning QR code.</string>
@@ -149,8 +152,10 @@
     <string name="account_username">Username</string>
     <string name="account_password">Password</string>
     <string name="account_api_key">Api key</string>
+    <string name="account_access_key">Access Key Under Hydrus(services->manage services)</string>
     <string name="account_forgot_password">Forgot password?</string>
     <string name="account_forgot_api_key">What is my Api key?</string>
+    <string name="account_forgot_access_key">Access key is under Services->Manage services?</string>
     <string name="account_set">Set account</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_avatars" translatable="false">%s://%s/data/avatars/%d.jpg</string>
@@ -291,4 +296,5 @@
     <string name="sauce_nao_source">Source</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">File</string>
+    <string name="settings_explicit_mode">NSFW Mode Only</string>
 </resources>

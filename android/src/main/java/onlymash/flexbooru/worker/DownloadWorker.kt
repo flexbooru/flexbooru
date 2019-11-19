@@ -26,19 +26,19 @@ import android.os.Build
 import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import androidx.work.*
+import onlymash.flexbooru.R
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.post.PostBase
+import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.okhttp.OkHttp3Downloader
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import onlymash.flexbooru.okhttp.ProgressListener
+import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 import java.io.FileInputStream
 import java.io.IOException
-import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.pool.PoolMoe
-import onlymash.flexbooru.extension.*
-import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
-import onlymash.flexbooru.okhttp.OkHttp3Downloader
 import java.io.InputStream
 
 class DownloadWorker(
@@ -74,10 +74,24 @@ class DownloadWorker(
                 else -> post.getOriginUrl()
             }
             if (url.isEmpty()) return
-            var fileName = url.fileName()
+            var fileName =""
+            var fileNameH =""
+            var docUri = activity.getDownloadUri(host, fileName) ?: return
+            var docId = ""
+
+            if (url.isHydrus()){
+                fileName = url.fileName()
+                fileNameH = "$id.jpg"
+                docUri = activity.getDownloadUri(host, fileNameH) ?: return
+
+            }else{
+                fileName = url.fileName()
+                docUri = activity.getDownloadUri(host, fileName) ?: return
+            }
+
             if (!fileName.contains(' ')) fileName = "$id - $fileName"
-            val docUri = activity.getDownloadUri(host, fileName) ?: return
-            val docId = DocumentsContract.getDocumentId(docUri)
+
+            docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<DownloadWorker>()
@@ -100,7 +114,12 @@ class DownloadWorker(
 
         internal fun download(url: String, postId: Int, host: String, activity: Activity) {
             if (url.isEmpty()) return
-            var fileName = url.fileName()
+            var fileName =""
+            if (url.isHydrus()){
+                fileName = "$postId.jpg"
+            }else{
+                fileName = url.fileName()
+            }
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
             val docUri = activity.getDownloadUri(host, fileName) ?: return
             val docId = DocumentsContract.getDocumentId(docUri)
@@ -172,6 +191,7 @@ class DownloadWorker(
     override suspend fun doWork(): Result {
         when (inputData.getString(TYPE_KEY)) {
             TYPE_POST -> {
+
                 val url = inputData.getString(URL_KEY)
                 val id = inputData.getInt(POST_ID_KEY, -1)
                 val host = inputData.getString(HOST_KEY)

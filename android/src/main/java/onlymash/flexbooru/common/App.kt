@@ -65,11 +65,13 @@ class App : Application(), KodeinAware {
         bind() from singleton { instance<FlexbooruDatabase>().postMoeDao() }
         bind() from singleton { instance<FlexbooruDatabase>().postGelDao() }
         bind() from singleton { instance<FlexbooruDatabase>().postSankakuDao() }
+        bind() from singleton { instance<FlexbooruDatabase>().postHydrusDao() }
         bind() from singleton { DanbooruApi() }
         bind() from singleton { DanbooruOneApi() }
         bind() from singleton { MoebooruApi() }
         bind() from singleton { GelbooruApi() }
         bind() from singleton { SankakuApi() }
+        bind() from singleton { HydrusApi() }
         bind() from singleton { Executors.newSingleThreadExecutor() }
         bind() from singleton { TagFilterRepositoryImpl(instance()) }
     }

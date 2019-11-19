@@ -34,6 +34,7 @@ object Constants {
     const val TYPE_DANBOORU_ONE = 2
     const val TYPE_GELBOORU = 3
     const val TYPE_SANKAKU = 4
+    const val TYPE_HYDRUS = 5
     const val TYPE_UNKNOWN = -1
 
     const val REQUEST_EDIT_CODE = 0

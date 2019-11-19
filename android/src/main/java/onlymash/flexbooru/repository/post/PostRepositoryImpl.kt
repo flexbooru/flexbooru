@@ -44,13 +44,32 @@ class PostRepositoryImpl(
     private val moebooruApi: MoebooruApi,
     private val gelbooruApi: GelbooruApi,
     private val sankakuApi: SankakuApi,
+    private val hydrusApi: HydrusApi,
     private val ioExecutor: Executor) : PostRepository {
 
+
+    private var hydrusBoundaryCallback: PostHydrusBoundaryCallback? = null
     private var danOneBoundaryCallback: PostDanOneBoundaryCallback? = null
     private var danBoundaryCallback: PostDanBoundaryCallback? = null
     private var moeBoundaryCallback: PostMoeBoundaryCallback? = null
     private var gelBoundaryCallback: PostGelBoundaryCallback? = null
     private var sankakuBoundaryCallback: PostSankakuBoundaryCallback? = null
+
+
+    private fun insertHydrusResultIntoDb(
+        search: Search,
+        body: MutableList<PostHydrusFileResponse>,
+        tagBlacklists: MutableList<TagBlacklist>
+    ) {
+        body?.let { postsHydrus ->
+            val items = mutableListOf<PostHydrusFileResponse>()
+            postsHydrus.forEach { post ->
+                items.add(post)
+            }
+
+            db.postHydrusDao().insert(items)
+        }
+    }
 
     private fun insertDanbooruOneResultIntoDb(
         search: Search,
@@ -175,6 +194,48 @@ class PostRepositoryImpl(
         }
     }
 
+    @MainThread
+    override fun getHydrusPosts(
+        scope: CoroutineScope,
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostHydrusFileResponse> {
+        hydrusBoundaryCallback = PostHydrusBoundaryCallback(
+            scope = scope,
+            hydrusApi = hydrusApi,
+            handleResponse = this::insertHydrusResultIntoDb,
+            ioExecutor = ioExecutor,
+            search = search,
+            tagBlacklists = tagBlacklists
+        )
+        val refreshTrigger = MutableLiveData<Unit>()
+        val refreshState = Transformations.switchMap(refreshTrigger) {
+            refreshHydrus(scope, search, tagBlacklists)
+        }
+
+
+        val livePagedList = db.postHydrusDao()
+            .getPosts(search.host, "test")
+            .toLiveData(
+                config = Config(
+                    pageSize = search.limit,
+                    enablePlaceholders = true,
+                    maxSize = 150
+                ),
+                boundaryCallback = hydrusBoundaryCallback
+            )
+        return Listing(
+            pagedList = livePagedList,
+            networkState = hydrusBoundaryCallback!!.networkState,
+            retry = {
+                hydrusBoundaryCallback!!.helper.retryAllFailed()
+            },
+            refresh = {
+                refreshTrigger.value = null
+            },
+            refreshState = refreshState
+        )
+    }
     @MainThread
     override fun getDanOnePosts(
         scope: CoroutineScope,
@@ -337,6 +398,87 @@ class PostRepositoryImpl(
             },
             refreshState = refreshState
         )
+    }
+
+
+    /*REFRESH BOORUS*/
+
+    @MainThread
+    private fun refreshHydrus(
+        scope: CoroutineScope,
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): LiveData<NetworkState> {
+        hydrusBoundaryCallback?.lastResponseSize = search.limit
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.value = NetworkState.LOADING
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val response = hydrusApi.getPosts(HydrusUrlHelper.getPostUrl(search, 1))
+                    db.runInTransaction {
+                        db.postHydrusDao().deletePosts(host = search.host, keyword = "test")
+                        var lists = mutableListOf<PostHydrusFileResponse>()
+                        var postsHydrus: MutableList<Int>
+                        var hydrusIdList = response.body()
+                        var listHydrus = mutableListOf<PostHydrusFileResponse>()
+                        if (hydrusIdList != null) {
+                            var arrayIds = hydrusIdList.file_ids
+                            postsHydrus = arrayIds.toMutableList()
+
+
+                            var i = 0
+                            for (post in postsHydrus) {
+                                var response = PostHydrusFileResponse(
+                                    id = post,
+                                    height = 800,
+                                    width = 800,
+                                    score = "0",
+                                    file_url ="http://${search.host}/get_files/file?Hydrus-Client-API-Access-Key=${search.auth_key}&file_id=$post",
+                                    sample_url = "http://${search.host}/get_files/file?Hydrus-Client-API-Access-Key=${search.auth_key}&file_id=$post",
+                                    preview_url= "http://${search.host}/get_files/thumbnail?Hydrus-Client-API-Access-Key=${search.auth_key}&file_id=$post",
+                                    sample_height = 800,
+                                    sample_width = 800,
+                                    rating = "explicit",
+                                    tags = "Hydrus",
+                                    change = 1L,
+                                    md5 = "",
+                                    creator_id = post,
+                                    has_children = false,
+                                    created_at = "2019",
+                                    status = "",
+                                    source = "",
+                                    preview_height = 800,
+                                    has_comments = false,
+                                    has_notes = false,
+                                    preview_width = 800
+
+                                )
+                                response.keyword = "test"
+                                response.scheme = "http"
+                                response.uid = hydrusIdList.uid
+                                response.host = search.host
+                                response.indexInResponse = i
+
+                                listHydrus.add(response)
+                                i++
+                            }
+                        }
+
+
+                        insertHydrusResultIntoDb(search, listHydrus, tagBlacklists)
+                    }
+                    NetResult.Success(NetworkState.LOADED)
+                } catch (e: Exception) {
+                    NetResult.Success(NetworkState.error(e.message))
+                }
+            }
+            when (val data = result.data) {
+                NetworkState.LOADED -> networkState.postValue(data)
+                else -> networkState.value = data
+            }
+        }
+        return networkState
     }
 
     @MainThread

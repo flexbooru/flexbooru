@@ -22,8 +22,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.entity.common.TagFilter
 import onlymash.flexbooru.entity.post.*
@@ -73,6 +73,12 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         }
                     }
                     is PostGel -> {
+                        Bundle().apply {
+                            putInt(POST_TYPE, Constants.TYPE_GELBOORU)
+                            putString(TAG_ALL_KEY, post.tags)
+                        }
+                    }
+                    is PostHydrusFileResponse -> {
                         Bundle().apply {
                             putInt(POST_TYPE, Constants.TYPE_GELBOORU)
                             putString(TAG_ALL_KEY, post.tags)
@@ -189,6 +195,16 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
             Constants.TYPE_MOEBOORU,
             Constants.TYPE_DANBOORU_ONE,
             Constants.TYPE_GELBOORU -> {
+                arg.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
+                    if (tag.isNotEmpty()) tags.add(
+                        TagFilter(
+                            booruUid = booruUid,
+                            name = tag
+                        )
+                    )
+                }
+            }
+            Constants.TYPE_HYDRUS -> {
                 arg.getString(TAG_ALL_KEY)?.trim()?.split(" ")?.forEach {  tag ->
                     if (tag.isNotEmpty()) tags.add(
                         TagFilter(

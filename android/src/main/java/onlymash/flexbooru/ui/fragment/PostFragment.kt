@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.os.Bundle
 import android.view.MenuItem
@@ -34,13 +35,14 @@ import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.animation.RippleAnimation
+import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.database.*
 import onlymash.flexbooru.database.dao.TagBlacklistDao
-import onlymash.flexbooru.entity.*
+import onlymash.flexbooru.entity.Search
+import onlymash.flexbooru.entity.Vote
 import onlymash.flexbooru.entity.common.*
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.entity.tag.SearchTag
@@ -51,10 +53,10 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.NetworkState
 import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
-import onlymash.flexbooru.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.repository.post.PostRepository
-import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
+import onlymash.flexbooru.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
+import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.ui.activity.*
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
@@ -62,7 +64,7 @@ import onlymash.flexbooru.ui.viewholder.PostViewHolder
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagBlacklistViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
-import onlymash.flexbooru.util.*
+import onlymash.flexbooru.util.ViewTransition
 import onlymash.flexbooru.widget.AutoStaggeredGridLayoutManager
 import onlymash.flexbooru.widget.search.SearchBar
 import onlymash.flexbooru.worker.DownloadWorker
@@ -96,6 +98,7 @@ class PostFragment : ListFragment(),
                     putString(Constants.HOST_KEY, booru.host)
                     putInt(Constants.TYPE_KEY, booru.type)
                     putString(Constants.KEYWORD_KEY, keyword)
+
                     if (user != null) {
                         putInt(Constants.USER_ID_KEY, user.id)
                         putString(Constants.USERNAME_KEY, user.name)
@@ -103,12 +106,21 @@ class PostFragment : ListFragment(),
                             Constants.AUTH_KEY,
                             when (booru.type) {
                                 Constants.TYPE_DANBOORU -> user.apiKey
+                                Constants.TYPE_HYDRUS -> user.passwordHash
                                 else -> user.passwordHash
                             }
-                            )
+                        )
                     } else {
+                        putString(
+                            Constants.AUTH_KEY,
+                            when (booru.type) {
+
+                                Constants.TYPE_HYDRUS -> booru.hashSalt
+                                else -> ""
+                            }
+                        )
                         putString(Constants.USERNAME_KEY, "")
-                        putString(Constants.AUTH_KEY, "")
+
                     }
                 }
             }
@@ -389,6 +401,7 @@ class PostFragment : ListFragment(),
                 username = it.getString(Constants.USERNAME_KEY, ""),
                 auth_key = it.getString(Constants.AUTH_KEY, ""),
                 limit = Settings.pageLimit)
+            val i = 0
         }
     }
 
@@ -397,6 +410,7 @@ class PostFragment : ListFragment(),
         init()
     }
 
+    @SuppressLint("FragmentLiveDataObserve")
     private fun init() {
         val activity = requireActivity()
         when (postType) {
@@ -444,6 +458,7 @@ class PostFragment : ListFragment(),
                 moebooruApi = moeApi,
                 gelbooruApi = gelApi,
                 sankakuApi = sankakuApi,
+                hydrusApi = hydrusApi,
                 ioExecutor = ioExecutor
             )
         )
@@ -451,8 +466,8 @@ class PostFragment : ListFragment(),
         val staggeredGridLayoutManager = AutoStaggeredGridLayoutManager(
             columnSize = resources.gridWidth(),
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
-                setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
-            }
+            setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
+        }
         postAdapter = PostAdapter(
             glide = glide,
             listener = itemListener,
@@ -547,6 +562,17 @@ class PostFragment : ListFragment(),
                 })
                 initSwipeToRefreshDanOne()
             }
+
+            Constants.TYPE_SANKAKU -> {
+                postViewModel.postsSankaku.observe(this, Observer<PagedList<PostSankaku>> { posts ->
+                    @Suppress("UNCHECKED_CAST")
+                    postAdapter.submitList(posts as PagedList<PostBase>)
+                })
+                postViewModel.networkStateSankaku.observe(this, Observer<NetworkState> { networkState ->
+                    postAdapter.setNetworkState(networkState)
+                })
+                initSwipeToRefreshSankaku()
+            }
             Constants.TYPE_GELBOORU -> {
                 postViewModel.postsGel.observe(this, Observer<PagedList<PostGel>> { posts ->
                     @Suppress("UNCHECKED_CAST")
@@ -557,15 +583,19 @@ class PostFragment : ListFragment(),
                 })
                 initSwipeToRefreshGel()
             }
-            Constants.TYPE_SANKAKU -> {
-                postViewModel.postsSankaku.observe(this, Observer<PagedList<PostSankaku>> { posts ->
-                    @Suppress("UNCHECKED_CAST")
-                    postAdapter.submitList(posts as PagedList<PostBase>)
-                })
-                postViewModel.networkStateSankaku.observe(this, Observer<NetworkState> { networkState ->
-                    postAdapter.setNetworkState(networkState)
-                })
-                initSwipeToRefreshSankaku()
+            Constants.TYPE_HYDRUS -> {
+                postViewModel.postsHydrus.observe(
+                    this, Observer<PagedList<PostHydrusFileResponse>> { posts ->
+                        @Suppress("UNCHECKED_CAST")
+//                        var test = db.postHydrusDao().getPostsRaw("192.168.100.122","test")
+                        postAdapter.submitList(posts as PagedList<PostBase>)
+                    })
+                postViewModel.networkStateHydrus.observe(
+                    this,
+                    Observer<NetworkState> { networkState ->
+                        postAdapter.setNetworkState(networkState)
+                    })
+                initSwipeToRefreshHydrus()
             }
         }
         tagBlacklistViewModel = getViewModel(object : ViewModelProvider.Factory {
@@ -585,12 +615,20 @@ class PostFragment : ListFragment(),
 
     override fun retry() {
         when (booruType) {
+            Constants.TYPE_HYDRUS -> postViewModel.retryHydrus()
             Constants.TYPE_DANBOORU -> postViewModel.retryDan()
             Constants.TYPE_MOEBOORU -> postViewModel.retryMoe()
             Constants.TYPE_DANBOORU_ONE -> postViewModel.retryDanOne()
             Constants.TYPE_GELBOORU -> postViewModel.retryGel()
             Constants.TYPE_SANKAKU -> postViewModel.retrySankaku()
         }
+    }
+
+    private fun initSwipeToRefreshHydrus() {
+        postViewModel.refreshStateHydrus.observe(this, Observer<NetworkState> {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+        swipe_refresh.setOnRefreshListener { postViewModel.refreshHydrus() }
     }
 
     private fun initSwipeToRefreshDanOne() {

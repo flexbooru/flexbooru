@@ -31,6 +31,13 @@ data class SearchData(
 class PostViewModel(private val repo: PostRepository): ScopeViewModel() {
 
     private val searchData = MutableLiveData<SearchData>()
+    private val hydrusRepoResult = map(searchData) { search ->
+        repo.getHydrusPosts(viewModelScope, search.search, search.tagBlacklists)
+    }
+    val postsHydrus = switchMap(hydrusRepoResult) { it.pagedList }
+    val networkStateHydrus = switchMap(hydrusRepoResult) { it.networkState }
+    val refreshStateHydrus = switchMap(hydrusRepoResult) { it.refreshState }
+
     private val danOneRepoResult = map(searchData) { search ->
         repo.getDanOnePosts(viewModelScope, search.search, search.tagBlacklists)
     }
@@ -72,6 +79,10 @@ class PostViewModel(private val repo: PostRepository): ScopeViewModel() {
         searchData.value = value
         return true
     }
+    fun refreshHydrus() {
+        hydrusRepoResult.value?.refresh?.invoke()
+    }
+
     fun refreshDanOne() {
         danOneRepoResult.value?.refresh?.invoke()
     }
@@ -80,6 +91,9 @@ class PostViewModel(private val repo: PostRepository): ScopeViewModel() {
     }
     fun refreshMoe() {
         moeRepoResult.value?.refresh?.invoke()
+    }
+    fun retryHydrus() {
+        hydrusRepoResult.value?.retry?.invoke()
     }
     fun retryDanOne() {
         danOneRepoResult.value?.retry?.invoke()

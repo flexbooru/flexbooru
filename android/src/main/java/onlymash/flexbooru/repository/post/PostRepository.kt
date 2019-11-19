@@ -23,6 +23,12 @@ import onlymash.flexbooru.repository.Listing
 
 interface PostRepository {
 
+    fun getHydrusPosts(
+        scope: CoroutineScope,
+        search: Search,
+        tagBlacklists: MutableList<TagBlacklist>
+    ): Listing<PostHydrusFileResponse>
+
     fun getDanOnePosts(
         scope: CoroutineScope,
         search: Search,

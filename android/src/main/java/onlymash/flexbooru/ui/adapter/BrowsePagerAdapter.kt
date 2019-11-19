@@ -16,7 +16,8 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.*
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -40,15 +41,16 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.entity.post.PostBase
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.decoder.CustomDecoder
 import onlymash.flexbooru.decoder.CustomRegionDecoder
+import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.extension.isGifImage
+import onlymash.flexbooru.extension.isHydrus
 import onlymash.flexbooru.extension.isStillImage
+import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.util.concurrent.Executor
@@ -94,6 +96,58 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         }
         if (url.isNotEmpty()) {
             when {
+                url.isHydrus()->{
+                    val stillView = SubsamplingScaleImageView(container.context).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT)
+                        transitionName = tranName
+                        setOnClickListener {
+                            photoViewListener?.onClickPhotoView()
+                        }
+                        setExecutor(ioExecutor)
+                        setBitmapDecoderFactory { CustomDecoder(picasso) }
+                        setRegionDecoderFactory { CustomRegionDecoder() }
+                    }
+                    val colorMatrix = ColorMatrix().apply {
+                        setSaturation(0f)
+                        set(floatArrayOf(
+                            1f, 0f, 0f, 0f, 0f, // R
+                            0f, 1f, 0f, 0f, 0f, // G
+                            0f, 0f, 1f, 0f, 0f, // B
+                            0f, 0f, 0f, 1f, 0f  // A
+                        ))
+                    }
+                    val progressBar = ProgressBar(container.context).apply {
+                        layoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            Gravity.CENTER)
+                        indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
+                    }
+                    layout.apply {
+                        removeAllViewsInLayout()
+                        addView(stillView, 0)
+                        addView(progressBar, 1)
+                    }
+                    stillView.setOnImageEventListener(object : SubsamplingScaleImageView.OnImageEventListener {
+                        override fun onImageLoaded() {
+                            layout.removeView(progressBar)
+                        }
+                        override fun onReady() {}
+                        override fun onTileLoadError(e: Exception?) {}
+                        override fun onPreviewReleased() {}
+                        override fun onImageLoadError(e: Exception?) {}
+                        override fun onPreviewLoadError(e: Exception?) {}
+                    })
+                    glideRequests.downloadOnly().load(url)
+                        .into(object : CustomTarget<File>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                            override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                                stillView.setImage(ImageSource.uri(resource.toUri()))
+                            }
+                        })
+                }
                 url.isStillImage() -> {
                     val stillView = SubsamplingScaleImageView(container.context).apply {
                         layoutParams = ViewGroup.LayoutParams(

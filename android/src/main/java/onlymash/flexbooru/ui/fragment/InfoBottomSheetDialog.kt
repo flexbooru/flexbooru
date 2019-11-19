@@ -28,17 +28,17 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import onlymash.flexbooru.common.Constants
+import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.worker.DownloadWorker
-import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.widget.LinkTransformationMethod
+import onlymash.flexbooru.worker.DownloadWorker
 
 class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
 
@@ -131,6 +131,16 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.getPostScore())
                     }
+                    is PostHydrusFileResponse -> bundle.apply {
+                        putInt(POST_TYPE_KEY, Constants.TYPE_HYDRUS)
+                        putString(USER_NAME_KEY, "")
+                        putInt(USER_ID_KEY, 999)
+                        putString(USER_AVATAR_KEY, "")
+                        putString(DATE_KEY, post.getCreatedDate())
+                        putString(SOURCE_KEY, post.source)
+                        putString(RATING_KEY, post.rating)
+                        putInt(SCORE_KEY, post.getPostScore())
+                    }
                     else -> throw IllegalStateException("unknown post type")
                 }
             }
@@ -191,6 +201,16 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     parent = -1
                 }
                 Constants.TYPE_SANKAKU -> {
+                    name = getString(USER_NAME_KEY) ?: ""
+                    userId = getInt(USER_ID_KEY, -1)
+                    avatar = getString(USER_AVATAR_KEY) ?: ""
+                    date = getString(DATE_KEY) ?: ""
+                    source = getString(SOURCE_KEY) ?: ""
+                    rating = getString(RATING_KEY) ?: ""
+                    score = getInt(SCORE_KEY, -1)
+                    parent = -1
+                }
+                Constants.TYPE_HYDRUS -> {
                     name = getString(USER_NAME_KEY) ?: ""
                     userId = getInt(USER_ID_KEY, -1)
                     avatar = getString(USER_AVATAR_KEY) ?: ""
