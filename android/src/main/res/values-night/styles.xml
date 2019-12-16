@@ -19,6 +19,4 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark"/>
 
     <style name="AppTheme.AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert"/>
-
-    <style name="Widget.OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow.Dark"/>
 </resources>

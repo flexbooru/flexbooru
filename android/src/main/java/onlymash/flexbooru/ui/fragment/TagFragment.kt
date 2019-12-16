@@ -368,55 +368,55 @@ class TagFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 searchBar.setMenu(R.menu.tag_dan, requireActivity().menuInflater)
-                tagViewModel.tagsDan.observe(this, Observer { tags ->
+                tagViewModel.tagsDan.observe(viewLifecycleOwner, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
-                tagViewModel.networkStateDan.observe(this, Observer { networkState ->
+                tagViewModel.networkStateDan.observe(viewLifecycleOwner, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
                 searchBar.setMenu(R.menu.tag_moe, requireActivity().menuInflater)
-                tagViewModel.tagsMoe.observe(this, Observer { tags ->
+                tagViewModel.tagsMoe.observe(viewLifecycleOwner, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
-                tagViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                tagViewModel.networkStateMoe.observe(viewLifecycleOwner, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 searchBar.setMenu(R.menu.tag_dan_one, requireActivity().menuInflater)
-                tagViewModel.tagsDanOne.observe(this, Observer { tags ->
+                tagViewModel.tagsDanOne.observe(viewLifecycleOwner, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
-                tagViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                tagViewModel.networkStateDanOne.observe(viewLifecycleOwner, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
             }
             Constants.TYPE_GELBOORU -> {
                 searchBar.setMenu(R.menu.tag_gel, requireActivity().menuInflater)
-                tagViewModel.tagsGel.observe(this, Observer { tags ->
+                tagViewModel.tagsGel.observe(viewLifecycleOwner, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
-                tagViewModel.networkStateGel.observe(this, Observer { networkState ->
+                tagViewModel.networkStateGel.observe(viewLifecycleOwner, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshGel()
             }
             Constants.TYPE_SANKAKU -> {
                 searchBar.setMenu(R.menu.tag_sankaku, requireActivity().menuInflater)
-                tagViewModel.tagsSankaku.observe(this, Observer { tags ->
+                tagViewModel.tagsSankaku.observe(viewLifecycleOwner, Observer { tags ->
                     @Suppress("UNCHECKED_CAST")
                     tagAdapter.submitList(tags as PagedList<TagBase>)
                 })
-                tagViewModel.networkStateSankaku.observe(this, Observer { networkState ->
+                tagViewModel.networkStateSankaku.observe(viewLifecycleOwner, Observer { networkState ->
                     tagAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshSankaku()
@@ -438,7 +438,7 @@ class TagFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDan() {
-        tagViewModel.refreshStateDan.observe(this, Observer<NetworkState> {
+        tagViewModel.refreshStateDan.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -447,7 +447,7 @@ class TagFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDanOne() {
-        tagViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+        tagViewModel.refreshStateDanOne.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -456,7 +456,7 @@ class TagFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshMoe() {
-        tagViewModel.refreshStateMoe.observe(this, Observer<NetworkState> {
+        tagViewModel.refreshStateMoe.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -465,7 +465,7 @@ class TagFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshGel() {
-        tagViewModel.refreshStateGel.observe(this, Observer<NetworkState> {
+        tagViewModel.refreshStateGel.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -474,7 +474,7 @@ class TagFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshSankaku() {
-        tagViewModel.refreshStateSankaku.observe(this, Observer<NetworkState> {
+        tagViewModel.refreshStateSankaku.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }

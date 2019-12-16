@@ -500,7 +500,7 @@ class PostFragment : ListFragment(),
             adapter = tagFilterAdapter
         }
         tagFilterViewModel = getTagFilterViewModel(tagFilterRepositoryImpl)
-        tagFilterViewModel.loadTags().observe(this, Observer {
+        tagFilterViewModel.loadTags().observe(viewLifecycleOwner, Observer {
             tagFilterAdapter.updateData(it, Settings.activeBooruUid, Settings.isShowAllTags)
         })
         action_search.setOnClickListener {
@@ -518,51 +518,51 @@ class PostFragment : ListFragment(),
         }
         when (booruType) {
             Constants.TYPE_DANBOORU -> {
-                postViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
+                postViewModel.postsDan.observe(viewLifecycleOwner, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                postViewModel.networkStateDan.observe(this, Observer<NetworkState> { networkState ->
+                postViewModel.networkStateDan.observe(viewLifecycleOwner, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                postViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
+                postViewModel.postsMoe.observe(viewLifecycleOwner, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                postViewModel.networkStateMoe.observe(this, Observer<NetworkState> { networkState ->
+                postViewModel.networkStateMoe.observe(viewLifecycleOwner, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                postViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
+                postViewModel.postsDanOne.observe(viewLifecycleOwner, Observer<PagedList<PostDanOne>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                postViewModel.networkStateDanOne.observe(this, Observer<NetworkState> { networkState ->
+                postViewModel.networkStateDanOne.observe(viewLifecycleOwner, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
             }
             Constants.TYPE_GELBOORU -> {
-                postViewModel.postsGel.observe(this, Observer<PagedList<PostGel>> { posts ->
+                postViewModel.postsGel.observe(viewLifecycleOwner, Observer<PagedList<PostGel>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                postViewModel.networkStateGel.observe(this, Observer<NetworkState> { networkState ->
+                postViewModel.networkStateGel.observe(viewLifecycleOwner, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshGel()
             }
             Constants.TYPE_SANKAKU -> {
-                postViewModel.postsSankaku.observe(this, Observer<PagedList<PostSankaku>> { posts ->
+                postViewModel.postsSankaku.observe(viewLifecycleOwner, Observer<PagedList<PostSankaku>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                postViewModel.networkStateSankaku.observe(this, Observer<NetworkState> { networkState ->
+                postViewModel.networkStateSankaku.observe(viewLifecycleOwner, Observer<NetworkState> { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshSankaku()
@@ -574,7 +574,7 @@ class PostFragment : ListFragment(),
                 return TagBlacklistViewModel(tagBlacklistDao) as T
             }
         })
-        tagBlacklistViewModel.loadTags(Settings.activeBooruUid).observe(this, Observer {
+        tagBlacklistViewModel.loadTags(Settings.activeBooruUid).observe(viewLifecycleOwner, Observer {
             postViewModel.show(search, it)
         })
         UserManager.listeners.add(userListener)
@@ -594,35 +594,35 @@ class PostFragment : ListFragment(),
     }
 
     private fun initSwipeToRefreshDanOne() {
-        postViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+        postViewModel.refreshStateDanOne.observe(viewLifecycleOwner, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshDanOne() }
     }
 
     private fun initSwipeToRefreshDan() {
-        postViewModel.refreshStateDan.observe(this, Observer<NetworkState> {
+        postViewModel.refreshStateDan.observe(viewLifecycleOwner, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshDan() }
     }
 
     private fun initSwipeToRefreshMoe() {
-        postViewModel.refreshStateMoe.observe(this, Observer<NetworkState> {
+        postViewModel.refreshStateMoe.observe(viewLifecycleOwner, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshMoe() }
     }
 
     private fun initSwipeToRefreshGel() {
-        postViewModel.refreshStateGel.observe(this, Observer<NetworkState> {
+        postViewModel.refreshStateGel.observe(viewLifecycleOwner, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshGel() }
     }
 
     private fun initSwipeToRefreshSankaku() {
-        postViewModel.refreshStateSankaku.observe(this, Observer<NetworkState> {
+        postViewModel.refreshStateSankaku.observe(viewLifecycleOwner, Observer<NetworkState> {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener { postViewModel.refreshSankaku() }

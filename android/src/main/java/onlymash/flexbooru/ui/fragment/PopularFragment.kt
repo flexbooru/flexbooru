@@ -565,44 +565,44 @@ class PopularFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 keyword = SCALE_DAY
-                popularViewModel.postsDan.observe(this, Observer<PagedList<PostDan>> { posts ->
+                popularViewModel.postsDan.observe(viewLifecycleOwner, Observer<PagedList<PostDan>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                popularViewModel.networkStateDan.observe(this, Observer { networkState ->
+                popularViewModel.networkStateDan.observe(viewLifecycleOwner, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
                 keyword = PERIOD_DAY
-                popularViewModel.postsMoe.observe(this, Observer<PagedList<PostMoe>> { posts ->
+                popularViewModel.postsMoe.observe(viewLifecycleOwner, Observer<PagedList<PostMoe>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                popularViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                popularViewModel.networkStateMoe.observe(viewLifecycleOwner, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 keyword = SCALE_DAY
-                popularViewModel.postsDanOne.observe(this, Observer<PagedList<PostDanOne>> { posts ->
+                popularViewModel.postsDanOne.observe(viewLifecycleOwner, Observer<PagedList<PostDanOne>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                popularViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                popularViewModel.networkStateDanOne.observe(viewLifecycleOwner, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
             }
             Constants.TYPE_SANKAKU -> {
                 keyword = SCALE_DAY
-                popularViewModel.postsSankaku.observe(this, Observer<PagedList<PostSankaku>> { posts ->
+                popularViewModel.postsSankaku.observe(viewLifecycleOwner, Observer<PagedList<PostSankaku>> { posts ->
                     @Suppress("UNCHECKED_CAST")
                     postAdapter.submitList(posts as PagedList<PostBase>)
                 })
-                popularViewModel.networkStateSankaku.observe(this, Observer { networkState ->
+                popularViewModel.networkStateSankaku.observe(viewLifecycleOwner, Observer { networkState ->
                     postAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshSankaku()
@@ -623,7 +623,7 @@ class PopularFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDan() {
-        popularViewModel.refreshStateDan.observe(this, Observer {
+        popularViewModel.refreshStateDan.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -632,7 +632,7 @@ class PopularFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDanOne() {
-        popularViewModel.refreshStateDanOne.observe(this, Observer {
+        popularViewModel.refreshStateDanOne.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -641,7 +641,7 @@ class PopularFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshMoe() {
-        popularViewModel.refreshStateMoe.observe(this, Observer {
+        popularViewModel.refreshStateMoe.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -650,7 +650,7 @@ class PopularFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshSankaku() {
-        popularViewModel.refreshStateSankaku.observe(this, Observer {
+        popularViewModel.refreshStateSankaku.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }

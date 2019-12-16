@@ -55,7 +55,7 @@ private fun toHexString(paramArrayOfByte: ByteArray?): String? {
         if (i >= paramArrayOfByte.size) {
             return localStringBuilder.toString()
         }
-        var str = Integer.toString(0xFF and paramArrayOfByte[i].toInt(), 16)
+        var str = (0xFF and paramArrayOfByte[i].toInt()).toString(16)
         if (str.length == 1) {
             str = "0$str"
         }

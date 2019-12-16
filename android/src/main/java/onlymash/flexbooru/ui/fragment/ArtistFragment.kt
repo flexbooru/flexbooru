@@ -272,33 +272,33 @@ class ArtistFragment : ListFragment() {
         when (type) {
             Constants.TYPE_DANBOORU -> {
                 searchBar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
-                artistViewModel.artistsDan.observe(this, Observer { artists ->
+                artistViewModel.artistsDan.observe(viewLifecycleOwner, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
                     artistAdapter.submitList(artists as PagedList<ArtistBase>)
                 })
-                artistViewModel.networkStateDan.observe(this, Observer { networkState ->
+                artistViewModel.networkStateDan.observe(viewLifecycleOwner, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
                 searchBar.setMenu(R.menu.artist_moe, requireActivity().menuInflater)
-                artistViewModel.artistsMoe.observe(this, Observer { artists ->
+                artistViewModel.artistsMoe.observe(viewLifecycleOwner, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
                     artistAdapter.submitList(artists as PagedList<ArtistBase>)
                 })
-                artistViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                artistViewModel.networkStateMoe.observe(viewLifecycleOwner, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
                 searchBar.setMenu(R.menu.artist_dan, requireActivity().menuInflater)
-                artistViewModel.artistsDanOne.observe(this, Observer { artists ->
+                artistViewModel.artistsDanOne.observe(viewLifecycleOwner, Observer { artists ->
                     @Suppress("UNCHECKED_CAST")
                     artistAdapter.submitList(artists as PagedList<ArtistBase>)
                 })
-                artistViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                artistViewModel.networkStateDanOne.observe(viewLifecycleOwner, Observer { networkState ->
                     artistAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
@@ -318,7 +318,7 @@ class ArtistFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDan() {
-        artistViewModel.refreshStateDan.observe(this, Observer<NetworkState> {
+        artistViewModel.refreshStateDan.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -327,7 +327,7 @@ class ArtistFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDanOne() {
-        artistViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+        artistViewModel.refreshStateDanOne.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -336,7 +336,7 @@ class ArtistFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshMoe() {
-        artistViewModel.refreshStateMoe.observe(this, Observer<NetworkState> {
+        artistViewModel.refreshStateMoe.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }

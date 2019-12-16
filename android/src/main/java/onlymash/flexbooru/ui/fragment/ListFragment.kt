@@ -34,9 +34,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.entity.tag.SearchTag
-import onlymash.flexbooru.extension.toVisibility
-import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.Status
 import onlymash.flexbooru.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.ui.activity.MainActivity
@@ -186,10 +183,10 @@ abstract class ListFragment : Fragment(), KodeinAware {
             setStateChangeListener(stateChangeListener)
         }
         searchBarMover = SearchBarMover(sbMoverHelper, searchBar, list)
-        suggestionViewModel.loadSuggestions(Settings.activeBooruUid).observe(this, Observer {
+        suggestionViewModel.loadSuggestions(Settings.activeBooruUid).observe(viewLifecycleOwner, Observer {
             searchBar.updateSuggestions(it)
         })
-        suggestionViewModel.suggestionsOnline.observe(this, Observer {
+        suggestionViewModel.suggestionsOnline.observe(viewLifecycleOwner, Observer {
             searchBar.updateOnlineSuggestions(it)
         })
     }

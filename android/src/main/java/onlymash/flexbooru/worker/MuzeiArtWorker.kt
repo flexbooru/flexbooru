@@ -20,7 +20,6 @@ import androidx.core.net.toUri
 import androidx.work.*
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderContract
-import kotlinx.coroutines.GlobalScope
 import onlymash.flexbooru.R
 import onlymash.flexbooru.api.*
 import onlymash.flexbooru.database.BooruManager

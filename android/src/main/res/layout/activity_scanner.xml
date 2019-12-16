@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
     <include layout="@layout/toolbar" />
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
             android:id="@+id/barcode"
             android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
             android:layout_width="match_parent"

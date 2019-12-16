@@ -287,41 +287,41 @@ class PoolFragment : ListFragment() {
         }
         when (type) {
             Constants.TYPE_DANBOORU -> {
-                poolViewModel.poolsDan.observe(this, Observer { pools ->
+                poolViewModel.poolsDan.observe(viewLifecycleOwner, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
                     poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
-                poolViewModel.networkStateDan.observe(this, Observer { networkState ->
+                poolViewModel.networkStateDan.observe(viewLifecycleOwner, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDan()
             }
             Constants.TYPE_MOEBOORU -> {
-                poolViewModel.poolsMoe.observe(this, Observer { pools ->
+                poolViewModel.poolsMoe.observe(viewLifecycleOwner, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
                     poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
-                poolViewModel.networkStateMoe.observe(this, Observer { networkState ->
+                poolViewModel.networkStateMoe.observe(viewLifecycleOwner, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshMoe()
             }
             Constants.TYPE_DANBOORU_ONE -> {
-                poolViewModel.poolsDanOne.observe(this, Observer { pools ->
+                poolViewModel.poolsDanOne.observe(viewLifecycleOwner, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
                     poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
-                poolViewModel.networkStateDanOne.observe(this, Observer { networkState ->
+                poolViewModel.networkStateDanOne.observe(viewLifecycleOwner, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshDanOne()
             }
             Constants.TYPE_SANKAKU -> {
-                poolViewModel.poolsSankaku.observe(this, Observer { pools ->
+                poolViewModel.poolsSankaku.observe(viewLifecycleOwner, Observer { pools ->
                     @Suppress("UNCHECKED_CAST")
                     poolAdapter.submitList(pools as PagedList<PoolBase>)
                 })
-                poolViewModel.networkStateSankaku.observe(this, Observer { networkState ->
+                poolViewModel.networkStateSankaku.observe(viewLifecycleOwner, Observer { networkState ->
                     poolAdapter.setNetworkState(networkState)
                 })
                 initSwipeToRefreshSankaku()
@@ -342,7 +342,7 @@ class PoolFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDan() {
-        poolViewModel.refreshStateDan.observe(this, Observer<NetworkState> {
+        poolViewModel.refreshStateDan.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -351,7 +351,7 @@ class PoolFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshDanOne() {
-        poolViewModel.refreshStateDanOne.observe(this, Observer<NetworkState> {
+        poolViewModel.refreshStateDanOne.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -360,7 +360,7 @@ class PoolFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshMoe() {
-        poolViewModel.refreshStateMoe.observe(this, Observer<NetworkState> {
+        poolViewModel.refreshStateMoe.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }
@@ -369,7 +369,7 @@ class PoolFragment : ListFragment() {
     }
 
     private fun initSwipeToRefreshSankaku() {
-        poolViewModel.refreshStateSankaku.observe(this, Observer<NetworkState> {
+        poolViewModel.refreshStateSankaku.observe(viewLifecycleOwner, Observer<NetworkState> {
             if (it != NetworkState.LOADING) {
                 swipe_refresh.isRefreshing = false
             }

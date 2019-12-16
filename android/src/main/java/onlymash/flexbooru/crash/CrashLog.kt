@@ -16,6 +16,7 @@ import java.util.Arrays
 import java.util.Comparator
 import java.util.Date
 import java.util.LinkedHashMap
+import kotlin.system.exitProcess
 
 abstract class CrashLog : Thread.UncaughtExceptionHandler {
 
@@ -99,7 +100,7 @@ abstract class CrashLog : Thread.UncaughtExceptionHandler {
                  */
                 Thread.sleep(1000)
                 android.os.Process.killProcess(android.os.Process.myPid())
-                System.exit(1)
+                exitProcess(1)
             }
         } catch (e: Exception) {
             Logger.e(TAG, "uncaughtException - " + e.message)

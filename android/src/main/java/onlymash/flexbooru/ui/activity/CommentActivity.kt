@@ -40,10 +40,8 @@ import onlymash.flexbooru.database.BooruManager
 import onlymash.flexbooru.database.UserManager
 import onlymash.flexbooru.entity.comment.CommentBase
 import onlymash.flexbooru.entity.comment.CommentAction
-import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.Status
 import onlymash.flexbooru.repository.comment.CommentRepositoryImpl
 import onlymash.flexbooru.repository.comment.CommentRepository
 import onlymash.flexbooru.repository.comment.CommentState
