@@ -15,7 +15,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">Ein Booru-Client für Android, unterstützt Danbooru, Moebooru, Gelbooru, Sankaku, etc.
+    <string name="app_description">Ein Booru-Client für Android; Unterstützung für Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Beiträge</string>
     <string name="title_popular">Beliebt</string>
@@ -105,10 +105,10 @@
     <string name="booru_config_host_invalid">Ungültiger Hostname.</string>
     <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
     <string name="booru_config_dialog_title_delete">Bist du sicher, dass du diesen Booru löschen möchtest?</string>
-    <string name="booru_config_hash_salt_must_contain_yp">Hash salt must contain text: your-password</string>
+    <string name="booru_config_hash_salt_must_contain_yp">Hashsalz muss Text enthalten: Ihr Passwort</string>
     <string name="scaner_scan_qr_code">QR-Code scannen</string>
     <string name="scaner_add_booru_permission_required">Die Kameraberechtigung ist erforderlich, um QR-Code zu scannen.</string>
-    <string name="browse_toolbar_title">Post</string>
+    <string name="browse_toolbar_title">Senden</string>
     <string name="browse_add_to_fav">Zu Favoriten hinzufügen</string>
     <string name="browse_download">Herunterladen</string>
     <string name="browse_set_as">Festlegen als</string>
@@ -121,19 +121,19 @@
     <string name="browse_recommended">Empfohlen</string>
     <string name="browse_comment">Kommentare</string>
     <string name="browse_tag_exclude">Ausschließen</string>
-    <string name="browse_tag_include">Include</string>
+    <string name="browse_tag_include">Einschließen</string>
     <string name="browse_info_source">Quelle</string>
     <string name="browse_info_rating">Bewertung</string>
     <string name="browse_info_rating_safe">Sicher</string>
     <string name="browse_info_rating_questionable">Fraglich</string>
     <string name="browse_info_rating_explicit">Explizit</string>
     <string name="browse_info_score">Bewertung</string>
-    <string name="browse_info_parent">Parent</string>
+    <string name="browse_info_parent">Übergeordnete</string>
     <string name="browse_info_title">Informationen</string>
     <string name="browse_info_url_open">URL öffnen</string>
     <string name="browse_info_url_download">Download-URL</string>
-    <string name="title_account_config">Account Config</string>
-    <string name="title_account_config_and_booru">Account Config - %s</string>
+    <string name="title_account_config">Accounteinstellungen</string>
+    <string name="title_account_config_and_booru">Accounteinstellungen - %s</string>
     <string name="account_username">Benutzername</string>
     <string name="account_password">Passwort</string>
     <string name="account_api_key">API-Schlüssel</string>
@@ -144,18 +144,18 @@
     <string name="account_user_remove">Konto entfernen</string>
     <string name="account_user_dialog_title_remove">Möchten Sie das Konto wirklich entfernen?</string>
     <string name="account_favorites">Favoriten</string>
-    <string name="account_posts">Posts</string>
+    <string name="account_posts">Beiträge</string>
     <string name="account_comments">Kommentare</string>
     <string name="account_config_msg_tip_empty">Benutzername oder Passwort/Api-Schlüssel dürfen nicht leer sein.</string>
     <string name="account_recommended">Empfohlen</string>
     <string name="settings_safe_mode">Sicherer Modus</string>
     <string name="settings_page_limit">Seitenlimit</string>
-    <string name="settings_muzei_limit">Muzei limit</string>
-    <string name="settings_browse_size">Browse size</string>
+    <string name="settings_muzei_limit">Muzei Limit</string>
+    <string name="settings_browse_size">Bildergröße (Vorschau)</string>
     <string name="settings_download_size">Download-Größe</string>
     <string name="settings_download_path">Downloadpfad</string>
     <string name="settings_download_path_not_set">Pfad nicht gesetzt</string>
-    <string name="settings_muzei_size">Muzei size</string>
+    <string name="settings_muzei_size">Bildergröße (Muzei)</string>
     <string name="settings_post_size_sample">Beispiel</string>
     <string name="settings_post_size_larger">Größer</string>
     <string name="settings_post_size_origin">Quelle</string>
@@ -180,7 +180,7 @@
     <string name="switch_yes">Ja</string>
     <string name="switch_no">Nein</string>
     <string name="pool_description_is_empty">Beschreibung ist leer.</string>
-    <string name="pool_download">Download pool</string>
+    <string name="pool_download">Downloadpfad</string>
     <string name="pool_download_jpgs">JPGs herunterladen</string>
     <string name="pool_download_pngs">PNGs herunterladen</string>
     <string name="tag_type">Typ</string>
@@ -190,9 +190,9 @@
     <string name="tag_type_copyright">Copyright</string>
     <string name="tag_type_character">Character</string>
     <string name="tag_type_circle">Kreis</string>
-    <string name="tag_type_faults">Faults</string>
+    <string name="tag_type_faults">Fehler</string>
     <string name="tag_type_meta">Meta</string>
-    <string name="tag_type_model">Model</string>
+    <string name="tag_type_model">Modell</string>
     <string name="tag_type_photo_set">Photo set</string>
     <string name="tag_type_genre">Genre</string>
     <string name="tag_type_studio">Studio</string>
@@ -210,7 +210,7 @@
     <string name="artist_order_name">Name</string>
     <string name="artist_order_count">Anzahl</string>
     <string name="artist_order_default">Standard</string>
-    <string name="search_bar_hint_search_posts">Search posts</string>
+    <string name="search_bar_hint_search_posts">Beiträge suchen</string>
     <string name="search_bar_hint_search_pools">Search pools</string>
     <string name="search_bar_hint_search_tags">Tags suchen</string>
     <string name="search_bar_hint_search_artists">Künstler suchen</string>
@@ -221,14 +221,14 @@
     <string name="order">Sortierung</string>
     <string name="rating">Bewertung</string>
     <string name="threshold">Schwellenwert</string>
-    <string name="muzei_copy">Copy</string>
+    <string name="muzei_copy">Kopieren</string>
     <string name="muzei_delete">Löschen</string>
     <string name="muzei_search">Suche</string>
     <string name="muzei_add">Label hinzufügen</string>
     <string name="muzei_fetch">Artwork abrufen</string>
-    <string name="muzei_input_cant_be_empty">Input can not be empty.</string>
-    <string name="muzei_action_view_post">View post on Flexbooru</string>
-    <string name="muzei_action_search_posts">Search posts on Flexbooru</string>
+    <string name="muzei_input_cant_be_empty">Eingabe darf nicht leer sein.</string>
+    <string name="muzei_action_view_post">Beitrag auf Flexbooru ansehen</string>
+    <string name="muzei_action_search_posts">Beitrag auf Flexbooru suchen</string>
     <string name="muzei_attribution">Beitrag von Flexbooru</string>
     <string name="tag_blacklist_copy">Kopieren</string>
     <string name="tag_blacklist_delete">Löschen</string>
@@ -243,9 +243,7 @@
     <string name="purchase_info_title">Werbung entfernen und alle Features freischalten</string>
     <string name="purchase_info_remove_ads">* Werbung entfernen</string>
     <string name="purchase_info_unlock_full_features">*  Alle Features freischalten</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
+    <string name="purchase_info_features">1. Enternt das Limit der verfügbaren Boorus. \ns Download des Zip Archivs von moebooru.\n3 Boorus von Datei sichern &amp; wiederherstellern.\n4 Per Bild auf SauceNao suchen.    </string>
     <string name="purchase_pay_title">Kaufen oder Kauf wiederherstellen</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
@@ -255,7 +253,7 @@
     <string name="sauce_nao_change_api_key">Api Schlüssel ändern</string>
     <string name="sauce_nao_get_api_key">Api Schlüssel holen</string>
     <string name="sauce_nao_remaining_times_today">Verbleibende Male heute: %1$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
+    <string name="sauce_nao_api_key_unset">SacueNao´s API Schlüssel ist nicht gesetzt.</string>
     <string name="sauce_nao_image_url">Bild URL</string>
     <string name="sauce_nao_invalid_image_url">Ungültige Bild URL</string>
     <string name="sauce_nao_source">Quelle</string>
