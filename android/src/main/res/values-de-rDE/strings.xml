@@ -59,7 +59,7 @@
     <string name="post_add_search_to_muzei">` %s ` wurden in Muzei gespeichert.</string>
     <string name="post_download">Bild herunterladen</string>
     <string name="post_add_to_fav">Zu Favoriten hinzufügen</string>
-    <string name="post_search_by_sauce_nao">Search by SauceNao</string>
+    <string name="post_search_by_sauce_nao">Aufe SauceNao suchen</string>
     <string name="msg_download_must_enable">Download Manager ist erforderlich.</string>
     <string name="msg_path_denied">Speichern fehlgeschlagen! Kein Zugriff auf den aktuellen Pfad.</string>
     <string name="msg_download_failed">Herunterladen fehlgeschlagen</string>
