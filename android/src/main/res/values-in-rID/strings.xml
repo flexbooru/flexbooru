@@ -183,11 +183,11 @@
     <string name="pool_download_jpgs">Unduh JPG</string>
     <string name="pool_download_pngs">Unduh PNG</string>
     <string name="tag_type">Tipe</string>
-    <string name="tag_type_all">All type</string>
+    <string name="tag_type_all">Semua jenis</string>
     <string name="tag_type_general">General</string>
-    <string name="tag_type_artist">Artist</string>
-    <string name="tag_type_copyright">Copyright</string>
-    <string name="tag_type_character">Character</string>
+    <string name="tag_type_artist">Seniman</string>
+    <string name="tag_type_copyright">Hak Cipta</string>
+    <string name="tag_type_character">Karakter</string>
     <string name="tag_type_circle">Circle</string>
     <string name="tag_type_faults">Faults</string>
     <string name="tag_type_meta">Meta</string>
@@ -202,7 +202,7 @@
     <string name="tag_order_name">Name</string>
     <string name="tag_order_count">Count</string>
     <string name="tag_delete_title">Delete tag</string>
-    <string name="tag_delete_content">`%s` will be deleted.</string>
+    <string name="tag_delete_content">%s akan dihapus.</string>
     <string name="artist_urls_is_empty">Urls is empty.</string>
     <string name="artist_order">Order</string>
     <string name="artist_order_date">Date</string>
@@ -220,10 +220,10 @@
     <string name="order">Order</string>
     <string name="rating">Rating</string>
     <string name="threshold">Threshold</string>
-    <string name="muzei_copy">Copy</string>
+    <string name="muzei_copy">Salin</string>
     <string name="muzei_delete">Delete</string>
-    <string name="muzei_search">Search</string>
-    <string name="muzei_add">Add keyword</string>
+    <string name="muzei_search">Cari</string>
+    <string name="muzei_add">Tambah kata kunci</string>
     <string name="muzei_fetch">Fetch Artwork</string>
     <string name="muzei_input_cant_be_empty">Input can not be empty.</string>
     <string name="muzei_action_view_post">View post on Flexbooru</string>
@@ -248,9 +248,9 @@
     <string name="purchase_pay_title">Pay/Restore purchase</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
-    <string name="tab_start_date">Start date</string>
-    <string name="tab_end_date">End date</string>
-    <string name="sauce_nao_help">Help</string>
+    <string name="tab_start_date">Tanggal mulai</string>
+    <string name="tab_end_date">Tanggal akhir</string>
+    <string name="sauce_nao_help">Bantuan</string>
     <string name="sauce_nao_change_api_key">Change api key</string>
     <string name="sauce_nao_get_api_key">Get api key</string>
     <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
@@ -259,5 +259,5 @@
     <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
     <string name="sauce_nao_source">Source</string>
     <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
+    <string name="sauce_nao_search_from_file">Berkas</string>
 </resources>
