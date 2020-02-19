@@ -24,7 +24,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
             android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

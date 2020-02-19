@@ -18,12 +18,11 @@ package onlymash.flexbooru.exoplayer
 import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.LoopingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
@@ -56,8 +55,8 @@ class PlayerHolder(private val context: Context) {
     private var currentPlayerState: PlayerState? = null
     private val playerStates: MutableList<PlayerState> = mutableListOf()
     // Create the player instance.
-    private val exoPlayer: ExoPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
-        .apply {
+    private val exoPlayer: ExoPlayer = SimpleExoPlayer.Builder(context)
+        .build().apply {
             playWhenReady = true
             repeatMode = Player.REPEAT_MODE_ALL
         }
