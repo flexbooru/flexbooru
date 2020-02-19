@@ -135,9 +135,6 @@
         <meta-data
                 android:name="com.google.android.backup.api_key"
                 android:value="${backupApiKey}"/>
-        <meta-data
-                android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="${admobAppId}"/>
 
         <uses-library
                 android:name="org.apache.http.legacy"

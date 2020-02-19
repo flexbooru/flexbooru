@@ -36,9 +36,6 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.*
 import androidx.viewpager.widget.ViewPager
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
@@ -523,17 +520,6 @@ class BrowseActivity : BaseActivity() {
         TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
         TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
         TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
-        if (!Settings.isOrderSuccess) {
-            val adBuilder = AdRequest.Builder().addTestDevice("C82BDF14EB83BBBF0A82F44262DD9330")
-            val adView = AdView(this)
-            bottom_bar_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-            adView.apply {
-                visibility = View.VISIBLE
-                adSize = AdSize.SMART_BANNER
-                adUnitId = "ca-app-pub-1547571472841615/1729907816"
-                loadAd(adBuilder.build())
-            }
-        }
     }
 
     private fun shareLink() {

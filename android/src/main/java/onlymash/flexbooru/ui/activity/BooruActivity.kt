@@ -24,16 +24,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -78,17 +73,6 @@ class BooruActivity : BaseActivity() {
         BooruManager.listeners.add(booruAdapter)
         if (intent != null) {
             handleShareIntent(intent)
-        }
-        if (!Settings.isOrderSuccess) {
-            val adBuilder = AdRequest.Builder().addTestDevice("C82BDF14EB83BBBF0A82F44262DD9330")
-            val adView = AdView(this)
-            booru_container.addView(adView, 1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-            adView.apply {
-                visibility = View.VISIBLE
-                adSize = AdSize.SMART_BANNER
-                adUnitId = "ca-app-pub-1547571472841615/5647147698"
-                loadAd(adBuilder.build())
-            }
         }
     }
     override fun onNewIntent(intent: Intent) {
