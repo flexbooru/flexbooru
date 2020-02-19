@@ -31,7 +31,7 @@ import onlymash.flexbooru.entity.post.*
     (PostMoe::class), (PostDan::class), (PostDanOne::class), (PostGel::class), (PostSankaku::class),
     (Booru::class), (User::class), (Suggestion::class), (Cookie::class),
     (TagFilter::class), (Muzei::class), (TagBlacklist::class)],
-    version = 23, exportSchema = true)
+    version = 24, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -158,6 +158,15 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_23_24 by lazy {
+            object : Migration(23, 24) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("DROP TABLE `posts_danbooru`")
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `posts_danbooru` (`id` INTEGER NOT NULL, `created_at` TEXT NOT NULL, `uploader_id` INTEGER NOT NULL, `score` INTEGER NOT NULL, `source` TEXT NOT NULL, `md5` TEXT, `last_comment_bumped_at` TEXT, `rating` TEXT NOT NULL, `image_width` INTEGER NOT NULL, `image_height` INTEGER NOT NULL, `tag_string` TEXT NOT NULL, `is_note_locked` INTEGER NOT NULL, `fav_count` INTEGER NOT NULL, `file_ext` TEXT, `last_noted_at` TEXT, `is_rating_locked` INTEGER NOT NULL, `parent_id` INTEGER, `has_children` INTEGER NOT NULL, `approver_id` INTEGER, `tag_count_general` INTEGER NOT NULL, `tag_count_artist` INTEGER NOT NULL, `tag_count_character` INTEGER NOT NULL, `tag_count_copyright` INTEGER NOT NULL, `file_size` INTEGER NOT NULL, `is_status_locked` INTEGER NOT NULL, `pool_string` TEXT, `up_score` INTEGER NOT NULL, `down_score` INTEGER NOT NULL, `is_pending` INTEGER NOT NULL, `is_flagged` INTEGER NOT NULL, `is_deleted` INTEGER NOT NULL, `tag_count` INTEGER NOT NULL, `updated_at` TEXT, `is_banned` INTEGER NOT NULL, `pixiv_id` INTEGER NOT NULL, `last_commented_at` TEXT, `has_active_children` INTEGER NOT NULL, `bit_flags` INTEGER NOT NULL, `tag_count_meta` INTEGER NOT NULL, `uploader_name` TEXT, `has_large` INTEGER NOT NULL, `has_visible_children` INTEGER NOT NULL, `children_ids` TEXT, `is_favorited` INTEGER NOT NULL, `tag_string_general` TEXT, `tag_string_character` TEXT, `tag_string_copyright` TEXT, `tag_string_artist` TEXT, `tag_string_meta` TEXT, `file_url` TEXT, `large_file_url` TEXT, `preview_file_url` TEXT, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `indexInResponse` INTEGER NOT NULL, `scheme` TEXT NOT NULL, `host` TEXT NOT NULL, `keyword` TEXT NOT NULL)")
+                    database.execSQL("CREATE UNIQUE INDEX `index_posts_danbooru_host_keyword_id` ON `posts_danbooru` (`host`, `keyword`, `id`)")
+                }
+            }
+        }
         @Volatile
         private var instance: FlexbooruDatabase? = null
         private val LOCK = Any()
@@ -181,7 +190,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_19_20,
                     MIGRATION_20_21,
                     MIGRATION_21_22,
-                    MIGRATION_22_23
+                    MIGRATION_22_23,
+                    MIGRATION_23_24
                 )
                 .build()
     }

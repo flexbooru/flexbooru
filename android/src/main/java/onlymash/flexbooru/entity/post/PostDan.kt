@@ -146,7 +146,7 @@ data class PostDan(
     val tag_count_meta: Int,
     @ColumnInfo(name = "uploader_name")
     @SerializedName("uploader_name")
-    val uploader_name: String,
+    val uploader_name: String?,
     @ColumnInfo(name = "has_large")
     @SerializedName("has_large")
     val has_large: Boolean,
