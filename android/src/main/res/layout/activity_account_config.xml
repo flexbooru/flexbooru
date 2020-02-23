@@ -118,7 +118,6 @@
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
                         android:text="@string/account_forgot_password"
-                        android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceOverline"
                         android:textStyle="bold"/>
             </LinearLayout>
