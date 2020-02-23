@@ -8,7 +8,6 @@ import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import onlymash.flexbooru.tracemoe.api.TraceMoeApi
 import onlymash.flexbooru.tracemoe.api.TraceMoeApiService
-import onlymash.flexbooru.tracemoe.model.TraceResponse
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -20,9 +19,7 @@ val kodeinTraceMoe = Kodein {
     bind<HttpClient>() with provider {
         HttpClient {
             install(JsonFeature) {
-                serializer = KotlinxSerializer(Json.nonstrict).apply {
-                    setMapper(TraceResponse::class, TraceResponse.serializer())
-                }
+                serializer = KotlinxSerializer(Json.nonstrict)
             }
             install(HttpCallValidator)
         }

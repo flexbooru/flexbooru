@@ -20,11 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepattributes *Annotation*
--keepattributes Signature
--keepattributes Exceptions
--keepattributes EnclosingMethod
--keepattributes InnerClasses
+-keepattributes *Annotation*, Exceptions, EnclosingMethod, InnerClasses, Signature
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -59,7 +55,6 @@
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn org.conscrypt.**
--dontwarn retrofit2.Platform$Java8
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 # OkHttp platform used only on JVM and when Conscrypt dependency is available.
@@ -94,24 +89,17 @@
 }
 -keepclasseswithmembernames class * {
     @com.tickaroo.tikxml.* <methods>;
-}
+}git diff
 -dontwarn com.tickaroo.tikxml.**
 
 -keep class com.android.vending.billing.**
 
 -dontnote kotlinx.serialization.SerializationKt
--keep,includedescriptorclasses class onlymash.flexbooru.saucenao.model.**$$serializer { *; }
--keepclassmembers class onlymash.flexbooru.saucenao.model.** {
+-keep,includedescriptorclasses class onlymash.flexbooru.**$$serializer { *; }
+-keepclassmembers class onlymash.flexbooru.** {
     *** Companion;
 }
--keepclasseswithmembers class onlymash.flexbooru.saucenao.model.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}
--keep,includedescriptorclasses class onlymash.flexbooru.trecemoe.model.**$$serializer { *; }
--keepclassmembers class onlymash.flexbooru.trecemoe.model.** {
-    *** Companion;
-}
--keepclasseswithmembers class onlymash.flexbooru.trecemoe.model.** {
+-keepclasseswithmembers class onlymash.flexbooru.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

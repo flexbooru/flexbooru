@@ -8,7 +8,6 @@ import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import onlymash.flexbooru.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.saucenao.api.SauceNaoApiService
-import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -20,9 +19,7 @@ val kodeinSauceNao = Kodein {
     bind<HttpClient>() with provider {
         HttpClient {
             install(JsonFeature) {
-                serializer = KotlinxSerializer(Json.nonstrict).apply {
-                    setMapper(SauceNaoResponse::class, SauceNaoResponse.serializer())
-                }
+                serializer = KotlinxSerializer(Json.nonstrict)
             }
             install(HttpCallValidator)
         }
