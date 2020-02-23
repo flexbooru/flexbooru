@@ -50,16 +50,12 @@
 
     <style name="AppTheme.Main">
         <!-- MaterialDrawer specific values -->
-        <item name="material_drawer_background">@color/colorDrawerBackground</item>
-        <item name="material_drawer_primary_text">@color/colorDrawerPrimaryText</item>
-        <item name="material_drawer_primary_icon">@color/colorDrawerPrimaryIcon</item>
-        <item name="material_drawer_secondary_text">@color/colorDrawerSecondaryText</item>
-        <item name="material_drawer_hint_text">@color/colorDrawerHintText</item>
-        <item name="material_drawer_divider">@color/colorDrawerDivider</item>
-        <item name="material_drawer_selected">@color/colorDrawerSelected</item>
-        <item name="material_drawer_selected_text">@color/colorDrawerSecondaryText</item>
-        <item name="material_drawer_header_selection_text">@color/colorDrawerHeaderSelectionText</item>
-        <item name="material_drawer_header_selection_subtext">@color/colorDrawerHeaderSelectionSubtext</item>
+        <item name="materialDrawerStyle">@style/MaterialDrawerStyle</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle</item>
+    </style>
+
+    <style name="MaterialDrawerStyle" parent="Widget.MaterialDrawerStyle">
+        <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
     </style>
 
     <style name="AppTheme.Search">

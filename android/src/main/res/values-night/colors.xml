@@ -34,7 +34,7 @@
     <color name="colorIconTint">@color/grey_400</color>
     <color name="colorIconTintToolbar">@color/white</color>
     <color name="colorFastScrollBar">@color/grey_700</color>
-    <color name="colorButtonText">@color/md_white_1000</color>
+    <color name="colorButtonText">@color/white</color>
     <color name="colorDividerItem">@color/grey_800</color>
     <color name="colorCardBackground">@color/background_card_dark</color>
     <color name="colorStatusBar">@color/color_dark_background</color>
@@ -50,14 +50,4 @@
     <color name="rating_s">@color/grey_800</color>
     <color name="muzei">@color/dark_level_1</color>
 
-    <color name="colorDrawerBackground">@color/color_dark_background</color>
-    <color name="colorDrawerPrimaryText">@color/material_drawer_dark_primary_text</color>
-    <color name="colorDrawerPrimaryIcon">@color/material_drawer_dark_primary_icon</color>
-    <color name="colorDrawerSecondaryText">@color/material_drawer_dark_secondary_text</color>
-    <color name="colorDrawerHintText">@color/material_drawer_dark_hint_text</color>
-    <color name="colorDrawerDivider">@color/material_drawer_dark_divider</color>
-    <color name="colorDrawerSelected">@color/material_drawer_dark_selected</color>
-    <color name="colorDrawerSelectedText">@color/material_drawer_dark_selected_text</color>
-    <color name="colorDrawerHeaderSelectionText">@color/material_drawer_dark_header_selection_text</color>
-    <color name="colorDrawerHeaderSelectionSubtext">@color/material_drawer_dark_header_selection_subtext</color>
 </resources>

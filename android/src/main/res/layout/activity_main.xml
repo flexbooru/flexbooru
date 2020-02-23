@@ -14,22 +14,27 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.MainActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.activity.MainActivity">
+        android:layout_height="match_parent">
 
-    <onlymash.flexbooru.widget.FullDrawerViewPager
+        <onlymash.flexbooru.widget.FullDrawerViewPager
             android:id="@+id/pager_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="58dp"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="58dp"
@@ -42,4 +47,11 @@
             app:itemHorizontalTranslationEnabled="false"
             app:layout_behavior="onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+        android:id="@+id/slider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"/>
+</androidx.drawerlayout.widget.DrawerLayout>

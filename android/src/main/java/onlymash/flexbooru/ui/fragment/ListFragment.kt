@@ -86,7 +86,7 @@ abstract class ListFragment : Fragment(), KodeinAware {
         override fun onLeftButtonClick() {
             val activity = requireActivity()
             if (activity is MainActivity) {
-                activity.drawer.openDrawer()
+                activity.openDrawer()
             } else if (activity !is MainActivity) {
                 activity.onBackPressed()
             }

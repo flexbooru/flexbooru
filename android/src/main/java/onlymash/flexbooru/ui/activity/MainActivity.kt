@@ -25,16 +25,20 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
+import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.mikepenz.materialdrawer.AccountHeader
-import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.holder.ImageHolder
+import com.mikepenz.materialdrawer.holder.StringHolder
 import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import com.mikepenz.materialdrawer.util.addItemAtPosition
+import com.mikepenz.materialdrawer.util.addItems
+import com.mikepenz.materialdrawer.util.getDrawerItem
+import com.mikepenz.materialdrawer.util.removeItems
+import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -71,8 +75,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
     internal var sharedElement: View? = null
-    lateinit var drawer: Drawer
-    private lateinit var header: AccountHeader
+    private lateinit var headerView: AccountHeaderView
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
     private val sp: SharedPreferences by instance()
@@ -84,107 +87,187 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sp.registerOnSharedPreferenceChangeListener(this)
-        profileSettingDrawerItem = ProfileSettingDrawerItem()
-            .withName(R.string.title_manage_boorus)
-            .withIdentifier(HEADER_ITEM_ID_BOORU_MANAGE)
-            .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_outline_24dp))
-            .withIconTinted(true)
-        header = AccountHeaderBuilder()
-            .withActivity(this)
-            .withOnAccountHeaderListener(headerItemClickListener)
-            .build()
-        header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
-        drawer = DrawerBuilder()
-            .withActivity(this)
-            .withTranslucentStatusBar(false)
-            .withAccountHeader(header, false)
-            .addDrawerItems(
-                PrimaryDrawerItem()
-                    .withIdentifier(DRAWER_ITEM_ID_ACCOUNT)
-                    .withName(R.string.title_account)
-                    .withSelectable(false)
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_account_circle_outline_24dp))
-                    .withIconTintingEnabled(true),
-                PrimaryDrawerItem()
-                    .withIdentifier(DRAWER_ITEM_ID_COMMENTS)
-                    .withName(R.string.title_comments)
-                    .withSelectable(false)
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_comment_outline_24dp))
-                    .withIconTintingEnabled(true),
-                PrimaryDrawerItem()
-                    .withIdentifier(DRAWER_ITEM_ID_TAG_BLACKLIST)
-                    .withName(R.string.title_tag_blacklist)
-                    .withSelectable(false)
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_visibility_off_outline_24dp))
-                    .withIconTintingEnabled(true),
-                PrimaryDrawerItem()
-                    .withIdentifier(DRAWER_ITEM_ID_MUZEI)
-                    .withName(R.string.title_muzei)
-                    .withSelectable(false)
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_muzei_24dp))
-                    .withIconTintingEnabled(true),
-                PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_settings_outline_24dp))
-                    .withName(R.string.title_settings)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_SETTINGS),
-                PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_search_24dp))
-                    .withName(R.string.title_sauce_nao)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_SAUCE_NAO),
-                PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_youtube_searched_for_24dp))
-                    .withName(R.string.title_what_anime)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_WHAT_ANIME)
+        profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
+            name = StringHolder(R.string.title_manage_boorus)
+            identifier = HEADER_ITEM_ID_BOORU_MANAGE
+            icon = ImageHolder(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_settings_outline_24dp))
+            isIconTinted = true
+        }
+        headerView = AccountHeaderView(this).apply {
+            attachToSliderView(slider)
+            addProfile(profileSettingDrawerItem, profiles?.size ?: 0)
+            withSavedInstance(savedInstanceState)
+            onAccountHeaderListener = { _: View?, profile: IProfile, _: Boolean ->
+                when (val uid = profile.identifier) {
+                    HEADER_ITEM_ID_BOORU_MANAGE -> {
+                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                    }
+                    else -> {
+                        Settings.activeBooruUid = uid
+                        boorus.forEach {
+                            if (it.uid == uid) {
+                                pager_container.adapter = NavPagerAdapter(supportFragmentManager, it, getCurrentUser())
+                                pager_container.setCurrentItem(currentNavItem, false)
+                                return@forEach
+                            }
+                        }
+                    }
+                }
+                false
+            }
+        }
+        slider.apply {
+            addItems(
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_account)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_account_circle_outline_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_ACCOUNT
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_comments)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_comment_outline_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_COMMENTS
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_tag_blacklist)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_visibility_off_outline_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_TAG_BLACKLIST
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_muzei)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_muzei_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_MUZEI
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_settings)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_settings_outline_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_SETTINGS
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_sauce_nao)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_search_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_SAUCE_NAO
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_what_anime)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_youtube_searched_for_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_WHAT_ANIME
+                }
             )
-            .addStickyDrawerItems(
-                SwitchDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_brightness_2_outline_24dp))
-                    .withName(R.string.title_night_mode)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_NIGHT_MODE)
-                    .withChecked(Settings.isNightMode)
-                    .withOnCheckedChangeListener(object : OnCheckedChangeListener {
+            stickyDrawerItems = arrayListOf(
+                SwitchDrawerItem().apply {
+                    name = StringHolder(R.string.title_night_mode)
+                    icon = ImageHolder(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_brightness_2_outline_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_NIGHT_MODE
+                    isChecked = Settings.isNightMode
+                    onCheckedChangeListener = object : OnCheckedChangeListener {
                         override fun onCheckedChanged(
                             drawerItem: IDrawerItem<*>,
                             buttonView: CompoundButton,
                             isChecked: Boolean
                         ) {
-                            drawer.closeDrawer()
                             Settings.isNightMode = isChecked
+                            closeDrawer()
                         }
-                    }),
-                PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_info_outline_24dp))
-                    .withName(R.string.title_about)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_ABOUT)
+                    }
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_about)
+                    icon = ImageHolder(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_info_outline_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_ABOUT
+                }
             )
-            .withStickyFooterShadow(false)
-            .withStickyFooterDivider(true)
-            .withSavedInstance(savedInstanceState)
-            .build()
-        drawer.apply {
+            stickyFooterShadow = false
+            stickyFooterDivider = true
             setSelection(-3L)
-            onDrawerItemClickListener = drawerItemClickListener
+            onDrawerItemClickListener = { _: View?, item: IDrawerItem<*>, _: Int ->
+                when (item.identifier) {
+                    DRAWER_ITEM_ID_ACCOUNT -> {
+                        val booru = getCurrentBooru()
+                        val user = getCurrentUser()
+                        if (user != null && booru != null) {
+                            startActivity(Intent(this@MainActivity, AccountActivity::class.java))
+                        } else if (booru == null){
+                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                        } else {
+                            startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
+                        }
+                    }
+                    DRAWER_ITEM_ID_COMMENTS -> {
+                        if (getCurrentBooru() != null) {
+                            CommentActivity.startActivity(this@MainActivity)
+                        } else {
+                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                        }
+                    }
+                    DRAWER_ITEM_ID_TAG_BLACKLIST -> {
+                        if (getCurrentBooru() != null) {
+                            startActivity(Intent(this@MainActivity, TagBlacklistActivity::class.java))
+                        } else {
+                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                        }
+                    }
+                    DRAWER_ITEM_ID_MUZEI -> {
+                        if (getCurrentBooru() != null) {
+                            startActivity(Intent(this@MainActivity, MuzeiActivity::class.java))
+                        } else {
+                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                        }
+                    }
+                    DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                    DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this@MainActivity, SauceNaoActivity::class.java))
+                    DRAWER_ITEM_ID_WHAT_ANIME -> startActivity(Intent(this@MainActivity, WhatAnimeActivity::class.java))
+                    DRAWER_ITEM_ID_ABOUT -> startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+                    DRAWER_ITEM_ID_PURCHASE -> startActivity(Intent(this@MainActivity, PurchaseActivity::class.java))
+                }
+                false
+            }
         }
         if (!Settings.isOrderSuccess) {
-            drawer.addItemAtPosition(
-                PrimaryDrawerItem()
-                    .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_payment_24dp))
-                    .withName(R.string.purchase_title)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
-                DRAWER_ITEM_ID_PURCHASE_POSITION
-                )
+            slider.addItemAtPosition(
+                DRAWER_ITEM_ID_PURCHASE_POSITION,
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.purchase_title)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_payment_24dp))
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_PURCHASE
+                }
+            )
         }
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         pager_container.addOnPageChangeListener(pageChangeListener)
@@ -240,7 +323,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         val size = boorus.size
         var uid = Settings.activeBooruUid
         var i = -1
-        header.clear()
+        headerView.clear()
         boorus.forEachIndexed { index, booru ->
             if (!success && index >= BOORUS_LIMIT) {
                 return@forEachIndexed
@@ -252,16 +335,17 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) {
                 host = host.replaceFirst("capi-v2.", "beta.")
             }
-            header.addProfile(
-                ProfileDrawerItem()
-                    .withName(booru.name)
-                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
-                    .withEmail(String.format("%s://%s", booru.scheme, booru.host))
-                    .withIdentifier(booru.uid),
+            headerView.addProfile(
+                ProfileDrawerItem().apply {
+                    icon = ImageHolder(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
+                    name = StringHolder(booru.name)
+                    description = StringHolder(String.format("%s://%s", booru.scheme, booru.host))
+                    identifier = booru.uid
+                },
                 index
             )
         }
-        header.addProfile(
+        headerView.addProfile(
             profileSettingDrawerItem,
             if (success || size < BOORUS_LIMIT) boorus.size else BOORUS_LIMIT
         )
@@ -274,7 +358,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         } else {
             booru = boorus[i]
         }
-        header.setActiveProfile(uid)
+        headerView.setActiveProfile(uid)
         pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
     }
 
@@ -290,7 +374,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         override fun onAdd(booru: Booru) {
             boorus.add(booru)
             if (!Settings.isOrderSuccess &&
-                header.profiles?.size ?: 0 == BOORUS_LIMIT + 1) {
+                headerView.profiles?.size ?: 0 == BOORUS_LIMIT + 1) {
                 return
             }
             initDrawerHeader()
@@ -299,12 +383,12 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         override fun onDelete(booruUid: Long) {
             val index = boorus.indexOfFirst { it.uid == booruUid }
             boorus.removeAt(index)
-            header.removeProfileByIdentifier(booruUid)
+            headerView.removeProfileByIdentifier(booruUid)
             if (boorus.size > 0) {
                 if (Settings.activeBooruUid == booruUid) {
                     val booru = boorus[0]
                     Settings.activeBooruUid = booru.uid
-                    header.setActiveProfile(booru.uid)
+                    headerView.setActiveProfile(booru.uid)
                     pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 }
             } else {
@@ -329,12 +413,14 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             var host = booru.host
             if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
-            header.updateProfile(
-                ProfileDrawerItem()
-                    .withName(booru.name)
-                    .withIcon(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
-                    .withEmail(String.format("%s://%s", booru.scheme, booru.host))
-                    .withIdentifier(booru.uid))
+            headerView.updateProfile(
+                ProfileDrawerItem().apply {
+                    icon = ImageHolder(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
+                    name = StringHolder(booru.name)
+                    description = StringHolder(String.format("%s://%s", booru.scheme, booru.host))
+                    identifier = booru.uid
+                }
+            )
         }
     }
 
@@ -367,73 +453,6 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     return@forEach
                 }
             }
-        }
-    }
-
-    private val headerItemClickListener = object : AccountHeader.OnAccountHeaderListener {
-        override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
-            when (val uid = profile.identifier) {
-                HEADER_ITEM_ID_BOORU_MANAGE -> {
-                    startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                }
-                else -> {
-                    Settings.activeBooruUid = uid
-                    boorus.forEach { booru ->
-                        if (booru.uid == uid) {
-                            pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
-                            pager_container.setCurrentItem(currentNavItem, false)
-                            return@forEach
-                        }
-                    }
-                }
-            }
-            return false
-        }
-    }
-
-    private val drawerItemClickListener = object : Drawer.OnDrawerItemClickListener {
-        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
-            when (drawerItem.identifier) {
-                DRAWER_ITEM_ID_ACCOUNT -> {
-                    val booru = getCurrentBooru()
-                    val user = getCurrentUser()
-                    if (user != null && booru != null) {
-                        startActivity(Intent(this@MainActivity, AccountActivity::class.java))
-                    } else if (booru == null){
-                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                    } else {
-                        startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
-                    }
-                }
-                DRAWER_ITEM_ID_COMMENTS -> {
-                    if (getCurrentBooru() != null) {
-                        CommentActivity.startActivity(this@MainActivity)
-                    } else {
-                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                    }
-                }
-                DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-                    if (getCurrentBooru() != null) {
-                        startActivity(Intent(this@MainActivity, TagBlacklistActivity::class.java))
-                    } else {
-                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                    }
-                }
-                DRAWER_ITEM_ID_MUZEI -> {
-                    if (getCurrentBooru() != null) {
-                        startActivity(Intent(this@MainActivity, MuzeiActivity::class.java))
-                    } else {
-                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                    }
-                }
-                DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this@MainActivity, SauceNaoActivity::class.java))
-                DRAWER_ITEM_ID_WHAT_ANIME -> startActivity(Intent(this@MainActivity, WhatAnimeActivity::class.java))
-                DRAWER_ITEM_ID_ABOUT -> startActivity(Intent(this@MainActivity, AboutActivity::class.java))
-                DRAWER_ITEM_ID_PURCHASE -> startActivity(Intent(this@MainActivity, PurchaseActivity::class.java))
-                DRAWER_ITEM_ID_NIGHT_MODE -> return false
-            }
-            return false
         }
     }
 
@@ -591,20 +610,20 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             Settings.ORDER_SUCCESS_KEY -> {
                 if (Settings.isOrderSuccess) {
-                    drawer.removeItem(DRAWER_ITEM_ID_PURCHASE)
+                    slider.removeItems(DRAWER_ITEM_ID_PURCHASE)
                 } else {
-                    val index = drawer.drawerItems.indexOfFirst {
-                        it.identifier == DRAWER_ITEM_ID_PURCHASE
-                    }
-                    if (index < 0) {
-                        drawer.addItemAtPosition(
-                            PrimaryDrawerItem()
-                                .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_payment_24dp))
-                                .withName(R.string.purchase_title)
-                                .withSelectable(false)
-                                .withIconTintingEnabled(true)
-                                .withIdentifier(DRAWER_ITEM_ID_PURCHASE),
-                            DRAWER_ITEM_ID_PURCHASE_POSITION
+                    if (slider.getDrawerItem(DRAWER_ITEM_ID_PURCHASE) == null) {
+                        slider.addItemAtPosition(
+                            DRAWER_ITEM_ID_PURCHASE_POSITION,
+                            PrimaryDrawerItem().apply {
+                                name = StringHolder(R.string.purchase_title)
+                                icon = ImageHolder(AppCompatResources.getDrawable(
+                                    this@MainActivity,
+                                    R.drawable.ic_payment_24dp))
+                                isSelectable = false
+                                isIconTinted = true
+                                identifier = DRAWER_ITEM_ID_PURCHASE
+                            }
                         )
                     }
                 }
@@ -617,9 +636,19 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onBackPressed() {
         when {
-            drawer.isDrawerOpen -> drawer.closeDrawer()
+            drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
             currentNavItem != 0 -> pager_container.setCurrentItem(0, false)
             else -> super.onBackPressed()
+        }
+    }
+
+    fun openDrawer() {
+        drawer_layout.openDrawer(GravityCompat.START)
+    }
+
+    fun closeDrawer() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
         }
     }
 }

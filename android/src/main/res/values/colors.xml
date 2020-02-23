@@ -87,18 +87,30 @@
     <color name="pauseTint">#ccc76185</color>
     <color name="playerControlText">#cca2a2a2</color>
 
-    <color name="tag_type_general">@color/md_white_1000</color>
-    <color name="tag_type_artist">@color/md_pink_200</color>
-    <color name="tag_type_copyright">@color/md_green_500</color>
-    <color name="tag_type_character">@color/md_blue_500</color>
-    <color name="tag_type_circle">@color/md_yellow_300</color>
-    <color name="tag_type_faults">@color/md_amber_800</color>
-    <color name="tag_type_meta">@color/md_blue_grey_500</color>
-    <color name="tag_type_model">@color/md_brown_500</color>
-    <color name="tag_type_photo_set">@color/md_deep_orange_300</color>
-    <color name="tag_type_genre">@color/md_light_green_400</color>
-    <color name="tag_type_studio">@color/md_orange_300</color>
-    <color name="tag_type_medium">@color/md_purple_400</color>
+    <color name="pink_200">#f48fb1</color>
+    <color name="green_500">#4caf50</color>
+    <color name="blue_500">#2196f3</color>
+    <color name="yellow_300">#fff176</color>
+    <color name="amber_800">#ff8f00</color>
+    <color name="blue_grey_500">#607d8b</color>
+    <color name="brown_500">#795548</color>
+    <color name="deep_orange_300">#ff8a65</color>
+    <color name="light_green_400">#9ccc65</color>
+    <color name="orange_300">#ffb74d</color>
+    <color name="purple_400">#ab47bc</color>
+
+    <color name="tag_type_general">@color/white</color>
+    <color name="tag_type_artist">@color/pink_200</color>
+    <color name="tag_type_copyright">@color/green_500</color>
+    <color name="tag_type_character">@color/blue_500</color>
+    <color name="tag_type_circle">@color/yellow_300</color>
+    <color name="tag_type_faults">@color/amber_800</color>
+    <color name="tag_type_meta">@color/blue_grey_500</color>
+    <color name="tag_type_model">@color/brown_500</color>
+    <color name="tag_type_photo_set">@color/deep_orange_300</color>
+    <color name="tag_type_genre">@color/light_green_400</color>
+    <color name="tag_type_studio">@color/orange_300</color>
+    <color name="tag_type_medium">@color/purple_400</color>
     <color name="tag_type_unknown">#ccffffff</color>
 
     <color name="muzei">#3C6CAF</color>
@@ -148,14 +160,4 @@
     <color name="color_dark_on_surface">@color/white</color>
     <color name="color_dark_scrim">@color/scrim</color>
 
-    <color name="colorDrawerBackground">@color/color_light_background</color>
-    <color name="colorDrawerPrimaryText">@color/material_drawer_primary_text</color>
-    <color name="colorDrawerPrimaryIcon">@color/material_drawer_primary_icon</color>
-    <color name="colorDrawerSecondaryText">@color/material_drawer_secondary_text</color>
-    <color name="colorDrawerHintText">@color/material_drawer_hint_text</color>
-    <color name="colorDrawerDivider">@color/material_drawer_divider</color>
-    <color name="colorDrawerSelected">@color/material_drawer_selected</color>
-    <color name="colorDrawerSelectedText">@color/material_drawer_selected_text</color>
-    <color name="colorDrawerHeaderSelectionText">@color/material_drawer_header_selection_text</color>
-    <color name="colorDrawerHeaderSelectionSubtext">@color/material_drawer_header_selection_subtext</color>
 </resources>
