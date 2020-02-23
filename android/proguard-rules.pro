@@ -89,7 +89,7 @@
 }
 -keepclasseswithmembernames class * {
     @com.tickaroo.tikxml.* <methods>;
-}git diff
+}
 -dontwarn com.tickaroo.tikxml.**
 
 -keep class com.android.vending.billing.**
