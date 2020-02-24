@@ -58,7 +58,8 @@
         <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
     </style>
 
-    <style name="AppTheme.Search">
+    <style name="AppTheme.NoAnimation">
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
         <item name="android:activityCloseEnterAnimation">@null</item>
@@ -77,7 +78,7 @@
         <item name="android:windowBackground">@drawable/background_launcher</item>
     </style>
 
-    <style name="AppTheme.Browse">
+    <style name="AppTheme.NoAnimation.Browse">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowBackground">@color/transparent</item>

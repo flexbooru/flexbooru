@@ -55,7 +55,7 @@
         <activity android:name=".ui.activity.CommentActivity"/>
         <activity
                 android:name=".ui.activity.SearchActivity"
-                android:theme="@style/AppTheme.Search">
+                android:theme="@style/AppTheme.NoAnimation">
         </activity>
         <activity android:name=".ui.activity.SettingsActivity">
         </activity>
@@ -70,7 +70,7 @@
         </activity>
         <activity
                 android:name=".ui.activity.BrowseActivity"
-                android:theme="@style/AppTheme.Browse">
+                android:theme="@style/AppTheme.NoAnimation.Browse">
         </activity>
         <activity
                 android:name=".ui.activity.ScannerActivity"
