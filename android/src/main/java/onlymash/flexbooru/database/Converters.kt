@@ -22,6 +22,7 @@ import onlymash.flexbooru.entity.artist.ArtistUrlDan
 import onlymash.flexbooru.entity.common.DanOneDate
 import onlymash.flexbooru.entity.common.SankakuAuthor
 import onlymash.flexbooru.entity.common.SankakuTag
+import onlymash.flexbooru.entity.post.Uploader
 
 /**
  * room database TypeConverter
@@ -93,4 +94,12 @@ class Converters {
         val listType = object : TypeToken<MutableList<SankakuTag>>(){}.type
         return Gson().fromJson<MutableList<SankakuTag>>(value, listType)
     }
+
+    @TypeConverter
+    fun fromUploaderToString(uploader: Uploader): String =
+        Gson().toJson(uploader)
+
+    @TypeConverter
+    fun fromStringToUploader(value: String): Uploader =
+        Gson().fromJson<Uploader>(value, object : TypeToken<Uploader>(){}.type)
 }

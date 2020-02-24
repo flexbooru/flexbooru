@@ -84,13 +84,13 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                 arguments = when (post) {
                     is PostDan -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_DANBOORU)
-                        putString(USER_NAME_KEY, post.uploader_name)
-                        putInt(USER_ID_KEY, post.uploader_id)
+                        putString(USER_NAME_KEY, post.uploader.name)
+                        putInt(USER_ID_KEY, post.uploader.id)
                         putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
                         putInt(SCORE_KEY, post.getPostScore())
-                        putInt(PARENT_KEY, post.parent_id ?: -1)
+                        putInt(PARENT_KEY, post.parentId ?: -1)
                     }
                     is PostMoe -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_MOEBOORU)

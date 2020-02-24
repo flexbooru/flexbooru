@@ -24,6 +24,8 @@ import onlymash.flexbooru.entity.comment.CommentAction
 import onlymash.flexbooru.entity.post.SearchPopular
 import onlymash.flexbooru.entity.tag.SearchTag
 
+private const val ONLY_FIELD_POSTS = "id,created_at,score,source,parent_id,preview_file_url,large_file_url,file_url,rating,image_width,image_height,updated_at,created_at,tag_string,tag_string_general,tag_string_character,tag_string_copyright,tag_string_artist,tag_string_meta,is_favorited?,children_ids,pixiv_id,file_size,fav_count,file_ext,uploader"
+
 object DanUrlHelper {
     /**
      * return danbooru posts request url [HttpUrl]
@@ -38,6 +40,7 @@ object DanUrlHelper {
             .addQueryParameter("page", page.toString())
             .addQueryParameter("login", search.username)
             .addQueryParameter("api_key", search.auth_key)
+            .addQueryParameter("only", ONLY_FIELD_POSTS)
             .build()
     }
     /**
@@ -54,6 +57,7 @@ object DanUrlHelper {
             .addQueryParameter("scale", popular.scale)
             .addQueryParameter("login", popular.username)
             .addQueryParameter("api_key", popular.auth_key)
+            .addQueryParameter("only", ONLY_FIELD_POSTS)
             .build()
     }
 
@@ -119,6 +123,7 @@ object DanUrlHelper {
             .addQueryParameter("page", page.toString())
             .addQueryParameter("login", search.username)
             .addQueryParameter("api_key", search.auth_key)
+            .addQueryParameter("only", "id,name,urls")
             .addQueryParameter("commit", "Search")
             .build()
     }
@@ -158,6 +163,7 @@ object DanUrlHelper {
             .addQueryParameter("limit", commentAction.limit.toString())
             .addQueryParameter("login", commentAction.username)
             .addQueryParameter("api_key", commentAction.auth_key)
+            .addQueryParameter("only", "creator,id,body,post_id,created_at")
             .build()
     }
 
@@ -176,6 +182,7 @@ object DanUrlHelper {
             .addQueryParameter("limit", commentAction.limit.toString())
             .addQueryParameter("login", commentAction.username)
             .addQueryParameter("api_key", commentAction.auth_key)
+            .addQueryParameter("only", "creator,id,body,post_id,created_at")
             .build()
     }
 

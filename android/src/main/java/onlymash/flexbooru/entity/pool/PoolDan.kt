@@ -27,31 +27,27 @@ data class PoolDan(
     val name: String,
     @SerializedName("created_at")
     val createdAt: String,
-    @SerializedName("updated_at")
-    val updatedAt: String,
-    @SerializedName("creator_id")
-    val creator_id: Int,
     @SerializedName("description")
     val description: String,
     @SerializedName("is_active")
     val isActive: Boolean,
     @SerializedName("is_deleted")
     val isDeleted: Boolean,
+    @SerializedName("post_count")
+    val postCountInt: Int,
     @SerializedName("category")
     val category: String,
-    @SerializedName("creator_name")
-    val creator_name: String,
-    @SerializedName("post_count")
-    val post_count: Int
+    @SerializedName("updated_at")
+    val updatedAt: String
 ) : PoolBase() {
     override fun getPoolId(): Int = id
     override fun getPoolName(): String = name
-    override fun getPostCount(): Int = post_count
+    override fun getPostCount(): Int = postCountInt
     override fun getPoolDate(): CharSequence {
         val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updatedAt) ?: return ""
         return date.time.formatDate()
     }
     override fun getPoolDescription(): String = description
-    override fun getCreatorId(): Int = creator_id
-    override fun getCreatorName(): String? = creator_name
+    override fun getCreatorId(): Int = -1
+    override fun getCreatorName(): String? = null
 }

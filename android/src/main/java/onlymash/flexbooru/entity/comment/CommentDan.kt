@@ -24,40 +24,51 @@ import java.util.*
  * Danbooru response data class
  * */
 data class CommentDan(
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("created_at")
-    val createdAt: String,
-    @SerializedName("post_id")
-    val post_id: Int,
-    @SerializedName("creator_id")
-    val creator_id: Int,
     @SerializedName("body")
     val body: String,
-    @SerializedName("score")
-    val score: Int,
-    @SerializedName("updated_at")
-    val updatedAt: String,
-    @SerializedName("updater_id")
-    val updaterId: Int,
-    @SerializedName("do_not_bump_post")
-    val doNotBumpPost: Boolean,
-    @SerializedName("is_deleted")
-    val isDeleted: Boolean,
-    @SerializedName("is_sticky")
-    val isSticky: Boolean,
-    @SerializedName("creator_name")
-    val creator_name: String,
-    @SerializedName("updater_name")
-    val updaterName: String
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("creator")
+    val creator: Creator,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("post_id")
+    val postIdInt: Int
 ) : CommentBase() {
-    override fun getPostId(): Int = post_id
+    override fun getPostId(): Int = postIdInt
     override fun getCommentId(): Int = id
     override fun getCommentBody(): String = body
     override fun getCommentDate(): CharSequence {
-        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(updatedAt) ?: return ""
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.ENGLISH).parse(createdAt) ?: return ""
         return date.time.formatDate()
     }
-    override fun getCreatorId(): Int = creator_id
-    override fun getCreatorName(): String = creator_name
+    override fun getCreatorId(): Int = creator.id
+    override fun getCreatorName(): String = creator.name
 }
+
+data class Creator(
+    @SerializedName("can_approve_posts")
+    val canApprovePosts: Boolean,
+    @SerializedName("can_upload_free")
+    val canUploadFree: Boolean,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("is_banned")
+    val isBanned: Boolean,
+    @SerializedName("is_super_voter")
+    val isSuperVoter: Boolean,
+    @SerializedName("level")
+    val level: Int,
+    @SerializedName("level_string")
+    val levelString: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("note_update_count")
+    val noteUpdateCount: Int,
+    @SerializedName("post_update_count")
+    val postUpdateCount: Int,
+    @SerializedName("post_upload_count")
+    val postUploadCount: Int
+)

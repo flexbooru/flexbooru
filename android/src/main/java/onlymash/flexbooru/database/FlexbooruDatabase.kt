@@ -31,7 +31,7 @@ import onlymash.flexbooru.entity.post.*
     (PostMoe::class), (PostDan::class), (PostDanOne::class), (PostGel::class), (PostSankaku::class),
     (Booru::class), (User::class), (Suggestion::class), (Cookie::class),
     (TagFilter::class), (Muzei::class), (TagBlacklist::class)],
-    version = 24, exportSchema = true)
+    version = 25, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class FlexbooruDatabase : RoomDatabase() {
 
@@ -167,6 +167,15 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                 }
             }
         }
+        private val MIGRATION_24_25 by lazy {
+            object : Migration(24, 25) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("DROP TABLE `posts_danbooru`")
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `posts_danbooru` (`id` INTEGER NOT NULL, `pixiv_id` INTEGER, `parent_id` INTEGER, `rating` TEXT NOT NULL, `score` INTEGER NOT NULL, `source` TEXT NOT NULL, `fav_count` INTEGER NOT NULL, `image_height` INTEGER NOT NULL, `image_width` INTEGER NOT NULL, `file_ext` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `preview_file_url` TEXT, `large_file_url` TEXT, `file_url` TEXT, `tag_string` TEXT NOT NULL, `tag_string_artist` TEXT NOT NULL, `tag_string_character` TEXT NOT NULL, `tag_string_copyright` TEXT NOT NULL, `tag_string_general` TEXT NOT NULL, `tag_string_meta` TEXT NOT NULL, `created_at` TEXT NOT NULL, `updated_at` TEXT, `is_favorited` INTEGER NOT NULL, `uploader` TEXT NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `indexInResponse` INTEGER NOT NULL, `scheme` TEXT NOT NULL, `host` TEXT NOT NULL, `keyword` TEXT NOT NULL)")
+                    database.execSQL("CREATE UNIQUE INDEX `index_posts_danbooru_host_keyword_id` ON `posts_danbooru` (`host`, `keyword`, `id`)")
+                }
+            }
+        }
         @Volatile
         private var instance: FlexbooruDatabase? = null
         private val LOCK = Any()
@@ -191,7 +200,8 @@ abstract class FlexbooruDatabase : RoomDatabase() {
                     MIGRATION_20_21,
                     MIGRATION_21_22,
                     MIGRATION_22_23,
-                    MIGRATION_23_24
+                    MIGRATION_23_24,
+                    MIGRATION_24_25
                 )
                 .build()
     }

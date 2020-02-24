@@ -96,9 +96,9 @@ class PostRepositoryImpl(
             val items = mutableListOf<PostDan>()
             posts.forEach { postDan ->
                 val index = tagBlacklists.indexOfFirst {
-                    postDan.tag_string.contains(it.tag)
+                    postDan.tagString.contains(it.tag)
                 }
-                if (index == -1 && !postDan.preview_file_url.isNullOrBlank()) {
+                if (index == -1 && !postDan.previewFileUrl.isNullOrBlank()) {
                     items.add(postDan)
                 }
             }

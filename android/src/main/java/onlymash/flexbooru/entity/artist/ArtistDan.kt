@@ -22,18 +22,6 @@ data class ArtistDan(
     val id: Int,
     @SerializedName("name")
     val name: String,
-    @SerializedName("created_at")
-    val createdAt: String,
-    @SerializedName("updated_at")
-    val updatedAt: String,
-    @SerializedName("creator_id")
-    val creatorId: Int,
-    @SerializedName("is_active")
-    val isActive: Boolean,
-    @SerializedName("group_name")
-    val groupName: String,
-    @SerializedName("is_banned")
-    val isBanned: Boolean,
     @SerializedName("urls")
     val urls: MutableList<ArtistUrlDan>?
 ) : ArtistBase() {

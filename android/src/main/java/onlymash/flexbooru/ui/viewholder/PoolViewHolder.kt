@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.pool.PoolBase
+import onlymash.flexbooru.entity.pool.PoolDan
 import onlymash.flexbooru.entity.pool.PoolMoe
 import onlymash.flexbooru.entity.pool.PoolSankaku
 import onlymash.flexbooru.extension.toggleArrow
@@ -89,10 +90,14 @@ class PoolViewHolder(itemView: View,
         poolDescription.transformationMethod = LinkTransformationMethod()
         userAvatar.setOnClickListener {
             pool?.let {
-                if (it is PoolSankaku) {
-                    itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName(), it.author.avatar)
-                } else {
-                    itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName())
+                when (it) {
+                    is PoolSankaku -> {
+                        itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName(), it.author.avatar)
+                    }
+                    !is PoolDan -> {
+                        itemListener?.onClickUserAvatar(it.getCreatorId(), it.getCreatorName())
+                    }
+                    else -> { }
                 }
             }
         }

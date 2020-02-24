@@ -88,7 +88,7 @@ class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     META -> res.getString(R.string.tag_type_meta)
                     else -> res.getString(R.string.tag_type_unknown)
                 }
-                count.text = data.post_count.toString()
+                count.text = data.postCount.toString()
             }
             is TagMoe -> {
                 tagName.text = data.name

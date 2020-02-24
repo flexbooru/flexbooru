@@ -23,19 +23,19 @@ data class TagDan(
     @SerializedName("name")
     val name: String,
     @SerializedName("post_count")
-    val post_count: Int,
+    val postCount: Int,
     @SerializedName("related_tags")
-    val related_tags: String,
+    val relatedTags: String,
     @SerializedName("related_tags_updated_at")
-    val related_tags_updated_at: String,
+    val relatedTagsUpdatedAt: String,
     @SerializedName("category")
     val category: Int,
     @SerializedName("created_at")
-    val created_at: String,
+    val createdAt: String,
     @SerializedName("updated_at")
-    val updated_at: String,
+    val updatedAt: String,
     @SerializedName("is_locked")
-    val is_locked: Boolean
+    val isLocked: Boolean
 ) : TagBase() {
     override fun getTagId(): Int = id
     override fun getTagName(): String = name

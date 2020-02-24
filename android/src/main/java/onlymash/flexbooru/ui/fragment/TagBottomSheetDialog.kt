@@ -53,11 +53,11 @@ class TagBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     is PostDan -> {
                         Bundle().apply {
                             putInt(POST_TYPE, Constants.TYPE_DANBOORU)
-                            putString(TAG_GENERAL_KEY, post.tag_string_general)
-                            putString(TAG_ARTIST_KEY, post.tag_string_artist)
-                            putString(TAG_COPYRIGHT_KEY, post.tag_string_copyright)
-                            putString(TAG_CHARACTER_KEY, post.tag_string_character)
-                            putString(TAG_META_KEY, post.tag_string_meta)
+                            putString(TAG_GENERAL_KEY, post.tagStringGeneral)
+                            putString(TAG_ARTIST_KEY, post.tagStringArtist)
+                            putString(TAG_COPYRIGHT_KEY, post.tagStringCopyright)
+                            putString(TAG_CHARACTER_KEY, post.tagStringCharacter)
+                            putString(TAG_META_KEY, post.tagStringMeta)
                         }
                     }
                     is PostMoe -> {
