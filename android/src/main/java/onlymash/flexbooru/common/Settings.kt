@@ -30,7 +30,11 @@ object Settings {
     const val DOWNLOAD_PATH_KEY = "settings_download_path"
     const val DOWNLOAD_PATH_TREE_ID_KEY = "settings_download_path_tree_id"
     const val DOWNLOAD_PATH_AUTHORITY_KEY = "settings_download_path_authority"
-    const val NIGHT_MODE_KEY = "settings_night_mode"
+    const val NIGHT_MODE_KEY = "settings_night"
+    const val NIGHT_MODE_ON = "on"
+    const val NIGHT_MODE_OFF = "off"
+    const val NIGHT_MODE_SYSTEM = "system"
+    const val NIGHT_MODE_BATTERY = "battery"
     const val THEME_KEY = "settings_theme"
     const val MUZEI_SIZE_KEY = "settings_muzei_size"
     const val POST_SIZE_SAMPLE = "sample"
@@ -97,16 +101,17 @@ object Settings {
         ) ?: POST_SIZE_LARGER
         set(value) = sp.edit().putString(MUZEI_SIZE_KEY, value).apply()
 
-    var isNightMode: Boolean
-        get() = sp.getBoolean(NIGHT_MODE_KEY, false)
-        set(value) = sp.edit().putBoolean(NIGHT_MODE_KEY, value).apply()
+    private var nightModeString: String
+        get() = sp.getString(NIGHT_MODE_KEY, NIGHT_MODE_SYSTEM) ?: NIGHT_MODE_SYSTEM
+        set(value) = sp.edit().putString(NIGHT_MODE_KEY, value).apply()
 
     @AppCompatDelegate.NightMode
     val nightMode: Int
-        get() = if (isNightMode) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
+        get() = when (nightModeString) {
+            NIGHT_MODE_ON -> AppCompatDelegate.MODE_NIGHT_YES
+            NIGHT_MODE_OFF -> AppCompatDelegate.MODE_NIGHT_NO
+            NIGHT_MODE_BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
 

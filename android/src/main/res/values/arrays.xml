@@ -15,6 +15,18 @@
   -->
 
 <resources>
+    <string-array name="settings_night_mode_entries">
+        <item>@string/settings_night_mode_on</item>
+        <item>@string/settings_night_mode_off</item>
+        <item>@string/settings_night_mode_system</item>
+        <item>@string/settings_night_mode_battery</item>
+    </string-array>
+    <string-array name="settings_night_mode_entries_values">
+        <item>on</item>
+        <item>off</item>
+        <item>system</item>
+        <item>battery</item>
+    </string-array>
     <string-array name="booru_type_entries">
         <item>@string/booru_type_danbooru</item>
         <item>@string/booru_type_moebooru</item>

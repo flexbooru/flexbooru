@@ -20,7 +20,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
@@ -30,7 +29,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.holder.StringHolder
-import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
@@ -64,13 +62,12 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val DRAWER_ITEM_ID_COMMENTS = 2L
         private const val DRAWER_ITEM_ID_TAG_BLACKLIST = 3L
         private const val DRAWER_ITEM_ID_MUZEI = 4L
-        private const val DRAWER_ITEM_ID_SETTINGS = 5L
-        private const val DRAWER_ITEM_ID_SAUCE_NAO = 6L
-        private const val DRAWER_ITEM_ID_WHAT_ANIME = 7L
-        private const val DRAWER_ITEM_ID_NIGHT_MODE = 8L
-        private const val DRAWER_ITEM_ID_ABOUT = 9L
-        private const val DRAWER_ITEM_ID_PURCHASE = 10L
-        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 8
+        private const val DRAWER_ITEM_ID_SAUCE_NAO = 5L
+        private const val DRAWER_ITEM_ID_WHAT_ANIME = 6L
+        private const val DRAWER_ITEM_ID_SETTINGS = 7L
+        private const val DRAWER_ITEM_ID_ABOUT = 8L
+        private const val DRAWER_ITEM_ID_PURCHASE = 9L
+        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 7
     }
     private lateinit var boorus: MutableList<Booru>
     private lateinit var users: MutableList<User>
@@ -155,15 +152,6 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     identifier = DRAWER_ITEM_ID_MUZEI
                 },
                 PrimaryDrawerItem().apply {
-                    name = StringHolder(R.string.title_settings)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_settings_outline_24dp))
-                    isSelectable = false
-                    isIconTinted = true
-                    identifier = DRAWER_ITEM_ID_SETTINGS
-                },
-                PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_sauce_nao)
                     icon = ImageHolder(AppCompatResources.getDrawable(
                         this@MainActivity,
@@ -183,23 +171,14 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             )
             stickyDrawerItems = arrayListOf(
-                SwitchDrawerItem().apply {
-                    name = StringHolder(R.string.title_night_mode)
-                    icon = ImageHolder(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_brightness_2_outline_24dp))
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_settings)
+                    icon = ImageHolder(AppCompatResources.getDrawable(
+                        this@MainActivity,
+                        R.drawable.ic_settings_outline_24dp))
                     isSelectable = false
                     isIconTinted = true
-                    identifier = DRAWER_ITEM_ID_NIGHT_MODE
-                    isChecked = Settings.isNightMode
-                    onCheckedChangeListener = object : OnCheckedChangeListener {
-                        override fun onCheckedChanged(
-                            drawerItem: IDrawerItem<*>,
-                            buttonView: CompoundButton,
-                            isChecked: Boolean
-                        ) {
-                            Settings.isNightMode = isChecked
-                            closeDrawer()
-                        }
-                    }
+                    identifier = DRAWER_ITEM_ID_SETTINGS
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_about)

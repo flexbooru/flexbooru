@@ -24,6 +24,15 @@
             app:title="@string/settings_display">
 
         <com.takisoft.preferencex.SimpleMenuPreference
+            app:entries="@array/settings_night_mode_entries"
+            app:entryValues="@array/settings_night_mode_entries_values"
+            app:defaultValue="system"
+            app:title="@string/settings_night_mode"
+            app:icon="@drawable/ic_brightness_2_outline_24dp"
+            app:key="settings_night"
+            app:useSimpleSummaryProvider="true"/>
+
+        <com.takisoft.preferencex.SimpleMenuPreference
                 app:key="settings_grid_width"
                 app:entries="@array/settings_grid_width_entries"
                 app:entryValues="@array/settings_grid_width_entries_values"
