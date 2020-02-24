@@ -21,7 +21,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.GravityCompat
@@ -583,9 +582,6 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 val booru = getCurrentBooru() ?: return
                 pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
                 pager_container.setCurrentItem(currentNavItem, false)
-            }
-            Settings.NIGHT_MODE_KEY -> {
-                AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
             }
             Settings.ORDER_SUCCESS_KEY -> {
                 if (Settings.isOrderSuccess) {

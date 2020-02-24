@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -54,6 +55,9 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
         when (key) {
             Settings.DOWNLOAD_PATH_KEY -> {
                 initPathSummary()
+            }
+            Settings.NIGHT_MODE_KEY -> {
+                AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
             }
         }
     }
