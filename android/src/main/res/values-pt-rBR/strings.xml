@@ -146,11 +146,11 @@
     <string name="account_comments">Comentários</string>
     <string name="account_config_msg_tip_empty">Nome de usuário ou senha/chave de Api não pode estar vazio.</string>
     <string name="account_recommended">Recomendado</string>
-    <string name="settings_night_mode">Night mode</string>
-    <string name="settings_night_mode_on">On</string>
-    <string name="settings_night_mode_off">Off</string>
-    <string name="settings_night_mode_system">Follow system</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
+    <string name="settings_night_mode">Modo Noturno</string>
+    <string name="settings_night_mode_on">Ligado</string>
+    <string name="settings_night_mode_off">Desligado</string>
+    <string name="settings_night_mode_system">Seguir sistema</string>
+    <string name="settings_night_mode_battery">Seguir economia de bateria</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Limite de página</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
