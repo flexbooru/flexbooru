@@ -92,9 +92,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
 
-    <style name="AppTheme.AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert"/>
-
-    <style name="AppTheme.AlertDialog.DayNight" parent="AppTheme.AlertDialog">
+    <style name="AppTheme.AlertDialog.DayNight" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.Button.TextButton.Dialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
@@ -136,6 +134,7 @@
     <style name="Widget.Button" parent="Widget.MaterialComponents.Button">
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="elevation">@dimen/elevation_size</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
     </style>
 
     <style name="Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">

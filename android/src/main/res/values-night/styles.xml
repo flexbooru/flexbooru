@@ -18,5 +18,4 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark"/>
 
-    <style name="AppTheme.AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert"/>
 </resources>
