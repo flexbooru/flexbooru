@@ -56,7 +56,7 @@ data class PostDan(
     val imageWidth: Int,
     @ColumnInfo(name = "file_ext")
     @SerializedName("file_ext")
-    val fileExt: String,
+    val fileExt: String?,
     @ColumnInfo(name = "file_size")
     @SerializedName("file_size")
     val fileSize: Int,
