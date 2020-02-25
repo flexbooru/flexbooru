@@ -38,19 +38,19 @@ data class PostGel(
     val score: String,
     @ColumnInfo(name = "file_url")
     @Attribute(name = "file_url")
-    val file_url: String,
+    val fileUrl: String,
     @ColumnInfo(name = "sample_url")
     @Attribute(name = "sample_url")
-    val sample_url: String,
+    val sampleUrlString: String,
     @ColumnInfo(name = "sample_width")
     @Attribute(name = "sample_width")
-    val sample_width: Int,
+    val sampleWidth: Int,
     @ColumnInfo(name = "sample_height")
     @Attribute(name = "sample_height")
-    val sample_height: Int,
+    val sampleHeight: Int,
     @ColumnInfo(name = "preview_url")
     @Attribute(name = "preview_url")
-    val preview_url: String,
+    val previewUrlString: String,
     @ColumnInfo(name = "rating")
     @Attribute(name = "rating")
     val rating: String,
@@ -68,13 +68,13 @@ data class PostGel(
     val md5: String,
     @ColumnInfo(name = "creator_id")
     @Attribute(name = "creator_id")
-    val creator_id: Int,
+    val creatorId: Int,
     @ColumnInfo(name = "has_children")
     @Attribute(name = "has_children")
-    val has_children: Boolean,
+    val hasChildren: Boolean,
     @ColumnInfo(name = "created_at")
     @Attribute(name = "created_at")
-    val created_at:	String,
+    val createdAt:	String,
     @ColumnInfo(name = "status")
     @Attribute(name = "status")
     val status: String,
@@ -83,18 +83,18 @@ data class PostGel(
     val source: String,
     @ColumnInfo(name = "has_notes")
     @Attribute(name = "has_notes")
-    val has_notes:	Boolean,
+    val hasNotes:	Boolean,
     @ColumnInfo(name = "has_comments")
     @Attribute(name = "has_comments")
-    val has_comments: Boolean,
+    val hasComments: Boolean,
     @ColumnInfo(name = "preview_width")
     @Attribute(name = "preview_width")
-    val preview_width: Int,
+    val previewWidth: Int,
     @ColumnInfo(name = "preview_height")
     @Attribute(name = "preview_height")
-    val preview_height: Int
+    val previewHeight: Int
 ) : PostBase() {
-    override fun getSampleSize(): String = "$sample_width x $sample_height"
+    override fun getSampleSize(): String = "$sampleWidth x $sampleHeight"
 
     override fun getLargerSize(): String = getSampleSize()
 
@@ -110,16 +110,16 @@ data class PostGel(
 
     override fun getPostRating(): String = rating
 
-    override fun getPreviewUrl(): String = checkUrl(preview_url)
+    override fun getPreviewUrl(): String = checkUrl(previewUrlString)
 
-    override fun getSampleUrl(): String = checkUrl(sample_url)
+    override fun getSampleUrl(): String = checkUrl(sampleUrlString)
 
     override fun getLargerUrl(): String = getSampleUrl()
 
-    override fun getOriginUrl(): String = checkUrl(file_url)
+    override fun getOriginUrl(): String = checkUrl(fileUrl)
 
     override fun getCreatedDate(): String =
-        SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(created_at)?.time?.formatDate().toString()
+        SimpleDateFormat(PATTERN, Locale.ENGLISH).parse(createdAt)?.time?.formatDate().toString()
 
     override fun getUpdatedDate(): String =
         (change * 1000L).formatDate().toString()

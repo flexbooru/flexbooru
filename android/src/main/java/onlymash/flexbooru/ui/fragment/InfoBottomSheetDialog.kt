@@ -115,7 +115,7 @@ class InfoBottomSheetDialog : TransparentBottomSheetDialogFragment() {
                     is PostGel -> bundle.apply {
                         putInt(POST_TYPE_KEY, Constants.TYPE_GELBOORU)
                         putString(USER_NAME_KEY, "")
-                        putInt(USER_ID_KEY, post.creator_id)
+                        putInt(USER_ID_KEY, post.creatorId)
                         putString(DATE_KEY, post.getCreatedDate())
                         putString(SOURCE_KEY, post.source)
                         putString(RATING_KEY, post.rating)
