@@ -29,8 +29,8 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.entity.post.*
 import onlymash.flexbooru.glide.GlideRequests
 
-private const val MAX_ASPECT_RATIO = 18.0 / 9.0
-private const val MIN_ASPECT_RATIO = 9.0 / 18.0
+private const val MAX_ASPECT_RATIO = 21.0 / 9.0
+private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 
 class PostViewHolder(itemView: View,
                      showInfoBar: Boolean,
@@ -82,21 +82,13 @@ class PostViewHolder(itemView: View,
             "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
             else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
         }
-        val lp = preview.layoutParams as ConstraintLayout.LayoutParams
-        val ratio = post.getPostWidth().toFloat()/post.getPostHeight().toFloat()
-        when {
-            ratio > MAX_ASPECT_RATIO -> {
-                lp.dimensionRatio = "H, 2:1"
+        val ratio = post.getPostWidth().toFloat() / post.getPostHeight().toFloat()
+        (preview.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
+            when {
+                ratio > MAX_ASPECT_RATIO -> "H, 21:9"
+                ratio < MIN_ASPECT_RATIO -> "H, 9:21"
+                else -> "H, ${post.getPostWidth()}:${post.getPostHeight()}"
             }
-            ratio < MIN_ASPECT_RATIO -> {
-                lp.dimensionRatio = "H, 1:2"
-            }
-            else -> {
-                lp.dimensionRatio = "H, ${post.getPostWidth()}:${post.getPostHeight()}"
-            }
-        }
-        preview.layoutParams = lp
-        preview.layout(0,0,0,0)
         glide.load(post.getPreviewUrl())
             .placeholder(placeholderDrawable)
             .into(preview)

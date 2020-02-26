@@ -31,7 +31,7 @@
                 android:transitionName="post_img"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:contentDescription="@null"
                 app:layout_constraintDimensionRatio="H, 3:4"
                 app:layout_constraintTop_toTopOf="parent"
