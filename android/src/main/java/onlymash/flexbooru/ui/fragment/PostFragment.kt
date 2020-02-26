@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
@@ -461,9 +462,16 @@ class PostFragment : ListFragment(),
             retryCallback = { retry() }
         )
         list.apply {
-            setHasFixedSize(true)
             layoutManager = staggeredGridLayoutManager
             adapter = postAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        invalidateItemDecorations()
+                    }
+                }
+            })
         }
         val orders =
             if (booruType == Constants.TYPE_SANKAKU)
