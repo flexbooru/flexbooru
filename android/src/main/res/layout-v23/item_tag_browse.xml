@@ -20,9 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:foreground="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        android:foreground="@drawable/background_selectable_item_black">
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/dot"
             android:layout_width="wrap_content"
@@ -48,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:foreground="@drawable/background_selectable_item_black_borderless"
             android:contentDescription="@string/browse_tag_exclude"
             android:focusable="true"
             android:nextFocusLeft="@+id/container"
@@ -61,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:foreground="@drawable/background_selectable_item_black_borderless"
             android:contentDescription="@string/browse_tag_include"
             android:focusable="true"
             android:padding="?attr/listPreferredItemPaddingStart"
