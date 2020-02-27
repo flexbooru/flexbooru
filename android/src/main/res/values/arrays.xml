@@ -103,6 +103,24 @@
         <item>fav</item>
         <item>wide</item>
         <item>nonwide</item>
+        <item>random</item>
+        <item>score</item>
+        <item>score_asc</item>
+        <item>mpixels</item>
+        <item>mpixels_asc</item>
+        <item>landscape</item>
+        <item>portrait</item>
+        <item>vote</item>
+        <item>favcount</item>
+    </string-array>
+    <string-array name="filter_order_danbooru">
+        <item>id</item>
+        <item>id_desc</item>
+        <item>fav</item>
+        <item>wide</item>
+        <item>nonwide</item>
+        <item>rank</item>
+        <item>random</item>
         <item>score</item>
         <item>score_asc</item>
         <item>mpixels</item>

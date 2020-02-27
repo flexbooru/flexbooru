@@ -473,11 +473,11 @@ class PostFragment : ListFragment(),
                 }
             })
         }
-        val orders =
-            if (booruType == Constants.TYPE_SANKAKU)
-                resources.getStringArray(R.array.filter_order_sankaku)
-            else
-                resources.getStringArray(R.array.filter_order)
+        val orders = resources.getStringArray(when(booruType) {
+            Constants.TYPE_DANBOORU -> R.array.filter_order_danbooru
+            Constants.TYPE_SANKAKU -> R.array.filter_order_sankaku
+            else -> R.array.filter_order
+        })
         val ratings = resources.getStringArray(R.array.filter_rating)
         val thresholds =
             if (booruType == Constants.TYPE_SANKAKU)
