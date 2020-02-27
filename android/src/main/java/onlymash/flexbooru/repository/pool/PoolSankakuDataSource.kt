@@ -42,8 +42,8 @@ class PoolSankakuDataSource(private val sankakuApi: SankakuApi,
             it.keyword = keyword
         }
         if (data.size < search.limit) {
-            callback.onResult(data, null, null)
             onEnd()
+            callback.onResult(data, null, null)
         } else {
             callback.onResult(data, null, 2)
         }
@@ -69,8 +69,8 @@ class PoolSankakuDataSource(private val sankakuApi: SankakuApi,
                         }
                         loadAfterOnSuccess()
                         if (data.size < search.limit) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }

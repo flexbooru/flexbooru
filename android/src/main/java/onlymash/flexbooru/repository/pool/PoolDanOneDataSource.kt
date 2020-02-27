@@ -45,8 +45,8 @@ class PoolDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
             it.keyword = keyword
         }
         if (data.size < PAGE_SIZE) {
-            callback.onResult(data, null, null)
             onEnd()
+            callback.onResult(data, null, null)
         } else {
             callback.onResult(data, null, 2)
         }
@@ -72,8 +72,8 @@ class PoolDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
                         }
                         loadAfterOnSuccess()
                         if (data.size < PAGE_SIZE) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }

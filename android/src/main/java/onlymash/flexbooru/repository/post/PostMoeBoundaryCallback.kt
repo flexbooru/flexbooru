@@ -68,10 +68,10 @@ class PostMoeBoundaryCallback(
 
     private suspend fun insertItemsIntoDb(response: Response<MutableList<PostMoe>>, it: PagingRequestHelper.Request.Callback) {
         withContext(Dispatchers.IO) {
+            it.recordSuccess()
             val data = response.body()
             lastResponseSize = data?.size ?: 0
             handleResponse(search, data)
-            it.recordSuccess()
         }
     }
 

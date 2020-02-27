@@ -32,8 +32,8 @@ class PopularDanOneBoundaryCallback(
         response: Response<MutableList<PostDanOne>>,
         it: PagingRequestHelper.Request.Callback) {
         withContext(Dispatchers.IO) {
-            handleResponse(search, response.body())
             it.recordSuccess()
+            handleResponse(search, response.body())
         }
     }
 

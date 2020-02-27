@@ -37,8 +37,8 @@ class TagDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
         val response =  request.execute()
         val data = response.body() ?: mutableListOf()
         if (data.size < search.limit) {
-            callback.onResult(data, null, null)
             onEnd()
+            callback.onResult(data, null, null)
         } else {
             callback.onResult(data, null, 2)
         }
@@ -57,8 +57,8 @@ class TagDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
                         val data = response.body() ?: mutableListOf()
                         loadAfterOnSuccess()
                         if (data.size < search.limit) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }

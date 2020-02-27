@@ -65,8 +65,8 @@ class ArtistMoeDataSource(private val moebooruApi: MoebooruApi,
                         }
                         loadAfterOnSuccess()
                         if (data.size < 25) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }

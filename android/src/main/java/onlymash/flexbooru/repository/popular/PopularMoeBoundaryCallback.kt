@@ -32,8 +32,8 @@ class PopularMoeBoundaryCallback(
         response: Response<MutableList<PostMoe>>,
         it: PagingRequestHelper.Request.Callback) {
         withContext(Dispatchers.IO) {
-            handleResponse(search, response.body())
             it.recordSuccess()
+            handleResponse(search, response.body())
         }
     }
 

@@ -44,8 +44,8 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
             it.keyword = keyword
         }
         if (data.size < pageSize) {
-            callback.onResult(data, null, null)
             onEnd()
+            callback.onResult(data, null, null)
         } else {
             callback.onResult(data, null, 2)
         }
@@ -71,8 +71,8 @@ class PoolMoeDataSource(private val moebooruApi: MoebooruApi,
                         }
                         loadAfterOnSuccess()
                         if (data.size < pageSize) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }

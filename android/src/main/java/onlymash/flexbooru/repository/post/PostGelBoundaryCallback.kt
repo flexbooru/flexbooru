@@ -60,10 +60,10 @@ class PostGelBoundaryCallback(
 
     private suspend fun insertItemsIntoDb(response: Response<PostGelResponse>, it: PagingRequestHelper.Request.Callback) {
         withContext(Dispatchers.IO) {
+            it.recordSuccess()
             val data = response.body()?.posts
             lastResponseSize = data?.size ?: 0
             handleResponse(search, data, tagBlacklists)
-            it.recordSuccess()
         }
     }
 

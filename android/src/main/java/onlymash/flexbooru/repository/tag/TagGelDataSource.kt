@@ -38,8 +38,8 @@ class TagGelDataSource(private val gelbooruApi: GelbooruApi,
         val response =  request.execute()
         val data = response.body()?.tags ?: mutableListOf()
         if (data.size < search.limit) {
-            callback.onResult(data, null, null)
             onEnd()
+            callback.onResult(data, null, null)
         } else {
             callback.onResult(data, null, 1)
         }
@@ -58,8 +58,8 @@ class TagGelDataSource(private val gelbooruApi: GelbooruApi,
                         val data = response.body()?.tags ?: mutableListOf()
                         loadAfterOnSuccess()
                         if (data.size < search.limit) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }

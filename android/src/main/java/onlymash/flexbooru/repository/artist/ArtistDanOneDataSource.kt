@@ -63,8 +63,8 @@ class ArtistDanOneDataSource(private val danbooruOneApi: DanbooruOneApi,
                         }
                         loadAfterOnSuccess()
                         if (data.size < 25) {
-                            callback.onResult(data, null)
                             onEnd()
+                            callback.onResult(data, null)
                         } else {
                             callback.onResult(data, page + 1)
                         }
