@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -232,6 +233,7 @@ class CommentActivity : BaseActivity(), KodeinAware {
         list.apply {
             layoutManager = LinearLayoutManager(this@CommentActivity, RecyclerView.VERTICAL, false)
             adapter = commentAdapter
+            updatePadding(top = 0)
         }
         swipe_refresh.setColorSchemeResources(
             R.color.blue,
