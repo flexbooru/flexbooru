@@ -6,6 +6,7 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import onlymash.flexbooru.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.saucenao.api.SauceNaoApiService
 import org.kodein.di.Kodein
@@ -19,7 +20,16 @@ val kodeinSauceNao = Kodein {
     bind<HttpClient>() with provider {
         HttpClient {
             install(JsonFeature) {
-                serializer = KotlinxSerializer(Json.nonstrict)
+                serializer = KotlinxSerializer(
+                    Json(
+                        JsonConfiguration(
+                            isLenient = true,
+                            ignoreUnknownKeys = true,
+                            serializeSpecialFloatingPointValues = true,
+                            useArrayPolymorphism = true
+                        )
+                    )
+                )
             }
             install(HttpCallValidator)
         }
