@@ -26,8 +26,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.core.net.toUri
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -53,37 +52,47 @@ import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.util.concurrent.Executor
 
-class BrowsePagerAdapter(private val glideRequests: GlideRequests,
-                         private val picasso: Picasso,
-                         private val onDismissListener: DismissFrameLayout.OnDismissListener,
-                         private val pageType: Int,
-                         private val ioExecutor: Executor): PagerAdapter() {
+class BrowseAdapter(private val glideRequests: GlideRequests,
+                    private val picasso: Picasso,
+                    private val onDismissListener: DismissFrameLayout.OnDismissListener,
+                    private val pageType: Int,
+                    private val ioExecutor: Executor) : RecyclerView.Adapter<BrowseAdapter.BrowseViewHolder>() {
 
     private val size = Settings.browseSize
     private var posts: MutableList<PostBase> = mutableListOf()
 
-    @Suppress("UNCHECKED_CAST")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrowseViewHolder =
+        BrowseViewHolder(DismissFrameLayout(parent.context).apply {
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        })
+
+    private var photoViewListener: PhotoViewListener? = null
+
+    fun setPhotoViewListener(listener: PhotoViewListener) {
+        photoViewListener = listener
+    }
+
+    interface PhotoViewListener {
+        fun onClickPhotoView()
+    }
+
     fun updateData(posts: MutableList<PostBase>) {
         this.posts = posts
         notifyDataSetChanged()
     }
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object`
-    }
-
-    override fun getCount(): Int = posts.size
 
     @SuppressLint("InflateParams")
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val layout = DismissFrameLayout(container.context).apply {
+    override fun onBindViewHolder(holder: BrowseViewHolder, position: Int) {
+        val layout = holder.itemView as DismissFrameLayout
+        layout.apply {
             setDismissListener(onDismissListener)
-            layoutParams = ViewPager.LayoutParams()
+            removeAllViews()
             tag = position
         }
         val post = posts[position]
         val tranName = when (pageType) {
-            Constants.PAGE_TYPE_POST -> container.context.getString(R.string.post_transition_name, post.getPostId())
-            Constants.PAGE_TYPE_POPULAR -> container.context.getString(R.string.post_popular_transition_name, post.getPostId())
+            Constants.PAGE_TYPE_POST -> layout.context.getString(R.string.post_transition_name, post.getPostId())
+            Constants.PAGE_TYPE_POPULAR -> layout.context.getString(R.string.post_popular_transition_name, post.getPostId())
             else -> throw IllegalStateException("unknown post type $pageType")
         }
         val previewUrl = post.getPreviewUrl()
@@ -95,7 +104,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
         if (url.isNotEmpty()) {
             when {
                 url.isStillImage() -> {
-                    val stillView = SubsamplingScaleImageView(container.context).apply {
+                    val stillView = SubsamplingScaleImageView(layout.context).apply {
                         layoutParams = ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT)
@@ -116,7 +125,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             0f, 0f, 0f, 1f, 0f  // A
                         ))
                     }
-                    val progressBar = ProgressBar(container.context).apply {
+                    val progressBar = ProgressBar(layout.context).apply {
                         layoutParams = FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -147,7 +156,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                         })
                 }
                 url.isGifImage() -> {
-                    val gifView = PhotoView(container.context).apply {
+                    val gifView = PhotoView(layout.context).apply {
                         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                         scaleType = ImageView.ScaleType.FIT_CENTER
                         transitionName = tranName
@@ -164,7 +173,7 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                             0f, 0f, 0f, 1f, 0f  // A
                         ))
                     }
-                    val progressBar = ProgressBar(container.context).apply {
+                    val progressBar = ProgressBar(layout.context).apply {
                         layoutParams = FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -211,28 +220,18 @@ class BrowsePagerAdapter(private val glideRequests: GlideRequests,
                         })
                 }
                 else -> {
-                    val playerView = LayoutInflater.from(container.context).inflate(R.layout.exoplayer, null) as PlayerView
+                    val playerView = LayoutInflater.from(layout.context).inflate(R.layout.exoplayer, null) as PlayerView
                     playerView.tag = String.format("player_%d", position)
                     playerView.transitionName = tranName
                     layout.addView(playerView)
                 }
             }
         }
-        container.addView(layout)
-        return layout
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as View)
-    }
+    override fun getItemCount(): Int = posts.size
 
-    private var photoViewListener: PhotoViewListener? = null
+    inner class BrowseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun setPhotoViewListener(listener: PhotoViewListener) {
-        photoViewListener = listener
-    }
-
-    interface PhotoViewListener {
-        fun onClickPhotoView()
     }
 }

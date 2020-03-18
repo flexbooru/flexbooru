@@ -24,11 +24,16 @@ import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
+import kotlin.math.PI
+import kotlin.math.atan2
 import kotlin.math.max
 
 class DismissFrameLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
+
+    private var lastX = 0f
+    private var lastY = 0f
 
     private val dragHelper: ViewDragHelper
     private val minimumFlingVelocity: Int
@@ -37,6 +42,24 @@ class DismissFrameLayout @JvmOverloads constructor(
     init {
         dragHelper = ViewDragHelper.create(this, 1f / 8f, ViewDragCallback())
         minimumFlingVelocity = ViewConfiguration.get(context).scaledMinimumFlingVelocity
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        when (ev?.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                lastX = ev.x
+                lastY = ev.y
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_MOVE -> {
+                val dx = ev.x - lastX
+                val dy = ev.y - lastY
+                val angle = atan2(dy, dx) * 180 / PI
+                if (angle in 20.0..160.0) {
+                    parent.requestDisallowInterceptTouchEvent(true)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =

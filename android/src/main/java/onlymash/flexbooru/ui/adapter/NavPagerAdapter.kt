@@ -17,17 +17,19 @@ package onlymash.flexbooru.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import onlymash.flexbooru.entity.common.Booru
 import onlymash.flexbooru.entity.common.User
 import onlymash.flexbooru.ui.fragment.*
 
 class NavPagerAdapter(
     fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
     private val booru: Booru, private val user: User?
-) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItem(position: Int): Fragment {
+    override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> PostFragment.newInstance(booru = booru, user = user, postType = PostFragment.POST_ALL)
             1 -> PopularFragment.newInstance(booru = booru, user = user)
@@ -37,6 +39,5 @@ class NavPagerAdapter(
         }
     }
 
-    override fun getCount(): Int = 5
-
+    override fun getItemCount(): Int = 5
 }

@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.BrowseActivity">
 
-    <onlymash.flexbooru.widget.HackyViewPager
+    <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager_browse"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

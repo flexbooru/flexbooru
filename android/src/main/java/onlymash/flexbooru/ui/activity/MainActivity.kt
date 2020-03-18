@@ -24,7 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.GravityCompat
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.holder.StringHolder
@@ -102,7 +102,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                         Settings.activeBooruUid = uid
                         boorus.forEach {
                             if (it.uid == uid) {
-                                pager_container.adapter = NavPagerAdapter(supportFragmentManager, it, getCurrentUser())
+                                pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, it, getCurrentUser())
                                 pager_container.setCurrentItem(currentNavItem, false)
                                 return@forEach
                             }
@@ -248,7 +248,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             )
         }
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        pager_container.addOnPageChangeListener(pageChangeListener)
+        pager_container.registerOnPageChangeCallback(pageChangeCallback)
         if (!BooruManager.isNotEmpty()) {
             BooruManager.createBooru(
                 Booru(
@@ -337,7 +337,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             booru = boorus[i]
         }
         headerView.setActiveProfile(uid)
-        pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+        pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
     }
 
     private val booruListener = object : BooruManager.Listener {
@@ -367,7 +367,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     val booru = boorus[0]
                     Settings.activeBooruUid = booru.uid
                     headerView.setActiveProfile(booru.uid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
                 }
             } else {
                 Settings.activeBooruUid = -1
@@ -384,7 +384,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     it.hashSalt = booru.hashSalt
                     it.type = booru.type
                     if (Settings.activeBooruUid == booru.uid) {
-                        pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+                        pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
                     }
                     return@forEach
                 }
@@ -448,47 +448,38 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private val pageChangeListener =
-        object : ViewPager.OnPageChangeListener {
-
-            override fun onPageScrollStateChanged(state: Int) {
-//                sharedElement = null
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> {
-                        if (navigation.selectedItemId != R.id.navigation_posts) {
-                            navigation.selectedItemId = R.id.navigation_posts
-                        }
+    private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            when (position) {
+                0 -> {
+                    if (navigation.selectedItemId != R.id.navigation_posts) {
+                        navigation.selectedItemId = R.id.navigation_posts
                     }
-                    1 -> {
-                        if (navigation.selectedItemId != R.id.navigation_popular) {
-                            navigation.selectedItemId = R.id.navigation_popular
-                        }
+                }
+                1 -> {
+                    if (navigation.selectedItemId != R.id.navigation_popular) {
+                        navigation.selectedItemId = R.id.navigation_popular
                     }
-                    2 -> {
-                        if (navigation.selectedItemId != R.id.navigation_pools) {
-                            navigation.selectedItemId = R.id.navigation_pools
-                        }
+                }
+                2 -> {
+                    if (navigation.selectedItemId != R.id.navigation_pools) {
+                        navigation.selectedItemId = R.id.navigation_pools
                     }
-                    3 -> {
-                        if (navigation.selectedItemId != R.id.navigation_tags) {
-                            navigation.selectedItemId = R.id.navigation_tags
-                        }
+                }
+                3 -> {
+                    if (navigation.selectedItemId != R.id.navigation_tags) {
+                        navigation.selectedItemId = R.id.navigation_tags
                     }
-                    else -> {
-                        if (navigation.selectedItemId != R.id.navigation_artists) {
-                            navigation.selectedItemId = R.id.navigation_artists
-                        }
+                }
+                else -> {
+                    if (navigation.selectedItemId != R.id.navigation_artists) {
+                        navigation.selectedItemId = R.id.navigation_artists
                     }
                 }
             }
         }
+    }
 
     private fun onNavPosition(position: Int) {
         if (pager_container.currentItem != position) {
@@ -544,6 +535,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onDestroy() {
         sp.unregisterOnSharedPreferenceChangeListener(this)
+        pager_container.unregisterOnPageChangeCallback(pageChangeCallback)
         BooruManager.listeners.remove(booruListener)
         UserManager.listeners.remove(userListener)
         super.onDestroy()
@@ -580,7 +572,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             Settings.GRID_WIDTH_KEY,
             Settings.SHOW_INFO_BAR_KEY -> {
                 val booru = getCurrentBooru() ?: return
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, booru, getCurrentUser())
+                pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
                 pager_container.setCurrentItem(currentNavItem, false)
             }
             Settings.ORDER_SUCCESS_KEY -> {

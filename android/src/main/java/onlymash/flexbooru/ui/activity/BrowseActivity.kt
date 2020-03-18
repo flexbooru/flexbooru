@@ -35,6 +35,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.*
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
@@ -59,7 +60,7 @@ import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.repository.browse.PostLoaderRepository
 import onlymash.flexbooru.repository.browse.PostLoaderRepositoryImpl
 import onlymash.flexbooru.repository.favorite.VoteRepositoryImpl
-import onlymash.flexbooru.ui.adapter.BrowsePagerAdapter
+import onlymash.flexbooru.ui.adapter.BrowseAdapter
 import onlymash.flexbooru.ui.fragment.InfoBottomSheetDialog
 import onlymash.flexbooru.ui.fragment.TagBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.FavPostViewModel
@@ -146,7 +147,6 @@ class BrowseActivity : BaseActivity() {
         }
         toolbar.title = String.format(getString(R.string.browse_toolbar_title_and_id), posts[position].getPostId())
         pagerAdapter.updateData(posts)
-        pager_browse.adapter = pagerAdapter
         pager_browse.setCurrentItem(if (currentPosition >= 0) currentPosition else position, false)
         if (canTransition) startPostponedEnterTransition()
         if (url.isNotEmpty() && !url.isImage()) {
@@ -167,17 +167,12 @@ class BrowseActivity : BaseActivity() {
     private var currentVideoUri: Uri? = null
 
     private lateinit var glide: GlideRequests
-    private lateinit var pagerAdapter: BrowsePagerAdapter
+    private lateinit var pagerAdapter: BrowseAdapter
 
-    private val pagerChangeListener = object : ViewPager.OnPageChangeListener {
+    private val pagerChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
             currentPlayerView?.onPause()
         }
-
-        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-        }
-
         override fun onPageSelected(position: Int) {
             var url = ""
             var id = -1
@@ -211,7 +206,7 @@ class BrowseActivity : BaseActivity() {
         }
     }
 
-    private val photoViewListener = object : BrowsePagerAdapter.PhotoViewListener {
+    private val photoViewListener = object : BrowseAdapter.PhotoViewListener {
         override fun onClickPhotoView() {
             setBg()
         }
@@ -354,14 +349,15 @@ class BrowseActivity : BaseActivity() {
             initFavViewModel()
         }
         glide = GlideApp.with(this)
-        pagerAdapter = BrowsePagerAdapter(
+        pagerAdapter = BrowseAdapter(
             glideRequests = glide,
             picasso = Picasso.Builder(this).build(),
             onDismissListener = onDismissListener,
             pageType = pageType,
             ioExecutor = ioExecutor)
         pagerAdapter.setPhotoViewListener(photoViewListener)
-        pager_browse.addOnPageChangeListener(pagerChangeListener)
+        pager_browse.adapter = pagerAdapter
+        pager_browse.registerOnPageChangeCallback(pagerChangeCallback)
         lifecycleScope.launch {
             val data = withContext(Dispatchers.IO) {
                 postLoader.loadPosts(
