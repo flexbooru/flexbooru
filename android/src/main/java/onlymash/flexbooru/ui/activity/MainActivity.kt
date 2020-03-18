@@ -17,7 +17,9 @@ package onlymash.flexbooru.ui.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -81,6 +83,13 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_Main)
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val windowHeight = resources.displayMetrics.heightPixels
+            val gestureWidth = resources.getDimensionPixelSize(R.dimen.gesture_exclusion_width)
+            val gestureHeight = resources.getDimensionPixelSize(R.dimen.gesture_exclusion_height)
+            val gestureOffset = resources.getDimensionPixelSize(R.dimen.gesture_exclusion_offset)
+            window.decorView.systemGestureExclusionRects = listOf(Rect(0, windowHeight - gestureHeight - gestureOffset, gestureWidth, windowHeight - gestureOffset))
+        }
         setContentView(R.layout.activity_main)
         sp.registerOnSharedPreferenceChangeListener(this)
         profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
