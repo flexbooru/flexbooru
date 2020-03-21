@@ -44,7 +44,7 @@ import java.io.InputStream
 class DownloadWorker(
     context: Context,
     workerParameters: WorkerParameters
-) : CoroutineWorker(context, workerParameters) {
+) : Worker(context, workerParameters) {
 
     companion object {
         private const val URL_KEY = "url"
@@ -169,7 +169,7 @@ class DownloadWorker(
         }
     }
 
-    override suspend fun doWork(): Result {
+    override fun doWork(): Result {
         when (inputData.getString(TYPE_KEY)) {
             TYPE_POST -> {
                 val url = inputData.getString(URL_KEY)

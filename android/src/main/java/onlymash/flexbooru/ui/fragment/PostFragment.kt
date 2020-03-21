@@ -453,6 +453,7 @@ class PostFragment : ListFragment(),
             columnSize = resources.gridWidth(),
             orientation = StaggeredGridLayoutManager.VERTICAL).apply {
                 setStrategy(AutoStaggeredGridLayoutManager.STRATEGY_SUITABLE_SIZE)
+                gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
             }
         postAdapter = PostAdapter(
             glide = glide,
