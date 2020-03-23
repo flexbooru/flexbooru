@@ -146,11 +146,11 @@
     <string name="account_comments">留言</string>
     <string name="account_config_msg_tip_empty">使用者名稱或密碼/API Key 不能為空白。</string>
     <string name="account_recommended">推薦</string>
-    <string name="settings_night_mode">Night mode</string>
-    <string name="settings_night_mode_on">On</string>
-    <string name="settings_night_mode_off">Off</string>
-    <string name="settings_night_mode_system">Follow system</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
+    <string name="settings_night_mode">夜間模式</string>
+    <string name="settings_night_mode_on">開啟</string>
+    <string name="settings_night_mode_off">關閉</string>
+    <string name="settings_night_mode_system">跟隨系統</string>
+    <string name="settings_night_mode_battery">跟隨省電模式</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每頁限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
