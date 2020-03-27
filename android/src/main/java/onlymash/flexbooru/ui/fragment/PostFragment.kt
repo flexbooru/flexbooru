@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
+import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.PAGE_TYPE
 import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.common.Settings.gridWidthResId
@@ -154,5 +155,9 @@ class PostFragment : ListFragment() {
         val outMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(outMetrics)
         return outMetrics.widthPixels
+    }
+
+    override fun getSearchBarHint(): CharSequence {
+        return getString(R.string.search_bar_hint_search_posts)
     }
 }

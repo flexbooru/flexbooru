@@ -43,6 +43,7 @@
         app:elevation="0dp">
 
         <onlymash.flexbooru.widget.SearchBar
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_bar_height"
             android:touchscreenBlocksFocus="false"

@@ -13,24 +13,24 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.pool
+package onlymash.flexbooru.data.repository.tag
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import onlymash.flexbooru.api.SankakuApi
-import onlymash.flexbooru.entity.pool.PoolSankaku
-import onlymash.flexbooru.entity.Search
-import java.util.concurrent.Executor
+import kotlinx.coroutines.CoroutineScope
+import onlymash.flexbooru.data.action.ActionTag
+import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.model.common.Tag
 
-//sankaku pools data source factory
-class PoolSankakuDataSourceFactory(
-    private val sankakuApi: SankakuApi,
-    private val search: Search,
-    private val retryExecutor: Executor) : DataSource.Factory<Int, PoolSankaku>() {
-    //source livedata
-    val sourceLiveData = MutableLiveData<PoolSankakuDataSource>()
-    override fun create(): DataSource<Int, PoolSankaku> {
-        val source = PoolSankakuDataSource(sankakuApi, search, retryExecutor)
+class TagDataSourceFactory(
+    private val action: ActionTag,
+    private val booruApis: BooruApis,
+    private val scope: CoroutineScope) : DataSource.Factory<Int, Tag>() {
+
+    val sourceLiveData = MutableLiveData<TagDataSource>()
+
+    override fun create(): DataSource<Int, Tag> {
+        val source = TagDataSource(action, booruApis, scope)
         sourceLiveData.postValue(source)
         return source
     }

@@ -13,24 +13,24 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.repository.pool
+package onlymash.flexbooru.data.repository.comment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.entity.pool.PoolMoe
-import onlymash.flexbooru.entity.Search
-import java.util.concurrent.Executor
+import kotlinx.coroutines.CoroutineScope
+import onlymash.flexbooru.data.action.ActionComment
+import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.model.common.Comment
 
-//moebooru pools data source factory
-class PoolMoeDataSourceFactory(
-    private val moebooruApi: MoebooruApi,
-    private val search: Search,
-    private val retryExecutor: Executor) : DataSource.Factory<Int, PoolMoe>() {
-    //source livedata
-    val sourceLiveData = MutableLiveData<PoolMoeDataSource>()
-    override fun create(): DataSource<Int, PoolMoe> {
-        val source = PoolMoeDataSource(moebooruApi, search, retryExecutor)
+class CommentDataSourceFactory(
+    private val action: ActionComment,
+    private val booruApis: BooruApis,
+    private val scope: CoroutineScope) : DataSource.Factory<Int, Comment>() {
+
+    val sourceLiveData = MutableLiveData<CommentDataSource>()
+
+    override fun create(): DataSource<Int, Comment> {
+        val source = CommentDataSource(action, booruApis, scope)
         sourceLiveData.postValue(source)
         return source
     }
