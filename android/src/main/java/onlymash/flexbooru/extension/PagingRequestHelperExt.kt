@@ -18,7 +18,7 @@ package onlymash.flexbooru.extension
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
-import onlymash.flexbooru.repository.NetworkState
+import onlymash.flexbooru.data.repository.NetworkState
 
 private fun getErrorMessage(report: PagingRequestHelper.StatusReport): String {
     return PagingRequestHelper.RequestType.values().mapNotNull {

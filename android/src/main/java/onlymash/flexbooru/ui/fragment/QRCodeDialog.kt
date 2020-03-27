@@ -25,18 +25,18 @@ import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import net.glxn.qrgen.android.QRCode
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Keys.BOORU_URL
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ProfilesFragment.kt
 class QRCodeDialog() : DialogFragment()  {
 
     @SuppressLint("ValidFragment")
     constructor(url: String) : this() {
-        arguments = bundleOf(Pair(Constants.URL_KEY, url))
+        arguments = bundleOf(Pair(BOORU_URL, url))
     }
 
-    private val url get() = arguments?.getString(Constants.URL_KEY)
+    private val url get() = arguments?.getString(BOORU_URL)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val image = ImageView(context)

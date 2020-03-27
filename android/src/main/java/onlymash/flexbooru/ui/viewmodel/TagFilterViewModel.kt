@@ -19,20 +19,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import onlymash.flexbooru.entity.common.TagFilter
-import onlymash.flexbooru.repository.tagfilter.TagFilterRepository
+import onlymash.flexbooru.data.model.common.TagFilter
+import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepository
 
 class TagFilterViewModel(private val repo: TagFilterRepository) : ScopeViewModel() {
 
-    private val _tagsFilter: MediatorLiveData<MutableList<TagFilter>> = MediatorLiveData()
+    private val _tagsFilter: MediatorLiveData<List<TagFilter>> = MediatorLiveData()
 
-    fun loadTags(): LiveData<MutableList<TagFilter>> {
+    fun loadTags(): LiveData<List<TagFilter>> {
         viewModelScope.launch {
             val data = withContext(Dispatchers.IO) {
                 repo.loadTagsFilter()
             }
             _tagsFilter.addSource(data) {
-                _tagsFilter.postValue(it ?: mutableListOf())
+                _tagsFilter.postValue(it ?: listOf())
             }
         }
         return _tagsFilter

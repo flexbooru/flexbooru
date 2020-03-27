@@ -15,50 +15,50 @@
   -->
 
 <PreferenceScreen
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:key="booru_config_screen">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="booru_config_screen">
 
     <EditTextPreference
-            app:key="booru_config_name"
-            app:title="@string/booru_config_name"
-            app:singleLine="true"
-            app:useSimpleSummaryProvider="true"/>
+        app:key="booru_config_name"
+        app:title="@string/booru_config_name"
+        app:singleLine="true"
+        app:useSimpleSummaryProvider="true"/>
 
     <PreferenceCategory
-            app:key="booru_info"
-            app:title="@string/booru_config_info">
+        app:key="booru_info"
+        app:title="@string/booru_config_info">
 
         <com.takisoft.preferencex.SimpleMenuPreference
-                app:key="booru_config_type"
-                app:title="@string/booru_config_type"
-                app:icon="@drawable/ic_class_24dp"
-                app:entries="@array/booru_type_entries"
-                app:entryValues="@array/booru_type_entries_values"
-                app:defaultValue="danbooru"
-                app:useSimpleSummaryProvider="true"/>
+            app:key="booru_config_type"
+            app:title="@string/booru_config_type"
+            app:icon="@drawable/ic_class_24dp"
+            app:entries="@array/booru_type_entries"
+            app:entryValues="@array/booru_type_entries_values"
+            app:defaultValue="danbooru"
+            app:useSimpleSummaryProvider="true"/>
 
         <com.takisoft.preferencex.SimpleMenuPreference
-                app:key="booru_config_scheme"
-                app:title="@string/booru_config_scheme"
-                app:icon="@drawable/ic_https_24dp"
-                app:entries="@array/booru_scheme_entries"
-                app:entryValues="@array/booru_scheme_entries_values"
-                app:defaultValue="https"
-                app:useSimpleSummaryProvider="true"/>
+            app:key="booru_config_scheme"
+            app:title="@string/booru_config_scheme"
+            app:icon="@drawable/ic_https_24dp"
+            app:entries="@array/booru_scheme_entries"
+            app:entryValues="@array/booru_scheme_entries_values"
+            app:defaultValue="https"
+            app:useSimpleSummaryProvider="true"/>
 
         <EditTextPreference
-                app:key="booru_config_host"
-                app:title="@string/booru_config_host"
-                app:singleLine="true"
-                app:icon="@drawable/ic_domain_24dp"
-                app:useSimpleSummaryProvider="true"/>
+            app:key="booru_config_host"
+            app:title="@string/booru_config_host"
+            app:singleLine="true"
+            app:icon="@drawable/ic_domain_24dp"
+            app:useSimpleSummaryProvider="true"/>
 
         <EditTextPreference
-                app:key="booru_config_hash_salt"
-                app:title="@string/booru_config_hash_salt"
-                app:singleLine="true"
-                app:icon="@drawable/ic_enhanced_encryption_24dp"
-                app:useSimpleSummaryProvider="true"/>
+            app:key="booru_config_hash_salt"
+            app:title="@string/booru_config_hash_salt"
+            app:singleLine="true"
+            app:icon="@drawable/ic_enhanced_encryption_24dp"
+            app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
 

@@ -26,8 +26,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.GravityCompat
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.holder.StringHolder
 import com.mikepenz.materialdrawer.model.*
@@ -41,22 +42,22 @@ import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import onlymash.flexbooru.*
-import onlymash.flexbooru.api.AppUpdaterApi
-import onlymash.flexbooru.common.Constants
+import onlymash.flexbooru.BuildConfig
+import onlymash.flexbooru.R
+import onlymash.flexbooru.data.api.AppUpdaterApi
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.common.Booru
-import onlymash.flexbooru.entity.common.User
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.data.database.dao.BooruDao
+import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.*
-import onlymash.flexbooru.ui.adapter.NavPagerAdapter
+import onlymash.flexbooru.ui.viewmodel.BooruViewModel
+import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import org.kodein.di.erased.instance
 
-class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
-        private const val TAG = "MainActivity"
         private const val BOORUS_LIMIT = 3
         private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
@@ -70,15 +71,19 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val DRAWER_ITEM_ID_PURCHASE = 9L
         private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 7
     }
-    private lateinit var boorus: MutableList<Booru>
-    private lateinit var users: MutableList<User>
+
+    private var currentBooru: Booru? = null
+    private var boorus: MutableList<Booru> = mutableListOf()
+
     internal var sharedElement: View? = null
+
     private lateinit var headerView: AccountHeaderView
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
     private val sp: SharedPreferences by instance()
+    private val booruDao: BooruDao by instance()
 
-    override var currentNavItem = 0
+    private lateinit var booruViewModel: BooruViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_Main)
@@ -91,7 +96,21 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             window.decorView.systemGestureExclusionRects = listOf(Rect(0, windowHeight - gestureHeight - gestureOffset, gestureWidth, windowHeight - gestureOffset))
         }
         setContentView(R.layout.activity_main)
+        navigation.setupWithNavController(findNavController(R.id.nav_host_fragment))
         sp.registerOnSharedPreferenceChangeListener(this)
+        booruViewModel = getBooruViewModel(booruDao)
+        if (!booruViewModel.isNotEmpty()) {
+            booruViewModel.createBooru(
+                Booru(
+                    name = "Sample",
+                    scheme = "https",
+                    host = "moe.fiepi.com",
+                    hashSalt = "onlymash--your-password--",
+                    type = BOORU_TYPE_MOE
+                )
+            )
+        }
+        val activatedBooruUid = Settings.activatedBooruUid
         profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
             name = StringHolder(R.string.title_manage_boorus)
             identifier = HEADER_ITEM_ID_BOORU_MANAGE
@@ -104,19 +123,8 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             withSavedInstance(savedInstanceState)
             onAccountHeaderListener = { _: View?, profile: IProfile, _: Boolean ->
                 when (val uid = profile.identifier) {
-                    HEADER_ITEM_ID_BOORU_MANAGE -> {
-                        startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                    }
-                    else -> {
-                        Settings.activeBooruUid = uid
-                        boorus.forEach {
-                            if (it.uid == uid) {
-                                pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, it, getCurrentUser())
-                                pager_container.setCurrentItem(currentNavItem, false)
-                                return@forEach
-                            }
-                        }
-                    }
+                    HEADER_ITEM_ID_BOORU_MANAGE -> startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                    else -> Settings.activatedBooruUid = uid
                 }
                 false
             }
@@ -202,36 +210,16 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
             onDrawerItemClickListener = { _: View?, item: IDrawerItem<*>, _: Int ->
                 when (item.identifier) {
                     DRAWER_ITEM_ID_ACCOUNT -> {
-                        val booru = getCurrentBooru()
-                        val user = getCurrentUser()
-                        if (user != null && booru != null) {
-                            startActivity(Intent(this@MainActivity, AccountActivity::class.java))
-                        } else if (booru == null){
-                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                        } else {
-                            startActivity(Intent(this@MainActivity, AccountConfigActivity::class.java))
-                        }
+
                     }
                     DRAWER_ITEM_ID_COMMENTS -> {
-                        if (getCurrentBooru() != null) {
-                            CommentActivity.startActivity(this@MainActivity)
-                        } else {
-                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                        }
+
                     }
                     DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-                        if (getCurrentBooru() != null) {
-                            startActivity(Intent(this@MainActivity, TagBlacklistActivity::class.java))
-                        } else {
-                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                        }
+
                     }
                     DRAWER_ITEM_ID_MUZEI -> {
-                        if (getCurrentBooru() != null) {
-                            startActivity(Intent(this@MainActivity, MuzeiActivity::class.java))
-                        } else {
-                            startActivity(Intent(this@MainActivity, BooruActivity::class.java))
-                        }
+
                     }
                     DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                     DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this@MainActivity, SauceNaoActivity::class.java))
@@ -242,6 +230,15 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 false
             }
         }
+        booruViewModel.loadBoorus().observe(this, Observer {
+            boorus.clear()
+            boorus.addAll(it)
+            initDrawerHeader(activatedBooruUid)
+        })
+        booruViewModel.booru.observe(this, Observer {
+            currentBooru = it
+        })
+        booruViewModel.loadBooru(activatedBooruUid)
         if (!Settings.isOrderSuccess) {
             slider.addItemAtPosition(
                 DRAWER_ITEM_ID_PURCHASE_POSITION,
@@ -256,24 +253,6 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             )
         }
-        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        pager_container.registerOnPageChangeCallback(pageChangeCallback)
-        if (!BooruManager.isNotEmpty()) {
-            BooruManager.createBooru(
-                Booru(
-                    name = "Sample",
-                    scheme = "https",
-                    host = "moe.fiepi.com",
-                    hashSalt = "onlymash--your-password--",
-                    type = Constants.TYPE_MOEBOORU
-                )
-            )
-        }
-        boorus = BooruManager.getAllBoorus() ?: mutableListOf()
-        users = UserManager.getAllUsers() ?: mutableListOf()
-        UserManager.listeners.add(userListener)
-        BooruManager.listeners.add(booruListener)
-        initDrawerHeader()
         setExitSharedElementCallback(sharedElementCallback)
         checkUpdate()
     }
@@ -305,10 +284,10 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private fun initDrawerHeader() {
+    private fun initDrawerHeader(activatedBooruUid: Long) {
         val success = Settings.isOrderSuccess
         val size = boorus.size
-        var uid = Settings.activeBooruUid
+        var uid = activatedBooruUid
         var i = -1
         headerView.clear()
         boorus.forEachIndexed { index, booru ->
@@ -319,7 +298,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 i = index
             }
             var host = booru.host
-            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) {
+            if (booru.type == BOORU_TYPE_SANKAKU && host.startsWith("capi-v2.")) {
                 host = host.replaceFirst("capi-v2.", "beta.")
             }
             headerView.addProfile(
@@ -334,112 +313,14 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
         headerView.addProfile(
             profileSettingDrawerItem,
-            if (success || size < BOORUS_LIMIT) boorus.size else BOORUS_LIMIT
+            if (success || size < BOORUS_LIMIT) size else BOORUS_LIMIT
         )
         if (size == 0) return
-        val booru: Booru
         if (i == -1) {
-            booru = boorus[0]
-            uid = booru.uid
-            Settings.activeBooruUid = uid
+            uid = boorus[0].uid
+            Settings.activatedBooruUid = uid
         } else {
-            booru = boorus[i]
-        }
-        headerView.setActiveProfile(uid)
-        pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
-    }
-
-    private val booruListener = object : BooruManager.Listener {
-        override fun onChanged(boorus: MutableList<Booru>) {
-            this@MainActivity.boorus.apply {
-                clear()
-                addAll(boorus)
-            }
-            initDrawerHeader()
-        }
-
-        override fun onAdd(booru: Booru) {
-            boorus.add(booru)
-            if (!Settings.isOrderSuccess &&
-                headerView.profiles?.size ?: 0 == BOORUS_LIMIT + 1) {
-                return
-            }
-            initDrawerHeader()
-        }
-
-        override fun onDelete(booruUid: Long) {
-            val index = boorus.indexOfFirst { it.uid == booruUid }
-            boorus.removeAt(index)
-            headerView.removeProfileByIdentifier(booruUid)
-            if (boorus.size > 0) {
-                if (Settings.activeBooruUid == booruUid) {
-                    val booru = boorus[0]
-                    Settings.activeBooruUid = booru.uid
-                    headerView.setActiveProfile(booru.uid)
-                    pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
-                }
-            } else {
-                Settings.activeBooruUid = -1
-                pager_container.adapter = null
-            }
-        }
-
-        override fun onUpdate(booru: Booru) {
-            boorus.forEach {
-                if (it.uid == booru.uid) {
-                    it.name = booru.name
-                    it.scheme = booru.scheme
-                    it.host = booru.host
-                    it.hashSalt = booru.hashSalt
-                    it.type = booru.type
-                    if (Settings.activeBooruUid == booru.uid) {
-                        pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
-                    }
-                    return@forEach
-                }
-            }
-            var host = booru.host
-            if (booru.type == Constants.TYPE_SANKAKU && host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
-            headerView.updateProfile(
-                ProfileDrawerItem().apply {
-                    icon = ImageHolder(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
-                    name = StringHolder(booru.name)
-                    description = StringHolder(String.format("%s://%s", booru.scheme, booru.host))
-                    identifier = booru.uid
-                }
-            )
-        }
-    }
-
-    private val userListener =  object : UserManager.Listener {
-        override fun onAdd(user: User) {
-            users.add(user)
-        }
-
-        override fun onDelete(user: User) {
-            var position = -1
-            users.forEachIndexed { i, u ->
-                if (user.uid == u.uid) {
-                    position = i
-                    return@forEachIndexed
-                }
-            }
-            if (position >= 0) {
-                users.removeAt(position)
-            }
-        }
-
-        override fun onUpdate(user: User) {
-            users.forEach {
-                if (it.uid == user.uid) {
-                    it.name = user.name
-                    it.id = user.id
-                    it.booruUid
-                    it.passwordHash = user.passwordHash
-                    it.apiKey = user.apiKey
-                    return@forEach
-                }
-            }
+            headerView.setActiveProfile(uid)
         }
     }
 
@@ -457,132 +338,16 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            when (position) {
-                0 -> {
-                    if (navigation.selectedItemId != R.id.navigation_posts) {
-                        navigation.selectedItemId = R.id.navigation_posts
-                    }
-                }
-                1 -> {
-                    if (navigation.selectedItemId != R.id.navigation_popular) {
-                        navigation.selectedItemId = R.id.navigation_popular
-                    }
-                }
-                2 -> {
-                    if (navigation.selectedItemId != R.id.navigation_pools) {
-                        navigation.selectedItemId = R.id.navigation_pools
-                    }
-                }
-                3 -> {
-                    if (navigation.selectedItemId != R.id.navigation_tags) {
-                        navigation.selectedItemId = R.id.navigation_tags
-                    }
-                }
-                else -> {
-                    if (navigation.selectedItemId != R.id.navigation_artists) {
-                        navigation.selectedItemId = R.id.navigation_artists
-                    }
-                }
-            }
-        }
-    }
-
-    private fun onNavPosition(position: Int) {
-        if (pager_container.currentItem != position) {
-            pager_container.setCurrentItem(position, false)
-        } else if (currentNavItem == position){
-            navigationListeners.forEach {
-                it.onClickPosition(position)
-            }
-        }
-        currentNavItem = position
-    }
-
-    private val onNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_posts -> {
-                    onNavPosition(0)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_popular -> {
-                    onNavPosition(1)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_pools -> {
-                    onNavPosition(2)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_tags -> {
-                    onNavPosition(3)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_artists -> {
-                    onNavPosition(4)
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-            false
-    }
-
-    private var navigationListeners: MutableList<NavigationListener> = mutableListOf()
-
-    fun addNavigationListener(listener: NavigationListener) {
-        navigationListeners.add(listener)
-    }
-
-    fun removeNavigationListener(listener: NavigationListener) {
-        navigationListeners.remove(listener)
-    }
-
-    interface NavigationListener {
-        fun onClickPosition(position: Int)
-    }
-
     override fun onDestroy() {
         sp.unregisterOnSharedPreferenceChangeListener(this)
-        pager_container.unregisterOnPageChangeCallback(pageChangeCallback)
-        BooruManager.listeners.remove(booruListener)
-        UserManager.listeners.remove(userListener)
         super.onDestroy()
-    }
-
-    internal fun getCurrentBooru(): Booru? {
-        var booru: Booru? = null
-        val uid = Settings.activeBooruUid
-        boorus.forEach {
-            if (it.uid == uid) {
-                booru = it
-                return@forEach
-            }
-        }
-        return booru
-    }
-
-    internal fun getCurrentUser(): User? {
-        var user: User? = null
-        val booruUid = Settings.activeBooruUid
-        users.forEach {
-            if (it.booruUid == booruUid) {
-                user = it
-                return@forEach
-            }
-        }
-        return user
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            Settings.SAFE_MODE_KEY,
-            Settings.PAGE_LIMIT_KEY,
-            Settings.GRID_WIDTH_KEY,
-            Settings.SHOW_INFO_BAR_KEY -> {
-                val booru = getCurrentBooru() ?: return
-                pager_container.adapter = NavPagerAdapter(supportFragmentManager, lifecycle, booru, getCurrentUser())
-                pager_container.setCurrentItem(currentNavItem, false)
+            Settings.BOORU_UID_ACTIVATED_KEY -> {
+                initDrawerHeader(Settings.activatedBooruUid)
+                navigation.selectedItemId = R.id.nav_posts
             }
             Settings.ORDER_SUCCESS_KEY -> {
                 if (Settings.isOrderSuccess) {
@@ -604,7 +369,7 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     }
                 }
                 if (boorus.size > BOORUS_LIMIT) {
-                    initDrawerHeader()
+                    initDrawerHeader(Settings.activatedBooruUid)
                 }
             }
         }
@@ -613,18 +378,11 @@ class MainActivity : PostActivity(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onBackPressed() {
         when {
             drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
-            currentNavItem != 0 -> pager_container.setCurrentItem(0, false)
             else -> super.onBackPressed()
         }
     }
 
     fun openDrawer() {
         drawer_layout.openDrawer(GravityCompat.START)
-    }
-
-    fun closeDrawer() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        }
     }
 }

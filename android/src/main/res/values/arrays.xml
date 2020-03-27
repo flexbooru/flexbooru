@@ -37,7 +37,7 @@
     <string-array name="booru_type_entries_values">
         <item>danbooru</item>
         <item>moebooru</item>
-        <item>danbooru_one</item>
+        <item>danbooru1</item>
         <item>gelbooru</item>
         <item>sankaku</item>
     </string-array>

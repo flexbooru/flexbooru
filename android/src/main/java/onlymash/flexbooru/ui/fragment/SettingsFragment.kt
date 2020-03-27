@@ -26,8 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.database.FlexbooruDatabase
-import onlymash.flexbooru.database.SuggestionManager
+import onlymash.flexbooru.data.database.SuggestionManager
+import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.trimCache
 import org.kodein.di.Kodein
@@ -38,7 +38,7 @@ import org.kodein.di.erased.instance
 class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferences.OnSharedPreferenceChangeListener {
 
     override val kodein: Kodein by kodein()
-    private val db: FlexbooruDatabase by instance()
+    private val postDao: PostDao by instance()
     private val sp: SharedPreferences by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,11 +89,7 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
                         context?.let {
                             lifecycleScope.launch(Dispatchers.IO) {
                                 try {
-                                    db.postDanDao().deleteAll()
-                                    db.postDanOneDao().deleteAll()
-                                    db.postMoeDao().deleteAll()
-                                    db.postGelDao().deleteAll()
-                                    db.postSankakuDao().deleteAll()
+                                    postDao.deleteAll()
                                 } catch (_: Exception) {}
                                 it.trimCache()
                             }

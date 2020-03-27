@@ -19,19 +19,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 
-inline fun <reified M : ViewModel> Fragment.getViewModel(viewModelFactory: ViewModelProvider.Factory): M {
+inline fun <reified M : ViewModel> ViewModelStoreOwner.getViewModel(viewModelFactory: ViewModelProvider.Factory): M {
     return ViewModelProvider(this, viewModelFactory).get(M::class.java)
 }
 
-inline fun <reified M : ViewModel> AppCompatActivity.getViewModel(viewModelFactory: ViewModelProvider.Factory): M {
-    return ViewModelProvider(this, viewModelFactory).get(M::class.java)
-}
-
-inline fun <reified M : ViewModel> Fragment.getViewModel(): M {
-    return ViewModelProvider(this).get(M::class.java)
-}
-
-inline fun <reified M : ViewModel> AppCompatActivity.getViewModel(): M {
+inline fun <reified M : ViewModel> ViewModelStoreOwner.getViewModel(): M {
     return ViewModelProvider(this).get(M::class.java)
 }

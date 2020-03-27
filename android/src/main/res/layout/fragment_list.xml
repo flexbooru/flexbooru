@@ -14,35 +14,43 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/not_supported"
-            android:text="@string/msg_not_supported"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textColor="?android:attr/textColorSecondary"
-            android:visibility="gone"/>
+        android:id="@+id/not_supported"
+        android:text="@string/msg_not_supported"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:visibility="gone"/>
 
     <include layout="@layout/refreshable_list"/>
 
     <include layout="@layout/search_layout"/>
 
-    <onlymash.flexbooru.widget.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_marginTop="@dimen/search_bar_vertical_margin"
-            android:layout_marginBottom="@dimen/search_bar_vertical_margin"
-            android:layout_marginStart="@dimen/search_bar_horizontal_margin"
-            android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:elevation="0dp">
+
+        <onlymash.flexbooru.widget.SearchBar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/search_bar_height"
             android:touchscreenBlocksFocus="false"
+            android:layout_marginVertical="@dimen/search_bar_vertical_margin"
+            android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
+            app:layout_scrollFlags="scroll|snap|enterAlways"
             style="@style/AppTheme.CardView.SearchBar"/>
 
-</FrameLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
 
-            <onlymash.flexbooru.widget.search.SearchEditText
+            <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/search_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -91,7 +91,7 @@
                 android:layout_height="0.8dp"
                 android:background="@color/colorDividerItem"/>
         <ListView
-                android:id="@+id/suggestion_list"
+                android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dividerHeight="1dp"/>

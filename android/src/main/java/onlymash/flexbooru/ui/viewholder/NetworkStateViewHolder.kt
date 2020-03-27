@@ -24,8 +24,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.toVisibility
-import onlymash.flexbooru.repository.NetworkState
-import onlymash.flexbooru.repository.Status
+import onlymash.flexbooru.data.repository.NetworkState
+import onlymash.flexbooru.data.repository.Status
 
 class NetworkStateViewHolder(itemView: View,
                              private val retryCallback: () -> Unit) : RecyclerView.ViewHolder(itemView) {

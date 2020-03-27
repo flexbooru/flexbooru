@@ -32,7 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.api.OrderApi
+import onlymash.flexbooru.data.api.OrderApi
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.copyText
 

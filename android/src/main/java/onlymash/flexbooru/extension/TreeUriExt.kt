@@ -26,9 +26,9 @@ import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
 import java.util.*
 
 fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
@@ -53,7 +53,7 @@ fun Activity.openDocumentTree() {
                         or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
                         or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
             },
-            Constants.REQUEST_CODE_OPEN_DIRECTORY)
+            REQUEST_CODE_OPEN_DIRECTORY)
     } catch (_: ActivityNotFoundException) {}
 }
 

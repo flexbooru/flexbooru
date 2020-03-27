@@ -22,9 +22,10 @@ import java.io.IOException
 
 import android.os.StatFs
 import androidx.annotation.VisibleForTesting
-import onlymash.flexbooru.common.HttpHeaders
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import onlymash.flexbooru.common.Keys.HEADER_REFERER
+import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.extension.getUserAgent
 import onlymash.flexbooru.util.Logger
 import kotlin.math.max
@@ -155,9 +156,9 @@ class OkHttp3Downloader : Downloader {
                 val host = url.host
                 it.proceed(it.request()
                     .newBuilder()
-                    .removeHeader(HttpHeaders.UserAgent)
-                    .addHeader(HttpHeaders.UserAgent, getUserAgent())
-                    .addHeader(HttpHeaders.Referrer, "$scheme://$host/post")
+                    .removeHeader(HEADER_USER_AGENT)
+                    .addHeader(HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(HEADER_REFERER, "$scheme://$host/post")
                     .build())
             }
             return OkHttpClient.Builder()

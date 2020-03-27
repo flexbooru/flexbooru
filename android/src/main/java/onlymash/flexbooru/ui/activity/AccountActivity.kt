@@ -23,22 +23,23 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.api.DanbooruApi
-import onlymash.flexbooru.api.DanbooruOneApi
-import onlymash.flexbooru.api.MoebooruApi
-import onlymash.flexbooru.api.SankakuApi
-import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.database.CookieManager
-import onlymash.flexbooru.database.UserManager
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.database.BooruManager
+import onlymash.flexbooru.data.database.CookieManager
+import onlymash.flexbooru.data.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.entity.common.Booru
-import onlymash.flexbooru.entity.common.User
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.repository.account.UserRepositoryImpl
+import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import org.kodein.di.erased.instance
 
 class AccountActivity : BaseActivity() {
@@ -49,49 +50,47 @@ class AccountActivity : BaseActivity() {
         const val USER_AVATAR_KEY = "user_avatar"
     }
 
-    private val danApi: DanbooruApi by instance()
-    private val danOneApi: DanbooruOneApi by instance()
-    private val moeApi: MoebooruApi by instance()
-    private val sankakuApi: SankakuApi by instance()
+    private val booruApis: BooruApis by instance()
 
     private lateinit var booru: Booru
     private lateinit var user: User
 
     private val userRepository by lazy {
-        UserRepositoryImpl(
-            danbooruApi = danApi,
-            danbooruOneApi = danOneApi,
-            moebooruApi = moeApi,
-            sankakuApi = sankakuApi
-        )
+        UserRepositoryImpl(booruApis)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        val uid = Settings.activeBooruUid
+        val uid = Settings.activatedBooruUid
         booru = BooruManager.getBooruByUid(uid) ?: return
         toolbar.title = String.format(getString(R.string.title_account_and_booru), booru.name)
         val extras = intent?.extras
         val type = booru.type
         var u: User? = null
         when {
-            (type == Constants.TYPE_DANBOORU || type == Constants.TYPE_SANKAKU) && extras != null -> {
+            (type == BOORU_TYPE_DAN || type == BOORU_TYPE_SANKAKU) && extras != null -> {
                 val id = extras.getInt(USER_ID_KEY, -1)
                 val name = extras.getString(USER_NAME_KEY)
                 if (id > 0 && !name.isNullOrBlank()) {
-                    u = User(name = name, id = id)
-                    if (type == Constants.TYPE_SANKAKU) {
+                    u = User(
+                        name = name,
+                        id = id
+                    )
+                    if (type == BOORU_TYPE_SANKAKU) {
                         u.avatarUrl = extras.getString(USER_AVATAR_KEY)
                     }
                 }
             }
-            (type == Constants.TYPE_MOEBOORU || type == Constants.TYPE_DANBOORU_ONE) && extras != null -> {
+            (type == BOORU_TYPE_MOE || type == BOORU_TYPE_DAN1) && extras != null -> {
                 val id = extras.getInt(USER_ID_KEY, -1)
                 val name = extras.getString(USER_NAME_KEY) ?: ""
                 if (id > 0) {
-                    u = User(id = id, name = name)
+                    u = User(
+                        id = id,
+                        name = name
+                    )
                     if (name.isBlank()) {
                         lifecycleScope.launch {
                             val result = userRepository.findUserById(id, booru)
@@ -121,7 +120,7 @@ class AccountActivity : BaseActivity() {
                     .setTitle(R.string.account_user_dialog_title_remove)
                     .setPositiveButton(R.string.dialog_yes) {_, _ ->
                         UserManager.deleteUser(user)
-                        if (booru.type == Constants.TYPE_GELBOORU) {
+                        if (booru.type == BOORU_TYPE_GEL) {
                             CookieManager.deleteByBooruUid(booru.uid)
                         }
                         finish()
@@ -136,51 +135,51 @@ class AccountActivity : BaseActivity() {
     private fun init() {
         username.text = user.name
         user_id.text = String.format(getString(R.string.account_user_id), user.id)
-        if (booru.type == Constants.TYPE_MOEBOORU) {
+        if (booru.type == BOORU_TYPE_MOE) {
             GlideApp.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
-        } else if (booru.type == Constants.TYPE_SANKAKU && !user.avatarUrl.isNullOrEmpty()) {
+        } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatarUrl.isNullOrEmpty()) {
             GlideApp.with(this)
                 .load(user.avatarUrl)
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
         }
         fav_action_button.setOnClickListener {
-            if (booru.type == Constants.TYPE_GELBOORU) {
+            if (booru.type == BOORU_TYPE_GEL) {
                 val url = "${booru.scheme}://${booru.host}/index.php?page=favorites&s=view&id=${user.id}"
                 launchUrl(url)
                 return@setOnClickListener
             }
             val keyword = when (booru.type) {
-                Constants.TYPE_DANBOORU,
-                Constants.TYPE_DANBOORU_ONE,
-                Constants.TYPE_SANKAKU -> String.format("fav:%s", user.name)
-                Constants.TYPE_MOEBOORU -> String.format("vote:3:%s order:vote", user.name)
+                BOORU_TYPE_DAN,
+                BOORU_TYPE_DAN1,
+                BOORU_TYPE_SANKAKU -> String.format("fav:%s", user.name)
+                BOORU_TYPE_MOE -> String.format("vote:3:%s order:vote", user.name)
                 else -> throw IllegalStateException("unknown booru type: ${booru.type}")
             }
-            SearchActivity.startActivity(this, keyword)
+//            SearchActivity.startActivity(this, keyword)
         }
         posts_action_button.setOnClickListener {
-            if (booru.type == Constants.TYPE_GELBOORU) {
+            if (booru.type == BOORU_TYPE_GEL) {
                 Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             val keyword = String.format("user:%s", user.name)
-            SearchActivity.startActivity(this, keyword)
+//            SearchActivity.startActivity(this, keyword)
         }
         comments_action_button.setOnClickListener {
-            if (booru.type == Constants.TYPE_GELBOORU) {
+            if (booru.type == BOORU_TYPE_GEL) {
                 Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            CommentActivity.startActivity(this, username = user.name)
+//            CommentActivity.startActivity(this, username = user.name)
         }
-        if (booru.type == Constants.TYPE_SANKAKU) {
+        if (booru.type == BOORU_TYPE_SANKAKU) {
             recommended_action_button.setOnClickListener {
                 val keyword = String.format("recommended_for:%s", user.name)
-                SearchActivity.startActivity(this, keyword)
+//                SearchActivity.startActivity(this, keyword)
             }
         } else {
             recommended_action_button_container.visibility = View.GONE

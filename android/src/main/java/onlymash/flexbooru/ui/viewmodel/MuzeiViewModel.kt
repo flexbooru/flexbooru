@@ -19,20 +19,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import onlymash.flexbooru.database.dao.MuzeiDao
-import onlymash.flexbooru.entity.common.Muzei
+import onlymash.flexbooru.data.database.dao.MuzeiDao
+import onlymash.flexbooru.data.model.common.Muzei
 
 class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ScopeViewModel() {
 
-    private val _muzeiOutcome: MediatorLiveData<MutableList<Muzei>> = MediatorLiveData()
+    private val _muzeiOutcome: MediatorLiveData<List<Muzei>> = MediatorLiveData()
 
-    fun loadMuzei(booruUid: Long): LiveData<MutableList<Muzei>> {
+    fun loadMuzei(booruUid: Long): LiveData<List<Muzei>> {
         viewModelScope.launch{
             val data = withContext(Dispatchers.IO) {
                 muzeiDao.getMuzeiByBooruUidLiveData(booruUid)
             }
             _muzeiOutcome.addSource(data) {
-                _muzeiOutcome.postValue(it ?: mutableListOf())
+                _muzeiOutcome.postValue(it ?: listOf())
             }
         }
         return _muzeiOutcome

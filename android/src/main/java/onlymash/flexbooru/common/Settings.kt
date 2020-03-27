@@ -17,6 +17,7 @@ package onlymash.flexbooru.common
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import onlymash.flexbooru.R
 import org.kodein.di.erased.instance
 import java.util.*
 
@@ -62,11 +63,13 @@ object Settings {
 
     private const val SAUCE_NAO_API_KEY_KEY = "sauce_nao_api_key"
 
+    const val BOORU_UID_ACTIVATED_KEY = "booru_uid_activated"
+
     private val sp: SharedPreferences by App.app.instance()
 
-    var activeBooruUid: Long
-        get() = sp.getLong(Constants.ACTIVE_BOORU_UID_KEY, -1)
-        set(value) = sp.edit().putLong(Constants.ACTIVE_BOORU_UID_KEY, value).apply()
+    var activatedBooruUid: Long
+        get() = sp.getLong(BOORU_UID_ACTIVATED_KEY, -1L)
+        set(value) = sp.edit().putLong(BOORU_UID_ACTIVATED_KEY, value).apply()
 
     var safeMode: Boolean
         get() = sp.getBoolean(SAFE_MODE_KEY, true)
@@ -114,8 +117,14 @@ object Settings {
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
+    val gridWidthResId: Int
+        get() = when (gridWidthString) {
+            GRID_WIDTH_SMALL -> R.dimen.post_item_width_small
+            GRID_WIDTH_NORMAL -> R.dimen.post_item_width_normal
+            else -> R.dimen.post_item_width_large
+        }
 
-    var gridWidth: String
+    private var gridWidthString: String
         get() = sp.getString(
             GRID_WIDTH_KEY,
             GRID_WIDTH_NORMAL

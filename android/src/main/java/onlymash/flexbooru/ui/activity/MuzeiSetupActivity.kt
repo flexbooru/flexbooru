@@ -18,14 +18,14 @@ package onlymash.flexbooru.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import onlymash.flexbooru.database.BooruManager
+import onlymash.flexbooru.data.database.BooruManager
 
 class MuzeiSetupActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val boorus = BooruManager.getAllBoorus() ?: mutableListOf()
-        if (boorus.size == 0) {
+        val boorus = BooruManager.getAllBoorus()
+        if (boorus.isNullOrEmpty()) {
             startActivity(Intent(this, BooruActivity::class.java))
         } else {
             setResult(RESULT_OK)

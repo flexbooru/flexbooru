@@ -28,14 +28,15 @@ import androidx.core.app.NotificationCompat
 import androidx.work.*
 import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.entity.post.PostBase
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import onlymash.flexbooru.okhttp.ProgressListener
 import java.io.FileInputStream
 import java.io.IOException
 import onlymash.flexbooru.R
-import onlymash.flexbooru.entity.pool.PoolMoe
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.Pool
+import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 import onlymash.flexbooru.okhttp.OkHttp3Downloader
@@ -64,18 +65,16 @@ class DownloadWorker(
 
         const val DOC_ID_KEY = "doc_id"
 
-        internal fun downloadPost(post: PostBase?, activity: Activity) {
+        internal fun downloadPost(post: Post?, host: String, activity: Activity) {
             if (post == null) return
-            val host = post.host
-            val id = post.getPostId()
             val url = when (Settings.downloadSize) {
-                Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
-                Settings.POST_SIZE_LARGER -> post.getLargerUrl()
-                else -> post.getOriginUrl()
+                Settings.POST_SIZE_SAMPLE -> post.sample
+                Settings.POST_SIZE_LARGER -> post.medium
+                else -> post.origin
             }
             if (url.isEmpty()) return
             var fileName = url.fileName()
-            if (!fileName.contains(' ')) fileName = "$id - $fileName"
+            if (!fileName.contains(' ')) fileName = "${post.id} - $fileName"
             val docUri = activity.getDownloadUri(host, fileName) ?: return
             val docId = DocumentsContract.getDocumentId(docUri)
             val workManager = WorkManager.getInstance(App.app)
@@ -85,7 +84,7 @@ class DownloadWorker(
                         workDataOf(
                             URL_KEY to url,
                             HOST_KEY to host,
-                            POST_ID_KEY to id,
+                            POST_ID_KEY to post.id,
                             TYPE_KEY to TYPE_POST,
                             DOC_ID_KEY to docId
                         )
@@ -126,14 +125,15 @@ class DownloadWorker(
 
         internal fun downloadPool(
             activity: Activity,
-            pool: PoolMoe,
+            pool: Pool,
             type: Int,
+            booru: Booru,
             username: String,
-            passwordHash: String
+            token: String
         ) {
 
-            val scheme = pool.scheme
-            val host = pool.host
+            val scheme = booru.scheme
+            val host = booru.host
             val id = pool.id
             val fileName = when (type) {
                 POOL_DOWNLOAD_TYPE_JPGS -> {
@@ -156,7 +156,7 @@ class DownloadWorker(
                             POOL_DOWNLOAD_TYPE_KEY to type,
                             TYPE_KEY to TYPE_POOL,
                             USERNAME_KEY to username,
-                            PASSWORD_HASH_KEY to passwordHash,
+                            PASSWORD_HASH_KEY to token,
                             DOC_ID_KEY to docId
                         )
                     )

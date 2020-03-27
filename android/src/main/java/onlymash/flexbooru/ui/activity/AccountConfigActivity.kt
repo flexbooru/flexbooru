@@ -24,50 +24,43 @@ import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_account_config.*
 import kotlinx.coroutines.*
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.api.*
-import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.database.UserManager
-import onlymash.flexbooru.entity.common.Booru
-import onlymash.flexbooru.entity.common.User
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.HASH_SALT_CONTAINED
+import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.database.BooruManager
+import onlymash.flexbooru.data.database.UserManager
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.extension.sha1
-import onlymash.flexbooru.repository.account.UserRepositoryImpl
-import onlymash.flexbooru.repository.account.UserRepository
+import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
+import onlymash.flexbooru.data.repository.user.UserRepository
 import org.kodein.di.erased.instance
 
 class AccountConfigActivity : BaseActivity() {
 
-    companion object {
-        private const val TAG = "AccountConfigActivity"
-    }
-
-    private val danApi: DanbooruApi by instance()
-    private val danOneApi: DanbooruOneApi by instance()
-    private val moeApi: MoebooruApi by instance()
-    private val sankakuApi: SankakuApi by instance()
+    private val booruApis: BooruApis by instance()
 
     private lateinit var booru: Booru
     private var username = ""
-    private var pass = ""
+    private var userToken = ""
     private var requesting = false
 
     private val userRepository: UserRepository by lazy {
-        UserRepositoryImpl(
-            danbooruApi = danApi,
-            danbooruOneApi = danOneApi,
-            moebooruApi = moeApi,
-            sankakuApi = sankakuApi
-        )
+        UserRepositoryImpl(booruApis)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_config)
-        val b = BooruManager.getBooruByUid(Settings.activeBooruUid)
+        val b = BooruManager.getBooruByUid(Settings.activatedBooruUid)
         if (b == null) {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
             finish()
@@ -75,20 +68,20 @@ class AccountConfigActivity : BaseActivity() {
         }
         booru = b
         account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru.name)
-        if (booru.type == Constants.TYPE_DANBOORU) {
+        if (booru.type == BOORU_TYPE_DAN) {
             password_edit_container.hint = getString(R.string.account_api_key)
             forgot_auth.setText(R.string.account_forgot_api_key)
         }
         forgot_auth.setOnClickListener {
             when (booru.type) {
-                Constants.TYPE_DANBOORU -> {
+                BOORU_TYPE_DAN -> {
                     launchUrl(String.format("%s://%s/session/new", booru.scheme, booru.host))
                 }
-                Constants.TYPE_MOEBOORU,
-                Constants.TYPE_DANBOORU_ONE -> {
+                BOORU_TYPE_MOE,
+                BOORU_TYPE_DAN1 -> {
                     launchUrl(String.format("%s://%s/user/reset_password", booru.scheme, booru.host))
                 }
-                Constants.TYPE_SANKAKU -> {
+                BOORU_TYPE_SANKAKU -> {
                     var host = booru.host
                     if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
                     launchUrl(String.format("%s://%s/reset_password", booru.scheme, host))
@@ -103,22 +96,22 @@ class AccountConfigActivity : BaseActivity() {
     private fun attemptSetAccount() {
         if (requesting) return
         username = username_edit.text.toString()
-        pass = password_edit.text.toString()
-        if (username.isBlank() || pass.isBlank()) {
+        userToken = password_edit.text.toString()
+        if (username.isBlank() || userToken.isBlank()) {
             Snackbar.make(account_config_title, getString(R.string.account_config_msg_tip_empty), Snackbar.LENGTH_LONG).show()
             return
         }
         val hashSalt = booru.hashSalt
-        if ((booru.type == Constants.TYPE_MOEBOORU
-                    || booru.type == Constants.TYPE_DANBOORU_ONE
-                    || booru.type == Constants.TYPE_SANKAKU) && hashSalt.isNotBlank()) {
-            pass = hashSalt.replace(Constants.HASH_SALT_CONTAINED, pass).sha1()
+        if ((booru.type == BOORU_TYPE_MOE
+                    || booru.type == BOORU_TYPE_DAN1
+                    || booru.type == BOORU_TYPE_SANKAKU) && hashSalt.isNotBlank()) {
+            userToken = hashSalt.replace(HASH_SALT_CONTAINED, userToken).sha1()
         }
         set_account.visibility = View.INVISIBLE
         progress_bar.visibility = View.VISIBLE
-        if (booru.type == Constants.TYPE_GELBOORU) {
+        if (booru.type == BOORU_TYPE_GEL) {
             lifecycleScope.launch {
-                val result = userRepository.gelLogin(username, pass, booru)
+                val result = userRepository.gelLogin(username, userToken, booru)
                 handlerResult(result)
             }
         } else {
@@ -134,23 +127,17 @@ class AccountConfigActivity : BaseActivity() {
             is NetResult.Success -> {
                 val user = result.data
                 when (booru.type) {
-                    Constants.TYPE_DANBOORU -> {
+                    BOORU_TYPE_DAN,
+                    BOORU_TYPE_MOE,
+                    BOORU_TYPE_DAN1,
+                    BOORU_TYPE_SANKAKU -> {
                         user.apply {
                             booruUid = booru.uid
-                            apiKey = pass
+                            token = userToken
                         }
                         UserManager.createUser(user)
                     }
-                    Constants.TYPE_MOEBOORU,
-                    Constants.TYPE_DANBOORU_ONE,
-                    Constants.TYPE_SANKAKU -> {
-                        user.apply {
-                            booruUid = booru.uid
-                            passwordHash = pass
-                        }
-                        UserManager.createUser(user)
-                    }
-                    Constants.TYPE_GELBOORU -> {
+                    BOORU_TYPE_GEL -> {
                         UserManager.createUser(user)
                     }
                 }

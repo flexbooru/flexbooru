@@ -31,12 +31,13 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
-import onlymash.flexbooru.api.*
 import onlymash.flexbooru.crash.CrashHandler
-import onlymash.flexbooru.database.FlexbooruDatabase
+import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.api.OrderApi
+import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.repository.tagfilter.TagFilterRepositoryImpl
+import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -51,24 +52,16 @@ class App : Application(), KodeinAware {
     override val kodein by Kodein.lazy {
         bind<Context>() with instance(this@App)
         bind<SharedPreferences>() with provider { PreferenceManager.getDefaultSharedPreferences(instance()) }
-        bind() from singleton { FlexbooruDatabase(instance()) }
-        bind() from singleton { instance<FlexbooruDatabase>().booruDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().userDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().cookieDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().suggestionDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().tagFilterDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().tagBlacklistDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().muzeiDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().postDanDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().postDanOneDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().postMoeDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().postGelDao() }
-        bind() from singleton { instance<FlexbooruDatabase>().postSankakuDao() }
-        bind() from singleton { DanbooruApi() }
-        bind() from singleton { DanbooruOneApi() }
-        bind() from singleton { MoebooruApi() }
-        bind() from singleton { GelbooruApi() }
-        bind() from singleton { SankakuApi() }
+        bind() from singleton { MyDatabase(instance()) }
+        bind() from singleton { instance<MyDatabase>().booruDao() }
+        bind() from singleton { instance<MyDatabase>().userDao() }
+        bind() from singleton { instance<MyDatabase>().cookieDao() }
+        bind() from singleton { instance<MyDatabase>().suggestionDao() }
+        bind() from singleton { instance<MyDatabase>().tagFilterDao() }
+        bind() from singleton { instance<MyDatabase>().tagBlacklistDao() }
+        bind() from singleton { instance<MyDatabase>().muzeiDao() }
+        bind() from singleton { instance<MyDatabase>().postDao() }
+        bind() from singleton { BooruApis() }
         bind() from singleton { Executors.newSingleThreadExecutor() }
         bind() from singleton { TagFilterRepositoryImpl(instance()) }
     }

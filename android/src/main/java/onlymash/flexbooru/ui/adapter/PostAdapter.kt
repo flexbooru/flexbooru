@@ -1,52 +1,81 @@
-/*
- * Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 package onlymash.flexbooru.ui.adapter
 
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.entity.post.PostBase
+import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.data.model.common.Post
+import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.ui.viewholder.PostViewHolder
 
-class PostAdapter(private val glide: GlideRequests,
-                  private val listener: PostViewHolder.ItemListener,
-                  private val showInfoBar: Boolean,
-                  private val pageType: Int,
-                  retryCallback: () -> Unit
-) : BaseStatePagedListAdapter<PostBase, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
+private const val MAX_ASPECT_RATIO = 21.0 / 9.0
+private const val MIN_ASPECT_RATIO = 9.0 / 21.0
+
+class PostAdapter(
+    private val glide: GlideRequests,
+    retryCallback: () -> Unit
+) : BasePagedListAdapter<Post, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
 
     companion object {
-        val POST_COMPARATOR = object : DiffUtil.ItemCallback<PostBase>() {
-            override fun areContentsTheSame(oldItem: PostBase, newItem: PostBase): Boolean =
-                oldItem.getPostId() == newItem.getPostId() && oldItem.getPostScore() == newItem.getPostScore()
-            override fun areItemsTheSame(oldItem: PostBase, newItem: PostBase): Boolean =
-                oldItem.getPostId() == newItem.getPostId()
+        val POST_COMPARATOR = object : DiffUtil.ItemCallback<Post>() {
+            override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
+                oldItem == newItem
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
+                oldItem.booruUid == newItem.booruUid &&
+                        oldItem.query == newItem.query &&
+                        oldItem.id == newItem.id
         }
     }
 
-    override fun onCreateDataViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        PostViewHolder.create(parent, showInfoBar, glide)
+    private val showInfoBar = Settings.showInfoBar
 
-    override fun onBindDataViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is PostViewHolder) {
-            holder.apply {
-                bind(getItem(position), pageType)
-                setItemListener(listener)
+    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        PostViewHolder(LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_post, parent, false))
+
+    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as PostViewHolder).bindTo(getItem(position))
+    }
+
+    inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val preview: AppCompatImageView = itemView.findViewById(R.id.preview)
+        private val infoContainer: LinearLayout = itemView.findViewById(R.id.info_container)
+        private val postId: AppCompatTextView = itemView.findViewById(R.id.post_id)
+        private val postSize: AppCompatTextView = itemView.findViewById(R.id.post_size)
+
+        private var post: Post? = null
+
+        init {
+            infoContainer.toVisibility(showInfoBar)
+        }
+
+        fun bindTo(post: Post?) {
+            this.post = post ?: return
+            postId.text = String.format("#%d", post.id)
+            postSize.text = String.format("%d x %d", post.width, postSize.height)
+            val placeholderDrawable = when (post.rating) {
+                "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
+                "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
+                else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
             }
+            val ratio = post.width.toFloat() / post.height.toFloat()
+            (preview.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
+                when {
+                    ratio > MAX_ASPECT_RATIO -> "H, 21:9"
+                    ratio < MIN_ASPECT_RATIO -> "H, 9:21"
+                    else -> "H, ${post.width}:${post.height}"
+                }
+            glide.load(post.preview)
+                .placeholder(placeholderDrawable)
+                .into(preview)
         }
     }
 }

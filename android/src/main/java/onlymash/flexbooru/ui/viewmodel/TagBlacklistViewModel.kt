@@ -19,20 +19,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import onlymash.flexbooru.database.dao.TagBlacklistDao
-import onlymash.flexbooru.entity.common.TagBlacklist
+import onlymash.flexbooru.data.database.dao.TagBlacklistDao
+import onlymash.flexbooru.data.model.common.TagBlacklist
 
 class TagBlacklistViewModel(private val tagBlacklistDao: TagBlacklistDao) : ScopeViewModel() {
 
-    private val tagOutcome: MediatorLiveData<MutableList<TagBlacklist>> = MediatorLiveData()
+    private val tagOutcome: MediatorLiveData<List<TagBlacklist>> = MediatorLiveData()
 
-    fun loadTags(booruUid: Long): LiveData<MutableList<TagBlacklist>> {
+    fun loadTags(booruUid: Long): LiveData<List<TagBlacklist>> {
         viewModelScope.launch {
             val data = withContext(Dispatchers.IO) {
                 tagBlacklistDao.getTagBlacklistByBooruUidLiveData(booruUid)
             }
             tagOutcome.addSource(data) {
-                tagOutcome.postValue(it ?: mutableListOf())
+                tagOutcome.postValue(it ?: listOf())
             }
         }
         return tagOutcome

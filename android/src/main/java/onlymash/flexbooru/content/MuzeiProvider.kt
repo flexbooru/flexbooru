@@ -19,11 +19,8 @@ import android.content.Intent
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
-import onlymash.flexbooru.common.Constants
 import onlymash.flexbooru.R
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.worker.MuzeiArtWorker
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
@@ -35,7 +32,7 @@ class MuzeiProvider : MuzeiArtProvider() {
         private const val COMMAND_ID_SEARCH_POSTS = 2
     }
     override fun onLoadRequested(initial: Boolean) {
-        MuzeiArtWorker.enqueueLoad()
+//        MuzeiArtWorker.enqueueLoad()
     }
 
     override fun getCommands(artwork: Artwork): MutableList<UserCommand> =
@@ -50,17 +47,17 @@ class MuzeiProvider : MuzeiArtProvider() {
         when (id) {
             COMMAND_ID_VIEW_POST -> {
                 val keyword = artwork.token ?: return
-                context.startActivity(
-                    Intent(context, SearchActivity::class.java)
-                        .putExtra(Constants.KEYWORD_KEY, keyword)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+//                context.startActivity(
+//                    Intent(context, SearchActivity::class.java)
+//                        .putExtra(Constants.KEYWORD_KEY, keyword)
+//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
             COMMAND_ID_SEARCH_POSTS -> {
                 val keyword = artwork.byline ?: return
-                context.startActivity(
-                    Intent(context, SearchActivity::class.java)
-                        .putExtra(Constants.KEYWORD_KEY, keyword)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+//                context.startActivity(
+//                    Intent(context, SearchActivity::class.java)
+//                        .putExtra(Constants.KEYWORD_KEY, keyword)
+//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
         }
     }

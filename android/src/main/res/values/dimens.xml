@@ -28,6 +28,7 @@
     <dimen name="post_item_margin">@dimen/list_padding_horizontal</dimen>
 
     <dimen name="list_padding_horizontal">4.5dp</dimen>
+    <dimen name="list_padding_top">63dp</dimen>
     <dimen name="swipe_refresh_layout_offset_start">10dp</dimen>
     <dimen name="swipe_refresh_layout_offset_end">90dp</dimen>
     <dimen name="header_item_height">64dp</dimen>

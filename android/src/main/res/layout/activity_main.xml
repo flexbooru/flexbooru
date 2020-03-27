@@ -28,11 +28,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager_container"
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="58dp"/>
+            android:layout_marginBottom="58dp"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_navigation"
+            tools:ignore="FragmentTagUsage" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"

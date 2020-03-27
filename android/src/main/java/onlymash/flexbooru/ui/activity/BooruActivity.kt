@@ -25,33 +25,41 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.serialization.parseList
+import kotlinx.serialization.stringify
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.database.BooruManager
-import onlymash.flexbooru.entity.common.Booru
-import onlymash.flexbooru.extension.copyTo
+import onlymash.flexbooru.data.database.dao.BooruDao
+import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
-import onlymash.flexbooru.ui.fragment.BooruConfigFragment
+import onlymash.flexbooru.ui.viewmodel.BooruViewModel
+import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
+import org.kodein.di.erased.instance
 import java.io.IOException
+import java.io.InputStream
 
 class BooruActivity : BaseActivity() {
 
+    private val booruDao: BooruDao by instance()
+
     private val booruAdapter by lazy { BooruAdapter(this) }
+
+    private lateinit var booruViewModel: BooruViewModel
 
     private val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
@@ -59,7 +67,6 @@ class BooruActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru)
         initToolbar()
-        BooruManager.isNotEmpty()
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         val animator = DefaultItemAnimator().apply {
             supportsChangeAnimations = false
@@ -70,27 +77,31 @@ class BooruActivity : BaseActivity() {
             itemAnimator = animator
             adapter = booruAdapter
         }
-        BooruManager.listeners.add(booruAdapter)
+        booruViewModel = getBooruViewModel(booruDao)
+        booruViewModel.loadBoorus().observe(this, Observer {
+            booruAdapter.updateBoorus(it)
+        })
         if (intent != null) {
             handleShareIntent(intent)
         }
     }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleShareIntent(intent)
     }
+
     private fun handleShareIntent(intent: Intent) {
         val sharedStr = intent.data?.toString()
         if (sharedStr.isNullOrEmpty()) return
-        val b = Booru.url2Booru(sharedStr)
-        if (b != null) {
+        Booru.url2Booru(sharedStr)?.let {
             AlertDialog.Builder(this)
                 .setTitle(R.string.booru_add_title_dialog)
                 .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                    BooruManager.createBooru(b)
+                    booruViewModel.createBooru(it)
                 }
                 .setNegativeButton(R.string.dialog_no, null)
-                .setMessage(b.toString())
+                .setMessage(sharedStr)
                 .create()
                 .show()
         }
@@ -157,7 +168,6 @@ class BooruActivity : BaseActivity() {
     }
 
     private fun addConfig() {
-        BooruConfigFragment.reset()
         startActivity(Intent(this, BooruConfigActivity::class.java))
     }
 
@@ -170,7 +180,7 @@ class BooruActivity : BaseActivity() {
         if (text != null || Uri.parse(text.toString()).scheme != "booru") {
             val booru = Booru.url2Booru(text.toString())
             if (booru != null) {
-                BooruManager.createBooru(booru)
+                booruViewModel.createBooru(booru)
             } else {
                 Snackbar.make(toolbar, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
             }
@@ -187,21 +197,21 @@ class BooruActivity : BaseActivity() {
                 val uri = data.data ?: return
                 GlobalScope.launch(Dispatchers.Main) {
                     val success = withContext(Dispatchers.IO) {
-                        val boorus = BooruManager.getAllBoorus()
+                        val boorus = booruAdapter.getBoorus()
                         if (boorus.isNullOrEmpty()) return@withContext false
-                        val jsonString = GsonBuilder()
-                            .setPrettyPrinting()
-                            .create()
-                            .toJson(boorus)
-                        val `is` = jsonString.byteInputStream()
-                        val os = contentResolver.openOutputStream(uri)
+                        val outputStream = contentResolver.openOutputStream(uri) ?: return@withContext false
+                        var inputStream: InputStream? = null
                         try {
-                            `is`.copyTo(os)
+                            inputStream = Json(JsonConfiguration(
+                                ignoreUnknownKeys = true,
+                                prettyPrint = true
+                            )).stringify(boorus).byteInputStream()
+                            inputStream.copyTo(outputStream)
                         } catch (_:IOException) {
                             return@withContext false
                         } finally {
-                            `is`.safeCloseQuietly()
-                            os?.safeCloseQuietly()
+                            inputStream?.safeCloseQuietly()
+                            outputStream.safeCloseQuietly()
                         }
                         return@withContext true
                     }
@@ -214,26 +224,21 @@ class BooruActivity : BaseActivity() {
             }
             REQUEST_CODE_RESTORE_FROM_FILE -> {
                 val uri = data.data ?: return
-                val `is` = contentResolver.openInputStream(uri) ?: return
+                val inputStream = contentResolver.openInputStream(uri) ?: return
+                var boorus: List<Booru>? = null
                 try {
-                    val jsonString = `is`.readBytes().toString(Charsets.UTF_8)
-                    val boorus = Gson().fromJson<MutableList<Booru>>(
-                        jsonString,
-                        object : TypeToken<MutableList<Booru>>(){}.type
-                    )?: return
-                    BooruManager.createBoorus(boorus)
+                    val jsonString = inputStream.readBytes().toString(Charsets.UTF_8)
+                    boorus = Json(JsonConfiguration(ignoreUnknownKeys = true)).parseList(jsonString)
                 } catch (_: Exception) {
 
                 } finally {
-                    `is`.close()
+                    inputStream.close()
+                }
+                boorus?.let {
+                    booruViewModel.createBoorus(it)
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        BooruManager.listeners.remove(booruAdapter)
-        super.onDestroy()
     }
 
     companion object {

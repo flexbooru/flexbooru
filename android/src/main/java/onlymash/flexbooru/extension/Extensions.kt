@@ -16,11 +16,9 @@
 package onlymash.flexbooru.extension
 
 import android.app.Activity
-import android.app.DownloadManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.text.StaticLayout
 import android.util.DisplayMetrics
@@ -31,10 +29,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.HttpHeaders
-import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.database.CookieManager
-import onlymash.flexbooru.entity.post.PostBase
 
 /**
  * An extension to `postponeEnterTransition` which will resume after a timeout.
@@ -104,43 +98,6 @@ fun Context.launchUrl(uri: Uri) = try {
 
 fun Context.launchUrl(url: String) = this.launchUrl(Uri.parse(url))
 
-fun Resources.gridWidth() = when (Settings.gridWidth) {
-    Settings.GRID_WIDTH_SMALL -> getDimensionPixelSize(R.dimen.post_item_width_small)
-    Settings.GRID_WIDTH_NORMAL -> getDimensionPixelSize(R.dimen.post_item_width_normal)
-    else -> getDimensionPixelSize(R.dimen.post_item_width_large)
-}
-
-fun Activity.downloadPost(post: PostBase?) {
-    if (post == null) return
-    var host = post.host
-    val id = post.getPostId()
-    val url = when (Settings.downloadSize) {
-        Settings.POST_SIZE_SAMPLE -> post.getSampleUrl()
-        Settings.POST_SIZE_LARGER -> post.getLargerUrl()
-        else -> post.getOriginUrl()
-    }
-    if (url.isEmpty()) return
-    var fileName = url.fileName()
-    if (!fileName.contains(' ')) fileName = "${post.getPostId()} - $fileName"
-    val uri = getDownloadUri(host, fileName)
-    val request = DownloadManager.Request(Uri.parse(url)).apply {
-        setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        setTitle(String.format("%s - %d", host, id))
-        setDescription(fileName)
-        setDestinationUri(uri)
-        addRequestHeader(HttpHeaders.UserAgent, getUserAgent())
-        if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "beta.")
-        addRequestHeader(HttpHeaders.Referrer, "${post.scheme}://$host/post")
-        CookieManager.getCookieByBooruUid(Settings.activeBooruUid)?.cookie?.let { cookie ->
-            addRequestHeader("Cookie", cookie)
-        }
-    }
-    try {
-        (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
-    } catch (ex: Exception) {
-        redirectToDownloadManagerSettings()
-    }
-}
 
 fun Context.redirectToDownloadManagerSettings() {
     try {

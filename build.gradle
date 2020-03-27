@@ -3,7 +3,8 @@ apply plugin: "com.github.ben-manes.versions"
 
 buildscript {
     ext {
-        kotlin_version = '1.3.70'
+        kotlin_version = '1.3.71'
+        nav_version = '2.3.0-alpha04'
         room_version = '2.2.5'
         work_version = '2.4.0-alpha01'
         glide_version = '4.11.0'
@@ -13,9 +14,9 @@ buildscript {
         retrofit_version = '2.7.2'
         tikxml_version = '0.9.3-SNAPSHOT'
         ktor_version = '1.3.2'
-        kodein_version = '6.5.3'
+        kodein_version = '6.5.4'
         coroutines_version = '1.3.5'
-        serialization_version = '0.13.0'
+        serialization_version = '0.20.0'
     }
     repositories {
         google()
