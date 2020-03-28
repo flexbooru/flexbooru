@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">一個支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 的 Android 用戶端。</string>
     <string name="title_posts">帖子</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
     <string name="title_settings">設定</string>
