@@ -88,6 +88,11 @@ class SearchBar @JvmOverloads constructor(
         title.text = text
     }
 
+    fun setEditText(text: CharSequence) {
+        editText.setText(text)
+        editText.setSelection(text.length)
+    }
+
     fun setLeftDrawable(drawable: Drawable) {
         leftButton.setImageDrawable(drawable)
     }
@@ -173,7 +178,7 @@ class SearchBar @JvmOverloads constructor(
         helper?.onEditTextBackPressed()
     }
 
-    private fun updateState(state: Int, animation: Boolean = true, showIME: Boolean) {
+    private fun updateState(state: Int, animation: Boolean = true, showIME: Boolean = false) {
         if (this.state == state) return
         val oldState = this.state
         this.state = state
@@ -203,7 +208,11 @@ class SearchBar @JvmOverloads constructor(
     }
 
     fun clearText() {
-        editText.text?.clear()
+        if (editText.text.isNullOrEmpty()) {
+            updateState(STATE_NORMAL)
+        } else {
+            editText.text?.clear()
+        }
     }
 
     private fun setIMEState(show: Boolean) {

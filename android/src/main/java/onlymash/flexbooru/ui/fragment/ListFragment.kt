@@ -4,6 +4,8 @@ import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageButton
+import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -106,6 +108,10 @@ abstract class ListFragment : BaseFragment(), SearchBar.Helper,
         searchBarMover = SearchBarMover(this, searchBar, list)
     }
 
+    fun setLeftDrawableProgress(@FloatRange(from = 0.0, to = 1.0) progress: Float) {
+        leftDrawable.progress = progress
+    }
+
     abstract fun getSearchBarHint(): CharSequence
 
     fun setSearchBarMenu(menuResId: Int) {
@@ -116,6 +122,14 @@ abstract class ListFragment : BaseFragment(), SearchBar.Helper,
 
     fun setSearchBarTitle(title: CharSequence) {
         searchBar.setTitle(title)
+    }
+
+    fun setSearchBarText(text: CharSequence) {
+        searchBar.setEditText(text)
+    }
+
+    fun getSearchBarLeftButton(): ImageButton {
+        return searchBar.getLeftButton()
     }
 
     val currentState: Int

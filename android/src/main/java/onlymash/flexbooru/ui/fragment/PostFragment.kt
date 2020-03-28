@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.getPostViewModel
@@ -67,7 +69,7 @@ class PostFragment : ListFragment() {
 
     private lateinit var viewTransition: ViewTransition
 
-    private lateinit var leftButton: View
+    private lateinit var leftButton: ImageButton
     private var rightButton: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,8 +102,12 @@ class PostFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         if (isPopularPage()) {
             setSearchBarTitle(getString(R.string.title_popular))
+        } else if (activity is SearchActivity) {
+            setLeftDrawableProgress(1.0f)
+            setSearchBarTitle(getString(R.string.title_search))
+            setSearchBarText(query)
         }
-        leftButton = view.findViewById(R.id.menu_button)
+        leftButton = getSearchBarLeftButton()
         viewTransition = ViewTransition(swipe_refresh, search_layout)
         val glide = GlideApp.with(this)
         postAdapter = PostAdapter(glide) {
@@ -347,5 +353,11 @@ class PostFragment : ListFragment() {
     private fun updateActionAndRefresh(action: ActionPost) {
         postViewModel.show(action)
         postViewModel.refresh()
+    }
+
+    override fun onApplySearch(query: String) {
+        context?.let {
+            SearchActivity.startSearch(it, query)
+        }
     }
 }
