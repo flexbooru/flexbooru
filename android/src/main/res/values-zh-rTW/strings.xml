@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">一個 Booru 安卓客戶端，支持Danbooru, Moebooru, Gelbooru, Sankaku, 之類的 Booru 系圖站。    </string>
     <string name="title_posts">貼圖</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
     <string name="title_settings">設定</string>
