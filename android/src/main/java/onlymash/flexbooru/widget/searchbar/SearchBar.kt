@@ -53,7 +53,7 @@ class SearchBar @JvmOverloads constructor(
 
     init {
         val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.widget_search_bar, this)
+        inflater.inflate(R.layout.widget_searchbar, this)
         editText = findViewById(R.id.search_edit_text)
         menuView = findViewById(R.id.search_bar_menu_view)
         leftButton = findViewById(R.id.menu_button)
@@ -107,7 +107,7 @@ class SearchBar @JvmOverloads constructor(
     val currentState: Int
         get() = state
 
-    private fun getQueryText(): String = (editText.text ?: "").toString().trim()
+    fun getQueryText(): String = (editText.text ?: "").toString().trim()
 
     fun setEditTextHint(hint: CharSequence) {
         editText.hint = hint

@@ -31,7 +31,7 @@ import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
 
-abstract class ListFragment : BaseFragment(), SearchBar.Helper,
+abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     SearchBar.StateListener, SearchBarMover.Helper {
 
     private val booruDao by instance<BooruDao>()
@@ -55,7 +55,7 @@ abstract class ListFragment : BaseFragment(), SearchBar.Helper,
     ): View? {
         booruViewModel = getBooruViewModel(booruDao)
         suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        return inflater.inflate(R.layout.fragment_searchbar, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -132,6 +132,8 @@ abstract class ListFragment : BaseFragment(), SearchBar.Helper,
         return searchBar.getLeftButton()
     }
 
+    fun getEditQuery(): String = searchBar.getQueryText()
+
     val currentState: Int
         get() =  searchBar.currentState
 
@@ -182,14 +184,15 @@ abstract class ListFragment : BaseFragment(), SearchBar.Helper,
     }
 
     override fun onFetchSuggestion(query: String) {
-        actionTag?.let {
-            it.query = when (it.booru.type) {
+        val action = actionTag ?: return
+        if (searchBar.currentState == SearchBar.STATE_SEARCH) {
+            action.query = when (action.booru.type) {
                 BOORU_TYPE_MOE,
                 BOORU_TYPE_DAN,
                 BOORU_TYPE_DAN1 -> "$query*"
                 else -> query
             }
-            suggestionViewModel.fetchSuggestions(it)
+            suggestionViewModel.fetchSuggestions(action)
         }
     }
 

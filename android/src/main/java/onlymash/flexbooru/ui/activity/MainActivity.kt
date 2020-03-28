@@ -48,6 +48,7 @@ import kotlinx.coroutines.launch
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.BOORU_UID_ACTIVATED_KEY
+import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.common.Settings.ORDER_SUCCESS_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Settings.isAvailableOnStore
@@ -62,7 +63,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.*
-import onlymash.flexbooru.ui.fragment.ListFragment
+import onlymash.flexbooru.ui.fragment.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import org.kodein.di.erased.instance
@@ -404,7 +405,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private fun isFragmentCanBack(): Boolean {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment)?.let { navHost ->
             val currentFragment = navHost.childFragmentManager.fragments.last()
-            if (currentFragment is ListFragment) {
+            if (currentFragment is SearchBarFragment) {
                 return currentFragment.onBackPressed()
             }
         }

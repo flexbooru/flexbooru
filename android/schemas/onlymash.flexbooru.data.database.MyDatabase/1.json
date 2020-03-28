@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ff2587b544004a32b24b682156a47a7e",
+    "identityHash": "29199a3ee8f36ce3731695ede59ff6a8",
     "entities": [
       {
         "tableName": "boorus",
@@ -359,60 +359,6 @@
         ]
       },
       {
-        "tableName": "tag_blacklist",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `tag` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
-        "fields": [
-          {
-            "fieldPath": "uid",
-            "columnName": "uid",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "booruUid",
-            "columnName": "booru_uid",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "tag",
-            "columnName": "tag",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "uid"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [
-          {
-            "name": "index_tag_blacklist_booru_uid_tag",
-            "unique": true,
-            "columnNames": [
-              "booru_uid",
-              "tag"
-            ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tag_blacklist_booru_uid_tag` ON `${TABLE_NAME}` (`booru_uid`, `tag`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "boorus",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "booru_uid"
-            ],
-            "referencedColumns": [
-              "uid"
-            ]
-          }
-        ]
-      },
-      {
         "tableName": "muzei",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `keyword` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
@@ -523,7 +469,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff2587b544004a32b24b682156a47a7e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '29199a3ee8f36ce3731695ede59ff6a8')"
     ]
   }
 }

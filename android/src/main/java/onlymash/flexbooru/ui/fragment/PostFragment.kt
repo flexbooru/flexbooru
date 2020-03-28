@@ -2,6 +2,7 @@ package onlymash.flexbooru.ui.fragment
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -13,29 +14,47 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.common.Keys.PAGE_TYPE
 import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
+import onlymash.flexbooru.common.Settings.PAGE_LIMIT_KEY
+import onlymash.flexbooru.common.Settings.SAFE_MODE_KEY
+import onlymash.flexbooru.common.Settings.SHOW_ALL_TAGS
+import onlymash.flexbooru.common.Settings.SHOW_INFO_BAR_KEY
 import onlymash.flexbooru.common.Settings.gridWidthResId
+import onlymash.flexbooru.common.Settings.isShowAllTags
 import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Settings.safeMode
+import onlymash.flexbooru.common.Settings.showInfoBar
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.database.MyDatabase
+import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
+import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
+import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
+import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.ui.viewmodel.getPostViewModel
+import onlymash.flexbooru.ui.viewmodel.getTagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
 import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.searchbar.SearchBar
@@ -53,7 +72,9 @@ private const val PERIOD_WEEK = "1w"
 private const val PERIOD_MONTH = "1m"
 private const val PERIOD_YEAR = "1y"
 
-class PostFragment : ListFragment() {
+class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private val sp by instance<SharedPreferences>()
 
     private lateinit var date: ActionPost.Date
 
@@ -61,6 +82,8 @@ class PostFragment : ListFragment() {
     private var currentPageType: Int = PAGE_TYPE_POSTS
     private lateinit var query: String
     private lateinit var postViewModel: PostViewModel
+
+    private lateinit var tagFilterViewModel: TagFilterViewModel
 
     private val db by instance<MyDatabase>()
     private val ioExecutor by instance<Executor>()
@@ -95,6 +118,7 @@ class PostFragment : ListFragment() {
             db = db,
             ioExecutor = ioExecutor
         ))
+        tagFilterViewModel = getTagFilterViewModel(TagFilterRepositoryImpl(db.tagFilterDao()))
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -109,8 +133,13 @@ class PostFragment : ListFragment() {
         }
         leftButton = getSearchBarLeftButton()
         viewTransition = ViewTransition(swipe_refresh, search_layout)
+        initPostsList()
+        sp.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun initPostsList() {
         val glide = GlideApp.with(this)
-        postAdapter = PostAdapter(glide) {
+        postAdapter = PostAdapter(glide, showInfoBar) {
             postViewModel.retry()
         }
         list.apply {
@@ -156,10 +185,60 @@ class PostFragment : ListFragment() {
                 setSearchBarMenu(R.menu.post)
                 rightButton = view?.findViewById(R.id.action_expand_or_clear)
             }
+            if (tags_filter_list.adapter == null) {
+                initFilterList(booru)
+            }
         } else {
             action == null
         }
         postViewModel.show(action)
+    }
+
+    private fun initFilterList(booru: Booru) {
+        val orders = resources.getStringArray(when(booru.type) {
+            BOORU_TYPE_DAN -> R.array.filter_order_danbooru
+            BOORU_TYPE_SANKAKU -> R.array.filter_order_sankaku
+            else -> R.array.filter_order
+        })
+        val ratings = resources.getStringArray(R.array.filter_rating)
+        val thresholds =
+            if (booru.type == BOORU_TYPE_SANKAKU)
+                resources.getStringArray(R.array.filter_threshold)
+            else arrayOf()
+        val tagFilterAdapter = TagFilterAdapter(
+            orders = orders,
+            ratings = ratings,
+            thresholds = thresholds,
+            booruType = booru.type
+        ) {
+            val text = getEditQuery()
+            if (text.isNotEmpty()) {
+                TagFilterManager.createTagFilter(
+                    TagFilter(
+                        booruUid = booru.uid,
+                        name = text
+                    )
+                )
+            }
+        }
+        tags_filter_list.apply {
+            layoutManager = FlexboxLayoutManager(requireContext()).apply {
+                flexWrap = FlexWrap.WRAP
+                flexDirection = FlexDirection.ROW
+                alignItems = AlignItems.STRETCH
+            }
+            adapter = tagFilterAdapter
+        }
+        tagFilterViewModel.loadTags().observe(viewLifecycleOwner, Observer {
+            tagFilterAdapter.updateData(it, booruUid = booru.uid, showAll = isShowAllTags)
+        })
+        action_search.setOnClickListener {
+            val context = context ?: return@setOnClickListener
+            val tagString = tagFilterAdapter.getSelectedTagsString()
+            if (tagString.isNotEmpty()) {
+                SearchActivity.startSearch(context, tagString)
+            }
+        }
     }
 
     private fun initDate() {
@@ -359,5 +438,37 @@ class PostFragment : ListFragment() {
         context?.let {
             SearchActivity.startSearch(it, query)
         }
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        val action = action ?: return
+        when (key) {
+            SHOW_ALL_TAGS -> {
+                val adapter = tags_filter_list.adapter
+                if (adapter is TagFilterAdapter) {
+                    adapter.updateData(action.booru.uid, isShowAllTags)
+                }
+            }
+            PAGE_LIMIT_KEY -> {
+                action.limit = pageLimit
+                postViewModel.show(action)
+            }
+            GRID_WIDTH_KEY -> {
+                list.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
+            }
+            SAFE_MODE_KEY -> {
+                action.isSafeMode = safeMode
+                updateActionAndRefresh(action)
+            }
+            SHOW_INFO_BAR_KEY -> {
+                postAdapter.showInfoBar = showInfoBar
+                postAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sp.unregisterOnSharedPreferenceChangeListener(this)
     }
 }

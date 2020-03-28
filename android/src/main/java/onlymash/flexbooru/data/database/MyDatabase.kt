@@ -27,8 +27,7 @@ import onlymash.flexbooru.data.database.dao.*
 @Database(
     entities = [
         (Booru::class), (User::class), (Post::class),
-        (TagFilter::class), (TagBlacklist::class),
-        (Muzei::class), (Cookie::class)
+        (TagFilter::class), (Muzei::class), (Cookie::class)
     ],
     version = 1,
     exportSchema = true)
@@ -54,8 +53,6 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
 
     abstract fun tagFilterDao(): TagFilterDao
-    abstract fun tagBlacklistDao(): TagBlacklistDao
-
     abstract fun cookieDao(): CookieDao
     abstract fun muzeiDao(): MuzeiDao
 }

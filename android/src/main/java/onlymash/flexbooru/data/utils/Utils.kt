@@ -1,6 +1,5 @@
 package onlymash.flexbooru.data.utils
 
-import onlymash.flexbooru.data.model.common.TagBlacklist
 import onlymash.flexbooru.common.Values.DATE_PATTERN_DAN as PATTERN_DAN
 import onlymash.flexbooru.common.Values.DATE_PATTERN_GEL as PATTERN_GEL
 import onlymash.flexbooru.extension.formatDate
@@ -27,11 +26,3 @@ fun String.formatDateDan(): CharSequence? =
 fun String.formatDateGel(): CharSequence? =
     SimpleDateFormat(PATTERN_GEL, Locale.ENGLISH)
         .parse(this)?.time?.formatDate()
-
-fun List<TagBlacklist>.toBlacklistString(): String {
-    var string = ""
-    forEach {
-        string = "$string -${it.tag}"
-    }
-    return string.trim()
-}

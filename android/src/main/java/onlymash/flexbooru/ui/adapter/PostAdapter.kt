@@ -7,12 +7,11 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.data.model.common.Post
-import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideRequests
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
@@ -20,6 +19,7 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 
 class PostAdapter(
     private val glide: GlideRequests,
+    var showInfoBar: Boolean,
     retryCallback: () -> Unit
 ) : BasePagedListAdapter<Post, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
 
@@ -33,8 +33,6 @@ class PostAdapter(
                         oldItem.id == newItem.id
         }
     }
-
-    private val showInfoBar = Settings.showInfoBar
 
     override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         PostViewHolder(LayoutInflater.from(parent.context)
@@ -54,11 +52,12 @@ class PostAdapter(
         private var post: Post? = null
 
         init {
-            infoContainer.toVisibility(showInfoBar)
+            infoContainer.isVisible = showInfoBar
         }
 
         fun bindTo(post: Post?) {
             this.post = post ?: return
+            infoContainer.isVisible = showInfoBar
             postId.text = String.format("#%d", post.id)
             postSize.text = String.format("%d x %d", post.width, postSize.height)
             val placeholderDrawable = when (post.rating) {

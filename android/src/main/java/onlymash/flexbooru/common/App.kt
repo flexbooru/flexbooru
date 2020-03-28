@@ -57,7 +57,6 @@ class App : Application(), KodeinAware {
         bind() from singleton { instance<MyDatabase>().userDao() }
         bind() from singleton { instance<MyDatabase>().cookieDao() }
         bind() from singleton { instance<MyDatabase>().tagFilterDao() }
-        bind() from singleton { instance<MyDatabase>().tagBlacklistDao() }
         bind() from singleton { instance<MyDatabase>().muzeiDao() }
         bind() from singleton { instance<MyDatabase>().postDao() }
         bind() from singleton { BooruApis() }
