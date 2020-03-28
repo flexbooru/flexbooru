@@ -53,7 +53,7 @@ data class ActionPost(
     private fun getPostsDanUrl(page: Int): HttpUrl {
         val builder = HttpUrl.Builder()
             .scheme(booru.scheme)
-            .host(booru.scheme)
+            .host(booru.host)
             .addPathSegment("posts.json")
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())

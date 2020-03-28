@@ -12,18 +12,8 @@ data class TagDan(
     val name: String,
     @SerialName("post_count")
     val postCount: Int,
-    @SerialName("related_tags")
-    val relatedTags: String,
-    @SerialName("related_tags_updated_at")
-    val relatedTagsUpdatedAt: String,
     @SerialName("category")
-    val category: Int,
-    @SerialName("created_at")
-    val createdAt: String,
-    @SerialName("updated_at")
-    val updatedAt: String,
-    @SerialName("is_locked")
-    val isLocked: Boolean
+    val category: Int
 ) {
     fun toTag(): Tag {
         return Tag(

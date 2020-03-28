@@ -12,9 +12,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import com.google.android.material.card.MaterialCardView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.toVisibility
+import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
 
 class SearchBar @JvmOverloads constructor(
@@ -131,15 +133,16 @@ class SearchBar @JvmOverloads constructor(
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         if (state != STATE_SEARCH) return
+        val text = (s?: "").trim()
         when {
-            s.isNullOrEmpty() -> {
+            text.isEmpty() -> {
                 if (suggestions.isNotEmpty()) {
                     suggestions.clear()
                     suggestionAdapter.notifyDataSetChanged()
                 }
             }
-            s.isNotEmpty() -> {
-                helper?.onFetchSuggestion(s.toString())
+            else -> {
+                helper?.onFetchSuggestion(text.toString())
             }
         }
     }
@@ -218,7 +221,23 @@ class SearchBar @JvmOverloads constructor(
     }
 
     private fun setSuggestionVisibility(state: Int = this.state) {
-        listContainer.toVisibility(state == STATE_SEARCH && suggestions.isNotEmpty())
+        if (state == STATE_SEARCH && suggestions.isNotEmpty()) {
+            showSuggestion()
+        } else {
+            hideSuggestion()
+        }
+    }
+
+    private fun hideSuggestion() {
+        if (listContainer.isVisible) {
+            ViewAnimation.collapse(listContainer)
+        }
+    }
+
+    private fun showSuggestion() {
+        if (!listContainer.isVisible) {
+            ViewAnimation.expand(listContainer)
+        }
     }
 
     interface Helper {

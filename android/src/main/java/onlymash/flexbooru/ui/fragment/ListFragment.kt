@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.UserManager
@@ -166,7 +169,12 @@ abstract class ListFragment : BaseFragment(), SearchBar.Helper,
 
     override fun onFetchSuggestion(query: String) {
         actionTag?.let {
-            it.query = "$query*"
+            it.query = when (it.booru.type) {
+                BOORU_TYPE_MOE,
+                BOORU_TYPE_DAN,
+                BOORU_TYPE_DAN1 -> "$query*"
+                else -> query
+            }
             suggestionViewModel.fetchSuggestions(it)
         }
     }

@@ -1,6 +1,7 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.getPostViewModel
 import onlymash.flexbooru.util.ViewTransition
+import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import org.kodein.di.erased.instance
 import java.util.Calendar
@@ -200,6 +202,35 @@ class PostFragment : ListFragment() {
                     SearchBar.STATE_EXPAND -> clearSearchBarText()
                 }
             }
+            R.id.action_date -> {
+                pickDate()
+            }
+            R.id.action_date_range -> {
+                if (action?.booru?.type == BOORU_TYPE_SANKAKU) {
+                    pickDateRange()
+                }
+            }
+            R.id.action_day -> {
+                action?.let {
+                    it.scale = SCALE_DAY
+                    it.period = PERIOD_DAY
+                    updateActionAndRefresh(it)
+                }
+            }
+            R.id.action_week -> {
+                action?.let {
+                    it.scale = SCALE_WEEK
+                    it.period = PERIOD_WEEK
+                    updateActionAndRefresh(it)
+                }
+            }
+            R.id.action_month -> {
+                action?.let {
+                    it.scale = SCALE_MONTH
+                    it.period = PERIOD_MONTH
+                    updateActionAndRefresh(it)
+                }
+            }
         }
     }
 
@@ -237,5 +268,84 @@ class PostFragment : ListFragment() {
         } else {
             true
         }
+    }
+
+    private fun pickDate() {
+        val context = context ?: return
+        val currentTimeMillis = System.currentTimeMillis()
+        val minCalendar = Calendar.getInstance(Locale.US).apply {
+            timeInMillis = currentTimeMillis
+            add(Calendar.YEAR, -20)
+        }
+        DatePickerDialog(
+            context,
+            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                date.year = year
+                date.month = month
+                date.day = dayOfMonth
+                action?.let {
+                    it.date = date
+                    updateActionAndRefresh(it)
+                }
+            },
+            date.year,
+            date.month,
+            date.day
+        ).apply {
+            datePicker.apply {
+                minDate = minCalendar.timeInMillis
+                maxDate = currentTimeMillis
+            }
+        }
+            .show()
+    }
+
+    private fun pickDateRange() {
+        val context = context ?: return
+        val currentTimeMillis = System.currentTimeMillis()
+        val minCalendar = Calendar.getInstance(Locale.US).apply {
+            timeInMillis = currentTimeMillis
+            add(Calendar.YEAR, -20)
+        }
+        val callback = object : DateRangePickerDialogFragment.OnDateRangeSetListener {
+            override fun onDateRangeSet(
+                startDay: Int,
+                startMonth: Int,
+                startYear: Int,
+                endDay: Int,
+                endMonth: Int,
+                endYear: Int
+            ) {
+                date.apply {
+                    day = startDay
+                    month = startMonth
+                    year = startYear
+                    dayEnd = endDay
+                    monthEnd = endMonth
+                    yearEnd = endYear
+                }
+                action?.let {
+                    it.date = date
+                    updateActionAndRefresh(it)
+                }
+            }
+        }
+        DateRangePickerDialogFragment.newInstance(
+            listener = callback,
+            startDay = date.day,
+            startMonth = date.month,
+            startYear = date.year,
+            endDay = date.dayEnd,
+            endMonth = date.monthEnd,
+            endYear = date.yearEnd,
+            minDate = minCalendar.timeInMillis,
+            maxDate = currentTimeMillis
+        )
+            .show(childFragmentManager, "DateRangePicker")
+    }
+
+    private fun updateActionAndRefresh(action: ActionPost) {
+        postViewModel.show(action)
+        postViewModel.refresh()
     }
 }
