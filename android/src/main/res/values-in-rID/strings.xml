@@ -17,6 +17,7 @@
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Posting</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Populer</string>
     <string name="title_manage_boorus">Kelola Booru</string>
     <string name="title_settings">Pengaturan</string>
