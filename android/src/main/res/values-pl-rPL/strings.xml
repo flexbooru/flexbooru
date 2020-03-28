@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">Klient booru dla Androida, obsługuje Danbooru, Moebooru, Gelbooru, Sankaku, itd.</string>
     <string name="title_posts">Posty</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Popularne</string>
     <string name="title_manage_boorus">Zarządzaj boorami</string>
     <string name="title_settings">Ustawienia</string>
