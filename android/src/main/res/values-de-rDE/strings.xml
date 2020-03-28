@@ -17,6 +17,7 @@
     <string name="app_description">Ein Booru-Client für Android; Unterstützung für Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Beiträge</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Beliebt</string>
     <string name="title_manage_boorus">Boorus verwalten</string>
     <string name="title_settings">Einstellungen</string>
