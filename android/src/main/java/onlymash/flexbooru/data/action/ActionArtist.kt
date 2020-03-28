@@ -1,62 +1,66 @@
 package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.User
 
 data class ActionArtist(
-    var scheme: String = "https",
-    var host: String,
-    var booruType: Int = BOORU_TYPE_DAN,
-    var token: String = "",
+    var booru: Booru,
+    var user: User? = null,
     var query: String,
     // danbooru: name, updated_at, post_count (Defaults to ID).
     // moebooru: name, date
     var order: String,
-    var limit: Int,
-    var username: String = ""
+    var limit: Int
 ) {
     fun getDanArtistsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("artists.json")
             .addQueryParameter("search[any_name_matches]", query)
             .addQueryParameter("search[order]", order)
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("api_key", token)
             .addQueryParameter("only", "id,name,urls")
             .addQueryParameter("commit", "Search")
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("api_key", it.token)
+        }
+        return builder.build()
     }
 
     fun getDan1ArtistsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("artist")
             .addPathSegment("index.json")
             .addQueryParameter("name", query)
             .addQueryParameter("order", order)
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("password_hash", token)
             .addQueryParameter("commit", "Search")
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("api_key", it.token)
+        }
+        return builder.build()
     }
 
     fun getMoeArtistsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("artist.json")
             .addQueryParameter("name", query)
             .addQueryParameter("order", order)
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("password_hash", token)
             .addQueryParameter("commit", "Search")
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("password_hash", it.token)
+        }
+        return builder.build()
     }
 }

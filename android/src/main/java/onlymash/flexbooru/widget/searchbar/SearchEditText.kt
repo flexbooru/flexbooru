@@ -1,4 +1,4 @@
-package onlymash.flexbooru.widget
+package onlymash.flexbooru.widget.searchbar
 
 import android.content.Context
 import android.util.AttributeSet

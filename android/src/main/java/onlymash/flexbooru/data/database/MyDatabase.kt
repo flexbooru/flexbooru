@@ -21,14 +21,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import onlymash.flexbooru.common.Values.DB_FILE_NAME
-import onlymash.flexbooru.data.model.autocomplete.Suggestion
 import onlymash.flexbooru.data.model.common.*
 import onlymash.flexbooru.data.database.dao.*
 
 @Database(
     entities = [
         (Booru::class), (User::class), (Post::class),
-        (Suggestion::class), (TagFilter::class), (TagBlacklist::class),
+        (TagFilter::class), (TagBlacklist::class),
         (Muzei::class), (Cookie::class)
     ],
     version = 1,
@@ -54,7 +53,6 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun postDao(): PostDao
 
-    abstract fun suggestionDao(): SuggestionDao
     abstract fun tagFilterDao(): TagFilterDao
     abstract fun tagBlacklistDao(): TagBlacklistDao
 

@@ -56,7 +56,6 @@ class App : Application(), KodeinAware {
         bind() from singleton { instance<MyDatabase>().booruDao() }
         bind() from singleton { instance<MyDatabase>().userDao() }
         bind() from singleton { instance<MyDatabase>().cookieDao() }
-        bind() from singleton { instance<MyDatabase>().suggestionDao() }
         bind() from singleton { instance<MyDatabase>().tagFilterDao() }
         bind() from singleton { instance<MyDatabase>().tagBlacklistDao() }
         bind() from singleton { instance<MyDatabase>().muzeiDao() }

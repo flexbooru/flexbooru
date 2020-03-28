@@ -111,7 +111,7 @@ class ArtistDataSource(
     private suspend fun getArtists(action: ActionArtist, page: Int): NetResult<List<Artist>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response =  when (action.booruType) {
+                val response =  when (action.booru.type) {
                     BOORU_TYPE_DAN -> booruApis.danApi.getArtists(action.getDanArtistsUrl(page))
                     BOORU_TYPE_DAN1 -> booruApis.dan1Api.getArtists(action.getDan1ArtistsUrl(page))
                     else -> booruApis.moeApi.getArtists(action.getMoeArtistsUrl(page))

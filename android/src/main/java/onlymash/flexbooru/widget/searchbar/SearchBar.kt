@@ -1,4 +1,4 @@
-package onlymash.flexbooru.widget
+package onlymash.flexbooru.widget.searchbar
 
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
@@ -11,12 +11,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.card.MaterialCardView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.toVisibility
-import onlymash.flexbooru.util.Logger
 import onlymash.flexbooru.util.ViewTransition
 
 class SearchBar @JvmOverloads constructor(
@@ -61,12 +59,12 @@ class SearchBar @JvmOverloads constructor(
         dividerHeader = findViewById(R.id.divider_header)
         listView = findViewById(R.id.list_view)
         listContainer = findViewById(R.id.list_container)
+
         listContainer.toVisibility(false)
         menuView.setOnMenuItemClickListener {
             helper?.onMenuItemClick(it)
             true
         }
-
         leftButton.setOnClickListener(this)
         title.setOnClickListener(this)
         viewTransition = ViewTransition(title, editText)
@@ -84,7 +82,7 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
-    fun setTitle(text: String) {
+    fun setTitle(text: CharSequence) {
         title.text = text
     }
 
@@ -95,8 +93,12 @@ class SearchBar @JvmOverloads constructor(
     fun getLeftButton(): ImageButton = leftButton
 
     fun setMenu(menuId: Int, menuInflater: MenuInflater) {
+        menuView.menu.clear()
         menuInflater.inflate(menuId, menuView.menu)
     }
+
+    val currentState: Int
+        get() = state
 
     private fun getQueryText(): String = (editText.text ?: "").toString().trim()
 
@@ -115,7 +117,6 @@ class SearchBar @JvmOverloads constructor(
                 }
             }
             title -> {
-                Logger.w("OnClick", "click title")
                 helper?.onClickTitle()
                 if (state == STATE_NORMAL) {
                     updateState(state = STATE_SEARCH, showIME = true)
@@ -156,7 +157,8 @@ class SearchBar @JvmOverloads constructor(
 
     override fun onBackPressed() {
         when (state) {
-            STATE_SEARCH -> updateState(STATE_NORMAL, showIME = false)
+            STATE_SEARCH -> updateState(
+                STATE_NORMAL, showIME = false)
             STATE_EXPAND -> {
                 if (inputMethodManager.isActive(editText)) {
                     hideIME()
@@ -189,6 +191,18 @@ class SearchBar @JvmOverloads constructor(
         stateListener?.onStateChange(state, oldState, animation)
     }
 
+    fun toExpandState() {
+        updateState(STATE_EXPAND, animation = true, showIME = false)
+    }
+
+    fun toNormalState() {
+        updateState(STATE_NORMAL, animation = true, showIME = false)
+    }
+
+    fun clearText() {
+        editText.text?.clear()
+    }
+
     private fun setIMEState(show: Boolean) {
         if (show) {
             inputMethodManager.showSoftInput(editText, 0)
@@ -211,7 +225,6 @@ class SearchBar @JvmOverloads constructor(
         fun onLeftButtonClick()
         fun onMenuItemClick(menuItem: MenuItem)
         fun onClickTitle()
-        fun onEditTextClick()
         fun onApplySearch(query: String)
         fun onEditTextBackPressed()
         fun onFetchSuggestion(query: String)

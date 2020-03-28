@@ -58,7 +58,7 @@ class PoolDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
         scope.launch {
-            when(val result = when(action.booruType) {
+            when(val result = when(action.booru.type) {
                 BOORU_TYPE_DAN -> getDanPools(action, 1)
                 BOORU_TYPE_DAN1 -> getDan1Pools(action, 1)
                 BOORU_TYPE_MOE -> getMoePools(action, 1)
@@ -94,7 +94,7 @@ class PoolDataSource(
         networkState.postValue(NetworkState.LOADING)
         val page = params.key
         scope.launch {
-            when(val result = when(action.booruType) {
+            when(val result = when(action.booru.type) {
                 BOORU_TYPE_DAN -> getDanPools(action, page)
                 BOORU_TYPE_DAN1 -> getDan1Pools(action,  page)
                 BOORU_TYPE_MOE -> getMoePools(action, page)

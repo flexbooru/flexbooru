@@ -25,38 +25,17 @@ import java.sql.SQLException
 
 object UserManager {
 
-    interface Listener {
-        fun onAdd(user: User)
-        fun onDelete(user: User)
-        fun onUpdate(user: User)
-    }
-
-    val listeners: MutableList<Listener> = mutableListOf()
-
     private val userDao: UserDao by App.app.instance()
 
     @Throws(SQLException::class)
     fun createUser(user: User): User {
         user.uid = 0
         user.uid = userDao.insert(user)
-        if (user.uid >= 0) {
-            listeners.forEach {
-                it.onAdd(user)
-            }
-        }
         return user
     }
 
     @Throws(SQLException::class)
-    fun updateUser(user: User): Boolean {
-        val result = userDao.update(user) == 1
-        if (result) {
-            listeners.forEach {
-                it.onUpdate(user)
-            }
-        }
-        return result
-    }
+    fun updateUser(user: User): Boolean = userDao.update(user) == 1
 
     @Throws(IOException::class)
     fun getUserByBooruUid(booruUid: Long): User? = try {
@@ -79,13 +58,7 @@ object UserManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteUser(user: User) {
-        if (userDao.delete(user.uid) == 1) {
-            listeners.forEach {
-                it.onDelete(user)
-            }
-        }
-    }
+    fun deleteUser(user: User) = userDao.delete(user.uid) == 1
 
     @Throws(SQLException::class)
     fun deleteAll() = userDao.deleteAll()

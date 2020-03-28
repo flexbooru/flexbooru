@@ -1,41 +1,38 @@
 package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.User
 
 data class ActionVote(
-    var scheme: String = "https",
-    var host: String,
-    var booruType: Int = BOORU_TYPE_DAN,
-    var username: String = "",
-    var token: String = "",
-    var booruUid: Long,
+    var booru: Booru,
+    var user: User? = null,
     var postId: Int
 ) {
     fun getDan1AddFavUrl(): String =
-        String.format("%s://%s/favorite/create.json", scheme, host)
+        String.format("%s://%s/favorite/create.json", booru.scheme, booru.host)
 
     fun getDan1RemoveFavUrl(): String =
-        String.format("%s://%s/favorite/destroy.json", scheme, host)
+        String.format("%s://%s/favorite/destroy.json", booru.scheme, booru.host)
 
     fun getDanAddFavUrl(): String =
-        String.format("%s://%s/favorites.json", scheme, host)
+        String.format("%s://%s/favorites.json", booru.scheme, booru.host)
 
     fun getDanRemoveFavUrl(): HttpUrl {
         return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("favorites")
             .addPathSegment("${postId}.json")
-            .addQueryParameter("login", username)
-            .addQueryParameter("api_key", token)
+            .addQueryParameter("login", user?.name)
+            .addQueryParameter("api_key", user?.token)
             .build()
     }
 
     fun getGelAddFavUrl(): HttpUrl {
         return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("public")
             .addPathSegment("addfav.php")
             .addQueryParameter("id", postId.toString())
@@ -44,8 +41,8 @@ data class ActionVote(
 
     fun getGelRemoveFavUrl(): HttpUrl {
         return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("index.php")
             .addQueryParameter("page", "favorites")
             .addQueryParameter("s", "delete")
@@ -54,13 +51,13 @@ data class ActionVote(
     }
 
     fun getMoeVoteUrl(): String =
-        String.format("%s://%s/post/vote.json", scheme, host)
+        String.format("%s://%s/post/vote.json", booru.scheme, booru.host)
 
     fun getSankakuAddFavUrl(): String =
-        String.format("%s://%s/favorite/create.json", scheme,
-            host.replaceFirst("capi-v2.", "chan."))
+        String.format("%s://%s/favorite/create.json", booru.scheme,
+            booru.host.replaceFirst("capi-v2.", "chan."))
 
     fun getSankakuRemoveFavUrl(): String =
-        String.format("%s://%s/favorite/destroy.json", scheme,
-            host.replaceFirst("capi-v2.", "chan."))
+        String.format("%s://%s/favorite/destroy.json", booru.scheme,
+            booru.host.replaceFirst("capi-v2.", "chan."))
 }

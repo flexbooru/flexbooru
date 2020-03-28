@@ -16,7 +16,6 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -35,23 +34,14 @@
 
     <include layout="@layout/search_layout"/>
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <onlymash.flexbooru.widget.searchbar.SearchBar
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
-        app:elevation="0dp">
-
-        <onlymash.flexbooru.widget.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_bar_height"
-            android:touchscreenBlocksFocus="false"
-            android:layout_marginVertical="@dimen/search_bar_vertical_margin"
-            android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
-            app:layout_scrollFlags="scroll|snap|enterAlways"
-            style="@style/AppTheme.CardView.SearchBar"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:minHeight="@dimen/search_bar_height"
+        android:touchscreenBlocksFocus="false"
+        android:layout_marginVertical="@dimen/search_bar_vertical_margin"
+        android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
+        style="@style/AppTheme.CardView.SearchBar"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

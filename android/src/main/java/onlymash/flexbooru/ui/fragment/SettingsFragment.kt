@@ -25,8 +25,11 @@ import androidx.preference.PreferenceFragmentCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.data.database.SuggestionManager
+import onlymash.flexbooru.common.Settings.CLEAR_CACHE_KEY
+import onlymash.flexbooru.common.Settings.DOWNLOAD_PATH_KEY
+import onlymash.flexbooru.common.Settings.NIGHT_MODE_KEY
+import onlymash.flexbooru.common.Settings.downloadDirPath
+import onlymash.flexbooru.common.Settings.nightMode
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.trimCache
@@ -53,11 +56,11 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            Settings.DOWNLOAD_PATH_KEY -> {
+            DOWNLOAD_PATH_KEY -> {
                 initPathSummary()
             }
-            Settings.NIGHT_MODE_KEY -> {
-                AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
+            NIGHT_MODE_KEY -> {
+                AppCompatDelegate.setDefaultNightMode(nightMode)
             }
         }
     }
@@ -68,19 +71,19 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
     }
 
     private fun initPathSummary() {
-        var path = Settings.downloadDirPath
+        var path = downloadDirPath
         if (path.isNullOrEmpty()) {
             path = getString(R.string.settings_download_path_not_set)
         }
-        findPreference<Preference>(Settings.DOWNLOAD_PATH_KEY)?.summary = path
+        findPreference<Preference>(DOWNLOAD_PATH_KEY)?.summary = path
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            Settings.DOWNLOAD_PATH_KEY -> {
+            DOWNLOAD_PATH_KEY -> {
                 requireActivity().openDocumentTree()
             }
-            Settings.CLEAR_CACHE_KEY -> {
+            CLEAR_CACHE_KEY -> {
                 AlertDialog.Builder(requireContext())
                     .setTitle(R.string.settings_clear_cache)
                     .setMessage(R.string.settings_clear_cache_dialog_content)
@@ -94,16 +97,6 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
                                 it.trimCache()
                             }
                         }
-                    }
-                    .show()
-            }
-            Settings.CLEAR_HISTORY_KEY -> {
-                AlertDialog.Builder(requireContext())
-                    .setTitle(R.string.settings_clear_history)
-                    .setMessage(R.string.settings_clear_history_dialog_content)
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                        SuggestionManager.deleteAll()
                     }
                     .show()
             }

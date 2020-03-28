@@ -29,7 +29,7 @@ import onlymash.flexbooru.data.model.common.Tag
 class SuggestionRepositoryImpl(private val booruApis: BooruApis) : SuggestionRepository {
 
     override suspend fun fetchSuggestions(action: ActionTag): List<Tag>? {
-        return when (action.booruType) {
+        return when (action.booru.type) {
             BOORU_TYPE_DAN -> getDanTags(action)
             BOORU_TYPE_DAN1 -> getDan1Tags(action)
             BOORU_TYPE_MOE -> getMoeTags(action)

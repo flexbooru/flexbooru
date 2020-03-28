@@ -35,7 +35,7 @@ class VoteRepositoryImpl(
 ): VoteRepository {
 
     override suspend fun addFav(action: ActionVote): NetResult<Boolean> {
-        return when (action.booruType) {
+        return when (action.booru.type) {
             BOORU_TYPE_DAN -> addDanFav(action)
             BOORU_TYPE_DAN1 -> addDan1Fav(action)
             BOORU_TYPE_MOE -> voteMoePost(action, 3)
@@ -45,7 +45,7 @@ class VoteRepositoryImpl(
     }
 
     override suspend fun removeFav(action: ActionVote): NetResult<Boolean> {
-        return when (action.booruType) {
+        return when (action.booru.type) {
             BOORU_TYPE_DAN -> removeDanFav(action)
             BOORU_TYPE_DAN1 -> removeDan1Fav(action)
             BOORU_TYPE_MOE -> voteMoePost(action, 0)
@@ -59,7 +59,7 @@ class VoteRepositoryImpl(
             try {
                 val response = booruApis.gelApi.favPost(action.getGelAddFavUrl())
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = true)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -81,11 +81,11 @@ class VoteRepositoryImpl(
                     url = action.getMoeVoteUrl(),
                     id = action.postId,
                     score = score,
-                    username = action.username,
-                    passwordHash = action.token
+                    username = action.user?.name ?: "",
+                    passwordHash = action.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = score != 0)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = score != 0)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -109,11 +109,11 @@ class VoteRepositoryImpl(
                 val response = booruApis.danApi.favPost(
                     url = action.getDanAddFavUrl(),
                     id = action.postId,
-                    username = action.username,
-                    apiKey = action.token
+                    username = action.user?.name ?: "",
+                    apiKey = action.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = true)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -122,7 +122,7 @@ class VoteRepositoryImpl(
                 if (e is HttpException) {
                     val code = e.code()
                     if (code == 500) {
-                        postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = true)
+                        postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                         NetResult.Success(true)
                     } else NetResult.Error("code: ${e.code()}")
                 } else NetResult.Error(e.message.toString())
@@ -135,7 +135,7 @@ class VoteRepositoryImpl(
             try {
                 val response = booruApis.danApi.removeFavPost(action.getDanRemoveFavUrl())
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = false)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = false)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -155,11 +155,11 @@ class VoteRepositoryImpl(
                 val response = booruApis.dan1Api.favPost(
                     url = action.getDan1RemoveFavUrl(),
                     id = action.postId,
-                    username = action.username,
-                    passwordHash = action.token
+                    username = action.user?.name ?: "",
+                    passwordHash = action.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = true)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -179,11 +179,11 @@ class VoteRepositoryImpl(
                 val response = booruApis.dan1Api.removeFavPost(
                     url = action.getDan1RemoveFavUrl(),
                     postId = action.postId,
-                    username = action.username,
-                    passwordHash = action.token
+                    username = action.user?.name ?: "",
+                    passwordHash = action.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = false)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = false)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -203,11 +203,11 @@ class VoteRepositoryImpl(
                 val response = booruApis.sankakuApi.favPost(
                     url = action.getSankakuAddFavUrl(),
                     postId = action.postId,
-                    username = action.username,
-                    passwordHash = action.token
+                    username = action.user?.name ?: "",
+                    passwordHash = action.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = true)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -227,12 +227,12 @@ class VoteRepositoryImpl(
                 val response = booruApis.sankakuApi.removeFavPost(
                     url = action.getSankakuRemoveFavUrl(),
                     postId = action.postId,
-                    username = action.username,
-                    passwordHash = action.token
+                    username = action.user?.name ?: "",
+                    passwordHash = action.user?.token ?: ""
                 )
                 val data = response.body()
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booruUid, postId = action.postId, isFavored = false)
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = false)
                     NetResult.Success(true)
                 } else {
                     NetResult.Error("code: ${response.code()}")

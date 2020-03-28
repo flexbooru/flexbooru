@@ -1,66 +1,72 @@
 package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.User
 
 data class ActionPool(
-    var scheme: String = "https",
-    var host: String,
-    var booruUid: String,
-    var booruType: Int = -1,
+    var booru: Booru,
+    var user: User? = null,
     var query: String = "",
-    var limit: Int = 20,
-    var username: String = "",
-    var token: String = ""
+    var limit: Int = 20
 ) {
 
     fun getDanPoolsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("pools.json")
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("search[name_matches]", query)
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("api_key", token)
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("api_key", it.token)
+        }
+        return builder.build()
     }
 
     fun getDan1PoolsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("pool")
             .addPathSegment("index.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("password_hash", token)
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("password_hash", it.token)
+        }
+        return builder.build()
     }
 
     fun getMoePoolsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("pool.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("password_hash", token)
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("password_hash", it.token)
+        }
+        return builder.build()
     }
 
     fun getSankakuPoolsUrl(page: Int): HttpUrl {
-        return HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
             .addPathSegment("pools")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
             .addQueryParameter("limit", limit.toString())
-            .addQueryParameter("login", username)
-            .addQueryParameter("password_hash", token)
-            .build()
+        user?.let {
+            builder.addQueryParameter("login", it.name)
+            builder.addQueryParameter("password_hash", it.token)
+        }
+        return builder.build()
     }
 }

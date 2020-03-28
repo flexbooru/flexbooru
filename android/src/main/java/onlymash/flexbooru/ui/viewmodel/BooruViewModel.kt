@@ -37,9 +37,11 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
         return true
     }
 
-    fun createBooru(booru: Booru) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun createBooru(booru: Booru): Long {
+        return try {
             booruDao.insert(booru)
+        } catch (_: Exception) {
+            -1L
         }
     }
 

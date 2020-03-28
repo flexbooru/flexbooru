@@ -59,7 +59,7 @@ class TagDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
         scope.launch {
-            when(val result = when(action.booruType) {
+            when(val result = when(action.booru.type) {
                 BOORU_TYPE_DAN -> getDanTags(action, 1)
                 BOORU_TYPE_DAN1 -> getDan1Tags(action, 1)
                 BOORU_TYPE_MOE -> getMoeTags(action, 1)
@@ -95,7 +95,7 @@ class TagDataSource(
         networkState.postValue(NetworkState.LOADING)
         val page = params.key
         scope.launch {
-            when(val result = when(action.booruType) {
+            when(val result = when(action.booru.type) {
                 BOORU_TYPE_DAN -> getDanTags(action, page)
                 BOORU_TYPE_DAN1 -> getDan1Tags(action,  page)
                 BOORU_TYPE_MOE -> getMoeTags(action, page)
