@@ -81,8 +81,8 @@ class CommentRepositoryImpl(
                     url = action.getDanCreateCommentUrl(),
                     body = action.body,
                     anonymous = action.anonymous,
-                    username = action.user?.name ?: "",
-                    apiKey = action.user?.token ?: "",
+                    username = action.booru.user?.name ?: "",
+                    apiKey = action.booru.user?.token ?: "",
                     postId = action.postId
                 )
                 if (response.isSuccessful) {
@@ -103,8 +103,8 @@ class CommentRepositoryImpl(
                     url = action.getDan1CreateCommentUrl(),
                     body = action.body,
                     anonymous = action.anonymous,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: "",
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: "",
                     postId = action.postId
                 )
                 if (response.isSuccessful) {
@@ -126,8 +126,8 @@ class CommentRepositoryImpl(
                     postId = action.postId,
                     body = action.body,
                     anonymous = action.anonymous,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     NetResult.Success(true)
@@ -147,8 +147,8 @@ class CommentRepositoryImpl(
                     url = action.getSankakuCreateCommentUrl(),
                     body = action.body,
                     anonymous = action.anonymous,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: "",
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: "",
                     postId = action.postId
                 )
                 if (response.isSuccessful) {
@@ -167,8 +167,8 @@ class CommentRepositoryImpl(
             try {
                 val response = booruApis.danApi.deleteComment(
                     url = action.getDanDeleteCommentUrl(),
-                    username = action.user?.name ?: "",
-                    apiKey = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    apiKey = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     NetResult.Success(true)
@@ -187,8 +187,8 @@ class CommentRepositoryImpl(
                 val response = booruApis.dan1Api.destroyComment(
                     url = action.getDan1DestroyCommentUrl(),
                     commentId = action.commentId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     NetResult.Success(true)
@@ -207,8 +207,8 @@ class CommentRepositoryImpl(
                 val response = booruApis.moeApi.destroyComment(
                     url = action.getMoeDestroyCommentUrl(),
                     commentId = action.commentId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     NetResult.Success(true)
@@ -227,8 +227,8 @@ class CommentRepositoryImpl(
                 val response = booruApis.sankakuApi.destroyComment(
                     url = action.getSankakuDestroyCommentUrl(),
                     commentId = action.commentId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     NetResult.Success(true)

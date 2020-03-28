@@ -4,13 +4,11 @@ import okhttp3.HttpUrl
 import onlymash.flexbooru.common.Values.ONLY_FIELD_POSTS_DAN
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 
 private const val SAFE_MODE_TAG = "rating:safe"
 
 data class ActionPost(
     var booru: Booru,
-    var user: User? = null,
     var pageType: Int = PAGE_TYPE_POSTS,
     var limit: Int,
     var query: String = "",
@@ -65,7 +63,7 @@ data class ActionPost(
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
 
-        user?.let { 
+        booru.user?.let { 
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("api_key", it.token)
@@ -89,7 +87,7 @@ data class ActionPost(
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("password_hash", it.token)
@@ -115,7 +113,7 @@ data class ActionPost(
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("user_id", it.id.toString())
                 addQueryParameter("api_key", it.token)
@@ -138,7 +136,7 @@ data class ActionPost(
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("password_hash", it.token)
@@ -161,7 +159,7 @@ data class ActionPost(
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("password_hash", it.token)
@@ -180,7 +178,7 @@ data class ActionPost(
             .addQueryParameter("date", date.getDateString())
             .addQueryParameter("scale", scale)
             .addQueryParameter("only", ONLY_FIELD_POSTS_DAN)
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("api_key", it.token)
@@ -199,7 +197,7 @@ data class ActionPost(
             .addQueryParameter("month", (date.month + 1).toString())
             .addQueryParameter("year", date.year.toString())
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("password_hash", it.token)
@@ -218,7 +216,7 @@ data class ActionPost(
             .addQueryParameter("month", (date.month + 1).toString())
             .addQueryParameter("year", date.year.toString())
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("password_hash", it.token)
@@ -242,7 +240,7 @@ data class ActionPost(
             builder.addQueryParameter("tags", tags)
         }
 
-        user?.let {
+        booru.user?.let {
             builder.apply {
                 addQueryParameter("login", it.name)
                 addQueryParameter("password_hash", it.token)

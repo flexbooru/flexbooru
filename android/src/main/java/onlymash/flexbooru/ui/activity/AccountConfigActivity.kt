@@ -19,6 +19,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 
@@ -34,7 +35,6 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.HASH_SALT_CONTAINED
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.data.database.UserManager
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.extension.NetResult
@@ -131,14 +131,11 @@ class AccountConfigActivity : BaseActivity() {
                     BOORU_TYPE_MOE,
                     BOORU_TYPE_DAN1,
                     BOORU_TYPE_SANKAKU -> {
-                        user.apply {
-                            booruUid = booru.uid
-                            token = userToken
-                        }
-                        UserManager.createUser(user)
+                        user.token = userToken
+                        updateUser(user)
                     }
                     BOORU_TYPE_GEL -> {
-                        UserManager.createUser(user)
+                        updateUser(user)
                     }
                 }
                 startActivity(Intent(this@AccountConfigActivity, AccountActivity::class.java))
@@ -146,9 +143,14 @@ class AccountConfigActivity : BaseActivity() {
             }
             is NetResult.Error -> {
                 error_msg.text = result.errorMsg
-                progress_bar.visibility = View.INVISIBLE
-                set_account.visibility = View.VISIBLE
+                progress_bar.isVisible = true
+                set_account.isVisible = true
             }
         }
+    }
+
+    private fun updateUser(user: User) {
+        booru.user = user
+        BooruManager.updateBooru(booru)
     }
 }

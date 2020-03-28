@@ -48,7 +48,6 @@ import kotlinx.coroutines.launch
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.BOORU_UID_ACTIVATED_KEY
-import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.common.Settings.ORDER_SUCCESS_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Settings.isAvailableOnStore
@@ -100,6 +99,35 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private lateinit var navController: NavController
 
+    private val drawerItemClickListener: ((v: View?, item: IDrawerItem<*>, position: Int) -> Boolean) = { _: View?, item: IDrawerItem<*>, _: Int ->
+        when (item.identifier) {
+            DRAWER_ITEM_ID_ACCOUNT -> {
+                currentBooru?.let {
+                    if (it.user == null) {
+                        startActivity(Intent(this, AccountConfigActivity::class.java))
+                    } else {
+                        startActivity(Intent(this, AccountActivity::class.java))
+                    }
+                }
+            }
+            DRAWER_ITEM_ID_COMMENTS -> {
+
+            }
+            DRAWER_ITEM_ID_TAG_BLACKLIST -> {
+
+            }
+            DRAWER_ITEM_ID_MUZEI -> {
+
+            }
+            DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this, SettingsActivity::class.java))
+            DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this, SauceNaoActivity::class.java))
+            DRAWER_ITEM_ID_WHAT_ANIME -> startActivity(Intent(this, WhatAnimeActivity::class.java))
+            DRAWER_ITEM_ID_ABOUT -> startActivity(Intent(this, AboutActivity::class.java))
+            DRAWER_ITEM_ID_PURCHASE -> startActivity(Intent(this, PurchaseActivity::class.java))
+        }
+        false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_Main)
         super.onCreate(savedInstanceState)
@@ -115,15 +143,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         navigation.setupWithNavController(navController)
         booruViewModel = getBooruViewModel(booruDao)
         if (!booruViewModel.isNotEmpty()) {
-            activatedBooruUid = booruViewModel.createBooru(
-                Booru(
-                    name = "Sample",
-                    scheme = "https",
-                    host = "moe.fiepi.com",
-                    hashSalt = "onlymash--your-password--",
-                    type = BOORU_TYPE_MOE
-                )
-            )
+            activatedBooruUid = createDefaultBooru()
         }
         sp.registerOnSharedPreferenceChangeListener(this)
         val currentBooruUid = activatedBooruUid
@@ -223,36 +243,19 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             stickyFooterShadow = false
             stickyFooterDivider = true
             setSelection(-3L)
-            onDrawerItemClickListener = { _: View?, item: IDrawerItem<*>, _: Int ->
-                when (item.identifier) {
-                    DRAWER_ITEM_ID_ACCOUNT -> {
-
-                    }
-                    DRAWER_ITEM_ID_COMMENTS -> {
-
-                    }
-                    DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-
-                    }
-                    DRAWER_ITEM_ID_MUZEI -> {
-
-                    }
-                    DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                    DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this@MainActivity, SauceNaoActivity::class.java))
-                    DRAWER_ITEM_ID_WHAT_ANIME -> startActivity(Intent(this@MainActivity, WhatAnimeActivity::class.java))
-                    DRAWER_ITEM_ID_ABOUT -> startActivity(Intent(this@MainActivity, AboutActivity::class.java))
-                    DRAWER_ITEM_ID_PURCHASE -> startActivity(Intent(this@MainActivity, PurchaseActivity::class.java))
-                }
-                false
-            }
+            onDrawerItemClickListener = drawerItemClickListener
         }
         booruViewModel.loadBoorus().observe(this, Observer {
-            boorus.clear()
-            boorus.addAll(it)
-            initDrawerHeader(currentBooruUid)
+            if (it.isNullOrEmpty()) {
+                createDefaultBooru()
+            } else {
+                boorus.clear()
+                boorus.addAll(it)
+                initDrawerHeader(currentBooruUid)
+            }
         })
-        booruViewModel.booru.observe(this, Observer {
-            currentBooru = it
+        booruViewModel.booru.observe(this, Observer { booru: Booru? ->
+            currentBooru = booru
         })
         booruViewModel.loadBooru(currentBooruUid)
         if (!isOrderSuccess) {
@@ -271,6 +274,18 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
         setExitSharedElementCallback(sharedElementCallback)
         checkUpdate()
+    }
+
+    private fun createDefaultBooru(): Long {
+        return booruViewModel.createBooru(
+            Booru(
+                name = "Sample",
+                scheme = "https",
+                host = "moe.fiepi.com",
+                hashSalt = "onlymash--your-password--",
+                type = BOORU_TYPE_MOE
+            )
+        )
     }
 
     private fun checkUpdate() {
@@ -365,7 +380,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             BOORU_UID_ACTIVATED_KEY -> {
-                initDrawerHeader(activatedBooruUid)
+                val uid = activatedBooruUid
+                initDrawerHeader(uid)
+                booruViewModel.loadBooru(uid)
                 navigation.selectedItemId = R.id.nav_posts
             }
             ORDER_SUCCESS_KEY -> {

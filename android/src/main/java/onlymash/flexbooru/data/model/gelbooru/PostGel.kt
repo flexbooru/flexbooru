@@ -20,7 +20,7 @@ import com.tickaroo.tikxml.annotation.Xml
 import onlymash.flexbooru.data.utils.formatDateGel
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
-import onlymash.flexbooru.data.model.common.Uploader
+import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
 
 @Xml(name = "post")
@@ -94,7 +94,7 @@ data class PostGel(
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
-            uploader = Uploader(id = creatorId, name = "")
+            uploader = User(id = creatorId, name = "")
         )
     }
 }

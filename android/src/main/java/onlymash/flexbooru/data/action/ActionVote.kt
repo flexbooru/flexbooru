@@ -2,11 +2,9 @@ package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 
 data class ActionVote(
     var booru: Booru,
-    var user: User? = null,
     var postId: Int
 ) {
     fun getDan1AddFavUrl(): String =
@@ -24,8 +22,8 @@ data class ActionVote(
             .host(booru.host)
             .addPathSegment("favorites")
             .addPathSegment("${postId}.json")
-            .addQueryParameter("login", user?.name)
-            .addQueryParameter("api_key", user?.token)
+            .addQueryParameter("login", booru.user?.name)
+            .addQueryParameter("api_key", booru.user?.token)
             .build()
     }
 

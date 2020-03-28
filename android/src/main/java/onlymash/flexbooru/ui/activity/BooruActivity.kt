@@ -42,7 +42,9 @@ import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.parseList
 import kotlinx.serialization.stringify
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.common.Settings.isOrderSuccess
+import onlymash.flexbooru.common.Values
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.safeCloseQuietly
@@ -78,12 +80,32 @@ class BooruActivity : BaseActivity() {
             adapter = booruAdapter
         }
         booruViewModel = getBooruViewModel(booruDao)
-        booruViewModel.loadBoorus().observe(this, Observer {
-            booruAdapter.updateBoorus(it)
+        booruViewModel.loadBoorus().observe(this, Observer { boorus ->
+            booruAdapter.updateBoorus(boorus)
+            if (boorus.isNullOrEmpty()) {
+                 activatedBooruUid = createDefaultBooru()
+            } else {
+                val uid = activatedBooruUid
+                if (boorus.indexOfFirst { it.uid == uid } < 0) {
+                    activatedBooruUid = boorus[0].uid
+                }
+            }
         })
         if (intent != null) {
             handleShareIntent(intent)
         }
+    }
+
+    private fun createDefaultBooru(): Long {
+        return booruViewModel.createBooru(
+            Booru(
+                name = "Sample",
+                scheme = "https",
+                host = "moe.fiepi.com",
+                hashSalt = "onlymash--your-password--",
+                type = Values.BOORU_TYPE_MOE
+            )
+        )
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -133,7 +155,7 @@ class BooruActivity : BaseActivity() {
     }
 
     private fun backupToFile() {
-        if (!Settings.isOrderSuccess) {
+        if (!isOrderSuccess) {
             startActivity(Intent(this, PurchaseActivity::class.java))
             return
         }
@@ -151,7 +173,7 @@ class BooruActivity : BaseActivity() {
     }
 
     private fun restoreFromFile() {
-        if (!Settings.isOrderSuccess) {
+        if (!isOrderSuccess) {
             startActivity(Intent(this, PurchaseActivity::class.java))
             return
         }

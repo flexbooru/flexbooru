@@ -53,7 +53,10 @@ data class Booru(
     var type: Int,
     @ColumnInfo(name = "blacklists")
     @SerialName("blacklists")
-    var blacklists: List<String> = listOf()
+    var blacklists: List<String> = listOf(),
+    @ColumnInfo(name = "user")
+    @SerialName("user")
+    var user: User? = null
 ) {
     fun getBlacklistsString(): String {
         var tagsString = ""

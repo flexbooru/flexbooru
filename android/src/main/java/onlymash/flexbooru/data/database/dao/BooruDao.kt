@@ -22,26 +22,29 @@ import onlymash.flexbooru.data.model.common.Booru
 @Dao
 interface BooruDao {
 
-    @Query("SELECT * FROM `boorus` WHERE `scheme` = :scheme AND host = :host")
+    @Query("SELECT * FROM `boorus` WHERE `scheme` = :scheme AND `host` = :host")
     operator fun get(scheme: String, host: String): Booru?
 
     @Query("SELECT * FROM `boorus` WHERE `uid` = :uid")
     fun getBooruByUid(uid: Long): Booru?
 
-    @Query("SELECT * FROM `boorus` ORDER BY uid ASC")
+    @Query("SELECT * FROM `boorus` WHERE `uid` = :uid")
+    fun getBooruByUidLiveData(uid: Long): LiveData<Booru?>
+
+    @Query("SELECT * FROM `boorus` ORDER BY `uid` ASC")
     fun getAll(): MutableList<Booru>
 
-    @Query("SELECT * FROM `boorus` ORDER BY uid ASC")
+    @Query("SELECT * FROM `boorus` ORDER BY `uid` ASC")
     fun getAllLiveData(): LiveData<List<Booru>>
 
     @Query("SELECT 1 FROM `boorus` LIMIT 1")
     fun isNotEmpty(): Boolean
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(booru: Booru): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(`boorus`: List<Booru>)
+    fun insert(boorus: List<Booru>)
 
     @Update
     fun update(booru: Booru): Int

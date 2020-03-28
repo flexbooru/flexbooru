@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import onlymash.flexbooru.data.utils.formatDateDan
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
-import onlymash.flexbooru.data.model.common.Uploader
+import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
 
 @Serializable
@@ -13,9 +13,9 @@ data class PostDan(
     @SerialName("id")
     val id: Int,
     @SerialName("pixiv_id")
-    val pixivId: Int?,
+    val pixivId: Int? = null,
     @SerialName("parent_id")
-    val parentId: Int?,
+    val parentId: Int? = null,
     @SerialName("rating")
     val rating: String,
     @SerialName("score")
@@ -29,15 +29,15 @@ data class PostDan(
     @SerialName("image_width")
     val imageWidth: Int,
     @SerialName("file_ext")
-    val fileExt: String?,
+    val fileExt: String? = null,
     @SerialName("file_size")
     val fileSize: Int,
     @SerialName("preview_file_url")
-    val previewFileUrl: String?,
+    val previewFileUrl: String? = null,
     @SerialName("large_file_url")
-    val largeFileUrl: String?,
+    val largeFileUrl: String? = null,
     @SerialName("file_url")
-    val fileUrl: String?,
+    val fileUrl: String? = null,
     @SerialName("tag_string")
     val tagString: String,
     @SerialName("tag_string_artist")
@@ -90,7 +90,7 @@ data class PostDan(
             origin = originUrl(scheme, host),
             pixivId = pixivId,
             source = source,
-            uploader = Uploader(id = uploader.id, name = uploader.name)
+            uploader = User(id = uploader.id, name = uploader.name)
         )
     }
 

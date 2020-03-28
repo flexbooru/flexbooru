@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "29199a3ee8f36ce3731695ede59ff6a8",
+    "identityHash": "4510f252a74fd26e8d10eea59f6c42b4",
     "entities": [
       {
         "tableName": "boorus",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `scheme` TEXT NOT NULL, `host` TEXT NOT NULL, `hash_salt` TEXT NOT NULL, `type` INTEGER NOT NULL, `blacklists` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `scheme` TEXT NOT NULL, `host` TEXT NOT NULL, `hash_salt` TEXT NOT NULL, `type` INTEGER NOT NULL, `blacklists` TEXT NOT NULL, `user` TEXT)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -49,6 +49,12 @@
             "columnName": "blacklists",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "user",
+            "columnName": "user",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -69,77 +75,6 @@
           }
         ],
         "foreignKeys": []
-      },
-      {
-        "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `id` INTEGER NOT NULL, `token` TEXT, `avatar_url` TEXT, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
-        "fields": [
-          {
-            "fieldPath": "uid",
-            "columnName": "uid",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "booruUid",
-            "columnName": "booru_uid",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "token",
-            "columnName": "token",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "avatarUrl",
-            "columnName": "avatar_url",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "uid"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [
-          {
-            "name": "index_users_booru_uid",
-            "unique": true,
-            "columnNames": [
-              "booru_uid"
-            ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_users_booru_uid` ON `${TABLE_NAME}` (`booru_uid`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "boorus",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "booru_uid"
-            ],
-            "referencedColumns": [
-              "uid"
-            ]
-          }
-        ]
       },
       {
         "tableName": "posts",
@@ -469,7 +404,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '29199a3ee8f36ce3731695ede59ff6a8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4510f252a74fd26e8d10eea59f6c42b4')"
     ]
   }
 }

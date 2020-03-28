@@ -1,5 +1,6 @@
 package onlymash.flexbooru.data.repository.post
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -31,7 +32,9 @@ class PostRepositoryImpl(
     private var postBoundaryCallback: PostBoundaryCallback? = null
 
     private fun insertResultIntoDb(posts: List<Post>) {
-        db.postDao().insert(posts)
+        try {
+            db.postDao().insert(posts)
+        } catch (_: SQLiteConstraintException) {}
     }
 
     override fun getPosts(

@@ -97,7 +97,6 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                             NetResult.Error(response.message)
                         } else {
                             val user = User(
-                                booruUid = booru.uid,
                                 name = username,
                                 id = userId,
                                 token = passHash

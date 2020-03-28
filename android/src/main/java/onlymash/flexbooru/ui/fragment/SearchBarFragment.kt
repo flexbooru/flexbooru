@@ -1,7 +1,9 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.animation.ValueAnimator
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
@@ -17,16 +19,11 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
-import onlymash.flexbooru.data.database.UserManager
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.ui.activity.MainActivity
-import onlymash.flexbooru.ui.viewmodel.BooruViewModel
-import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
-import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
+import onlymash.flexbooru.ui.viewmodel.*
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
@@ -34,10 +31,8 @@ import org.kodein.di.erased.instance
 abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     SearchBar.StateListener, SearchBarMover.Helper {
 
-    private val booruDao by instance<BooruDao>()
     val booruApis by instance<BooruApis>()
-
-    var user: User? = null
+    private val booruDao by instance<BooruDao>()
 
     private var actionTag: ActionTag? = null
 
@@ -64,14 +59,11 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         searchBar = view.findViewById(R.id.search_bar)
         initSearchBar()
         booruViewModel.booru.observe(viewLifecycleOwner, Observer {
-            if (it == null) {
-                actionTag = null
-                user = null
+            actionTag = if (it == null) {
+                null
             } else {
-                user = UserManager.getUserByBooruUid(it.uid)
-                actionTag = ActionTag(
+                ActionTag(
                     booru = it,
-                    user = user,
                     limit = 10,
                     order = "count"
                 )

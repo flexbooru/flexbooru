@@ -81,8 +81,8 @@ class VoteRepositoryImpl(
                     url = action.getMoeVoteUrl(),
                     id = action.postId,
                     score = score,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = score != 0)
@@ -109,8 +109,8 @@ class VoteRepositoryImpl(
                 val response = booruApis.danApi.favPost(
                     url = action.getDanAddFavUrl(),
                     id = action.postId,
-                    username = action.user?.name ?: "",
-                    apiKey = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    apiKey = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
@@ -155,8 +155,8 @@ class VoteRepositoryImpl(
                 val response = booruApis.dan1Api.favPost(
                     url = action.getDan1RemoveFavUrl(),
                     id = action.postId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
@@ -179,8 +179,8 @@ class VoteRepositoryImpl(
                 val response = booruApis.dan1Api.removeFavPost(
                     url = action.getDan1RemoveFavUrl(),
                     postId = action.postId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = false)
@@ -203,8 +203,8 @@ class VoteRepositoryImpl(
                 val response = booruApis.sankakuApi.favPost(
                     url = action.getSankakuAddFavUrl(),
                     postId = action.postId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
@@ -227,8 +227,8 @@ class VoteRepositoryImpl(
                 val response = booruApis.sankakuApi.removeFavPost(
                     url = action.getSankakuRemoveFavUrl(),
                     postId = action.postId,
-                    username = action.user?.name ?: "",
-                    passwordHash = action.user?.token ?: ""
+                    username = action.booru.user?.name ?: "",
+                    passwordHash = action.booru.user?.token ?: ""
                 )
                 val data = response.body()
                 if (response.isSuccessful) {

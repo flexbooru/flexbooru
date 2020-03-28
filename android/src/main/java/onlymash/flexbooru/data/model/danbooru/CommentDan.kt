@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.data.utils.formatDateDan
 import onlymash.flexbooru.data.model.common.Comment
-import onlymash.flexbooru.data.model.common.Uploader
+import onlymash.flexbooru.data.model.common.User
 
 @Serializable
 data class CommentDan(
@@ -13,7 +13,7 @@ data class CommentDan(
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("creator")
-    val creator: Uploader,
+    val creator: User,
     @SerialName("id")
     val id: Int,
     @SerialName("post_id")

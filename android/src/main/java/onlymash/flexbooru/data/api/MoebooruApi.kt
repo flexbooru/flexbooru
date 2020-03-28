@@ -26,7 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Keys.HEADER_COOKIE
 import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.common.Values.BASE_URL
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.database.CookieManager
@@ -60,7 +60,7 @@ interface MoebooruApi {
                     .newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
                     .addHeader(HEADER_USER_AGENT, getUserAgent())
-                CookieManager.getCookieByBooruUid(Settings.activatedBooruUid)?.cookie?.let {
+                CookieManager.getCookieByBooruUid(activatedBooruUid)?.cookie?.let {
                     builder.addHeader(HEADER_COOKIE, it)
                 }
 

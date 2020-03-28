@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.Date
 import onlymash.flexbooru.data.model.common.TagBase
-import onlymash.flexbooru.data.model.common.Uploader
+import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
 import onlymash.flexbooru.extension.formatDate
 
@@ -98,7 +98,7 @@ data class PostSankaku(
             origin = originUrl(scheme, host),
             source = source,
             isFavored = isFavorited,
-            uploader = Uploader(id = author.id, name = author.name, avatar = author.avatar)
+            uploader = User(id = author.id, name = author.name, avatar = author.avatar)
         )
     }
 

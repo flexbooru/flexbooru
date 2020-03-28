@@ -86,6 +86,7 @@ class PostBoundaryCallback(
 
     private suspend fun insertItemsIntoDb(posts: List<Post>) {
         withContext(Dispatchers.IO) {
+            lastResponseSize = posts.size
             handleResponse(posts)
         }
     }

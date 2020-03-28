@@ -23,7 +23,7 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values.BASE_URL
 import onlymash.flexbooru.data.database.CookieManager
 import onlymash.flexbooru.data.model.gelbooru.CommentGelResponse
@@ -56,7 +56,7 @@ interface GelbooruApi {
                 val builder =  chain.request().newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
                     .addHeader(HEADER_USER_AGENT, getUserAgent())
-                val cookie = CookieManager.getCookieByBooruUid(Settings.activatedBooruUid)?.cookie
+                val cookie = CookieManager.getCookieByBooruUid(activatedBooruUid)?.cookie
                 if (!cookie.isNullOrEmpty()) {
                     builder.addHeader("cookie", cookie)
                 }

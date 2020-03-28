@@ -146,7 +146,7 @@ class SearchBar @JvmOverloads constructor(
                     suggestionAdapter.notifyDataSetChanged()
                 }
             }
-            else -> {
+            !text.contains(" ") -> {
                 helper?.onFetchSuggestion(text.toString())
             }
         }

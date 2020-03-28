@@ -54,7 +54,6 @@ class App : Application(), KodeinAware {
         bind<SharedPreferences>() with provider { PreferenceManager.getDefaultSharedPreferences(instance()) }
         bind() from singleton { MyDatabase(instance()) }
         bind() from singleton { instance<MyDatabase>().booruDao() }
-        bind() from singleton { instance<MyDatabase>().userDao() }
         bind() from singleton { instance<MyDatabase>().cookieDao() }
         bind() from singleton { instance<MyDatabase>().tagFilterDao() }
         bind() from singleton { instance<MyDatabase>().muzeiDao() }

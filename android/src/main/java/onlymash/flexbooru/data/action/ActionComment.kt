@@ -2,11 +2,9 @@ package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 
 data class ActionComment(
     var booru: Booru,
-    var user: User? = null,
     var limit: Int = 10,
     var body: String = "",
     var commentId: Int = -1,
@@ -24,7 +22,7 @@ data class ActionComment(
             .addPathSegment("index.json")
             .addQueryParameter("post_id", postId.toString())
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -38,7 +36,7 @@ data class ActionComment(
             .addPathSegment("comment")
             .addPathSegment("index.json")
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -53,7 +51,7 @@ data class ActionComment(
             .addPathSegment("search.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -77,7 +75,7 @@ data class ActionComment(
             .addQueryParameter("page", page.toString())
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("only", "creator,id,body,post_id,created_at")
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("api_key", it.token)
         }
@@ -98,7 +96,7 @@ data class ActionComment(
             .addQueryParameter("page", page.toString())
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("only", "creator,id,body,post_id,created_at")
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("api_key", it.token)
         }
@@ -151,7 +149,7 @@ data class ActionComment(
             .addPathSegment("comment.json")
             .addQueryParameter("post_id", postId.toString())
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -166,7 +164,7 @@ data class ActionComment(
             .addPathSegment("search.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -187,7 +185,7 @@ data class ActionComment(
             .addPathSegment("index.json")
             .addQueryParameter("post_id", postId.toString())
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -201,7 +199,7 @@ data class ActionComment(
             .addPathSegment("comments")
             .addQueryParameter("page", page.toString())
             .addQueryParameter("limit", "25")
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -215,7 +213,7 @@ data class ActionComment(
             .addPathSegment("comment")
             .addPathSegment("index.json")
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -230,7 +228,7 @@ data class ActionComment(
             .addPathSegment("search.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }

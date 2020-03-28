@@ -165,7 +165,6 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             if (action == null) {
                 action = ActionPost(
                     booru = booru,
-                    user = user,
                     pageType = currentPageType,
                     limit = pageLimit,
                     date = date,

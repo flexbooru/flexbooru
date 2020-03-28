@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
-import onlymash.flexbooru.data.model.common.Uploader
+import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
 import onlymash.flexbooru.extension.formatDate
 
@@ -96,7 +96,7 @@ data class PostMoe(
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
-            uploader = Uploader(id = creatorId, name = author)
+            uploader = User(id = creatorId, name = author)
         )
     }
 }

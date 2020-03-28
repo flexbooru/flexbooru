@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.ui.fragment.PostFragment
 
 class SearchActivity : AppCompatActivity() {
 
@@ -19,5 +20,13 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_post_container)
+        if (fragment is PostFragment && !fragment.onBackPressed()) {
+            return
+        }
+        super.onBackPressed()
     }
 }

@@ -2,11 +2,9 @@ package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 
 data class ActionArtist(
     var booru: Booru,
-    var user: User? = null,
     var query: String,
     // danbooru: name, updated_at, post_count (Defaults to ID).
     // moebooru: name, date
@@ -24,7 +22,7 @@ data class ActionArtist(
             .addQueryParameter("page", page.toString())
             .addQueryParameter("only", "id,name,urls")
             .addQueryParameter("commit", "Search")
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("api_key", it.token)
         }
@@ -41,7 +39,7 @@ data class ActionArtist(
             .addQueryParameter("order", order)
             .addQueryParameter("page", page.toString())
             .addQueryParameter("commit", "Search")
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("api_key", it.token)
         }
@@ -57,7 +55,7 @@ data class ActionArtist(
             .addQueryParameter("order", order)
             .addQueryParameter("page", page.toString())
             .addQueryParameter("commit", "Search")
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }

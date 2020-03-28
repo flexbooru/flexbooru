@@ -2,11 +2,9 @@ package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 
 data class ActionTag(
     var booru: Booru,
-    var user: User? = null,
     var query: String = "",
     //count name date
     var order: String,
@@ -30,7 +28,7 @@ data class ActionTag(
         if (type > -1) {
             builder.addQueryParameter("search[category]", type.toString())
         }
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("api_key", it.token)
         }
@@ -51,7 +49,7 @@ data class ActionTag(
         if (type > -1) {
             builder.addQueryParameter("type", type.toString())
         }
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -86,7 +84,7 @@ data class ActionTag(
         if (type > -1) {
             builder.addQueryParameter("type", type.toString())
         }
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -106,7 +104,7 @@ data class ActionTag(
         if (type > -1) {
             builder.addQueryParameter("type", type.toString())
         }
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }

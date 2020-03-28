@@ -51,5 +51,5 @@ data class Post(
     @ColumnInfo(name = "source")
     val source: String?,
     @ColumnInfo(name = "uploader")
-    val uploader: Uploader
+    val uploader: User
 )

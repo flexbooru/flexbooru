@@ -20,7 +20,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.parseList
 import kotlinx.serialization.stringify
 import onlymash.flexbooru.data.model.common.TagBase
-import onlymash.flexbooru.data.model.common.Uploader
+import onlymash.flexbooru.data.model.common.User
 
 /**
  * room database TypeConverter
@@ -37,12 +37,16 @@ class MyConverters {
 
 
     @TypeConverter
-    fun fromUploaderToString(uploader: Uploader) =
-        Json.stringify(Uploader.serializer(), uploader)
+    fun fromUserToString(user: User?): String? {
+        if (user == null) return null
+        return Json.stringify(User.serializer(), user)
+    }
 
     @TypeConverter
-    fun fromStringToUploader(value: String) =
-        Json.parse(Uploader.serializer(), value)
+    fun fromStringToUser(value: String?): User? {
+        if (value == null) return null
+        return Json.parse(User.serializer(), value)
+    }
 
     @TypeConverter
     fun formStringToTagBase(value: String) =

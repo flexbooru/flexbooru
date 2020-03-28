@@ -2,11 +2,9 @@ package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.User
 
 data class ActionPool(
     var booru: Booru,
-    var user: User? = null,
     var query: String = "",
     var limit: Int = 20
 ) {
@@ -19,7 +17,7 @@ data class ActionPool(
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("search[name_matches]", query)
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("api_key", it.token)
         }
@@ -34,7 +32,7 @@ data class ActionPool(
             .addPathSegment("index.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -48,7 +46,7 @@ data class ActionPool(
             .addPathSegment("pool.json")
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }
@@ -63,7 +61,7 @@ data class ActionPool(
             .addQueryParameter("query", query)
             .addQueryParameter("page", page.toString())
             .addQueryParameter("limit", limit.toString())
-        user?.let {
+        booru.user?.let {
             builder.addQueryParameter("login", it.name)
             builder.addQueryParameter("password_hash", it.token)
         }

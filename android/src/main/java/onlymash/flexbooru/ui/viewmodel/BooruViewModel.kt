@@ -11,11 +11,8 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
 
     private val _boorus: MediatorLiveData<List<Booru>> = MediatorLiveData()
 
-    private val _uid: MutableLiveData<Long> = MutableLiveData(-1L)
-
-    val booru = Transformations.map(_uid) {
-        booruDao.getBooruByUid(it)
-    }
+    private val _uid: MutableLiveData<Long> = MutableLiveData(-1)
+    val booru: MediatorLiveData<Booru> = MediatorLiveData()
 
     fun loadBoorus(): LiveData<List<Booru>> {
         viewModelScope.launch {
@@ -34,6 +31,14 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
             return false
         }
         _uid.value = uid
+        viewModelScope.launch {
+            val data = withContext(Dispatchers.IO) {
+                booruDao.getBooruByUidLiveData(uid)
+            }
+            booru.addSource(data) {
+                booru.postValue(it)
+            }
+        }
         return true
     }
 

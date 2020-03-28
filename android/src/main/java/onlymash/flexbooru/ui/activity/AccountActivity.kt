@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
@@ -33,7 +33,6 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.CookieManager
-import onlymash.flexbooru.data.database.UserManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.User
@@ -63,7 +62,7 @@ class AccountActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        val uid = Settings.activatedBooruUid
+        val uid = activatedBooruUid
         booru = BooruManager.getBooruByUid(uid) ?: return
         toolbar.title = String.format(getString(R.string.title_account_and_booru), booru.name)
         val extras = intent?.extras
@@ -79,7 +78,7 @@ class AccountActivity : BaseActivity() {
                         id = id
                     )
                     if (type == BOORU_TYPE_SANKAKU) {
-                        u.avatarUrl = extras.getString(USER_AVATAR_KEY)
+                        u.avatar = extras.getString(USER_AVATAR_KEY)
                     }
                 }
             }
@@ -101,7 +100,7 @@ class AccountActivity : BaseActivity() {
             }
         }
         if (u == null) {
-            u = UserManager.getUserByBooruUid(uid)
+            u = booru.user
             if (u != null) {
                 user = u
                 initToolbarMenu()
@@ -119,7 +118,8 @@ class AccountActivity : BaseActivity() {
                 AlertDialog.Builder(this@AccountActivity)
                     .setTitle(R.string.account_user_dialog_title_remove)
                     .setPositiveButton(R.string.dialog_yes) {_, _ ->
-                        UserManager.deleteUser(user)
+                        booru.user = null
+                        BooruManager.updateBooru(booru)
                         if (booru.type == BOORU_TYPE_GEL) {
                             CookieManager.deleteByBooruUid(booru.uid)
                         }
@@ -140,9 +140,9 @@ class AccountActivity : BaseActivity() {
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
-        } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatarUrl.isNullOrEmpty()) {
+        } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatar.isNullOrEmpty()) {
             GlideApp.with(this)
-                .load(user.avatarUrl)
+                .load(user.avatar)
                 .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
                 .into(user_avatar)
         }
@@ -152,22 +152,22 @@ class AccountActivity : BaseActivity() {
                 launchUrl(url)
                 return@setOnClickListener
             }
-            val keyword = when (booru.type) {
+            val query = when (booru.type) {
                 BOORU_TYPE_DAN,
                 BOORU_TYPE_DAN1,
                 BOORU_TYPE_SANKAKU -> String.format("fav:%s", user.name)
                 BOORU_TYPE_MOE -> String.format("vote:3:%s order:vote", user.name)
                 else -> throw IllegalStateException("unknown booru type: ${booru.type}")
             }
-//            SearchActivity.startActivity(this, keyword)
+            SearchActivity.startSearch(this, query)
         }
         posts_action_button.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
                 Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            val keyword = String.format("user:%s", user.name)
-//            SearchActivity.startActivity(this, keyword)
+            val query = String.format("user:%s", user.name)
+            SearchActivity.startSearch(this, query)
         }
         comments_action_button.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
@@ -178,8 +178,8 @@ class AccountActivity : BaseActivity() {
         }
         if (booru.type == BOORU_TYPE_SANKAKU) {
             recommended_action_button.setOnClickListener {
-                val keyword = String.format("recommended_for:%s", user.name)
-//                SearchActivity.startActivity(this, keyword)
+                val query = String.format("recommended_for:%s", user.name)
+                SearchActivity.startSearch(this, query)
             }
         } else {
             recommended_action_button_container.visibility = View.GONE
