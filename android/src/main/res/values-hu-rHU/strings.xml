@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">Bejegyzések</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Népszerű</string>
     <string name="title_manage_boorus">Booruk kezelése</string>
     <string name="title_settings">Beállítások</string>
