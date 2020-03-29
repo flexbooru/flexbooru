@@ -74,14 +74,14 @@ class TagDataSource(
                     initialLoad.postValue(error)
                 }
                 is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null, null)
                     } else {
                         callback.onResult(result.data, null, 2)
                     }
-                    retry = null
-                    networkState.postValue(NetworkState.LOADED)
-                    initialLoad.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -109,13 +109,13 @@ class TagDataSource(
                     networkState.postValue(NetworkState.error(result.errorMsg))
                 }
                 is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null)
                     } else {
                         callback.onResult(result.data, page + 1)
                     }
-                    retry = null
-                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         }

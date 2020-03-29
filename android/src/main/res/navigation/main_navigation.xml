@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/nav_pools"
-        android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
+        android:name="onlymash.flexbooru.ui.fragment.PoolFragment"
         android:label="@string/title_pools"
         tools:layout="@layout/fragment_searchbar"/>
 

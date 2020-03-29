@@ -75,6 +75,8 @@ private const val PERIOD_YEAR = "1y"
 class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val sp by instance<SharedPreferences>()
+    private val db by instance<MyDatabase>()
+    private val ioExecutor by instance<Executor>()
 
     private lateinit var date: ActionPost.Date
 
@@ -84,9 +86,6 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var postViewModel: PostViewModel
 
     private lateinit var tagFilterViewModel: TagFilterViewModel
-
-    private val db by instance<MyDatabase>()
-    private val ioExecutor by instance<Executor>()
 
     private lateinit var postAdapter: PostAdapter
 

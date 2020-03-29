@@ -74,6 +74,7 @@ class SearchBar @JvmOverloads constructor(
         listView.apply {
             adapter = suggestionAdapter
             onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                updateState(STATE_NORMAL)
                 helper?.onApplySearch(suggestions[position])
             }
         }
@@ -156,6 +157,7 @@ class SearchBar @JvmOverloads constructor(
         if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL) {
             val query = getQueryText()
             if (query.isNotEmpty()) {
+                updateState(STATE_NORMAL)
                 helper?.onApplySearch(query)
             }
             return true

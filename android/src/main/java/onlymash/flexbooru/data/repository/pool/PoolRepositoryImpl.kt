@@ -25,12 +25,10 @@ import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.data.repository.Listing
 
-class PoolRepositoryImpl(
-    private val booruApis: BooruApis,
-    private val scope: CoroutineScope) : PoolRepository {
+class PoolRepositoryImpl(private val booruApis: BooruApis) : PoolRepository {
 
     @MainThread
-    override fun getPools(action: ActionPool): Listing<Pool> {
+    override fun getPools(scope: CoroutineScope, action: ActionPool): Listing<Pool> {
 
         val sourceFactory = PoolDataSourceFactory(action, booruApis, scope)
 

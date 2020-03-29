@@ -2,6 +2,7 @@ package onlymash.flexbooru.data.model.danbooru
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.data.utils.formatDateDan
 import onlymash.flexbooru.data.model.common.Pool
 @Serializable
@@ -25,8 +26,11 @@ data class PoolDan(
     @SerialName("updated_at")
     val updatedAt: String
 ) {
-    fun toPool(): Pool {
+    fun toPool(scheme: String, host: String): Pool {
         return Pool(
+            booruType = BOORU_TYPE_DAN,
+            scheme = scheme,
+            host = host,
             id = id,
             name = name,
             count = postCount,

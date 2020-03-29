@@ -2,6 +2,7 @@ package onlymash.flexbooru.data.model.moebooru
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
@@ -37,8 +38,11 @@ data class PoolMoe(
         return date.time.formatDate()
     }
 
-    fun toPool(): Pool {
+    fun toPool(scheme: String, host: String): Pool {
         return Pool(
+            booruType = BOORU_TYPE_MOE,
+            scheme = scheme,
+            host = host,
             id = id,
             name = name,
             count = postCount,

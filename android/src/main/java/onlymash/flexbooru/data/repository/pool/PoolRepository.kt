@@ -15,10 +15,11 @@
 
 package onlymash.flexbooru.data.repository.pool
 
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.data.repository.Listing
 
 interface PoolRepository {
-    fun getPools(action: ActionPool): Listing<Pool>
+    fun getPools(scope: CoroutineScope, action: ActionPool): Listing<Pool>
 }

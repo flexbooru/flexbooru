@@ -2,6 +2,7 @@ package onlymash.flexbooru.data.model.sankaku
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Pool
 
 @Serializable
@@ -45,15 +46,19 @@ data class PoolSankaku(
     @SerialName("vote_count")
     val voteCount: Int
 ) {
-    fun toPool(): Pool {
+    fun toPool(scheme: String, host: String): Pool {
         return Pool(
+            booruType = BOORU_TYPE_SANKAKU,
+            scheme = scheme,
+            host = host,
             id = id,
             name = name,
             count = postCount,
             date = updatedAt,
             description = description,
             creatorId = author.id,
-            creatorName = author.name
+            creatorName = author.name,
+            creatorAvatar = author.avatar
         )
     }
 }

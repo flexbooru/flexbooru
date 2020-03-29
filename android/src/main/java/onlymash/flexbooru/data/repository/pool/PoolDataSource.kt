@@ -21,9 +21,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN as BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1 as BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE as BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Pool
@@ -73,14 +73,14 @@ class PoolDataSource(
                     initialLoad.postValue(error)
                 }
                 is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null, null)
                     } else {
                         callback.onResult(result.data, null, 2)
                     }
-                    retry = null
-                    networkState.postValue(NetworkState.LOADED)
-                    initialLoad.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -107,13 +107,13 @@ class PoolDataSource(
                     networkState.postValue(NetworkState.error(result.errorMsg))
                 }
                 is NetResult.Success -> {
+                    networkState.postValue(NetworkState.LOADED)
+                    retry = null
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null)
                     } else {
                         callback.onResult(result.data, page + 1)
                     }
-                    retry = null
-                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -124,7 +124,7 @@ class PoolDataSource(
             try {
                 val response =  booruApis.danApi.getPools(action.getDanPoolsUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toPool() } ?: listOf()
+                    val pools = response.body()?.map { it.toPool(action.booru.scheme, action.booru.host) } ?: listOf()
                     NetResult.Success(pools)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -140,7 +140,7 @@ class PoolDataSource(
             try {
                 val response =  booruApis.dan1Api.getPools(action.getDan1PoolsUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toPool() } ?: listOf()
+                    val pools = response.body()?.map { it.toPool(action.booru.scheme, action.booru.host) } ?: listOf()
                     NetResult.Success(pools)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -156,7 +156,7 @@ class PoolDataSource(
             try {
                 val response =  booruApis.moeApi.getPools(action.getMoePoolsUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toPool() } ?: listOf()
+                    val pools = response.body()?.map { it.toPool(action.booru.scheme, action.booru.host) } ?: listOf()
                     NetResult.Success(pools)
                 } else {
                     NetResult.Error("code: ${response.code()}")
@@ -172,7 +172,7 @@ class PoolDataSource(
             try {
                 val response =  booruApis.sankakuApi.getPools(action.getSankakuPoolsUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toPool() } ?: listOf()
+                    val pools = response.body()?.map { it.toPool(action.booru.scheme, action.booru.host) } ?: listOf()
                     NetResult.Success(pools)
                 } else {
                     NetResult.Error("code: ${response.code()}")
