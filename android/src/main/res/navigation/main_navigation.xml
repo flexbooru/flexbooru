@@ -33,11 +33,11 @@
 
     <fragment
         android:id="@+id/nav_tags"
-        android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
+        android:name="onlymash.flexbooru.ui.fragment.TagFragment"
         android:label="@string/title_tags"/>
 
     <fragment
         android:id="@+id/nav_artists"
-        android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
+        android:name="onlymash.flexbooru.ui.fragment.ArtistFragment"
         android:label="@string/title_artists"/>
 </navigation>

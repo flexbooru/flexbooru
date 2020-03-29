@@ -25,12 +25,10 @@ import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Tag
 import onlymash.flexbooru.data.repository.Listing
 
-class TagRepositoryImpl(
-    private val booruApis: BooruApis,
-    private val scope: CoroutineScope) : TagRepository {
+class TagRepositoryImpl(private val booruApis: BooruApis) : TagRepository {
 
     @MainThread
-    override fun getPools(action: ActionTag): Listing<Tag> {
+    override fun getTags(scope: CoroutineScope, action: ActionTag): Listing<Tag> {
 
         val sourceFactory = TagDataSourceFactory(action, booruApis, scope)
 

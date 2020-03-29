@@ -15,10 +15,11 @@
 
 package onlymash.flexbooru.data.repository.tag
 
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.model.common.Tag
 import onlymash.flexbooru.data.repository.Listing
 
 interface TagRepository {
-    fun getPools(action: ActionTag): Listing<Tag>
+    fun getTags(scope: CoroutineScope, action: ActionTag): Listing<Tag>
 }

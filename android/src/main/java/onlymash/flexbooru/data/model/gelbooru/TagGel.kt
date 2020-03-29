@@ -17,6 +17,7 @@ package onlymash.flexbooru.data.model.gelbooru
 
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Tag
 
 @Xml(name = "tag")
@@ -34,6 +35,7 @@ data class TagGel(
 ) {
     fun toTag(): Tag {
         return Tag(
+            booruType = BOORU_TYPE_GEL,
             id = id,
             name = name,
             category = type,

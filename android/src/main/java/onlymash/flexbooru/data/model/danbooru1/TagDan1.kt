@@ -2,6 +2,7 @@ package onlymash.flexbooru.data.model.danbooru1
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.model.common.Tag
 
 @Serializable
@@ -19,6 +20,7 @@ data class TagDan1(
 ) {
     fun toTag(): Tag {
         return Tag(
+            booruType = BOORU_TYPE_DAN1,
             id = id,
             name = name,
             category = type,

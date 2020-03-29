@@ -25,12 +25,10 @@ import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.repository.Listing
 
-class ArtistRepositoryImpl(
-    private val booruApis: BooruApis,
-    private val scope: CoroutineScope) : ArtistRepository {
+class ArtistRepositoryImpl(private val booruApis: BooruApis) : ArtistRepository {
 
     @MainThread
-    override fun getPools(action: ActionArtist): Listing<Artist> {
+    override fun getArtists(scope: CoroutineScope, action: ActionArtist): Listing<Artist> {
 
         val sourceFactory = ArtistDataSourceFactory(action, booruApis, scope)
 

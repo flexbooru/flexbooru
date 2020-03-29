@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import onlymash.flexbooru.data.database.dao.BooruDao
+import onlymash.flexbooru.data.repository.artist.ArtistRepository
 import onlymash.flexbooru.data.repository.pool.PoolRepository
 import onlymash.flexbooru.data.repository.post.PostRepository
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepository
+import onlymash.flexbooru.data.repository.tag.TagRepository
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.extension.getViewModel
 
@@ -48,5 +50,21 @@ fun ViewModelStoreOwner.getPoolViewModel(repository: PoolRepository): PoolViewMo
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return PoolViewModel(repository) as T
+        }
+    })
+
+fun ViewModelStoreOwner.getTagViewModel(repository: TagRepository): TagViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return TagViewModel(repository) as T
+        }
+    })
+
+fun ViewModelStoreOwner.getArtistViewModel(repository: ArtistRepository): ArtistViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return ArtistViewModel(repository) as T
         }
     })

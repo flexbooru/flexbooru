@@ -31,13 +31,10 @@ import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.data.repository.Listing
 import onlymash.flexbooru.extension.NetResult
 
-class CommentRepositoryImpl(
-    private val booruApis: BooruApis,
-    private val scope: CoroutineScope
-) : CommentRepository {
+class CommentRepositoryImpl(private val booruApis: BooruApis) : CommentRepository {
 
     @MainThread
-    override fun getComments(action: ActionComment): Listing<Comment> {
+    override fun getComments(scope: CoroutineScope, action: ActionComment): Listing<Comment> {
         val sourceFactory = CommentDataSourceFactory(action, booruApis, scope)
         val livePagedList = sourceFactory.toLiveData(
             config = Config(

@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.data.repository.comment
 
+import kotlinx.coroutines.CoroutineScope
 import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.data.repository.Listing
@@ -22,7 +23,7 @@ import onlymash.flexbooru.extension.NetResult
 
 interface CommentRepository {
 
-    fun getComments(action: ActionComment): Listing<Comment>
+    fun getComments(scope: CoroutineScope, action: ActionComment): Listing<Comment>
 
     suspend fun createComment(action: ActionComment): NetResult<Boolean>
 
