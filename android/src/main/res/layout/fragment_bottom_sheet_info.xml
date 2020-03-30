@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"/>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/source"
+                    android:id="@+id/source_url"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -154,32 +154,6 @@
                     android:layout_height="match_parent"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/score"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:gravity="end"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="@color/secondary_text_dark"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/parent_container"
-                android:background="@drawable/background_selectable_item_black"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/listPreferredItemHeight">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/browse_info_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="@color/secondary_text_dark"
-                    android:layout_height="match_parent"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/parent"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:gravity="end"

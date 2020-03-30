@@ -77,3 +77,11 @@ fun ViewModelStoreOwner.getDetailViewModel(postDao: PostDao, booruUid: Long, que
             return DetailViewModel(postDao, booruUid, query) as T
         }
     })
+
+fun ViewModelStoreOwner.getShortcutViewModel(postDao: PostDao, booruUid: Long, postId: Int): ShortcutViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return ShortcutViewModel(postDao, booruUid, postId) as T
+        }
+    })

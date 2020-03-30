@@ -3,13 +3,19 @@ package onlymash.flexbooru.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.DocumentsContract
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.IntRange
+import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
@@ -20,12 +26,24 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar_transparent.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_POSITION
 import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.common.Settings.POST_SIZE_LARGER
+import onlymash.flexbooru.common.Settings.POST_SIZE_SAMPLE
 import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.common.Settings.detailSize
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
@@ -34,15 +52,16 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.favorite.VoteRepository
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
-import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.extension.hideBar
-import onlymash.flexbooru.extension.showBar
+import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
+import onlymash.flexbooru.ui.fragment.ShortcutInfoFragment
 import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
 import onlymash.flexbooru.widget.DismissFrameLayout
+import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.erased.instance
+import java.io.*
 import java.util.concurrent.Executor
 
 private const val ALPHA_MAX = 0xFF
@@ -50,7 +69,11 @@ private const val ALPHA_MIN = 0x00
 private const val POSITION_INIT = -1
 private const val POSITION_INITED = -2
 
-class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener {
+private const val ACTION_SAVE = 101
+private const val ACTION_SET_AS = 102
+private const val ACTION_SEND = 103
+
+class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Toolbar.OnMenuItemClickListener {
 
     companion object {
         fun start(context: Context, query: String?, position: Int) {
@@ -89,7 +112,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener {
         if (post == null) return
         actionVote.postId = post.id
         setVoteItemIcon(post.isFavored)
-        toolbar_transparent.title = "# ${post.id}"
+        toolbar_transparent.title = "Post ${post.id}"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +130,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener {
         setContentView(R.layout.activity_detail)
         initInsets()
         initPager()
+        initToolbar()
         initShortcutBar()
     }
 
@@ -174,11 +198,36 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener {
         })
     }
 
+    private fun initToolbar() {
+        toolbar_transparent.inflateMenu(
+            if (booru.type == BOORU_TYPE_SANKAKU)
+                R.menu.detail_sankaku
+            else
+                R.menu.detail
+        )
+        toolbar_transparent.setOnMenuItemClickListener(this)
+        toolbar_transparent.setNavigationOnClickListener {
+            finish()
+        }
+    }
+
     private fun initShortcutBar() {
         TooltipCompat.setTooltipText(post_tags, post_tags.contentDescription)
         TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
         TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
         TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
+        post_tags.setOnClickListener {
+
+        }
+        post_info.setOnClickListener {
+            currentPost?.let {
+                ShortcutInfoFragment.create(it.id)
+                    .show(supportFragmentManager, "info")
+            }
+        }
+        post_save.setOnClickListener {
+            saveAndAction(ACTION_SAVE)
+        }
         post_fav.setOnClickListener {
             if (booru.user == null) {
                 startActivity(Intent(this, AccountConfigActivity::class.java))
@@ -227,5 +276,142 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener {
 
     override fun onDismissCancel() {
         colorDrawable.alpha = ALPHA_MAX
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_browse_comment -> {
+
+            }
+            R.id.action_browse_download -> {
+                DownloadWorker.downloadPost(currentPost, booru.host, this)
+            }
+            R.id.action_browse_set_as -> saveAndAction(ACTION_SET_AS)
+            R.id.action_browse_send -> saveAndAction(ACTION_SEND)
+            R.id.action_browse_share -> shareLink()
+            R.id.action_browse_recommended -> {
+                val id = currentPost?.id ?: return true
+                if (id > 0) {
+                    SearchActivity.startSearch(
+                        this,
+                        "recommended_for_post:$id"
+                    )
+                }
+            }
+            R.id.action_browse_open_browser -> {
+                val url = getLink()
+                if (!url.isNullOrEmpty()) {
+                    launchUrl(url)
+                }
+            }
+        }
+        return true
+    }
+
+    private fun getLink(): String? {
+        val id = currentPost?.id ?: return null
+        return when (booru.type) {
+            BOORU_TYPE_DAN -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, id)
+            BOORU_TYPE_DAN1 -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, id)
+            BOORU_TYPE_MOE -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, id)
+            BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, id)
+            BOORU_TYPE_SANKAKU -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), id)
+            else -> null
+        }
+    }
+
+    private fun shareLink() {
+        val url = getLink()
+        if (!url.isNullOrEmpty()) {
+            startActivity(Intent.createChooser(
+                Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, url)
+                },
+                getString(R.string.share_via)
+            ))
+        }
+    }
+
+    private val mutex = Mutex()
+
+    private fun saveAndAction(@IntRange(from = ACTION_SAVE.toLong(), to = ACTION_SEND.toLong()) action: Int) {
+        lifecycleScope.launch {
+            mutex.withLock {
+                val post = currentPost ?: return@launch
+                val url = when (detailSize) {
+                    POST_SIZE_SAMPLE -> post.sample
+                    POST_SIZE_LARGER -> post.medium
+                    else -> post.origin
+                }
+                if (url.isBlank()) return@launch
+                val file = loadFile(url) ?: return@launch
+                val fileName = url.fileName()
+                when (action) {
+                    ACTION_SAVE -> {
+                        val uri = getSaveUri(fileName) ?: return@launch
+                        if (copyFile(file, uri)) {
+                            Toast.makeText(this@DetailActivity,
+                                getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    ACTION_SET_AS -> {
+                        val cacheFile = File(externalCacheDir, fileName)
+                        val desUri = cacheFile.toUri()
+                        if (copyFile(file, desUri)) {
+                            this@DetailActivity.startActivity(Intent.createChooser(
+                                Intent(Intent.ACTION_ATTACH_DATA).apply {
+                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    putExtra(Intent.EXTRA_MIME_TYPES, fileName.getMimeType())
+                                    data = getUriForFile(cacheFile)
+                                },
+                                getString(R.string.share_via)
+                            ))
+                        }
+                    }
+                    ACTION_SEND -> {
+                        this@DetailActivity.startActivity(Intent.createChooser(
+                            Intent(Intent.ACTION_SEND).apply {
+                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                type = fileName.getMimeType()
+                                putExtra(Intent.EXTRA_STREAM, getUriForFile(file))
+                            },
+                            getString(R.string.share_via)
+                        ))
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun loadFile(url: String): File? =
+        withContext(Dispatchers.IO) {
+            try {
+                GlideApp.with(this@DetailActivity)
+                    .downloadOnly()
+                    .load(url)
+                    .submit()
+                    .get()
+            } catch (_: Exception) {
+                null
+            }
+        }
+
+    private suspend fun copyFile(file: File, desUri: Uri): Boolean = withContext(Dispatchers.IO) {
+        var inputStream: InputStream? = null
+        var outputSteam: OutputStream? = null
+        try {
+            inputStream = FileInputStream(file)
+            outputSteam = contentResolver.openOutputStream(desUri)
+            inputStream.copyTo(outputSteam)
+            return@withContext true
+        } catch (_: IOException) {
+            return@withContext false
+        } finally {
+            inputStream?.safeCloseQuietly()
+            outputSteam?.safeCloseQuietly()
+        }
     }
 }

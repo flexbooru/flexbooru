@@ -127,9 +127,7 @@ class DownloadWorker(
             activity: Activity,
             pool: Pool,
             type: Int,
-            booru: Booru,
-            username: String,
-            token: String
+            booru: Booru
         ) {
 
             val scheme = booru.scheme
@@ -155,8 +153,8 @@ class DownloadWorker(
                             POOL_ID_KEY to id,
                             POOL_DOWNLOAD_TYPE_KEY to type,
                             TYPE_KEY to TYPE_POOL,
-                            USERNAME_KEY to username,
-                            PASSWORD_HASH_KEY to token,
+                            USERNAME_KEY to booru.user?.name,
+                            PASSWORD_HASH_KEY to booru.user?.token,
                             DOC_ID_KEY to docId
                         )
                     )
@@ -346,5 +344,4 @@ class DownloadWorker(
             .setOngoing(false)
             .setAutoCancel(true)
     }
-
 }

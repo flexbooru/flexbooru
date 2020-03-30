@@ -38,6 +38,9 @@ interface PostDao {
     @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC LIMIT 1")
     fun getFirstPostRaw(booruUid: Long, query: String) : Post?
 
+    @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `id` = :postId ORDER BY `index` ASC LIMIT 1")
+    fun getFirstPostLiveData(booruUid: Long, postId: Int) : LiveData<Post?>
+
     @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC")
     fun getPostsLiveData(booruUid: Long, query: String) : LiveData<List<Post>>
 

@@ -13,4 +13,5 @@ object Keys {
 
     const val POST_QUERY = "post_query"
     const val POST_POSITION = "post_position"
+    const val POST_ID = "post_id"
 }

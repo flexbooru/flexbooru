@@ -11,7 +11,7 @@ buildscript {
         lifecycle_version = '2.3.0-alpha01'
         exoplayer_version = '2.11.3'
         okhttp_version = '4.4.1'
-        retrofit_version = '2.7.2'
+        retrofit_version = '2.8.1'
         tikxml_version = '0.9.3-SNAPSHOT'
         ktor_version = '1.3.2'
         kodein_version = '6.5.4'

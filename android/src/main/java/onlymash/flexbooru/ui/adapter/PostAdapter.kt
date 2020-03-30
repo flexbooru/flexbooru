@@ -40,7 +40,7 @@ class PostAdapter(
             .inflate(R.layout.item_post, parent, false))
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PostViewHolder).bindTo(position)
+        (holder as PostViewHolder).bindTo(getItem(position))
     }
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,22 +50,19 @@ class PostAdapter(
         private val postId: AppCompatTextView = itemView.findViewById(R.id.post_id)
         private val postSize: AppCompatTextView = itemView.findViewById(R.id.post_size)
 
-        private var currentPosition: Int = 0
-        private var query: String? = null
+        private var post: Post? = null
 
         init {
             infoContainer.isVisible = showInfoBar
             itemView.setOnClickListener {
-                query.let {
-                    DetailActivity.start(itemView.context, query, currentPosition)
+                post?.let {
+                    DetailActivity.start(itemView.context, it.query, layoutPosition)
                 }
             }
         }
 
-        fun bindTo(position: Int) {
-            currentPosition = position
-            val post = getItem(position) ?: return
-            query = post.query
+        fun bindTo(post: Post?) {
+            this.post = post ?: return
             infoContainer.isVisible = showInfoBar
             postId.text = String.format("#%d", post.id)
             postSize.text = String.format("%d x %d", post.width, postSize.height)

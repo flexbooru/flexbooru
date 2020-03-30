@@ -43,7 +43,7 @@ import onlymash.flexbooru.tracemoe.model.TraceResponse
 import onlymash.flexbooru.tracemoe.presentation.TraceMoeActions
 import onlymash.flexbooru.tracemoe.presentation.TraceMoePresenter
 import onlymash.flexbooru.tracemoe.presentation.TraceMoeView
-import onlymash.flexbooru.ui.fragment.TransparentBottomSheetDialogFragment
+import onlymash.flexbooru.ui.fragment.BaseBottomSheetDialogFragment
 import java.io.ByteArrayOutputStream
 import kotlin.properties.Delegates
 
@@ -247,7 +247,7 @@ class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
         }
     }
 
-    class AnimePlayerDialog : TransparentBottomSheetDialogFragment() {
+    class AnimePlayerDialog : BaseBottomSheetDialogFragment() {
 
         private lateinit var playerView: PlayerView
         private lateinit var behavior: BottomSheetBehavior<View>

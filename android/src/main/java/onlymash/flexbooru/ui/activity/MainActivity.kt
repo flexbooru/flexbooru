@@ -21,7 +21,6 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
@@ -349,9 +348,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (i == -1) {
             uid = boorus[0].uid
             activatedBooruUid = uid
-            Log.w("Test", "1111")
         } else {
-            Log.w("Test", "2222")
             headerView.setActiveProfile(uid)
         }
     }
