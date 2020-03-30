@@ -155,11 +155,11 @@
     <string name="settings_safe_mode">セーフモード</string>
     <string name="settings_page_limit">ページ制限</string>
     <string name="settings_muzei_limit">Muzei制限</string>
-    <string name="settings_browse_size">イメージサイズ</string>
+    <string name="settings_muzei_size">Muzeiサイズ</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">ダウンロードサイズ</string>
     <string name="settings_download_path">ダウンロードパス</string>
     <string name="settings_download_path_not_set">パス未設定</string>
-    <string name="settings_muzei_size">Muzeiサイズ</string>
     <string name="settings_post_size_sample">Sample</string>
     <string name="settings_post_size_larger">大きく</string>
     <string name="settings_post_size_origin">オリジン</string>
