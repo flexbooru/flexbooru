@@ -206,7 +206,7 @@ class VoteRepositoryImpl(
                     username = action.booru.user?.name ?: "",
                     passwordHash = action.booru.user?.token ?: ""
                 )
-                if (response.isSuccessful) {
+                if (response.isSuccessful || response.code() == 423) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                     NetResult.Success(true)
                 } else {

@@ -79,7 +79,7 @@ data class PostSankaku(
 
     private fun List<TagSankaku>.toTags() = map { it.toTagBase() }
 
-    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int): Post {
+    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int, isFavored: Boolean): Post {
         return Post(
             booruUid = booruUid,
             query = query,
@@ -97,7 +97,7 @@ data class PostSankaku(
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
-            isFavored = isFavorited,
+            isFavored = isFavored,
             uploader = User(id = author.id, name = author.name, avatar = author.avatar)
         )
     }

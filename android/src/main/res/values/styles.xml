@@ -45,7 +45,6 @@
         <item name="android:actionOverflowMenuStyle">@style/Widget.OverflowMenuStyle.DayNight</item>
         <item name="android:popupWindowStyle">@style/Widget.PopupWindowStyle</item>
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
-<!--        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>-->
     </style>
 
     <style name="AppTheme.Main">

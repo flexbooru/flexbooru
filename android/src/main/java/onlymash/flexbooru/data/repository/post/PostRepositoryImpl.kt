@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL as BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN as BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1 as BOORU_TYPE_DAN1
@@ -138,7 +135,8 @@ class PostRepositoryImpl(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = index
+                            index = index,
+                            isFavored = action.isFavoredQuery()
                         )
                     } ?: listOf()
                     NetResult.Success(posts)
@@ -162,7 +160,8 @@ class PostRepositoryImpl(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = index
+                            index = index,
+                            isFavored = action.isFavoredQuery()
                         )
                     } ?: listOf()
                     NetResult.Success(posts)
@@ -210,7 +209,8 @@ class PostRepositoryImpl(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = index
+                            index = index,
+                            isFavored = action.isFavoredQuery()
                         )
                     } ?: listOf()
                     NetResult.Success(posts)

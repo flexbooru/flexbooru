@@ -1,6 +1,9 @@
 package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.ONLY_FIELD_POSTS_DAN
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.model.common.Booru
@@ -20,32 +23,37 @@ data class ActionPost(
     var period: String = "1d"
 ) {
     data class Date(
-        var year: Int,
-        var month: Int,
-        var day: Int,
+        var yearStart: Int,
+        var monthStart: Int,
+        var dayStart: Int,
         var yearEnd: Int,
         var monthEnd: Int,
         var dayEnd: Int
     ) {
         fun getDateString(): String {
-            val realMonth = month + 1
+            val realMonth = monthEnd + 1
             val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
-            val dayString = if (day < 10) "0$day" else day.toString()
+            val dayString = if (dayEnd < 10) "0$dayEnd" else dayEnd.toString()
 
-            return "$year-$monthString-$dayString"
+            return "$yearEnd-$monthString-$dayString"
         }
 
         fun getDateRangeString(): String {
-            val realMonth = month + 1
-            val monthString = if (realMonth < 10) "0$realMonth" else realMonth.toString()
-            val dayString = if (day < 10) "0$day" else day.toString()
+            val realMonthStart = monthStart + 1
+            val monthStringStart = if (realMonthStart < 10) "0$realMonthStart" else realMonthStart.toString()
+            val dayStringStart = if (dayStart < 10) "0$dayStart" else dayStart.toString()
 
             val realMonthEnd = monthEnd + 1
             val monthStringEnd = if (realMonthEnd < 10) "0$realMonthEnd" else realMonthEnd.toString()
             val dayStringEnd = if (dayEnd < 10) "0$dayEnd" else dayEnd.toString()
 
-            return "$dayString.$monthString.$year..$dayStringEnd.$monthStringEnd.$yearEnd"
+            return "$dayStringStart.$monthStringStart.$yearStart..$dayStringEnd.$monthStringEnd.$yearEnd"
         }
+    }
+
+    fun isFavoredQuery(): Boolean {
+        return (booru.user != null && booru.type == BOORU_TYPE_MOE && query.contains("vote:3:${booru.user?.name}")) ||
+                (booru.user != null && (booru.type == BOORU_TYPE_DAN1 || booru.type == BOORU_TYPE_SANKAKU) && query.contains("fav:${booru.user?.name}"))
     }
 
     private fun getPostsDanUrl(page: Int): HttpUrl {
@@ -193,9 +201,9 @@ data class ActionPost(
             .host(booru.host)
             .addPathSegment("post")
             .addPathSegment("popular_by_$scale.json")
-            .addQueryParameter("day", date.day.toString())
-            .addQueryParameter("month", (date.month + 1).toString())
-            .addQueryParameter("year", date.year.toString())
+            .addQueryParameter("day", date.dayEnd.toString())
+            .addQueryParameter("month", (date.monthEnd + 1).toString())
+            .addQueryParameter("year", date.yearEnd.toString())
 
         booru.user?.let {
             builder.apply {
@@ -212,9 +220,9 @@ data class ActionPost(
             .host(booru.host)
             .addPathSegment("post")
             .addPathSegment("popular_by_$scale.json")
-            .addQueryParameter("day", date.day.toString())
-            .addQueryParameter("month", (date.month + 1).toString())
-            .addQueryParameter("year", date.year.toString())
+            .addQueryParameter("day", date.dayEnd.toString())
+            .addQueryParameter("month", (date.monthEnd + 1).toString())
+            .addQueryParameter("year", date.yearEnd.toString())
 
         booru.user?.let {
             builder.apply {

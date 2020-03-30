@@ -246,13 +246,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             onDrawerItemClickListener = drawerItemClickListener
         }
         booruViewModel.loadBoorus().observe(this, Observer {
-            if (it.isNullOrEmpty()) {
-                createDefaultBooru()
-            } else {
-                boorus.clear()
-                boorus.addAll(it)
-                initDrawerHeader(currentBooruUid)
-            }
+            boorus.clear()
+            boorus.addAll(it)
+            initDrawerHeader(currentBooruUid)
         })
         booruViewModel.booru.observe(this, Observer { booru: Booru? ->
             currentBooru = booru
@@ -353,7 +349,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (i == -1) {
             uid = boorus[0].uid
             activatedBooruUid = uid
+            Log.w("Test", "1111")
         } else {
+            Log.w("Test", "2222")
             headerView.setActiveProfile(uid)
         }
     }
@@ -380,9 +378,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             BOORU_UID_ACTIVATED_KEY -> {
-                val uid = activatedBooruUid
-                initDrawerHeader(uid)
-                booruViewModel.loadBooru(uid)
+                booruViewModel.loadBooru(activatedBooruUid)
                 navigation.selectedItemId = R.id.nav_posts
             }
             ORDER_SUCCESS_KEY -> {

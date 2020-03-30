@@ -64,7 +64,7 @@ data class PostDan1(
     private fun getTags(): List<TagBase> =
         tags.trim().split(" ").map { TagBase(it, -1) }
 
-    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int): Post {
+    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int, isFavored: Boolean): Post {
         return Post(
             booruUid = booruUid,
             query = query,
@@ -82,7 +82,8 @@ data class PostDan1(
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
-            uploader = User(id = creatorId, name = author)
+            uploader = User(id = creatorId, name = author),
+            isFavored = isFavored
         )
     }
 }

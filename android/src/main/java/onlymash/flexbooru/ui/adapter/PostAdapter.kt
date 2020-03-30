@@ -27,7 +27,7 @@ class PostAdapter(
     companion object {
         val POST_COMPARATOR = object : DiffUtil.ItemCallback<Post>() {
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem == newItem
+                oldItem.id == newItem.id
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
                 oldItem.booruUid == newItem.booruUid &&
                         oldItem.query == newItem.query &&

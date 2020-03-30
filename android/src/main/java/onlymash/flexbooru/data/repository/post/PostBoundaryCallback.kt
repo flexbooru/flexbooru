@@ -26,6 +26,9 @@ class PostBoundaryCallback(
     private val handleResponse: (List<Post>) -> Unit,
     ioExecutor: Executor
 ) : PagedList.BoundaryCallback<Post>() {
+
+    private val isFavored = action.isFavoredQuery()
+
     //PagingRequestHelper
     val helper = PagingRequestHelper(ioExecutor)
     //network state
@@ -85,8 +88,8 @@ class PostBoundaryCallback(
     }
 
     private suspend fun insertItemsIntoDb(posts: List<Post>) {
+        lastResponseSize = posts.size
         withContext(Dispatchers.IO) {
-            lastResponseSize = posts.size
             handleResponse(posts)
         }
     }
@@ -128,7 +131,8 @@ class PostBoundaryCallback(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = indexInNext + index
+                            index = indexInNext + index,
+                            isFavored = isFavored
                         )
                     } ?: listOf()
                     NetResult.Success(posts)
@@ -153,7 +157,8 @@ class PostBoundaryCallback(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = indexInNext + index
+                            index = indexInNext + index,
+                            isFavored = isFavored
                         )
                     } ?: listOf()
                     NetResult.Success(posts)
@@ -203,7 +208,8 @@ class PostBoundaryCallback(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = indexInNext + index
+                            index = indexInNext + index,
+                            isFavored = isFavored
                         )
                     } ?: listOf()
                     NetResult.Success(posts)

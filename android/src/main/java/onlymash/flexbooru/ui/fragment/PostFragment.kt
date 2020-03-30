@@ -246,10 +246,14 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
         val currentMonth = calendar.get(Calendar.MONTH)
         val currentYear = calendar.get(Calendar.YEAR)
+        calendar.add(Calendar.DATE, -1)
+        val beforeDay = calendar.get(Calendar.DAY_OF_MONTH)
+        val beforeMonth = calendar.get(Calendar.MONTH)
+        val beforeYear = calendar.get(Calendar.YEAR)
         date = ActionPost.Date(
-            day = currentDay,
-            month = currentMonth,
-            year = currentYear,
+            dayStart = beforeDay,
+            monthStart = beforeMonth,
+            yearStart = beforeYear,
             dayEnd = currentDay,
             monthEnd = currentMonth,
             yearEnd = currentYear
@@ -363,17 +367,17 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         DatePickerDialog(
             context,
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                date.year = year
-                date.month = month
-                date.day = dayOfMonth
+                date.yearEnd = year
+                date.monthEnd = month
+                date.dayEnd = dayOfMonth
                 action?.let {
                     it.date = date
                     updateActionAndRefresh(it)
                 }
             },
-            date.year,
-            date.month,
-            date.day
+            date.yearEnd,
+            date.monthEnd,
+            date.dayEnd
         ).apply {
             datePicker.apply {
                 minDate = minCalendar.timeInMillis
@@ -400,9 +404,9 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
                 endYear: Int
             ) {
                 date.apply {
-                    day = startDay
-                    month = startMonth
-                    year = startYear
+                    dayStart = startDay
+                    monthStart = startMonth
+                    yearStart = startYear
                     dayEnd = endDay
                     monthEnd = endMonth
                     yearEnd = endYear
@@ -415,9 +419,9 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         }
         DateRangePickerDialogFragment.newInstance(
             listener = callback,
-            startDay = date.day,
-            startMonth = date.month,
-            startYear = date.year,
+            startDay = date.dayStart,
+            startMonth = date.monthStart,
+            startYear = date.yearStart,
             endDay = date.dayEnd,
             endMonth = date.monthEnd,
             endYear = date.yearEnd,

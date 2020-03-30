@@ -69,7 +69,7 @@ class DetailAdapter(
         }
     }
 
-    fun isFavored(position: Int) = getItem(position)?.isFavored ?: false
+    fun getPost(position: Int) = getItem(position)
 
     @SuppressLint("InflateParams")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
