@@ -155,11 +155,11 @@
     <string name="settings_safe_mode">Safe mode</string>
     <string name="settings_page_limit">Oldal limit</string>
     <string name="settings_muzei_limit">Muzei limit</string>
-    <string name="settings_browse_size">Böngészési méret</string>
+    <string name="settings_muzei_size">Muzei méret</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Letöltési méret</string>
     <string name="settings_download_path">Letöltési útvonal</string>
     <string name="settings_download_path_not_set">Elérési út nincs beállítva</string>
-    <string name="settings_muzei_size">Muzei méret</string>
     <string name="settings_post_size_sample">Minta</string>
     <string name="settings_post_size_larger">Nagyobb</string>
     <string name="settings_post_size_origin">Eredeti</string>
