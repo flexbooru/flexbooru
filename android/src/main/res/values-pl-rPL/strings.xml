@@ -155,11 +155,11 @@
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
     <string name="settings_muzei_limit">Limit Muzei</string>
-    <string name="settings_browse_size">Rozmiar przy przeglądaniu</string>
+    <string name="settings_muzei_size">Rozmiar Muzei</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
     <string name="settings_download_path">Ścieżka pobierania</string>
     <string name="settings_download_path_not_set">Nie wybrano ścieżki</string>
-    <string name="settings_muzei_size">Rozmiar Muzei</string>
     <string name="settings_post_size_sample">Przykład</string>
     <string name="settings_post_size_larger">Większe</string>
     <string name="settings_post_size_origin">Źródło</string>
