@@ -75,11 +75,11 @@
                 app:useSimpleSummaryProvider="true"/>
 
         <com.takisoft.preferencex.SimpleMenuPreference
-                app:key="settings_browse_size"
+                app:key="settings_detail_size"
                 app:entries="@array/settings_post_size_entries"
                 app:entryValues="@array/settings_post_size_entries_values"
                 app:defaultValue="sample"
-                app:title="@string/settings_browse_size"
+                app:title="@string/settings_detail_size"
                 app:useSimpleSummaryProvider="true"/>
 
         <com.takisoft.preferencex.SimpleMenuPreference
@@ -119,11 +119,6 @@
         <Preference
                 app:key="settings_download_path"
                 app:title="@string/settings_download_path"/>
-
-        <Preference
-                app:key="settings_clear_history"
-                app:title="@string/settings_clear_history"
-                app:summary="@string/settings_clear_history_summery"/>
 
         <Preference
                 app:key="settings_clear_cache"

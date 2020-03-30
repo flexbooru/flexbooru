@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.glide.GlideRequests
+import onlymash.flexbooru.ui.activity.DetailActivity
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
 private const val MIN_ASPECT_RATIO = 9.0 / 21.0
@@ -39,7 +40,7 @@ class PostAdapter(
             .inflate(R.layout.item_post, parent, false))
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PostViewHolder).bindTo(getItem(position))
+        (holder as PostViewHolder).bindTo(position)
     }
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,14 +50,22 @@ class PostAdapter(
         private val postId: AppCompatTextView = itemView.findViewById(R.id.post_id)
         private val postSize: AppCompatTextView = itemView.findViewById(R.id.post_size)
 
-        private var post: Post? = null
+        private var currentPosition: Int = 0
+        private var query: String? = null
 
         init {
             infoContainer.isVisible = showInfoBar
+            itemView.setOnClickListener {
+                query.let {
+                    DetailActivity.start(itemView.context, query, currentPosition)
+                }
+            }
         }
 
-        fun bindTo(post: Post?) {
-            this.post = post ?: return
+        fun bindTo(position: Int) {
+            currentPosition = position
+            val post = getItem(position) ?: return
+            query = post.query
             infoContainer.isVisible = showInfoBar
             postId.text = String.format("#%d", post.id)
             postSize.text = String.format("%d x %d", post.width, postSize.height)

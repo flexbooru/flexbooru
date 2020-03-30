@@ -12,4 +12,5 @@ object Keys {
     const val PAGE_TYPE = "page_type"
 
     const val POST_QUERY = "post_query"
+    const val POST_POSITION = "post_position"
 }

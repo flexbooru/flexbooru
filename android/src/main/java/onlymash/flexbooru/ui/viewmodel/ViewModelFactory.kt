@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import onlymash.flexbooru.data.database.dao.BooruDao
+import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.repository.artist.ArtistRepository
 import onlymash.flexbooru.data.repository.pool.PoolRepository
 import onlymash.flexbooru.data.repository.post.PostRepository
@@ -66,5 +67,13 @@ fun ViewModelStoreOwner.getArtistViewModel(repository: ArtistRepository): Artist
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return ArtistViewModel(repository) as T
+        }
+    })
+
+fun ViewModelStoreOwner.getDetailViewModel(postDao: PostDao, booruUid: Long, query: String): DetailViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return DetailViewModel(postDao, booruUid, query) as T
         }
     })

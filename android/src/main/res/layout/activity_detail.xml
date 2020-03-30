@@ -19,10 +19,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.activity.BrowseActivity">
+        tools:context=".ui.activity.DetailActivity">
 
     <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager_browse"
+            android:id="@+id/detail_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

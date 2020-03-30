@@ -45,7 +45,7 @@
         <item name="android:actionOverflowMenuStyle">@style/Widget.OverflowMenuStyle.DayNight</item>
         <item name="android:popupWindowStyle">@style/Widget.PopupWindowStyle</item>
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
-        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
+<!--        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>-->
     </style>
 
     <style name="AppTheme.Main">
@@ -56,6 +56,10 @@
 
     <style name="MaterialDrawerStyle" parent="Widget.MaterialDrawerStyle">
         <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
+    </style>
+
+    <style name="AppTheme.Animation">
+        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
     </style>
 
     <style name="AppTheme.NoAnimation">
@@ -78,10 +82,10 @@
         <item name="android:windowBackground">@drawable/background_launcher</item>
     </style>
 
-    <style name="AppTheme.NoAnimation.Browse">
+    <style name="AppTheme.NoAnimation.Detail">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>

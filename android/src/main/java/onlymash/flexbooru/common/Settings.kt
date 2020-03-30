@@ -26,7 +26,7 @@ object Settings {
     const val SAFE_MODE_KEY = "settings_safe_mode"
     const val PAGE_LIMIT_KEY = "settings_page_limit"
     const val MUZEI_LIMIT_KEY = "settings_muzei_limit"
-    const val BROWSE_SIZE_KEY = "settings_browse_size"
+    const val DETAIL_SIZE_KEY = "settings_detail_size"
     const val DOWNLOAD_SIZE_KEY = "settings_download_size"
     const val DOWNLOAD_PATH_KEY = "settings_download_path"
     const val DOWNLOAD_PATH_TREE_ID_KEY = "settings_download_path_tree_id"
@@ -83,12 +83,12 @@ object Settings {
         get() = sp.getString(MUZEI_LIMIT_KEY, "10")!!.toInt()
         set(value) = sp.edit().putString(MUZEI_LIMIT_KEY, value.toString()).apply()
 
-    var browseSize: String
+    var detailSize: String
         get() = sp.getString(
-            BROWSE_SIZE_KEY,
+            DETAIL_SIZE_KEY,
             POST_SIZE_SAMPLE
         ) ?: POST_SIZE_SAMPLE
-        set(value) = sp.edit().putString(BROWSE_SIZE_KEY, value).apply()
+        set(value) = sp.edit().putString(DETAIL_SIZE_KEY, value).apply()
 
     var downloadSize: String
         get() = sp.getString(

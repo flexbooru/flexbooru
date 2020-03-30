@@ -26,14 +26,13 @@
             android:layout_gravity="top"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/browse_bottom_bar_height">
+            android:layout_height="@dimen/browse_bottom_bar_height">
 
         <ImageButton
                 android:id="@+id/post_tags"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_bookmark_border_24dp"
                 android:tint="@color/white"
                 android:background="@drawable/background_selectable_item_black"
@@ -43,7 +42,7 @@
                 android:id="@+id/post_info"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_info_outline_24dp"
                 android:tint="@color/white"
                 android:background="@drawable/background_selectable_item_black"
@@ -53,7 +52,7 @@
                 android:id="@+id/post_save"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_save_outline_24dp"
                 android:tint="@color/white"
                 android:background="@drawable/background_selectable_item_black"
@@ -63,7 +62,7 @@
                 android:id="@+id/post_fav"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/browse_bottom_bar_height"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_star_border_24dp"
                 android:tint="@color/white"
                 android:background="@drawable/background_selectable_item_black"

@@ -84,10 +84,10 @@ class DismissFrameLayout @JvmOverloads constructor(
     }
 
     interface OnDismissListener {
-        fun onStart()
-        fun onProgress(progress: Float)
-        fun onDismiss()
-        fun onCancel()
+        fun onDismissStart()
+        fun onDismissProgress(progress: Float)
+        fun onDismissed()
+        fun onDismissCancel()
     }
 
     private inner class ViewDragCallback : ViewDragHelper.Callback() {
@@ -103,19 +103,19 @@ class DismissFrameLayout @JvmOverloads constructor(
         override fun getViewVerticalDragRange(child: View): Int = height
 
         override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
-            dismissListener?.onStart()
+            dismissListener?.onDismissStart()
         }
 
         override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
-            dismissListener?.onProgress(top.toFloat() / height.toFloat())
+            dismissListener?.onDismissProgress(top.toFloat() / height.toFloat())
         }
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
             val slop = if (yvel > minimumFlingVelocity) height / 6 else height / 3
             if (releasedChild.top > slop) {
-                dismissListener?.onDismiss()
+                dismissListener?.onDismissed()
             } else {
-                dismissListener?.onCancel()
+                dismissListener?.onDismissCancel()
                 dragHelper.settleCapturedViewAt(0, 0)
                 invalidate()
             }
