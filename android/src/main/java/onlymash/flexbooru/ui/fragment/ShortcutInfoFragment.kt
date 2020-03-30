@@ -56,7 +56,6 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
     private var postId = -1
     private var post: Post? = null
 
-    private var booruUid = -1L
     private lateinit var booru: Booru
 
     private lateinit var shortcutViewModel: ShortcutViewModel
@@ -66,8 +65,7 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
         arguments?.apply {
             postId = getInt(POST_ID, -1)
         }
-        booruUid = activatedBooruUid
-        val booru = BooruManager.getBooruByUid(booruUid)
+        val booru = BooruManager.getBooruByUid(activatedBooruUid)
         if (booru == null) {
             dismiss()
             return
@@ -169,7 +167,7 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
                 downloadUrl(it.sample)
             }
         }
-        shortcutViewModel = getShortcutViewModel(postDao, activatedBooruUid, postId)
+        shortcutViewModel = getShortcutViewModel(postDao, booru.uid, postId)
         shortcutViewModel.post.observe(this, Observer { post ->
             this.post = post
             if (post != null) {

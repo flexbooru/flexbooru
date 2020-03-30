@@ -56,6 +56,7 @@ import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
 import onlymash.flexbooru.ui.fragment.ShortcutInfoFragment
+import onlymash.flexbooru.ui.fragment.ShortcutTagFragment
 import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
 import onlymash.flexbooru.widget.DismissFrameLayout
@@ -217,7 +218,10 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
         TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
         post_tags.setOnClickListener {
-
+            currentPost?.let {
+                ShortcutTagFragment.create(it.id)
+                    .show(supportFragmentManager, "tag")
+            }
         }
         post_info.setOnClickListener {
             currentPost?.let {

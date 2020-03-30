@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Values.Tags
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
@@ -52,19 +53,6 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
                     .inflate(R.layout.item_tag, parent, false)
                 return TagViewHolder(view)
             }
-            const val GENERAL = 0
-            const val ARTIST = 1
-            const val COPYRIGHT = 3
-            const val CHARACTER = 4
-            const val CIRCLE = 5
-            const val FAULTS = 6
-            const val META = 5
-            const val MODEL = 5
-            const val PHOTO_SET = 6
-            const val GENRE = 5
-            const val MEDIUM = 8
-            const val STUDIO = 2
-            const val META_SANKAKU = 9
         }
 
         private val tagName: AppCompatTextView = itemView.findViewById(R.id.tag_name)
@@ -77,11 +65,11 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
                 BOORU_TYPE_DAN -> {
                     tagName.text = data.name
                     tagType.text = when (data.category) {
-                        GENERAL -> res.getString(R.string.tag_type_general)
-                        ARTIST -> res.getString(R.string.tag_type_artist)
-                        COPYRIGHT -> res.getString(R.string.tag_type_copyright)
-                        CHARACTER -> res.getString(R.string.tag_type_character)
-                        META -> res.getString(R.string.tag_type_meta)
+                        Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)
+                        Tags.TYPE_ARTIST -> res.getString(R.string.tag_type_artist)
+                        Tags.TYPE_COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                        Tags.TYPE_CHARACTER -> res.getString(R.string.tag_type_character)
+                        Tags.TYPE_META -> res.getString(R.string.tag_type_meta)
                         else -> res.getString(R.string.tag_type_unknown)
                     }
                     count.text = data.count.toString()
@@ -89,12 +77,12 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
                 BOORU_TYPE_MOE -> {
                     tagName.text = data.name
                     tagType.text = when (data.category) {
-                        GENERAL -> res.getString(R.string.tag_type_general)
-                        ARTIST -> res.getString(R.string.tag_type_artist)
-                        COPYRIGHT -> res.getString(R.string.tag_type_copyright)
-                        CHARACTER -> res.getString(R.string.tag_type_character)
-                        CIRCLE -> res.getString(R.string.tag_type_circle)
-                        FAULTS -> res.getString(R.string.tag_type_faults)
+                        Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)
+                        Tags.TYPE_ARTIST -> res.getString(R.string.tag_type_artist)
+                        Tags.TYPE_COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                        Tags.TYPE_CHARACTER -> res.getString(R.string.tag_type_character)
+                        Tags.TYPE_CIRCLE -> res.getString(R.string.tag_type_circle)
+                        Tags.TYPE_FAULTS -> res.getString(R.string.tag_type_faults)
                         else -> res.getString(R.string.tag_type_unknown)
                     }
                     count.text = data.count.toString()
@@ -102,12 +90,12 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
                 BOORU_TYPE_DAN1 -> {
                     tagName.text = data.name
                     tagType.text = when (data.category) {
-                        GENERAL -> res.getString(R.string.tag_type_general)
-                        ARTIST -> res.getString(R.string.tag_type_artist)
-                        COPYRIGHT -> res.getString(R.string.tag_type_copyright)
-                        CHARACTER -> res.getString(R.string.tag_type_character)
-                        MODEL -> res.getString(R.string.tag_type_model)
-                        PHOTO_SET -> res.getString(R.string.tag_type_photo_set)
+                        Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)
+                        Tags.TYPE_ARTIST -> res.getString(R.string.tag_type_artist)
+                        Tags.TYPE_COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                        Tags.TYPE_CHARACTER -> res.getString(R.string.tag_type_character)
+                        Tags.TYPE_MODEL -> res.getString(R.string.tag_type_model)
+                        Tags.TYPE_PHOTO_SET -> res.getString(R.string.tag_type_photo_set)
                         else -> res.getString(R.string.tag_type_unknown)
                     }
                     count.text = data.count.toString()
@@ -115,11 +103,11 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
                 BOORU_TYPE_GEL -> {
                     tagName.text = data.name
                     tagType.text = when (data.category) {
-                        GENERAL -> res.getString(R.string.tag_type_general)
-                        ARTIST -> res.getString(R.string.tag_type_artist)
-                        COPYRIGHT -> res.getString(R.string.tag_type_copyright)
-                        CHARACTER -> res.getString(R.string.tag_type_character)
-                        META -> res.getString(R.string.tag_type_meta)
+                        Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)
+                        Tags.TYPE_ARTIST -> res.getString(R.string.tag_type_artist)
+                        Tags.TYPE_COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                        Tags.TYPE_CHARACTER -> res.getString(R.string.tag_type_character)
+                        Tags.TYPE_META -> res.getString(R.string.tag_type_meta)
                         else -> res.getString(R.string.tag_type_unknown)
                     }
                     count.text = data.count.toString()
@@ -127,14 +115,14 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
                 BOORU_TYPE_SANKAKU -> {
                     tagName.text = data.name
                     tagType.text = when (data.category) {
-                        GENERAL -> res.getString(R.string.tag_type_general)
-                        ARTIST -> res.getString(R.string.tag_type_artist)
-                        COPYRIGHT -> res.getString(R.string.tag_type_copyright)
-                        CHARACTER -> res.getString(R.string.tag_type_character)
-                        MEDIUM -> res.getString(R.string.tag_type_medium)
-                        META_SANKAKU -> res.getString(R.string.tag_type_meta)
-                        STUDIO -> res.getString(R.string.tag_type_studio)
-                        GENRE -> res.getString(R.string.tag_type_genre)
+                        Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)
+                        Tags.TYPE_ARTIST -> res.getString(R.string.tag_type_artist)
+                        Tags.TYPE_COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                        Tags.TYPE_CHARACTER -> res.getString(R.string.tag_type_character)
+                        Tags.TYPE_MEDIUM -> res.getString(R.string.tag_type_medium)
+                        Tags.TYPE_META_SANKAKU -> res.getString(R.string.tag_type_meta)
+                        Tags.TYPE_STUDIO -> res.getString(R.string.tag_type_studio)
+                        Tags.TYPE_GENRE -> res.getString(R.string.tag_type_genre)
                         else -> res.getString(R.string.tag_type_unknown)
                     }
                     count.text = data.count.toString()

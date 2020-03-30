@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.pageLimit
+import onlymash.flexbooru.common.Values.Tags
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
@@ -22,21 +23,6 @@ import onlymash.flexbooru.data.repository.tag.TagRepositoryImpl
 import onlymash.flexbooru.ui.adapter.TagAdapter
 import onlymash.flexbooru.ui.viewmodel.TagViewModel
 import onlymash.flexbooru.ui.viewmodel.getTagViewModel
-
-private const val TYPE_ALL = -1
-private const val TYPE_GENERAL = 0
-private const val TYPE_ARTIST = 1
-private const val TYPE_COPYRIGHT = 3
-private const val TYPE_CHARACTER = 4
-private const val TYPE_CIRCLE = 5
-private const val TYPE_FAULTS = 6
-private const val TYPE_META = 5
-private const val TYPE_MODEL = 5
-private const val TYPE_PHOTO_SET = 6
-private const val TYPE_META_SANKAKU = 9
-private const val TYPE_STUDIO = 2
-private const val TYPE_GENRE = 5
-private const val TYPE_MEDIUM = 8
 
 private const val ORDER_DATE = "date"
 private const val ORDER_NAME = "name"
@@ -159,85 +145,85 @@ class TagFragment : SearchBarFragment() {
             }
             R.id.action_tag_type_all -> {
                 action?.let {
-                    it.type = TYPE_ALL
+                    it.type = Tags.TYPE_ALL
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_general -> {
                 action?.let {
-                    it.type = TYPE_GENERAL
+                    it.type = Tags.TYPE_GENERAL
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_artist -> {
                 action?.let {
-                    it.type = TYPE_ARTIST
+                    it.type = Tags.TYPE_ARTIST
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_copyright -> {
                 action?.let {
-                    it.type = TYPE_COPYRIGHT
+                    it.type = Tags.TYPE_COPYRIGHT
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_character -> {
                 action?.let {
-                    it.type = TYPE_CHARACTER
+                    it.type = Tags.TYPE_CHARACTER
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_circle -> {
                 action?.let {
-                    it.type = TYPE_CIRCLE
+                    it.type = Tags.TYPE_CIRCLE
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_faults -> {
                 action?.let {
-                    it.type = TYPE_FAULTS
+                    it.type = Tags.TYPE_FAULTS
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_meta -> {
                 action?.let {
-                    it.type = TYPE_META
+                    it.type = Tags.TYPE_META
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_model -> {
                 action?.let {
-                    it.type = TYPE_MODEL
+                    it.type = Tags.TYPE_MODEL
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_photo_set -> {
                 action?.let {
-                    it.type = TYPE_PHOTO_SET
+                    it.type = Tags.TYPE_PHOTO_SET
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_meta_sankaku -> {
                 action?.let {
-                    it.type = TYPE_META_SANKAKU
+                    it.type = Tags.TYPE_META_SANKAKU
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_genre -> {
                 action?.let {
-                    it.type = TYPE_GENRE
+                    it.type = Tags.TYPE_GENRE
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_studio -> {
                 action?.let {
-                    it.type = TYPE_STUDIO
+                    it.type = Tags.TYPE_STUDIO
                     updateActionAndRefresh(it)
                 }
             }
             R.id.action_tag_type_medium -> {
                 action?.let {
-                    it.type = TYPE_MEDIUM
+                    it.type = Tags.TYPE_MEDIUM
                     updateActionAndRefresh(it)
                 }
             }

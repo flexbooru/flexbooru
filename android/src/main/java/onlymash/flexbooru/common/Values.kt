@@ -26,4 +26,21 @@ object Values {
     const val HASH_SALT_CONTAINED = "your-password"
 
     const val REQUEST_CODE_OPEN_DIRECTORY = 101
+    
+    object Tags {
+        const val TYPE_ALL = -1
+        const val TYPE_GENERAL = 0
+        const val TYPE_ARTIST = 1
+        const val TYPE_COPYRIGHT = 3
+        const val TYPE_CHARACTER = 4
+        const val TYPE_CIRCLE = 5
+        const val TYPE_FAULTS = 6
+        const val TYPE_META = 5 
+        const val TYPE_MODEL = 5
+        const val TYPE_PHOTO_SET = 6
+        const val TYPE_META_SANKAKU = 9
+        const val TYPE_STUDIO = 2
+        const val TYPE_GENRE = 5
+        const val TYPE_MEDIUM = 8
+    }
 }
