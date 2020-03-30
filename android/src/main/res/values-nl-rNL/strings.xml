@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
     <string name="title_posts">Posts</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Populair</string>
     <string name="title_manage_boorus">Beheer boorus</string>
     <string name="title_settings">Instellingen</string>
@@ -154,11 +155,11 @@
     <string name="settings_safe_mode">Veilige modus</string>
     <string name="settings_page_limit">Paginalimiet</string>
     <string name="settings_muzei_limit">Muzeilimiet</string>
-    <string name="settings_browse_size">Bladergrootte</string>
+    <string name="settings_muzei_size">Muzeigrootte</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Downloadgrootte</string>
     <string name="settings_download_path">Download path</string>
     <string name="settings_download_path_not_set">Path not set</string>
-    <string name="settings_muzei_size">Muzeigrootte</string>
     <string name="settings_post_size_sample">Voorbeeld</string>
     <string name="settings_post_size_larger">Groter</string>
     <string name="settings_post_size_origin">Origineel</string>

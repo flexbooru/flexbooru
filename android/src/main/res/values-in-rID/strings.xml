@@ -17,6 +17,7 @@
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Posting</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Populer</string>
     <string name="title_manage_boorus">Kelola Booru</string>
     <string name="title_settings">Pengaturan</string>
@@ -155,11 +156,11 @@
     <string name="settings_safe_mode">Mode aman</string>
     <string name="settings_page_limit">Batas halaman</string>
     <string name="settings_muzei_limit">Batas Muzei</string>
-    <string name="settings_browse_size">Browse size</string>
+    <string name="settings_muzei_size">Muzei size</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Ukuran file unduhan</string>
     <string name="settings_download_path">Download path</string>
     <string name="settings_download_path_not_set">Path not set</string>
-    <string name="settings_muzei_size">Muzei size</string>
     <string name="settings_post_size_sample">Sampel</string>
     <string name="settings_post_size_larger">Lebih besar</string>
     <string name="settings_post_size_origin">Sesuai Asli</string>

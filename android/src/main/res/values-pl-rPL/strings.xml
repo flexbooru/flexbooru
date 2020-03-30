@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">Klient booru dla Androida, obsługuje Danbooru, Moebooru, Gelbooru, Sankaku, itd.</string>
     <string name="title_posts">Posty</string>
+    <string name="title_search">Szukaj</string>
     <string name="title_popular">Popularne</string>
     <string name="title_manage_boorus">Zarządzaj boorami</string>
     <string name="title_settings">Ustawienia</string>
@@ -146,19 +147,19 @@
     <string name="account_comments">Komentarze</string>
     <string name="account_config_msg_tip_empty">Nazwa użytkownika lub hasło/klucz Api nie mogą być puste.</string>
     <string name="account_recommended">Polecane</string>
-    <string name="settings_night_mode">Night mode</string>
-    <string name="settings_night_mode_on">On</string>
-    <string name="settings_night_mode_off">Off</string>
-    <string name="settings_night_mode_system">Follow system</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
+    <string name="settings_night_mode">Tryb nocny</string>
+    <string name="settings_night_mode_on">Wł</string>
+    <string name="settings_night_mode_off">Wył</string>
+    <string name="settings_night_mode_system">System Obserwowania</string>
+    <string name="settings_night_mode_battery">Włącz oszczędzanie baterii</string>
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
     <string name="settings_muzei_limit">Limit Muzei</string>
-    <string name="settings_browse_size">Rozmiar przy przeglądaniu</string>
+    <string name="settings_muzei_size">Rozmiar Muzei</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
     <string name="settings_download_path">Ścieżka pobierania</string>
     <string name="settings_download_path_not_set">Nie wybrano ścieżki</string>
-    <string name="settings_muzei_size">Rozmiar Muzei</string>
     <string name="settings_post_size_sample">Przykład</string>
     <string name="settings_post_size_larger">Większe</string>
     <string name="settings_post_size_origin">Źródło</string>

@@ -16,6 +16,7 @@
 <resources>
     <string name="app_description">一個 Booru 安卓客戶端，支持Danbooru, Moebooru, Gelbooru, Sankaku, 之類的 Booru 系圖站。    </string>
     <string name="title_posts">貼圖</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
     <string name="title_settings">設定</string>
@@ -154,11 +155,11 @@
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每頁限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
-    <string name="settings_browse_size">瀏覽影像大小</string>
+    <string name="settings_muzei_size">Muzei 影像大小</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">下載影像大小</string>
     <string name="settings_download_path">下載路徑</string>
     <string name="settings_download_path_not_set">路徑暫未設定</string>
-    <string name="settings_muzei_size">Muzei 影像大小</string>
     <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">較大</string>
     <string name="settings_post_size_origin">原圖</string>

@@ -17,6 +17,7 @@
     <string name="app_description">Booru-клиент для Android с поддержкой Danbooru, Moebooru, Gelbooru, Sankaku и др.
     </string>
     <string name="title_posts">Посты</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Популярное</string>
     <string name="title_manage_boorus">Управление booru-галереями</string>
     <string name="title_settings">Настройки</string>
@@ -155,11 +156,11 @@
     <string name="settings_safe_mode">Безопасный режим</string>
     <string name="settings_page_limit">Лимит страниц</string>
     <string name="settings_muzei_limit">Лимит Muzei</string>
-    <string name="settings_browse_size">Поиск по размеру</string>
+    <string name="settings_muzei_size">Размер музея</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Размер для сканирования</string>
     <string name="settings_download_path">Путь скачивания</string>
     <string name="settings_download_path_not_set">Путь не установлен</string>
-    <string name="settings_muzei_size">Размер музея</string>
     <string name="settings_post_size_sample">Пример</string>
     <string name="settings_post_size_larger">Большой</string>
     <string name="settings_post_size_origin">Оригинал</string>

@@ -17,6 +17,7 @@
     <string name="app_description">Ein Booru-Client für Android; Unterstützung für Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Beiträge</string>
+    <string name="title_search">Search</string>
     <string name="title_popular">Beliebt</string>
     <string name="title_manage_boorus">Boorus verwalten</string>
     <string name="title_settings">Einstellungen</string>
@@ -155,11 +156,11 @@
     <string name="settings_safe_mode">Sicherer Modus</string>
     <string name="settings_page_limit">Seitenlimit</string>
     <string name="settings_muzei_limit">Muzei Limit</string>
-    <string name="settings_browse_size">Bildergröße (Vorschau)</string>
+    <string name="settings_muzei_size">Bildergröße (Muzei)</string>
+    <string name="settings_detail_size">Detail size</string>
     <string name="settings_download_size">Download-Größe</string>
     <string name="settings_download_path">Downloadpfad</string>
     <string name="settings_download_path_not_set">Pfad nicht gesetzt</string>
-    <string name="settings_muzei_size">Bildergröße (Muzei)</string>
     <string name="settings_post_size_sample">Beispiel</string>
     <string name="settings_post_size_larger">Größer</string>
     <string name="settings_post_size_origin">Quelle</string>
