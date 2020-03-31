@@ -21,7 +21,8 @@ kotlin {
     }
 }
 
-val jvmMainImplementation by configurations
+fun DependencyHandler.jvmMainImplementation(dependencyNotation: Any): Dependency? =
+    add("jvmMainImplementation", dependencyNotation)
 
 dependencies {
     val ext = rootProject.extra

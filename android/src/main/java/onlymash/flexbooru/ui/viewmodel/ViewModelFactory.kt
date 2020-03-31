@@ -12,6 +12,8 @@ import onlymash.flexbooru.data.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.data.repository.tag.TagRepository
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.extension.getViewModel
+import onlymash.flexbooru.saucenao.api.SauceNaoApi
+import onlymash.flexbooru.tracemoe.api.TraceMoeApi
 
 
 fun ViewModelStoreOwner.getBooruViewModel(booruDao: BooruDao): BooruViewModel =
@@ -83,5 +85,21 @@ fun ViewModelStoreOwner.getShortcutViewModel(postDao: PostDao, booruUid: Long, p
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return ShortcutViewModel(postDao, booruUid, postId) as T
+        }
+    })
+
+fun ViewModelStoreOwner.getSauceNaoViewModel(sauceNaoApi: SauceNaoApi): SauceNaoViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return SauceNaoViewModel(sauceNaoApi) as T
+        }
+    })
+
+fun ViewModelStoreOwner.getTraceMoeViewModel(traceMoeApi: TraceMoeApi): TraceMoeViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return TraceMoeViewModel(traceMoeApi) as T
         }
     })

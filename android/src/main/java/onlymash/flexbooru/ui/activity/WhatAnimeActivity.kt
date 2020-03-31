@@ -17,6 +17,8 @@ import android.view.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,37 +34,41 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Settings.isOrderSuccess
+import onlymash.flexbooru.common.Settings.safeMode
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.tracemoe.api.TraceMoeApi
+import onlymash.flexbooru.tracemoe.di.kodeinTraceMoe
 import onlymash.flexbooru.tracemoe.model.Doc
-import onlymash.flexbooru.tracemoe.model.TraceResponse
-import onlymash.flexbooru.tracemoe.presentation.TraceMoeActions
-import onlymash.flexbooru.tracemoe.presentation.TraceMoePresenter
-import onlymash.flexbooru.tracemoe.presentation.TraceMoeView
 import onlymash.flexbooru.ui.fragment.BaseBottomSheetDialogFragment
+import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
+import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
+import org.kodein.di.erased.instance
 import java.io.ByteArrayOutputStream
-import kotlin.properties.Delegates
 
 private const val READ_IMAGE_REQUEST_CODE = 147
 private const val PREVIEW_VIDEO_URL_KEY = "preview_video_url"
 
-class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
+class WhatAnimeActivity : AppCompatActivity() {
 
     private val docs: MutableList<Doc> = mutableListOf()
 
     private lateinit var whatAnimeAdapter: WhatAnimeAdapter
+    private lateinit var traceMoeViiewModel: TraceMoeViewModel
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
-    private val actions: TraceMoeActions by lazy {
-        TraceMoePresenter(Dispatchers.Main, this)
-    }
+    private val api: TraceMoeApi by kodeinTraceMoe.instance("TraceMoeApi")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!isOrderSuccess) {
+            startActivity(Intent(this, PurchaseActivity::class.java))
+            finish()
+            return
+        }
         setContentView(R.layout.activity_what_anime)
         toolbar.apply {
             setTitle(R.string.title_what_anime)
@@ -75,6 +81,36 @@ class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
             layoutManager = LinearLayoutManager(this@WhatAnimeActivity, RecyclerView.VERTICAL, false)
             adapter = whatAnimeAdapter
         }
+        traceMoeViiewModel = getTraceMoeViewModel(api)
+        traceMoeViiewModel.data.observe(this, Observer { response ->
+            docs.clear()
+            if (response != null) {
+                if (safeMode) {
+                    response.docs.forEach {
+                        if (!it.isAdult) {
+                            docs.add(it)
+                        }
+                    }
+                } else {
+                    docs.addAll(response.docs)
+                }
+            }
+            whatAnimeAdapter.notifyDataSetChanged()
+        })
+        traceMoeViiewModel.isLoading.observe(this, Observer {
+            progress_bar.isVisible = it
+            if (it && error_msg.isVisible) {
+                error_msg.isVisible = false
+            }
+        })
+        traceMoeViiewModel.error.observe(this, Observer {
+            if (!it.isNullOrBlank()) {
+                error_msg.isVisible = true
+                error_msg.text = it
+            } else {
+                error_msg.isVisible = false
+            }
+        })
         what_anime_search_fab.setOnClickListener {
             try {
                 startActivityForResult(
@@ -85,10 +121,6 @@ class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
                     READ_IMAGE_REQUEST_CODE
                 )
             } catch (_: ActivityNotFoundException) {}
-        }
-        if (!Settings.isOrderSuccess) {
-            startActivity(Intent(this, PurchaseActivity::class.java))
-            finish()
         }
     }
 
@@ -120,12 +152,10 @@ class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
                                     }
                                 }
                                 if (encodedImage != null) {
-                                    actions.onRequestData(head + encodedImage)
-                                } else {
-                                    progress_bar.toVisibility(false)
+                                    traceMoeViiewModel.fetch(head + encodedImage)
                                 }
                             }
-                        } else progress_bar.toVisibility(false)
+                        }
                     }
                 })
         } else {
@@ -146,9 +176,7 @@ class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
                     }
                 }
                 if (encodedImage != null) {
-                    actions.onRequestData(head + encodedImage)
-                } else {
-                    progress_bar.toVisibility(false)
+                    traceMoeViiewModel.fetch(head + encodedImage)
                 }
             }
         }
@@ -161,32 +189,6 @@ class WhatAnimeActivity : AppCompatActivity(), TraceMoeView {
                 search(it)
             }
         }
-    }
-
-    override var isUpdating: Boolean by Delegates.observable(false) { _, _, isLoading ->
-        progress_bar.toVisibility(isLoading)
-        if (isLoading) {
-            error_msg.toVisibility(false)
-        }
-    }
-
-    override fun onUpdate(data: TraceResponse) {
-        docs.clear()
-        if (Settings.safeMode) {
-            data.docs.forEach {
-                if (!it.isAdult) {
-                    docs.add(it)
-                }
-            }
-        } else {
-            docs.addAll(data.docs)
-        }
-        whatAnimeAdapter.notifyDataSetChanged()
-    }
-
-    override fun showError(error: Throwable) {
-        error_msg.toVisibility(true)
-        error_msg.text = error.message ?: ""
     }
 
     inner class WhatAnimeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

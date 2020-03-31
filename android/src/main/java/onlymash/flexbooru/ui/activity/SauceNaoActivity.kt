@@ -15,6 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,22 +29,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.common.Settings.isOrderSuccess
+import onlymash.flexbooru.common.Settings.sauceNaoApiKey
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.saucenao.api.SauceNaoApi
+import onlymash.flexbooru.saucenao.di.kodeinSauceNao
 import onlymash.flexbooru.saucenao.model.Result
 import onlymash.flexbooru.saucenao.model.SauceNaoResponse
-import onlymash.flexbooru.saucenao.presentation.SauceNaoActions
-import onlymash.flexbooru.saucenao.presentation.SauceNaoPresenter
-import onlymash.flexbooru.saucenao.presentation.SauceNaoView
+import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
+import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
+import org.kodein.di.erased.instance
 import java.io.IOException
-import kotlin.properties.Delegates
 
 const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
 
 private const val READ_IMAGE_REQUEST_CODE = 147
 
-class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
+class SauceNaoActivity : AppCompatActivity() {
 
     companion object {
         fun startSearch(context: Context, url: String) {
@@ -54,17 +58,20 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
         }
     }
 
+    private val api: SauceNaoApi by kodeinSauceNao.instance("SauceNaoApi")
+
+    private lateinit var sauceNaoViewModel: SauceNaoViewModel
     private var response: SauceNaoResponse? = null
 
     private lateinit var sauceNaoAdapter: SauceNaoAdapter
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
-    private val actions: SauceNaoActions by lazy {
-        SauceNaoPresenter(Dispatchers.Main, this)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!isOrderSuccess) {
+            startActivity(Intent(this, PurchaseActivity::class.java))
+            finish()
+            return
+        }
         setContentView(R.layout.activity_sauce_nao)
         toolbar.apply {
             setTitle(R.string.title_sauce_nao)
@@ -90,11 +97,26 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             layoutManager = LinearLayoutManager(this@SauceNaoActivity, RecyclerView.VERTICAL, false)
             adapter = sauceNaoAdapter
         }
-        if (!Settings.isOrderSuccess) {
-            startActivity(Intent(this, PurchaseActivity::class.java))
-            finish()
-            return
-        }
+        sauceNaoViewModel = getSauceNaoViewModel(api)
+        sauceNaoViewModel.data.observe(this, Observer {
+            response = it
+            toolbar.subtitle = getString(R.string.sauce_nao_remaining_times_today, it.header.longRemaining)
+            sauceNaoAdapter.notifyDataSetChanged()
+        })
+        sauceNaoViewModel.isLoading.observe(this, Observer {
+            progress_bar.isVisible = it
+            if (it && error_msg.isVisible) {
+                error_msg.isVisible = false
+            }
+        })
+        sauceNaoViewModel.error.observe(this, Observer {
+            if (!it.isNullOrBlank()) {
+                error_msg.isVisible = true
+                error_msg.text = it
+            } else {
+                error_msg.isVisible = false
+            }
+        })
         val url = intent?.getStringExtra(SAUCE_NAO_SEARCH_URL_KEY)
         if (!url.isNullOrEmpty()) {
             search(url)
@@ -110,9 +132,9 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
     }
 
     private fun search(url: String) {
-        val apiKey = Settings.sauceNaoApiKey
+        val apiKey = sauceNaoApiKey
         if (apiKey.isNotEmpty()) {
-            actions.onRequestData(apiKey = apiKey, imageUrl = url)
+            sauceNaoViewModel.searchByUrl(imageUrl = url, apiKey = apiKey)
         } else {
             error_msg.toVisibility(true)
             error_msg.setText(R.string.sauce_nao_api_key_unset)
@@ -173,9 +195,8 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
     }
 
     private fun search(imageUri: Uri) {
-        val apiKey = Settings.sauceNaoApiKey
+        val apiKey = sauceNaoApiKey
         if (apiKey.isNotEmpty()) {
-            progress_bar.toVisibility(true)
             lifecycleScope.launch {
                 val byteArray = withContext(Dispatchers.IO) {
                     try {
@@ -185,16 +206,14 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
                     }
                 }
                 if (byteArray != null) {
-                    actions.onRequestData(
+                    sauceNaoViewModel.searchByImage(
                         apiKey = apiKey,
                         byteArray = byteArray,
                         fileExt = imageUri.toDecodedString().fileExt())
-                } else {
-                    progress_bar.toVisibility(false)
                 }
             }
         } else {
-            error_msg.toVisibility(true)
+            error_msg.isVisible = true
             error_msg.setText(R.string.sauce_nao_api_key_unset)
         }
     }
@@ -206,7 +225,7 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             setPadding(padding, padding / 2, padding, 0)
         }
         val editText = EditText(this).apply {
-            setText(Settings.sauceNaoApiKey)
+            setText(sauceNaoApiKey)
         }
         layout.addView(editText)
         AlertDialog.Builder(this)
@@ -214,7 +233,7 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             .setView(layout)
             .setPositiveButton(R.string.dialog_ok) { _, _ ->
                 val key = (editText.text ?: "").toString().trim()
-                Settings.sauceNaoApiKey = key
+                sauceNaoApiKey = key
                 if (key.isEmpty()) {
                     error_msg.toVisibility(true)
                     error_msg.setText(R.string.sauce_nao_api_key_unset)
@@ -225,24 +244,6 @@ class SauceNaoActivity : AppCompatActivity(), SauceNaoView {
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()
             .show()
-    }
-
-    override var isUpdating: Boolean by Delegates.observable(false) {_, _, isLoading ->
-        progress_bar.toVisibility(isLoading)
-        if (isLoading) {
-            error_msg.toVisibility(false)
-        }
-    }
-
-    override fun onUpdate(data: SauceNaoResponse) {
-        response = data
-        toolbar.subtitle = getString(R.string.sauce_nao_remaining_times_today, data.header.longRemaining)
-        sauceNaoAdapter.notifyDataSetChanged()
-    }
-
-    override fun showError(error: Throwable) {
-        error_msg.toVisibility(true)
-        error_msg.text = error.message ?: ""
     }
 
     inner class SauceNaoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
