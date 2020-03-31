@@ -18,16 +18,11 @@ package onlymash.flexbooru.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.provider.DocumentsContract
-import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
 import onlymash.flexbooru.extension.toDecodedString
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
 
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-
-    override val kodein by kodein()
+abstract class BaseActivity : KodeinActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

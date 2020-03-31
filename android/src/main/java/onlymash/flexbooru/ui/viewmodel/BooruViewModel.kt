@@ -61,4 +61,12 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
     }
 
     fun isNotEmpty() = booruDao.isNotEmpty()
+
+    fun updateBooru(booru: Booru) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                booruDao.update(booru)
+            } catch (_: Exception) {}
+        }
+    }
 }

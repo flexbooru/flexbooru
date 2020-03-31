@@ -65,7 +65,7 @@ class PostAdapter(
             this.post = post ?: return
             infoContainer.isVisible = showInfoBar
             postId.text = String.format("#%d", post.id)
-            postSize.text = String.format("%d x %d", post.width, postSize.height)
+            postSize.text = String.format("%d x %d", post.width, post.height)
             val placeholderDrawable = when (post.rating) {
                 "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
                 "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)

@@ -53,7 +53,7 @@ data class Booru(
     var type: Int,
     @ColumnInfo(name = "blacklists")
     @SerialName("blacklists")
-    var blacklists: List<String> = listOf(),
+    var blacklists: MutableList<String> = mutableListOf(),
     @ColumnInfo(name = "user")
     @SerialName("user")
     var user: User? = null

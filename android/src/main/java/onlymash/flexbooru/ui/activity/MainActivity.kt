@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Rect
@@ -103,28 +104,26 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             DRAWER_ITEM_ID_ACCOUNT -> {
                 currentBooru?.let {
                     if (it.user == null) {
-                        startActivity(Intent(this, AccountConfigActivity::class.java))
+                        toActivity(AccountConfigActivity::class.java)
                     } else {
-                        startActivity(Intent(this, AccountActivity::class.java))
+                        toActivity(AccountActivity::class.java)
                     }
                 }
             }
-            DRAWER_ITEM_ID_COMMENTS -> {
-
-            }
-            DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-
-            }
-            DRAWER_ITEM_ID_MUZEI -> {
-
-            }
-            DRAWER_ITEM_ID_SETTINGS -> startActivity(Intent(this, SettingsActivity::class.java))
-            DRAWER_ITEM_ID_SAUCE_NAO -> startActivity(Intent(this, SauceNaoActivity::class.java))
-            DRAWER_ITEM_ID_WHAT_ANIME -> startActivity(Intent(this, WhatAnimeActivity::class.java))
-            DRAWER_ITEM_ID_ABOUT -> startActivity(Intent(this, AboutActivity::class.java))
-            DRAWER_ITEM_ID_PURCHASE -> startActivity(Intent(this, PurchaseActivity::class.java))
+            DRAWER_ITEM_ID_COMMENTS -> toActivity(CommentActivity::class.java )
+            DRAWER_ITEM_ID_TAG_BLACKLIST -> toActivity(TagBlacklistActivity::class.java)
+            DRAWER_ITEM_ID_MUZEI -> toActivity(MuzeiActivity::class.java)
+            DRAWER_ITEM_ID_SETTINGS -> toActivity(SettingsActivity::class.java)
+            DRAWER_ITEM_ID_SAUCE_NAO -> toActivity(SauceNaoActivity::class.java)
+            DRAWER_ITEM_ID_WHAT_ANIME -> toActivity(WhatAnimeActivity::class.java)
+            DRAWER_ITEM_ID_ABOUT -> toActivity(AboutActivity::class.java)
+            DRAWER_ITEM_ID_PURCHASE -> toActivity(PurchaseActivity::class.java)
         }
         false
+    }
+
+    private fun toActivity(activityCls: Class<*>) {
+        startActivity(Intent(this, activityCls))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
