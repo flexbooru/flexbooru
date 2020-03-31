@@ -19,6 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#noinspection ShrinkerUnresolvedReference
 
 -keepattributes *Annotation*, Exceptions, EnclosingMethod, InnerClasses, Signature
 
@@ -62,24 +63,6 @@
 # Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
 -dontwarn org.codehaus.mojo.animal_sniffer.*
 
-# Gson specific classes
--dontwarn sun.misc.**
-#-keep class com.google.gson.stream.** { *; }
-
-# Application classes that will be serialized/deserialized over Gson
--keep class onlymash.flexbooru.entity.** { <fields>; }
-
-# Prevent proguard from stripping interface information from TypeAdapterFactory,
-# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
-
-# Prevent R8 from leaving Data object members always null
--keepclassmembers,allowobfuscation class * {
-  @com.google.gson.annotations.SerializedName <fields>;
-}
-
 #https://github.com/Tickaroo/tikxml/blob/master/docs/AnnotatingModelClasses.md
 -keep class com.tickaroo.tikxml.** { *; }
 -keep @com.tickaroo.tikxml.annotation.Xml public class *
@@ -95,11 +78,25 @@
 -keep class com.android.vending.billing.**
 
 -dontnote kotlinx.serialization.SerializationKt
--keep,includedescriptorclasses class onlymash.flexbooru.**$$serializer { *; }
--keepclassmembers class onlymash.flexbooru.** {
+-keep,includedescriptorclasses class onlymash.flexbooru.data.model.**$$serializer { *; }
+-keep,includedescriptorclasses class onlymash.flexbooru.saucenao.model.**$$serializer { *; }
+-keep,includedescriptorclasses class onlymash.flexbooru.tracemoe.model.**$$serializer { *; }
+-keepclassmembers class onlymash.flexbooru.data.model.** {
     *** Companion;
 }
--keepclasseswithmembers class onlymash.flexbooru.** {
+-keepclassmembers class onlymash.flexbooru.saucenao.model.** {
+    *** Companion;
+}
+-keepclassmembers class onlymash.flexbooru.tracemoe.model.** {
+    *** Companion;
+}
+-keepclasseswithmembers class onlymash.flexbooru.data.model.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keepclasseswithmembers class onlymash.flexbooru.saucenao.model** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keepclasseswithmembers class onlymash.flexbooru.tracemoe.model.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

@@ -2,13 +2,10 @@ package onlymash.flexbooru
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.UnstableDefault
 import onlymash.flexbooru.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.saucenao.di.kodeinSauceNao
 import org.kodein.di.erased.instance
 
-@ExperimentalStdlibApi
-@UnstableDefault
 fun main() {
     val api: SauceNaoApi by kodeinSauceNao.instance("SauceNaoApi")
     GlobalScope.launch {
