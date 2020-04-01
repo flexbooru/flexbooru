@@ -23,7 +23,7 @@ Click on this [link](https://crowdin.com/project/flexbooru) and you can translat
 - [OkHttp:](https://github.com/square/okhttp) An HTTP+HTTP/2 client for Android and Java applications. 
 - [Ktor:](https://github.com/ktorio/ktor) A framework for quickly creating web applications in Kotlin with minimal effort.
 - [Retrofit:](https://github.com/square/retrofit) Type-safe HTTP client for Android and Java by Square.
-- [Gson:](https://github.com/google/gson) A Java serialization/deserialization library to convert Java Objects into JSON and back.
+- [KotlinxSerializationConverter:](https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter) A Retrofit 2 Converter.Factory for Kotlin serialization.
 - [TikXml:](https://github.com/Tickaroo/tikxml) Modern XML Parser for Android.
 - [Glide:](https://github.com/bumptech/glide) An image loading and caching library for Android focused on smooth scrolling.
 - [Picasso:](https://github.com/square/picasso) A powerful image downloading and caching library for Android.
