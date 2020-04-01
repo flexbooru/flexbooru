@@ -16,7 +16,7 @@
 <resources>
     <string name="app_description">一個支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 的 Android 用戶端。</string>
     <string name="title_posts">帖子</string>
-    <string name="title_search">Search</string>
+    <string name="title_search">搜尋</string>
     <string name="title_popular">熱門</string>
     <string name="title_manage_boorus">管理 Boorus</string>
     <string name="title_settings">設定</string>
@@ -156,7 +156,7 @@
     <string name="settings_page_limit">每頁限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
     <string name="settings_muzei_size">Muzei 大小</string>
-    <string name="settings_detail_size">Detail size</string>
+    <string name="settings_detail_size">詳細大小</string>
     <string name="settings_download_size">下載大小</string>
     <string name="settings_download_path">下載路徑</string>
     <string name="settings_download_path_not_set">未設定路徑</string>
