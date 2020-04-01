@@ -10,8 +10,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.AlignItems
@@ -20,6 +22,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.search_layout.*
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.common.Keys.PAGE_TYPE
@@ -35,19 +38,24 @@ import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Settings.safeMode
 import onlymash.flexbooru.common.Settings.showInfoBar
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.action.ActionPost
+import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.data.repository.NetworkState
+import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.activity.SauceNaoActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
@@ -58,6 +66,7 @@ import onlymash.flexbooru.ui.viewmodel.getTagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
 import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.searchbar.SearchBar
+import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.erased.instance
 import java.util.Calendar
 import java.util.Locale
@@ -77,6 +86,8 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     private val sp by instance<SharedPreferences>()
     private val db by instance<MyDatabase>()
     private val ioExecutor by instance<Executor>()
+
+    private val voteRepository by lazy { VoteRepositoryImpl(booruApis, db.postDao()) }
 
     private lateinit var date: ActionPost.Date
 
@@ -140,9 +151,12 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
 
     private fun initPostsList() {
         val glide = GlideApp.with(this)
-        postAdapter = PostAdapter(glide, showInfoBar) {
-            postViewModel.retry()
-        }
+        postAdapter = PostAdapter(
+            glide = glide,
+            showInfoBar = showInfoBar,
+            longClickItemCallback = { handleLongClick(it) },
+            retryCallback = { postViewModel.retry() }
+        )
         postsList.apply {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             adapter = postAdapter
@@ -279,6 +293,37 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
 
     override fun getSearchBarHint(): CharSequence {
         return getString(R.string.search_bar_hint_search_posts)
+    }
+
+
+    private fun handleLongClick(post: Post) {
+        val context = context ?: return
+        AlertDialog.Builder(context)
+            .setTitle("Post ${post.id}")
+            .setItems(resources.getTextArray(R.array.post_item_action)) { _, which ->
+                when (which) {
+                    0 -> {
+                        action?.apply {
+                            activity?.let {
+                                DownloadWorker.downloadPost(post, booru.host, it)
+                            }
+                        }
+                    }
+                    1 -> {
+                        action?.apply {
+                            if (booru.user != null && booru.type != BOORU_TYPE_GEL) {
+                                val actionVote = ActionVote(booru, post.id)
+                                lifecycleScope.launch {
+                                    voteRepository.addFav(actionVote)
+                                }
+                            }
+                        }
+                    }
+                    2 -> SauceNaoActivity.startSearch(context, post.sample)
+                }
+            }
+            .create()
+            .show()
     }
 
     override fun onMenuItemClick(menuItem: MenuItem) {

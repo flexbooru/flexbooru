@@ -3,12 +3,11 @@ package onlymash.flexbooru.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.ui.fragment.PostFragment
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     companion object {
         fun startSearch(context: Context, query: String) {

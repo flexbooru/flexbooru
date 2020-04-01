@@ -21,6 +21,7 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 class PostAdapter(
     private val glide: GlideRequests,
     var showInfoBar: Boolean,
+    private val longClickItemCallback: (Post) -> Unit,
     retryCallback: () -> Unit
 ) : BasePagedListAdapter<Post, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
 
@@ -63,6 +64,12 @@ class PostAdapter(
                 post?.let {
                     DetailActivity.start(itemView.context, it.query, layoutPosition)
                 }
+            }
+            itemView.setOnLongClickListener {
+                post?.let {
+                    longClickItemCallback(it)
+                }
+                true
             }
         }
 
