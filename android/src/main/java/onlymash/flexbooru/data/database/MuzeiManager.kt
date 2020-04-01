@@ -51,4 +51,9 @@ object MuzeiManager {
     fun getMuzeiByBooruUid(booruUid: Long): List<Muzei>? {
         return muzeiDao.getMuzeiByBooruUid(booruUid)
     }
+
+    @Throws(IOException::class)
+    fun getMuzeiByUid(uid: Long): Muzei? {
+        return muzeiDao.getMuzeiByUid(uid)
+    }
 }

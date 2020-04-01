@@ -90,6 +90,17 @@ class CommentActivity : KodeinActivity() {
                 toolbar.subtitle = "Post ${action.postId}"
                 if (action.booru.type != BOORU_TYPE_GEL && action.booru.user != null) {
                     toolbar.inflateMenu(R.menu.comment)
+                    toolbar.setOnMenuItemClickListener { menuItem ->
+                        if (menuItem?.itemId == R.id.action_comment_reply) {
+                            if (action.booru.user == null) {
+                                startActivity(Intent(this, AccountConfigActivity::class.java))
+                                finish()
+                            } else {
+                                reply(postId = action.postId)
+                            }
+                        }
+                        true
+                    }
                 }
             }
             action.query.isNotBlank() -> {

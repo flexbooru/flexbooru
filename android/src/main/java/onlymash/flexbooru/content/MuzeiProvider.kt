@@ -20,19 +20,21 @@ import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.worker.MuzeiArtWorker
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 
 class MuzeiProvider : MuzeiArtProvider() {
     companion object {
-        private const val TAG = "MuzeiProvider"
         private const val COMMAND_ID_VIEW_POST = 1
         private const val COMMAND_ID_SEARCH_POSTS = 2
     }
     override fun onLoadRequested(initial: Boolean) {
-//        MuzeiArtWorker.enqueueLoad()
+        MuzeiArtWorker.enqueueLoad()
     }
 
     override fun getCommands(artwork: Artwork): MutableList<UserCommand> =
@@ -46,18 +48,18 @@ class MuzeiProvider : MuzeiArtProvider() {
         val context = context ?: return
         when (id) {
             COMMAND_ID_VIEW_POST -> {
-                val keyword = artwork.token ?: return
-//                context.startActivity(
-//                    Intent(context, SearchActivity::class.java)
-//                        .putExtra(Constants.KEYWORD_KEY, keyword)
-//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                val query = artwork.token ?: return
+                context.startActivity(
+                    Intent(context, SearchActivity::class.java)
+                        .putExtra(POST_QUERY, query)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
             COMMAND_ID_SEARCH_POSTS -> {
-                val keyword = artwork.byline ?: return
-//                context.startActivity(
-//                    Intent(context, SearchActivity::class.java)
-//                        .putExtra(Constants.KEYWORD_KEY, keyword)
-//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                val query = artwork.byline ?: return
+                context.startActivity(
+                    Intent(context, SearchActivity::class.java)
+                        .putExtra(POST_QUERY, query)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
         }
     }

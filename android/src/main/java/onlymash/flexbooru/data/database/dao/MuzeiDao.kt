@@ -28,6 +28,9 @@ interface MuzeiDao {
     @Query("SELECT * FROM muzei WHERE booru_uid = :booruUid ORDER BY uid ASC")
     fun getMuzeiByBooruUid(booruUid: Long): List<Muzei>?
 
+    @Query("SELECT * FROM muzei WHERE uid = :uid")
+    fun getMuzeiByUid(uid: Long): Muzei?
+
     @Query("SELECT * FROM muzei WHERE booru_uid = :booruUid ORDER BY uid ASC")
     fun getMuzeiByBooruUidLiveData(booruUid: Long): LiveData<List<Muzei>>
 

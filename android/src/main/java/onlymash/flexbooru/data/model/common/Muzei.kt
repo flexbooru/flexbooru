@@ -16,9 +16,8 @@
 package onlymash.flexbooru.data.model.common
 
 import androidx.room.*
-import onlymash.flexbooru.data.model.common.Booru
 
-@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "keyword"], unique = true))],
+@Entity(tableName = "muzei", indices = [(Index(value = ["booru_uid", "query"], unique = true))],
     foreignKeys = [(ForeignKey(
         entity = Booru::class,
         parentColumns = ["uid"],
@@ -30,6 +29,6 @@ data class Muzei(
     var uid: Long = 0L,
     @ColumnInfo(name = "booru_uid")
     val booruUid: Long,
-    @ColumnInfo(name = "keyword")
-    var keyword: String
+    @ColumnInfo(name = "query")
+    var query: String
 )

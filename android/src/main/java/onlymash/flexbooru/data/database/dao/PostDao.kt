@@ -32,8 +32,8 @@ interface PostDao {
     @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC")
     fun getPosts(booruUid: Long, query: String) : DataSource.Factory<Int, Post>
 
-    @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC")
-    fun getPostsRaw(booruUid: Long, query: String) : List<Post>
+    @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC LIMIT :limit")
+    fun getPostsRaw(booruUid: Long, query: String, limit: Int) : List<Post>
 
     @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC LIMIT 1")
     fun getFirstPostRaw(booruUid: Long, query: String) : Post?

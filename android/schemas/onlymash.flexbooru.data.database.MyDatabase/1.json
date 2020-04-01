@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4510f252a74fd26e8d10eea59f6c42b4",
+    "identityHash": "d08a61936d3d20803a5b764519c99d24",
     "entities": [
       {
         "tableName": "boorus",
@@ -295,7 +295,7 @@
       },
       {
         "tableName": "muzei",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `keyword` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -310,8 +310,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "keyword",
-            "columnName": "keyword",
+            "fieldPath": "query",
+            "columnName": "query",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -324,13 +324,13 @@
         },
         "indices": [
           {
-            "name": "index_muzei_booru_uid_keyword",
+            "name": "index_muzei_booru_uid_query",
             "unique": true,
             "columnNames": [
               "booru_uid",
-              "keyword"
+              "query"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_muzei_booru_uid_keyword` ON `${TABLE_NAME}` (`booru_uid`, `keyword`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_muzei_booru_uid_query` ON `${TABLE_NAME}` (`booru_uid`, `query`)"
           }
         ],
         "foreignKeys": [
@@ -404,7 +404,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4510f252a74fd26e8d10eea59f6c42b4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd08a61936d3d20803a5b764519c99d24')"
     ]
   }
 }
