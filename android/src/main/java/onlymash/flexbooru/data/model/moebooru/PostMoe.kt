@@ -17,7 +17,7 @@ data class PostMoe(
     @SerialName("created_at")
     val createdAt: Int,
     @SerialName("creator_id")
-    val creatorId: Int,
+    val creatorId: Int? = -1,
     @SerialName("author")
     val author: String,
     @SerialName("source")
@@ -96,7 +96,7 @@ data class PostMoe(
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
-            uploader = User(id = creatorId, name = author),
+            uploader = User(id = creatorId ?: -1, name = author),
             isFavored = isFavored
         )
     }
