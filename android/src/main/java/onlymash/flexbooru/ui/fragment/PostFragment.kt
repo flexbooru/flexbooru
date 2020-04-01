@@ -93,6 +93,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
 
     private lateinit var leftButton: ImageButton
     private var rightButton: View? = null
+    private lateinit var postsList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,6 +131,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             setSearchBarTitle(getString(R.string.title_search))
             setSearchBarText(query)
         }
+        postsList = view.findViewById(R.id.list)
         leftButton = getSearchBarLeftButton()
         viewTransition = ViewTransition(swipe_refresh, search_layout)
         initPostsList()
@@ -141,7 +143,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         postAdapter = PostAdapter(glide, showInfoBar) {
             postViewModel.retry()
         }
-        list.apply {
+        postsList.apply {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             adapter = postAdapter
         }
@@ -455,7 +457,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
                 postViewModel.show(action)
             }
             GRID_WIDTH_KEY -> {
-                list.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
+                postsList.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             }
             SAFE_MODE_KEY -> {
                 action.isSafeMode = safeMode

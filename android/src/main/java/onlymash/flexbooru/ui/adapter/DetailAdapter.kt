@@ -77,7 +77,11 @@ class DetailAdapter(
         if (layout.childCount > 0) {
             layout.removeAllViews()
         }
-        val post = getItem(position) ?: return
+        val post = try {
+            getItem(position)
+        } catch (_: IndexOutOfBoundsException) {
+            null
+        } ?: return
         val url = when (size) {
             POST_SIZE_SAMPLE -> post.sample
             POST_SIZE_LARGER -> post.medium
@@ -184,7 +188,7 @@ class DetailAdapter(
             }
             else -> {
                 val playerView = LayoutInflater.from(layout.context).inflate(R.layout.exoplayer, null) as PlayerView
-                playerView.tag = String.format("player_%d", position)
+                playerView.tag = String.format("player_%d", post.id)
                 layout.addView(playerView)
             }
         }

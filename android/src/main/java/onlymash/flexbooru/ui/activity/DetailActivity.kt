@@ -21,6 +21,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.exoplayer2.ui.PlayerView
 
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -52,6 +53,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.favorite.VoteRepository
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
+import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
@@ -90,6 +92,8 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private val booruApis by instance<BooruApis>()
     private val voteRepository: VoteRepository by lazy { VoteRepositoryImpl(booruApis, postDao) }
 
+    private val playerHolder by lazy { PlayerHolder(this) }
+
     private lateinit var booru: Booru
     private lateinit var actionVote: ActionVote
     private var initPosition = POSITION_INIT
@@ -100,12 +104,20 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private val currentPost: Post?
         get() = detailAdapter.getPost(detail_pager.currentItem)
 
+    private fun getPlayerView(post: Post?): PlayerView? {
+        val id = post?.id ?: return null
+        return detail_pager.findViewWithTag(String.format("player_%d", id))
+    }
+
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
-
+            getPlayerView(currentPost)?.onPause()
         }
         override fun onPageSelected(position: Int) {
-            syncInfo(detailAdapter.getPost(position))
+            val post = detailAdapter.getPost(position)
+            syncInfo(post)
+            if (post == null) return
+            play(post)
         }
     }
 
@@ -419,5 +431,31 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             inputStream?.safeCloseQuietly()
             outputSteam?.safeCloseQuietly()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentPost?.let { post ->
+            play(post)
+        }
+    }
+
+    private fun play(post: Post) {
+        val url = post.origin
+        if (url.isNotEmpty() && !url.isImage()) {
+            getPlayerView(post)?.let { playerView ->
+                playerHolder.start(url.toUri(), playerView)
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        playerHolder.stop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        playerHolder.release()
     }
 }

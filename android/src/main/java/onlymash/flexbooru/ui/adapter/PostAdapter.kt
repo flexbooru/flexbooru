@@ -40,7 +40,12 @@ class PostAdapter(
             .inflate(R.layout.item_post, parent, false))
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PostViewHolder).bindTo(getItem(position))
+        val post = try {
+            getItem(position)
+        } catch (_: IndexOutOfBoundsException) {
+            null
+        }
+        (holder as PostViewHolder).bindTo(post)
     }
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
