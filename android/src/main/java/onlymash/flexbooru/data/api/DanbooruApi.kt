@@ -40,6 +40,7 @@ import java.util.concurrent.TimeUnit
 interface DanbooruApi {
 
     companion object {
+        val E621_HOSTS = arrayOf("e621.net", "e926.net")
         /**
          * return [DanbooruApi]
          * */

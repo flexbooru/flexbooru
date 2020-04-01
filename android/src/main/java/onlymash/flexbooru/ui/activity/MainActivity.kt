@@ -246,7 +246,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         booruViewModel.loadBoorus().observe(this, Observer {
             boorus.clear()
             boorus.addAll(it)
-            initDrawerHeader(currentBooruUid)
+            initDrawerHeader()
         })
         booruViewModel.booru.observe(this, Observer { booru: Booru? ->
             currentBooru = booru
@@ -309,10 +309,10 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private fun initDrawerHeader(booruUid: Long) {
+    private fun initDrawerHeader() {
         val success = isOrderSuccess
         val size = boorus.size
-        var uid = booruUid
+        var uid = activatedBooruUid
         var i = -1
         headerView.clear()
         boorus.forEachIndexed { index, booru ->
@@ -347,9 +347,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (i == -1) {
             uid = boorus[0].uid
             activatedBooruUid = uid
-        } else {
-            headerView.setActiveProfile(uid)
         }
+        headerView.setActiveProfile(uid)
     }
 
     private val sharedElementCallback = object : SharedElementCallback() {
@@ -397,7 +396,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     }
                 }
                 if (boorus.size > BOORUS_LIMIT) {
-                    initDrawerHeader(activatedBooruUid)
+                    initDrawerHeader()
                 }
             }
         }

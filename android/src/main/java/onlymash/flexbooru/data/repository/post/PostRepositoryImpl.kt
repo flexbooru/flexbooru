@@ -13,6 +13,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1 as BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE as BOORU_TYPE_MOE
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
+import onlymash.flexbooru.data.api.DanbooruApi
 import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.Listing
@@ -77,7 +78,13 @@ class PostRepositoryImpl(
         networkState.value = NetworkState.LOADING
         scope.launch {
             when(val result = when(action.booru.type) {
-                BOORU_TYPE_DAN -> refreshDan(action)
+                BOORU_TYPE_DAN -> {
+                    if (action.booru.host in DanbooruApi.E621_HOSTS) {
+                        refreshE621(action)
+                    } else {
+                        refreshDan(action)
+                    }
+                }
                 BOORU_TYPE_DAN1 -> refreshDan1(action)
                 BOORU_TYPE_MOE -> refreshMoe(action)
                 BOORU_TYPE_GEL -> refreshGel(action)
@@ -111,6 +118,28 @@ class PostRepositoryImpl(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
+                            index = index
+                        )
+                    } ?: listOf()
+                    NetResult.Success(posts)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun refreshE621(action: ActionPost): NetResult<List<Post>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.danApi.getPostsE621(action.getDanPostsUrl(1))
+                if (response.isSuccessful) {
+                    val posts = response.body()?.posts?.mapIndexed { index, post ->
+                        post.toPost(
+                            booruUid = action.booru.uid,
+                            query = action.query,
                             index = index
                         )
                     } ?: listOf()

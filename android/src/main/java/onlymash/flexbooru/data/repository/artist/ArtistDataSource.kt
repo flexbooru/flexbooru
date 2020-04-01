@@ -25,6 +25,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.api.DanbooruApi
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.extension.NetResult
@@ -109,7 +110,7 @@ class ArtistDataSource(
     }
 
     private suspend fun getArtists(action: ActionArtist, page: Int): NetResult<List<Artist>> {
-        if (action.booru.host == "e621.net") {
+        if (action.booru.host in DanbooruApi.E621_HOSTS) {
             return getArtistsE621(action, page)
         }
         return withContext(Dispatchers.IO) {

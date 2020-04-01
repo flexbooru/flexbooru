@@ -14,6 +14,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU as BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR as PAGE_TYPE_POPULAR
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
+import onlymash.flexbooru.data.api.DanbooruApi
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
@@ -73,7 +74,7 @@ class PostBoundaryCallback(
         scope.launch {
             when (val result = when (action.booru.type) {
                 BOORU_TYPE_DAN -> {
-                    if (action.booru.host == "e621.net") {
+                    if (action.booru.host in DanbooruApi.E621_HOSTS) {
                         getPostsDanE621(page, indexInNext)
                     } else {
                         getPostsDan(page, indexInNext)
