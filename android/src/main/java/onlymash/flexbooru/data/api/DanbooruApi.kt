@@ -85,6 +85,9 @@ interface DanbooruApi {
     suspend fun getPosts(@Url httpUrl: HttpUrl): Response<List<PostDan>>
 
     @GET
+    suspend fun getPostsE621(@Url httpUrl: HttpUrl): Response<PostDanE621Response>
+
+    @GET
     suspend fun getUsers(@Url httpUrl: HttpUrl): Response<List<User>>
 
     @GET
@@ -95,6 +98,9 @@ interface DanbooruApi {
 
     @GET
     suspend fun getArtists(@Url httpUrl: HttpUrl): Response<List<Artist>>
+
+    @GET
+    suspend fun getArtistsE621(@Url httpUrl: HttpUrl): Response<List<ArtistE621>>
 
     @FormUrlEncoded
     @POST

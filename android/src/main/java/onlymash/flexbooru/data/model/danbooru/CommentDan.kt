@@ -14,11 +14,15 @@ data class CommentDan(
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("creator")
-    val creator: User,
+    val creator: User? = null,
     @SerialName("id")
     val id: Int,
     @SerialName("post_id")
-    val postId: Int
+    val postId: Int,
+    @SerialName("creator_id")
+    val creatorId: Int? = -1,
+    @SerialName("creator_name")
+    val creatorName: String? = null
 ) {
     fun toComment(): Comment {
         return Comment(
@@ -27,8 +31,8 @@ data class CommentDan(
             postId = postId,
             body = body,
             date = createdAt.formatDateDan().toString(),
-            creatorId = creator.id,
-            creatorName = creator.name
+            creatorId = creator?.id ?: creatorId ?: -1,
+            creatorName = creator?.name ?: creatorName ?: ""
         )
     }
 }

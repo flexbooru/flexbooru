@@ -109,6 +109,9 @@ class ArtistDataSource(
     }
 
     private suspend fun getArtists(action: ActionArtist, page: Int): NetResult<List<Artist>> {
+        if (action.booru.host == "e621.net") {
+            return getArtistsE621(action, page)
+        }
         return withContext(Dispatchers.IO) {
             try {
                 val response =  when (action.booru.type) {
@@ -118,6 +121,22 @@ class ArtistDataSource(
                 }
                 if (response.isSuccessful) {
                     val pools = response.body() ?: listOf()
+                    NetResult.Success(pools)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun getArtistsE621(action: ActionArtist, page: Int): NetResult<List<Artist>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response =  booruApis.danApi.getArtistsE621(action.getDanArtistsUrl(page))
+                if (response.isSuccessful) {
+                    val pools = response.body()?.map { it.toArtist() } ?: listOf()
                     NetResult.Success(pools)
                 } else {
                     NetResult.Error("code: ${response.code()}")

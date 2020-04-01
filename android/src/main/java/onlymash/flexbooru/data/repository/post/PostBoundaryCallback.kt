@@ -72,7 +72,13 @@ class PostBoundaryCallback(
     private fun createCallback(page: Int, indexInNext: Int, callback: PagingRequestHelper.Request.Callback) {
         scope.launch {
             when (val result = when (action.booru.type) {
-                BOORU_TYPE_DAN -> getPostsDan(page, indexInNext)
+                BOORU_TYPE_DAN -> {
+                    if (action.booru.host == "e621.net") {
+                        getPostsDanE621(page, indexInNext)
+                    } else {
+                        getPostsDan(page, indexInNext)
+                    }
+                }
                 BOORU_TYPE_DAN1 -> getPostsDan1(page, indexInNext)
                 BOORU_TYPE_MOE -> getPostsMoe(page, indexInNext)
                 BOORU_TYPE_GEL -> getPostsGel(page, indexInNext)
@@ -106,6 +112,29 @@ class PostBoundaryCallback(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
+                            index = indexInNext + index
+                        )
+                    } ?: listOf()
+                    NetResult.Success(posts)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun getPostsDanE621(page: Int, indexInNext: Int): NetResult<List<Post>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.danApi.getPostsE621(
+                    action.getDanPostsUrl(page))
+                if (response.isSuccessful) {
+                    val posts = response.body()?.posts?.mapIndexed { index, postDan ->
+                        postDan.toPost(
+                            booruUid = action.booru.uid,
+                            query = action.query,
                             index = indexInNext + index
                         )
                     } ?: listOf()
