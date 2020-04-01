@@ -366,7 +366,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         }
         DatePickerDialog(
             context,
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 date.yearEnd = year
                 date.monthEnd = month
                 date.dayEnd = dayOfMonth
@@ -388,7 +388,6 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun pickDateRange() {
-        val context = context ?: return
         val currentTimeMillis = System.currentTimeMillis()
         val minCalendar = Calendar.getInstance(Locale.US).apply {
             timeInMillis = currentTimeMillis

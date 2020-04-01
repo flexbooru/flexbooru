@@ -76,14 +76,14 @@ class CommentDataSource(
                     initialLoad.postValue(error)
                 }
                 is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null, null)
                     } else {
                         callback.onResult(result.data, null, 2)
                     }
-                    retry = null
-                    networkState.postValue(NetworkState.LOADED)
-                    initialLoad.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -111,13 +111,13 @@ class CommentDataSource(
                     networkState.postValue(NetworkState.error(result.errorMsg))
                 }
                 is NetResult.Success -> {
+                    retry = null
+                    networkState.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null)
                     } else {
                         callback.onResult(result.data, page + 1)
                     }
-                    retry = null
-                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -134,13 +134,21 @@ class CommentDataSource(
         }
 
     private fun ActionComment.getMoeUrl(page: Int): HttpUrl =
-        if (postId > 0) getMoePostCommentUrl(page) else getMoePostsCommentUrl(page)
+        when {
+            postId > 0 -> getMoePostCommentUrl(page)
+            else -> getMoePostsCommentUrl(page)
+        }
 
     private fun ActionComment.getGelUrl(page: Int): HttpUrl =
         if (postId > 0) getGelPostCommentUrl(page) else getGelPostsCommentUrl(page)
 
-    private fun ActionComment.getSankakuUrl(page: Int): HttpUrl =
-        if (postId > 0) getSankakuPostCommentUrl(page) else getSankakuPostsCommentUrl(page)
+    private fun ActionComment.getSankakuUrl(page: Int): HttpUrl {
+        return when {
+            postId > 0 -> getSankakuPostCommentUrl(page)
+            query.isNotBlank() -> getSankakuPostsCommentSearchUrl(page)
+            else -> getSankakuPostsCommentIndexUrl(page)
+        }
+    }
 
     private suspend fun getDanComments(action: ActionComment, page: Int): NetResult<List<Comment>> {
         return withContext(Dispatchers.IO) {

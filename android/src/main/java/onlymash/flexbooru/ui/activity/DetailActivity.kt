@@ -285,7 +285,9 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_browse_comment -> {
-
+                currentPost?.let {
+                    CommentActivity.startActivity(this, postId = it.id)
+                }
             }
             R.id.action_browse_download -> {
                 DownloadWorker.downloadPost(currentPost, booru.host, this)

@@ -2,6 +2,7 @@ package onlymash.flexbooru.data.model.sankaku
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Comment
 
 @Serializable
@@ -25,6 +26,7 @@ data class CommentSankaku(
 ) {
     fun toComment(): Comment {
         return Comment(
+            booruType = BOORU_TYPE_SANKAKU,
             id = id,
             postId = postId,
             body = body,

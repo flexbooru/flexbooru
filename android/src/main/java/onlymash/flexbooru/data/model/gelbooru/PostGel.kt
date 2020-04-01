@@ -88,7 +88,7 @@ data class PostGel(
             score = getIntScore(),
             rating = rating,
             date = createdAt.formatDateGel().toString(),
-            tags = tags.getTags() ?: listOf(),
+            tags = tags.getTags(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),
             medium = mediumUrl(scheme, host),

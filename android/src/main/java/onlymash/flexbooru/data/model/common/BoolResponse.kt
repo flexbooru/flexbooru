@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class BoolResponse(
     @SerialName("success")
-    val success: Boolean
+    val success: Boolean = false
 )

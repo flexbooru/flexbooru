@@ -174,7 +174,8 @@ class AccountActivity : BaseActivity() {
                 Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-//            CommentActivity.startActivity(this, username = user.name)
+            val query = if (booru.type != BOORU_TYPE_DAN) "user:${user.name}" else user.name
+            CommentActivity.startActivity(this, query = query)
         }
         if (booru.type == BOORU_TYPE_SANKAKU) {
             recommended_action_button.setOnClickListener {

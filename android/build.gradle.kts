@@ -51,11 +51,13 @@ android {
         targetSdkVersion(29)
         versionCode = verCode
         versionName = "1.2.3"
-        versionNameSuffix = ".c" + verCode
+        versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
-        resConfigs(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL", "pt-rBR", "es-rES", "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP", "in-rID", "de-rDE"))
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = mapOf("backupApiKey" to "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw")
+        resConfigs(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL",
+            "pt-rBR", "es-rES", "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU",
+            "ja-rJP", "in-rID", "de-rDE"))
     }
     applicationVariants.all {
         outputs.map {
@@ -171,13 +173,13 @@ dependencies {
     implementation("com.mikepenz:materialdrawer:8.0.0")
     implementation("com.github.kenglxn.QRGen:android:2.6.0")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
-    implementation("com.google.firebase:firebase-core:17.2.3")
+    implementation("com.google.firebase:firebase-core:17.3.0")
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
     implementation("com.google.android.gms:play-services-vision:19.0.0")
     implementation("com.android.billingclient:billing:2.2.0")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.5.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.6.0-SNAPSHOT")
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.okio:okio:2.5.0")

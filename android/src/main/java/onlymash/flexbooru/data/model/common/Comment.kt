@@ -1,6 +1,7 @@
 package onlymash.flexbooru.data.model.common
 
 data class Comment(
+    val booruType: Int,
     val id: Int,
     val postId: Int,
     val body: String,

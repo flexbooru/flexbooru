@@ -17,6 +17,7 @@ package onlymash.flexbooru.data.model.gelbooru
 
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Comment
 
 @Xml(name = "comment")
@@ -36,6 +37,7 @@ data class CommentGel(
 ) {
     fun toComment(): Comment {
         return Comment(
+            booruType = BOORU_TYPE_GEL,
             id = id,
             postId = postId,
             body = body,

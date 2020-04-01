@@ -2,6 +2,7 @@ package onlymash.flexbooru.data.model.moebooru
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
@@ -33,6 +34,7 @@ data class CommentMoe(
 
     fun toComment(): Comment {
         return Comment(
+            booruType = BOORU_TYPE_MOE,
             id = id,
             postId = postId,
             body = body,

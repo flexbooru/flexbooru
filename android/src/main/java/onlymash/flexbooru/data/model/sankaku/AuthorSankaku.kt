@@ -6,9 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AuthorSankaku(
     @SerialName("avatar")
-    val avatar: String,
-    @SerialName("avatar_rating")
-    val avatar_rating: String,
+    val avatar: String? = null,
     @SerialName("id")
     val id: Int,
     @SerialName("name")
