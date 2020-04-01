@@ -69,7 +69,11 @@ class DetailAdapter(
         }
     }
 
-    fun getPost(position: Int) = getItem(position)
+    fun getPost(position: Int) = try {
+        getItem(position)
+    } catch (_: IndexOutOfBoundsException) {
+        null
+    }
 
     @SuppressLint("InflateParams")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -77,11 +81,7 @@ class DetailAdapter(
         if (layout.childCount > 0) {
             layout.removeAllViews()
         }
-        val post = try {
-            getItem(position)
-        } catch (_: IndexOutOfBoundsException) {
-            null
-        } ?: return
+        val post = getPost(position) ?: return
         val url = when (size) {
             POST_SIZE_SAMPLE -> post.sample
             POST_SIZE_LARGER -> post.medium

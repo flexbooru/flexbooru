@@ -104,14 +104,11 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private val currentPost: Post?
         get() = detailAdapter.getPost(detail_pager.currentItem)
 
-    private fun getPlayerView(post: Post?): PlayerView? {
-        val id = post?.id ?: return null
-        return detail_pager.findViewWithTag(String.format("player_%d", id))
-    }
+    private var currentPlayerView: PlayerView? = null
 
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
-            getPlayerView(currentPost)?.onPause()
+            currentPlayerView?.onPause()
         }
         override fun onPageSelected(position: Int) {
             val post = detailAdapter.getPost(position)
@@ -122,10 +119,32 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun syncInfo(post: Post?) {
-        if (post == null) return
+        if (post == null) {
+            currentPlayerView = null
+            return
+        }
         actionVote.postId = post.id
         setVoteItemIcon(post.isFavored)
         toolbar_transparent.title = "Post ${post.id}"
+        play(post)
+    }
+
+    private fun play(post: Post) {
+        val url = post.origin
+        if (url.isNotEmpty() && !url.isImage()) {
+            playerHolder.stop()
+            currentPlayerView = getPlayerView(post)
+            currentPlayerView?.let { playerView ->
+                playerHolder.start(url.toUri(), playerView)
+            }
+        } else {
+            currentPlayerView?.onPause()
+            currentPlayerView = null
+        }
+    }
+
+    private fun getPlayerView(post: Post): PlayerView? {
+        return detail_pager.findViewWithTag(String.format("player_%d", post.id))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -430,22 +449,6 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         } finally {
             inputStream?.safeCloseQuietly()
             outputSteam?.safeCloseQuietly()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        currentPost?.let { post ->
-            play(post)
-        }
-    }
-
-    private fun play(post: Post) {
-        val url = post.origin
-        if (url.isNotEmpty() && !url.isImage()) {
-            getPlayerView(post)?.let { playerView ->
-                playerHolder.start(url.toUri(), playerView)
-            }
         }
     }
 

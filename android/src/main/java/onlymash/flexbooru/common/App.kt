@@ -37,7 +37,6 @@ import onlymash.flexbooru.data.api.OrderApi
 import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
-import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -60,7 +59,6 @@ class App : Application(), KodeinAware {
         bind() from singleton { instance<MyDatabase>().postDao() }
         bind() from singleton { BooruApis() }
         bind() from singleton { Executors.newSingleThreadExecutor() }
-        bind() from singleton { TagFilterRepositoryImpl(instance()) }
     }
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
