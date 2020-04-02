@@ -105,6 +105,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var leftButton: ImageButton
     private var rightButton: View? = null
     private lateinit var postsList: RecyclerView
+    private lateinit var tagsFilterList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,6 +145,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         }
         postsList = view.findViewById(R.id.list)
         leftButton = getSearchBarLeftButton()
+        tagsFilterList = view.findViewById(R.id.tags_filter_list)
         viewTransition = ViewTransition(swipe_refresh, search_layout)
         initPostsList()
         sp.registerOnSharedPreferenceChangeListener(this)
@@ -199,7 +201,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
                 setSearchBarMenu(R.menu.post)
                 rightButton = view?.findViewById(R.id.action_expand_or_clear)
             }
-            if (tags_filter_list.adapter == null) {
+            if (tagsFilterList.adapter == null) {
                 initFilterList(booru)
             }
         } else {
@@ -235,7 +237,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
                 )
             }
         }
-        tags_filter_list.apply {
+        tagsFilterList.apply {
             layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexWrap = FlexWrap.WRAP
                 flexDirection = FlexDirection.ROW
@@ -492,7 +494,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         val action = action ?: return
         when (key) {
             SHOW_ALL_TAGS -> {
-                val adapter = tags_filter_list.adapter
+                val adapter = tagsFilterList.adapter
                 if (adapter is TagFilterAdapter) {
                     adapter.updateData(action.booru.uid, isShowAllTags)
                 }
