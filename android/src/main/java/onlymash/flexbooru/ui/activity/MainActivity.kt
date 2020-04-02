@@ -22,10 +22,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -88,8 +89,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private var currentBooru: Booru? = null
     private var boorus: MutableList<Booru> = mutableListOf()
 
-    internal var sharedElement: View? = null
-
     private lateinit var headerView: AccountHeaderView
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
@@ -149,7 +148,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
             name = StringHolder(R.string.title_manage_boorus)
             identifier = HEADER_ITEM_ID_BOORU_MANAGE
-            icon = ImageHolder(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_settings_outline_24dp))
+            icon = createImageHolder(R.drawable.ic_settings_outline_24dp)
             isIconTinted = true
         }
         headerView = AccountHeaderView(this).apply {
@@ -168,54 +167,42 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             addItems(
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_account)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_account_circle_outline_24dp))
+                    icon = createImageHolder(R.drawable.ic_account_circle_outline_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_ACCOUNT
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_comments)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_comment_outline_24dp))
+                    icon = createImageHolder(R.drawable.ic_comment_outline_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_COMMENTS
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_tag_blacklist)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_visibility_off_outline_24dp))
+                    icon = createImageHolder(R.drawable.ic_visibility_off_outline_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_TAG_BLACKLIST
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_muzei)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_muzei_24dp))
+                    icon = createImageHolder(R.drawable.ic_muzei_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_MUZEI
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_sauce_nao)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_search_24dp))
+                    icon = createImageHolder(R.drawable.ic_search_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_SAUCE_NAO
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_what_anime)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_youtube_searched_for_24dp))
+                    icon = createImageHolder(R.drawable.ic_youtube_searched_for_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_WHAT_ANIME
@@ -224,16 +211,14 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             stickyDrawerItems = arrayListOf(
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_settings)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_settings_outline_24dp))
+                    icon = createImageHolder(R.drawable.ic_settings_outline_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_SETTINGS
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_about)
-                    icon = ImageHolder(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_info_outline_24dp))
+                    icon = createImageHolder(R.drawable.ic_info_outline_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_ABOUT
@@ -259,9 +244,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 DRAWER_ITEM_ID_PURCHASE_POSITION,
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.purchase_title)
-                    icon = ImageHolder(AppCompatResources.getDrawable(
-                        this@MainActivity,
-                        R.drawable.ic_payment_24dp))
+                    icon = createImageHolder(R.drawable.ic_payment_24dp)
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_PURCHASE
@@ -284,6 +267,9 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         navigation.inflateMenu(menuRes)
         navController.graph = navController.navInflater.inflate(navRes)
     }
+
+    private fun createImageHolder(@DrawableRes resId: Int): ImageHolder =
+        ImageHolder(ResourcesCompat.getDrawable(resources, resId, theme))
 
     private fun createDefaultBooru(): Long {
         return booruViewModel.createBooru(
@@ -383,9 +369,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                             DRAWER_ITEM_ID_PURCHASE_POSITION,
                             PrimaryDrawerItem().apply {
                                 name = StringHolder(R.string.purchase_title)
-                                icon = ImageHolder(AppCompatResources.getDrawable(
-                                    this@MainActivity,
-                                    R.drawable.ic_payment_24dp))
+                                icon = createImageHolder(R.drawable.ic_payment_24dp)
                                 isSelectable = false
                                 isIconTinted = true
                                 identifier = DRAWER_ITEM_ID_PURCHASE

@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
@@ -138,12 +139,12 @@ class AccountActivity : BaseActivity() {
         if (booru.type == BOORU_TYPE_MOE) {
             GlideApp.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
-                .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
+                .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
                 .into(user_avatar)
         } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatar.isNullOrEmpty()) {
             GlideApp.with(this)
                 .load(user.avatar)
-                .placeholder(resources.getDrawable(R.drawable.avatar_account, theme))
+                .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
                 .into(user_avatar)
         }
         fav_action_button.setOnClickListener {
