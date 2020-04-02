@@ -35,6 +35,7 @@ import onlymash.flexbooru.common.Settings.SAFE_MODE_KEY
 import onlymash.flexbooru.common.Settings.SHOW_ALL_TAGS
 import onlymash.flexbooru.common.Settings.SHOW_INFO_BAR_KEY
 import onlymash.flexbooru.common.Settings.gridWidthResId
+import onlymash.flexbooru.common.Settings.isLargeWidth
 import onlymash.flexbooru.common.Settings.isShowAllTags
 import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Settings.safeMode
@@ -161,6 +162,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         postAdapter = PostAdapter(
             glide = glide,
             showInfoBar = showInfoBar,
+            isLargeItemWidth = isLargeWidth,
             clickItemCallback = { view, position, tranName ->
                 activity?.let {
                     sharedElement = view
@@ -515,6 +517,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
                 postViewModel.show(action)
             }
             GRID_WIDTH_KEY -> {
+                postAdapter.isLargeItemWidth = isLargeWidth
                 postsList.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             }
             SAFE_MODE_KEY -> {

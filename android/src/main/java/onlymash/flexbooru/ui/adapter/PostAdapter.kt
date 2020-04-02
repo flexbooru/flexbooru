@@ -22,6 +22,7 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 class PostAdapter(
     private val glide: GlideRequests,
     var showInfoBar: Boolean,
+    var isLargeItemWidth: Boolean,
     private val clickItemCallback: (View, Int, String) -> Unit,
     private val longClickItemCallback: (Post) -> Unit,
     retryCallback: () -> Unit
@@ -98,7 +99,7 @@ class PostAdapter(
                     else -> "H, ${post.width}:${post.height}"
                 }
             preview.transitionName = "post_${post.id}"
-            glide.load(post.preview)
+            glide.load(if(isLargeItemWidth) post.sample else post.preview)
                 .placeholder(placeholderDrawable)
                 .into(preview)
         }

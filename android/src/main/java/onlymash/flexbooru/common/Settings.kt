@@ -131,6 +131,9 @@ object Settings {
         ) ?: GRID_WIDTH_NORMAL
         set(value) = sp.edit().putString(GRID_WIDTH_KEY, value).apply()
 
+    val isLargeWidth: Boolean
+        get() = gridWidthString == GRID_WIDTH_LARGE
+
     var activeMuzeiUid: Long
         get() = sp.getLong(ACTIVE_MUZEI_UID_KEY, 0L)
         set(value) = sp.edit().putLong(ACTIVE_MUZEI_UID_KEY, value).apply()
