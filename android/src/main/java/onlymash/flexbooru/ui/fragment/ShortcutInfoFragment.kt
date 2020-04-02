@@ -173,6 +173,7 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
             if (post != null) {
                 username.text = post.uploader.name
                 userId.text = post.uploader.id.toString()
+                source.text = post.source
                 view.findViewById<AppCompatTextView>(R.id.url_origin_size).text = getSize(post.width, post.height, post.size)
                 if (booru.type != BOORU_TYPE_GEL) {
                     view.findViewById<ConstraintLayout>(R.id.user_container).setOnClickListener {
