@@ -26,7 +26,6 @@ import androidx.annotation.MenuRes
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.SharedElementCallback
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -269,7 +268,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             )
         }
-        setExitSharedElementCallback(sharedElementCallback)
         checkUpdate()
     }
 
@@ -368,20 +366,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         headerView.setActiveProfile(uid)
     }
 
-    private val sharedElementCallback = object : SharedElementCallback() {
-        override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
-            if (names == null || sharedElements == null) return
-            names.clear()
-            sharedElements.clear()
-            sharedElement?.let { view ->
-                view.transitionName?.let { name ->
-                    names.add(name)
-                    sharedElements[name] = view
-                }
-            }
-        }
-    }
-
     override fun onDestroy() {
         sp.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
@@ -389,10 +373,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            BOORU_UID_ACTIVATED_KEY -> {
-                booruViewModel.loadBooru(activatedBooruUid)
-//                navigation.selectedItemId = R.id.nav_posts
-            }
+            BOORU_UID_ACTIVATED_KEY -> booruViewModel.loadBooru(activatedBooruUid)
             ORDER_SUCCESS_KEY -> {
                 if (isOrderSuccess) {
                     slider.removeItems(DRAWER_ITEM_ID_PURCHASE)

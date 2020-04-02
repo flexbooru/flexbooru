@@ -1,6 +1,6 @@
 package onlymash.flexbooru.ui.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.TooltipCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -79,11 +80,19 @@ private const val ACTION_SEND = 103
 class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Toolbar.OnMenuItemClickListener {
 
     companion object {
-        fun start(context: Context, query: String?, position: Int) {
-            context.startActivity(Intent(context, DetailActivity::class.java).apply {
+        const val ACTION_DETAIL_POST_POSITION = "detail_post_position"
+
+        fun start(activity: Activity, query: String?, position: Int, view: View, tranName: String) {
+            val intent = Intent(activity, DetailActivity::class.java).apply {
                 putExtra(POST_QUERY, query)
                 putExtra(POST_POSITION, position)
-            })
+            }
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                view,
+                tranName
+            ).toBundle()
+            activity.startActivity(intent, options)
         }
     }
 
@@ -115,6 +124,11 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             syncInfo(post)
             if (post == null) return
             play(post)
+            val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
+                putExtra(POST_QUERY, post.query)
+                putExtra(POST_POSITION, position)
+            }
+            sendBroadcast(intent)
         }
     }
 
@@ -159,6 +173,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             booru = booru,
             postId = -1
         )
+        postponeEnterTransition()
         setContentView(R.layout.activity_detail)
         initInsets()
         initPager()
@@ -222,6 +237,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
                     detail_pager.setCurrentItem(initPosition, false)
                     lifecycleScope.launch {
                         delay(100)
+                        startPostponedEnterTransition()
                         syncInfo(currentPost)
                     }
                 }
@@ -239,7 +255,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         )
         toolbar_transparent.setOnMenuItemClickListener(this)
         toolbar_transparent.setNavigationOnClickListener {
-            finish()
+            finishAfterTransition()
         }
     }
 
@@ -306,7 +322,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     override fun onDismissed() {
-        finish()
+        finishAfterTransition()
     }
 
     override fun onDismissCancel() {

@@ -4,16 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.ui.activity.DetailActivity
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
 private const val MIN_ASPECT_RATIO = 9.0 / 21.0
@@ -21,6 +22,7 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 class PostAdapter(
     private val glide: GlideRequests,
     var showInfoBar: Boolean,
+    private val clickItemCallback: (View, Int, String) -> Unit,
     private val longClickItemCallback: (Post) -> Unit,
     retryCallback: () -> Unit
 ) : BasePagedListAdapter<Post, RecyclerView.ViewHolder>(POST_COMPARATOR, retryCallback) {
@@ -62,7 +64,7 @@ class PostAdapter(
             infoContainer.isVisible = showInfoBar
             itemView.setOnClickListener {
                 post?.let {
-                    DetailActivity.start(itemView.context, it.query, layoutPosition)
+                    clickItemCallback(preview, layoutPosition, "post_${it.id}")
                 }
             }
             itemView.setOnLongClickListener {
@@ -73,16 +75,21 @@ class PostAdapter(
             }
         }
 
+        private fun getPlaceholderDrawable(@DrawableRes drawableRes: Int) =
+            ResourcesCompat.getDrawable(itemView.context.resources, drawableRes, itemView.context.theme)
+
         fun bindTo(post: Post?) {
             this.post = post ?: return
             infoContainer.isVisible = showInfoBar
             postId.text = String.format("#%d", post.id)
             postSize.text = String.format("%d x %d", post.width, post.height)
-            val placeholderDrawable = when (post.rating) {
-                "s" -> itemView.resources.getDrawable(R.drawable.background_rating_s, itemView.context.theme)
-                "q" -> itemView.resources.getDrawable(R.drawable.background_rating_q, itemView.context.theme)
-                else -> itemView.resources.getDrawable(R.drawable.background_rating_e, itemView.context.theme)
-            }
+            val placeholderDrawable = getPlaceholderDrawable(
+                when (post.rating) {
+                    "s" -> R.drawable.background_rating_s
+                    "q" -> R.drawable.background_rating_q
+                    else -> R.drawable.background_rating_e
+                }
+            )
             val ratio = post.width.toFloat() / post.height.toFloat()
             (preview.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
                 when {
@@ -90,6 +97,7 @@ class PostAdapter(
                     ratio < MIN_ASPECT_RATIO -> "H, 9:21"
                     else -> "H, ${post.width}:${post.height}"
                 }
+            preview.transitionName = "post_${post.id}"
             glide.load(post.preview)
                 .placeholder(placeholderDrawable)
                 .into(preview)

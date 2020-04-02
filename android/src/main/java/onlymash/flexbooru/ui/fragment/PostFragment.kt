@@ -2,7 +2,7 @@ package onlymash.flexbooru.ui.fragment
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.SharedPreferences
+import android.content.*
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.SharedElementCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.common.Keys.PAGE_TYPE
+import onlymash.flexbooru.common.Keys.POST_POSITION
 import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.common.Settings.PAGE_LIMIT_KEY
@@ -55,6 +57,7 @@ import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.activity.DetailActivity
 import onlymash.flexbooru.ui.activity.SauceNaoActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
@@ -156,6 +159,11 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         postAdapter = PostAdapter(
             glide = glide,
             showInfoBar = showInfoBar,
+            clickItemCallback = { view, position, tranName ->
+                activity?.let {
+                    DetailActivity.start(it, query, position, view, tranName)
+                }
+            },
             longClickItemCallback = { handleLongClick(it) },
             retryCallback = { postViewModel.retry() }
         )
@@ -520,5 +528,51 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     override fun onDestroy() {
         super.onDestroy()
         sp.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    private var sharedElement: View? = null
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val bundle= intent?.extras ?: return
+            if (query != bundle.getString(POST_QUERY)) return
+            val position = bundle.getInt(POST_POSITION, -1)
+            if (position >= 0 && position < postAdapter.itemCount) {
+                postsList.scrollToPosition(position)
+                sharedElement = postsList.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.preview)
+            }
+        }
+    }
+
+    private val sharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+            if (names == null || sharedElements == null) return
+            names.clear()
+            sharedElements.clear()
+            sharedElement?.let { view ->
+                view.transitionName?.let { name ->
+                    names.add(name)
+                    sharedElements[name] = view
+                }
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        val activity = activity ?: return
+        activity.setExitSharedElementCallback(sharedElementCallback)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activity?.registerReceiver(
+            broadcastReceiver,
+            IntentFilter(DetailActivity.ACTION_DETAIL_POST_POSITION)
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unregisterReceiver(broadcastReceiver)
     }
 }

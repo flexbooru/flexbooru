@@ -99,6 +99,7 @@ class DetailAdapter(
                     setExecutor(ioExecutor)
                     setBitmapDecoderFactory { CustomDecoder(picasso) }
                     setRegionDecoderFactory { CustomRegionDecoder() }
+                    transitionName = String.format("post_%d", post.id)
                 }
                 val progressBar = ProgressBar(layout.context).apply {
                     layoutParams = FrameLayout.LayoutParams(
@@ -141,6 +142,7 @@ class DetailAdapter(
                     setOnViewTapListener { _, _, _ ->
                         clickCallback()
                     }
+                    transitionName = String.format("post_%d", post.id)
                 }
                 val progressBar = ProgressBar(layout.context).apply {
                     layoutParams = FrameLayout.LayoutParams(
@@ -189,6 +191,7 @@ class DetailAdapter(
             else -> {
                 val playerView = LayoutInflater.from(layout.context).inflate(R.layout.exoplayer, null) as PlayerView
                 playerView.tag = String.format("player_%d", post.id)
+                playerView.transitionName = String.format("post_%d", post.id)
                 layout.addView(playerView)
             }
         }
