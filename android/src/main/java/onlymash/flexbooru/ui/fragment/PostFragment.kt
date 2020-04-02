@@ -110,6 +110,8 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var postsList: RecyclerView
     private lateinit var tagsFilterList: RecyclerView
 
+    private var sharedElement: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentPageType = arguments?.getInt(PAGE_TYPE, PAGE_TYPE_POSTS) ?: PAGE_TYPE_POSTS
@@ -161,6 +163,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             showInfoBar = showInfoBar,
             clickItemCallback = { view, position, tranName ->
                 activity?.let {
+                    sharedElement = view
                     DetailActivity.start(it, query, position, view, tranName)
                 }
             },
@@ -529,8 +532,6 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         super.onDestroy()
         sp.unregisterOnSharedPreferenceChangeListener(this)
     }
-
-    private var sharedElement: View? = null
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
