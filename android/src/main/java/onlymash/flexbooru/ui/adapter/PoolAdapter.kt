@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -25,7 +26,7 @@ import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class PoolAdapter(
     private val glide: GlideRequests,
-    private val downloadPoolCallback: (Pool) -> Unit,
+    private val downloadPoolCallback: (Int) -> Unit,
     retryCallback: () -> Unit
 ) : BasePagedListAdapter<Pool, RecyclerView.ViewHolder>(POOL_COMPARATOR, retryCallback) {
     companion object {
@@ -50,8 +51,8 @@ class PoolAdapter(
                 }
             }
             itemView.setOnLongClickListener {
-                if (pool?.booruType == BOORU_TYPE_MOE) {
-                    downloadPoolCallback(pool)
+                pool?.let {
+                    downloadPoolCallback(it.id)
                 }
                 true
             }
@@ -100,20 +101,20 @@ class PoolAdapter(
                 descriptionContainer.visibility = View.GONE
             }
             if (pool == null) return
-            val res = container.context.resources
+            val context = itemView.context
             poolName.text = pool.name
-            poolIdCount.text = String.format(res.getString(R.string.pool_info_id_and_count), pool.id, pool.count)
+            poolIdCount.text = String.format(context.getString(R.string.pool_info_id_and_count), pool.id, pool.count)
             poolDescription.text = pool.description
             poolDate.text = pool.date
             when (pool.booruType) {
                 BOORU_TYPE_MOE -> {
-                    glide.load(String.format(res.getString(R.string.account_user_avatars), pool.scheme, pool.host, pool.creatorId))
-                        .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
+                    glide.load(String.format(context.getString(R.string.account_user_avatars), pool.scheme, pool.host, pool.creatorId))
+                        .placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
                         .into(userAvatar)
                 }
                 BOORU_TYPE_SANKAKU -> {
                     glide.load(pool.creatorAvatar)
-                        .placeholder(res.getDrawable(R.drawable.avatar_account, container.context.theme))
+                        .placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
                         .into(userAvatar)
                 }
             }

@@ -125,20 +125,18 @@ class DownloadWorker(
 
         internal fun downloadPool(
             activity: Activity,
-            pool: Pool,
+            poolId: Int,
             type: Int,
             booru: Booru
         ) {
-
             val scheme = booru.scheme
             val host = booru.host
-            val id = pool.id
             val fileName = when (type) {
                 POOL_DOWNLOAD_TYPE_JPGS -> {
-                    "$host - $id.jpg.zip"
+                    "$host - $poolId.jpg.zip"
                 }
                 else -> {
-                    "$host - $id.png.zip"
+                    "$host - $poolId.png.zip"
                 }
             }
             val docUri = activity.getPoolUri(fileName) ?: return
@@ -150,7 +148,7 @@ class DownloadWorker(
                         workDataOf(
                             SCHEME_KEY to scheme,
                             HOST_KEY to host,
-                            POOL_ID_KEY to id,
+                            POOL_ID_KEY to poolId,
                             POOL_DOWNLOAD_TYPE_KEY to type,
                             TYPE_KEY to TYPE_POOL,
                             USERNAME_KEY to booru.user?.name,

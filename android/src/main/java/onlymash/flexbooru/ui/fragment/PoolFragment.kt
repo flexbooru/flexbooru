@@ -1,14 +1,17 @@
 package onlymash.flexbooru.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
@@ -17,9 +20,12 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.pool.PoolRepositoryImpl
 import onlymash.flexbooru.glide.GlideApp
+import onlymash.flexbooru.ui.activity.AccountConfigActivity
+import onlymash.flexbooru.ui.activity.PurchaseActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
 import onlymash.flexbooru.ui.viewmodel.getPoolViewModel
+import onlymash.flexbooru.worker.DownloadWorker
 
 class PoolFragment : SearchBarFragment() {
 
@@ -44,8 +50,10 @@ class PoolFragment : SearchBarFragment() {
         super.onViewCreated(view, savedInstanceState)
         setSearchBarTitle(getString(R.string.title_pools))
         poolAdapter = PoolAdapter(GlideApp.with(this),
-            downloadPoolCallback = {
-
+            downloadPoolCallback = { poolId ->
+                action?.booru?.let {
+                    handlePoolDownload(poolId, it)
+                }
         }) {
             poolViewModel.retry()
         }
@@ -103,5 +111,34 @@ class PoolFragment : SearchBarFragment() {
             poolViewModel.show(action)
             poolViewModel.refresh()
         }
+    }
+
+    private fun handlePoolDownload(poolId: Int, booru: Booru) {
+        if (booru.type != BOORU_TYPE_MOE) {
+            return
+        }
+        val activity = activity ?: return
+        AlertDialog.Builder(activity)
+            .setTitle("Pool $poolId")
+            .setItems(activity.resources.getStringArray(R.array.pool_item_action)) { _, which ->
+                if (!isOrderSuccess) {
+                    startActivity(Intent(activity, PurchaseActivity::class.java))
+                    return@setItems
+                }
+                if (booru.user == null) {
+                    startActivity(Intent(activity, AccountConfigActivity::class.java))
+                    return@setItems
+                }
+                when (which) {
+                    0 -> {
+                        DownloadWorker.downloadPool(activity, poolId, DownloadWorker.POOL_DOWNLOAD_TYPE_JPGS, booru)
+                    }
+                    1 -> {
+                        DownloadWorker.downloadPool(activity, poolId, DownloadWorker.POOL_DOWNLOAD_TYPE_PNGS, booru)
+                    }
+                }
+            }
+            .create()
+            .show()
     }
 }
