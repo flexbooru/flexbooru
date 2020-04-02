@@ -63,6 +63,7 @@ class TagDataSource(
                 BOORU_TYPE_DAN -> getDanTags(action, 1)
                 BOORU_TYPE_DAN1 -> getDan1Tags(action, 1)
                 BOORU_TYPE_MOE -> getMoeTags(action, 1)
+                BOORU_TYPE_GEL -> getGelTags(action, 0)
                 else -> getSankakuTags(action, 1)
             }) {
                 is NetResult.Error -> {
