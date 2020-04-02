@@ -22,6 +22,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.MenuRes
+import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.SharedElementCallback
@@ -250,23 +252,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         })
         booruViewModel.booru.observe(this, Observer { booru: Booru? ->
             currentBooru = booru
-            when (booru?.type) {
-                BOORU_TYPE_SANKAKU -> {
-                    navigation.menu.clear()
-                    menuInflater.inflate(R.menu.navigation_sankaku, navigation.menu)
-                    navController.graph = navController.navInflater.inflate(R.navigation.main_navigation_sankaku)
-                }
-                BOORU_TYPE_GEL -> {
-                    navigation.menu.clear()
-                    menuInflater.inflate(R.menu.navigation_gel, navigation.menu)
-                    navController.graph = navController.navInflater.inflate(R.navigation.main_navigation_gel)
-                }
-                else -> {
-                    navigation.menu.clear()
-                    menuInflater.inflate(R.menu.navigation, navigation.menu)
-                    navController.graph = navController.navInflater.inflate(R.navigation.main_navigation)
-                }
-            }
+            setupNavigation(booru?.type ?: -1)
         })
         booruViewModel.loadBooru(currentBooruUid)
         if (!isOrderSuccess) {
@@ -285,6 +271,20 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
         setExitSharedElementCallback(sharedElementCallback)
         checkUpdate()
+    }
+
+    private fun setupNavigation(booruType: Int) {
+        when (booruType) {
+            BOORU_TYPE_SANKAKU -> setupNavigationMenu(R.menu.navigation_sankaku, R.navigation.main_navigation_sankaku)
+            BOORU_TYPE_GEL -> setupNavigationMenu(R.menu.navigation_gel, R.navigation.main_navigation_gel)
+            else -> setupNavigationMenu(R.menu.navigation, R.navigation.main_navigation)
+        }
+    }
+
+    private fun setupNavigationMenu(@MenuRes menuRes: Int, @NavigationRes navRes: Int) {
+        navigation.menu.clear()
+        navigation.inflateMenu(menuRes)
+        navController.graph = navController.navInflater.inflate(navRes)
     }
 
     private fun createDefaultBooru(): Long {
