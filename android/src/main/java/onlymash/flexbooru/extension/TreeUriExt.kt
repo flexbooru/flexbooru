@@ -169,21 +169,28 @@ fun String.fileName(): String {
 
 fun String.isImage(): Boolean {
     val ext = fileExt()
-    return ext == "jpg" || ext == "png" || ext == "gif" ||
-            ext == "webp" || ext == "jpeg"
+    return ext.equals("jpg", ignoreCase = true) ||
+            ext.equals("png", ignoreCase = true) ||
+            ext.equals("gif", ignoreCase = true) ||
+            ext.equals("jpeg", ignoreCase = true) ||
+            ext.equals("webp", ignoreCase = true)
 }
+
+fun String.isVideo(): Boolean {
+    val ext = fileExt()
+    return ext.equals("mp4", ignoreCase = true) ||
+            ext.equals("webm", ignoreCase = true)
+}
+
 fun String.isStillImage(): Boolean {
     val ext = fileExt()
-    return ext == "jpg" || ext == "png" || ext == "jpeg"
-}
-fun String.isGifImage(): Boolean = fileExt() == "gif"
-
-fun String.isImageNotWebp(): Boolean {
-    val ext = fileExt()
-    return ext == "jpg" || ext == "png" || ext == "gif"
+    return ext.equals("jpg", ignoreCase = true) ||
+            ext.equals("png", ignoreCase = true) ||
+            ext.equals("jpeg", ignoreCase = true) ||
+            ext.equals("webp", ignoreCase = true)
 }
 
-fun String.isWebp(): Boolean = fileExt() == "webp"
+fun String.isGifImage(): Boolean = fileExt().equals("gif", ignoreCase = true)
 
 fun Uri.toDecodedString(): String = toString().toDecodedString()
 

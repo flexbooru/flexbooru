@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.Post
+import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.glide.GlideRequests
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
@@ -99,7 +100,7 @@ class PostAdapter(
                     else -> "H, ${post.width}:${post.height}"
                 }
             preview.transitionName = "post_${post.id}"
-            glide.load(if(isLargeItemWidth) post.sample else post.preview)
+            glide.load(if(isLargeItemWidth && post.sample.isImage()) post.sample else post.preview)
                 .placeholder(placeholderDrawable)
                 .into(preview)
         }
