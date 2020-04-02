@@ -4,7 +4,7 @@ buildscript {
     extra.apply {
         set("nav_version", "2.3.0-alpha04")
         set("room_version", "2.2.5")
-        set("work_version", "2.4.0-alpha01")
+        set("work_version", "2.4.0-alpha02")
         set("glide_version", "4.11.0")
         set("lifecycle_version", "2.3.0-alpha01")
         set("exoplayer_version", "2.11.3")
