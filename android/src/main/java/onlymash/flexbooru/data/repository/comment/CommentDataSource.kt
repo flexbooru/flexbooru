@@ -201,9 +201,11 @@ class CommentDataSource(
     private suspend fun getSankakuComments(action: ActionComment, page: Int): NetResult<List<Comment>> {
         return withContext(Dispatchers.IO) {
             try {
+                val scheme = action.booru.scheme
+                val host = action.booru.host
                 val response =  booruApis.sankakuApi.getComments(action.getSankakuUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toComment() } ?: listOf()
+                    val pools = response.body()?.map { it.toComment(scheme, host) } ?: listOf()
                     NetResult.Success(pools)
                 } else {
                     NetResult.Error("code: ${response.code()}")

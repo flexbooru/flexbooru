@@ -10,5 +10,5 @@ data class Artist(
     @SerialName("name")
     val name: String,
     @SerialName("urls")
-    val urls: List<String>?
+    val urls: List<String>? = null
 )

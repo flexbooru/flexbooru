@@ -4,6 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Pool
+import onlymash.flexbooru.data.utils.toSafeUrl
 
 @Serializable
 data class PoolSankaku(
@@ -12,7 +13,7 @@ data class PoolSankaku(
     @SerialName("author")
     val author: AuthorSankaku,
     @SerialName("cover_url")
-    val coverUrl: String,
+    val coverUrl: String? = null,
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("description")
@@ -58,7 +59,7 @@ data class PoolSankaku(
             description = description,
             creatorId = author.id,
             creatorName = author.name,
-            creatorAvatar = author.avatar
+            creatorAvatar = author.avatar?.toSafeUrl(scheme, host)
         )
     }
 }

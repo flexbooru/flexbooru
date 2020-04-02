@@ -4,6 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Comment
+import onlymash.flexbooru.data.utils.toSafeUrl
 
 @Serializable
 data class CommentSankaku(
@@ -24,7 +25,7 @@ data class CommentSankaku(
     @SerialName("score")
     val score: Int
 ) {
-    fun toComment(): Comment {
+    fun toComment(scheme: String, host: String): Comment {
         return Comment(
             booruType = BOORU_TYPE_SANKAKU,
             id = id,
@@ -33,7 +34,7 @@ data class CommentSankaku(
             date = createdAt,
             creatorId = creatorId,
             creatorName = creator,
-            creatorAvatar = creatorAvatar
+            creatorAvatar = creatorAvatar?.toSafeUrl(scheme, host)
         )
     }
 }

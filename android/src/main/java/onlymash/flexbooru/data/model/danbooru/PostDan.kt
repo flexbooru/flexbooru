@@ -57,7 +57,11 @@ data class PostDan(
     @SerialName("is_favorited")
     val isFavorited: Boolean = false,
     @SerialName("uploader")
-    val uploader: UploaderDan
+    val uploader: UploaderDan? = null,
+    @SerialName("uploader_id")
+    val uploaderId: Int = -1,
+    @SerialName("uploader_name")
+    val uploaderName: String? = null
 ) {
     private fun previewUrl(scheme: String, host: String) =
         previewFileUrl?.toSafeUrl(scheme, host) ?: ""
@@ -90,7 +94,7 @@ data class PostDan(
             origin = originUrl(scheme, host),
             pixivId = pixivId,
             source = source,
-            uploader = User(id = uploader.id, name = uploader.name)
+            uploader = User(id = uploader?.id ?: uploaderId, name = uploader?.name ?: uploaderName ?: "null")
         )
     }
 
