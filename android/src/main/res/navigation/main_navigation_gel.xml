@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/nav_posts">
+
+    <fragment
+        android:id="@+id/nav_posts"
+        android:name="onlymash.flexbooru.ui.fragment.PostFragment"
+        android:label="@string/title_posts">
+        <argument
+            android:name="page_type"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_tags"
+        android:name="onlymash.flexbooru.ui.fragment.TagFragment"
+        android:label="@string/title_tags"/>
+
+</navigation>

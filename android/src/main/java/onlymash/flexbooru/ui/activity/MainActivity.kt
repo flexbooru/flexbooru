@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Rect
@@ -57,6 +56,7 @@ import onlymash.flexbooru.common.Settings.latestVersionCode
 import onlymash.flexbooru.common.Settings.latestVersionName
 import onlymash.flexbooru.common.Settings.latestVersionUrl
 import onlymash.flexbooru.data.api.AppUpdaterApi
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.database.dao.BooruDao
@@ -250,6 +250,23 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         })
         booruViewModel.booru.observe(this, Observer { booru: Booru? ->
             currentBooru = booru
+            when (booru?.type) {
+                BOORU_TYPE_SANKAKU -> {
+                    navigation.menu.clear()
+                    menuInflater.inflate(R.menu.navigation_sankaku, navigation.menu)
+                    navController.graph = navController.navInflater.inflate(R.navigation.main_navigation_sankaku)
+                }
+                BOORU_TYPE_GEL -> {
+                    navigation.menu.clear()
+                    menuInflater.inflate(R.menu.navigation_gel, navigation.menu)
+                    navController.graph = navController.navInflater.inflate(R.navigation.main_navigation_gel)
+                }
+                else -> {
+                    navigation.menu.clear()
+                    menuInflater.inflate(R.menu.navigation, navigation.menu)
+                    navController.graph = navController.navInflater.inflate(R.navigation.main_navigation)
+                }
+            }
         })
         booruViewModel.loadBooru(currentBooruUid)
         if (!isOrderSuccess) {
@@ -374,7 +391,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         when (key) {
             BOORU_UID_ACTIVATED_KEY -> {
                 booruViewModel.loadBooru(activatedBooruUid)
-                navigation.selectedItemId = R.id.nav_posts
+//                navigation.selectedItemId = R.id.nav_posts
             }
             ORDER_SUCCESS_KEY -> {
                 if (isOrderSuccess) {
