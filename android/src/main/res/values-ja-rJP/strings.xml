@@ -97,6 +97,7 @@
     <string name="booru_config_info">Booruインフォメーション</string>
     <string name="booru_config_scheme">スキーム</string>
     <string name="booru_config_host">ホスト</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">タイプ</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">名前は空欄にできません。</string>
