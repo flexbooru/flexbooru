@@ -98,6 +98,7 @@
     <string name="booru_config_info">Booru info</string>
     <string name="booru_config_scheme">Skema</string>
     <string name="booru_config_host">Penyedia</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Tipe</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
