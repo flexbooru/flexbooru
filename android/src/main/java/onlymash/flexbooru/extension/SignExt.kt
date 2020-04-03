@@ -23,9 +23,14 @@ import android.os.Build
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-@Throws(NoSuchAlgorithmException::class)
 fun Context.getSignMd5(): String? {
-    val paramArrayOfByte = getSignature().toByteArray()
+    val paramArrayOfByte = try {
+        getSignature().toByteArray()
+    } catch (_: NoSuchAlgorithmException) {
+        null
+    } catch (_: NullPointerException) {
+        null
+    } ?: return null
     val localMessageDigest = MessageDigest.getInstance("MD5")
     localMessageDigest.update(paramArrayOfByte)
     return toHexString(localMessageDigest.digest())

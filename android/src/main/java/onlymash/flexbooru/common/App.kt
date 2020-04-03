@@ -83,9 +83,9 @@ class App : Application(), KodeinAware {
     private fun initial() {
         CrashHandler.getInstance().init(this)
         AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
+        DrawerImageLoader.init(drawerImageLoader)
         val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
         Settings.isGoogleSign = isGoogleSign
-        DrawerImageLoader.init(drawerImageLoader)
         if (isGoogleSign) {
             checkOrderFromCache()
         } else {

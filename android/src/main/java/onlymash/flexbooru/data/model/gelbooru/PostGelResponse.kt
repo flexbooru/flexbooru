@@ -26,5 +26,5 @@ data class PostGelResponse (
     @Attribute(name = "offset")
     val offset: Int,
     @Element
-    val posts: MutableList<PostGel>?
+    val posts: MutableList<PostGel>? = null
 )

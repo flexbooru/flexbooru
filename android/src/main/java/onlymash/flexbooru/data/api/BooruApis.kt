@@ -6,4 +6,5 @@ class BooruApis {
     val moeApi by lazy { MoebooruApi() }
     val gelApi by lazy { GelbooruApi() }
     val sankakuApi by lazy { SankakuApi() }
+    val shimmieApi by lazy { ShimmieApi() }
 }
