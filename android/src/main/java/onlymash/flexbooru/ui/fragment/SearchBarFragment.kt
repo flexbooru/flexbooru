@@ -17,6 +17,7 @@ import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.dao.BooruDao
@@ -177,6 +178,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     override fun onFetchSuggestion(query: String) {
         val action = actionTag ?: return
+        if (action.booru.type == BOORU_TYPE_SHIMMIE) return
         if (searchBar.currentState == SearchBar.STATE_SEARCH) {
             action.query = when (action.booru.type) {
                 BOORU_TYPE_MOE,

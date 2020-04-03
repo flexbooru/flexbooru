@@ -54,6 +54,12 @@
             app:useSimpleSummaryProvider="true"/>
 
         <EditTextPreference
+            app:key="booru_config_path"
+            app:title="@string/booru_config_path"
+            app:singleLine="true"
+            app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
             app:key="booru_config_hash_salt"
             app:title="@string/booru_config_hash_salt"
             app:singleLine="true"

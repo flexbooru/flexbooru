@@ -7,10 +7,11 @@ import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import kotlinx.coroutines.*
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL as BOORU_TYPE_GEL
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN as BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1 as BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE as BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi
@@ -88,6 +89,7 @@ class PostRepositoryImpl(
                 BOORU_TYPE_DAN1 -> refreshDan1(action)
                 BOORU_TYPE_MOE -> refreshMoe(action)
                 BOORU_TYPE_GEL -> refreshGel(action)
+                BOORU_TYPE_SHIMMIE -> refreshShimmie(action)
                 else -> refreshSankaku(action)
             }) {
                 is NetResult.Error -> {
@@ -240,6 +242,30 @@ class PostRepositoryImpl(
                             host = action.booru.host,
                             index = index,
                             isFavored = action.isFavoredQuery()
+                        )
+                    } ?: listOf()
+                    NetResult.Success(posts)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun refreshShimmie(action: ActionPost): NetResult<List<Post>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.shimmieApi.getPosts(action.getShimmiePostsUrl(1))
+                if (response.isSuccessful) {
+                    val posts = response.body()?.posts?.mapIndexed { index, post ->
+                        post.toPost(
+                            booruUid = action.booru.uid,
+                            query = action.query,
+                            scheme = action.booru.scheme,
+                            host = action.booru.host,
+                            index = index
                         )
                     } ?: listOf()
                     NetResult.Success(posts)

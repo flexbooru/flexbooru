@@ -268,4 +268,27 @@ data class ActionPost(
 
     fun getSankakuPostsUrl(page: Int) =
         if (pageType == PAGE_TYPE_POSTS) getPostsSankakuUrl(page) else getPopularSankakuUrl(page)
+
+
+    fun getShimmiePostsUrl(page: Int): HttpUrl {
+        val builder = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+
+        val path = booru.path
+        if (!path.isNullOrBlank()) {
+            builder.addPathSegments(path)
+        }
+
+        builder.addPathSegment("api")
+            .addPathSegment("danbooru")
+            .addPathSegment("find_posts")
+            .addQueryParameter("limit", limit.toString())
+            .addQueryParameter("page", page.toString())
+
+        if (query.isNotBlank()) {
+            builder.addQueryParameter("tags", query)
+        }
+        return builder.build()
+    }
 }

@@ -56,7 +56,10 @@ data class Booru(
     var blacklists: MutableList<String> = mutableListOf(),
     @ColumnInfo(name = "user")
     @SerialName("user")
-    var user: User? = null
+    var user: User? = null,
+    @ColumnInfo(name = "path")
+    @SerialName("path")
+    var path: String? = null
 ) {
     fun getBlacklistsString(): String {
         var tagsString = ""
@@ -127,9 +130,16 @@ data class Booru(
         return Uri.Builder()
             .scheme("booru")
             .encodedAuthority(String.format(Locale.ENGLISH, "%s",
-                Base64.encodeToString("$name@@@$scheme@@@$host@@@$type@@@$hashSalt".toByteArray(),
-                    Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)))
+                Base64.encodeToString(getString().toByteArray(), Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)))
             .build()
+    }
+
+    private fun getString(): String {
+        return if (path.isNullOrBlank()) {
+            "$name@@@$scheme@@@$host@@@$type@@@$hashSalt"
+        } else {
+            "$name@@@$scheme@@@$host@@@$type@@@$hashSalt@@@$path"
+        }
     }
 
     companion object {
@@ -141,16 +151,29 @@ data class Booru(
                 val dataByte = Base64.decode(str.toUri().authority,
                     Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE)
                 val dataList = String(dataByte).split("@@@")
-                if (dataList.size == 5) {
-                    Booru(
-                        name = dataList[0],
-                        scheme = dataList[1],
-                        host = dataList[2],
-                        type = dataList[3].toInt(),
-                        hashSalt = dataList[4]
-                    )
-                } else {
-                    null
+                when (dataList.size) {
+                    5 -> {
+                        Booru(
+                            name = dataList[0],
+                            scheme = dataList[1],
+                            host = dataList[2],
+                            type = dataList[3].toInt(),
+                            hashSalt = dataList[4]
+                        )
+                    }
+                    6 -> {
+                        Booru(
+                            name = dataList[0],
+                            scheme = dataList[1],
+                            host = dataList[2],
+                            type = dataList[3].toInt(),
+                            hashSalt = dataList[4],
+                            path = dataList[5]
+                        )
+                    }
+                    else -> {
+                        null
+                    }
                 }
             } catch (ex: Exception) {
                 ex.printStackTrace()

@@ -14,6 +14,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.common.Values.HASH_SALT_CONTAINED
 import onlymash.flexbooru.common.Values.SCHEME_HTTPS
 import onlymash.flexbooru.data.database.dao.BooruDao
@@ -29,6 +30,7 @@ private const val CONFIG_NAME_KEY = "booru_config_name"
 private const val CONFIG_TYPE_KEY = "booru_config_type"
 private const val CONFIG_SCHEME_KEY = "booru_config_scheme"
 private const val CONFIG_HOST_KEY = "booru_config_host"
+private const val CONFIG_PATH_KEY = "booru_config_path"
 private const val CONFIG_HASH_SALT_KEY = "booru_config_hash_salt"
 
 private const val CONFIG_TYPE_DAN = "danbooru"
@@ -36,6 +38,7 @@ private const val CONFIG_TYPE_DAN1 = "danbooru1"
 private const val CONFIG_TYPE_MOE = "moebooru"
 private const val CONFIG_TYPE_GEL = "gelbooru"
 private const val CONFIG_TYPE_SANKAKU = "sankaku"
+private const val CONFIG_TYPE_SHIMMIE = "shimmie"
 
 class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
     Toolbar.OnMenuItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -53,6 +56,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
     )
 
     private var hashSaltPreferences: Preference? = null
+    private var pathPreferences: Preference? = null
 
     private var name: String
         get() = sp.getString(CONFIG_NAME_KEY, "") ?: ""
@@ -65,6 +69,10 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
     private var host: String
         get() = sp.getString(CONFIG_HOST_KEY, "") ?: ""
         set(value) = sp.edit().putString(CONFIG_HOST_KEY, value).apply()
+
+    private var path: String?
+        get() = sp.getString(CONFIG_PATH_KEY, "")
+        set(value) = sp.edit().putString(CONFIG_PATH_KEY, value).apply()
 
     private var type: Int
         get() = getBooruTypeInt(sp.getString(CONFIG_TYPE_KEY, CONFIG_TYPE_MOE) ?: CONFIG_TYPE_MOE)
@@ -95,10 +103,13 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
             host = it.host
             type = it.type
             hashSalt = it.hashSalt
+            path = it.path
         }
         addPreferencesFromResource(R.xml.pref_booru_config)
         hashSaltPreferences = findPreference(CONFIG_HASH_SALT_KEY)
         hashSaltPreferences?.isVisible = type in hashBoorus
+        pathPreferences = findPreference(CONFIG_PATH_KEY)
+        pathPreferences?.isVisible = type == BOORU_TYPE_SHIMMIE
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -140,15 +151,18 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
                     booru.type in hashBoorus && !booru.hashSalt.contains(HASH_SALT_CONTAINED) -> {
                         Snackbar.make(listView, getString(R.string.booru_config_hash_salt_must_contain_yp), Snackbar.LENGTH_LONG).show()
                     }
-                    booru.uid == 0L -> {
+                    else -> {
                         if (booru.type !in hashBoorus) {
                             booru.hashSalt = ""
                         }
-                        booruDao.insert(booru)
-                        activity?.finish()
-                    }
-                    else -> {
-                        booruDao.update(booru)
+                        if (booru.type != BOORU_TYPE_SHIMMIE) {
+                            booru.path = null
+                        }
+                        if (booru.uid == 0L) {
+                            booruDao.insert(booru)
+                        } else {
+                            booruDao.update(booru)
+                        }
                         activity?.finish()
                     }
                 }
@@ -166,8 +180,10 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
                 val type = type
                 booru?.type = type
                 hashSaltPreferences?.isVisible = type in hashBoorus
+                pathPreferences?.isVisible = type == BOORU_TYPE_SHIMMIE
             }
             CONFIG_HASH_SALT_KEY -> booru?.hashSalt = hashSalt
+            CONFIG_PATH_KEY -> booru?.path = path
         }
     }
 
@@ -177,6 +193,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
             BOORU_TYPE_DAN -> CONFIG_TYPE_DAN
             BOORU_TYPE_DAN1 -> CONFIG_TYPE_DAN1
             BOORU_TYPE_GEL -> CONFIG_TYPE_GEL
+            BOORU_TYPE_SHIMMIE -> CONFIG_TYPE_SHIMMIE
             else -> CONFIG_TYPE_SANKAKU
         }
     }
@@ -187,6 +204,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
             CONFIG_TYPE_DAN -> BOORU_TYPE_DAN
             CONFIG_TYPE_DAN1 -> BOORU_TYPE_DAN1
             CONFIG_TYPE_GEL -> BOORU_TYPE_GEL
+            CONFIG_TYPE_SHIMMIE -> BOORU_TYPE_SHIMMIE
             else -> BOORU_TYPE_SANKAKU
         }
     }

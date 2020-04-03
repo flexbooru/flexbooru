@@ -46,6 +46,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
@@ -248,10 +249,11 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
 
     private fun initToolbar() {
         toolbar_transparent.inflateMenu(
-            if (booru.type == BOORU_TYPE_SANKAKU)
-                R.menu.detail_sankaku
-            else
-                R.menu.detail
+            when (booru.type) {
+                BOORU_TYPE_SANKAKU -> R.menu.detail_sankaku
+                BOORU_TYPE_SHIMMIE -> R.menu.detail_shimmie
+                else -> R.menu.detail
+            }
         )
         toolbar_transparent.setOnMenuItemClickListener(this)
         toolbar_transparent.setNavigationOnClickListener {
@@ -280,6 +282,10 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             saveAndAction(ACTION_SAVE)
         }
         post_fav.setOnClickListener {
+            if (booru.type == BOORU_TYPE_SHIMMIE) {
+                Toast.makeText(this, getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (booru.user == null) {
                 startActivity(Intent(this, AccountConfigActivity::class.java))
                 finish()
@@ -369,6 +375,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             BOORU_TYPE_MOE -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, id)
             BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, id)
             BOORU_TYPE_SANKAKU -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), id)
+            BOORU_TYPE_SHIMMIE -> String.format("%s://%s/post/view/%d", booru.scheme, booru.host, id)
             else -> null
         }
     }
@@ -407,7 +414,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
                         if (copyFile(file, uri)) {
                             Toast.makeText(this@DetailActivity,
                                 getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
-                                Toast.LENGTH_LONG).show()
+                                Toast.LENGTH_SHORT).show()
                         }
                     }
                     ACTION_SET_AS -> {

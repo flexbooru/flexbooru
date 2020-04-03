@@ -11,5 +11,5 @@ data class PostShimmieResponse(
     @Attribute(name = "count")
     val count: Int,
     @Element
-    val post: List<PostShimmie>? = null
+    val posts: List<PostShimmie>? = null
 )

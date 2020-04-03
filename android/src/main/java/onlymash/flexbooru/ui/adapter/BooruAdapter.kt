@@ -31,6 +31,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.copyText
@@ -122,6 +123,7 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruA
                     BOORU_TYPE_DAN1 -> R.string.booru_type_danbooru_one
                     BOORU_TYPE_GEL -> R.string.booru_type_gelbooru
                     BOORU_TYPE_SANKAKU -> R.string.booru_type_sankaku
+                    BOORU_TYPE_SHIMMIE -> R.string.booru_type_shimmie
                     else -> R.string.booru_type_unknown
                 }
             )

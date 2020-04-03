@@ -22,6 +22,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.annotation.NavigationRes
@@ -61,6 +62,7 @@ import onlymash.flexbooru.data.api.AppUpdaterApi
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.*
@@ -103,15 +105,31 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         when (item.identifier) {
             DRAWER_ITEM_ID_ACCOUNT -> {
                 currentBooru?.let {
-                    if (it.user == null) {
-                        toActivity(AccountConfigActivity::class.java)
+                    if (it.type != BOORU_TYPE_SHIMMIE) {
+                        if (it.user == null) {
+                            toActivity(AccountConfigActivity::class.java)
+                        } else {
+                            toActivity(AccountActivity::class.java)
+                        }
                     } else {
-                        toActivity(AccountActivity::class.java)
+                        notSupportedToast()
                     }
                 }
             }
-            DRAWER_ITEM_ID_COMMENTS -> toActivity(CommentActivity::class.java )
-            DRAWER_ITEM_ID_TAG_BLACKLIST -> toActivity(TagBlacklistActivity::class.java)
+            DRAWER_ITEM_ID_COMMENTS -> {
+                if (currentBooru?.type != BOORU_TYPE_SHIMMIE) {
+                    toActivity(CommentActivity::class.java )
+                } else {
+                    notSupportedToast()
+                }
+            }
+            DRAWER_ITEM_ID_TAG_BLACKLIST -> {
+                if (currentBooru?.type != BOORU_TYPE_SHIMMIE) {
+                    toActivity(TagBlacklistActivity::class.java)
+                } else {
+                    notSupportedToast()
+                }
+            }
             DRAWER_ITEM_ID_MUZEI -> toActivity(MuzeiActivity::class.java)
             DRAWER_ITEM_ID_SETTINGS -> toActivity(SettingsActivity::class.java)
             DRAWER_ITEM_ID_SAUCE_NAO -> toActivity(SauceNaoActivity::class.java)
@@ -124,6 +142,10 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private fun toActivity(activityCls: Class<*>) {
         startActivity(Intent(this, activityCls))
+    }
+
+    private fun notSupportedToast() {
+        Toast.makeText(this, getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -258,6 +280,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         when (booruType) {
             BOORU_TYPE_SANKAKU -> setupNavigationMenu(R.menu.navigation_sankaku, R.navigation.main_navigation_sankaku)
             BOORU_TYPE_GEL -> setupNavigationMenu(R.menu.navigation_gel, R.navigation.main_navigation_gel)
+            BOORU_TYPE_SHIMMIE -> setupNavigationMenu(R.menu.navigation_shimmie, R.navigation.main_navigation_shimmie)
             else -> setupNavigationMenu(R.menu.navigation, R.navigation.main_navigation)
         }
     }

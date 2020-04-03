@@ -23,6 +23,7 @@ import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.model.common.Booru
@@ -175,7 +176,7 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
                 userId.text = post.uploader.id.toString()
                 source.text = post.source
                 view.findViewById<AppCompatTextView>(R.id.url_origin_size).text = getSize(post.width, post.height, post.size)
-                if (booru.type != BOORU_TYPE_GEL) {
+                if (booru.type != BOORU_TYPE_GEL && booru.type != BOORU_TYPE_SHIMMIE) {
                     view.findViewById<ConstraintLayout>(R.id.user_container).setOnClickListener {
                         startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
                             putExtra(AccountActivity.USER_ID_KEY, post.uploader.id)

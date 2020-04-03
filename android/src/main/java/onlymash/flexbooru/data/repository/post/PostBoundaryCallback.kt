@@ -6,12 +6,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL as BOORU_TYPE_GEL
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN as BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1 as BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE as BOORU_TYPE_MOE
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU as BOORU_TYPE_SANKAKU
-import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR as PAGE_TYPE_POPULAR
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi
@@ -83,6 +84,7 @@ class PostBoundaryCallback(
                 BOORU_TYPE_DAN1 -> getPostsDan1(page, indexInNext)
                 BOORU_TYPE_MOE -> getPostsMoe(page, indexInNext)
                 BOORU_TYPE_GEL -> getPostsGel(page, indexInNext)
+                BOORU_TYPE_SHIMMIE -> getPostsShimmie(page, indexInNext)
                 else -> getPostsSankaku(page, indexInNext)
             }) {
                 is NetResult.Success -> {
@@ -240,6 +242,31 @@ class PostBoundaryCallback(
                             host = action.booru.host,
                             index = indexInNext + index,
                             isFavored = isFavored
+                        )
+                    } ?: listOf()
+                    NetResult.Success(posts)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun getPostsShimmie(page: Int, indexInNext: Int): NetResult<List<Post>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.shimmieApi.getPosts(
+                    action.getShimmiePostsUrl(page))
+                if (response.isSuccessful) {
+                    val posts = response.body()?.posts?.mapIndexed { index, postShimmie ->
+                        postShimmie.toPost(
+                            booruUid = action.booru.uid,
+                            query = action.query,
+                            scheme = action.booru.scheme,
+                            host = action.booru.host,
+                            index = indexInNext + index
                         )
                     } ?: listOf()
                     NetResult.Success(posts)

@@ -7,6 +7,7 @@ object Values {
 
     const val DATE_PATTERN_DAN = "yyyy-MM-dd'T'HH:mm:ss.sss"
     const val DATE_PATTERN_GEL = "EEE MMM dd HH:mm:ss Z yyyy"
+    const val DATE_PATTERN_SHIMMIE = "yyyy-MM-dd HH:mm:ss"
 
     const val SCHEME_HTTP = "http"
     const val SCHEME_HTTPS = "https"
@@ -16,6 +17,7 @@ object Values {
     const val BOORU_TYPE_DAN1 = 2
     const val BOORU_TYPE_GEL = 3
     const val BOORU_TYPE_SANKAKU = 4
+    const val BOORU_TYPE_SHIMMIE = 5
     const val BOORU_TYPE_UNKNOWN = -1
 
     const val ONLY_FIELD_POSTS_DAN = "id,created_at,score,source,parent_id,preview_file_url,large_file_url,file_url,rating,image_width,image_height,updated_at,created_at,tag_string,tag_string_general,tag_string_character,tag_string_copyright,tag_string_artist,tag_string_meta,is_favorited?,children_ids,pixiv_id,file_size,fav_count,file_ext,uploader"
