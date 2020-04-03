@@ -97,6 +97,7 @@
     <string name="booru_config_info">Booru informatie</string>
     <string name="booru_config_scheme">Schema</string>
     <string name="booru_config_host">Host</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Type</string>
     <string name="booru_config_hash_salt">Hash-zout</string>
     <string name="booru_config_name_cant_empty">De naam mag niet leeg zijn.</string>
