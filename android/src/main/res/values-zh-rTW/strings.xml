@@ -97,6 +97,7 @@
     <string name="booru_config_info">Booru 資訊</string>
     <string name="booru_config_scheme">協議</string>
     <string name="booru_config_host">主機</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">類型</string>
     <string name="booru_config_hash_salt">哈希值</string>
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
