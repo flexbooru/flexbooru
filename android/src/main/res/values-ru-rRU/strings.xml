@@ -98,6 +98,7 @@
     <string name="booru_config_info">Информация о booru</string>
     <string name="booru_config_scheme">Схема</string>
     <string name="booru_config_host">Сервер</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Тип</string>
     <string name="booru_config_hash_salt">Хэш соль</string>
     <string name="booru_config_name_cant_empty">Имя не может быть пустым.</string>
