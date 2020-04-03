@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -107,17 +106,20 @@ class AccountConfigActivity : BaseActivity() {
                     || booru.type == BOORU_TYPE_SANKAKU) && hashSalt.isNotBlank()) {
             userToken = hashSalt.replace(HASH_SALT_CONTAINED, userToken).sha1()
         }
-        set_account.visibility = View.INVISIBLE
-        progress_bar.visibility = View.VISIBLE
-        if (booru.type == BOORU_TYPE_GEL) {
-            lifecycleScope.launch {
-                val result = userRepository.gelLogin(username, userToken, booru)
-                handlerResult(result)
+        set_account.isVisible = false
+        progress_bar.isVisible = true
+        when (booru.type) {
+            BOORU_TYPE_GEL -> {
+                lifecycleScope.launch {
+                    val result = userRepository.gelLogin(username, userToken, booru)
+                    handlerResult(result)
+                }
             }
-        } else {
-            lifecycleScope.launch {
-                val result = userRepository.findUserByName(username, booru)
-                handlerResult(result)
+            else -> {
+                lifecycleScope.launch {
+                    val result = userRepository.findUserByName(username, booru)
+                    handlerResult(result)
+                }
             }
         }
     }
@@ -143,7 +145,7 @@ class AccountConfigActivity : BaseActivity() {
             }
             is NetResult.Error -> {
                 error_msg.text = result.errorMsg
-                progress_bar.isVisible = true
+                progress_bar.isVisible = false
                 set_account.isVisible = true
             }
         }
