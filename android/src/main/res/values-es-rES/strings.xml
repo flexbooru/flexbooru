@@ -98,6 +98,7 @@
     <string name="booru_config_info">Información de Booru</string>
     <string name="booru_config_scheme">Esquema</string>
     <string name="booru_config_host">Host</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Tipo</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">El nombre no puede estar vacío.</string>
