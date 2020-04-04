@@ -58,11 +58,14 @@ import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Settings.latestVersionCode
 import onlymash.flexbooru.common.Settings.latestVersionName
 import onlymash.flexbooru.common.Settings.latestVersionUrl
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.api.AppUpdaterApi
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
+import onlymash.flexbooru.common.Values.BOORU_TYPE_UNKNOWN
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.*
@@ -124,7 +127,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             }
             DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-                if (currentBooru?.type != BOORU_TYPE_SHIMMIE) {
+                if (currentBooru?.type ?: BOORU_TYPE_UNKNOWN
+                    in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1)) {
                     toActivity(TagBlacklistActivity::class.java)
                 } else {
                     notSupportedToast()
