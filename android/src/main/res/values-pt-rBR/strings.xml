@@ -229,7 +229,7 @@
     <string name="muzei_copy">Copiar</string>
     <string name="muzei_delete">Excluir</string>
     <string name="muzei_search">Pesquisar</string>
-    <string name="muzei_add">Adicionar palavra-chave</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Buscar Arte</string>
     <string name="muzei_input_cant_be_empty">O campo não pode estar vazio.</string>
     <string name="muzei_action_view_post">Ver post no Flexbooru</string>
