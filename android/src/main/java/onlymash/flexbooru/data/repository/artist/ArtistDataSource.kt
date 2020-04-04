@@ -25,7 +25,6 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.api.BooruApis
-import onlymash.flexbooru.data.api.DanbooruApi
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.extension.NetResult
@@ -110,13 +109,12 @@ class ArtistDataSource(
     }
 
     private suspend fun getArtists(action: ActionArtist, page: Int): NetResult<List<Artist>> {
-        if (action.booru.host in DanbooruApi.E621_HOSTS) {
-            return getArtistsE621(action, page)
+        if (action.booru.type == BOORU_TYPE_DAN) {
+            return getArtistsDan(action, page)
         }
         return withContext(Dispatchers.IO) {
             try {
                 val response =  when (action.booru.type) {
-                    BOORU_TYPE_DAN -> booruApis.danApi.getArtists(action.getDanArtistsUrl(page))
                     BOORU_TYPE_DAN1 -> booruApis.dan1Api.getArtists(action.getDan1ArtistsUrl(page))
                     else -> booruApis.moeApi.getArtists(action.getMoeArtistsUrl(page))
                 }
@@ -132,10 +130,10 @@ class ArtistDataSource(
         }
     }
 
-    private suspend fun getArtistsE621(action: ActionArtist, page: Int): NetResult<List<Artist>> {
+    private suspend fun getArtistsDan(action: ActionArtist, page: Int): NetResult<List<Artist>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response =  booruApis.danApi.getArtistsE621(action.getDanArtistsUrl(page))
+                val response =  booruApis.danApi.getArtists(action.getDanArtistsUrl(page))
                 if (response.isSuccessful) {
                     val pools = response.body()?.map { it.toArtist() } ?: listOf()
                     NetResult.Success(pools)

@@ -26,7 +26,6 @@ import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.common.Values.BASE_URL
-import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.model.danbooru.*
@@ -98,10 +97,7 @@ interface DanbooruApi {
     suspend fun getTags(@Url httpUrl: HttpUrl): Response<List<TagDan>>
 
     @GET
-    suspend fun getArtists(@Url httpUrl: HttpUrl): Response<List<Artist>>
-
-    @GET
-    suspend fun getArtistsE621(@Url httpUrl: HttpUrl): Response<List<ArtistE621>>
+    suspend fun getArtists(@Url httpUrl: HttpUrl): Response<List<ArtistDan>>
 
     @FormUrlEncoded
     @POST
