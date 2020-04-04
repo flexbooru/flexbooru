@@ -38,4 +38,11 @@ class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ScopeViewModel() {
         return _muzeiOutcome
     }
 
+    fun create(muzei: Muzei) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                muzeiDao.insert(muzei)
+            } catch (_: Exception) {}
+        }
+    }
 }

@@ -1,46 +1,74 @@
 package onlymash.flexbooru.ui.activity
 
+import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
+import android.database.MatrixCursor
 import android.os.Bundle
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
-import androidx.appcompat.app.AlertDialog
+import android.provider.BaseColumns
+import androidx.appcompat.widget.SearchView
+import androidx.cursoradapter.widget.CursorAdapter
+import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_muzei.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
-import onlymash.flexbooru.data.database.MuzeiManager
+import onlymash.flexbooru.common.Values
+import onlymash.flexbooru.data.action.ActionTag
+import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.dao.MuzeiDao
 import onlymash.flexbooru.data.model.common.Muzei
+import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
+import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
+import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import org.kodein.di.erased.instance
 
 class MuzeiActivity : KodeinActivity() {
 
     private val muzeiDao by instance<MuzeiDao>()
+    private val booruApis by instance<BooruApis>()
 
     private lateinit var muzeiViewModel: MuzeiViewModel
     private lateinit var muzeiAdapter: MuzeiAdapter
-    private val booruUid: Long = activatedBooruUid
+    private lateinit var actionTag: ActionTag
+
+    private val suggestions: MutableList<String> = mutableListOf()
+    private var suggestionsAdapter: CursorAdapter? = null
+    private lateinit var suggestionViewModel: SuggestionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_muzei)
+        val booru = BooruManager.getBooruByUid(activatedBooruUid)
+        if (booru == null) {
+            finish()
+            return
+        }
+        actionTag = ActionTag(
+            booru = booru,
+            order = "count",
+            limit = 6
+        )
         initView()
         muzeiViewModel = getMuzeiViewModel(muzeiDao)
-        muzeiViewModel.loadMuzei(booruUid).observe(this, Observer {
+        muzeiViewModel.loadMuzei(booru.uid).observe(this, Observer {
             muzeiAdapter.updateData(it)
+        })
+        suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
+        suggestionViewModel.suggestions.observe(this, Observer {
+            suggestions.clear()
+            suggestions.addAll(it)
+            handleSuggestions(it)
         })
     }
 
@@ -51,39 +79,16 @@ class MuzeiActivity : KodeinActivity() {
             setNavigationOnClickListener {
                 onBackPressed()
             }
-            setOnMenuItemClickListener {
-                if (it.itemId == R.id.action_muzei_add) {
-                    val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
-                    val layout = FrameLayout(this@MuzeiActivity).apply {
-                        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                        setPadding(padding, padding / 2, padding, 0)
-                    }
-                    val editText = EditText(this@MuzeiActivity)
-                    layout.addView(editText)
-                    AlertDialog.Builder(this@MuzeiActivity)
-                        .setTitle(R.string.muzei_add)
-                        .setView(layout)
-                        .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                            val text = (editText.text ?: "").toString().trim()
-                            if (!text.isBlank()) {
-                                MuzeiManager.createMuzei(
-                                    Muzei(
-                                        booruUid = booruUid,
-                                        query = text
-                                    )
-                                )
-                            } else {
-                                Snackbar.make(toolbar, getString(R.string.muzei_input_cant_be_empty), Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                        .setNegativeButton(R.string.dialog_no, null)
-                        .create()
-                        .show()
-                } else if (it.itemId == R.id.action_muzei_fetch) {
+            setOnMenuItemClickListener { menuItem ->
+                if (menuItem?.itemId == R.id.action_muzei_fetch) {
                     MuzeiArtWorker.enqueueLoad()
                 }
                 true
             }
+        }
+        val searchView = toolbar.menu?.findItem(R.id.action_muzei_search)?.actionView as? SearchView
+        if (searchView != null) {
+            initSearchView(searchView)
         }
         muzei_button.setOnClickListener {
             val muzeiPackageName = "net.nurik.roman.muzei"
@@ -106,5 +111,74 @@ class MuzeiActivity : KodeinActivity() {
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))
             adapter = muzeiAdapter
         }
+    }
+
+    private fun initSearchView(searchView: SearchView) {
+        suggestionsAdapter = SimpleCursorAdapter(
+            this,
+            R.layout.item_suggestion_muzei,
+            null,
+            arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1),
+            intArrayOf(android.R.id.text1),
+            0
+        )
+        searchView.suggestionsAdapter = suggestionsAdapter
+        searchView.queryHint = getString(R.string.muzei_search_hint)
+        searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+            override fun onSuggestionClick(position: Int): Boolean {
+                val tag = suggestions[position]
+                muzeiViewModel.create(Muzei(
+                    booruUid = actionTag.booru.uid,
+                    query = tag
+                ))
+                return true
+            }
+            override fun onSuggestionSelect(position: Int): Boolean {
+                return true
+            }
+        })
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrBlank()) return false
+                val query = newText.trim()
+                actionTag.query = when (actionTag.booru.type) {
+                    Values.BOORU_TYPE_MOE,
+                    Values.BOORU_TYPE_DAN,
+                    Values.BOORU_TYPE_DAN1 -> "$query*"
+                    else -> query
+                }
+                suggestionViewModel.fetchSuggestions(actionTag)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query.isNullOrBlank()) return false
+                muzeiViewModel.create(
+                    Muzei(
+                        booruUid = actionTag.booru.uid,
+                        query = query.trim()
+                    )
+                )
+                return true
+            }
+        })
+    }
+
+    private fun handleSuggestions(suggestions: List<String>) {
+        val columns = arrayOf(
+            BaseColumns._ID,
+            SearchManager.SUGGEST_COLUMN_TEXT_1,
+            SearchManager.SUGGEST_COLUMN_INTENT_DATA
+        )
+        val cursor = MatrixCursor(columns)
+        suggestions.forEachIndexed { index, suggestion ->
+            val tmp = arrayOf(
+                index.toString(),
+                suggestion,
+                suggestion
+            )
+            cursor.addRow(tmp)
+        }
+        suggestionsAdapter?.swapCursor(cursor)
     }
 }

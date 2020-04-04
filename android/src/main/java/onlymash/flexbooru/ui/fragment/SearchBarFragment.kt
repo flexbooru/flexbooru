@@ -65,7 +65,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
             } else {
                 ActionTag(
                     booru = it,
-                    limit = 10,
+                    limit = 6,
                     order = "count"
                 )
             }

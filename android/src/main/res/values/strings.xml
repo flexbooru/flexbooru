@@ -248,7 +248,7 @@
     <string name="muzei_copy">Copy</string>
     <string name="muzei_delete">Delete</string>
     <string name="muzei_search">Search</string>
-    <string name="muzei_add">Add keyword</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Fetch Artwork</string>
     <string name="muzei_input_cant_be_empty">Input can not be empty.</string>
     <string name="muzei_action_view_post">View post on Flexbooru</string>
