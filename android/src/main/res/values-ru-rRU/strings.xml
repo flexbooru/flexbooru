@@ -230,7 +230,7 @@
     <string name="muzei_copy">Копировать</string>
     <string name="muzei_delete">Удалить</string>
     <string name="muzei_search">Поиск</string>
-    <string name="muzei_add">Добавить ключевое слово</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Получить Арт</string>
     <string name="muzei_input_cant_be_empty">Поле ввода не может быть пустое.</string>
     <string name="muzei_action_view_post">Посмотреть пост в Flexbooru</string>
