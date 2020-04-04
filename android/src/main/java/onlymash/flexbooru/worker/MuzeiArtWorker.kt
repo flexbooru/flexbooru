@@ -17,6 +17,7 @@ import onlymash.flexbooru.common.Settings.muzeiLimit
 import onlymash.flexbooru.common.Settings.muzeiSize
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
 import org.kodein.di.erased.instance
@@ -68,6 +69,13 @@ class MuzeiArtWorker(
         return when (booru.type) {
             BOORU_TYPE_DAN -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, postId).toUri()
             BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, postId).toUri()
+            BOORU_TYPE_SHIMMIE -> {
+                if (booru.path.isNullOrBlank()) {
+                    String.format("%s://%s/post/view/%d", booru.scheme, booru.host, postId).toUri()
+                } else {
+                    String.format("%s://%s/%s/post/view/%d", booru.scheme, booru.host, booru.path, postId).toUri()
+                }
+            }
             else -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postId).toUri()
         }
     }

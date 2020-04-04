@@ -375,7 +375,13 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             BOORU_TYPE_MOE -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, id)
             BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, id)
             BOORU_TYPE_SANKAKU -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), id)
-            BOORU_TYPE_SHIMMIE -> String.format("%s://%s/post/view/%d", booru.scheme, booru.host, id)
+            BOORU_TYPE_SHIMMIE -> {
+                if (booru.path.isNullOrBlank()) {
+                    String.format("%s://%s/post/view/%d", booru.scheme, booru.host, id)
+                } else {
+                    String.format("%s://%s/%s/post/view/%d", booru.scheme, booru.host, booru.path, id)
+                }
+            }
             else -> null
         }
     }
