@@ -128,7 +128,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             DRAWER_ITEM_ID_TAG_BLACKLIST -> {
                 if (currentBooru?.type ?: BOORU_TYPE_UNKNOWN
-                    in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1)) {
+                    in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1, BOORU_TYPE_GEL)) {
                     toActivity(TagBlacklistActivity::class.java)
                 } else {
                     notSupportedToast()
