@@ -16,7 +16,7 @@
 <resources>
     <string name="app_description">Um cliente booru para Android, com suporte a Danbooru, Moebooru, Gelbooru, Sankaku, etc.    </string>
     <string name="title_posts">Postagens</string>
-    <string name="title_search">Search</string>
+    <string name="title_search">Pesquisar</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Gerenciar boorus</string>
     <string name="title_settings">Configurações</string>
@@ -97,6 +97,7 @@
     <string name="booru_config_info">Informação do Booru</string>
     <string name="booru_config_scheme">Esquema</string>
     <string name="booru_config_host">Servidor</string>
+    <string name="booru_config_path">Caminho</string>
     <string name="booru_config_type">Tipo</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">O nome não pode estar vazio.</string>
@@ -156,7 +157,7 @@
     <string name="settings_page_limit">Limite de página</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
     <string name="settings_muzei_size">Tamanho do Muzei</string>
-    <string name="settings_detail_size">Detail size</string>
+    <string name="settings_detail_size">Tamanho do detalhe</string>
     <string name="settings_download_size">Tamanho do download</string>
     <string name="settings_download_path">Caminho de download</string>
     <string name="settings_download_path_not_set">Caminho não definido</string>
@@ -265,4 +266,5 @@
     <string name="sauce_nao_source">Fonte</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Arquivo</string>
+    <string name="action_add_to_muzei">Add to Muzei</string>
 </resources>

@@ -98,6 +98,7 @@
     <string name="booru_config_info">Информация о booru</string>
     <string name="booru_config_scheme">Схема</string>
     <string name="booru_config_host">Сервер</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Тип</string>
     <string name="booru_config_hash_salt">Хэш соль</string>
     <string name="booru_config_name_cant_empty">Имя не может быть пустым.</string>
@@ -265,4 +266,5 @@
     <string name="sauce_nao_source">Источник</string>
     <string name="sauce_nao_search_from_url">URL-Адрес</string>
     <string name="sauce_nao_search_from_file">Файл</string>
+    <string name="action_add_to_muzei">Add to Muzei</string>
 </resources>

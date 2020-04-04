@@ -97,6 +97,7 @@
     <string name="booru_config_info">Informacja o Booru</string>
     <string name="booru_config_scheme">System</string>
     <string name="booru_config_host">Serwer</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Typ</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">Nazwa nie może być pusta.</string>
@@ -264,4 +265,5 @@
     <string name="sauce_nao_source">Źródło</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Plik</string>
+    <string name="action_add_to_muzei">Add to Muzei</string>
 </resources>

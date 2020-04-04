@@ -98,6 +98,7 @@
     <string name="booru_config_info">Booru info</string>
     <string name="booru_config_scheme">Skema</string>
     <string name="booru_config_host">Penyedia</string>
+    <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Tipe</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
@@ -266,4 +267,5 @@
     <string name="sauce_nao_source">Source</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Berkas</string>
+    <string name="action_add_to_muzei">Add to Muzei</string>
 </resources>
