@@ -146,7 +146,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             setSearchBarTitle(getString(R.string.title_popular))
         } else if (activity is SearchActivity) {
             setLeftDrawableProgress(1.0f)
-            setSearchBarTitle(getString(R.string.title_search))
+            setSearchBarTitle(query)
             setSearchBarText(query)
         }
         postsList = view.findViewById(R.id.list)
