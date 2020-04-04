@@ -229,7 +229,7 @@
     <string name="muzei_copy">コピー</string>
     <string name="muzei_delete">削除</string>
     <string name="muzei_search">検索</string>
-    <string name="muzei_add">キーワードの追加</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">アートワークを取得する</string>
     <string name="muzei_input_cant_be_empty">内容を入力してください。</string>
     <string name="muzei_action_view_post">Flexbooruでpostを見ます</string>
