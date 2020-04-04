@@ -58,8 +58,10 @@ class ArtistFragment : SearchBarFragment() {
             layoutManager = LinearLayoutManager(this@ArtistFragment.context, RecyclerView.VERTICAL, false)
             adapter = artistAdapter
         }
-        artistViewModel.artists.observe(viewLifecycleOwner, Observer {
-            artistAdapter.submitList(it)
+        artistViewModel.artists.observe(viewLifecycleOwner, Observer { artistList ->
+            artistList?.let {
+                artistAdapter.submitList(it)
+            }
         })
         artistViewModel.networkState.observe(viewLifecycleOwner, Observer {
             artistAdapter.setNetworkState(it)

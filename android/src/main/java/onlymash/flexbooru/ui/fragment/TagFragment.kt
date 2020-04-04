@@ -57,8 +57,10 @@ class TagFragment : SearchBarFragment() {
             layoutManager = LinearLayoutManager(this@TagFragment.context, RecyclerView.VERTICAL, false)
             adapter = tagAdapter
         }
-        tagViewModel.tags.observe(viewLifecycleOwner, Observer {
-            tagAdapter.submitList(it)
+        tagViewModel.tags.observe(viewLifecycleOwner, Observer { tagList ->
+            tagList?.let {
+                tagAdapter.submitList(it)
+            }
         })
         tagViewModel.networkState.observe(viewLifecycleOwner, Observer {
             tagAdapter.setNetworkState(it)

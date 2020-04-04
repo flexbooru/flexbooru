@@ -8,17 +8,21 @@ import onlymash.flexbooru.data.repository.tag.TagRepository
 
 class TagViewModel(private val repository: TagRepository) : ScopeViewModel() {
 
-    private val _action: MutableLiveData<ActionTag> = MutableLiveData()
+    private val _action: MutableLiveData<ActionTag?> = MutableLiveData()
 
-    private val _result = Transformations.map(_action) {
-        repository.getTags(viewModelScope, it)
+    private val _result = Transformations.map(_action) { action ->
+        if (action != null) {
+            repository.getTags(viewModelScope, action)
+        } else {
+            null
+        }
     }
 
-    val tags = Transformations.switchMap(_result) { it.pagedList }
+    val tags = Transformations.switchMap(_result) { it?.pagedList }
 
-    val networkState = Transformations.switchMap(_result) { it.networkState }
+    val networkState = Transformations.switchMap(_result) { it?.networkState }
 
-    val refreshState = Transformations.switchMap(_result) { it.refreshState }
+    val refreshState = Transformations.switchMap(_result) { it?.refreshState }
 
     fun show(action: ActionTag?): Boolean {
         if (_action.value == action) {

@@ -8,17 +8,21 @@ import onlymash.flexbooru.data.repository.artist.ArtistRepository
 
 class ArtistViewModel(private val repository: ArtistRepository) : ScopeViewModel() {
 
-    private val _action: MutableLiveData<ActionArtist> = MutableLiveData()
+    private val _action: MutableLiveData<ActionArtist?> = MutableLiveData()
 
-    private val _result = Transformations.map(_action) {
-        repository.getArtists(viewModelScope, it)
+    private val _result = Transformations.map(_action) { action ->
+        if (action != null) {
+            repository.getArtists(viewModelScope, action)
+        } else {
+            null
+        }
     }
 
-    val artists = Transformations.switchMap(_result) { it.pagedList }
+    val artists = Transformations.switchMap(_result) { it?.pagedList }
 
-    val networkState = Transformations.switchMap(_result) { it.networkState }
+    val networkState = Transformations.switchMap(_result) { it?.networkState }
 
-    val refreshState = Transformations.switchMap(_result) { it.refreshState }
+    val refreshState = Transformations.switchMap(_result) { it?.refreshState }
 
     fun show(action: ActionArtist?): Boolean {
         if (_action.value == action) {

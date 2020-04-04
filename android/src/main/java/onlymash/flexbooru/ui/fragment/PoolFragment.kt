@@ -61,8 +61,10 @@ class PoolFragment : SearchBarFragment() {
             layoutManager = LinearLayoutManager(this@PoolFragment.context, RecyclerView.VERTICAL, false)
             adapter = poolAdapter
         }
-        poolViewModel.pools.observe(viewLifecycleOwner, Observer {
-            poolAdapter.submitList(it)
+        poolViewModel.pools.observe(viewLifecycleOwner, Observer { poolList ->
+            poolList?.let {
+                poolAdapter.submitList(it)
+            }
         })
         poolViewModel.networkState.observe(viewLifecycleOwner, Observer {
             poolAdapter.setNetworkState(it)
