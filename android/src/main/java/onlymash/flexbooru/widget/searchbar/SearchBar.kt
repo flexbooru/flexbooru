@@ -94,6 +94,10 @@ class SearchBar @JvmOverloads constructor(
         editText.setSelection(text.length)
     }
 
+    fun setEditTextSelectionModeCallback(callback: ActionMode.Callback) {
+        editText.customSelectionActionModeCallback = callback
+    }
+
     fun setLeftDrawable(drawable: Drawable) {
         leftButton.setImageDrawable(drawable)
     }
@@ -109,6 +113,13 @@ class SearchBar @JvmOverloads constructor(
         get() = state
 
     fun getQueryText(): String = (editText.text ?: "").toString().trim()
+
+    fun getSelectedText(): String {
+        val text = editText.text ?: return ""
+        val selectedText = text.toString().substring(editText.selectionStart, editText.selectionEnd)
+        editText.setSelection(text.length)
+        return selectedText
+    }
 
     fun setEditTextHint(hint: CharSequence) {
         editText.hint = hint

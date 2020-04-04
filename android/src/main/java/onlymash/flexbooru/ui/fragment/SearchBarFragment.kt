@@ -1,9 +1,7 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.animation.ValueAnimator
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
@@ -20,8 +18,10 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
+import onlymash.flexbooru.data.database.MuzeiManager
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.ui.activity.MainActivity
 import onlymash.flexbooru.ui.viewmodel.*
@@ -30,7 +30,7 @@ import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
 
 abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
-    SearchBar.StateListener, SearchBarMover.Helper {
+    SearchBar.StateListener, SearchBarMover.Helper, ActionMode.Callback {
 
     val booruApis by instance<BooruApis>()
     private val booruDao by instance<BooruDao>()
@@ -99,6 +99,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         searchBar.setStateListener(this)
         searchBar.setEditTextHint(getSearchBarHint())
         searchBarMover = SearchBarMover(this, searchBar, list)
+        searchBar.setEditTextSelectionModeCallback(this)
     }
 
     fun setLeftDrawableProgress(@FloatRange(from = 0.0, to = 1.0) progress: Float) {
@@ -222,4 +223,39 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     }
 
     open fun onBackPressed(): Boolean = true
+
+    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        menu?.add(
+            MUZEI_MENU_GROUP_ID,
+            MUZEI_MENU_ITEM_ID,
+            MUZEI_MENU_ORDER,
+            R.string.action_add_to_muzei)
+        return true
+    }
+
+    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        return false
+    }
+
+    override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+        if (item?.itemId == MUZEI_MENU_ITEM_ID) {
+            val query = searchBar.getSelectedText()
+            val muzei = Muzei(
+                booruUid = activatedBooruUid,
+                query = query
+            )
+            MuzeiManager.createMuzei(muzei)
+        }
+        return false
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+
+    }
+
+    companion object {
+        private const val MUZEI_MENU_GROUP_ID = 101
+        private const val MUZEI_MENU_ITEM_ID = 101
+        private const val MUZEI_MENU_ORDER = 0
+    }
 }
