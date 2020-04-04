@@ -266,4 +266,5 @@
     <string name="sauce_nao_source">Fonte</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Arquivo</string>
+    <string name="action_add_to_muzei">Add to Muzei</string>
 </resources>
