@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values
+import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
@@ -139,7 +140,9 @@ class MuzeiActivity : KodeinActivity() {
         })
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrBlank()) return false
+                if (actionTag.booru.type == BOORU_TYPE_SHIMMIE || newText.isNullOrBlank()) {
+                    return false
+                }
                 val query = newText.trim()
                 actionTag.query = when (actionTag.booru.type) {
                     Values.BOORU_TYPE_MOE,
