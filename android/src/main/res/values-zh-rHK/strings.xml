@@ -229,7 +229,7 @@
     <string name="muzei_copy">複製</string>
     <string name="muzei_delete">刪除</string>
     <string name="muzei_search">搜尋</string>
-    <string name="muzei_add">新增關鍵字</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">取得 Artwork</string>
     <string name="muzei_input_cant_be_empty">輸入不能為空白。</string>
     <string name="muzei_action_view_post">在 Flexbooru 上查看帖子</string>
