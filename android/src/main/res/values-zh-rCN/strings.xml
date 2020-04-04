@@ -97,7 +97,7 @@
     <string name="booru_config_info">Booru 信息</string>
     <string name="booru_config_scheme">协议</string>
     <string name="booru_config_host">主机</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">路径</string>
     <string name="booru_config_type">类型</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">名称不能为空。</string>
@@ -229,7 +229,7 @@
     <string name="muzei_copy">复制</string>
     <string name="muzei_delete">删除</string>
     <string name="muzei_search">搜索</string>
-    <string name="muzei_add">添加关键词</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">拉取 Artwork</string>
     <string name="muzei_input_cant_be_empty">输入不能为空。</string>
     <string name="muzei_action_view_post">在 Flexboru 查看此投稿</string>
@@ -264,5 +264,5 @@
     <string name="sauce_nao_source">来源</string>
     <string name="sauce_nao_search_from_url">链接</string>
     <string name="sauce_nao_search_from_file">文件</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="action_add_to_muzei">添加至 Muzei</string>
 </resources>
