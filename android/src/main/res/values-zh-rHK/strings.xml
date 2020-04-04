@@ -264,4 +264,5 @@
     <string name="sauce_nao_source">來源</string>
     <string name="sauce_nao_search_from_url">連結</string>
     <string name="sauce_nao_search_from_file">檔案</string>
+    <string name="action_add_to_muzei">Add to Muzei</string>
 </resources>
