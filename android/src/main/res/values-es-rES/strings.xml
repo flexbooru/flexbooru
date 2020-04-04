@@ -230,7 +230,7 @@
     <string name="muzei_copy">Copia</string>
     <string name="muzei_delete">Eliminar</string>
     <string name="muzei_search">Buscar</string>
-    <string name="muzei_add">Agregar palabra clave</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Obtener imagen</string>
     <string name="muzei_input_cant_be_empty">La entrada no puede estar vacía.</string>
     <string name="muzei_action_view_post">Ver post en Flexbooru</string>

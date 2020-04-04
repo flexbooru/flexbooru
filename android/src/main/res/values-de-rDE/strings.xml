@@ -230,7 +230,7 @@
     <string name="muzei_copy">Kopieren</string>
     <string name="muzei_delete">Löschen</string>
     <string name="muzei_search">Suche</string>
-    <string name="muzei_add">Label hinzufügen</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Artwork abrufen</string>
     <string name="muzei_input_cant_be_empty">Eingabe darf nicht leer sein.</string>
     <string name="muzei_action_view_post">Beitrag auf Flexbooru ansehen</string>

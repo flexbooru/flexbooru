@@ -229,7 +229,7 @@
     <string name="muzei_copy">Kopiëren</string>
     <string name="muzei_delete">Verwijderen</string>
     <string name="muzei_search">Zoeken</string>
-    <string name="muzei_add">Trefwoord toevoegen</string>
+    <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Artwork Ophalen</string>
     <string name="muzei_input_cant_be_empty">Invoer mag niet leeg zijn.</string>
     <string name="muzei_action_view_post">Post in Flexbooru weergeven</string>
