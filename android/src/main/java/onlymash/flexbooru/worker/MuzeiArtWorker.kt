@@ -76,7 +76,14 @@ class MuzeiArtWorker(
                     String.format("%s://%s/%s/post/view/%d", booru.scheme, booru.host, booru.path, postId).toUri()
                 }
             }
-            else -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, postId).toUri()
+            else -> String.format("%s://%s/post/show/%d",
+                booru.scheme,
+                if (booru.host.startsWith("capi-v2."))
+                    booru.host.replaceFirst("capi-v2.", "chan.")
+                else
+                    booru.host,
+                postId
+            ).toUri()
         }
     }
 }
