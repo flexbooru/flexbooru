@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
@@ -94,7 +95,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
                 scheme = SCHEME_HTTPS,
                 host = "",
                 type = BOORU_TYPE_MOE,
-                hashSalt = "-$HASH_SALT_CONTAINED-"
+                hashSalt = "--$HASH_SALT_CONTAINED--"
             )
         }
         booru?.let {
@@ -106,6 +107,9 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
             path = it.path
         }
         addPreferencesFromResource(R.xml.pref_booru_config)
+        findPreference<EditTextPreference>(CONFIG_HOST_KEY)?.setOnBindEditTextListener {
+            it.hint = "example.com"
+        }
         hashSaltPreferences = findPreference(CONFIG_HASH_SALT_KEY)
         hashSaltPreferences?.isVisible = type in hashBoorus
         pathPreferences = findPreference(CONFIG_PATH_KEY)

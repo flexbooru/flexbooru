@@ -173,7 +173,7 @@ dependencies {
     implementation("com.github.onlymash:subsampling-scale-image-view:3.10.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.onlymash:OMFM:1.1.4")
-    implementation("com.mikepenz:materialdrawer:8.0.0")
+    implementation("com.mikepenz:materialdrawer:8.0.1")
     implementation("com.github.kenglxn.QRGen:android:2.6.0")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-core:17.3.0")
