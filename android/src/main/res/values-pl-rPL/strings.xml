@@ -97,7 +97,7 @@
     <string name="booru_config_info">Informacja o Booru</string>
     <string name="booru_config_scheme">System</string>
     <string name="booru_config_host">Serwer</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">Ścieżka</string>
     <string name="booru_config_type">Typ</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">Nazwa nie może być pusta.</string>
@@ -157,7 +157,7 @@
     <string name="settings_page_limit">Limit strony</string>
     <string name="settings_muzei_limit">Limit Muzei</string>
     <string name="settings_muzei_size">Rozmiar Muzei</string>
-    <string name="settings_detail_size">Detail size</string>
+    <string name="settings_detail_size">Dokładny rozmiar</string>
     <string name="settings_download_size">Rozmiar pobierania</string>
     <string name="settings_download_path">Ścieżka pobierania</string>
     <string name="settings_download_path_not_set">Nie wybrano ścieżki</string>
@@ -170,6 +170,7 @@
     <string name="settings_grid_width_large">Duży</string>
     <string name="settings_show_info_bar">Pokaż pasek informacyjny</string>
     <string name="settings_show_all_tags">Pokaż tagi dla wszystkich stron</string>
+    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
     <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
     <string name="settings_clear_cache_summery">Usuń wszystkie zapisane grafiki.</string>
     <string name="settings_clear_cache_dialog_content">Pamięć podręczna zostanie wyczyszczona.</string>
@@ -229,7 +230,7 @@
     <string name="muzei_copy">Kopiuj</string>
     <string name="muzei_delete">Usuń</string>
     <string name="muzei_search">Szukaj</string>
-    <string name="muzei_search_hint">Add tag…</string>
+    <string name="muzei_search_hint">Dodaj tag…</string>
     <string name="muzei_fetch">Złap obrazek</string>
     <string name="muzei_input_cant_be_empty">Pole nie może pozostać puste.</string>
     <string name="muzei_action_view_post">Zobacz post na Flexbooru</string>
@@ -265,5 +266,5 @@
     <string name="sauce_nao_source">Źródło</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Plik</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="action_add_to_muzei">Dodaj do Muzei</string>
 </resources>

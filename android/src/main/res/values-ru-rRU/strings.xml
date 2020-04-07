@@ -171,6 +171,7 @@
     <string name="settings_grid_width_large">Большая</string>
     <string name="settings_show_info_bar">Отображать информацию</string>
     <string name="settings_show_all_tags">Отображать теги для всех сайтов</string>
+    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
     <string name="settings_clear_cache">Очистить кэш</string>
     <string name="settings_clear_cache_summery">Удалить все кэшированные файлы.</string>
     <string name="settings_clear_cache_dialog_content">Кэшированные файлы будут очищены.</string>
