@@ -31,11 +31,8 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import onlymash.flexbooru.common.Keys.HEADER_COOKIE
 import onlymash.flexbooru.common.Keys.HEADER_REFERER
 import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.data.database.CookieManager
 import onlymash.flexbooru.extension.getUserAgent
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.InputStream
@@ -66,9 +63,6 @@ class MyAppGlideModule : AppGlideModule() {
                 .addHeader(HEADER_REFERER, "$scheme://$host/post")
                 .removeHeader(HEADER_USER_AGENT)
                 .addHeader(HEADER_USER_AGENT, getUserAgent())
-            CookieManager.getCookieByBooruUid(Settings.activatedBooruUid)?.cookie?.let { cookie ->
-                builder.addHeader(HEADER_COOKIE, cookie)
-            }
             it.proceed(builder.build())
         }
         val client = OkHttpClient.Builder().apply {
