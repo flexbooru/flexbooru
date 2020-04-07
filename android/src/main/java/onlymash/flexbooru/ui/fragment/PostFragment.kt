@@ -32,7 +32,7 @@ import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.common.Settings.PAGE_LIMIT_KEY
 import onlymash.flexbooru.common.Settings.SAFE_MODE_KEY
-import onlymash.flexbooru.common.Settings.SHOW_ALL_TAGS
+import onlymash.flexbooru.common.Settings.SHOW_ALL_TAGS_KEY
 import onlymash.flexbooru.common.Settings.SHOW_INFO_BAR_KEY
 import onlymash.flexbooru.common.Settings.gridWidthResId
 import onlymash.flexbooru.common.Settings.isLargeWidth
@@ -85,9 +85,8 @@ private const val PERIOD_WEEK = "1w"
 private const val PERIOD_MONTH = "1m"
 private const val PERIOD_YEAR = "1y"
 
-class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class PostFragment : SearchBarFragment() {
 
-    private val sp by instance<SharedPreferences>()
     private val db by instance<MyDatabase>()
     private val ioExecutor by instance<Executor>()
 
@@ -108,7 +107,6 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
 
     private lateinit var leftButton: ImageButton
     private var rightButton: View? = null
-    private lateinit var postsList: RecyclerView
     private lateinit var tagsFilterList: RecyclerView
 
     private var sharedElement: View? = null
@@ -149,12 +147,10 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             setSearchBarTitle(query)
             setSearchBarText(query)
         }
-        postsList = view.findViewById(R.id.list)
         leftButton = getSearchBarLeftButton()
         tagsFilterList = view.findViewById(R.id.tags_filter_list)
         viewTransition = ViewTransition(swipe_refresh, search_layout)
         initPostsList()
-        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     private fun initPostsList() {
@@ -172,7 +168,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             longClickItemCallback = { handleLongClick(it) },
             retryCallback = { postViewModel.retry() }
         )
-        postsList.apply {
+        mainList.apply {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             adapter = postAdapter
         }
@@ -504,9 +500,10 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        super.onSharedPreferenceChanged(sharedPreferences, key)
         val action = action ?: return
         when (key) {
-            SHOW_ALL_TAGS -> {
+            SHOW_ALL_TAGS_KEY -> {
                 val adapter = tagsFilterList.adapter
                 if (adapter is TagFilterAdapter) {
                     adapter.updateData(action.booru.uid, isShowAllTags)
@@ -518,7 +515,7 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
             }
             GRID_WIDTH_KEY -> {
                 postAdapter.isLargeItemWidth = isLargeWidth
-                postsList.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
+                mainList.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             }
             SAFE_MODE_KEY -> {
                 action.isSafeMode = safeMode
@@ -531,19 +528,14 @@ class PostFragment : SearchBarFragment(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        sp.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val bundle= intent?.extras ?: return
             if (query != bundle.getString(POST_QUERY)) return
             val position = bundle.getInt(POST_POSITION, -1)
             if (position >= 0 && position < postAdapter.itemCount) {
-                postsList.scrollToPosition(position)
-                sharedElement = postsList.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.preview)
+                mainList.scrollToPosition(position)
+                sharedElement = mainList.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.preview)
             }
         }
     }

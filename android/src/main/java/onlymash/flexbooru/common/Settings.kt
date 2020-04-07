@@ -47,7 +47,8 @@ object Settings {
     const val GRID_WIDTH_LARGE = "large"
     private const val ACTIVE_MUZEI_UID_KEY = "settings_muzei_uid"
     const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
-    const val SHOW_ALL_TAGS = "settings_show_all_tags"
+    const val SHOW_ALL_TAGS_KEY = "settings_show_all_tags"
+    const val AUTO_HIDE_BOTTOM_BAR_KEY = "settings_auto_hide_bottom_bar"
     const val CLEAR_CACHE_KEY = "settings_clear_cache"
     const val CLEAR_HISTORY_KEY = "settings_clear_history"
     const val LATEST_VERSION_CODE_KEY = "settings_latest_version_code"
@@ -143,8 +144,12 @@ object Settings {
         set(value) = sp.edit().putBoolean(SHOW_INFO_BAR_KEY, value).apply()
 
     var isShowAllTags: Boolean
-        get() = sp.getBoolean(SHOW_ALL_TAGS, false)
-        set(value) = sp.edit().putBoolean(SHOW_ALL_TAGS, value).apply()
+        get() = sp.getBoolean(SHOW_ALL_TAGS_KEY, false)
+        set(value) = sp.edit().putBoolean(SHOW_ALL_TAGS_KEY, value).apply()
+
+    var autoHideBottomBar: Boolean
+        get() = sp.getBoolean(AUTO_HIDE_BOTTOM_BAR_KEY, false)
+        set(value) = sp.edit().putBoolean(AUTO_HIDE_BOTTOM_BAR_KEY, value).apply()
 
     var downloadDirPath: String?
         get() = sp.getString(DOWNLOAD_PATH_KEY, "")

@@ -54,7 +54,7 @@ class ArtistFragment : SearchBarFragment() {
         artistAdapter = ArtistAdapter {
             artistViewModel.retry()
         }
-        list.apply {
+        mainList.apply {
             layoutManager = LinearLayoutManager(this@ArtistFragment.context, RecyclerView.VERTICAL, false)
             adapter = artistAdapter
         }

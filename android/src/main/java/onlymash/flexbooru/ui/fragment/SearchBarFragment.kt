@@ -1,17 +1,21 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.animation.ValueAnimator
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.AUTO_HIDE_BOTTOM_BAR_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.common.Settings.autoHideBottomBar
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
@@ -30,8 +34,10 @@ import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
 
 abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
-    SearchBar.StateListener, SearchBarMover.Helper, ActionMode.Callback {
+    SearchBar.StateListener, SearchBarMover.Helper, ActionMode.Callback,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private val sp by instance<SharedPreferences>()
     val booruApis by instance<BooruApis>()
     private val booruDao by instance<BooruDao>()
 
@@ -43,6 +49,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     private lateinit var searchBar: SearchBar
     private lateinit var searchBarMover: SearchBarMover
     private lateinit var leftDrawable: DrawerArrowDrawable
+    internal lateinit var mainList: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +63,8 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainList = view.findViewById(R.id.list)
+        setupMainListPadding()
         initSwipeRefresh()
         searchBar = view.findViewById(R.id.search_bar)
         initSearchBar()
@@ -75,6 +84,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         suggestionViewModel.suggestions.observe(viewLifecycleOwner, Observer {
             searchBar.updateSuggestions(it)
         })
+        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     private fun initSwipeRefresh() {
@@ -100,6 +110,13 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         searchBar.setEditTextHint(getSearchBarHint())
         searchBarMover = SearchBarMover(this, searchBar, list)
         searchBar.setEditTextSelectionModeCallback(this)
+    }
+
+    private fun setupMainListPadding() {
+        val activity = activity
+        if (activity is MainActivity) {
+            mainList.updatePadding(bottom = if (autoHideBottomBar) 0 else activity.getNavigationBarHeight())
+        }
     }
 
     fun setLeftDrawableProgress(@FloatRange(from = 0.0, to = 1.0) progress: Float) {
@@ -251,6 +268,17 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     override fun onDestroyActionMode(mode: ActionMode?) {
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sp.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == AUTO_HIDE_BOTTOM_BAR_KEY) {
+            setupMainListPadding()
+        }
     }
 
     companion object {

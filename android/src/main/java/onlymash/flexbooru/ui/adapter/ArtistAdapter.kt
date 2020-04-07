@@ -8,7 +8,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.extension.copyText
@@ -68,9 +67,6 @@ class ArtistAdapter(retryCallback: () -> Unit) :
             btExpand.setOnClickListener {
                 if (!artistUrls.text.isNullOrBlank()) {
                     isShowing = toggleLayoutExpand(!isShowing, btExpand, urlsContainer)
-                } else {
-                    Snackbar.make(itemView, itemView.context.getString(R.string.artist_urls_is_empty),
-                        Snackbar.LENGTH_SHORT).show()
                 }
             }
             artistUrls.transformationMethod = LinkTransformationMethod()
@@ -91,7 +87,10 @@ class ArtistAdapter(retryCallback: () -> Unit) :
                 urlsText = String.format("%s\r\n%s", url, urlsText)
             }
             if (urlsText.isNotBlank()) {
+                btExpand.isVisible = true
                 artistUrls.text = urlsText
+            } else {
+                btExpand.isVisible = false
             }
         }
 

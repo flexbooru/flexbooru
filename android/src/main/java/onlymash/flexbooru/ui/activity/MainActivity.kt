@@ -27,6 +27,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -34,6 +35,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.holder.StringHolder
 import com.mikepenz.materialdrawer.model.*
@@ -49,9 +52,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.AUTO_HIDE_BOTTOM_BAR_KEY
 import onlymash.flexbooru.common.Settings.BOORU_UID_ACTIVATED_KEY
 import onlymash.flexbooru.common.Settings.ORDER_SUCCESS_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.common.Settings.autoHideBottomBar
 import onlymash.flexbooru.common.Settings.isAvailableOnStore
 import onlymash.flexbooru.common.Settings.isGoogleSign
 import onlymash.flexbooru.common.Settings.isOrderSuccess
@@ -165,6 +170,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         setContentView(R.layout.activity_main)
         navController = findNavController(R.id.nav_host_fragment)
         navigation.setupWithNavController(navController)
+        setupNavigationBarBehavior()
         booruViewModel = getBooruViewModel(booruDao)
         if (!booruViewModel.isNotEmpty()) {
             activatedBooruUid = createDefaultBooru()
@@ -408,6 +414,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     initDrawerHeader()
                 }
             }
+            AUTO_HIDE_BOTTOM_BAR_KEY -> setupNavigationBarBehavior()
         }
     }
 
@@ -432,4 +439,20 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     fun openDrawer() {
         drawer_layout.openDrawer(GravityCompat.START)
     }
+
+    private fun setupNavigationBarBehavior() {
+        val layoutParams = navigation.layoutParams as CoordinatorLayout.LayoutParams
+        val behavior = layoutParams.behavior
+        layoutParams.behavior =
+            if (autoHideBottomBar) {
+                HideBottomViewOnScrollBehavior<BottomNavigationView>()
+            } else {
+                if (behavior is HideBottomViewOnScrollBehavior) {
+                    behavior.slideUp(navigation)
+                }
+                null
+            }
+    }
+
+    fun getNavigationBarHeight() = navigation.height
 }

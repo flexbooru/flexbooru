@@ -53,7 +53,7 @@ class TagFragment : SearchBarFragment() {
         tagAdapter = TagAdapter {
             tagViewModel.retry()
         }
-        list.apply {
+        mainList.apply {
             layoutManager = LinearLayoutManager(this@TagFragment.context, RecyclerView.VERTICAL, false)
             adapter = tagAdapter
         }

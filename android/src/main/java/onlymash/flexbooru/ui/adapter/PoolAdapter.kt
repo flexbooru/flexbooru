@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
@@ -70,7 +69,6 @@ class PoolAdapter(
 
     inner class PoolViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        private val container: ConstraintLayout = itemView.findViewById(R.id.container)
         val userAvatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
         private val poolName: AppCompatTextView = itemView.findViewById(R.id.pool_name)
         private val poolIdCount: AppCompatTextView = itemView.findViewById(R.id.pool_id_and_count)
@@ -85,9 +83,6 @@ class PoolAdapter(
             expandBottom.setOnClickListener {
                 if (!poolDescription.text.isNullOrBlank()) {
                     isShowing = toggleLayoutExpand(!isShowing, expandBottom, descriptionContainer)
-                } else {
-                    Snackbar.make(container, container.context.getString(R.string.pool_description_is_empty),
-                        Snackbar.LENGTH_SHORT).show()
                 }
             }
             poolDescription.transformationMethod = LinkTransformationMethod()
@@ -98,13 +93,14 @@ class PoolAdapter(
             if (descriptionContainer.visibility == View.VISIBLE) {
                 isShowing = false
                 expandBottom.toggleArrow(show = false, delay = false)
-                descriptionContainer.visibility = View.GONE
+                descriptionContainer.isVisible = false
             }
             if (pool == null) return
             val context = itemView.context
             poolName.text = pool.name
             poolIdCount.text = String.format(context.getString(R.string.pool_info_id_and_count), pool.id, pool.count)
             poolDescription.text = pool.description
+            expandBottom.isVisible = pool.description.isNotBlank()
             poolDate.text = pool.date
             when (pool.booruType) {
                 BOORU_TYPE_MOE -> {

@@ -33,7 +33,6 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="58dp"
             app:defaultNavHost="true"
             app:navGraph="@navigation/main_navigation"
             tools:ignore="FragmentTagUsage" />
@@ -41,15 +40,14 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
             android:background="@drawable/background"
             app:menu="@menu/navigation"
             app:layout_anchorGravity="bottom"
             app:labelVisibilityMode="labeled"
-            app:itemHorizontalTranslationEnabled="false"
-            app:layout_behavior="onlymash.flexbooru.widget.BottomNavigationSnackbarBehavior"/>
+            app:itemHorizontalTranslationEnabled="false" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

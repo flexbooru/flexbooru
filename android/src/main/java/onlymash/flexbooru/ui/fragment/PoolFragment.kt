@@ -57,7 +57,7 @@ class PoolFragment : SearchBarFragment() {
         }) {
             poolViewModel.retry()
         }
-        list.apply {
+        mainList.apply {
             layoutManager = LinearLayoutManager(this@PoolFragment.context, RecyclerView.VERTICAL, false)
             adapter = poolAdapter
         }
