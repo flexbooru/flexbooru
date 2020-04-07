@@ -170,7 +170,7 @@
     <string name="settings_grid_width_large">Grande</string>
     <string name="settings_show_info_bar">Mostrar Barra de Informação</string>
     <string name="settings_show_all_tags">Mostrar tags para todos os sites</string>
-    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
+    <string name="settings_auto_hide_bottom_bar">Ocultar a barra inferior automaticamente</string>
     <string name="settings_clear_cache">Limpar cache</string>
     <string name="settings_clear_cache_summery">Remover todos os arquivos em cache.</string>
     <string name="settings_clear_cache_dialog_content">Os arquivos em cache serão apagados.</string>
