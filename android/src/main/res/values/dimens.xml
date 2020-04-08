@@ -21,14 +21,13 @@
     <dimen name="corner_radius">8dp</dimen>
 
     <dimen name="elevation_size">1.2dp</dimen>
-    <dimen name="toolbar_elevation_size">3dp</dimen>
+    <dimen name="elevation_appbar">4dp</dimen>
     <dimen name="post_item_width_small">130dp</dimen>
     <dimen name="post_item_width_normal">190dp</dimen>
     <dimen name="post_item_width_large">260dp</dimen>
     <dimen name="post_item_margin">@dimen/list_padding_horizontal</dimen>
 
     <dimen name="list_padding_horizontal">4.5dp</dimen>
-    <dimen name="list_padding_top">63dp</dimen>
     <dimen name="swipe_refresh_layout_offset_start">10dp</dimen>
     <dimen name="swipe_refresh_layout_offset_end">90dp</dimen>
     <dimen name="header_item_height">64dp</dimen>

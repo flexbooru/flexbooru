@@ -14,20 +14,21 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="onlymash.flexbooru.ui.activity.BooruConfigActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="onlymash.flexbooru.ui.activity.BooruConfigActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/appbar"/>
 
     <fragment
-            android:name="onlymash.flexbooru.ui.fragment.BooruConfigFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment_booru_config"/>
+        android:name="onlymash.flexbooru.ui.fragment.BooruConfigFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_booru_config"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

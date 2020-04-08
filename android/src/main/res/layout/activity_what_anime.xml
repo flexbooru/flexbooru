@@ -8,7 +8,9 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.WhatAnimeActivity">
 
-    <include layout="@layout/common_toolbar_list"/>
+    <include layout="@layout/appbar"/>
+
+    <include layout="@layout/common_list"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/what_anime_search_fab"
@@ -18,6 +20,6 @@
             android:layout_margin="@dimen/margin_normal"
             android:src="@drawable/ic_add_long_24dp"
             style="@style/Widget.FloatingActionButton"
-            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

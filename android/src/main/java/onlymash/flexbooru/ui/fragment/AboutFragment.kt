@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.core.net.toUri
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -25,9 +26,14 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.activity.CopyrightActivity
+import onlymash.flexbooru.widget.ListListener
 
 
 class AboutFragment : PreferenceFragmentCompat() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listView.setOnApplyWindowInsetsListener(ListListener)
+    }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_about)
         findPreference<Preference>("about_app_version")?.summary = BuildConfig.VERSION_NAME

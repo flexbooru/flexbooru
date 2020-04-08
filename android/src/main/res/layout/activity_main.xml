@@ -55,5 +55,5 @@
         android:id="@+id/slider"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start" />
 </androidx.drawerlayout.widget.DrawerLayout>

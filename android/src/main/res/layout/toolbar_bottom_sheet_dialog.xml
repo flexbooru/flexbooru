@@ -20,8 +20,5 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-        android:background="@color/transparent"
         app:navigationIcon="@drawable/ic_close_white_24dp"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        style="@style/Widget.Toolbar.Transparent" />

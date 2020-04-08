@@ -15,13 +15,10 @@
   -->
 
 <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="@dimen/toolbar_elevation_size"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="@color/colorBackground"
-        app:navigationIcon="?android:attr/homeAsUpIndicator"
-        app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    app:navigationIcon="?android:attr/homeAsUpIndicator"
+    style="@style/Widget.Toolbar"/>

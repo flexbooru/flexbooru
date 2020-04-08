@@ -4,7 +4,9 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.view.View
 import androidx.core.math.MathUtils
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
+import onlymash.flexbooru.R
 import onlymash.flexbooru.animation.SimpleAnimatorListener
 
 class SearchBarMover(private val helper: Helper,
@@ -55,12 +57,13 @@ class SearchBarMover(private val helper: Helper,
             true
         } else {
             val recyclerView = helper.validRecyclerView
+            val systemUiTopSize = searchBar.marginTop - searchBar.resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin)
             if (!recyclerView.isShown) {
                 true
-            } else if (recyclerView.computeVerticalScrollOffset() < searchBar.bottom) {
+            } else if (recyclerView.computeVerticalScrollOffset() < searchBar.bottom - systemUiTopSize) {
                 true
             } else {
-                getY2(searchBar).toInt() > searchBar.height/2
+                getY2(searchBar).toInt() - systemUiTopSize > searchBar.height / 2
             }
         }
 

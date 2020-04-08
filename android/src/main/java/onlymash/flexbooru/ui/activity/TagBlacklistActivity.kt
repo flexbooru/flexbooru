@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +22,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
+import onlymash.flexbooru.widget.hideNavBar
 import org.kodein.di.erased.instance
 
 class TagBlacklistActivity : KodeinActivity() {
@@ -31,6 +35,13 @@ class TagBlacklistActivity : KodeinActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tag_blacklist)
+        hideNavBar {
+            tag_blacklist_list.updatePadding(bottom = it.systemWindowInsetBottom)
+            add_button.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                bottomMargin = it.systemWindowInsetBottom +
+                        resources.getDimensionPixelSize(R.dimen.margin_normal)
+            }
+        }
         toolbar.apply {
             setTitle(R.string.title_tag_blacklist)
             setNavigationOnClickListener {

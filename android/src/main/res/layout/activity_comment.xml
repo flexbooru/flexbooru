@@ -13,22 +13,15 @@
   ~ You should have received a copy of the GNU General Public License along with
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".ui.activity.BooruActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/appbar"/>
 
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <include layout="@layout/refreshable_list"/>
 
-        <include layout="@layout/refreshable_list"/>
-
-    </FrameLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

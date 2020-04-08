@@ -25,6 +25,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -51,6 +52,7 @@ import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
+import onlymash.flexbooru.widget.hideNavBar
 import org.kodein.di.erased.instance
 import java.io.IOException
 import java.io.InputStream
@@ -68,6 +70,9 @@ class BooruActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru)
+        hideNavBar { insets ->
+            list.updatePadding(bottom = insets.systemWindowInsetBottom)
+        }
         initToolbar()
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         val animator = DefaultItemAnimator().apply {

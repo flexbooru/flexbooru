@@ -30,6 +30,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -77,11 +78,13 @@ import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.ui.fragment.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
+import onlymash.flexbooru.widget.setupInsets
 import org.kodein.di.erased.instance
 
 class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
+        private const val SETUP_NAV_KEY = "nav_setup"
         private const val BOORUS_LIMIT = 3
         private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
@@ -260,6 +263,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             stickyFooterDivider = true
             setSelection(-3L)
             onDrawerItemClickListener = drawerItemClickListener
+            setSavedInstance(savedInstanceState)
+            tintNavigationBar = false
         }
         booruViewModel.loadBoorus().observe(this, Observer {
             boorus.clear()
@@ -267,10 +272,21 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             initDrawerHeader()
         })
         booruViewModel.booru.observe(this, Observer { booru: Booru? ->
-            currentBooru = booru
-            setupNavigation(booru?.type ?: -1)
+            if (booru != null && currentBooru != booru) {
+                currentBooru = booru
+                when {
+                    savedInstanceState == null || savedInstanceState.getBoolean(SETUP_NAV_KEY, true) -> {
+                        setupNavigation(booru.type)
+                    }
+                    else -> {
+                        savedInstanceState.putBoolean(SETUP_NAV_KEY, true)
+                    }
+                }
+            }
         })
-        booruViewModel.loadBooru(currentBooruUid)
+        if (savedInstanceState == null) {
+            booruViewModel.loadBooru(currentBooruUid)
+        }
         if (!isOrderSuccess) {
             slider.addItemAtPosition(
                 DRAWER_ITEM_ID_PURCHASE_POSITION,
@@ -282,6 +298,10 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     identifier = DRAWER_ITEM_ID_PURCHASE
                 }
             )
+        }
+        setupInsets { insets ->
+            slider.recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
+            slider.stickyFooterView?.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
         checkUpdate()
     }
@@ -461,5 +481,10 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (behavior is HideBottomViewOnScrollBehavior) {
             behavior.slideUp(navigation)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(SETUP_NAV_KEY, false)
+        super.onSaveInstanceState(outState)
     }
 }

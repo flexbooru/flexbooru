@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <color name="colorNavigationBar">@color/color_light_background</color>
+    <color name="colorNavigationBar">@color/system_bar_light</color>
 </resources>

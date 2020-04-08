@@ -16,8 +16,11 @@ import android.util.Base64
 import android.view.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +31,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_what_anime.*
-import kotlinx.android.synthetic.main.common_toolbar_list.*
+import kotlinx.android.synthetic.main.common_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +50,7 @@ import onlymash.flexbooru.tracemoe.model.Doc
 import onlymash.flexbooru.ui.fragment.BaseBottomSheetDialogFragment
 import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
+import onlymash.flexbooru.widget.hideNavBar
 import org.kodein.di.erased.instance
 import java.io.ByteArrayOutputStream
 
@@ -70,6 +74,13 @@ class WhatAnimeActivity : AppCompatActivity() {
             return
         }
         setContentView(R.layout.activity_what_anime)
+        hideNavBar {
+            list.updatePadding(bottom = it.systemWindowInsetBottom)
+            what_anime_search_fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                bottomMargin = it.systemWindowInsetBottom +
+                        resources.getDimensionPixelSize(R.dimen.margin_normal)
+            }
+        }
         toolbar.apply {
             setTitle(R.string.title_what_anime)
             setNavigationOnClickListener {

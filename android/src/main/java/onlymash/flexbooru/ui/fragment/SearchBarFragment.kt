@@ -53,6 +53,9 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     internal lateinit var mainList: RecyclerView
     internal lateinit var searchLayout: CoordinatorLayout
     internal lateinit var swipeRefresh: SwipeRefreshLayout
+    private lateinit var container: CoordinatorLayout
+    private var systemUiBottomSize = 0
+    private var systemUiTopSize = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,12 +69,21 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        container = view.findViewById(R.id.searchbar_fragment_container)
         mainList = view.findViewById(R.id.list)
         searchBar = view.findViewById(R.id.search_bar)
         searchLayout = view.findViewById(R.id.search_layout)
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
-        setupMainListPadding()
-        initSwipeRefresh()
+        container.setOnApplyWindowInsetsListener { _, insets ->
+            (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
+                resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + insets.systemWindowInsetTop
+            systemUiBottomSize = insets.systemWindowInsetBottom
+            systemUiTopSize = insets.systemWindowInsetTop
+            setupMainListPadding()
+            setupSwipeRefreshOffset()
+            insets
+        }
+        setupSwipeRefreshColor()
         initSearchBar()
         booruViewModel.booru.observe(viewLifecycleOwner, Observer {
             actionTag = if (it == null) {
@@ -92,19 +104,20 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
-    private fun initSwipeRefresh() {
-        val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
-        val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
-        swipeRefresh.apply {
-            setProgressViewOffset(false, start, end)
-            setColorSchemeResources(
-                R.color.blue,
-                R.color.purple,
-                R.color.green,
-                R.color.orange,
-                R.color.red
-            )
-        }
+    private fun setupSwipeRefreshColor() {
+        swipeRefresh.setColorSchemeResources(
+            R.color.blue,
+            R.color.purple,
+            R.color.green,
+            R.color.orange,
+            R.color.red
+        )
+    }
+
+    private fun setupSwipeRefreshOffset() {
+        val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start) + systemUiTopSize
+        val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end) + systemUiTopSize
+        swipeRefresh.setProgressViewOffset(false, start, end)
     }
 
     private fun initSearchBar() {
@@ -119,10 +132,14 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     private fun setupMainListPadding() {
         val activity = activity
+        val paddingTop = systemUiTopSize + resources.getDimensionPixelSize(R.dimen.header_item_height)
         if (activity is MainActivity) {
             val navHeight = activity.getNavigationBarHeight()
-            searchLayout.updatePadding(bottom = navHeight)
-            mainList.updatePadding(bottom = if (autoHideBottomBar) 0 else navHeight)
+            searchLayout.updatePadding(top = paddingTop, bottom = navHeight)
+            mainList.updatePadding(top = paddingTop, bottom = if (autoHideBottomBar) systemUiBottomSize else navHeight)
+        } else {
+            searchLayout.updatePadding(top = paddingTop, bottom = systemUiBottomSize)
+            mainList.updatePadding(top = paddingTop, bottom = systemUiBottomSize)
         }
     }
 

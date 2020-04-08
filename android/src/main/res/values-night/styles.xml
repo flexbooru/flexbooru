@@ -16,6 +16,6 @@
 
 <resources>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark"/>
+    <style name="PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark"/>
 
 </resources>

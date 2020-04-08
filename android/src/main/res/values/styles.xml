@@ -13,12 +13,13 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ns2="http://schemas.android.com/tools">
 
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/is_light_status_bar</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/is_light_navigation_bar</item>
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/colorNavigationBarDivider</item>
         <item name="android:statusBarColor">@color/colorStatusBar</item>
         <item name="android:navigationBarColor">@color/colorNavigationBar</item>
     </style>
@@ -92,10 +93,6 @@
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
-
     <style name="AppTheme.AlertDialog.DayNight" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.Button.TextButton.Dialog</item>
@@ -129,6 +126,21 @@
 
     <style name="PreferenceStyle" parent="Preference.Material">
         <item name="iconSpaceReserved">true</item>
+    </style>
+
+    <style name="PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="Widget.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:elevation" ns2:ignore="NewApi">@dimen/elevation_appbar</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
+        <item name="popupTheme">@style/PopupOverlay</item>
+    </style>
+
+    <style name="Widget.Toolbar.Transparent">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
     <style name="Widget.PopupWindowStyle" parent="@style/Widget.AppCompat.PopupWindow">

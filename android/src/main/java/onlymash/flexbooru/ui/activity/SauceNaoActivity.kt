@@ -15,7 +15,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_sauce_nao.*
-import kotlinx.android.synthetic.main.common_toolbar_list.*
+import kotlinx.android.synthetic.main.common_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +42,7 @@ import onlymash.flexbooru.saucenao.model.Result
 import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
 import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
+import onlymash.flexbooru.widget.hideNavBar
 import org.kodein.di.erased.instance
 import java.io.IOException
 
@@ -73,6 +77,13 @@ class SauceNaoActivity : AppCompatActivity() {
             return
         }
         setContentView(R.layout.activity_sauce_nao)
+        hideNavBar {
+            list.updatePadding(bottom = it.systemWindowInsetBottom)
+            sauce_nao_search_fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                bottomMargin = it.systemWindowInsetBottom +
+                        resources.getDimensionPixelSize(R.dimen.margin_normal)
+            }
+        }
         toolbar.apply {
             setTitle(R.string.title_sauce_nao)
             inflateMenu(R.menu.sauce_nao)

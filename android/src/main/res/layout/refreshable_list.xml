@@ -19,14 +19,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <onlymash.flexbooru.widget.HackyRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="@dimen/list_padding_top"
+        android:paddingTop="@dimen/header_item_height"
         android:paddingStart="@dimen/list_padding_horizontal"
         android:paddingEnd="@dimen/list_padding_horizontal"
         app:fastScrollEnabled="true"

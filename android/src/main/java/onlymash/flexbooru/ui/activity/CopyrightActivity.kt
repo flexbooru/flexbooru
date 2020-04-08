@@ -25,16 +25,21 @@ import android.view.View
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
+import androidx.core.view.updatePadding
 import kotlinx.android.synthetic.main.activity_copyright.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.launchUrl
+import onlymash.flexbooru.widget.hideNavBar
 
 class CopyrightActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_copyright)
+        hideNavBar {
+            scroll_view.updatePadding(bottom = it.systemWindowInsetBottom)
+        }
         toolbar.title = getString(R.string.title_copyright)
         toolbar.setNavigationOnClickListener {
             onBackPressed()

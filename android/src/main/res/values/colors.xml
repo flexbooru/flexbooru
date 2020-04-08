@@ -37,10 +37,12 @@
     <color name="colorDividerItem">@color/grey_300</color>
     <color name="colorButtonText">@color/colorPrimary</color>
     <color name="colorCardBackground">@color/background_card_light</color>
-    <color name="colorStatusBar">#33000000</color>
-    <color name="colorNavigationBar">@color/color_dark_background</color>
+    <color name="colorStatusBar">@color/system_bar_dark</color>
+    <color name="colorNavigationBar">@color/system_bar_dark</color>
     <color name="colorNavigationBarDivider">#DCDCDC</color>
 
+    <color name="system_bar_dark">#33000000</color>
+    <color name="system_bar_light">#ccffffff</color>
     <color name="background_tint_account_action">@color/colorPrimary</color>
 
     <color name="background_card_light">@color/white</color>

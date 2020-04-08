@@ -17,6 +17,7 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +34,7 @@ import onlymash.flexbooru.common.Settings.nightMode
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.trimCache
+import onlymash.flexbooru.widget.ListListener
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -47,6 +49,11 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sp.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listView.setOnApplyWindowInsetsListener(ListListener)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

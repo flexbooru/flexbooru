@@ -8,7 +8,9 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.SauceNaoActivity">
 
-    <include layout="@layout/common_toolbar_list"/>
+    <include layout="@layout/appbar"/>
+
+    <include layout="@layout/common_list"/>
 
     <com.dekoservidoni.omfm.OneMoreFabMenu
             android:id="@+id/sauce_nao_search_fab"
@@ -24,6 +26,6 @@
             app:close_on_click="true"
             app:rotate_main_button="true"
             app:enable_main_as_action="false"
-            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

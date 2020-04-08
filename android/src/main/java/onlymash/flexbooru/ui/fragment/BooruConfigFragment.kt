@@ -3,6 +3,7 @@ package onlymash.flexbooru.ui.fragment
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.EditTextPreference
@@ -22,6 +23,7 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
+import onlymash.flexbooru.widget.ListListener
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -82,6 +84,11 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
     private var hashSalt: String
         get() = sp.getString(CONFIG_HASH_SALT_KEY, "") ?: ""
         set(value) = sp.edit().putString(CONFIG_HASH_SALT_KEY, value).apply()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listView.setOnApplyWindowInsetsListener(ListListener)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val activity = activity as BooruConfigActivity

@@ -7,6 +7,9 @@ import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
 import androidx.appcompat.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.cursoradapter.widget.CursorAdapter
 import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.lifecycle.Observer
@@ -31,6 +34,7 @@ import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
+import onlymash.flexbooru.widget.hideNavBar
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import org.kodein.di.erased.instance
 
@@ -74,6 +78,12 @@ class MuzeiActivity : KodeinActivity() {
     }
 
     private fun initView() {
+        hideNavBar { insets ->
+            muzei_list.updatePadding(bottom = insets.systemWindowInsetBottom)
+            muzei_button.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                bottomMargin = resources.getDimensionPixelSize(R.dimen.margin_normal) + insets.systemWindowInsetBottom
+            }
+        }
         toolbar.apply {
             setTitle(R.string.title_muzei)
             inflateMenu(R.menu.muzei)

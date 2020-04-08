@@ -14,42 +14,36 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:coadntext=".ui.BooruActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/muzei_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:coadntext=".ui.BooruActivity">
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:fastScrollEnabled="true"
+        app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+        app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+        app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+        app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        <include layout="@layout/toolbar"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/muzei_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                app:fastScrollEnabled="true"
-                app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-                app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
-                app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-                app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
-
-    </LinearLayout>
+    <include layout="@layout/appbar"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/muzei_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/margin_normal"
-            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-            app:backgroundTint="@color/muzei"
-            app:srcCompat="@drawable/ic_muzei_24dp"
-            style="@style/Widget.FloatingActionButton"/>
+        android:id="@+id/muzei_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:backgroundTint="@color/muzei"
+        app:srcCompat="@drawable/ic_muzei_24dp"
+        style="@style/Widget.FloatingActionButton"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

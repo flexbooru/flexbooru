@@ -6,6 +6,7 @@ import android.os.Bundle
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.ui.fragment.PostFragment
+import onlymash.flexbooru.widget.setupInsets
 
 class SearchActivity : BaseActivity() {
 
@@ -19,6 +20,9 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        setupInsets {
+
+        }
     }
 
     override fun onBackPressed() {

@@ -47,11 +47,6 @@
             android:theme="@style/AppTheme.Animation">
         </activity>
         <activity
-            android:name=".ui.activity.MuzeiSetupActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
-        <activity
             android:name=".ui.activity.AboutActivity"
             android:theme="@style/AppTheme.Animation">
         </activity>
@@ -135,9 +130,7 @@
             <meta-data
                 android:name="settingsActivity"
                 android:value="onlymash.flexbooru.ui.activity.MuzeiActivity"/>
-            <meta-data
-                android:name="setupActivity"
-                android:value="onlymash.flexbooru.ui.activity.MuzeiSetupActivity"/>
+
         </provider>
         <provider
             android:name="androidx.core.content.FileProvider"

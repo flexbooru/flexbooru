@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <color name="colorStatusBar">@color/color_light_background</color>
+    <color name="colorStatusBar">@color/system_bar_light</color>
 </resources>
