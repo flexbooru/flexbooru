@@ -146,12 +146,11 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     }
 
     private fun setupMainListPadding() {
-        val activity = activity
         val paddingTop = systemUiTopSize + resources.getDimensionPixelSize(R.dimen.header_item_height)
         if (activity is MainActivity) {
-            val navHeight = activity.getNavigationBarHeight()
-            searchLayout.updatePadding(top = paddingTop, bottom = navHeight)
-            mainList.updatePadding(top = paddingTop, bottom = if (autoHideBottomBar) systemUiBottomSize else navHeight)
+            val paddingBottom = systemUiBottomSize + resources.getDimensionPixelSize(R.dimen.nav_bar_height)
+            searchLayout.updatePadding(top = paddingTop, bottom = paddingBottom)
+            mainList.updatePadding(top = paddingTop, bottom = if (autoHideBottomBar) systemUiBottomSize else paddingBottom)
         } else {
             searchLayout.updatePadding(top = paddingTop, bottom = systemUiBottomSize)
             mainList.updatePadding(top = paddingTop, bottom = systemUiBottomSize)

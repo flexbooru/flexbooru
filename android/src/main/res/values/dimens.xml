@@ -53,4 +53,6 @@
     <dimen name="gesture_exclusion_width">30dp</dimen>
     <dimen name="gesture_exclusion_height">190dp</dimen>
     <dimen name="gesture_exclusion_offset">60dp</dimen>
+
+    <dimen name="nav_bar_height">56dp</dimen>
 </resources>

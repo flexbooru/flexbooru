@@ -474,8 +474,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
     }
 
-    fun getNavigationBarHeight() = navigation.height
-
     fun forceShowNavBar() {
         val behavior = (navigation.layoutParams as CoordinatorLayout.LayoutParams).behavior
         if (behavior is HideBottomViewOnScrollBehavior) {
