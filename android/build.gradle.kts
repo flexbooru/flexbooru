@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
+ * Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -95,7 +95,7 @@ android {
     kapt {
         useBuildCache = true
         arguments {
-            arg("room.schemaLocation", "$projectDir/schemas".toString())
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
     packagingOptions {
