@@ -21,8 +21,7 @@ import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.android.synthetic.main.refreshable_list.*
-import kotlinx.android.synthetic.main.search_layout.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.animation.RippleAnimation
@@ -149,7 +148,7 @@ class PostFragment : SearchBarFragment() {
         }
         leftButton = getSearchBarLeftButton()
         tagsFilterList = view.findViewById(R.id.tags_filter_list)
-        viewTransition = ViewTransition(swipe_refresh, search_layout)
+        viewTransition = ViewTransition(swipeRefresh, searchLayout)
         initPostsList()
     }
 
@@ -179,9 +178,9 @@ class PostFragment : SearchBarFragment() {
             postAdapter.setNetworkState(it)
         })
         postViewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+            swipeRefresh.isRefreshing = it == NetworkState.LOADING
         })
-        swipe_refresh.setOnRefreshListener {
+        swipeRefresh.setOnRefreshListener {
             postViewModel.refresh()
         }
     }
@@ -257,7 +256,7 @@ class PostFragment : SearchBarFragment() {
         tagFilterViewModel.loadTags().observe(viewLifecycleOwner, Observer {
             tagFilterAdapter.updateData(it, booruUid = booru.uid, showAll = isShowAllTags)
         })
-        action_search.setOnClickListener {
+        searchLayout.findViewById<FloatingActionButton>(R.id.action_search).setOnClickListener {
             val context = context ?: return@setOnClickListener
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (tagString.isNotEmpty()) {
@@ -384,7 +383,7 @@ class PostFragment : SearchBarFragment() {
         rightButton?.rotate(135f)
         when {
             oldState == SearchBar.STATE_NORMAL && newState == SearchBar.STATE_EXPAND -> {
-                if (!search_layout.isVisible) {
+                if (!searchLayout.isVisible) {
                     rightButton?.let {
                         RippleAnimation.create(it).setDuration(300).start()
                     }
@@ -395,7 +394,7 @@ class PostFragment : SearchBarFragment() {
 
             }
             oldState == SearchBar.STATE_EXPAND && newState == SearchBar.STATE_NORMAL -> {
-                if (!swipe_refresh.isVisible) {
+                if (!swipeRefresh.isVisible) {
                     RippleAnimation.create(leftButton).setDuration(300).start()
                     viewTransition.showView(0)
                 }

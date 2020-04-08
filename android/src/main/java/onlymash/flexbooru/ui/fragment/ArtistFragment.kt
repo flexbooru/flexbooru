@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
@@ -68,10 +67,10 @@ class ArtistFragment : SearchBarFragment() {
         })
         artistViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {
-                swipe_refresh.isRefreshing = false
+                swipeRefresh.isRefreshing = false
             }
         })
-        swipe_refresh.setOnRefreshListener {
+        swipeRefresh.setOnRefreshListener {
             artistViewModel.refresh()
         }
     }

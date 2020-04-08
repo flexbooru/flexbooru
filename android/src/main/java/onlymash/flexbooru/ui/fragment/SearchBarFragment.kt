@@ -8,10 +8,11 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.refreshable_list.*
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.AUTO_HIDE_BOTTOM_BAR_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
@@ -50,6 +51,8 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     private lateinit var searchBarMover: SearchBarMover
     private lateinit var leftDrawable: DrawerArrowDrawable
     internal lateinit var mainList: RecyclerView
+    internal lateinit var searchLayout: CoordinatorLayout
+    internal lateinit var swipeRefresh: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,9 +67,11 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainList = view.findViewById(R.id.list)
+        searchBar = view.findViewById(R.id.search_bar)
+        searchLayout = view.findViewById(R.id.search_layout)
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
         setupMainListPadding()
         initSwipeRefresh()
-        searchBar = view.findViewById(R.id.search_bar)
         initSearchBar()
         booruViewModel.booru.observe(viewLifecycleOwner, Observer {
             actionTag = if (it == null) {
@@ -90,7 +95,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     private fun initSwipeRefresh() {
         val start = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_start)
         val end = resources.getDimensionPixelSize(R.dimen.swipe_refresh_layout_offset_end)
-        swipe_refresh.apply {
+        swipeRefresh.apply {
             setProgressViewOffset(false, start, end)
             setColorSchemeResources(
                 R.color.blue,
@@ -108,14 +113,16 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         searchBar.setHelper(this)
         searchBar.setStateListener(this)
         searchBar.setEditTextHint(getSearchBarHint())
-        searchBarMover = SearchBarMover(this, searchBar, list)
+        searchBarMover = SearchBarMover(this, searchBar, mainList)
         searchBar.setEditTextSelectionModeCallback(this)
     }
 
     private fun setupMainListPadding() {
         val activity = activity
         if (activity is MainActivity) {
-            mainList.updatePadding(bottom = if (autoHideBottomBar) 0 else activity.getNavigationBarHeight())
+            val navHeight = activity.getNavigationBarHeight()
+            searchLayout.updatePadding(bottom = navHeight)
+            mainList.updatePadding(bottom = if (autoHideBottomBar) 0 else navHeight)
         }
     }
 
@@ -149,6 +156,10 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         get() =  searchBar.currentState
 
     fun toExpandState() {
+        val activity = activity
+        if (activity is MainActivity) {
+            activity.forceShowNavBar()
+        }
         searchBar.toExpandState()
     }
 
@@ -228,11 +239,11 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     }
 
     override val validRecyclerView: RecyclerView
-        get() = list
+        get() = mainList
 
     override fun isValidView(recyclerView: RecyclerView): Boolean =
         searchBar.currentState == SearchBar.STATE_NORMAL &&
-                recyclerView == list
+                recyclerView == mainList
 
     override fun forceShowSearchBar(): Boolean {
         return (searchBar.currentState == SearchBar.STATE_SEARCH) ||

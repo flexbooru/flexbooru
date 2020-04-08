@@ -14,45 +14,43 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:id="@+id/search_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:visibility="gone">
-
-    <View android:layout_width="match_parent"
-          android:layout_height="@dimen/header_item_height"/>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/header_item_height"
+    android:visibility="gone">
 
     <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/search_bar_vertical_margin"
-            android:layout_marginBottom="@dimen/search_bar_vertical_margin"
-            android:layout_marginStart="@dimen/search_bar_horizontal_margin"
-            android:layout_marginEnd="@dimen/search_bar_horizontal_margin"
-            android:touchscreenBlocksFocus="false"
-            style="@style/AppTheme.CardView.SearchBar">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/search_bar_vertical_margin"
+        android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
+        android:touchscreenBlocksFocus="false"
+        style="@style/AppTheme.CardView.SearchBar">
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tags_filter_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:fastScrollEnabled="true"
-                app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-                app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
-                app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-                app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_search"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/margin_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_search_24dp"
-                style="@style/Widget.FloatingActionButton"/>
+            android:id="@+id/tags_filter_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/spacing_medium"
+            app:fastScrollEnabled="true"
+            app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+            app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
 
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/action_search"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_search_24dp"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        style="@style/Widget.FloatingActionButton"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

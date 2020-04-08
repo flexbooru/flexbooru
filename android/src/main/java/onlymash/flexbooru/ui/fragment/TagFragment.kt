@@ -67,10 +67,10 @@ class TagFragment : SearchBarFragment() {
         })
         tagViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {
-                swipe_refresh.isRefreshing = false
+                swipeRefresh.isRefreshing = false
             }
         })
-        swipe_refresh.setOnRefreshListener {
+        swipeRefresh.setOnRefreshListener {
             tagViewModel.refresh()
         }
     }

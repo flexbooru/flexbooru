@@ -15,11 +15,8 @@
   -->
 
 <onlymash.flexbooru.widget.TagFilterView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:layout_marginBottom="@dimen/spacing_small"
-        android:layout_marginStart="@dimen/spacing_normal"
-        android:layout_marginEnd="@dimen/spacing_medium"
-        android:minHeight="?android:listPreferredItemHeightSmall"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_small"
+    android:minHeight="?android:listPreferredItemHeightSmall"/>
