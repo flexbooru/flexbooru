@@ -55,6 +55,7 @@
     </style>
 
     <style name="MaterialDrawerStyle" parent="Widget.MaterialDrawerStyle">
+        <item name="materialDrawerBackground">@color/colorCardBackground</item>
         <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
     </style>
 
