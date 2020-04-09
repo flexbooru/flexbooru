@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
         android:layout_margin="@dimen/post_item_margin"
-        style="@style/AppTheme.CardView">
+        style="@style/Widget.CardView">
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

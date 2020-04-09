@@ -15,16 +15,20 @@
   -->
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <fragment
+        android:id="@+id/barcode"
+        android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-    <include layout="@layout/toolbar" />
-    <fragment
-            android:id="@+id/barcode"
-            android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:gvb_auto_focus="true"/>
+        app:gvb_auto_focus="true"
+        tools:ignore="FragmentTagUsage" />
 </LinearLayout>

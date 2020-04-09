@@ -27,7 +27,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.model.common.Booru
@@ -37,7 +36,6 @@ import onlymash.flexbooru.ui.adapter.ArtistAdapter
 import onlymash.flexbooru.ui.viewmodel.ArtistViewModel
 import onlymash.flexbooru.ui.viewmodel.getArtistViewModel
 
-private const val ORDER_DEFAULT = ""
 private const val ORDER_DATE = "date"
 private const val ORDER_UPDATED_AT = "updated_at"
 private const val ORDER_NAME = "name"
@@ -104,7 +102,7 @@ class ArtistFragment : SearchBarFragment() {
                 query = ""
             )
             setSearchBarMenu(when (booru.type) {
-                BOORU_TYPE_GEL -> R.menu.artist_moe
+                BOORU_TYPE_DAN -> R.menu.artist_dan
                 else -> R.menu.artist_moe
             })
         } else {
@@ -140,12 +138,6 @@ class ArtistFragment : SearchBarFragment() {
     override fun onMenuItemClick(menuItem: MenuItem) {
         super.onMenuItemClick(menuItem)
         when (menuItem.itemId) {
-            R.id.action_artist_order_default -> {
-                action?.let{
-                    it.order = ORDER_DEFAULT
-                    updateActionAndRefresh(it)
-                }
-            }
             R.id.action_artist_order_date -> {
                 action?.let{
                     it.order = if (it.booru.type == BOORU_TYPE_DAN) {

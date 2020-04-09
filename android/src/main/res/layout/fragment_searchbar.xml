@@ -42,6 +42,6 @@
         android:touchscreenBlocksFocus="false"
         android:layout_marginVertical="@dimen/search_bar_vertical_margin"
         android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
-        style="@style/AppTheme.CardView.SearchBar"/>
+        style="@style/Widget.CardView"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

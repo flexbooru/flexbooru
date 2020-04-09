@@ -41,7 +41,7 @@
     <color name="colorNavigationBar">@color/system_bar_dark</color>
     <color name="colorNavigationBarDivider">#DCDCDC</color>
 
-    <color name="system_bar_dark">#33000000</color>
+    <color name="system_bar_dark">#55000000</color>
     <color name="system_bar_light">#ccffffff</color>
     <color name="background_tint_account_action">@color/colorPrimary</color>
 

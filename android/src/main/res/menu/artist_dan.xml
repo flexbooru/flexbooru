@@ -21,9 +21,6 @@
             app:showAsAction="ifRoom">
         <menu>
             <item
-                    android:id="@+id/action_artist_order_default"
-                    android:title="@string/artist_order_default"/>
-            <item
                     android:id="@+id/action_artist_order_date"
                     android:title="@string/artist_order_date"/>
             <item

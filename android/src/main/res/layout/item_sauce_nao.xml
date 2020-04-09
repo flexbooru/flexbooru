@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_middle"
         android:foreground="?selectableItemBackground"
-        style="@style/AppTheme.CardView">
+        style="@style/Widget.CardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

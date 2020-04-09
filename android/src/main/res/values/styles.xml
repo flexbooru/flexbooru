@@ -99,17 +99,13 @@
         <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
 
-    <style name="AppTheme.CardView" parent="Widget.MaterialComponents.CardView">
+    <style name="Widget.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
         <item name="cardUseCompatPadding">false</item>
         <item name="cardElevation">@dimen/elevation_size</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="contentPadding">0dp</item>
         <item name="cardBackgroundColor">@color/colorCardBackground</item>
-    </style>
-
-    <style name="AppTheme.CardView.SearchBar" parent="AppTheme.CardView">
-        <item name="cardElevation">@dimen/elevation_size</item>
     </style>
 
     <style name="TransparentBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
@@ -166,7 +162,7 @@
     </style>
 
     <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="elevation">@dimen/elevation_size</item>
+        <item name="elevation">@dimen/elevation_fab</item>
     </style>
 
     <style name="Widget.Account.FloatingActionButton" parent="@style/Widget.FloatingActionButton">
