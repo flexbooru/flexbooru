@@ -37,6 +37,13 @@
             app:navGraph="@navigation/main_navigation"
             tools:ignore="FragmentTagUsage" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_normal"
+            android:background="@drawable/shadow"
+            app:layout_anchor="@id/navigation"
+            app:layout_anchorGravity="top"/>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
@@ -45,7 +52,6 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/background"
             app:menu="@menu/navigation"
-            app:layout_anchorGravity="bottom"
             app:labelVisibilityMode="labeled"
             app:itemHorizontalTranslationEnabled="false" />
 
