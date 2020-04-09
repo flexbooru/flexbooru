@@ -186,8 +186,10 @@ class PostFragment : SearchBarFragment() {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             adapter = postAdapter
         }
-        postViewModel.posts.observe(viewLifecycleOwner, Observer {
-            postAdapter.submitList(it)
+        postViewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
+            postList?.let {
+                postAdapter.submitList(it)
+            }
         })
         postViewModel.networkState.observe(viewLifecycleOwner, Observer {
             postAdapter.setNetworkState(it)

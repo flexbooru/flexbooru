@@ -23,17 +23,21 @@ import onlymash.flexbooru.data.repository.post.PostRepository
 
 class PostViewModel(private val repository: PostRepository) : ScopeViewModel() {
 
-    private val _action: MutableLiveData<ActionPost> = MutableLiveData()
+    private val _action: MutableLiveData<ActionPost?> = MutableLiveData()
 
-    private val _result = Transformations.map(_action) {
-        repository.getPosts(viewModelScope, it)
+    private val _result = Transformations.map(_action) { action ->
+        if (action != null) {
+            repository.getPosts(viewModelScope, action)
+        } else {
+            null
+        }
     }
 
-    val posts = Transformations.switchMap(_result) { it.pagedList }
+    val posts = Transformations.switchMap(_result) { it?.pagedList }
 
-    val networkState = Transformations.switchMap(_result) { it.networkState }
+    val networkState = Transformations.switchMap(_result) { it?.networkState }
 
-    val refreshState = Transformations.switchMap(_result) { it.refreshState }
+    val refreshState = Transformations.switchMap(_result) { it?.refreshState }
 
     fun show(action: ActionPost?): Boolean {
         if (_action.value == action) {
