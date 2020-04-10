@@ -33,6 +33,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -282,7 +283,7 @@ class WhatAnimeActivity : AppCompatActivity() {
 
         private var url: String? = null
 
-        private val playerHolder: PlayerHolder by lazy { PlayerHolder(requireContext()) }
+        private val playerHolder: PlayerHolder by lazy { PlayerHolder() }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -310,8 +311,11 @@ class WhatAnimeActivity : AppCompatActivity() {
 
         override fun onResume() {
             super.onResume()
-            url?.let {
-                playerHolder.start(Uri.parse(it), playerView)
+            context?.apply {
+                playerView.player = playerHolder.create(applicationContext)
+                url?.toUri()?.let { uri ->
+                    playerHolder.start(applicationContext, uri)
+                }
             }
         }
 
@@ -322,11 +326,8 @@ class WhatAnimeActivity : AppCompatActivity() {
 
         override fun onStop() {
             super.onStop()
-            playerHolder.stop()
-        }
-
-        override fun onDestroy() {
-            super.onDestroy()
+            playerView.onPause()
+            playerView.player = null
             playerHolder.release()
         }
     }

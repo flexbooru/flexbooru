@@ -23,7 +23,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.LoopingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
@@ -35,7 +34,7 @@ import java.io.File
 /**
  * [ExoPlayer] holder
  * */
-class PlayerHolder(private val context: Context) {
+class PlayerHolder {
 
     companion object {
         private var cache: SimpleCache? = null
@@ -54,61 +53,62 @@ class PlayerHolder(private val context: Context) {
     }
     private var currentPlayerState: PlayerState? = null
     private val playerStates: MutableList<PlayerState> = mutableListOf()
-    // Create the player instance.
-    private val exoPlayer: ExoPlayer = SimpleExoPlayer.Builder(context)
-        .build().apply {
-            playWhenReady = true
-            repeatMode = Player.REPEAT_MODE_ALL
-        }
+    private var player: SimpleExoPlayer? = null
 
-    private fun createExtractorMediaSource(uri: Uri): MediaSource {
+    private fun createExtractorMediaSource(context: Context, uri: Uri): MediaSource {
         val sourceFactory = DefaultDataSourceFactory(context, getUserAgent())
         val cacheSourceFactory = CacheDataSourceFactory(cache(), sourceFactory)
         return ProgressiveMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
     }
 
     //start play
-    fun start(uri: Uri, playerView: PlayerView) {
-        val mediaSource = createExtractorMediaSource(uri)
+    fun start(context: Context, uri: Uri) {
+        val mediaSource = createExtractorMediaSource(context, uri)
         val loopingSource = LoopingMediaSource(mediaSource)
-        playerView.player = exoPlayer
-        currentPlayerState = null
-        playerStates.forEach {
-            if (it.uri == uri) {
-                currentPlayerState = it
+        val index = playerStates.indexOfFirst { it.uri == uri }
+        currentPlayerState = if (index >= 0) {
+            playerStates[index]
+        } else {
+            PlayerState(uri = uri).also {
+                playerStates.add(it)
             }
         }
-        if (currentPlayerState == null) {
-            currentPlayerState = PlayerState(uri = uri)
-            playerStates.add(currentPlayerState!!)
-        }
-        // Load media.
-        exoPlayer.prepare(loopingSource)
-        // Restore state (after onResume()/onStart())
-        with(currentPlayerState!!) {
-            // Start playback when media has buffered enough
-            exoPlayer.seekTo(window, position)
-        }
-    }
-    // Stop playback and release resources, but re-use the player instance.
-    fun stop() {
-        with(exoPlayer) {
-            if (currentPlayerState != null) {
-                // Save state
-                with(currentPlayerState!!) {
-                    position = currentPosition
-                    window = currentWindowIndex
-                    whenReady = playWhenReady
-                }
+        player?.apply {
+            prepare(loopingSource)
+            playWhenReady = true
+            // Restore state (after onResume()/onStart())
+            currentPlayerState?.apply {
+                // Start playback when media has buffered enough
+                seekTo(window, position)
             }
-            // Stop the player (and release it's resources). The player instance can be reused.
-            stop(true)
         }
     }
 
-    // Destroy the player instance.
-    fun release() {
-        playerStates.clear()
-        exoPlayer.release() // player instance can't be used again.
+    fun pause() {
+        player?.apply {
+            currentPlayerState?.apply {
+                position = currentPosition
+                window = currentWindowIndex
+                whenReady = playWhenReady
+            }
+            playWhenReady = false
+            playbackState
+        }
     }
+
+    fun create(context: Context): SimpleExoPlayer {
+        val player = SimpleExoPlayer.Builder(context).build().apply {
+                playWhenReady = true
+                repeatMode = Player.REPEAT_MODE_ALL
+            }
+        this.player = player
+        return player
+    }
+
+    fun release() {
+        player?.release()
+        player = null
+    }
+
+    fun playerIsNull() = player == null
 }

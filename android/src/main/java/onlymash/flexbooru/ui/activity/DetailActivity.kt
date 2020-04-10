@@ -117,7 +117,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private val booruApis by instance<BooruApis>()
     private val voteRepository: VoteRepository by lazy { VoteRepositoryImpl(booruApis, postDao) }
 
-    private val playerHolder by lazy { PlayerHolder(this) }
+    private val playerHolder by lazy { PlayerHolder() }
 
     private lateinit var booru: Booru
     private lateinit var actionVote: ActionVote
@@ -126,20 +126,23 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
 
+    private var playerView: PlayerView? = null
+
     private val currentPost: Post?
         get() = detailAdapter.getPost(detail_pager.currentItem)
 
-    private var currentPlayerView: PlayerView? = null
-
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
-            currentPlayerView?.onPause()
+            when (state) {
+                ViewPager2.SCROLL_STATE_DRAGGING -> pause()
+                ViewPager2.SCROLL_STATE_IDLE -> resume()
+                ViewPager2.SCROLL_STATE_SETTLING -> { }
+            }
         }
         override fun onPageSelected(position: Int) {
             val post = detailAdapter.getPost(position)
             syncInfo(post)
             if (post == null) return
-            play(post)
             val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
                 putExtra(POST_QUERY, post.query)
                 putExtra(POST_POSITION, position)
@@ -149,32 +152,45 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun syncInfo(post: Post?) {
+        play(post)
         if (post == null) {
-            currentPlayerView = null
             return
         }
         actionVote.postId = post.id
         setVoteItemIcon(post.isFavored)
         toolbar_transparent.title = "Post ${post.id}"
-        play(post)
     }
 
-    private fun play(post: Post) {
+    private fun play(post: Post?) {
+        if (post == null) {
+            return
+        }
         val url = post.origin
-        if (url.isNotEmpty() && !url.isImage()) {
-            playerHolder.stop()
-            currentPlayerView = getPlayerView(post)
-            currentPlayerView?.let { playerView ->
-                playerHolder.start(url.toUri(), playerView)
-            }
+        if (url.isVideo()) {
+            playerView?.isVisible = true
+            playerHolder.start(applicationContext, url.toUri())
         } else {
-            currentPlayerView?.onPause()
-            currentPlayerView = null
+            playerView?.isVisible = false
+            playerView?.onPause()
         }
     }
 
-    private fun getPlayerView(post: Post): PlayerView? {
-        return detail_pager.findViewWithTag(String.format("player_%d", post.id))
+    private fun pause() {
+        playerView?.apply {
+            if (isVisible) {
+                playerHolder.pause()
+                onPause()
+                isVisible = false
+            }
+        }
+    }
+
+    private fun resume() {
+        playerView?.apply {
+            if (!isVisible && currentPost?.origin?.isVideo() == true) {
+                isVisible = true
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,6 +207,9 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         )
         postponeEnterTransition()
         setContentView(R.layout.activity_detail)
+        colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
+        findViewById<View>(android.R.id.content).background = colorDrawable
+        playerView = findViewById(R.id.player_view)
         initInsets()
         initPager()
         initToolbar()
@@ -223,8 +242,8 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         val glide = GlideApp.with(this)
         detailAdapter = DetailAdapter(
             glide = glide,
-            picasso = Picasso.Builder(this).build(),
             dismissListener = this,
+            picasso = Picasso.Builder(this).build(),
             ioExecutor = ioExecutor
         ) {
             if (toolbar_container.isVisible) {
@@ -232,16 +251,20 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
                 toolbar_container.isVisible = false
                 bottom_bar_container.isVisible = false
                 shadow.isVisible = false
+                if (playerView?.isVisible == true) {
+                    playerView?.hideController()
+                }
             } else {
                 window.showBar()
                 toolbar_container.isVisible = true
                 bottom_bar_container.isVisible = true
                 shadow.isVisible = true
+                if (playerView?.isVisible == true) {
+                    playerView?.showController()
+                }
             }
         }
-        colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         detail_pager.apply {
-            background = colorDrawable
             adapter = detailAdapter
             registerOnPageChangeCallback(pageChangeCallback)
         }
@@ -336,6 +359,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
 
     override fun onDismissStart() {
         colorDrawable.alpha = ALPHA_MIN
+        pause()
     }
 
     override fun onDismissProgress(progress: Float) {
@@ -348,6 +372,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
 
     override fun onDismissCancel() {
         colorDrawable.alpha = ALPHA_MAX
+        resume()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -496,13 +521,48 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        playerHolder.stop()
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            initPlayer()
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && playerHolder.playerIsNull()) {
+            initPlayer()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            releasePlayer()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            releasePlayer()
+        }
+    }
+
+    private fun initPlayer() {
+        playerView?.player = playerHolder.create(applicationContext)
+        currentPost?.origin?.let { url ->
+            if (url.isVideo()) {
+                playerHolder.start(applicationContext, url.toUri())
+            }
+        }
+    }
+
+    private fun releasePlayer() {
+        playerView?.apply {
+            onPause()
+            player = null
+        }
         playerHolder.release()
     }
 }

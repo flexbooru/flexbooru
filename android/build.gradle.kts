@@ -178,7 +178,7 @@ dependencies {
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-core:17.3.0")
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
-    implementation("com.google.android.gms:play-services-vision:19.0.0")
+    implementation("com.google.android.gms:play-services-vision:20.0.0")
     implementation("com.android.billingclient:billing:2.2.0")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
