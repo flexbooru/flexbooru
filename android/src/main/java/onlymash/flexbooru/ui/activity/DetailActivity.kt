@@ -553,6 +553,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         playerView?.player = playerHolder.create(applicationContext)
         currentPost?.origin?.let { url ->
             if (url.isVideo()) {
+                playerView?.isVisible = true
                 playerHolder.start(applicationContext, url.toUri())
             }
         }
