@@ -25,16 +25,6 @@ import java.sql.SQLException
 
 object BooruManager {
 
-    interface Listener {
-        fun onAdd(booru: Booru)
-        fun onDelete(booruUid: Long)
-        fun onUpdate(booru: Booru)
-        fun onChanged(boorus: List<Booru>)
-    }
-
-    // booru change callback
-    val listeners: MutableList<Listener> = mutableListOf()
-
     private val booruDao: BooruDao by App.app.instance()
 
     @Throws(SQLException::class)
@@ -43,9 +33,6 @@ object BooruManager {
         val uid = booruDao.insert(booru)
         if (uid >= 0) {
             booru.uid = uid
-            listeners.forEach {
-                it.onAdd(booru)
-            }
         }
         return booru
     }
@@ -54,21 +41,10 @@ object BooruManager {
     fun createBoorus(boorus: List<Booru>) {
         booruDao.insert(boorus)
         val bs = getAllBoorus() ?: mutableListOf()
-        listeners.forEach {
-            it.onChanged(bs)
-        }
     }
 
     @Throws(SQLException::class)
-    fun updateBooru(booru: Booru): Boolean {
-        val result = booruDao.update(booru) == 1
-        if (result) {
-            listeners.forEach {
-                it.onUpdate(booru)
-            }
-        }
-        return result
-    }
+    fun updateBooru(booru: Booru): Boolean = booruDao.update(booru) == 1
 
     @Throws(IOException::class)
     fun getBooru(scheme: String, host: String): Booru? = try {
@@ -89,13 +65,7 @@ object BooruManager {
     }
 
     @Throws(SQLException::class)
-    fun deleteBooru(uid: Long) {
-        if (booruDao.delete(uid) == 1) {
-            listeners.forEach {
-                it.onDelete(uid)
-            }
-        }
-    }
+    fun deleteBooru(uid: Long) = booruDao.delete(uid) == 1
 
     @Throws(SQLException::class)
     fun deleteAll() = booruDao.deleteAll()
