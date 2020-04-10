@@ -15,10 +15,12 @@
 
 package onlymash.flexbooru.ui.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.Drawable
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -36,7 +38,9 @@ import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
+import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
+import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.POST_SIZE_LARGER
 import onlymash.flexbooru.common.Settings.POST_SIZE_SAMPLE
 import onlymash.flexbooru.common.Settings.detailSize
@@ -45,6 +49,7 @@ import onlymash.flexbooru.decoder.CustomDecoder
 import onlymash.flexbooru.decoder.CustomRegionDecoder
 import onlymash.flexbooru.extension.isGifImage
 import onlymash.flexbooru.extension.isStillImage
+import onlymash.flexbooru.extension.isVideo
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
@@ -86,6 +91,7 @@ class DetailAdapter(
         null
     }
 
+    @SuppressLint("InflateParams")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val layout = holder.itemView as FrameLayout
         if (layout.childCount > 0) {
@@ -198,21 +204,16 @@ class DetailAdapter(
                         }
                     })
             }
-            else -> {
-                val photoView = PhotoView(layout.context).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    scaleType = ImageView.ScaleType.FIT_CENTER
-                    setOnViewTapListener { _, _, _ ->
+            url.isVideo() -> {
+                val playerView = LayoutInflater.from(layout.context).inflate(R.layout.item_exoplayer, null) as PlayerView
+                playerView.apply {
+                    tag = String.format("player_%d", position)
+                    transitionName = String.format("post_%d", post.id)
+                    setOnClickListener {
                         clickCallback()
                     }
-                    transitionName = String.format("post_%d", post.id)
                 }
-                layout.addView(photoView)
-                glide.load(post.preview)
-                    .into(photoView)
+                layout.addView(playerView)
             }
         }
     }

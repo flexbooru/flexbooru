@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.LoopingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
@@ -62,7 +63,8 @@ class PlayerHolder {
     }
 
     //start play
-    fun start(context: Context, uri: Uri) {
+    fun start(context: Context, uri: Uri, playerView: PlayerView) {
+        playerView.player = player
         val mediaSource = createExtractorMediaSource(context, uri)
         val loopingSource = LoopingMediaSource(mediaSource)
         val index = playerStates.indexOfFirst { it.uri == uri }

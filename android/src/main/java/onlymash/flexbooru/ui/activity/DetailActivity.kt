@@ -126,18 +126,17 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
 
-    private var playerView: PlayerView? = null
-
     private val currentPost: Post?
         get() = detailAdapter.getPost(detail_pager.currentItem)
 
+    private var oldPlayerView: PlayerView? = null
+
+    private val playerView: PlayerView?
+        get() = detail_pager.findViewWithTag(String.format("player_%d", detail_pager.currentItem))
+
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
-            when (state) {
-                ViewPager2.SCROLL_STATE_DRAGGING -> pause()
-                ViewPager2.SCROLL_STATE_IDLE -> resume()
-                ViewPager2.SCROLL_STATE_SETTLING -> { }
-            }
+            playerHolder.pause()
         }
         override fun onPageSelected(position: Int) {
             val post = detailAdapter.getPost(position)
@@ -165,31 +164,12 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         if (post == null) {
             return
         }
+        val playerView = playerView ?: return
+        oldPlayerView?.player = null
+        oldPlayerView = playerView
         val url = post.origin
         if (url.isVideo()) {
-            playerView?.isVisible = true
-            playerHolder.start(applicationContext, url.toUri())
-        } else {
-            playerView?.isVisible = false
-            playerView?.onPause()
-        }
-    }
-
-    private fun pause() {
-        playerView?.apply {
-            if (isVisible) {
-                playerHolder.pause()
-                onPause()
-                isVisible = false
-            }
-        }
-    }
-
-    private fun resume() {
-        playerView?.apply {
-            if (!isVisible && currentPost?.origin?.isVideo() == true) {
-                isVisible = true
-            }
+            playerHolder.start(applicationContext, url.toUri(), playerView)
         }
     }
 
@@ -209,7 +189,6 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         setContentView(R.layout.activity_detail)
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         findViewById<View>(android.R.id.content).background = colorDrawable
-        playerView = findViewById(R.id.player_view)
         initInsets()
         initPager()
         initToolbar()
@@ -251,17 +230,11 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
                 toolbar_container.isVisible = false
                 bottom_bar_container.isVisible = false
                 shadow.isVisible = false
-                if (playerView?.isVisible == true) {
-                    playerView?.hideController()
-                }
             } else {
                 window.showBar()
                 toolbar_container.isVisible = true
                 bottom_bar_container.isVisible = true
                 shadow.isVisible = true
-                if (playerView?.isVisible == true) {
-                    playerView?.showController()
-                }
             }
         }
         detail_pager.apply {
@@ -359,7 +332,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
 
     override fun onDismissStart() {
         colorDrawable.alpha = ALPHA_MIN
-        pause()
+        playerHolder.pause()
     }
 
     override fun onDismissProgress(progress: Float) {
@@ -367,12 +340,12 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     override fun onDismissed() {
+        playerHolder.pause()
         finishAfterTransition()
     }
 
     override fun onDismissCancel() {
         colorDrawable.alpha = ALPHA_MAX
-        resume()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -550,11 +523,11 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun initPlayer() {
-        playerView?.player = playerHolder.create(applicationContext)
+        playerHolder.create(applicationContext)
         currentPost?.origin?.let { url ->
             if (url.isVideo()) {
-                playerView?.isVisible = true
-                playerHolder.start(applicationContext, url.toUri())
+                val playerView = playerView ?: return@let
+                playerHolder.start(applicationContext, url.toUri(), playerView)
             }
         }
     }

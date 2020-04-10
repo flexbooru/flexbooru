@@ -312,9 +312,9 @@ class WhatAnimeActivity : AppCompatActivity() {
         override fun onResume() {
             super.onResume()
             context?.apply {
-                playerView.player = playerHolder.create(applicationContext)
+                playerHolder.create(applicationContext)
                 url?.toUri()?.let { uri ->
-                    playerHolder.start(applicationContext, uri)
+                    playerHolder.start(applicationContext, uri, playerView)
                 }
             }
         }
