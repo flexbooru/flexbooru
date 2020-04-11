@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.pageLimit
 import onlymash.flexbooru.common.Values.Tags
@@ -244,6 +243,13 @@ class TagFragment : SearchBarFragment() {
                     updateActionAndRefresh(it)
                 }
             }
+        }
+    }
+
+    override fun toListTop() {
+        if (tagAdapter.itemCount > 0) {
+            mainList.scrollToPosition(0)
+            toNormalState()
         }
     }
 }

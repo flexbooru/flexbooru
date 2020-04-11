@@ -162,4 +162,11 @@ class ArtistFragment : SearchBarFragment() {
             }
         }
     }
+
+    override fun toListTop() {
+        if (artistAdapter.itemCount > 0) {
+            mainList.scrollToPosition(0)
+            toNormalState()
+        }
+    }
 }

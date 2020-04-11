@@ -157,4 +157,11 @@ class PoolFragment : SearchBarFragment() {
             .create()
             .show()
     }
+
+    override fun toListTop() {
+        if (poolAdapter.itemCount > 0) {
+            mainList.scrollToPosition(0)
+            toNormalState()
+        }
+    }
 }

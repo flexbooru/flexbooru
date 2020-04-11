@@ -283,6 +283,8 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     open fun onBackPressed(): Boolean = true
 
+    abstract fun toListTop()
+
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         menu?.add(
             MUZEI_MENU_GROUP_ID,
