@@ -13,7 +13,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply(plugin = "com.github.ben-manes.versions")
+plugins {
+    id("com.github.ben-manes.versions") version "0.28.0"
+}
 
 buildscript {
     extra.apply {
@@ -41,7 +43,6 @@ buildscript {
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(kotlin("serialization", kotlinVersion))
         classpath("com.android.tools.build:gradle:4.0.0-beta04")
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.28.0")
         classpath("com.google.gms:google-services:4.3.3")
         classpath("io.fabric.tools:gradle:1.31.2")
     }
