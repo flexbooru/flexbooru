@@ -18,6 +18,8 @@ package onlymash.flexbooru.widget.searchbar
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Drawable
+import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -41,6 +43,8 @@ class SearchBar @JvmOverloads constructor(
     SearchEditText.SearchEditTextListener {
 
     companion object {
+        private const val STATE_KEY_SUPER = "super"
+        private const val STATE_KEY_STATE = "state"
         const val STATE_NORMAL = 0
         const val STATE_SEARCH = 1
         const val STATE_EXPAND = 2
@@ -274,6 +278,19 @@ class SearchBar @JvmOverloads constructor(
     private fun showSuggestion() {
         if (!listContainer.isVisible) {
             ViewAnimation.expand(listContainer)
+        }
+    }
+
+    override fun onSaveInstanceState(): Parcelable? =
+        Bundle().apply {
+            putParcelable(STATE_KEY_SUPER, super.onSaveInstanceState())
+            putInt(STATE_KEY_STATE, state)
+        }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is Bundle) {
+            super.onRestoreInstanceState(state.getParcelable(STATE_KEY_SUPER))
+            updateState(state.getInt(STATE_KEY_STATE, STATE_NORMAL), animation = false)
         }
     }
 

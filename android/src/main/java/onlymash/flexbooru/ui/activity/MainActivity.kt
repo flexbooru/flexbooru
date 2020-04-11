@@ -331,6 +331,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
         navController.graph = navController.navInflater.inflate(navRes)
         bottomNavigationView.selectedItemId = navController.graph.startDestination
+        forceShowNavBar()
     }
 
     private fun createImageHolder(@DrawableRes resId: Int): ImageHolder =

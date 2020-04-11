@@ -225,6 +225,9 @@ class PostFragment : SearchBarFragment() {
             } else {
                 setSearchBarMenu(R.menu.post)
                 rightButton = view?.findViewById(R.id.action_expand_or_clear)
+                if (currentState != SearchBar.STATE_NORMAL) {
+                    rightButton?.rotation = 135f
+                }
             }
             if (tagsFilterList.adapter == null) {
                 initFilterList(booru)
@@ -401,8 +404,10 @@ class PostFragment : SearchBarFragment() {
         when {
             oldState == SearchBar.STATE_NORMAL && newState == SearchBar.STATE_EXPAND -> {
                 if (!searchLayout.isVisible) {
-                    rightButton?.let {
-                        RippleAnimation.create(it).setDuration(300).start()
+                    if (animation) {
+                        rightButton?.let {
+                            RippleAnimation.create(it).setDuration(300).start()
+                        }
                     }
                     viewTransition.showView(1)
                 }
@@ -412,7 +417,9 @@ class PostFragment : SearchBarFragment() {
             }
             oldState == SearchBar.STATE_EXPAND && newState == SearchBar.STATE_NORMAL -> {
                 if (!swipeRefresh.isVisible) {
-                    RippleAnimation.create(leftButton).setDuration(300).start()
+                    if (animation) {
+                        RippleAnimation.create(leftButton).setDuration(300).start()
+                    }
                     viewTransition.showView(0)
                 }
             }
@@ -569,6 +576,7 @@ class PostFragment : SearchBarFragment() {
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
         val activity = activity ?: return
