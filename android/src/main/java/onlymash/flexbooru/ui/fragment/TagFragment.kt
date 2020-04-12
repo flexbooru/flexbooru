@@ -245,11 +245,4 @@ class TagFragment : SearchBarFragment() {
             }
         }
     }
-
-    override fun toListTop() {
-        if (tagAdapter.itemCount > 0) {
-            mainList.scrollToPosition(0)
-            toNormalState()
-        }
-    }
 }

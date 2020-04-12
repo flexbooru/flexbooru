@@ -595,11 +595,4 @@ class PostFragment : SearchBarFragment() {
         super.onStop()
         activity?.unregisterReceiver(broadcastReceiver)
     }
-
-    override fun toListTop() {
-        if (postAdapter.itemCount > 0) {
-            mainList.scrollToPosition(0)
-            toNormalState()
-        }
-    }
 }

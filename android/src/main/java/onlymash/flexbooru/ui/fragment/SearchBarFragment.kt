@@ -196,6 +196,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     fun toNormalState() {
         searchBar.toNormalState()
+        searchBarMover.showSearchBar(true)
     }
 
     fun clearSearchBarText() {
@@ -283,7 +284,13 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     open fun onBackPressed(): Boolean = true
 
-    abstract fun toListTop()
+    fun toListTop() {
+        val itemCount = mainList.adapter?.itemCount
+        if (itemCount != null && itemCount > 0) {
+            mainList.scrollToPosition(0)
+        }
+        toNormalState()
+    }
 
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         menu?.add(
