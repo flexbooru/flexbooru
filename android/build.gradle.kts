@@ -116,7 +116,12 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
     testOptions {
-        unitTests.isIncludeAndroidResources = true
+        unitTests.apply {
+            isIncludeAndroidResources = true
+            all(KotlinClosure1<Any, Test>({
+                (this as Test).also { maxHeapSize = "1G" }
+            }, unitTests))
+        }
     }
 }
 
