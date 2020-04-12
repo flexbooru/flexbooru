@@ -40,7 +40,6 @@ object BooruManager {
     @Throws(SQLException::class)
     fun createBoorus(boorus: List<Booru>) {
         booruDao.insert(boorus)
-        val bs = getAllBoorus() ?: mutableListOf()
     }
 
     @Throws(SQLException::class)

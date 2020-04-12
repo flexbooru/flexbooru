@@ -126,7 +126,7 @@ class SauceNaoActivity : AppCompatActivity() {
         sauceNaoViewModel = getSauceNaoViewModel(api)
         sauceNaoViewModel.data.observe(this, Observer {
             response = it
-            toolbar.subtitle = getString(R.string.sauce_nao_remaining_times_today, it.header.longRemaining)
+            toolbar.subtitle = String.format(getString(R.string.sauce_nao_remaining_times_today), it.header.longRemaining)
             sauceNaoAdapter.notifyDataSetChanged()
         })
         sauceNaoViewModel.isLoading.observe(this, Observer {
