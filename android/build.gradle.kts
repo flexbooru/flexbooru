@@ -25,8 +25,13 @@ plugins {
     id("io.fabric")
 }
 
+val releaseStoreFile = file("../.gradle/flexbooru_play.jks")
+val storePropertyFile = file("../.gradle/keystore.properties")
+
 val properties = Properties()
-properties.load(project.rootProject.file(".gradle/keystore.properties").inputStream())
+if (storePropertyFile.exists()) {
+    properties.load(storePropertyFile.inputStream())
+}
 val byteOut = org.apache.commons.io.output.ByteArrayOutputStream()
 project.exec {
     commandLine = "git rev-list HEAD --first-parent --count".split(" ")
@@ -36,11 +41,13 @@ val verCode = String(byteOut.toByteArray()).trim().toInt()
 
 android {
     signingConfigs {
-        create("release") {
-            storeFile = file("../.gradle/flexbooru_play.jks")
-            keyAlias = properties.getProperty("KEY_ALIAS")
-            keyPassword = properties.getProperty("KEY_PASS")
-            storePassword = properties.getProperty("STORE_PASS")
+        if (storePropertyFile.exists() && releaseStoreFile.exists()) {
+            create("release") {
+                storeFile = releaseStoreFile
+                keyAlias = properties.getProperty("KEY_ALIAS")
+                keyPassword = properties.getProperty("KEY_PASS")
+                storePassword = properties.getProperty("STORE_PASS")
+            }
         }
     }
     compileSdkVersion(29)
@@ -72,7 +79,14 @@ android {
             getByName("release") {
                 isShrinkResources = true
                 isMinifyEnabled = true
-                signingConfig = signingConfigs.getByName("release")
+                val config = try {
+                    signingConfigs.getByName("release")
+                } catch (_: UnknownDomainObjectException) {
+                    null
+                }
+                if (config != null) {
+                    signingConfig = config
+                }
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
             getByName("debug") {
