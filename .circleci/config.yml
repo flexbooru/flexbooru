@@ -1,0 +1,27 @@
+version: 2.1
+
+orbs:
+ android: circleci/android@0.2.0
+
+jobs:
+  build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx2048m
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}
+      - run:
+          name: Run Build and Tests
+          command: ./gradlew assembleDebug check
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/.android/build-cache
+          key: jars-{{ checksum "build.gradle" }}
+      - store_artifacts:
+          path: android/build/outputs/apk
+          destination: apk
