@@ -88,13 +88,15 @@ class PlayerHolder {
 
     fun pause() {
         player?.apply {
-            currentPlayerState?.apply {
-                position = currentPosition
-                window = currentWindowIndex
-                whenReady = playWhenReady
+            if (playWhenReady) {
+                currentPlayerState?.apply {
+                    position = currentPosition
+                    window = currentWindowIndex
+                    whenReady = playWhenReady
+                }
+                playWhenReady = false
+                playbackState
             }
-            playWhenReady = false
-            playbackState
         }
     }
 

@@ -136,7 +136,9 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
 
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
-            playerHolder.pause()
+            if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                playerHolder.pause()
+            }
         }
         override fun onPageSelected(position: Int) {
             val post = detailAdapter.getPost(position)
