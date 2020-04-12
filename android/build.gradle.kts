@@ -216,7 +216,6 @@ dependencies {
     implementation("com.tickaroo.tikxml:retrofit-converter:$tikxmlVersion")
     kapt("com.tickaroo.tikxml:processor:$tikxmlVersion")
     testImplementation("junit:junit:4.13")
-    testImplementation("org.mockito:mockito-core:3.3.3")
     testImplementation("org.robolectric:robolectric:4.3.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
     androidTestImplementation("androidx.test:core:1.3.0-alpha05")

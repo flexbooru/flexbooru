@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+ android: circleci/android@0.2.0
+
+jobs:
+  build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29-node
+    environment:
+      GRADLE_OPTS: -Dorg.gradle.workers.max=1 -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy="in-process" -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "android/build.gradle.kts" }}
+      - run:
+          name: Run Lint
+          command: ./gradlew lint
+      - store_artifacts:
+          path: android/build/reports
+          destination: reports
+      - run:
+          name: Run Debug Build
+          command: ./gradlew assembleDebug
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/.android/build-cache
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "android/build.gradle.kts" }}
+      - store_artifacts:
+          path: android/build/outputs/apk
+          destination: apk
