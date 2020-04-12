@@ -99,6 +99,8 @@ private const val PERIOD_WEEK = "1w"
 private const val PERIOD_MONTH = "1m"
 private const val PERIOD_YEAR = "1y"
 
+private const val ROTATION_DEGREE = 135f
+
 class PostFragment : SearchBarFragment() {
 
     private val db by instance<MyDatabase>()
@@ -226,7 +228,7 @@ class PostFragment : SearchBarFragment() {
                 setSearchBarMenu(R.menu.post)
                 rightButton = view?.findViewById(R.id.action_expand_or_clear)
                 if (currentState != SearchBar.STATE_NORMAL) {
-                    rightButton?.rotation = 135f
+                    rightButton?.rotation = ROTATION_DEGREE
                 }
             }
             if (tagsFilterList.adapter == null) {
@@ -400,7 +402,7 @@ class PostFragment : SearchBarFragment() {
 
     override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
         super.onStateChange(newState, oldState, animation)
-        rightButton?.rotate(135f)
+        rightButton?.rotate(ROTATION_DEGREE)
         when {
             oldState == SearchBar.STATE_NORMAL && newState == SearchBar.STATE_EXPAND -> {
                 if (!searchLayout.isVisible) {

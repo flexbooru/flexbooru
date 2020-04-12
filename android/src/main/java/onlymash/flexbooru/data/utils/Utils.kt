@@ -46,3 +46,11 @@ fun String.formatDateGel(): CharSequence? =
 fun String.formatDateShimmie(): CharSequence? =
     SimpleDateFormat(DATE_PATTERN_SHIMMIE, Locale.ENGLISH)
         .parse(this)?.time?.formatDate()
+
+fun List<String>.toQuery(): String {
+    var query = ""
+    forEach {
+        query = "$query $it"
+    }
+    return query.trim()
+}

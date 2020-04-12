@@ -98,7 +98,8 @@ android {
         jvmTarget = "1.8"
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-Xopt-in=kotlinx.serialization.UnstableDefault",
-            "-Xopt-in=kotlinx.serialization.ImplicitReflectionSerializer"
+            "-Xopt-in=kotlinx.serialization.ImplicitReflectionSerializer",
+            "-Xopt-in=kotlin.ExperimentalStdlibApi"
         )
     }
     compileOptions {

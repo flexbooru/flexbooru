@@ -32,6 +32,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import com.google.android.material.card.MaterialCardView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.data.utils.toQuery
 import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.util.ViewTransition
@@ -93,8 +94,7 @@ class SearchBar @JvmOverloads constructor(
         listView.apply {
             adapter = suggestionAdapter
             onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                updateState(STATE_NORMAL)
-                helper?.onApplySearch(suggestions[position])
+                addTagToQuery(suggestions[position])
             }
         }
         editText.apply {
@@ -109,6 +109,11 @@ class SearchBar @JvmOverloads constructor(
     }
 
     fun setEditText(text: CharSequence) {
+        editText.setText(text)
+        editText.setSelection(text.length)
+    }
+
+    fun setEditText(text: String) {
         editText.setText(text)
         editText.setSelection(text.length)
     }
@@ -132,6 +137,26 @@ class SearchBar @JvmOverloads constructor(
         get() = state
 
     fun getQueryText(): String = (editText.text ?: "").toString().trim()
+
+    private fun addTagToQuery(tag: String) {
+        val queryList = (editText.text ?: "").toString()
+            .replace(" +".toRegex(), " ").split(" ").toMutableList()
+        if (tag in queryList) {
+            return
+        }
+        if (queryList.isEmpty()) {
+            setEditText("$tag ")
+        } else {
+            queryList.removeLast()
+            queryList.add(tag)
+            setEditText(queryList.toQuery() + " ")
+        }
+    }
+
+    private fun getLastTag(query: String): String {
+        val queryList = query.replace(" +".toRegex(), " ").split(" ")
+        return if (queryList.isEmpty()) "" else queryList[queryList.lastIndex]
+    }
 
     fun getSelectedText(): String {
         val text = editText.text ?: return ""
@@ -169,18 +194,26 @@ class SearchBar @JvmOverloads constructor(
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         if (state != STATE_SEARCH) return
-        val text = (s?: "").trim()
         when {
-            text.isEmpty() -> {
+            s.isNullOrEmpty() -> {
                 if (suggestions.isNotEmpty()) {
-                    suggestions.clear()
-                    suggestionAdapter.notifyDataSetChanged()
+                    clearSuggestions()
                 }
             }
-            !text.contains(" ") -> {
-                helper?.onFetchSuggestion(text.toString())
+            else -> {
+                clearSuggestions()
+                val tag = getLastTag(s.toString())
+                if (tag.isNotBlank()) {
+                    helper?.onFetchSuggestion(tag)
+                }
             }
         }
+    }
+
+    private fun clearSuggestions() {
+        suggestions.clear()
+        suggestionAdapter.notifyDataSetChanged()
+        hideSuggestion(false)
     }
 
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
@@ -269,9 +302,13 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
-    private fun hideSuggestion() {
+    private fun hideSuggestion(animation: Boolean = true) {
         if (listContainer.isVisible) {
-            ViewAnimation.collapse(listContainer)
+            if (animation) {
+                ViewAnimation.collapse(listContainer)
+            } else {
+                listContainer.isVisible = false
+            }
         }
     }
 
