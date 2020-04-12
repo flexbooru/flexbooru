@@ -259,7 +259,7 @@
     <string name="sauce_nao_help">Hilfe</string>
     <string name="sauce_nao_change_api_key">Api Schlüssel ändern</string>
     <string name="sauce_nao_get_api_key">Api Schlüssel holen</string>
-    <string name="sauce_nao_remaining_times_today">Verbleibende Male heute: %1$d</string>
+    <string name="sauce_nao_remaining_times_today">Verbleibende Male heute: %01$d</string>
     <string name="sauce_nao_api_key_unset">SacueNao´s API Schlüssel ist nicht gesetzt.</string>
     <string name="sauce_nao_image_url">Bild URL</string>
     <string name="sauce_nao_invalid_image_url">Ungültige Bild URL</string>
