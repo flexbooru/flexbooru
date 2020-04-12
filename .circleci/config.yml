@@ -13,15 +13,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle.kts" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "android/build.gradle.kts" }}
       - run:
-          name: Run Build and Tests
-          command: ./gradlew assembleDebug check
+          name: Run Debug Build
+          command: ./gradlew assembleDebug
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.android/build-cache
-          key: jars-{{ checksum "build.gradle.kts" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "android/build.gradle.kts" }}
       - store_artifacts:
           path: android/build/outputs/apk
           destination: apk
