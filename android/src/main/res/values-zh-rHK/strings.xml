@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">一個支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 的 Android 用戶端。</string>
+    <string name="app_description">一個支援 Danbooru, Moebooru, Gelbooru, Sankaku 等 Booru 的 Android 用戶端。</string>
     <string name="title_posts">帖子</string>
     <string name="title_search">搜尋</string>
     <string name="title_popular">熱門</string>
@@ -173,7 +173,7 @@
     <string name="settings_grid_width_large">大</string>
     <string name="settings_show_info_bar">顯示資訊列</string>
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
-    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
+    <string name="settings_auto_hide_bottom_bar">自動隱藏底欄</string>
     <string name="settings_clear_cache">清除緩存</string>
     <string name="settings_clear_cache_summery">清除所有緩存檔案。</string>
     <string name="settings_clear_cache_dialog_content">緩存檔案將會被清除。</string>
