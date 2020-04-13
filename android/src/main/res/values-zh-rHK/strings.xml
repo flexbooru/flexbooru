@@ -34,9 +34,9 @@
     <string name="title_tag_blacklist">標籤黑名單</string>
     <string name="title_sauce_nao">SauceNAO</string>
     <string name="title_what_anime">What Anime</string>
-    <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="title_history">記錄</string>
+    <string name="history_clear_all">清除全部</string>
+    <string name="history_clear_all_content">所有記錄將會被清除。</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">評價這個應用程式</string>
     <string name="about_app_translation">翻譯</string>
@@ -100,7 +100,7 @@
     <string name="booru_config_info">Booru 資訊</string>
     <string name="booru_config_scheme">協定</string>
     <string name="booru_config_host">主機</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">路徑</string>
     <string name="booru_config_type">類型</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">名稱不能為空白。</string>
@@ -233,7 +233,7 @@
     <string name="muzei_copy">複製</string>
     <string name="muzei_delete">刪除</string>
     <string name="muzei_search">搜尋</string>
-    <string name="muzei_search_hint">Add tag…</string>
+    <string name="muzei_search_hint">新增標籤...</string>
     <string name="muzei_fetch">取得 Artwork</string>
     <string name="muzei_input_cant_be_empty">輸入不能為空白。</string>
     <string name="muzei_action_view_post">在 Flexbooru 上查看帖子</string>
@@ -268,5 +268,5 @@
     <string name="sauce_nao_source">來源</string>
     <string name="sauce_nao_search_from_url">連結</string>
     <string name="sauce_nao_search_from_file">檔案</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="action_add_to_muzei">釘選到 Muzei</string>
 </resources>
