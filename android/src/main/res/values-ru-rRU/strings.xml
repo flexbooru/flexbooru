@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2019. by onlymash <im@fiepi.me>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -35,6 +35,9 @@
     <string name="title_tag_blacklist">Чёрный список тегов</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">What Anime</string>
+    <string name="title_history">History</string>
+    <string name="history_clear_all">Clear all</string>
+    <string name="history_clear_all_content">All history will be cleared.</string>
     <string name="about_app_version">Версия</string>
     <string name="about_app_rate">Оцените приложение</string>
     <string name="about_app_translation">Перевод</string>
