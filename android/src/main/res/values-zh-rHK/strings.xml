@@ -102,13 +102,13 @@
     <string name="booru_config_host">主機</string>
     <string name="booru_config_path">路徑</string>
     <string name="booru_config_type">類型</string>
-    <string name="booru_config_hash_salt">Hash salt</string>
+    <string name="booru_config_hash_salt">Hash Salt</string>
     <string name="booru_config_name_cant_empty">名稱不能為空白。</string>
     <string name="booru_config_host_cant_empty">主機不能為空白。</string>
     <string name="booru_config_host_invalid">無效的主機。</string>
-    <string name="booru_config_hash_salt_cant_empty">Hash salt 不能為空白。</string>
+    <string name="booru_config_hash_salt_cant_empty">Hash Salt 不能為空白。</string>
     <string name="booru_config_dialog_title_delete">您確定要移除這個 Booru 嗎？</string>
-    <string name="booru_config_hash_salt_must_contain_yp">Hash salt 必須包含文本: your-password</string>
+    <string name="booru_config_hash_salt_must_contain_yp">Hash Salt 必須包含文本: your-password</string>
     <string name="scaner_scan_qr_code">掃描 QR Code</string>
     <string name="scaner_add_booru_permission_required">掃描 QR Code 需要相機權限。</string>
     <string name="browse_toolbar_title">帖子</string>
