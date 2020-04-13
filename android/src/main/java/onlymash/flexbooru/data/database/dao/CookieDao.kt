@@ -26,9 +26,9 @@ interface CookieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(cookie: Cookie): Long
 
-    @Query("SELECT * FROM cookies WHERE booru_uid = :booruUid")
+    @Query("SELECT * FROM `cookies` WHERE `booru_uid` = :booruUid")
     fun getCookieByBooruUid(booruUid: Long): Cookie?
 
-    @Query("DELETE FROM cookies WHERE booru_uid = :booruUid")
+    @Query("DELETE FROM `cookies` WHERE `booru_uid` = :booruUid")
     fun deleteByBooruUid(booruUid: Long)
 }

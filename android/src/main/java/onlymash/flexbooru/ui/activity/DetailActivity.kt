@@ -65,8 +65,10 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
+import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.favorite.VoteRepository
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
@@ -366,10 +368,12 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             R.id.action_browse_recommended -> {
                 val id = currentPost?.id ?: return true
                 if (id > 0) {
-                    SearchActivity.startSearch(
-                        this,
-                        "recommended_for_post:$id"
+                    val query = "recommended_for_post:$id"
+                    HistoryManager.createHistory(History(
+                        booruUid = booru.uid,
+                        query = query)
                     )
+                    SearchActivity.startSearch(this, query)
                 }
             }
             R.id.action_browse_open_browser -> {

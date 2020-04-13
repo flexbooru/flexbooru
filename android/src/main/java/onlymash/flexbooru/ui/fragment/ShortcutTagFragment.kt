@@ -36,12 +36,10 @@ import onlymash.flexbooru.common.Values.Tags
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.database.BooruManager
+import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.database.dao.PostDao
-import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.Post
-import onlymash.flexbooru.data.model.common.TagBase
-import onlymash.flexbooru.data.model.common.TagFilter
+import onlymash.flexbooru.data.model.common.*
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewmodel.ShortcutViewModel
@@ -151,9 +149,12 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
             TooltipCompat.setTooltipText(tagExclude, tagExclude.contentDescription)
             TooltipCompat.setTooltipText(tagInclude, tagInclude.contentDescription)
             itemView.setOnClickListener {
-                tag?.let {
-                    SearchActivity.startSearch(itemView.context, it.name)
-                }
+                val query = tag?.name ?: return@setOnClickListener
+                HistoryManager.createHistory(History(
+                    booruUid = booru.uid,
+                    query = query
+                ))
+                SearchActivity.startSearch(itemView.context, query)
             }
             itemView.setOnLongClickListener {
                 itemView.context.copyText(tagName.text)

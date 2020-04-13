@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import onlymash.flexbooru.R
 import onlymash.flexbooru.ui.fragment.BooruConfigFragment
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 
 class BooruConfigActivity : AppCompatActivity() {
 
@@ -33,7 +33,7 @@ class BooruConfigActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru_config)
-        hideNavBar {
+        drawNavBar {
 
         }
         toolbar = findViewById(R.id.toolbar)

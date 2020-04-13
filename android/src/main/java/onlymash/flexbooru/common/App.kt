@@ -30,7 +30,13 @@ import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.isGoogleSign
+import onlymash.flexbooru.common.Settings.isOrderSuccess
+import onlymash.flexbooru.common.Settings.nightMode
+import onlymash.flexbooru.common.Settings.orderDeviceId
+import onlymash.flexbooru.common.Settings.orderId
 import onlymash.flexbooru.crash.CrashHandler
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.api.OrderApi
@@ -44,6 +50,7 @@ import org.kodein.di.erased.*
 import java.util.concurrent.Executors
 
 class App : Application(), KodeinAware {
+
     companion object {
         lateinit var app: App
     }
@@ -57,6 +64,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { instance<MyDatabase>().tagFilterDao() }
         bind() from singleton { instance<MyDatabase>().muzeiDao() }
         bind() from singleton { instance<MyDatabase>().postDao() }
+        bind() from singleton { instance<MyDatabase>().historyDao() }
         bind() from singleton { BooruApis() }
         bind() from singleton { Executors.newSingleThreadExecutor() }
     }
@@ -81,21 +89,28 @@ class App : Application(), KodeinAware {
     }
 
     private fun initial() {
-        CrashHandler.getInstance().init(this)
-        AppCompatDelegate.setDefaultNightMode(Settings.nightMode)
+        AppCompatDelegate.setDefaultNightMode(nightMode)
         DrawerImageLoader.init(drawerImageLoader)
-        val isGoogleSign = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
-        Settings.isGoogleSign = isGoogleSign
-        if (isGoogleSign) {
+        if (BuildConfig.DEBUG) {
+            return
+        }
+        CrashHandler.getInstance().init(this)
+        checkOrder()
+    }
+
+    private fun checkOrder() {
+        val isPlayVersion = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
+        isGoogleSign = isPlayVersion
+        if (isPlayVersion) {
             checkOrderFromCache()
         } else {
-            val orderId = Settings.orderId
-            if (orderId.isNotEmpty()) {
+            val id = orderId
+            if (id.isNotEmpty()) {
                 GlobalScope.launch {
-                    OrderApi.orderChecker(orderId, Settings.orderDeviceId)
+                    OrderApi.orderChecker(id, orderDeviceId)
                 }
             } else {
-                Settings.isOrderSuccess = false
+                isOrderSuccess = false
             }
         }
     }
@@ -104,15 +119,14 @@ class App : Application(), KodeinAware {
         val billingClient = BillingClient
             .newBuilder(this)
             .enablePendingPurchases()
-            .setListener { _, _ ->
-
-            }
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult?) {
                 if (billingClient.isReady) {
                     val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
-                    if (purchases != null) {
+                    if (purchases.isNullOrEmpty()) {
+                        isOrderSuccess = false
+                    } else {
                         val index = purchases.indexOfFirst {
                             it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
                         }
@@ -124,12 +138,10 @@ class App : Application(), KodeinAware {
                                     .build()
                                 billingClient.acknowledgePurchase(ackParams){}
                             }
-                            Settings.isOrderSuccess = true
+                            isOrderSuccess = true
                         } else {
-                            Settings.isOrderSuccess = false
+                            isOrderSuccess = false
                         }
-                    } else {
-                        Settings.isOrderSuccess = false
                     }
                     billingClient.endConnection()
                 }

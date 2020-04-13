@@ -47,7 +47,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 import org.kodein.di.erased.instance
 
 class CommentActivity : KodeinActivity() {
@@ -97,7 +97,7 @@ class CommentActivity : KodeinActivity() {
     }
 
     private fun initView() {
-        hideNavBar {
+        drawNavBar {
             list.updatePadding(bottom = it.systemWindowInsetBottom)
         }
         toolbar.setTitle(R.string.title_comments)

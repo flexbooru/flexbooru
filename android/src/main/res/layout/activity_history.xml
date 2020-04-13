@@ -13,16 +13,17 @@
   ~ You should have received a copy of the GNU General Public License along with
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MuzeiActivity">
+    tools:context=".ui.activity.HistoryActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/muzei_list"
+        android:id="@+id/history_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -34,16 +35,5 @@
         app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
 
     <include layout="@layout/appbar"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/muzei_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/margin_normal"
-        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-        app:backgroundTint="@color/muzei"
-        app:srcCompat="@drawable/ic_muzei_24dp"
-        style="@style/Widget.FloatingActionButton"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

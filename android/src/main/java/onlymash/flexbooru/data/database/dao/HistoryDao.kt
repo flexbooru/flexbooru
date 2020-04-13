@@ -17,23 +17,29 @@ package onlymash.flexbooru.data.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import onlymash.flexbooru.data.model.common.Muzei
+import onlymash.flexbooru.data.model.common.History
 
 @Dao
-interface MuzeiDao {
+interface HistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(muzei: Muzei): Long
+    fun insert(history: History): Long
 
-    @Query("SELECT * FROM `muzei` WHERE `booru_uid` = :booruUid ORDER BY `uid` ASC")
-    fun getMuzeiByBooruUid(booruUid: Long): List<Muzei>?
+    @Query("SELECT * FROM `history` WHERE `booru_uid` = :booruUid ORDER BY `uid` DESC")
+    fun getHistoryByBooruUid(booruUid: Long): List<History>?
 
-    @Query("SELECT * FROM `muzei` WHERE `uid` = :uid")
-    fun getMuzeiByUid(uid: Long): Muzei?
+    @Query("SELECT * FROM `history` WHERE `uid` = :uid")
+    fun getHistoryByUid(uid: Long): History?
 
-    @Query("SELECT * FROM `muzei` WHERE `booru_uid` = :booruUid ORDER BY `uid` ASC")
-    fun getMuzeiByBooruUidLiveData(booruUid: Long): LiveData<List<Muzei>>
+    @Query("SELECT * FROM `history` WHERE `booru_uid` = :booruUid ORDER BY `uid` DESC")
+    fun getHistoryByBooruUidLiveData(booruUid: Long): LiveData<List<History>>
 
     @Delete
-    fun delete(muzei: Muzei): Int
+    fun delete(history: History): Int
+
+    @Query("DELETE FROM `history` WHERE `uid` = :uid")
+    fun deleteByUid(uid: Long): Int
+
+    @Query("DELETE FROM `history` WHERE `booru_uid` = :booruUid")
+    fun deleteByBooruUid(booruUid: Long): Int
 }

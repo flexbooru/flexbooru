@@ -17,7 +17,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:background="@drawable/background_muzei"
+              android:background="@drawable/background_selectable_item"
               android:layout_height="60dp">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/spacing_large"
-            android:layout_marginEnd="@dimen/spacing_large"
+            android:layout_marginHorizontal="@dimen/spacing_large"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"

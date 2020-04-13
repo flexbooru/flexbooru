@@ -49,7 +49,7 @@ import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import org.kodein.di.erased.instance
 
@@ -93,7 +93,7 @@ class MuzeiActivity : KodeinActivity() {
     }
 
     private fun initView() {
-        hideNavBar { insets ->
+        drawNavBar { insets ->
             muzei_list.updatePadding(bottom = insets.systemWindowInsetBottom)
             muzei_button.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = resources.getDimensionPixelSize(R.dimen.margin_normal) + insets.systemWindowInsetBottom

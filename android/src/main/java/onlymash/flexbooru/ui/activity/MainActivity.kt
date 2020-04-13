@@ -90,14 +90,15 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
         private const val DRAWER_ITEM_ID_COMMENTS = 2L
-        private const val DRAWER_ITEM_ID_TAG_BLACKLIST = 3L
-        private const val DRAWER_ITEM_ID_MUZEI = 4L
-        private const val DRAWER_ITEM_ID_SAUCE_NAO = 5L
-        private const val DRAWER_ITEM_ID_WHAT_ANIME = 6L
-        private const val DRAWER_ITEM_ID_SETTINGS = 7L
-        private const val DRAWER_ITEM_ID_ABOUT = 8L
-        private const val DRAWER_ITEM_ID_PURCHASE = 9L
-        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 7
+        private const val DRAWER_ITEM_ID_HISTORY = 3L
+        private const val DRAWER_ITEM_ID_TAG_BLACKLIST = 4L
+        private const val DRAWER_ITEM_ID_MUZEI = 5L
+        private const val DRAWER_ITEM_ID_SAUCE_NAO = 6L
+        private const val DRAWER_ITEM_ID_WHAT_ANIME = 7L
+        private const val DRAWER_ITEM_ID_SETTINGS = 8L
+        private const val DRAWER_ITEM_ID_ABOUT = 9L
+        private const val DRAWER_ITEM_ID_PURCHASE = 10L
+        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 8
     }
 
     private var currentBooru: Booru? = null
@@ -136,6 +137,11 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     toActivity(CommentActivity::class.java )
                 } else {
                     notSupportedToast()
+                }
+            }
+            DRAWER_ITEM_ID_HISTORY -> {
+                if (currentBooru != null) {
+                    toActivity(HistoryActivity::class.java)
                 }
             }
             DRAWER_ITEM_ID_TAG_BLACKLIST -> {
@@ -188,7 +194,67 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             activatedBooruUid = createDefaultBooru()
         }
         sp.registerOnSharedPreferenceChangeListener(this)
-        val currentBooruUid = activatedBooruUid
+        setupDrawer()
+        booruViewModel.loadBoorus().observe(this, Observer {
+            boorus.clear()
+            boorus.addAll(it)
+            initDrawerHeader()
+        })
+        booruViewModel.booru.observe(this, Observer { booru: Booru? ->
+            if (booru != null && currentBooru != booru) {
+                currentBooru = booru
+                when {
+                    savedInstanceState == null || savedInstanceState.getBoolean(SETUP_NAV_KEY, true) -> {
+                        setupNavigationMenu(booru.type)
+                    }
+                    else -> {
+                        savedInstanceState.putBoolean(SETUP_NAV_KEY, true)
+                    }
+                }
+            }
+        })
+        if (savedInstanceState == null) {
+            booruViewModel.loadBooru(activatedBooruUid)
+        }
+        if (!isOrderSuccess) {
+            drawerSliderView.addItemAtPosition(
+                DRAWER_ITEM_ID_PURCHASE_POSITION,
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.purchase_title)
+                    icon = createImageHolder(R.drawable.ic_payment_24dp)
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_PURCHASE
+                }
+            )
+        }
+        setupInsets { insets ->
+            drawerSliderView.recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
+            drawerSliderView.stickyFooterView?.updatePadding(bottom = insets.systemWindowInsetBottom)
+        }
+        checkUpdate()
+    }
+
+    private fun setupNavigationMenu(booruType: Int) {
+        when (booruType) {
+            BOORU_TYPE_SANKAKU -> setupNavigationMenu(4, R.menu.navigation_sankaku, R.navigation.main_navigation_sankaku)
+            BOORU_TYPE_GEL -> setupNavigationMenu(2, R.menu.navigation_gel, R.navigation.main_navigation_gel)
+            BOORU_TYPE_SHIMMIE -> setupNavigationMenu(1, R.menu.navigation_shimmie, R.navigation.main_navigation_shimmie)
+            else -> setupNavigationMenu(5, R.menu.navigation, R.navigation.main_navigation)
+        }
+    }
+
+    private fun setupNavigationMenu(menuSize: Int, @MenuRes menuRes: Int, @NavigationRes navRes: Int) {
+        if (bottomNavigationView.menu.size() != menuSize) {
+            bottomNavigationView.menu.clear()
+            bottomNavigationView.inflateMenu(menuRes)
+        }
+        navController.graph = navController.navInflater.inflate(navRes)
+        bottomNavigationView.selectedItemId = navController.graph.startDestination
+        forceShowNavBar()
+    }
+
+    private fun setupDrawer() {
         profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
             name = StringHolder(R.string.title_manage_boorus)
             identifier = HEADER_ITEM_ID_BOORU_MANAGE
@@ -198,7 +264,6 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         headerView = AccountHeaderView(this).apply {
             attachToSliderView(drawerSliderView)
             addProfile(profileSettingDrawerItem, profiles?.size ?: 0)
-            withSavedInstance(savedInstanceState)
             onAccountHeaderListener = { _: View?, profile: IProfile, _: Boolean ->
                 when (val uid = profile.identifier) {
                     HEADER_ITEM_ID_BOORU_MANAGE -> startActivity(Intent(this@MainActivity, BooruActivity::class.java))
@@ -222,6 +287,13 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     isSelectable = false
                     isIconTinted = true
                     identifier = DRAWER_ITEM_ID_COMMENTS
+                },
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.title_history)
+                    icon = createImageHolder(R.drawable.ic_history_24dp)
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_HISTORY
                 },
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.title_tag_blacklist)
@@ -272,66 +344,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             stickyFooterDivider = true
             setSelection(-3L)
             onDrawerItemClickListener = drawerItemClickListener
-            setSavedInstance(savedInstanceState)
             tintNavigationBar = false
         }
-        booruViewModel.loadBoorus().observe(this, Observer {
-            boorus.clear()
-            boorus.addAll(it)
-            initDrawerHeader()
-        })
-        booruViewModel.booru.observe(this, Observer { booru: Booru? ->
-            if (booru != null && currentBooru != booru) {
-                currentBooru = booru
-                when {
-                    savedInstanceState == null || savedInstanceState.getBoolean(SETUP_NAV_KEY, true) -> {
-                        setupNavigationMenu(booru.type)
-                    }
-                    else -> {
-                        savedInstanceState.putBoolean(SETUP_NAV_KEY, true)
-                    }
-                }
-            }
-        })
-        if (savedInstanceState == null) {
-            booruViewModel.loadBooru(currentBooruUid)
-        }
-        if (!isOrderSuccess) {
-            drawerSliderView.addItemAtPosition(
-                DRAWER_ITEM_ID_PURCHASE_POSITION,
-                PrimaryDrawerItem().apply {
-                    name = StringHolder(R.string.purchase_title)
-                    icon = createImageHolder(R.drawable.ic_payment_24dp)
-                    isSelectable = false
-                    isIconTinted = true
-                    identifier = DRAWER_ITEM_ID_PURCHASE
-                }
-            )
-        }
-        setupInsets { insets ->
-            drawerSliderView.recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
-            drawerSliderView.stickyFooterView?.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
-        checkUpdate()
-    }
-
-    private fun setupNavigationMenu(booruType: Int) {
-        when (booruType) {
-            BOORU_TYPE_SANKAKU -> setupNavigationMenu(4, R.menu.navigation_sankaku, R.navigation.main_navigation_sankaku)
-            BOORU_TYPE_GEL -> setupNavigationMenu(2, R.menu.navigation_gel, R.navigation.main_navigation_gel)
-            BOORU_TYPE_SHIMMIE -> setupNavigationMenu(1, R.menu.navigation_shimmie, R.navigation.main_navigation_shimmie)
-            else -> setupNavigationMenu(5, R.menu.navigation, R.navigation.main_navigation)
-        }
-    }
-
-    private fun setupNavigationMenu(menuSize: Int, @MenuRes menuRes: Int, @NavigationRes navRes: Int) {
-        if (bottomNavigationView.menu.size() != menuSize) {
-            bottomNavigationView.menu.clear()
-            bottomNavigationView.inflateMenu(menuRes)
-        }
-        navController.graph = navController.navInflater.inflate(navRes)
-        bottomNavigationView.selectedItemId = navController.graph.startDestination
-        forceShowNavBar()
     }
 
     private fun createImageHolder(@DrawableRes resId: Int): ImageHolder =

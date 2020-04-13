@@ -57,7 +57,7 @@ import onlymash.flexbooru.saucenao.model.Result
 import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
 import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 import org.kodein.di.erased.instance
 import java.io.IOException
 
@@ -92,7 +92,7 @@ class SauceNaoActivity : AppCompatActivity() {
             return
         }
         setContentView(R.layout.activity_sauce_nao)
-        hideNavBar {
+        drawNavBar {
             list.updatePadding(bottom = it.systemWindowInsetBottom)
             sauce_nao_search_fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = it.systemWindowInsetBottom +

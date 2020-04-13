@@ -33,7 +33,7 @@ fun AppCompatActivity.setupInsets(insetsCallback: (insets: WindowInsets) -> Unit
     }
 }
 
-fun AppCompatActivity.hideNavBar(insetsCallback: (insets: WindowInsets) -> Unit) {
+fun AppCompatActivity.drawNavBar(insetsCallback: (insets: WindowInsets) -> Unit) {
     findViewById<View>(android.R.id.content).apply {
         systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         setOnApplyWindowInsetsListener { _, insets ->

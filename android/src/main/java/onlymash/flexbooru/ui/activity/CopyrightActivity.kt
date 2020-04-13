@@ -30,14 +30,14 @@ import kotlinx.android.synthetic.main.activity_copyright.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 
 class CopyrightActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_copyright)
-        hideNavBar {
+        drawNavBar {
             scroll_view.updatePadding(bottom = it.systemWindowInsetBottom)
         }
         toolbar.title = getString(R.string.title_copyright)

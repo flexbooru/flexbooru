@@ -20,8 +20,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import onlymash.flexbooru.common.Values.DB_FILE_NAME
 import onlymash.flexbooru.data.model.common.*
 import onlymash.flexbooru.data.database.dao.*
@@ -29,21 +27,14 @@ import onlymash.flexbooru.data.database.dao.*
 @Database(
     entities = [
         (Booru::class), (Post::class), (TagFilter::class),
-        (Muzei::class), (Cookie::class)
+        (Muzei::class), (Cookie::class), (History::class)
     ],
-    version = 2,
+    version = 3,
     exportSchema = true)
 @TypeConverters(MyConverters::class)
 abstract class MyDatabase : RoomDatabase() {
 
     companion object {
-        private val MIGRATION_1_2 by lazy {
-            object : Migration(1, 2) {
-                override fun migrate(database: SupportSQLiteDatabase) {
-                    database.execSQL("ALTER TABLE  `boorus` ADD COLUMN `path` TEXT")
-                }
-            }
-        }
         @Volatile
         private var instance: MyDatabase? = null
         private val LOCK = Any()
@@ -54,7 +45,10 @@ abstract class MyDatabase : RoomDatabase() {
             Room.databaseBuilder(context, MyDatabase::class.java, DB_FILE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(
+                    MyMigration(1, 2),
+                    MyMigration(2, 3)
+                )
                 .build()
     }
 
@@ -64,4 +58,5 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun tagFilterDao(): TagFilterDao
     abstract fun cookieDao(): CookieDao
     abstract fun muzeiDao(): MuzeiDao
+    abstract fun historyDao(): HistoryDao
 }

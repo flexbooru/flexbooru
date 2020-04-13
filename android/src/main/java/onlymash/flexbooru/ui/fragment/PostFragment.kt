@@ -61,9 +61,11 @@ import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.action.ActionVote
+import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.data.repository.NetworkState
@@ -279,10 +281,9 @@ class PostFragment : SearchBarFragment() {
             tagFilterAdapter.updateData(it, booruUid = booru.uid, showAll = isShowAllTags)
         })
         searchLayout.findViewById<FloatingActionButton>(R.id.action_search).setOnClickListener {
-            val context = context ?: return@setOnClickListener
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (tagString.isNotEmpty()) {
-                SearchActivity.startSearch(context, tagString)
+                search(tagString)
             }
         }
     }
@@ -519,9 +520,17 @@ class PostFragment : SearchBarFragment() {
     }
 
     override fun onApplySearch(query: String) {
-        context?.let {
-            SearchActivity.startSearch(it, query)
-        }
+       search(query)
+    }
+
+    private fun search(query: String) {
+        val context = context ?: return
+        val uid = action?.booru?.uid ?: return
+        HistoryManager.createHistory(History(
+            booruUid = uid,
+            query = query
+        ))
+        SearchActivity.startSearch(context, query)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

@@ -13,24 +13,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.activity
+package onlymash.flexbooru.data.model.common
 
-import android.os.Bundle
-import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.R
-import onlymash.flexbooru.widget.drawNavBar
+import androidx.room.*
 
-class AboutActivity : BaseActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about)
-        drawNavBar {
-
-        }
-        toolbar.setTitle(R.string.title_about)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-    }
-}
+@Entity(tableName = "history", indices = [(Index(value = ["booru_uid", "query"], unique = true))],
+    foreignKeys = [(ForeignKey(
+        entity = Booru::class,
+        parentColumns = ["uid"],
+        childColumns = ["booru_uid"],
+        onDelete = ForeignKey.CASCADE))])
+data class History(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
+    var uid: Long = 0L,
+    @ColumnInfo(name = "booru_uid")
+    val booruUid: Long,
+    @ColumnInfo(name = "query")
+    var query: String
+)

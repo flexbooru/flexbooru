@@ -21,16 +21,16 @@ import onlymash.flexbooru.data.model.common.TagFilter
 
 @Dao
 interface TagFilterDao {
-    @Query("SELECT * FROM tags_filter WHERE booru_uid = :booruUid")
+    @Query("SELECT * FROM `tags_filter` WHERE `booru_uid` = :booruUid")
     fun getTagByBooruUid(booruUid: Long): List<TagFilter>?
 
-    @Query("SELECT * FROM tags_filter WHERE uid = :uid")
+    @Query("SELECT * FROM `tags_filter` WHERE `uid` = :uid")
     fun getTagByTagUid(uid: Long): TagFilter?
 
-    @Query("SELECT * FROM tags_filter ORDER BY uid ASC")
+    @Query("SELECT * FROM `tags_filter` ORDER BY `uid` ASC")
     fun getAll(): List<TagFilter>?
 
-    @Query("SELECT 1 FROM boorus LIMIT 1")
+    @Query("SELECT 1 FROM `boorus` LIMIT 1")
     fun isNotEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -39,18 +39,18 @@ interface TagFilterDao {
     @Update
     fun update(tag: TagFilter): Int
 
-    @Query("DELETE FROM tags_filter WHERE uid = :uid")
+    @Query("DELETE FROM `tags_filter` WHERE `uid` = :uid")
     fun delete(uid: Long): Int
 
     @Delete
     fun delete(tags: List<TagFilter>)
 
-    @Query("DELETE FROM tags_filter")
+    @Query("DELETE FROM `tags_filter`")
     fun deleteAll(): Int
 
-    @Query("SELECT * FROM tags_filter WHERE booru_uid = :booruUid")
+    @Query("SELECT * FROM `tags_filter` WHERE `booru_uid` = :booruUid")
     fun getTagByBooruUidLiveData(booruUid: Long): LiveData<List<TagFilter>>
 
-    @Query("SELECT * FROM tags_filter ORDER BY name ASC")
+    @Query("SELECT * FROM `tags_filter` ORDER BY `name` ASC")
     fun getAllLiveData(): LiveData<List<TagFilter>>
 }

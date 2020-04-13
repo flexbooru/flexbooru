@@ -13,24 +13,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.activity
+package onlymash.flexbooru.ui.helper
 
-import android.os.Bundle
-import kotlinx.android.synthetic.main.toolbar.*
-import onlymash.flexbooru.R
-import onlymash.flexbooru.widget.drawNavBar
+interface DismissItemListener {
 
-class AboutActivity : BaseActivity() {
+    fun onDismissItem(position: Int)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about)
-        drawNavBar {
-
-        }
-        toolbar.setTitle(R.string.title_about)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-    }
 }

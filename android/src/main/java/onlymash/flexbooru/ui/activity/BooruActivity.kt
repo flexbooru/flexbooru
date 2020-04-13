@@ -52,7 +52,7 @@ import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 import org.kodein.di.erased.instance
 import java.io.IOException
 import java.io.InputStream
@@ -70,7 +70,7 @@ class BooruActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru)
-        hideNavBar { insets ->
+        drawNavBar { insets ->
             list.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
         initToolbar()

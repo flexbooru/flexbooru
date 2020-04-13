@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import onlymash.flexbooru.data.database.dao.BooruDao
+import onlymash.flexbooru.data.database.dao.HistoryDao
 import onlymash.flexbooru.data.database.dao.MuzeiDao
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.repository.artist.ArtistRepository
@@ -134,5 +135,16 @@ fun ViewModelStoreOwner.getMuzeiViewModel(muzeiDao: MuzeiDao): MuzeiViewModel =
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return MuzeiViewModel(muzeiDao) as T
+        }
+    })
+
+fun ViewModelStoreOwner.getHistoryViewModel(
+    historyDao: HistoryDao,
+    postDao: PostDao
+): HistoryViewModel =
+    getViewModel(object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return HistoryViewModel(historyDao, postDao) as T
         }
     })

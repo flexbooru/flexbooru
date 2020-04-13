@@ -18,14 +18,14 @@ package onlymash.flexbooru.ui.activity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.widget.hideNavBar
+import onlymash.flexbooru.widget.drawNavBar
 
 class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        hideNavBar {
+        drawNavBar {
 
         }
         toolbar.setTitle(R.string.title_settings)

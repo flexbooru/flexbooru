@@ -46,6 +46,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
+            android:name=".ui.activity.HistoryActivity"
+            android:theme="@style/AppTheme.Animation" />
+        <activity
             android:name=".ui.activity.WhatAnimeActivity"
             android:theme="@style/AppTheme.Animation">
         </activity>

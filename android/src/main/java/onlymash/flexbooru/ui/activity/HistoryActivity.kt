@@ -1,0 +1,92 @@
+/*
+ * Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package onlymash.flexbooru.ui.activity
+
+import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.updatePadding
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.android.synthetic.main.toolbar.*
+import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.data.database.dao.HistoryDao
+import onlymash.flexbooru.data.database.dao.PostDao
+import onlymash.flexbooru.ui.adapter.HistoryAdapter
+import onlymash.flexbooru.ui.helper.DismissItemTouchHelperCallback
+import onlymash.flexbooru.ui.viewmodel.HistoryViewModel
+import onlymash.flexbooru.ui.viewmodel.getHistoryViewModel
+import onlymash.flexbooru.widget.drawNavBar
+import org.kodein.di.erased.instance
+
+class HistoryActivity : KodeinActivity() {
+
+    private val historyDao by instance<HistoryDao>()
+    private val postDao by instance<PostDao>()
+
+    private lateinit var historyAdapter: HistoryAdapter
+    private lateinit var historyViewModel: HistoryViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_history)
+        drawNavBar {  insets ->
+            history_list.updatePadding(bottom = insets.systemWindowInsetBottom)
+        }
+        historyViewModel = getHistoryViewModel(historyDao, postDao)
+        historyAdapter = HistoryAdapter { history ->
+            historyViewModel.deleteByUid(history)
+        }
+        toolbar.apply {
+            setTitle(R.string.title_history)
+            inflateMenu(R.menu.history)
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
+            setOnMenuItemClickListener { menuItem ->
+                if (menuItem.itemId == R.id.action_history_clear_all && historyAdapter.itemCount > 0) {
+                    clearAll()
+                }
+                true
+            }
+        }
+        history_list.apply {
+            layoutManager = LinearLayoutManager(this@HistoryActivity, RecyclerView.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(this@HistoryActivity, RecyclerView.VERTICAL))
+            adapter = historyAdapter
+            ItemTouchHelper(DismissItemTouchHelperCallback(historyAdapter)).attachToRecyclerView(this)
+        }
+        historyViewModel.loadHistory(activatedBooruUid).observe(this, Observer {
+            historyAdapter.updateData(it)
+        })
+    }
+
+    private fun clearAll() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.history_clear_all)
+            .setMessage(R.string.history_clear_all_content)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                historyViewModel.deleteAll(activatedBooruUid)
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+}

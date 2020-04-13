@@ -47,6 +47,9 @@ interface PostDao {
     @Query("DELETE FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query")
     fun deletePosts(booruUid: Long, query: String)
 
+    @Query("DELETE FROM `posts` WHERE `booru_uid` = :booruUid")
+    fun deletePosts(booruUid: Long)
+
     @Query("SELECT MAX(`index`) + 1 FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query")
     fun getNextIndex(booruUid: Long, query: String): Int
 
