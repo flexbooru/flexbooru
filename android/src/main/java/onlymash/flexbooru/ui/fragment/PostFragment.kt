@@ -70,6 +70,7 @@ import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
+import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.extension.rotate
@@ -193,10 +194,14 @@ class PostFragment : SearchBarFragment() {
         postViewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
             postList?.let {
                 postAdapter.submitList(it)
+                if (progressBar.isVisible && it.size > 0) {
+                    progressBar.isVisible = false
+                }
             }
         })
         postViewModel.networkState.observe(viewLifecycleOwner, Observer {
             postAdapter.setNetworkState(it)
+            progressBar.isVisible = progressBar.isVisible && it.isRunning() && postAdapter.itemCount == 0
         })
         postViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             swipeRefresh.isRefreshing = it == NetworkState.LOADING

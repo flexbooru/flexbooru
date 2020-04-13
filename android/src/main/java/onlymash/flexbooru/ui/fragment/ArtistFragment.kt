@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.artist.ArtistRepositoryImpl
+import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.ui.adapter.ArtistAdapter
 import onlymash.flexbooru.ui.viewmodel.ArtistViewModel
 import onlymash.flexbooru.ui.viewmodel.getArtistViewModel
@@ -77,6 +79,7 @@ class ArtistFragment : SearchBarFragment() {
         })
         artistViewModel.networkState.observe(viewLifecycleOwner, Observer {
             artistAdapter.setNetworkState(it)
+            progressBar.isVisible = it.isRunning() && artistAdapter.itemCount == 0
         })
         artistViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {

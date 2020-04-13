@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.repository.NetworkState
+import onlymash.flexbooru.data.repository.isFailed
+import onlymash.flexbooru.data.repository.isSuccess
 import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 
 abstract class BasePagedListAdapter<T, VH : RecyclerView.ViewHolder>(
@@ -31,7 +33,7 @@ abstract class BasePagedListAdapter<T, VH : RecyclerView.ViewHolder>(
 
     private var networkState: NetworkState? = null
 
-    private fun hasExtraRow() = networkState != null && networkState != NetworkState.LOADED
+    private fun hasExtraRow() = networkState?.isFailed() ?: false
 
     override fun getItemCount(): Int {
         return super.getItemCount() + if (hasExtraRow()) 1 else 0

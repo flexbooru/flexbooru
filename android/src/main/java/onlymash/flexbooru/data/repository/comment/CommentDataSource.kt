@@ -77,13 +77,13 @@ class CommentDataSource(
                 }
                 is NetResult.Success -> {
                     retry = null
-                    networkState.postValue(NetworkState.LOADED)
-                    initialLoad.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null, null)
                     } else {
                         callback.onResult(result.data, null, 2)
                     }
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -112,12 +112,12 @@ class CommentDataSource(
                 }
                 is NetResult.Success -> {
                     retry = null
-                    networkState.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null)
                     } else {
                         callback.onResult(result.data, page + 1)
                     }
+                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         }

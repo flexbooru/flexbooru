@@ -20,17 +20,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/not_supported"
-        android:text="@string/msg_not_supported"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?attr/textAppearanceSubtitle1"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone"/>
-
     <include layout="@layout/refreshable_list"/>
+
+    <include layout="@layout/progress_bar"/>
 
     <include layout="@layout/search_layout"/>
 

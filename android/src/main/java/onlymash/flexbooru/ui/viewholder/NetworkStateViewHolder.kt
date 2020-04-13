@@ -19,18 +19,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.data.repository.*
 import onlymash.flexbooru.extension.toVisibility
-import onlymash.flexbooru.data.repository.NetworkState
-import onlymash.flexbooru.data.repository.Status
 
 class NetworkStateViewHolder(itemView: View,
                              private val retryCallback: () -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-    private val progressBar: ProgressBar = itemView.findViewById(R.id.progress_bar)
     private val retry: Button = itemView.findViewById(R.id.retry_button)
     private val errorMsg: AppCompatTextView = itemView.findViewById(R.id.error_msg)
 
@@ -41,9 +38,8 @@ class NetworkStateViewHolder(itemView: View,
     }
 
     fun bindTo(networkState: NetworkState?) {
-        progressBar.toVisibility(networkState?.status == Status.RUNNING)
-        retry.toVisibility(networkState?.status == Status.FAILED)
-        errorMsg.toVisibility(networkState?.msg != null)
+        retry.toVisibility(networkState.isFailed())
+        errorMsg.toVisibility(networkState.hasMsg())
         errorMsg.text = networkState?.msg
     }
 

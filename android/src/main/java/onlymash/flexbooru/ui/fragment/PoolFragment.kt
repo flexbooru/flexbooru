@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.repository.NetworkState
+import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.pool.PoolRepositoryImpl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountConfigActivity
@@ -82,6 +84,7 @@ class PoolFragment : SearchBarFragment() {
         })
         poolViewModel.networkState.observe(viewLifecycleOwner, Observer {
             poolAdapter.setNetworkState(it)
+            progressBar.isVisible = it.isRunning() && poolAdapter.itemCount == 0
         })
         poolViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {

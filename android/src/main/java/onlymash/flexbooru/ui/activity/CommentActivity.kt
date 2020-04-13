@@ -24,10 +24,12 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.progress_bar.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
@@ -42,6 +44,7 @@ import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.comment.CommentRepositoryImpl
+import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.CommentAdapter
@@ -166,6 +169,7 @@ class CommentActivity : KodeinActivity() {
         })
         commentViewModel.networkState.observe(this, Observer {
             commentAdapter.setNetworkState(it)
+            progress_bar.isVisible = it.isRunning() && commentAdapter.itemCount == 0
         })
         commentViewModel.refreshState.observe(this, Observer {
             if (it != NetworkState.LOADING) {

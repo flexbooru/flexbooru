@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -68,6 +69,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     internal lateinit var mainList: RecyclerView
     internal lateinit var searchLayout: CoordinatorLayout
     internal lateinit var swipeRefresh: SwipeRefreshLayout
+    internal lateinit var progressBar: ProgressBar
     private lateinit var container: CoordinatorLayout
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
@@ -89,6 +91,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         searchBar = view.findViewById(R.id.search_bar)
         searchLayout = view.findViewById(R.id.search_layout)
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
+        progressBar = view.findViewById(R.id.progress_bar)
         container.setOnApplyWindowInsetsListener { _, insets ->
             (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
                 resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + insets.systemWindowInsetTop

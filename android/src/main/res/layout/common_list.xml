@@ -32,11 +32,8 @@
         app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+    <include
+        layout="@layout/progress_bar"
         android:visibility="gone"/>
 
     <androidx.appcompat.widget.AppCompatTextView

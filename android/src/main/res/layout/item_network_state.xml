@@ -18,25 +18,17 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:padding="8dp">
+              android:padding="@dimen/spacing_normal">
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/error_msg"
-        android:maxWidth="256dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxHeight="100dp"
         android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="@dimen/spacing_large"
+        android:paddingVertical="@dimen/spacing_normal"
         android:gravity="center_horizontal"
         android:textAppearance="?attr/textAppearanceBody2"/>
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:paddingTop="30dp"
-        android:paddingBottom="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        style="@style/Widget.AppCompat.ProgressBar"/>
     <Button
         android:id="@+id/retry_button"
         android:layout_width="wrap_content"

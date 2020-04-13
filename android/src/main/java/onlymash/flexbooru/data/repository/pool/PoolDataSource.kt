@@ -74,13 +74,13 @@ class PoolDataSource(
                 }
                 is NetResult.Success -> {
                     retry = null
-                    networkState.postValue(NetworkState.LOADED)
-                    initialLoad.postValue(NetworkState.LOADED)
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null, null)
                     } else {
                         callback.onResult(result.data, null, 2)
                     }
+                    networkState.postValue(NetworkState.LOADED)
+                    initialLoad.postValue(NetworkState.LOADED)
                 }
             }
         }
@@ -107,13 +107,13 @@ class PoolDataSource(
                     networkState.postValue(NetworkState.error(result.errorMsg))
                 }
                 is NetResult.Success -> {
-                    networkState.postValue(NetworkState.LOADED)
                     retry = null
                     if (result.data.size < action.limit) {
                         callback.onResult(result.data, null)
                     } else {
                         callback.onResult(result.data, page + 1)
                     }
+                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         }

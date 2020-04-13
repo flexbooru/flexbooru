@@ -111,13 +111,13 @@ class PostRepositoryImpl(
                     networkState.value = NetworkState.error(result.errorMsg)
                 }
                 is NetResult.Success -> {
-                    networkState.postValue(NetworkState.LOADED)
                     withContext(Dispatchers.IO) {
                         db.runInTransaction {
                             db.postDao().deletePosts(booruUid = action.booru.uid, query = action.query)
                             insertResultIntoDb(result.data)
                         }
                     }
+                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         }
