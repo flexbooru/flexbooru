@@ -119,6 +119,7 @@ class App : Application(), KodeinAware {
         val billingClient = BillingClient
             .newBuilder(this)
             .enablePendingPurchases()
+            .setListener { _, _ ->  }
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult?) {
