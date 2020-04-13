@@ -233,7 +233,7 @@
     <string name="muzei_copy">Copiar</string>
     <string name="muzei_delete">Excluir</string>
     <string name="muzei_search">Pesquisar</string>
-    <string name="muzei_search_hint">Add tag…</string>
+    <string name="muzei_search_hint">Adicionar marcador…</string>
     <string name="muzei_fetch">Buscar Arte</string>
     <string name="muzei_input_cant_be_empty">O campo não pode estar vazio.</string>
     <string name="muzei_action_view_post">Ver post no Flexbooru</string>
@@ -270,5 +270,5 @@
     <string name="sauce_nao_source">Fonte</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Arquivo</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="action_add_to_muzei">Adicionar no Muzei</string>
 </resources>
