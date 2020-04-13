@@ -201,7 +201,7 @@ class PostFragment : SearchBarFragment() {
         })
         postViewModel.networkState.observe(viewLifecycleOwner, Observer {
             postAdapter.setNetworkState(it)
-            progressBar.isVisible = progressBar.isVisible && it.isRunning() && postAdapter.itemCount == 0
+            progressBar.isVisible = it.isRunning() && postAdapter.itemCount == 0
         })
         postViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             swipeRefresh.isRefreshing = it == NetworkState.LOADING
