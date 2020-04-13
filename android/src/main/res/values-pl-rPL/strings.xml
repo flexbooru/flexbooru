@@ -34,9 +34,9 @@
     <string name="title_tag_blacklist">Blokowane tagi</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Jakie Anime</string>
-    <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="title_history">Historia</string>
+    <string name="history_clear_all">Wyczyść wszystko</string>
+    <string name="history_clear_all_content">Cała historia zostanie usunięta.</string>
     <string name="about_app_version">Wersja</string>
     <string name="about_app_rate">Oceń aplikację</string>
     <string name="about_app_translation">Tłumaczenie</string>
@@ -173,7 +173,7 @@
     <string name="settings_grid_width_large">Duży</string>
     <string name="settings_show_info_bar">Pokaż pasek informacyjny</string>
     <string name="settings_show_all_tags">Pokaż tagi dla wszystkich stron</string>
-    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
+    <string name="settings_auto_hide_bottom_bar">Automatyczne ukryj dolny pasek</string>
     <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
     <string name="settings_clear_cache_summery">Usuń wszystkie zapisane grafiki.</string>
     <string name="settings_clear_cache_dialog_content">Pamięć podręczna zostanie wyczyszczona.</string>
