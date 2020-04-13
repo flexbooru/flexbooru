@@ -184,8 +184,8 @@
     <string name="settings_display">顯示</string>
     <string name="settings_options">選項</string>
     <string name="settings_storage">儲存</string>
-    <string name="switch_on">開</string>
-    <string name="switch_off">關</string>
+    <string name="switch_on">開啟</string>
+    <string name="switch_off">關閉</string>
     <string name="switch_yes">是</string>
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">簡介為空白的。</string>
@@ -225,8 +225,8 @@
     <string name="search_bar_hint_search_artists">搜尋畫師</string>
     <string name="tag_filter_add_text">新增 ↑️</string>
     <string name="share_via">透過</string>
-    <string name="a11y_filter_applied">%1s 已啟用過濾器</string>
-    <string name="a11y_filter_not_applied">%1s 已停用過濾器</string>
+    <string name="a11y_filter_applied">%1s 過濾器已啟用</string>
+    <string name="a11y_filter_not_applied">%1s 過濾器已停用</string>
     <string name="order">排序</string>
     <string name="rating">評級</string>
     <string name="threshold">閾值</string>
@@ -236,9 +236,9 @@
     <string name="muzei_search_hint">新增標籤...</string>
     <string name="muzei_fetch">取得 Artwork</string>
     <string name="muzei_input_cant_be_empty">輸入不能為空白。</string>
-    <string name="muzei_action_view_post">在 Flexbooru 上查看帖子</string>
-    <string name="muzei_action_search_posts">在 Flexbooru 上搜尋帖子</string>
-    <string name="muzei_attribution">在 Flexbooru 上的帖子</string>
+    <string name="muzei_action_view_post">在 Flexbooru 查看帖子</string>
+    <string name="muzei_action_search_posts">在 Flexbooru 搜尋帖子</string>
+    <string name="muzei_attribution">在 Flexbooru 的帖子</string>
     <string name="tag_blacklist_copy">複製</string>
     <string name="tag_blacklist_delete">刪除</string>
     <string name="tag_blacklist_add">新增</string>
@@ -261,10 +261,10 @@
     <string name="sauce_nao_help">幫助</string>
     <string name="sauce_nao_change_api_key">更改 API Key</string>
     <string name="sauce_nao_get_api_key">取得 API Key</string>
-    <string name="sauce_nao_remaining_times_today">今天的剩餘次數：%01$d</string>
+    <string name="sauce_nao_remaining_times_today">今天的剩餘次數: %01$d</string>
     <string name="sauce_nao_api_key_unset">SauceNAO 的 API Key 還未設定。</string>
     <string name="sauce_nao_image_url">圖片連結</string>
-    <string name="sauce_nao_invalid_image_url">無效的圖片超連結。</string>
+    <string name="sauce_nao_invalid_image_url">無效的圖片連結。</string>
     <string name="sauce_nao_source">來源</string>
     <string name="sauce_nao_search_from_url">連結</string>
     <string name="sauce_nao_search_from_file">檔案</string>
