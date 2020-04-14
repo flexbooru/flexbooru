@@ -32,7 +32,6 @@
     <dimen name="swipe_refresh_layout_offset_start">10dp</dimen>
     <dimen name="swipe_refresh_layout_offset_end">90dp</dimen>
     <dimen name="header_item_height">64dp</dimen>
-    <dimen name="booru_padding">8dp</dimen>
     <dimen name="qr_code_size">300dp</dimen>
     <dimen name="browse_bottom_bar_height">56dp</dimen>
 

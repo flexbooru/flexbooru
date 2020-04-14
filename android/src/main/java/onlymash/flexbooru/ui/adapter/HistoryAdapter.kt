@@ -24,11 +24,11 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.ui.helper.DismissItemListener
+import onlymash.flexbooru.ui.helper.ItemTouchCallback
 
 class HistoryAdapter(
     private val deleteHistoryCallback: (History) -> Unit
-) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>(), DismissItemListener {
+) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>(), ItemTouchCallback {
 
     companion object {
         fun historyDiffCallback(oldItems: List<History>, newItems: List<History>) = object : DiffUtil.Callback() {
@@ -54,9 +54,19 @@ class HistoryAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onDismissItem(position: Int) {
+    override fun onSwipeItem(position: Int) {
         deleteHistoryCallback(data[position])
     }
+
+    override fun onDragItem(position: Int, targetPosition: Int) {
+
+    }
+
+    override val isDragEnabled: Boolean
+        get() = false
+
+    override val isSwipeEnabled: Boolean
+        get() = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder =
         HistoryViewHolder(LayoutInflater.from(parent.context)

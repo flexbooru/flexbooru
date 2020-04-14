@@ -29,6 +29,7 @@ import androidx.cursoradapter.widget.CursorAdapter
 import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_muzei.*
@@ -45,6 +46,8 @@ import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
+import onlymash.flexbooru.ui.helper.ItemTouchCallback
+import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
@@ -65,6 +68,22 @@ class MuzeiActivity : KodeinActivity() {
     private val suggestions: MutableList<String> = mutableListOf()
     private var suggestionsAdapter: CursorAdapter? = null
     private lateinit var suggestionViewModel: SuggestionViewModel
+
+    private val itemTouchCallback = object : ItemTouchCallback {
+        override val isDragEnabled: Boolean
+            get() = false
+        override val isSwipeEnabled: Boolean
+            get() = true
+        override fun onDragItem(position: Int, targetPosition: Int) {
+
+        }
+        override fun onSwipeItem(position: Int) {
+            val uid = muzeiAdapter.getUidByPosition(position) ?: -1L
+            if (uid >= 0) {
+                muzeiViewModel.deleteByUid(uid)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,11 +150,14 @@ class MuzeiActivity : KodeinActivity() {
                 openAppInMarket(muzeiPackageName)
             }
         }
-        muzeiAdapter = MuzeiAdapter()
+        muzeiAdapter = MuzeiAdapter {
+            muzeiViewModel.deleteByUid(it)
+        }
         muzei_list.apply {
             layoutManager = LinearLayoutManager(this@MuzeiActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))
             adapter = muzeiAdapter
+            ItemTouchHelper(ItemTouchHelperCallback(itemTouchCallback)).attachToRecyclerView(this)
         }
     }
 

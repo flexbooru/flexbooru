@@ -70,8 +70,9 @@
             android:id="@+id/search_bar_menu_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:minWidth="@dimen/spacing_normal"
             android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
+            android:layout_marginHorizontal="@dimen/spacing_medium"
             style="@style/ThemeOverlay.MaterialComponents.ActionBar"/>
     </LinearLayout>
 

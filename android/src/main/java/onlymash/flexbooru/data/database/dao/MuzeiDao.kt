@@ -36,4 +36,7 @@ interface MuzeiDao {
 
     @Delete
     fun delete(muzei: Muzei): Int
+
+    @Query("DELETE FROM `muzei` WHERE `uid` = :uid")
+    fun deleteByUid(uid: Long): Int
 }

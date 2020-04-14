@@ -30,7 +30,7 @@ import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.HistoryDao
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.ui.adapter.HistoryAdapter
-import onlymash.flexbooru.ui.helper.DismissItemTouchHelperCallback
+import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.HistoryViewModel
 import onlymash.flexbooru.ui.viewmodel.getHistoryViewModel
 import onlymash.flexbooru.widget.drawNavBar
@@ -71,7 +71,7 @@ class HistoryActivity : KodeinActivity() {
             layoutManager = LinearLayoutManager(this@HistoryActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@HistoryActivity, RecyclerView.VERTICAL))
             adapter = historyAdapter
-            ItemTouchHelper(DismissItemTouchHelperCallback(historyAdapter)).attachToRecyclerView(this)
+            ItemTouchHelper(ItemTouchHelperCallback(historyAdapter)).attachToRecyclerView(this)
         }
         historyViewModel.loadHistory(activatedBooruUid).observe(this, Observer {
             historyAdapter.updateData(it)

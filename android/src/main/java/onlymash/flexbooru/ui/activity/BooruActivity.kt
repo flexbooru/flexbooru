@@ -27,10 +27,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_booru.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -50,6 +47,8 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
+import onlymash.flexbooru.ui.helper.ItemTouchCallback
+import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import onlymash.flexbooru.widget.drawNavBar
@@ -67,6 +66,25 @@ class BooruActivity : BaseActivity() {
 
     private val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
+    private val itemTouchCallback = object : ItemTouchCallback {
+        override val isDragEnabled: Boolean
+            get() = false
+
+        override val isSwipeEnabled: Boolean
+            get() = true
+
+        override fun onDragItem(position: Int, targetPosition: Int) {
+
+        }
+
+        override fun onSwipeItem(position: Int) {
+            val uid = booruAdapter.getUidByPosition(position)
+            if (uid != null) {
+                booruViewModel.deleteBooru(uid)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru)
@@ -83,6 +101,7 @@ class BooruActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(this@BooruActivity, layoutManager.orientation))
             itemAnimator = animator
             adapter = booruAdapter
+            ItemTouchHelper(ItemTouchHelperCallback(itemTouchCallback)).attachToRecyclerView(this)
         }
         booruViewModel = getBooruViewModel(booruDao)
         booruViewModel.loadBoorus().observe(this, Observer { boorus ->

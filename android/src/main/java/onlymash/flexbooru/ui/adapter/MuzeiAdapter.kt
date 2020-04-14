@@ -25,12 +25,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activeMuzeiUid
-import onlymash.flexbooru.data.database.MuzeiManager
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
 
-class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MuzeiAdapter(
+    private val deleteMuzeiCallback: (Long) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     
     companion object {
         fun muzeiDiffCallback(oldItems: List<Muzei>, newItems: List<Muzei>) = object : DiffUtil.Callback() {
@@ -50,13 +51,14 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var activeUid = activeMuzeiUid
 
+    fun getUidByPosition(position: Int) = data.getOrNull(position)?.uid
+
     private fun refresh(uid: Long) {
         val index = data.indexOfFirst { it.uid == uid }
         if (index >= 0) {
             notifyItemChanged(index)
         }
     }
-
 
     fun updateData(data: List<Muzei>) {
         val result = DiffUtil.calculateDiff(muzeiDiffCallback(this.data, data))
@@ -71,30 +73,26 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = data[position]
-        val uid = data.uid
-        (holder as MuzeiViewHolder).bind(data)
-        holder.itemView.apply {
-            tag = uid
-            isSelected = uid == activeUid
-            setOnClickListener {
-                if (!isSelected) {
-                    refresh(activeUid)
-                    activeUid = uid
-                    activeMuzeiUid = uid
-                    isSelected = true
-                }
-            }
-        }
+        (holder as MuzeiViewHolder).bind(data[position])
     }
 
-    class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val keyword = itemView.findViewById<AppCompatTextView>(R.id.muzei_keyword)
         private val actionMenu = itemView.findViewById<ActionMenuView>(R.id.action_menu)
         private lateinit var muzei: Muzei
 
         init {
+            itemView.setOnClickListener {
+                if (!itemView.isSelected) {
+                    val oldUid = activeUid
+                    val newUid = muzei.uid
+                    activeUid = newUid
+                    activeMuzeiUid = newUid
+                    itemView.isSelected = true
+                    refresh(oldUid)
+                }
+            }
             MenuInflater(itemView.context).inflate(R.menu.muzei_item, actionMenu.menu)
             actionMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -105,7 +103,7 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         itemView.context.copyText(muzei.query)
                     }
                     R.id.action_muzei_item_delete -> {
-                        MuzeiManager.deleteMuzei(muzei)
+                        deleteMuzeiCallback(muzei.uid)
                     }
                 }
                 true
@@ -114,6 +112,8 @@ class MuzeiAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(muzei: Muzei) {
             this.muzei = muzei
+            itemView.tag = muzei.uid
+            itemView.isSelected = muzei.uid == activeUid
             keyword.text = muzei.query
         }
     }

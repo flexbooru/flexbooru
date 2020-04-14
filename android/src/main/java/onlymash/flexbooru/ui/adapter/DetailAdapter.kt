@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.annotation.IntRange
 import androidx.core.net.toUri
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -85,7 +86,7 @@ class DetailAdapter(
         }
     }
 
-    fun getPost(position: Int) = try {
+    fun getPost(@IntRange(from = 0) position: Int) = try {
         getItem(position)
     } catch (_: IndexOutOfBoundsException) {
         null

@@ -13,6 +13,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import org.apache.commons.io.output.ByteArrayOutputStream
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.konan.properties.Properties
 
@@ -22,6 +24,7 @@ plugins {
     kotlin("android.extensions")
     kotlin("kapt")
     kotlin("plugin.serialization")
+    id("com.google.gms.google-services")
     id("io.fabric")
 }
 
@@ -32,7 +35,7 @@ val properties = Properties()
 if (storePropertyFile.exists()) {
     properties.load(storePropertyFile.inputStream())
 }
-val byteOut = org.apache.commons.io.output.ByteArrayOutputStream()
+val byteOut = ByteArrayOutputStream()
 project.exec {
     commandLine = "git rev-list HEAD --first-parent --count".split(" ")
     standardOutput = byteOut
@@ -68,7 +71,7 @@ android {
     }
     applicationVariants.all {
         outputs.map {
-            it as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            it as BaseVariantOutputImpl
         }
             .forEach { output ->
                 output.outputFileName = "flexbooru_${defaultConfig.versionName}${defaultConfig.versionNameSuffix}.apk"
@@ -119,9 +122,6 @@ android {
     testOptions {
         unitTests.apply {
             isIncludeAndroidResources = true
-            all(KotlinClosure1<Any, Test>({
-                (this as Test).also { maxHeapSize = "1G" }
-            }, unitTests))
         }
     }
 }
@@ -186,7 +186,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
     implementation("androidx.paging:paging-runtime-ktx:2.1.2")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.2.0-alpha05")
+    implementation("com.google.android.material:material:1.2.0-alpha06")
     implementation("com.google.android:flexbox:2.0.1")
     implementation("com.google.android.apps.muzei:muzei-api:3.2.0")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -197,6 +197,7 @@ dependencies {
     implementation("com.github.kenglxn.QRGen:android:2.6.0")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-core:17.3.0")
+    implementation("com.google.firebase:firebase-analytics:17.3.0")
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
     implementation("com.google.android.gms:play-services-vision:20.0.0")
     implementation("com.android.billingclient:billing:2.2.0")
@@ -224,5 +225,3 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.3.0-alpha05")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0-alpha05")
 }
-
-apply { plugin("com.google.gms.google-services") }

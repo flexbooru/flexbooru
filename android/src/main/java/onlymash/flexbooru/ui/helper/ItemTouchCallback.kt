@@ -15,8 +15,13 @@
 
 package onlymash.flexbooru.ui.helper
 
-interface DismissItemListener {
+interface ItemTouchCallback {
 
-    fun onDismissItem(position: Int)
+    fun onSwipeItem(position: Int)
 
+    fun onDragItem(position: Int, targetPosition: Int)
+
+    val isSwipeEnabled: Boolean
+
+    val isDragEnabled: Boolean
 }

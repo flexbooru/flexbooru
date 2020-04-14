@@ -26,6 +26,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
@@ -39,7 +40,8 @@ import onlymash.flexbooru.ui.activity.BooruActivity
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
 import onlymash.flexbooru.ui.fragment.QRCodeDialog
 
-class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruAdapter.BooruViewHolder>() {
+class BooruAdapter(private val activity: Activity
+) : RecyclerView.Adapter<BooruAdapter.BooruViewHolder>() {
 
     companion object {
         fun booruDiffCallback(oldBoorus: List<Booru>, newBoorus: List<Booru>) = object : DiffUtil.Callback() {
@@ -56,10 +58,19 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruA
         }
     }
 
+    private var activeUid = activatedBooruUid
+
     private val _boorus: MutableList<Booru> = mutableListOf()
 
     init {
         setHasStableIds(true)
+    }
+
+    private fun refresh(uid: Long) {
+        val index = _boorus.indexOfFirst { it.uid == uid }
+        if (index >= 0) {
+            notifyItemChanged(index)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooruViewHolder =
@@ -73,6 +84,8 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruA
     }
 
     override fun getItemId(position: Int): Long = _boorus[position].uid
+
+    fun getUidByPosition(position: Int) = _boorus.getOrNull(position)?.uid
 
     fun updateBoorus(boorus: List<Booru>) {
         val result = DiffUtil.calculateDiff(booruDiffCallback(_boorus, boorus))
@@ -93,6 +106,16 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruA
         private val booruType: AppCompatTextView = itemView.findViewById(R.id.booru_type)
 
         init {
+            itemView.setOnClickListener {
+                if (!itemView.isSelected) {
+                    val oldUid = activeUid
+                    val newUid = booru.uid
+                    activeUid = newUid
+                    activatedBooruUid = newUid
+                    itemView.isSelected = true
+                    refresh(oldUid)
+                }
+            }
             MenuInflater(itemView.context).inflate(R.menu.booru_action_menu, booruActionMenuView.menu)
             booruActionMenuView.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -114,6 +137,7 @@ class BooruAdapter(private val activity: Activity) : RecyclerView.Adapter<BooruA
 
         fun bind(booru: Booru) {
             this.booru = booru
+            itemView.isSelected = booru.uid == activeUid
             booruName.text = booru.name
             booruUrl.text = String.format("%s://%s", booru.scheme, booru.host)
             booruType.setText(

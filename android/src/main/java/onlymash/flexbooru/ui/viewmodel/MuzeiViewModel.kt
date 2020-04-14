@@ -45,4 +45,12 @@ class MuzeiViewModel(private val muzeiDao: MuzeiDao) : ScopeViewModel() {
             } catch (_: Exception) {}
         }
     }
+
+    fun deleteByUid(uid: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                muzeiDao.deleteByUid(uid)
+            } catch (_: Exception) {}
+        }
+    }
 }

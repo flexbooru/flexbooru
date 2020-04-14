@@ -439,7 +439,14 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            BOORU_UID_ACTIVATED_KEY -> booruViewModel.loadBooru(activatedBooruUid)
+            BOORU_UID_ACTIVATED_KEY -> {
+                val identifier = headerView.activeProfile?.identifier ?: -1
+                val uid = activatedBooruUid
+                if (uid >= 0 && uid != identifier) {
+                    headerView.setActiveProfile(identifier = uid, fireOnProfileChanged = false)
+                }
+                booruViewModel.loadBooru(uid)
+            }
             ORDER_SUCCESS_KEY -> {
                 if (isOrderSuccess) {
                     drawerSliderView.removeItems(DRAWER_ITEM_ID_PURCHASE)

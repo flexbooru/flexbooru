@@ -18,8 +18,8 @@ package onlymash.flexbooru.ui.helper
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class DismissItemTouchHelperCallback(
-    private val dismissItemListener: DismissItemListener) : ItemTouchHelper.Callback() {
+class ItemTouchHelperCallback(
+    private val itemTouchCallback: ItemTouchCallback) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -35,13 +35,20 @@ class DismissItemTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
+        itemTouchCallback.onDragItem(
+            position = viewHolder.absoluteAdapterPosition,
+            targetPosition = target.absoluteAdapterPosition
+        )
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        dismissItemListener.onDismissItem(viewHolder.absoluteAdapterPosition)
+        itemTouchCallback.onSwipeItem(viewHolder.absoluteAdapterPosition)
     }
 
-    override fun isLongPressDragEnabled(): Boolean = false
+    override fun isLongPressDragEnabled(): Boolean =
+        itemTouchCallback.isDragEnabled
 
+    override fun isItemViewSwipeEnabled(): Boolean =
+        itemTouchCallback.isSwipeEnabled
 }

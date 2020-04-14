@@ -84,4 +84,12 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
             } catch (_: Exception) {}
         }
     }
+
+    fun deleteBooru(uid: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                booruDao.delete(uid)
+            } catch (_: Exception) {}
+        }
+    }
 }
