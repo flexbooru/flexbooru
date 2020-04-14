@@ -117,6 +117,7 @@
     <string name="browse_set_as">Beállítás, mint</string>
     <string name="browse_send_file">Fájl Küldése</string>
     <string name="browse_save_file">Fájl mentése</string>
+    <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Link megosztása</string>
     <string name="browse_open_in_browser">Megnyitás böngészőben</string>
     <string name="browse_tags">Címkék</string>

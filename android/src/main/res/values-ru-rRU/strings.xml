@@ -118,6 +118,7 @@
     <string name="browse_set_as">Установить как</string>
     <string name="browse_send_file">Отправить файл</string>
     <string name="browse_save_file">Сохранить файл</string>
+    <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Поделиться ссылкой</string>
     <string name="browse_open_in_browser">Открыть в браузере</string>
     <string name="browse_tags">Теги</string>

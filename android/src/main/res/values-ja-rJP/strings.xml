@@ -117,6 +117,7 @@
     <string name="browse_set_as">設定</string>
     <string name="browse_send_file">ファイルを送信</string>
     <string name="browse_save_file">ファイルを保存</string>
+    <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">リンクをシェア</string>
     <string name="browse_open_in_browser">ブラウザで開く</string>
     <string name="browse_tags">タグ</string>
