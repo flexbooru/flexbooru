@@ -61,7 +61,8 @@ class DetailAdapter(
     private val picasso: Picasso,
     private val dismissListener: DismissFrameLayout.OnDismissListener,
     private val ioExecutor: Executor,
-    private val clickCallback: () -> Unit) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostAdapter.POST_COMPARATOR) {
+    private val clickCallback: () -> Unit,
+    private val longClickCallback: () -> Unit) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostAdapter.POST_COMPARATOR) {
 
     private val size = detailSize
     private val colorMatrix = ColorMatrix().apply {
@@ -113,6 +114,10 @@ class DetailAdapter(
                     setOnClickListener {
                         clickCallback()
                     }
+                    setOnLongClickListener {
+                        longClickCallback()
+                        true
+                    }
                     setExecutor(ioExecutor)
                     setBitmapDecoderFactory { CustomDecoder(picasso) }
                     setRegionDecoderFactory { CustomRegionDecoder() }
@@ -158,6 +163,10 @@ class DetailAdapter(
                     scaleType = ImageView.ScaleType.FIT_CENTER
                     setOnViewTapListener { _, _, _ ->
                         clickCallback()
+                    }
+                    setOnLongClickListener {
+                        longClickCallback()
+                        true
                     }
                     transitionName = String.format("post_%d", post.id)
                 }

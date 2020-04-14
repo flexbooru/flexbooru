@@ -16,6 +16,7 @@
 package onlymash.flexbooru.ui.activity
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -27,6 +28,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.IntRange
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -62,6 +64,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
+import onlymash.flexbooru.common.Values.REQUEST_CODE_SAVE_FILE
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
@@ -91,9 +94,10 @@ private const val ALPHA_MIN = 0x00
 private const val POSITION_INIT = -1
 private const val POSITION_INITED = -2
 
-private const val ACTION_SAVE = 101
-private const val ACTION_SET_AS = 102
-private const val ACTION_SEND = 103
+private const val ACTION_SAVE = 11
+private const val ACTION_SAVE_AS = 12
+private const val ACTION_SET_AS = 13
+private const val ACTION_SEND = 14
 
 class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Toolbar.OnMenuItemClickListener {
 
@@ -127,6 +131,8 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     private lateinit var colorDrawable: ColorDrawable
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
+
+    private var tmpFile: File? = null
 
     private val currentPost: Post?
         get() = detailAdapter.getPost(detail_pager.currentItem)
@@ -227,20 +233,24 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             glide = glide,
             dismissListener = this,
             picasso = Picasso.Builder(this).build(),
-            ioExecutor = ioExecutor
-        ) {
-            if (toolbar_container.isVisible) {
-                window.hideBar()
-                toolbar_container.isVisible = false
-                bottom_bar_container.isVisible = false
-                shadow.isVisible = false
-            } else {
-                window.showBar()
-                toolbar_container.isVisible = true
-                bottom_bar_container.isVisible = true
-                shadow.isVisible = true
+            ioExecutor = ioExecutor,
+            clickCallback = {
+                if (toolbar_container.isVisible) {
+                    window.hideBar()
+                    toolbar_container.isVisible = false
+                    bottom_bar_container.isVisible = false
+                    shadow.isVisible = false
+                } else {
+                    window.showBar()
+                    toolbar_container.isVisible = true
+                    bottom_bar_container.isVisible = true
+                    shadow.isVisible = true
+                }
+            },
+            longClickCallback = {
+                createLongClickDialog()
             }
-        }
+        )
         detail_pager.apply {
             adapter = detailAdapter
             registerOnPageChangeCallback(pageChangeCallback)
@@ -294,7 +304,9 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             }
         }
         post_save.setOnClickListener {
-            saveAndAction(ACTION_SAVE)
+            currentPost?.let {
+                saveAndAction(it, ACTION_SAVE)
+            }
         }
         post_fav.setOnClickListener {
             if (booru.type == BOORU_TYPE_SHIMMIE) {
@@ -353,60 +365,61 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
+        val post = currentPost ?: return true
         when (item?.itemId) {
             R.id.action_browse_comment -> {
                 currentPost?.let {
                     CommentActivity.startActivity(this, postId = it.id)
                 }
             }
-            R.id.action_browse_download -> {
-                DownloadWorker.downloadPost(currentPost, booru.host, this)
-            }
-            R.id.action_browse_set_as -> saveAndAction(ACTION_SET_AS)
-            R.id.action_browse_send -> saveAndAction(ACTION_SEND)
-            R.id.action_browse_share -> shareLink()
+            R.id.action_browse_download -> download(post)
+            R.id.action_browse_set_as -> saveAndAction(post, ACTION_SET_AS)
+            R.id.action_browse_send -> saveAndAction(post, ACTION_SEND)
+            R.id.action_browse_share -> shareLink(post)
             R.id.action_browse_recommended -> {
-                val id = currentPost?.id ?: return true
-                if (id > 0) {
-                    val query = "recommended_for_post:$id"
-                    HistoryManager.createHistory(History(
-                        booruUid = booru.uid,
-                        query = query)
-                    )
-                    SearchActivity.startSearch(this, query)
-                }
+                val query = "recommended_for_post:${post.id}"
+                HistoryManager.createHistory(History(
+                    booruUid = booru.uid,
+                    query = query)
+                )
+                SearchActivity.startSearch(this, query)
             }
-            R.id.action_browse_open_browser -> {
-                val url = getLink()
-                if (!url.isNullOrEmpty()) {
-                    launchUrl(url)
-                }
-            }
+            R.id.action_browse_open_browser -> openBrowser(post)
         }
         return true
     }
 
-    private fun getLink(): String? {
-        val id = currentPost?.id ?: return null
+    private fun download(post: Post) {
+        DownloadWorker.downloadPost(post, booru.host, this)
+    }
+
+    private fun openBrowser(post: Post) {
+        val url = getLink(post)
+        if (!url.isNullOrEmpty()) {
+            launchUrl(url)
+        }
+    }
+
+    private fun getLink(post: Post): String? {
         return when (booru.type) {
-            BOORU_TYPE_DAN -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, id)
-            BOORU_TYPE_DAN1 -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, id)
-            BOORU_TYPE_MOE -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, id)
-            BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, id)
-            BOORU_TYPE_SANKAKU -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), id)
+            BOORU_TYPE_DAN -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
+            BOORU_TYPE_DAN1 -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+            BOORU_TYPE_MOE -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
+            BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
+            BOORU_TYPE_SANKAKU -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
             BOORU_TYPE_SHIMMIE -> {
                 if (booru.path.isNullOrBlank()) {
-                    String.format("%s://%s/post/view/%d", booru.scheme, booru.host, id)
+                    String.format("%s://%s/post/view/%d", booru.scheme, booru.host, post.id)
                 } else {
-                    String.format("%s://%s/%s/post/view/%d", booru.scheme, booru.host, booru.path, id)
+                    String.format("%s://%s/%s/post/view/%d", booru.scheme, booru.host, booru.path, post.id)
                 }
             }
             else -> null
         }
     }
 
-    private fun shareLink() {
-        val url = getLink()
+    private fun shareLink(post: Post) {
+        val url = getLink(post)
         if (!url.isNullOrEmpty()) {
             startActivity(Intent.createChooser(
                 Intent().apply {
@@ -419,56 +432,100 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         }
     }
 
+    private fun createLongClickDialog() {
+        val post = currentPost ?: return
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Post ${post.id}")
+            .setItems(resources.getTextArray(R.array.detail_item_action)) { _, which ->
+                when (which) {
+                    0 -> saveAndAction(post, ACTION_SAVE_AS)
+                    1 -> download(post)
+                    2 -> openBrowser(post)
+                }
+            }
+            .create()
+        dialog.show()
+    }
+
     private val mutex = Mutex()
 
-    private fun saveAndAction(@IntRange(from = ACTION_SAVE.toLong(), to = ACTION_SEND.toLong()) action: Int) {
+    private fun saveAndAction(post: Post, @IntRange(from = ACTION_SAVE.toLong(), to = ACTION_SEND.toLong()) action: Int) {
+        val url = when (detailSize) {
+            POST_SIZE_SAMPLE -> post.sample
+            POST_SIZE_LARGER -> post.medium
+            else -> post.origin
+        }
+        if (url.isBlank()) return
         lifecycleScope.launch {
             mutex.withLock {
-                val post = currentPost ?: return@launch
-                val url = when (detailSize) {
-                    POST_SIZE_SAMPLE -> post.sample
-                    POST_SIZE_LARGER -> post.medium
-                    else -> post.origin
-                }
-                if (url.isBlank()) return@launch
-                val file = loadFile(url) ?: return@launch
-                val fileName = url.fileName()
                 when (action) {
-                    ACTION_SAVE -> {
-                        val uri = getSaveUri(fileName) ?: return@launch
-                        if (copyFile(file, uri)) {
-                            Toast.makeText(this@DetailActivity,
-                                getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
-                                Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    ACTION_SET_AS -> {
-                        val cacheFile = File(externalCacheDir, fileName)
-                        val desUri = cacheFile.toUri()
-                        if (copyFile(file, desUri)) {
-                            this@DetailActivity.startActivity(Intent.createChooser(
-                                Intent(Intent.ACTION_ATTACH_DATA).apply {
-                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    putExtra(Intent.EXTRA_MIME_TYPES, fileName.getMimeType())
-                                    data = getUriForFile(cacheFile)
-                                },
-                                getString(R.string.share_via)
-                            ))
-                        }
-                    }
-                    ACTION_SEND -> {
-                        this@DetailActivity.startActivity(Intent.createChooser(
-                            Intent(Intent.ACTION_SEND).apply {
-                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                type = fileName.getMimeType()
-                                putExtra(Intent.EXTRA_STREAM, getUriForFile(file))
-                            },
-                            getString(R.string.share_via)
-                        ))
-                    }
+                    ACTION_SAVE -> saveFile(loadFile(url), url.fileName())
+                    ACTION_SAVE_AS -> saveFileAs(loadFile(url), url.fileName())
+                    ACTION_SET_AS -> setFileAs(loadFile(url), url.fileName())
+                    ACTION_SEND -> sendFile(loadFile(url), url.fileName())
                 }
             }
         }
+    }
+
+    private suspend fun saveFile(source: File?, fileName: String) {
+        if (source == null) {
+            return
+        }
+        val uri = getSaveUri(fileName) ?: return
+        if (copyFile(file = source, desUri = uri)) {
+            Toast.makeText(this,
+                getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
+                Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveFileAs(source: File?, fileName: String) {
+        if (source == null) {
+            return
+        }
+        tmpFile = source
+        val intent = Intent().apply {
+            action = Intent.ACTION_CREATE_DOCUMENT
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = fileName.getMimeType()
+            putExtra(Intent.EXTRA_TITLE, fileName)
+        }
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SAVE_FILE)
+        } catch (_: ActivityNotFoundException) {}
+    }
+
+    private suspend fun setFileAs(source: File?, fileName: String) {
+        if (source == null) {
+            return
+        }
+        val cacheFile = File(externalCacheDir, fileName)
+        val desUri = cacheFile.toUri()
+        if (copyFile(source, desUri)) {
+            startActivity(Intent.createChooser(
+                Intent(Intent.ACTION_ATTACH_DATA).apply {
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    putExtra(Intent.EXTRA_MIME_TYPES, fileName.getMimeType())
+                    data = getUriForFile(cacheFile)
+                },
+                getString(R.string.share_via)
+            ))
+        }
+    }
+
+    private fun sendFile(source: File?, fileName: String) {
+        if (source == null) {
+            return
+        }
+        startActivity(Intent.createChooser(
+            Intent(Intent.ACTION_SEND).apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                type = fileName.getMimeType()
+                putExtra(Intent.EXTRA_STREAM, getUriForFile(source))
+            },
+            getString(R.string.share_via)
+        ))
     }
 
     private suspend fun loadFile(url: String): File? =
@@ -484,21 +541,22 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             }
         }
 
-    private suspend fun copyFile(file: File, desUri: Uri): Boolean = withContext(Dispatchers.IO) {
-        var inputStream: InputStream? = null
-        var outputSteam: OutputStream? = null
-        try {
-            inputStream = FileInputStream(file)
-            outputSteam = contentResolver.openOutputStream(desUri)
-            inputStream.copyTo(outputSteam)
-            return@withContext true
-        } catch (_: IOException) {
-            return@withContext false
-        } finally {
-            inputStream?.safeCloseQuietly()
-            outputSteam?.safeCloseQuietly()
+    private suspend fun copyFile(file: File, desUri: Uri): Boolean =
+        withContext(Dispatchers.IO) {
+            var inputStream: InputStream? = null
+            var outputSteam: OutputStream? = null
+            try {
+                inputStream = FileInputStream(file)
+                outputSteam = contentResolver.openOutputStream(desUri)
+                inputStream.copyTo(outputSteam)
+                true
+            } catch (_: IOException) {
+                false
+            } finally {
+                inputStream?.safeCloseQuietly()
+                outputSteam?.safeCloseQuietly()
+            }
         }
-    }
 
     override fun onStart() {
         super.onStart()
@@ -544,5 +602,25 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             player = null
         }
         playerHolder.release()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            tmpFile = null
+            return
+        }
+        if (requestCode == REQUEST_CODE_SAVE_FILE) {
+            val uri = data.data ?: return
+            val file = tmpFile ?: return
+            lifecycleScope.launch {
+                if (copyFile(file, uri)) {
+                    Toast.makeText(this@DetailActivity,
+                        getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
+                        Toast.LENGTH_SHORT).show()
+                }
+                tmpFile = null
+            }
+        }
     }
 }

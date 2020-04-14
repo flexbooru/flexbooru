@@ -178,4 +178,9 @@
         <item>@string/pool_download_jpgs</item>
         <item>@string/pool_download_pngs</item>
     </string-array>
+    <string-array name="detail_item_action">
+        <item>@string/browse_save_as</item>
+        <item>@string/browse_download</item>
+        <item>@string/browse_open_in_browser</item>
+    </string-array>
 </resources>

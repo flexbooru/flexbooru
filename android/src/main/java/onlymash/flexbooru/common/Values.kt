@@ -43,6 +43,7 @@ object Values {
     const val HASH_SALT_CONTAINED = "your-password"
 
     const val REQUEST_CODE_OPEN_DIRECTORY = 101
+    const val REQUEST_CODE_SAVE_FILE = 102
     
     object Tags {
         const val TYPE_ALL = -1
