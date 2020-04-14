@@ -335,16 +335,17 @@ class PostFragment : SearchBarFragment() {
 
 
     private fun handleLongClick(post: Post) {
-        val context = context ?: return
-        AlertDialog.Builder(context)
+        val activity = activity
+        if (activity == null || activity.isFinishing) {
+            return
+        }
+        AlertDialog.Builder(activity)
             .setTitle("Post ${post.id}")
             .setItems(resources.getTextArray(R.array.post_item_action)) { _, which ->
                 when (which) {
                     0 -> {
                         action?.apply {
-                            activity?.let {
-                                DownloadWorker.downloadPost(post, booru.host, it)
-                            }
+                            DownloadWorker.downloadPost(post, booru.host, activity)
                         }
                     }
                     1 -> {
@@ -357,7 +358,7 @@ class PostFragment : SearchBarFragment() {
                             }
                         }
                     }
-                    2 -> SauceNaoActivity.startSearch(context, post.sample)
+                    2 -> SauceNaoActivity.startSearch(activity, post.sample)
                 }
             }
             .create()

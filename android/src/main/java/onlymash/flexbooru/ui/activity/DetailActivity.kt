@@ -433,7 +433,10 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun createLongClickDialog() {
-        val post = currentPost ?: return
+        val post = currentPost
+        if (post == null || isFinishing) {
+            return
+        }
         val dialog = AlertDialog.Builder(this)
             .setTitle("Post ${post.id}")
             .setItems(resources.getTextArray(R.array.detail_item_action)) { _, which ->
