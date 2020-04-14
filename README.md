@@ -12,7 +12,10 @@ A booru client for Android, support [Danbooru](https://github.com/r888888888/dan
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Translate
-Click on this [link](https://crowdin.com/project/flexbooru) and you can translate this app into your language.
+
+Click the icon below to translate this app.
+
+[![Crowdin](https://badges.crowdin.net/flexbooru/localized.svg)](https://crowdin.com/project/flexbooru)
 
 ## Downlad
 <a href="https://play.google.com/store/apps/details?id=onlymash.flexbooru.play"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="48"></a>
