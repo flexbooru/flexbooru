@@ -118,6 +118,7 @@
     <string name="browse_set_as">Establecer como</string>
     <string name="browse_send_file">Enviar archivo</string>
     <string name="browse_save_file">Guardar archivo</string>
+    <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Compartir enlace</string>
     <string name="browse_open_in_browser">Abrir en el navegador</string>
     <string name="browse_tags">Etiquetas</string>

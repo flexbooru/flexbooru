@@ -118,6 +118,7 @@
     <string name="browse_set_as">Jadikan sebagai</string>
     <string name="browse_send_file">Kirim file</string>
     <string name="browse_save_file">Simpan berkas</string>
+    <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Bagikan tautan</string>
     <string name="browse_open_in_browser">Buka di browser</string>
     <string name="browse_tags">Label</string>
