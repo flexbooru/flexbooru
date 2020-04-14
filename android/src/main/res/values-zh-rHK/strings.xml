@@ -117,6 +117,7 @@
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送檔案</string>
     <string name="browse_save_file">儲存檔案</string>
+    <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">分享連結</string>
     <string name="browse_open_in_browser">在瀏覽器開啟</string>
     <string name="browse_tags">標籤</string>
