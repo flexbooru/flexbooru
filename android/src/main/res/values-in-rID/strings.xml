@@ -17,7 +17,7 @@
     <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Posting</string>
-    <string name="title_search">Search</string>
+    <string name="title_search">Cari</string>
     <string name="title_popular">Populer</string>
     <string name="title_manage_boorus">Kelola Booru</string>
     <string name="title_settings">Pengaturan</string>
@@ -35,8 +35,8 @@
     <string name="title_tag_blacklist">Pengecualian Label</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Cari Anime</string>
-    <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
+    <string name="title_history">Riwayat</string>
+    <string name="history_clear_all">Hapus semua</string>
     <string name="history_clear_all_content">All history will be cleared.</string>
     <string name="about_app_version">Versi</string>
     <string name="about_app_rate">Beri nilai app ini</string>
@@ -65,8 +65,8 @@
     <string name="post_search_by_sauce_nao">Telusuri dengan SauceNao</string>
     <string name="msg_download_must_enable">Manajer Unduhan dibutuhkan</string>
     <string name="msg_path_denied">Gagal disimpan! Tidak memiliki akses ke path</string>
-    <string name="msg_download_failed">Download failed</string>
-    <string name="msg_download_complete">Download complete</string>
+    <string name="msg_download_failed">Unduhan gagal</string>
+    <string name="msg_download_complete">Unduhan selesai</string>
     <string name="msg_password_or_hash_salt_wrong">Password or Hash salt is wrong.</string>
     <string name="popular_day">Hari</string>
     <string name="popular_week">Minggu</string>
@@ -82,8 +82,8 @@
     <string name="update_found_update">Pembaruan baru tersedia</string>
     <string name="update_version">Versi: %s</string>
     <string name="booru_add">Add booru</string>
-    <string name="booru_add_from_qr_code">Scan QR code</string>
-    <string name="booru_add_from_clipboard">Import from Clipboard</string>
+    <string name="booru_add_from_qr_code">Pindai kode QR</string>
+    <string name="booru_add_from_clipboard">Impor dari Papan Klip</string>
     <string name="booru_add_from_manual_settings">Manual settings</string>
     <string name="booru_add_error">ERROR: Invalid data</string>
     <string name="booru_add_title_dialog">Add this booru?</string>
@@ -118,7 +118,7 @@
     <string name="browse_set_as">Jadikan sebagai</string>
     <string name="browse_send_file">Kirim file</string>
     <string name="browse_save_file">Simpan berkas</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">Simpan sebagai…</string>
     <string name="browse_share_link">Bagikan tautan</string>
     <string name="browse_open_in_browser">Buka di browser</string>
     <string name="browse_tags">Label</string>
@@ -184,7 +184,7 @@
     <string name="settings_clear_history_dialog_content">All search history will be cleared.</string>
     <string name="settings_muzei">Muzei</string>
     <string name="settings_display">Display</string>
-    <string name="settings_options">Options</string>
+    <string name="settings_options">Opsi</string>
     <string name="settings_storage">Storage</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
@@ -233,7 +233,7 @@
     <string name="rating">Rating</string>
     <string name="threshold">Threshold</string>
     <string name="muzei_copy">Salin</string>
-    <string name="muzei_delete">Delete</string>
+    <string name="muzei_delete">Hapus</string>
     <string name="muzei_search">Cari</string>
     <string name="muzei_search_hint">Add tag…</string>
     <string name="muzei_fetch">Fetch Artwork</string>
@@ -241,14 +241,14 @@
     <string name="muzei_action_view_post">View post on Flexbooru</string>
     <string name="muzei_action_search_posts">Search posts on Flexbooru</string>
     <string name="muzei_attribution">Post from Flexbooru</string>
-    <string name="tag_blacklist_copy">Copy</string>
-    <string name="tag_blacklist_delete">Delete</string>
-    <string name="tag_blacklist_add">Add</string>
-    <string name="comment_reply">Reply</string>
-    <string name="comment_quote">Quote</string>
-    <string name="comment_delete">Delete</string>
-    <string name="comment_send">Send</string>
-    <string name="comment_cancel">Cancel</string>
+    <string name="tag_blacklist_copy">Salin</string>
+    <string name="tag_blacklist_delete">Hapus</string>
+    <string name="tag_blacklist_add">Tambah</string>
+    <string name="comment_reply">Balas</string>
+    <string name="comment_quote">Kutip</string>
+    <string name="comment_delete">Hapus</string>
+    <string name="comment_send">Kirim</string>
+    <string name="comment_cancel">Batal</string>
     <string name="comment_hint">Input comment</string>
     <string name="purchase_title">Remove ads &amp; feature unlock</string>
     <string name="purchase_info_title">Remove ads and unlock full features</string>
@@ -269,7 +269,7 @@
     <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
     <string name="sauce_nao_image_url">Image url</string>
     <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
+    <string name="sauce_nao_source">Sumber</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Berkas</string>
     <string name="action_add_to_muzei">Add to Muzei</string>
