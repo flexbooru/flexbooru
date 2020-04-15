@@ -5,6 +5,9 @@ orbs:
 
 jobs:
   build:
+    branches:
+      only:
+        - master
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29-node
@@ -16,13 +19,13 @@ jobs:
           key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "android/build.gradle.kts" }}
       - run:
           name: Run Lint
-          command: ./gradlew lint
+          command: ./gradlew lint --warning-mode all
       - store_artifacts:
           path: android/build/reports
           destination: reports
       - run:
           name: Run Debug Build
-          command: ./gradlew assembleDebug
+          command: ./gradlew assembleDebug --warning-mode all
       - save_cache:
           paths:
             - ~/.gradle
