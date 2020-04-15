@@ -37,8 +37,8 @@
     <color name="colorDividerItem">@color/grey_300</color>
     <color name="colorButtonText">@color/colorPrimary</color>
     <color name="colorCardBackground">@color/background_card_light</color>
-    <color name="colorStatusBar">@color/system_bar_dark</color>
-    <color name="colorNavigationBar">@color/system_bar_dark</color>
+    <color name="colorStatusBar">@color/system_bar_dark_scrim</color>
+    <color name="colorNavigationBar">@color/system_bar_dark_scrim</color>
     <color name="colorStatusBarScrim">@color/system_bar_dark_scrim</color>
     <color name="colorNavigationBarScrim">@color/system_bar_dark_scrim</color>
     <color name="colorNavigationBarDivider">#DCDCDC</color>
