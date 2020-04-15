@@ -24,13 +24,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_booru.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.activity_list_common.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -58,7 +59,7 @@ import java.io.InputStream
 
 class BooruActivity : BaseActivity() {
 
-    private val booruDao: BooruDao by instance()
+    private val booruDao by instance<BooruDao>()
 
     private val booruAdapter by lazy { BooruAdapter(this) }
 
@@ -87,11 +88,14 @@ class BooruActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_booru)
+        setContentView(R.layout.activity_list_common)
         drawNavBar { insets ->
             list.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
-        initToolbar()
+        supportActionBar?.apply {
+            setTitle(R.string.title_manage_boorus)
+            setDisplayHomeAsUpEnabled(true)
+        }
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         val animator = DefaultItemAnimator().apply {
             supportsChangeAnimations = false
@@ -152,29 +156,39 @@ class BooruActivity : BaseActivity() {
                 .show()
         }
     }
-    private fun initToolbar(){
-        toolbar.setTitle(R.string.title_manage_boorus)
-        toolbar.setNavigationOnClickListener { finish() }
-        toolbar.inflateMenu(R.menu.booru)
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_booru_add_qr -> {
-                    addConfigFromQRCode()
-                }
-                R.id.action_booru_add_clipboard -> {
-                    addConfigFromClipboard()
-                }
-                R.id.action_booru_add_manual -> {
-                    addConfig()
-                }
-                R.id.action_booru_backup_to_file -> {
-                    backupToFile()
-                }
-                R.id.action_booru_restore_from_file -> {
-                    restoreFromFile()
-                }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.booru, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
             }
-            true
+            R.id.action_booru_add_qr -> {
+                addConfigFromQRCode()
+                true
+            }
+            R.id.action_booru_add_clipboard -> {
+                addConfigFromClipboard()
+                true
+            }
+            R.id.action_booru_add_manual -> {
+                addConfig()
+                true
+            }
+            R.id.action_booru_backup_to_file -> {
+                backupToFile()
+                true
+            }
+            R.id.action_booru_restore_from_file -> {
+                restoreFromFile()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -228,10 +242,10 @@ class BooruActivity : BaseActivity() {
             if (booru != null) {
                 booruViewModel.createBooru(booru)
             } else {
-                Snackbar.make(toolbar, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(list, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
             }
         } else {
-            Snackbar.make(toolbar, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(list, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
         }
     }
 

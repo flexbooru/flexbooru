@@ -110,8 +110,8 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var headerView: AccountHeaderView
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
-    private val sp: SharedPreferences by instance()
-    private val booruDao: BooruDao by instance()
+    private val sp by instance<SharedPreferences>()
+    private val booruDao by instance<BooruDao>()
 
     private lateinit var booruViewModel: BooruViewModel
 
@@ -171,7 +171,7 @@ class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_Main)
+        setTheme(R.style.AppTheme_NoActionBar_Scrim_Main)
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val windowHeight = resources.displayMetrics.heightPixels

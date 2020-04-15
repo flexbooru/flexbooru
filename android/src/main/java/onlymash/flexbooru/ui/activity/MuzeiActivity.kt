@@ -21,6 +21,8 @@ import android.content.pm.PackageManager
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
@@ -33,7 +35,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_muzei.*
-import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values
@@ -118,22 +119,9 @@ class MuzeiActivity : KodeinActivity() {
                 bottomMargin = resources.getDimensionPixelSize(R.dimen.margin_normal) + insets.systemWindowInsetBottom
             }
         }
-        toolbar.apply {
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_muzei)
-            inflateMenu(R.menu.muzei)
-            setNavigationOnClickListener {
-                onBackPressed()
-            }
-            setOnMenuItemClickListener { menuItem ->
-                if (menuItem?.itemId == R.id.action_muzei_fetch) {
-                    MuzeiArtWorker.enqueueLoad()
-                }
-                true
-            }
-        }
-        val searchView = toolbar.menu?.findItem(R.id.action_muzei_search)?.actionView as? SearchView
-        if (searchView != null) {
-            initSearchView(searchView)
         }
         muzei_button.setOnClickListener {
             val muzeiPackageName = "net.nurik.roman.muzei"
@@ -158,6 +146,29 @@ class MuzeiActivity : KodeinActivity() {
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))
             adapter = muzeiAdapter
             ItemTouchHelper(ItemTouchHelperCallback(itemTouchCallback)).attachToRecyclerView(this)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.muzei, menu)
+        val searchView = menu?.findItem(R.id.action_muzei_search)?.actionView as? SearchView
+        if (searchView != null) {
+            initSearchView(searchView)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            R.id.action_muzei_fetch -> {
+                MuzeiArtWorker.enqueueLoad()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

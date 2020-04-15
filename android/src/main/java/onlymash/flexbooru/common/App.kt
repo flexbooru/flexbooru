@@ -125,8 +125,8 @@ class App : Application(), KodeinAware {
             override fun onBillingSetupFinished(billingResult: BillingResult?) {
                 if (billingClient.isReady) {
                     val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
-                    if (purchases.isNullOrEmpty()) {
-                        isOrderSuccess = false
+                    isOrderSuccess = if (purchases.isNullOrEmpty()) {
+                       false
                     } else {
                         val index = purchases.indexOfFirst {
                             it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
@@ -139,10 +139,8 @@ class App : Application(), KodeinAware {
                                     .build()
                                 billingClient.acknowledgePurchase(ackParams){}
                             }
-                            isOrderSuccess = true
-                        } else {
-                            isOrderSuccess = false
-                        }
+                            true
+                        } else false
                     }
                     billingClient.endConnection()
                 }

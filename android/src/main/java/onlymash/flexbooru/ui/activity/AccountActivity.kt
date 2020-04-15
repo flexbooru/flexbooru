@@ -16,13 +16,14 @@
 package onlymash.flexbooru.ui.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
@@ -50,7 +51,7 @@ class AccountActivity : BaseActivity() {
         const val USER_AVATAR_KEY = "user_avatar"
     }
 
-    private val booruApis: BooruApis by instance()
+    private val booruApis by instance<BooruApis>()
 
     private lateinit var booru: Booru
     private lateinit var user: User
@@ -61,11 +62,18 @@ class AccountActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
         val uid = activatedBooruUid
-        booru = BooruManager.getBooruByUid(uid) ?: return
-        toolbar.title = String.format(getString(R.string.title_account_and_booru), booru.name)
+        val booru = BooruManager.getBooruByUid(uid)
+        if (booru == null) {
+            finish()
+            return
+        }
+        this.booru = booru
+        setContentView(R.layout.activity_account)
+        supportActionBar?.apply {
+            title = String.format(getString(R.string.title_account_and_booru), booru.name)
+            setDisplayHomeAsUpEnabled(true)
+        }
         val extras = intent?.extras
         val type = booru.type
         var u: User? = null
@@ -101,10 +109,8 @@ class AccountActivity : BaseActivity() {
             }
         }
         if (u == null) {
-            u = booru.user
-            if (u != null) {
-                user = u
-                initToolbarMenu()
+            booru.user?.let {
+                user = it
                 init()
             }
         } else {
@@ -112,27 +118,47 @@ class AccountActivity : BaseActivity() {
             init()
         }
     }
-    private fun initToolbarMenu() {
-        toolbar.inflateMenu(R.menu.account)
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.action_account_remove) {
-                AlertDialog.Builder(this@AccountActivity)
-                    .setTitle(R.string.account_user_dialog_title_remove)
-                    .setPositiveButton(R.string.dialog_yes) {_, _ ->
-                        booru.user = null
-                        BooruManager.updateBooru(booru)
-                        if (booru.type == BOORU_TYPE_GEL) {
-                            CookieManager.deleteByBooruUid(booru.uid)
-                        }
-                        finish()
-                    }
-                    .setNegativeButton(R.string.dialog_no, null)
-                    .create()
-                    .show()
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (booru.user != null) {
+            menuInflater.inflate(R.menu.account, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
             }
-            return@setOnMenuItemClickListener true
+            R.id.action_account_remove -> {
+                createDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun createDialog() {
+        if (isFinishing) {
+            return
+        }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.account_user_dialog_title_remove)
+            .setPositiveButton(R.string.dialog_yes) {_, _ ->
+                booru.user = null
+                BooruManager.updateBooru(booru)
+                if (booru.type == BOORU_TYPE_GEL) {
+                    CookieManager.deleteByBooruUid(booru.uid)
+                }
+                finish()
+            }
+            .setNegativeButton(R.string.dialog_no, null)
+            .create()
+            .show()
+    }
+
     private fun init() {
         username.text = user.name
         user_id.text = String.format(getString(R.string.account_user_id), user.id)
@@ -151,32 +177,32 @@ class AccountActivity : BaseActivity() {
             if (booru.type == BOORU_TYPE_GEL) {
                 val url = "${booru.scheme}://${booru.host}/index.php?page=favorites&s=view&id=${user.id}"
                 launchUrl(url)
-                return@setOnClickListener
+            } else {
+                val query = when (booru.type) {
+                    BOORU_TYPE_DAN,
+                    BOORU_TYPE_DAN1,
+                    BOORU_TYPE_SANKAKU -> String.format("fav:%s", user.name)
+                    BOORU_TYPE_MOE -> String.format("vote:3:%s order:vote", user.name)
+                    else -> throw IllegalStateException("unknown booru type: ${booru.type}")
+                }
+                SearchActivity.startSearch(this, query)
             }
-            val query = when (booru.type) {
-                BOORU_TYPE_DAN,
-                BOORU_TYPE_DAN1,
-                BOORU_TYPE_SANKAKU -> String.format("fav:%s", user.name)
-                BOORU_TYPE_MOE -> String.format("vote:3:%s order:vote", user.name)
-                else -> throw IllegalStateException("unknown booru type: ${booru.type}")
-            }
-            SearchActivity.startSearch(this, query)
         }
         posts_action_button.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
-                Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
-                return@setOnClickListener
+                Snackbar.make(root_container, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
+            } else {
+                val query = String.format("user:%s", user.name)
+                SearchActivity.startSearch(this, query)
             }
-            val query = String.format("user:%s", user.name)
-            SearchActivity.startSearch(this, query)
         }
         comments_action_button.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
-                Snackbar.make(toolbar, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
-                return@setOnClickListener
+                Snackbar.make(root_container, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
+            } else {
+                val query = if (booru.type != BOORU_TYPE_DAN) "user:${user.name}" else user.name
+                CommentActivity.startActivity(this, query = query)
             }
-            val query = if (booru.type != BOORU_TYPE_DAN) "user:${user.name}" else user.name
-            CommentActivity.startActivity(this, query = query)
         }
         if (booru.type == BOORU_TYPE_SANKAKU) {
             recommended_action_button.setOnClickListener {

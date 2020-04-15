@@ -16,7 +16,6 @@
 package onlymash.flexbooru.data.model.common
 
 import androidx.room.*
-import onlymash.flexbooru.data.model.common.Booru
 
 
 @Entity(tableName = "cookies", indices = [(Index(value = ["booru_uid"], unique = true))],

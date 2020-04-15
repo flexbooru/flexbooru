@@ -16,4 +16,5 @@
 
 <resources>
     <color name="colorStatusBar">@color/system_bar_light</color>
+    <color name="colorStatusBarScrim">@color/system_bar_light_scrim</color>
 </resources>

@@ -17,11 +17,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:ns2="http://schemas.android.com/tools">
 
-    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/is_light_status_bar</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/is_light_navigation_bar</item>
         <item name="android:statusBarColor">@color/colorStatusBar</item>
         <item name="android:navigationBarColor">@color/colorNavigationBar</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="background">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
@@ -48,7 +53,25 @@
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
     </style>
 
-    <style name="AppTheme.Main">
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Scrim">
+        <item name="android:statusBarColor">@color/colorStatusBarScrim</item>
+        <item name="android:navigationBarColor">@color/colorNavigationBarScrim</item>
+    </style>
+
+    <style name="AppTheme.ScrimNavBar">
+        <item name="android:navigationBarColor">@color/colorNavigationBarScrim</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Launcher">
+        <item name="android:windowBackground">@drawable/background_launcher</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Scrim.Main">
         <!-- MaterialDrawer specific values -->
         <item name="materialDrawerStyle">@style/MaterialDrawerStyle</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle</item>
@@ -59,11 +82,15 @@
         <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
     </style>
 
-    <style name="AppTheme.Animation">
+    <style name="AppTheme.ScrimNavBar.Animation">
         <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
     </style>
 
-    <style name="AppTheme.NoAnimation">
+    <style name="AppTheme.NoActionBar.Animation">
+        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Scrim.NoAnimation">
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
@@ -79,11 +106,7 @@
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
 
-    <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/background_launcher</item>
-    </style>
-
-    <style name="AppTheme.NoAnimation.Detail">
+    <style name="AppTheme.NoActionBar.Scrim.NoAnimation.Detail">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>

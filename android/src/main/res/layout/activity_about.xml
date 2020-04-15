@@ -14,22 +14,12 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_about"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="onlymash.flexbooru.ui.activity.AboutActivity">
-
-    <include layout="@layout/appbar"/>
-
-    <fragment
-        android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_about"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:ignore="FragmentTagUsage" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    android:name="onlymash.flexbooru.ui.fragment.AboutFragment"
+    tools:context="onlymash.flexbooru.ui.activity.AboutActivity"
+    tools:ignore="FragmentTagUsage"/>

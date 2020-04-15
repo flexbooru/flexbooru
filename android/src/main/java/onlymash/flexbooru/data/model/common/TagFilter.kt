@@ -16,7 +16,6 @@
 package onlymash.flexbooru.data.model.common
 
 import androidx.room.*
-import onlymash.flexbooru.data.model.common.Booru
 
 @Entity(tableName = "tags_filter", indices = [(Index(value = ["booru_uid", "name"], unique = true))],
     foreignKeys = [(ForeignKey(

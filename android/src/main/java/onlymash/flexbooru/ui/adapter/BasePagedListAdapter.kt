@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.isFailed
-import onlymash.flexbooru.data.repository.isSuccess
 import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 
 abstract class BasePagedListAdapter<T, VH : RecyclerView.ViewHolder>(

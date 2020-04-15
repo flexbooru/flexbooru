@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.activity
 import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -26,7 +27,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.android.billingclient.api.*
 import kotlinx.android.synthetic.main.activity_purchase.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -46,9 +46,9 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
-        toolbar.setTitle(R.string.purchase_title)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setTitle(R.string.purchase_title)
         }
         if (Settings.isGoogleSign) {
             pay_alipay.visibility = View.GONE
@@ -207,5 +207,13 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         billingClient?.apply {
             if (isReady) endConnection()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

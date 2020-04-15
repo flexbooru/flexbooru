@@ -49,7 +49,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_what_anime.*
 import kotlinx.android.synthetic.main.common_list.*
 import kotlinx.android.synthetic.main.progress_bar.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -81,7 +80,7 @@ class WhatAnimeActivity : AppCompatActivity() {
     private lateinit var whatAnimeAdapter: WhatAnimeAdapter
     private lateinit var traceMoeViiewModel: TraceMoeViewModel
 
-    private val api: TraceMoeApi by kodeinTraceMoe.instance("TraceMoeApi")
+    private val api by kodeinTraceMoe.instance<TraceMoeApi>("TraceMoeApi")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,11 +97,9 @@ class WhatAnimeActivity : AppCompatActivity() {
                         resources.getDimensionPixelSize(R.dimen.margin_normal)
             }
         }
-        toolbar.apply {
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_what_anime)
-            setNavigationOnClickListener {
-                onBackPressed()
-            }
         }
         whatAnimeAdapter = WhatAnimeAdapter()
         list.apply {
@@ -331,5 +328,13 @@ class WhatAnimeActivity : AppCompatActivity() {
             playerView.player = null
             playerHolder.release()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

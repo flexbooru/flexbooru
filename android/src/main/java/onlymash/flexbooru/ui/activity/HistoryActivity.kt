@@ -16,6 +16,8 @@
 package onlymash.flexbooru.ui.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
@@ -23,8 +25,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.activity_list_common.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.HistoryDao
@@ -46,28 +47,19 @@ class HistoryActivity : KodeinActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
+        setContentView(R.layout.activity_list_common)
         drawNavBar {  insets ->
-            history_list.updatePadding(bottom = insets.systemWindowInsetBottom)
+            list.updatePadding(bottom = insets.systemWindowInsetBottom)
+        }
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setTitle(R.string.title_history)
         }
         historyViewModel = getHistoryViewModel(historyDao, postDao)
         historyAdapter = HistoryAdapter { history ->
             historyViewModel.deleteByUid(history)
         }
-        toolbar.apply {
-            setTitle(R.string.title_history)
-            inflateMenu(R.menu.history)
-            setNavigationOnClickListener {
-                onBackPressed()
-            }
-            setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.action_history_clear_all && historyAdapter.itemCount > 0) {
-                    clearAll()
-                }
-                true
-            }
-        }
-        history_list.apply {
+        list.apply {
             layoutManager = LinearLayoutManager(this@HistoryActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@HistoryActivity, RecyclerView.VERTICAL))
             adapter = historyAdapter
@@ -76,6 +68,25 @@ class HistoryActivity : KodeinActivity() {
         historyViewModel.loadHistory(activatedBooruUid).observe(this, Observer {
             historyAdapter.updateData(it)
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.history, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when {
+            item.itemId == android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            item.itemId == R.id.action_history_clear_all && historyAdapter.itemCount > 0 -> {
+                clearAll()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun clearAll() {

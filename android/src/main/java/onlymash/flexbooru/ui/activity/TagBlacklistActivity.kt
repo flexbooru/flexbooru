@@ -16,6 +16,7 @@
 package onlymash.flexbooru.ui.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -29,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_tag_blacklist.*
-import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.BooruDao
@@ -42,7 +42,7 @@ import org.kodein.di.erased.instance
 
 class TagBlacklistActivity : KodeinActivity() {
 
-    private val booruDao: BooruDao by instance()
+    private val booruDao by instance<BooruDao>()
     private lateinit var booruViewModel: BooruViewModel
     private lateinit var tagBlacklistAdapter: TagBlacklistAdapter
     private var booru: Booru? = null
@@ -57,16 +57,15 @@ class TagBlacklistActivity : KodeinActivity() {
                         resources.getDimensionPixelSize(R.dimen.margin_normal)
             }
         }
-        toolbar.apply {
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_tag_blacklist)
-            setNavigationOnClickListener {
-                onBackPressed()
-            }
         }
-        tagBlacklistAdapter = TagBlacklistAdapter {
-            val booru = booru ?: return@TagBlacklistAdapter
-            if (booru.blacklists.remove(it)) {
-                booruViewModel.updateBooru(booru)
+        tagBlacklistAdapter = TagBlacklistAdapter { tag ->
+            booru?.apply {
+                if (blacklists.remove(tag)) {
+                    booruViewModel.updateBooru(this)
+                }
             }
         }
         tag_blacklist_list.apply {
@@ -81,34 +80,51 @@ class TagBlacklistActivity : KodeinActivity() {
         })
         booruViewModel.loadBooru(activatedBooruUid)
         add_button.setOnClickListener {
-            val booru = booru ?: return@setOnClickListener
-            val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
-            val layout = FrameLayout(this@TagBlacklistActivity).apply {
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                setPadding(padding, padding / 2, padding, 0)
-            }
-            val editText = EditText(this@TagBlacklistActivity)
-            layout.addView(editText)
-            AlertDialog.Builder(this@TagBlacklistActivity)
-                .setTitle(R.string.tag_blacklist_add)
-                .setView(layout)
-                .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                    val text = (editText.text ?: "").toString().trim()
-                    if (!text.isBlank()) {
-                        if (booru.blacklists.add(text)) {
-                            booruViewModel.updateBooru(booru)
-                        }
-                    } else {
-                        Snackbar.make(
-                            toolbar,
-                            getString(R.string.muzei_input_cant_be_empty),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                }
-                .setNegativeButton(R.string.dialog_no, null)
-                .create()
-                .show()
+            createInputDialog()
         }
+    }
+
+    private fun createInputDialog() {
+        val booru = booru
+        if (booru == null || isFinishing) {
+            return
+        }
+        val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
+        val layout = FrameLayout(this).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+            setPadding(padding, padding / 2, padding, 0)
+        }
+        val editText = EditText(this)
+        layout.addView(editText)
+        AlertDialog.Builder(this)
+            .setTitle(R.string.tag_blacklist_add)
+            .setView(layout)
+            .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                val text = (editText.text ?: "").toString().trim()
+                if (!text.isBlank()) {
+                    if (booru.blacklists.add(text)) {
+                        booruViewModel.updateBooru(booru)
+                    }
+                } else {
+                    Snackbar.make(
+                        tag_blacklist_container,
+                        getString(R.string.muzei_input_cant_be_empty),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+            .setNegativeButton(R.string.dialog_no, null)
+            .create()
+            .show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

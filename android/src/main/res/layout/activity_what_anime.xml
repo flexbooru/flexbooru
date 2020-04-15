@@ -23,8 +23,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.WhatAnimeActivity">
 
-    <include layout="@layout/appbar"/>
-
     <include layout="@layout/common_list"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

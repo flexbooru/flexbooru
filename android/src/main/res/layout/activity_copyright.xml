@@ -14,27 +14,19 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:scrollbars="vertical" >
 
-    <include layout="@layout/appbar"/>
-
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/copyright"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/copyright"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_large"
-            android:textIsSelectable="true"
-            android:textAppearance="?attr/textAppearanceBody2"/>
-    </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_large"
+        android:textIsSelectable="true"
+        android:textAppearance="?attr/textAppearanceBody2"/>
+</ScrollView>

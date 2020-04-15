@@ -15,71 +15,76 @@
   -->
 
 <PreferenceScreen
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:key="about_screen"
-        app:initialExpandedChildrenCount="4">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="about_screen"
+    app:initialExpandedChildrenCount="4">
 
     <PreferenceCategory
-            app:key="flexbooru"
-            app:title="@string/about_app">
+        app:key="flexbooru"
+        app:title="@string/about_app">
 
         <Preference
-                app:key="about_app_version"
-                app:title="@string/about_app_version"
-                app:summary="%s"/>
+            app:key="about_app_version"
+            app:title="@string/about_app_version"
+            app:summary="%s"/>
         <Preference
-                app:key="about_app_translation"
-                app:title="@string/about_app_translation"
-                app:summary="@string/about_app_translation_summary"/>
+            app:key="about_app_translation"
+            app:title="@string/about_app_translation"
+            app:summary="@string/about_app_translation_summary"/>
         <Preference
-                app:key="about_app_rate"
-                app:title="@string/about_app_rate"/>
+            app:key="about_app_rate"
+            app:title="@string/about_app_rate"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            app:key="author"
-            app:title="@string/about_author">
+        app:key="author"
+        app:title="@string/about_author">
 
         <Preference
-                app:key="about_author_website"
-                app:title="@string/about_author_website"
-                app:summary="https://blog.fiepi.com"/>
+            app:key="about_author_website"
+            app:title="@string/about_author_website"
+            app:summary="https://blog.fiepi.com"/>
         <Preference
-                app:key="about_author_email"
-                app:title="@string/about_author_email"
-                app:summary="im@fiepi.me"/>
+            app:key="about_author_email"
+            app:title="@string/about_author_email"
+            app:summary="im@fiepi.me"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            app:key="feedback"
-            app:title="@string/about_feedback">
+        app:key="feedback"
+        app:title="@string/about_feedback">
 
         <Preference
-                app:key="about_feedback_telegram"
-                app:title="@string/about_feedback_telegram"
-                app:summary="https://t.me/Flexbooru"/>
+            app:key="about_feedback_telegram"
+            app:title="@string/about_feedback_telegram"
+            app:summary="https://t.me/Flexbooru"/>
         <Preference
-                app:key="about_feedback_discord"
-                app:title="@string/about_feedback_discord"
-                app:summary="https://discord.gg/zxAX5Jh"/>
+            app:key="about_feedback_discord"
+            app:title="@string/about_feedback_discord"
+            app:summary="https://discord.gg/zxAX5Jh"/>
         <Preference
-                app:key="about_feedback_email"
-                app:title="@string/about_feedback_email"
-                app:summary="feedback@fiepi.me"/>
+            app:key="about_feedback_email"
+            app:title="@string/about_feedback_email"
+            app:summary="feedback@fiepi.me"/>
         <Preference
-                app:key="about_feedback_github"
-                app:title="@string/about_feedback_github"
-                app:summary="https://github.com/flexbooru/flexbooru/issues"/>
+            app:key="about_feedback_github"
+            app:title="@string/about_feedback_github"
+            app:summary="https://github.com/flexbooru/flexbooru/issues"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            app:key="copyright"
-            app:title="@string/about_copyright">
+        app:key="copyright"
+        app:title="@string/about_copyright_and_licenses">
 
         <Preference
-                app:key="about_licenses"
-                app:title="@string/about_licenses"
-                app:summary="@string/about_open_source_licenses"
-                app:icon="@drawable/ic_copyright_24dp"/>
+            app:key="about_copyright"
+            app:title="@string/about_copyright"
+            app:summary="@string/about_app_copyright"
+            app:icon="@drawable/ic_copyright_24dp"/>
+
+        <Preference
+            app:key="about_licenses"
+            app:title="@string/about_licenses"
+            app:summary="@string/about_open_source_licenses" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -16,7 +16,7 @@
 package onlymash.flexbooru.ui.activity
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.toolbar.*
+import android.view.MenuItem
 import onlymash.flexbooru.R
 import onlymash.flexbooru.widget.drawNavBar
 
@@ -25,12 +25,18 @@ class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        drawNavBar {
+        drawNavBar {}
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setTitle(R.string.title_settings)
+        }
+    }
 
-        }
-        toolbar.setTitle(R.string.title_settings)
-        toolbar.setNavigationOnClickListener {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
             onBackPressed()
+            return true
         }
+        return super.onOptionsItemSelected(item)
     }
 }

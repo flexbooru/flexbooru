@@ -39,6 +39,8 @@
     <color name="colorCardBackground">@color/background_card_dark</color>
     <color name="colorStatusBar">@color/system_bar_dark</color>
     <color name="colorNavigationBar">@color/system_bar_dark</color>
+    <color name="colorStatusBarScrim">@color/system_bar_dark_scrim</color>
+    <color name="colorNavigationBarScrim">@color/system_bar_dark_scrim</color>
     <color name="colorNavigationBarDivider">@color/color_dark_background</color>
 
     <color name="background_text_info">@color/background_card_dark</color>

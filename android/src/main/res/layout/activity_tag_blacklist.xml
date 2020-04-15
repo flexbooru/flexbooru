@@ -15,14 +15,13 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:coadntext=".ui.TagBlacklistActivity">
-
-    <include layout="@layout/appbar"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tag_blacklist_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:coadntext=".ui.TagBlacklistActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tag_blacklist_list"
@@ -37,13 +36,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/margin_normal"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-            app:srcCompat="@drawable/ic_add_long_24dp"
-            style="@style/Widget.FloatingActionButton"/>
+        android:id="@+id/add_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:srcCompat="@drawable/ic_add_long_24dp"
+        style="@style/Widget.FloatingActionButton"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

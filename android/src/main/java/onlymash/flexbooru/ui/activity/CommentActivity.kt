@@ -19,6 +19,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -31,7 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.progress_bar.*
 import kotlinx.android.synthetic.main.refreshable_list.*
-import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Settings.pageLimit
@@ -103,30 +104,16 @@ class CommentActivity : KodeinActivity() {
         drawNavBar {
             list.updatePadding(bottom = it.systemWindowInsetBottom)
         }
-        toolbar.setTitle(R.string.title_comments)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-        when {
-            action.postId > 0 -> {
-                toolbar.subtitle = "Post ${action.postId}"
-                if (action.booru.type != BOORU_TYPE_GEL && action.booru.user != null) {
-                    toolbar.inflateMenu(R.menu.comment)
-                    toolbar.setOnMenuItemClickListener { menuItem ->
-                        if (menuItem?.itemId == R.id.action_comment_reply) {
-                            if (action.booru.user == null) {
-                                startActivity(Intent(this, AccountConfigActivity::class.java))
-                                finish()
-                            } else {
-                                reply(postId = action.postId)
-                            }
-                        }
-                        true
-                    }
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setTitle(R.string.title_comments)
+            when {
+                action.postId > 0 -> {
+                    subtitle = "Post ${action.postId}"
                 }
-            }
-            action.query.isNotBlank() -> {
-                toolbar.subtitle = action.query
+                action.query.isNotBlank() -> {
+                    subtitle = action.query
+                }
             }
         }
         commentAdapter = CommentAdapter(
@@ -162,6 +149,35 @@ class CommentActivity : KodeinActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (action.postId > 0 &&
+            action.booru.type != BOORU_TYPE_GEL &&
+            action.booru.user != null) {
+
+            menuInflater.inflate(R.menu.comment, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            R.id.action_comment_reply -> {
+                if (action.booru.user == null) {
+                    startActivity(Intent(this, AccountConfigActivity::class.java))
+                    finish()
+                } else {
+                    reply(postId = action.postId)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun initViewModel() {
         commentViewModel = getCommentViewModel(CommentRepositoryImpl(booruApis))
         commentViewModel.comments.observe(this, Observer {
@@ -190,6 +206,9 @@ class CommentActivity : KodeinActivity() {
     }
 
     private fun reply(postId: Int, qoute: String = "") {
+        if (isFinishing) {
+            return
+        }
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
         val layout = FrameLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)

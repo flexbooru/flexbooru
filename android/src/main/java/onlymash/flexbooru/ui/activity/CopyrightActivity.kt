@@ -21,13 +21,13 @@ import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
+import android.view.MenuItem
 import android.view.View
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.core.view.updatePadding
 import kotlinx.android.synthetic.main.activity_copyright.*
-import kotlinx.android.synthetic.main.toolbar.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.widget.drawNavBar
@@ -40,9 +40,9 @@ class CopyrightActivity : BaseActivity() {
         drawNavBar {
             scroll_view.updatePadding(bottom = it.systemWindowInsetBottom)
         }
-        toolbar.title = getString(R.string.title_copyright)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setTitle(R.string.title_copyright)
         }
         copyright.apply {
             text = SpannableStringBuilder(resources.openRawResource(R.raw.copyright).bufferedReader().readText()
@@ -61,8 +61,15 @@ class CopyrightActivity : BaseActivity() {
                     removeSpan(span)
                 }
             }
-//            setBackgroundColor(ContextCompat.getColor(this@CopyrightActivity, R.color.background))
             movementMethod = LinkMovementMethod.getInstance()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -16,10 +16,10 @@
 package onlymash.flexbooru.ui.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import onlymash.flexbooru.R
-import onlymash.flexbooru.ui.fragment.BooruConfigFragment
 import onlymash.flexbooru.widget.drawNavBar
 
 class BooruConfigActivity : AppCompatActivity() {
@@ -28,23 +28,34 @@ class BooruConfigActivity : AppCompatActivity() {
         const val EXTRA_BOORU_UID = "extra_booru_uid"
     }
 
-    lateinit var toolbar: Toolbar
+    private var menuListener: MenuListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru_config)
-        drawNavBar {
-
-        }
-        toolbar = findViewById(R.id.toolbar)
-        toolbar.apply {
+        drawNavBar {}
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_booru_config)
-            setNavigationIcon(R.drawable.ic_close_24dp)
-            inflateMenu(R.menu.booru_config)
-            setNavigationOnClickListener {
-                finish()
-            }
-            setOnMenuItemClickListener(supportFragmentManager.findFragmentById(R.id.fragment_booru_config) as BooruConfigFragment)
         }
+        menuListener = supportFragmentManager.findFragmentById(R.id.fragment_booru_config) as? MenuListener
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.booru_config, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            true
+        } else {
+            menuListener?.onMenuItemClick(item) ?: super.onOptionsItemSelected(item)
+        }
+    }
+
+    interface MenuListener {
+        fun onMenuItemClick(item: MenuItem): Boolean
     }
 }

@@ -35,7 +35,6 @@ import java.io.FileInputStream
 import java.io.IOException
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver

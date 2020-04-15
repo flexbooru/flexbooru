@@ -33,8 +33,6 @@
         app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
         app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
 
-    <include layout="@layout/appbar"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/muzei_button"
         android:layout_width="match_parent"

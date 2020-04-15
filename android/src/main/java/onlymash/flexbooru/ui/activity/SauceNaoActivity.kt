@@ -21,9 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
@@ -43,7 +41,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_sauce_nao.*
 import kotlinx.android.synthetic.main.common_list.*
 import kotlinx.android.synthetic.main.progress_bar.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,7 +75,7 @@ class SauceNaoActivity : AppCompatActivity() {
         }
     }
 
-    private val api: SauceNaoApi by kodeinSauceNao.instance("SauceNaoApi")
+    private val api by kodeinSauceNao.instance<SauceNaoApi>("SauceNaoApi")
 
     private lateinit var sauceNaoViewModel: SauceNaoViewModel
     private var response: SauceNaoResponse? = null
@@ -100,24 +97,9 @@ class SauceNaoActivity : AppCompatActivity() {
                         resources.getDimensionPixelSize(R.dimen.margin_normal)
             }
         }
-        toolbar.apply {
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_sauce_nao)
-            inflateMenu(R.menu.sauce_nao)
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.action_sauce_nao_change_api_key -> {
-                        changeApiKey()
-                    }
-                    R.id.action_sauce_nao_get_api_key -> {
-                        val url = "https://saucenao.com/user.php"
-                        launchUrl(url)
-                    }
-                }
-                true
-            }
-            setNavigationOnClickListener {
-                onBackPressed()
-            }
         }
         sauceNaoAdapter = SauceNaoAdapter()
         list.apply {
@@ -127,7 +109,7 @@ class SauceNaoActivity : AppCompatActivity() {
         sauceNaoViewModel = getSauceNaoViewModel(api)
         sauceNaoViewModel.data.observe(this, Observer {
             response = it
-            toolbar.subtitle = String.format(getString(R.string.sauce_nao_remaining_times_today), it.header.longRemaining)
+            supportActionBar?.subtitle = String.format(getString(R.string.sauce_nao_remaining_times_today), it.header.longRemaining)
             sauceNaoAdapter.notifyDataSetChanged()
         })
         sauceNaoViewModel.isLoading.observe(this, Observer {
@@ -156,6 +138,30 @@ class SauceNaoActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.sauce_nao, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_sauce_nao_change_api_key -> {
+                changeApiKey()
+                true
+            }
+            R.id.action_sauce_nao_get_api_key -> {
+                val url = "https://saucenao.com/user.php"
+                launchUrl(url)
+                true
+            }
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun search(url: String) {

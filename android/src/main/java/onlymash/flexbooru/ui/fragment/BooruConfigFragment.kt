@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -59,11 +58,11 @@ private const val CONFIG_TYPE_SANKAKU = "sankaku"
 private const val CONFIG_TYPE_SHIMMIE = "shimmie"
 
 class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
-    Toolbar.OnMenuItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener, BooruConfigActivity.MenuListener {
 
     override val kodein: Kodein by kodein()
-    private val booruDao: BooruDao by instance()
-    private val sp: SharedPreferences by instance()
+    private val booruDao by instance<BooruDao>()
+    private val sp by instance<SharedPreferences>()
 
     private var booru: Booru? = null
 
@@ -144,9 +143,9 @@ class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
         sp.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
+    override fun onMenuItemClick(item: MenuItem): Boolean {
         val booru = booru ?: return true
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.action_booru_config_delete -> {
                 context?.let { context ->
                     AlertDialog.Builder(context)
