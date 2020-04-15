@@ -49,7 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">Email</string>
+    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">Copyright</string>
+    <string name="about_app_copyright">App copyright</string>
     <string name="about_licenses">Licences</string>
     <string name="about_open_source_licenses">Licences Open Source</string>
     <string name="snackbar_copy_text">%s a été copié dans le presse-papiers.</string>
