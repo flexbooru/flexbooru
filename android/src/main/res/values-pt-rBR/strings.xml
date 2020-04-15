@@ -49,9 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">E-mail</string>
-    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
+    <string name="about_copyright_and_licenses">Direitos Autorais &amp; Licenças</string>
     <string name="about_copyright">Direitos autorais</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">Direitos autorais</string>
     <string name="about_licenses">Licenças</string>
     <string name="about_open_source_licenses">Licenças de código aberto</string>
     <string name="snackbar_copy_text">`%s` foi copiado para a área de transferência.</string>
@@ -119,7 +119,7 @@
     <string name="browse_set_as">Definir como</string>
     <string name="browse_send_file">Enviar arquivo</string>
     <string name="browse_save_file">Salvar arquivo</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">Salvar como…</string>
     <string name="browse_share_link">Compartilhar link</string>
     <string name="browse_open_in_browser">Abrir no Navegador</string>
     <string name="browse_tags">Marcadores</string>
