@@ -84,7 +84,9 @@ class PoolFragment : SearchBarFragment() {
         })
         poolViewModel.networkState.observe(viewLifecycleOwner, Observer {
             poolAdapter.setNetworkState(it)
-            progressBar.isVisible = it.isRunning() && poolAdapter.itemCount == 0
+            val isRunning = it.isRunning()
+            progressBarHorizontal.isVisible = isRunning
+            progressBar.isVisible = isRunning && poolAdapter.itemCount == 0
         })
         poolViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {

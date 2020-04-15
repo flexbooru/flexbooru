@@ -24,4 +24,6 @@
 
     <include layout="@layout/progress_bar" />
 
+    <include layout="@layout/progress_bar_horizontal" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

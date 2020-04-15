@@ -80,7 +80,9 @@ class TagFragment : SearchBarFragment() {
         })
         tagViewModel.networkState.observe(viewLifecycleOwner, Observer {
             tagAdapter.setNetworkState(it)
-            progressBar.isVisible = it.isRunning() && tagAdapter.itemCount == 0
+            val isRunning = it.isRunning()
+            progressBarHorizontal.isVisible = isRunning
+            progressBar.isVisible = isRunning && tagAdapter.itemCount == 0
         })
         tagViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {

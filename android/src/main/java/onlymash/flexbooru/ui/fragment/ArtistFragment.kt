@@ -79,7 +79,9 @@ class ArtistFragment : SearchBarFragment() {
         })
         artistViewModel.networkState.observe(viewLifecycleOwner, Observer {
             artistAdapter.setNetworkState(it)
-            progressBar.isVisible = it.isRunning() && artistAdapter.itemCount == 0
+            val isRunning = it.isRunning()
+            progressBarHorizontal.isVisible = isRunning
+            progressBar.isVisible = isRunning && artistAdapter.itemCount == 0
         })
         artistViewModel.refreshState.observe(viewLifecycleOwner, Observer {
             if (it != NetworkState.LOADING) {

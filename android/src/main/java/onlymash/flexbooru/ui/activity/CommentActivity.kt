@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.progress_bar.*
+import kotlinx.android.synthetic.main.progress_bar_horizontal.*
 import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
@@ -102,7 +103,9 @@ class CommentActivity : KodeinActivity() {
 
     private fun initView() {
         drawNavBar {
-            list.updatePadding(bottom = it.systemWindowInsetBottom)
+            val bottomPadding = it.systemWindowInsetBottom
+            list.updatePadding(bottom = bottomPadding)
+            progress_bar_horizontal.updatePadding(bottom = bottomPadding)
         }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -185,7 +188,9 @@ class CommentActivity : KodeinActivity() {
         })
         commentViewModel.networkState.observe(this, Observer {
             commentAdapter.setNetworkState(it)
-            progress_bar.isVisible = it.isRunning() && commentAdapter.itemCount == 0
+            val isRunning = it.isRunning()
+            progress_bar_horizontal.isVisible = isRunning
+            progress_bar.isVisible = isRunning && commentAdapter.itemCount == 0
         })
         commentViewModel.refreshState.observe(this, Observer {
             if (it != NetworkState.LOADING) {

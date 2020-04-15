@@ -70,6 +70,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     internal lateinit var searchLayout: CoordinatorLayout
     internal lateinit var swipeRefresh: SwipeRefreshLayout
     internal lateinit var progressBar: ProgressBar
+    internal lateinit var progressBarHorizontal: ProgressBar
     private lateinit var container: CoordinatorLayout
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
@@ -92,11 +93,13 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         searchLayout = view.findViewById(R.id.search_layout)
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         progressBar = view.findViewById(R.id.progress_bar)
+        progressBarHorizontal = view.findViewById(R.id.progress_bar_horizontal)
         container.setOnApplyWindowInsetsListener { _, insets ->
-            (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
-                resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + insets.systemWindowInsetTop
-            systemUiBottomSize = insets.systemWindowInsetBottom
             systemUiTopSize = insets.systemWindowInsetTop
+            systemUiBottomSize = insets.systemWindowInsetBottom
+            (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
+                resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + systemUiTopSize
+            progressBarHorizontal.updatePadding(bottom = systemUiBottomSize)
             setupMainListPadding()
             setupSwipeRefreshOffset()
             insets

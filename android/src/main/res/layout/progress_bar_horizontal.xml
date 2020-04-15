@@ -14,28 +14,13 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ProgressBar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/searchbar_fragment_container"
+    android:id="@+id/progress_bar_horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <include layout="@layout/refreshable_list"/>
-
-    <include layout="@layout/progress_bar"/>
-
-    <include layout="@layout/progress_bar_horizontal"/>
-
-    <include layout="@layout/search_layout"/>
-
-    <onlymash.flexbooru.widget.searchbar.SearchBar
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/search_bar_height"
-        android:touchscreenBlocksFocus="false"
-        android:layout_marginVertical="@dimen/search_bar_vertical_margin"
-        android:layout_marginHorizontal="@dimen/search_bar_horizontal_margin"
-        style="@style/Widget.CardView"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:indeterminate="true"
+    android:layout_marginBottom="@dimen/margin_vertical_progressbar"
+    android:visibility="gone"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
