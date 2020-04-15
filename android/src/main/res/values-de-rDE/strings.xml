@@ -50,7 +50,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">E-mail</string>
+    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">Urheberrecht</string>
+    <string name="about_app_copyright">App copyright</string>
     <string name="about_licenses">Lizenz</string>
     <string name="about_open_source_licenses">Open Source Lizenz</string>
     <string name="snackbar_copy_text">` %s ` wurde in die Zwischenablage kopiert.</string>
