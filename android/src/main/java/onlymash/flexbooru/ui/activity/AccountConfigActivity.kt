@@ -45,7 +45,7 @@ import org.kodein.di.erased.instance
 
 class AccountConfigActivity : BaseActivity() {
 
-    private val booruApis: BooruApis by instance()
+    private val booruApis by instance<BooruApis>()
 
     private lateinit var booru: Booru
     private var username = ""

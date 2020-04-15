@@ -24,7 +24,7 @@ import java.sql.SQLException
 
 object HistoryManager {
 
-    private val historyDao: HistoryDao by App.app.instance()
+    private val historyDao by App.app.instance<HistoryDao>()
     /**
      * Create a [History]
      * */

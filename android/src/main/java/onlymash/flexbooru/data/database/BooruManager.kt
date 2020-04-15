@@ -25,7 +25,7 @@ import java.sql.SQLException
 
 object BooruManager {
 
-    private val booruDao: BooruDao by App.app.instance()
+    private val booruDao by App.app.instance<BooruDao>()
 
     @Throws(SQLException::class)
     fun createBooru(booru: Booru): Booru {

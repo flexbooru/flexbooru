@@ -91,7 +91,6 @@ import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.erased.instance
 import java.util.Calendar
 import java.util.Locale
-import java.util.concurrent.Executor
 import kotlin.math.roundToInt
 
 private const val SCALE_DAY = "day"
@@ -107,7 +106,6 @@ private const val ROTATION_DEGREE = 135f
 class PostFragment : SearchBarFragment() {
 
     private val db by instance<MyDatabase>()
-    private val ioExecutor by instance<Executor>()
 
     private val voteRepository by lazy { VoteRepositoryImpl(booruApis, db.postDao()) }
 
@@ -149,9 +147,8 @@ class PostFragment : SearchBarFragment() {
         savedInstanceState: Bundle?
     ): View? {
         postViewModel = getPostViewModel(PostRepositoryImpl(
-            booruApis = booruApis,
             db = db,
-            ioExecutor = ioExecutor
+            booruApis = booruApis
         ))
         tagFilterViewModel = getTagFilterViewModel(TagFilterRepositoryImpl(db.tagFilterDao()))
         return super.onCreateView(inflater, container, savedInstanceState)

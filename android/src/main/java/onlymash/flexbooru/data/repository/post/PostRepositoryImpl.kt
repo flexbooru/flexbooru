@@ -35,12 +35,10 @@ import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.Listing
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.extension.NetResult
-import java.util.concurrent.Executor
 
 class PostRepositoryImpl(
     private val db: MyDatabase,
-    private val booruApis: BooruApis,
-    private val ioExecutor: Executor
+    private val booruApis: BooruApis
 ) : PostRepository {
 
     private var postBoundaryCallback: PostBoundaryCallback? = null
@@ -59,8 +57,7 @@ class PostRepositoryImpl(
             action = action,
             booruApis = booruApis,
             scope = scope,
-            handleResponse = this::insertResultIntoDb,
-            ioExecutor = ioExecutor
+            handleResponse = this::insertResultIntoDb
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -79,7 +76,11 @@ class PostRepositoryImpl(
         return Listing(
             pagedList = livePagedList,
             networkState = postBoundaryCallback!!.networkState,
-            retry = { postBoundaryCallback!!.helper.retryAllFailed() },
+            retry = {
+                scope.launch {
+                    postBoundaryCallback!!.helper.retryAllFailed()
+                }
+            },
             refresh = { refreshTrigger.value = null },
             refreshState = refreshState
         )

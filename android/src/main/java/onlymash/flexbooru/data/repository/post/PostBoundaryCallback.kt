@@ -16,7 +16,6 @@
 package onlymash.flexbooru.data.repository.post
 
 import androidx.paging.PagedList
-import androidx.paging.PagingRequestHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,22 +31,21 @@ import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi
 import onlymash.flexbooru.data.model.common.Post
+import onlymash.flexbooru.data.repository.PagingRequestHelper
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
-import java.util.concurrent.Executor
 
 class PostBoundaryCallback(
     private val action: ActionPost,
     private val booruApis: BooruApis,
     private val scope: CoroutineScope,
-    private val handleResponse: (List<Post>) -> Unit,
-    ioExecutor: Executor
+    private val handleResponse: (List<Post>) -> Unit
 ) : PagedList.BoundaryCallback<Post>() {
 
     private val isFavored = action.isFavoredQuery()
 
     //PagingRequestHelper
-    val helper = PagingRequestHelper(ioExecutor)
+    val helper = PagingRequestHelper()
     //network state
     val networkState = helper.createStatusLiveData()
 
@@ -55,12 +53,14 @@ class PostBoundaryCallback(
     var lastResponseSize = action.limit
 
     override fun onZeroItemsLoaded() {
-        helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) { callback ->
-            val page = when (action.booru.type) {
-                BOORU_TYPE_GEL -> 0
-                else -> 1
+        scope.launch {
+            helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) { callback ->
+                val page = when (action.booru.type) {
+                    BOORU_TYPE_GEL -> 0
+                    else -> 1
+                }
+                createCallback(page, 0, callback)
             }
-            createCallback(page, 0, callback)
         }
     }
 
@@ -72,12 +72,14 @@ class PostBoundaryCallback(
         val indexInNext = itemAtEnd.index + 1
         val limit = action.limit
         if (lastResponseSize == limit) {
-            helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { callback ->
-                val page = when (action.booru.type) {
-                    BOORU_TYPE_GEL -> indexInNext/limit
-                    else -> indexInNext/limit + 1
+            scope.launch {
+                helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { callback ->
+                    val page = when (action.booru.type) {
+                        BOORU_TYPE_GEL -> indexInNext/limit
+                        else -> indexInNext/limit + 1
+                    }
+                    createCallback(page, indexInNext, callback)
                 }
-                createCallback(page, indexInNext, callback)
             }
         }
     }
@@ -86,7 +88,7 @@ class PostBoundaryCallback(
 
     }
 
-    private fun createCallback(page: Int, indexInNext: Int, callback: PagingRequestHelper.Request.Callback) {
+    private fun createCallback(page: Int, indexInNext: Int, callback: PagingRequestHelper.Callback) {
         scope.launch {
             when (val result = when (action.booru.type) {
                 BOORU_TYPE_DAN -> {

@@ -16,21 +16,19 @@
 package onlymash.flexbooru.data.repository
 
 
-@Suppress("DataClassPrivateConstructor")
-data class NetworkState private constructor(
-    val status: Status,
-    val msg: String? = null) {
-    companion object {
-        val LOADED = NetworkState(Status.SUCCESS)
-        val LOADING = NetworkState(Status.RUNNING)
-        fun error(msg: String?) = NetworkState(Status.FAILED, msg)
-    }
+enum class Status {
+    /**
+     * There is current a running request.
+     */
+    RUNNING,
+
+    /**
+     * The last request has succeeded or no such requests have ever been run.
+     */
+    SUCCESS,
+
+    /**
+     * The last request has failed.
+     */
+    FAILED
 }
-
-fun NetworkState?.isRunning() = this?.status == Status.RUNNING
-
-fun NetworkState?.isSuccess() = this?.status == Status.SUCCESS
-
-fun NetworkState?.isFailed() = this?.status == Status.FAILED
-
-fun NetworkState?.hasMsg() = this?.msg != null

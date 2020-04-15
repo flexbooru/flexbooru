@@ -43,8 +43,8 @@ import org.kodein.di.erased.instance
 class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferences.OnSharedPreferenceChangeListener {
 
     override val kodein: Kodein by kodein()
-    private val postDao: PostDao by instance()
-    private val sp: SharedPreferences by instance()
+    private val postDao by instance<PostDao>()
+    private val sp by instance<SharedPreferences>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -27,7 +27,7 @@ import java.sql.SQLException
  * */
 object MuzeiManager {
 
-    private val muzeiDao: MuzeiDao by App.app.instance()
+    private val muzeiDao by App.app.instance<MuzeiDao>()
     /**
      * Create a [Muzei]
      * */

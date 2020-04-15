@@ -25,7 +25,7 @@ import java.sql.SQLException
 
 object TagFilterManager {
 
-    private val tagFilterDao: TagFilterDao by App.app.instance()
+    private val tagFilterDao by App.app.instance<TagFilterDao>()
 
     @Throws(SQLException::class)
     fun createTagFilter(tag: TagFilter): TagFilter {

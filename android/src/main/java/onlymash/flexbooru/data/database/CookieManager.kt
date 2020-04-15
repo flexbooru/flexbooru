@@ -25,7 +25,7 @@ import java.sql.SQLException
 
 object CookieManager {
 
-    private val cookieDao: CookieDao by App.app.instance()
+    private val cookieDao by App.app.instance<CookieDao>()
 
     @Throws(SQLException::class)
     fun createCookie(cookie: Cookie): Cookie {

@@ -66,7 +66,7 @@ object Settings {
 
     const val BOORU_UID_ACTIVATED_KEY = "booru_uid_activated"
 
-    private val sp: SharedPreferences by App.app.instance()
+    private val sp by App.app.instance<SharedPreferences>()
 
     var activatedBooruUid: Long
         get() = sp.getLong(BOORU_UID_ACTIVATED_KEY, -1L)
