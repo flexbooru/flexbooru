@@ -49,7 +49,9 @@
     <string name="about_feedback_telegram">電報</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">電子郵件</string>
+    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">版權</string>
+    <string name="about_app_copyright">App copyright</string>
     <string name="about_licenses">授權許可證</string>
     <string name="about_open_source_licenses">開源授權許可證</string>
     <string name="snackbar_copy_text">已將 ` %s ` 複製到剪貼簿。</string>
