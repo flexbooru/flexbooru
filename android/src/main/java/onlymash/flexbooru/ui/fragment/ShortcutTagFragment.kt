@@ -155,6 +155,7 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
                     query = query
                 ))
                 SearchActivity.startSearch(itemView.context, query)
+                dismiss()
             }
             itemView.setOnLongClickListener {
                 itemView.context.copyText(tagName.text)
