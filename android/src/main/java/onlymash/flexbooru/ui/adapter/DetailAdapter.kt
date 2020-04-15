@@ -116,7 +116,7 @@ class DetailAdapter(
                     }
                     setOnLongClickListener {
                         longClickCallback()
-                        true
+                        false
                     }
                     setExecutor(ioExecutor)
                     setBitmapDecoderFactory { CustomDecoder(picasso) }
@@ -166,7 +166,7 @@ class DetailAdapter(
                     }
                     setOnLongClickListener {
                         longClickCallback()
-                        true
+                        false
                     }
                     transitionName = String.format("post_%d", post.id)
                 }
