@@ -49,7 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">电子邮箱</string>
+    <string name="about_copyright_and_licenses">版权和许可证</string>
     <string name="about_copyright">版权</string>
+    <string name="about_app_copyright">应用程序版权</string>
     <string name="about_licenses">授权许可</string>
     <string name="about_open_source_licenses">开源许可</string>
     <string name="snackbar_copy_text">` %s ` 已复制到剪贴板。</string>

@@ -49,7 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">電子郵件</string>
+    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">版權</string>
+    <string name="about_app_copyright">App copyright</string>
     <string name="about_licenses">授權</string>
     <string name="about_open_source_licenses">開放原始碼授權</string>
     <string name="snackbar_copy_text">` %s ` 已被複製到剪貼板。</string>
@@ -117,7 +119,7 @@
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送檔案</string>
     <string name="browse_save_file">儲存檔案</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">儲存為...</string>
     <string name="browse_share_link">分享連結</string>
     <string name="browse_open_in_browser">在瀏覽器開啟</string>
     <string name="browse_tags">標籤</string>

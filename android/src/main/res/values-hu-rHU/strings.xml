@@ -49,7 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">Email</string>
+    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">Szerzői jogok</string>
+    <string name="about_app_copyright">App copyright</string>
     <string name="about_licenses">Licenszek</string>
     <string name="about_open_source_licenses">Nyílt forráskódú licencek</string>
     <string name="snackbar_copy_text">A(z) `%s` a vágólapra másolva.</string>
