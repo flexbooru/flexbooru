@@ -42,13 +42,14 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.POST_SIZE_LARGER
+import onlymash.flexbooru.common.Settings.POST_SIZE_ORIGIN
 import onlymash.flexbooru.common.Settings.POST_SIZE_SAMPLE
 import onlymash.flexbooru.common.Settings.detailSize
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.decoder.CustomDecoder
 import onlymash.flexbooru.decoder.CustomRegionDecoder
 import onlymash.flexbooru.extension.isGifImage
-import onlymash.flexbooru.extension.isStillImage
+import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.extension.isVideo
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.widget.DismissFrameLayout
@@ -104,113 +105,18 @@ class DetailAdapter(
             else -> post.origin
         }
         when {
-            url.isStillImage() -> {
-                val stillView = SubsamplingScaleImageView(layout.context).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT)
-                    setOnClickListener {
-                        clickCallback()
+            url.isImage() -> {
+                when {
+                    url.isGifImage() -> {
+                        loadSampleOrGifImage(layout, post, url, true)
                     }
-                    setOnLongClickListener {
-                        longClickCallback()
-                        false
+                    size == POST_SIZE_ORIGIN -> {
+                        loadStillImage(layout, post.id, url)
                     }
-                    setExecutor(ioExecutor)
-                    setBitmapDecoderFactory { CustomDecoder(glide) }
-                    setRegionDecoderFactory { CustomRegionDecoder() }
-                    transitionName = String.format("post_%d", post.id)
-                }
-                val progressBar = ProgressBar(layout.context).apply {
-                    layoutParams = FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        Gravity.CENTER)
-                    indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
-                }
-                layout.apply {
-                    addView(stillView, 0)
-                    addView(progressBar, 1)
-                }
-                stillView.setOnImageEventListener(object : SubsamplingScaleImageView.OnImageEventListener {
-                    override fun onImageLoaded() {
-                        layout.removeView(progressBar)
+                    else -> {
+                        loadSampleOrGifImage(layout, post, url, false)
                     }
-                    override fun onReady() {}
-                    override fun onTileLoadError(e: Exception?) {}
-                    override fun onPreviewReleased() {}
-                    override fun onImageLoadError(e: Exception?) {}
-                    override fun onPreviewLoadError(e: Exception?) {}
-                })
-                glide.downloadOnly().load(url)
-                    .into(object : CustomTarget<File>() {
-                        override fun onLoadCleared(placeholder: Drawable?) {}
-                        override fun onResourceReady(
-                            resource: File,
-                            transition: Transition<in File>?) {
-                            stillView.setImage(ImageSource.uri(resource.toUri()))
-                        }
-                    })
-            }
-            url.isGifImage() -> {
-                val gifView = PhotoView(layout.context).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    scaleType = ImageView.ScaleType.FIT_CENTER
-                    setOnViewTapListener { _, _, _ ->
-                        clickCallback()
-                    }
-                    setOnLongClickListener {
-                        longClickCallback()
-                        false
-                    }
-                    transitionName = String.format("post_%d", post.id)
                 }
-                val progressBar = ProgressBar(layout.context).apply {
-                    layoutParams = FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        Gravity.CENTER)
-                    indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
-                }
-                layout.apply {
-                    addView(gifView, 0)
-                    addView(progressBar, 1)
-                }
-                glide.load(post.preview)
-                    .into(object : CustomTarget<Drawable>() {
-                        override fun onLoadCleared(placeholder: Drawable?) {}
-                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                            glide.asGif()
-                                .load(url)
-                                .placeholder(resource)
-                                .addListener(object : RequestListener<GifDrawable> {
-                                    override fun onLoadFailed(
-                                        e: GlideException?,
-                                        model: Any?,
-                                        target: Target<GifDrawable>?,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        layout.removeView(progressBar)
-                                        return false
-                                    }
-
-                                    override fun onResourceReady(
-                                        resource: GifDrawable?,
-                                        model: Any?,
-                                        target: Target<GifDrawable>?,
-                                        dataSource: DataSource?,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        layout.removeView(progressBar)
-                                        return false
-                                    }
-                                })
-                                .into(gifView)
-                        }
-                    })
             }
             url.isVideo() -> {
                 val playerView = LayoutInflater.from(layout.context).inflate(R.layout.item_exoplayer, null) as PlayerView
@@ -223,6 +129,144 @@ class DetailAdapter(
                 }
                 layout.addView(playerView)
             }
+        }
+    }
+
+    private fun loadStillImage(layout: FrameLayout, postId: Int, url: String) {
+        val stillView = SubsamplingScaleImageView(layout.context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+            setOnClickListener {
+                clickCallback()
+            }
+            setOnLongClickListener {
+                longClickCallback()
+                false
+            }
+            setExecutor(ioExecutor)
+            setBitmapDecoderFactory { CustomDecoder(glide) }
+            setRegionDecoderFactory { CustomRegionDecoder() }
+            transitionName = String.format("post_%d", postId)
+        }
+        val progressBar = ProgressBar(layout.context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER)
+            indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
+        }
+        layout.apply {
+            addView(stillView, 0)
+            addView(progressBar, 1)
+        }
+        stillView.setOnImageEventListener(object : SubsamplingScaleImageView.OnImageEventListener {
+            override fun onImageLoaded() {
+                layout.removeView(progressBar)
+            }
+            override fun onReady() {}
+            override fun onTileLoadError(e: Exception?) {}
+            override fun onPreviewReleased() {}
+            override fun onImageLoadError(e: Exception?) {}
+            override fun onPreviewLoadError(e: Exception?) {}
+        })
+        glide.downloadOnly().load(url)
+            .into(object : CustomTarget<File>() {
+                override fun onLoadCleared(placeholder: Drawable?) {}
+                override fun onResourceReady(
+                    resource: File,
+                    transition: Transition<in File>?) {
+                    stillView.setImage(ImageSource.uri(resource.toUri()))
+                }
+            })
+    }
+
+    private fun loadSampleOrGifImage(layout: FrameLayout, post: Post, url: String, isGif: Boolean) {
+        val photoView = PhotoView(layout.context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            isClickable = true
+            setOnViewTapListener { _, _, _ ->
+                clickCallback()
+            }
+            setOnLongClickListener {
+                longClickCallback()
+                false
+            }
+            transitionName = String.format("post_%d", post.id)
+        }
+        val progressBar = ProgressBar(layout.context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER)
+            indeterminateDrawable.colorFilter = ColorMatrixColorFilter(colorMatrix)
+        }
+        layout.apply {
+            addView(photoView, 0)
+            addView(progressBar, 1)
+        }
+        if (isGif) {
+            val gifListener = object : RequestListener<GifDrawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    layout.removeView(progressBar)
+                    return false
+                }
+                override fun onResourceReady(
+                    resource: GifDrawable?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    layout.removeView(progressBar)
+                    return false
+                }
+            }
+            glide.load(post.preview)
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        glide.asGif()
+                            .load(url)
+                            .placeholder(resource)
+                            .addListener(gifListener)
+                            .into(photoView)
+                    }
+                })
+        } else {
+            val stillListener = object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    layout.removeView(progressBar)
+                    return false
+                }
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    layout.removeView(progressBar)
+                    return false
+                }
+            }
+            glide.load(url)
+                .addListener(stillListener)
+                .into(photoView)
         }
     }
 }
