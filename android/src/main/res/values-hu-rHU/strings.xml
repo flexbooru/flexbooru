@@ -170,6 +170,10 @@
     <string name="settings_post_size_sample">Minta</string>
     <string name="settings_post_size_larger">Nagyobb</string>
     <string name="settings_post_size_origin">Eredeti</string>
+    <string name="settings_grid_mode">Grid mode</string>
+    <string name="settings_grid_mode_rectangle">Rectangle</string>
+    <string name="settings_grid_mode_staggered">Staggered</string>
+    <string name="settings_grid_ratio">Grid ratio</string>
     <string name="settings_grid_width">Rács szélessége</string>
     <string name="settings_grid_width_small">Kicsi</string>
     <string name="settings_grid_width_normal">Normál</string>
