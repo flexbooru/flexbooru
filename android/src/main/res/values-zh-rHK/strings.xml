@@ -170,6 +170,10 @@
     <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">較大</string>
     <string name="settings_post_size_origin">來源</string>
+    <string name="settings_grid_mode">Grid mode</string>
+    <string name="settings_grid_mode_rectangle">Rectangle</string>
+    <string name="settings_grid_mode_staggered">Staggered</string>
+    <string name="settings_grid_ratio">Grid ratio</string>
     <string name="settings_grid_width">網格寬度</string>
     <string name="settings_grid_width_small">小</string>
     <string name="settings_grid_width_normal">一般</string>
