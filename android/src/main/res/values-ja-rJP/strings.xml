@@ -171,7 +171,7 @@
     <string name="settings_post_size_larger">大きく</string>
     <string name="settings_post_size_origin">オリジン</string>
     <string name="settings_grid_mode">Grid mode</string>
-    <string name="settings_grid_mode_rectangle">Rectangle</string>
+    <string name="settings_grid_mode_fixed">Fixed ratio</string>
     <string name="settings_grid_mode_staggered">Staggered</string>
     <string name="settings_grid_ratio">Grid ratio</string>
     <string name="settings_grid_width">グリッド幅</string>
