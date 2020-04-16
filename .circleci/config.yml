@@ -3,8 +3,9 @@ version: 2
 jobs:
   build:
     branches:
-      only:
-        - master
+      ignore:
+        - l10n_master
+        - gh-pages
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29-node
