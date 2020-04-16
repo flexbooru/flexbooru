@@ -18,16 +18,14 @@ package onlymash.flexbooru.decoder
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.core.net.toFile
 import com.davemorrissey.labs.subscaleview.decoder.ImageDecoder
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
+import onlymash.flexbooru.glide.GlideRequests
 
-class CustomDecoder(private val picasso: Picasso) : ImageDecoder {
+class CustomDecoder(private val glide: GlideRequests) : ImageDecoder {
     override fun decode(context: Context?, uri: Uri): Bitmap {
-        return picasso.load(uri.toFile())
-            .config(Bitmap.Config.ARGB_8888)
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
+        return glide.asBitmap()
+            .load(uri)
+            .submit()
             .get()
     }
 }

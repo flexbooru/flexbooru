@@ -41,7 +41,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
 
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar_transparent.*
@@ -232,7 +231,6 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
         detailAdapter = DetailAdapter(
             glide = glide,
             dismissListener = this,
-            picasso = Picasso.Builder(this).build(),
             ioExecutor = ioExecutor,
             clickCallback = {
                 if (toolbar_container.isVisible) {

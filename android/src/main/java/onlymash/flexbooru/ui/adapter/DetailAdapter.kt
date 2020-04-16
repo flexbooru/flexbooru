@@ -40,7 +40,6 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.exoplayer2.ui.PlayerView
-import com.squareup.picasso.Picasso
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.POST_SIZE_LARGER
 import onlymash.flexbooru.common.Settings.POST_SIZE_SAMPLE
@@ -58,7 +57,6 @@ import java.util.concurrent.Executor
 
 class DetailAdapter(
     private val glide: GlideRequests,
-    private val picasso: Picasso,
     private val dismissListener: DismissFrameLayout.OnDismissListener,
     private val ioExecutor: Executor,
     private val clickCallback: () -> Unit,
@@ -119,7 +117,7 @@ class DetailAdapter(
                         false
                     }
                     setExecutor(ioExecutor)
-                    setBitmapDecoderFactory { CustomDecoder(picasso) }
+                    setBitmapDecoderFactory { CustomDecoder(glide) }
                     setRegionDecoderFactory { CustomRegionDecoder() }
                     transitionName = String.format("post_%d", post.id)
                 }
