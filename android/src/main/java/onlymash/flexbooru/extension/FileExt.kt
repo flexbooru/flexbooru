@@ -15,13 +15,12 @@
 
 package onlymash.flexbooru.extension
 
-import android.content.Context
 import java.io.File
 import java.io.IOException
 
-fun Context.trimCache() {
+fun File.trim() {
     try {
-        cacheDir?.deleteAll()
+        deleteAll()
     } catch (_: IOException) {}
 }
 

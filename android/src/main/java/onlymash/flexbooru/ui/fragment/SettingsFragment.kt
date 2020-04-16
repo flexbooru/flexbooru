@@ -39,7 +39,7 @@ import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.getTreeUri
 import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.toDecodedString
-import onlymash.flexbooru.extension.trimCache
+import onlymash.flexbooru.extension.trim
 import onlymash.flexbooru.widget.ListListener
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -113,15 +113,17 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
             .setMessage(R.string.settings_clear_cache_dialog_content)
             .setNegativeButton(R.string.dialog_cancel, null)
             .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                context?.let {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        try {
-                            postDao.deleteAll()
-                        } catch (_: Exception) {}
-                        it.trimCache()
-                    }
-                }
+                trimCache()
             }
             .show()
+    }
+
+    private fun trimCache() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                postDao.deleteAll()
+            } catch (_: Exception) {}
+            context?.cacheDir?.trim()
+        }
     }
 }
