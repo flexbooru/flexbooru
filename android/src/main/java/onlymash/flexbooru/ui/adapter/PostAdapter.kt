@@ -36,6 +36,7 @@ import onlymash.flexbooru.common.Settings.isLargeWidth
 import onlymash.flexbooru.common.Settings.showInfoBar
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.isImage
+import onlymash.flexbooru.extension.isStillImage
 import onlymash.flexbooru.glide.GlideRequests
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
@@ -87,7 +88,7 @@ class PostAdapter(
         private var post: Post? = null
 
         init {
-            infoContainer.isVisible = showInfoBar
+            infoContainer.isVisible = isShowBar
             itemView.setOnClickListener {
                 post?.let {
                     clickItemCallback(preview, layoutPosition, "post_${it.id}")
@@ -130,7 +131,10 @@ class PostAdapter(
                     }
                 }
             preview.transitionName = "post_${post.id}"
-            val url = if(isLargeItemWidth && post.sample.isImage()) post.sample else post.preview
+            val url = if(isLargeItemWidth && post.sample.isStillImage())
+                post.sample
+            else
+                post.preview
             glide.load(url)
                 .placeholder(placeholderDrawable)
                 .into(preview)

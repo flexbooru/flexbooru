@@ -19,7 +19,7 @@ plugins {
 
 buildscript {
     extra.apply {
-        set("nav_version", "2.3.0-alpha04")
+        set("nav_version", "2.3.0-alpha05")
         set("room_version", "2.2.5")
         set("work_version", "2.4.0-alpha02")
         set("glide_version", "4.11.0")
