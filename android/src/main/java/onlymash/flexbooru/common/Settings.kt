@@ -29,8 +29,6 @@ object Settings {
     const val DETAIL_SIZE_KEY = "settings_detail_size"
     const val DOWNLOAD_SIZE_KEY = "settings_download_size"
     const val DOWNLOAD_PATH_KEY = "settings_download_path"
-    const val DOWNLOAD_PATH_TREE_ID_KEY = "settings_download_path_tree_id"
-    const val DOWNLOAD_PATH_AUTHORITY_KEY = "settings_download_path_authority"
     const val NIGHT_MODE_KEY = "settings_night"
     const val NIGHT_MODE_ON = "on"
     const val NIGHT_MODE_OFF = "off"
@@ -165,14 +163,6 @@ object Settings {
     var downloadDirPath: String?
         get() = sp.getString(DOWNLOAD_PATH_KEY, "")
         set(value) = sp.edit().putString(DOWNLOAD_PATH_KEY, value).apply()
-
-    var downloadDirPathTreeId: String?
-        get() = sp.getString(DOWNLOAD_PATH_TREE_ID_KEY, "")
-        set(value) = sp.edit().putString(DOWNLOAD_PATH_TREE_ID_KEY, value).apply()
-
-    var downloadDirPathAuthority: String?
-        get() = sp.getString(DOWNLOAD_PATH_AUTHORITY_KEY, "")
-        set(value) = sp.edit().putString(DOWNLOAD_PATH_AUTHORITY_KEY, value).apply()
 
     var latestVersionCode: Long
         get() = sp.getLong(LATEST_VERSION_CODE_KEY, -1L)

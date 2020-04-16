@@ -25,40 +25,45 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
 import java.io.IOException
 import java.util.*
 
-fun Activity.getSaveUri(fileName: String): Uri? = getUri("save", fileName)
+fun Activity.getSaveUri(fileName: String): Uri? = getFileUri("save", fileName)
 
-fun Activity.getPoolUri(fileName: String): Uri? = getUri("pools", fileName)
+fun Activity.getPoolUri(fileName: String): Uri? = getFileUri("pools", fileName)
 
-fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getUri(host, fileName)
+fun Activity.getDownloadUri(host: String, fileName: String): Uri? = getFileUri(host, fileName)
 
-fun getFileUriByDocId(docId: String): Uri? {
-    val treeId = Settings.downloadDirPathTreeId ?: return null
-    val authority = Settings.downloadDirPathAuthority ?: return null
-    val treeUri = DocumentsContract.buildTreeDocumentUri(authority, treeId) ?: return null
+fun ContentResolver.getFileUriByDocId(docId: String): Uri? {
+    val treeUri = getTreeUri() ?: return null
     return DocumentsContract.buildDocumentUriUsingTree(treeUri, docId)
 }
 
-private fun Activity.getUri(dirName: String, fileName: String): Uri? {
-    val basePath = Settings.downloadDirPath
-    val treeId = Settings.downloadDirPathTreeId
-    val authority = Settings.downloadDirPathAuthority
-    if (basePath == null || !basePath.startsWith(ContentResolver.SCHEME_CONTENT) ||
-        treeId.isNullOrEmpty() || authority.isNullOrEmpty()) {
+fun ContentResolver.getTreeUri(): Uri? {
+    val permissions = persistedUriPermissions
+    val index = permissions.indexOfFirst { permission ->
+        permission.isReadPermission && permission.isWritePermission
+    }
+    if (index < 0) {
+        return null
+    }
+    return permissions[index].uri
+}
+
+private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
+    val treeUri = contentResolver.getTreeUri()
+    if (treeUri == null) {
         openDocumentTree()
         return null
     }
-    val treeUri = DocumentsContract.buildTreeDocumentUri(authority, treeId)
     val treeDir = DocumentFile.fromTreeUri(this, treeUri)
     if (treeDir == null || !treeDir.canWrite()) {
         Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
         openDocumentTree()
         return null
     }
+    val treeId = DocumentsContract.getTreeDocumentId(treeUri)
     val dirId = getDocumentFileId(treeId, dirName)
     val dirUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirId)
     val dir = DocumentFile.fromSingleUri(this, dirUri)

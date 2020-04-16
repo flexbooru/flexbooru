@@ -36,7 +36,9 @@ import onlymash.flexbooru.common.Settings.downloadDirPath
 import onlymash.flexbooru.common.Settings.gridMode
 import onlymash.flexbooru.common.Settings.nightMode
 import onlymash.flexbooru.data.database.dao.PostDao
+import onlymash.flexbooru.extension.getTreeUri
 import onlymash.flexbooru.extension.openDocumentTree
+import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.extension.trimCache
 import onlymash.flexbooru.widget.ListListener
 import org.kodein.di.Kodein
@@ -52,11 +54,6 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
 
     private var gridRatioPreference: Preference? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sp.registerOnSharedPreferenceChangeListener(this)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listView.setOnApplyWindowInsetsListener(ListListener)
@@ -66,7 +63,9 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
         addPreferencesFromResource(R.xml.pref_settings)
         gridRatioPreference = findPreference(GRID_RATIO_KEY)
         gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
+        downloadDirPath = context?.contentResolver?.getTreeUri()?.toDecodedString()
         initPathSummary()
+        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -98,27 +97,31 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            DOWNLOAD_PATH_KEY -> {
-                requireActivity().openDocumentTree()
-            }
-            CLEAR_CACHE_KEY -> {
-                AlertDialog.Builder(requireContext())
-                    .setTitle(R.string.settings_clear_cache)
-                    .setMessage(R.string.settings_clear_cache_dialog_content)
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                        context?.let {
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                try {
-                                    postDao.deleteAll()
-                                } catch (_: Exception) {}
-                                it.trimCache()
-                            }
-                        }
-                    }
-                    .show()
-            }
+            DOWNLOAD_PATH_KEY -> activity?.openDocumentTree()
+            CLEAR_CACHE_KEY -> createClearDialog()
         }
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun createClearDialog() {
+        val activity = activity
+        if (activity == null || activity.isFinishing) {
+            return
+        }
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.settings_clear_cache)
+            .setMessage(R.string.settings_clear_cache_dialog_content)
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                context?.let {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        try {
+                            postDao.deleteAll()
+                        } catch (_: Exception) {}
+                        it.trimCache()
+                    }
+                }
+            }
+            .show()
     }
 }

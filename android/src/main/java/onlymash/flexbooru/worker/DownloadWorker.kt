@@ -172,7 +172,7 @@ class DownloadWorker(
                 val host = inputData.getString(HOST_KEY)
                 val docId =  inputData.getString(DOC_ID_KEY)
                 if (url == null || id < 0 || host == null || docId == null) return Result.failure()
-                val desUri = getFileUriByDocId(docId) ?: return Result.failure()
+                val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
                 val channelId = applicationContext.packageName + ".download"
                 val notificationManager = getNotificationManager(
                     channelId,
@@ -245,7 +245,7 @@ class DownloadWorker(
                     }
                 }
                 url = "$url&login=$username&password_hash=$passwordHash"
-                val desUri = getFileUriByDocId(docId) ?: return Result.failure()
+                val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
                 val channelId = applicationContext.packageName + ".download_pool"
                 val notificationManager = getNotificationManager(
                     channelId,

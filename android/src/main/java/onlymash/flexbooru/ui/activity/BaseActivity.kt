@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.provider.DocumentsContract
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
 import onlymash.flexbooru.extension.toDecodedString
@@ -28,14 +27,16 @@ abstract class BaseActivity : KodeinActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(
-                uri,
-                takeFlags
-            )
+            val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            contentResolver.apply {
+                persistedUriPermissions.forEach { permission ->
+                    if (permission.isWritePermission && permission.uri != uri) {
+                        releasePersistableUriPermission(permission.uri, flags)
+                    }
+                }
+                takePersistableUriPermission(uri, flags)
+            }
             Settings.downloadDirPath = uri.toDecodedString()
-            Settings.downloadDirPathTreeId = DocumentsContract.getTreeDocumentId(uri)
-            Settings.downloadDirPathAuthority = uri.authority
         }
     }
 }
