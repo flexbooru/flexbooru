@@ -28,7 +28,7 @@ buildscript {
         set("okhttp_version", "4.5.0")
         set("retrofit_version", "2.8.1")
         set("tikxml_version", "0.8.13")
-        set("kodein_version", "6.5.4")
+        set("kodein_version", "6.5.5")
         set("coroutines_version", "1.3.5")
         set("serialization_version", "0.20.0")
         set("ktor_version", "1.3.2")
