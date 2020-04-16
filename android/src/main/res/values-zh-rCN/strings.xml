@@ -171,9 +171,9 @@
     <string name="settings_post_size_larger">略大</string>
     <string name="settings_post_size_origin">原文件</string>
     <string name="settings_grid_mode">网格模式</string>
-    <string name="settings_grid_mode_fixed">Fixed ratio</string>
-    <string name="settings_grid_mode_staggered">Staggered</string>
-    <string name="settings_grid_ratio">Grid ratio</string>
+    <string name="settings_grid_mode_fixed">固定比例</string>
+    <string name="settings_grid_mode_staggered">瀑布流</string>
+    <string name="settings_grid_ratio">网格比例</string>
     <string name="settings_grid_width">网格宽度</string>
     <string name="settings_grid_width_small">小</string>
     <string name="settings_grid_width_normal">正常</string>
