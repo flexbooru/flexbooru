@@ -28,8 +28,8 @@ import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.CLEAR_CACHE_KEY
 import onlymash.flexbooru.common.Settings.DOWNLOAD_PATH_KEY
+import onlymash.flexbooru.common.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.common.Settings.GRID_MODE_KEY
-import onlymash.flexbooru.common.Settings.GRID_MODE_RECTANGLE
 import onlymash.flexbooru.common.Settings.GRID_RATIO_KEY
 import onlymash.flexbooru.common.Settings.NIGHT_MODE_KEY
 import onlymash.flexbooru.common.Settings.downloadDirPath
@@ -65,7 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_settings)
         gridRatioPreference = findPreference(GRID_RATIO_KEY)
-        gridRatioPreference?.isVisible = gridMode == GRID_MODE_RECTANGLE
+        gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
         initPathSummary()
     }
 
@@ -78,7 +78,7 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
                 AppCompatDelegate.setDefaultNightMode(nightMode)
             }
             GRID_MODE_KEY -> {
-                gridRatioPreference?.isVisible = gridMode == GRID_MODE_RECTANGLE
+                gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
             }
         }
     }

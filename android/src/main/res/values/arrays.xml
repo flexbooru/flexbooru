@@ -90,11 +90,11 @@
         <item>origin</item>
     </string-array>
     <string-array name="settings_grid_mode_entries">
-        <item>@string/settings_grid_mode_rectangle</item>
+        <item>@string/settings_grid_mode_fixed</item>
         <item>@string/settings_grid_mode_staggered</item>
     </string-array>
     <string-array name="settings_grid_mode_entries_values">
-        <item>rectangle</item>
+        <item>fixed</item>
         <item>staggered</item>
     </string-array>
     <string-array name="settings_grid_ratio_entries">

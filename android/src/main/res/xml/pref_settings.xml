@@ -36,7 +36,7 @@
             app:key="settings_grid_mode"
             app:entries="@array/settings_grid_mode_entries"
             app:entryValues="@array/settings_grid_mode_entries_values"
-            app:defaultValue="rectangle"
+            app:defaultValue="fixed"
             app:title="@string/settings_grid_mode"
             app:useSimpleSummaryProvider="true" />
 

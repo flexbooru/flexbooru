@@ -42,7 +42,7 @@ object Settings {
     const val POST_SIZE_LARGER = "larger"
     const val POST_SIZE_ORIGIN = "origin"
     const val GRID_MODE_KEY = "settings_grid_mode"
-    const val GRID_MODE_RECTANGLE = "rectangle"
+    const val GRID_MODE_FIXED = "fixed"
     const val GRID_MODE_STAGGERED = "staggered"
     const val GRID_RATIO_KEY = "settings_grid_ratio"
     const val GRID_RATIO_1_1 = "1:1"
@@ -124,7 +124,7 @@ object Settings {
         }
 
     val gridMode: String
-        get() = sp.getString(GRID_MODE_KEY, GRID_MODE_RECTANGLE) ?: GRID_MODE_RECTANGLE
+        get() = sp.getString(GRID_MODE_KEY, GRID_MODE_FIXED) ?: GRID_MODE_FIXED
 
     val gridRatio: String
         get() = sp.getString(GRID_RATIO_KEY, GRID_RATIO_1_1) ?: GRID_RATIO_1_1

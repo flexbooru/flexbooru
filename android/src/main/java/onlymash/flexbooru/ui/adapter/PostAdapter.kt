@@ -29,7 +29,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.GRID_MODE_RECTANGLE
+import onlymash.flexbooru.common.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.common.Settings.gridMode
 import onlymash.flexbooru.common.Settings.gridRatio
 import onlymash.flexbooru.common.Settings.isLargeWidth
@@ -61,7 +61,7 @@ class PostAdapter(
 
     var isShowBar = showInfoBar
     var isLargeItemWidth = isLargeWidth
-    var isRectangle = gridMode == GRID_MODE_RECTANGLE
+    var isRatioFixed = gridMode == GRID_MODE_FIXED
     var itemRatio = gridRatio
 
     override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -117,7 +117,7 @@ class PostAdapter(
                 }
             )
             (preview.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
-                if (isRectangle) {
+                if (isRatioFixed) {
                     preview.scaleType = ImageView.ScaleType.CENTER_CROP
                     "H, $itemRatio"
                 } else {

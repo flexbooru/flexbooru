@@ -43,8 +43,8 @@ import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.common.Keys.PAGE_TYPE
 import onlymash.flexbooru.common.Keys.POST_POSITION
 import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.common.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.common.Settings.GRID_MODE_KEY
-import onlymash.flexbooru.common.Settings.GRID_MODE_RECTANGLE
 import onlymash.flexbooru.common.Settings.GRID_RATIO_KEY
 import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.common.Settings.PAGE_LIMIT_KEY
@@ -555,7 +555,7 @@ class PostFragment : SearchBarFragment() {
                 postViewModel.show(action)
             }
             GRID_MODE_KEY -> {
-                postAdapter.isRectangle = gridMode == GRID_MODE_RECTANGLE
+                postAdapter.isRatioFixed = gridMode == GRID_MODE_FIXED
                 postAdapter.notifyDataSetChanged()
             }
             GRID_RATIO_KEY -> {
