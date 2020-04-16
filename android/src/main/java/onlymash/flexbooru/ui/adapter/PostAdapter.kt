@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -28,6 +29,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.GRID_MODE_RECTANGLE
+import onlymash.flexbooru.common.Settings.gridMode
+import onlymash.flexbooru.common.Settings.gridRatio
+import onlymash.flexbooru.common.Settings.isLargeWidth
+import onlymash.flexbooru.common.Settings.showInfoBar
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.glide.GlideRequests
@@ -37,8 +43,6 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 
 class PostAdapter(
     private val glide: GlideRequests,
-    var showInfoBar: Boolean,
-    var isLargeItemWidth: Boolean,
     private val clickItemCallback: (View, Int, String) -> Unit,
     private val longClickItemCallback: (Post) -> Unit,
     retryCallback: () -> Unit
@@ -54,6 +58,11 @@ class PostAdapter(
                         oldItem.id == newItem.id
         }
     }
+
+    var isShowBar = showInfoBar
+    var isLargeItemWidth = isLargeWidth
+    var isRectangle = gridMode == GRID_MODE_RECTANGLE
+    var itemRatio = gridRatio
 
     override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         PostViewHolder(LayoutInflater.from(parent.context)
@@ -97,7 +106,7 @@ class PostAdapter(
 
         fun bindTo(post: Post?) {
             this.post = post ?: return
-            infoContainer.isVisible = showInfoBar
+            infoContainer.isVisible = isShowBar
             postId.text = String.format("#%d", post.id)
             postSize.text = String.format("%d x %d", post.width, post.height)
             val placeholderDrawable = getPlaceholderDrawable(
@@ -107,15 +116,22 @@ class PostAdapter(
                     else -> R.drawable.background_rating_e
                 }
             )
-            val ratio = post.width.toFloat() / post.height.toFloat()
             (preview.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
-                when {
-                    ratio > MAX_ASPECT_RATIO -> "H, 21:9"
-                    ratio < MIN_ASPECT_RATIO -> "H, 9:21"
-                    else -> "H, ${post.width}:${post.height}"
+                if (isRectangle) {
+                    preview.scaleType = ImageView.ScaleType.CENTER_CROP
+                    "H, $itemRatio"
+                } else {
+                    preview.scaleType = ImageView.ScaleType.FIT_CENTER
+                    val ratio = post.width.toFloat() / post.height.toFloat()
+                    when {
+                        ratio > MAX_ASPECT_RATIO -> "H, 21:9"
+                        ratio < MIN_ASPECT_RATIO -> "H, 9:21"
+                        else -> "H, ${post.width}:${post.height}"
+                    }
                 }
             preview.transitionName = "post_${post.id}"
-            glide.load(if(isLargeItemWidth && post.sample.isImage()) post.sample else post.preview)
+            val url = if(isLargeItemWidth && post.sample.isImage()) post.sample else post.preview
+            glide.load(url)
                 .placeholder(placeholderDrawable)
                 .into(preview)
         }

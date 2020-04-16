@@ -185,6 +185,13 @@
     <string name="settings_post_size_sample">Sample</string>
     <string name="settings_post_size_larger">Larger</string>
     <string name="settings_post_size_origin">Origin</string>
+    <string name="settings_grid_mode">Grid mode</string>
+    <string name="settings_grid_mode_rectangle">Rectangle</string>
+    <string name="settings_grid_mode_staggered">Staggered</string>
+    <string name="settings_grid_ratio">Grid ratio</string>
+    <string name="settings_grid_ratio_1_1" translatable="false">1 : 1</string>
+    <string name="settings_grid_ratio_3_4" translatable="false">3 : 4</string>
+    <string name="settings_grid_ratio_4_3" translatable="false">4 : 3</string>
     <string name="settings_grid_width">Grid width</string>
     <string name="settings_grid_width_small">Small</string>
     <string name="settings_grid_width_normal">Normal</string>

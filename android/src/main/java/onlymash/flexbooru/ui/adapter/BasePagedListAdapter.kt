@@ -61,8 +61,9 @@ abstract class BasePagedListAdapter<T, VH : RecyclerView.ViewHolder>(
     override fun onBindViewHolder(holder: VH, position: Int) {
         when (getItemViewType(position)) {
             R.layout.item_network_state -> {
-                if (holder.itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams) {
-                    (holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams).isFullSpan = true
+                val layoutParams = holder.itemView.layoutParams
+                if (layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+                    layoutParams.isFullSpan = true
                 }
                 (holder as NetworkStateViewHolder).bindTo(networkState)
             }

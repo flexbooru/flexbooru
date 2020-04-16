@@ -41,6 +41,11 @@ object Settings {
     const val POST_SIZE_SAMPLE = "sample"
     const val POST_SIZE_LARGER = "larger"
     const val POST_SIZE_ORIGIN = "origin"
+    const val GRID_MODE_KEY = "settings_grid_mode"
+    const val GRID_MODE_RECTANGLE = "rectangle"
+    const val GRID_MODE_STAGGERED = "staggered"
+    const val GRID_RATIO_KEY = "settings_grid_ratio"
+    const val GRID_RATIO_1_1 = "1:1"
     const val GRID_WIDTH_KEY = "settings_grid_width"
     const val GRID_WIDTH_SMALL = "small"
     const val GRID_WIDTH_NORMAL = "normal"
@@ -117,6 +122,12 @@ object Settings {
             NIGHT_MODE_BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
+
+    val gridMode: String
+        get() = sp.getString(GRID_MODE_KEY, GRID_MODE_RECTANGLE) ?: GRID_MODE_RECTANGLE
+
+    val gridRatio: String
+        get() = sp.getString(GRID_RATIO_KEY, GRID_RATIO_1_1) ?: GRID_RATIO_1_1
 
     val gridWidthResId: Int
         get() = when (gridWidthString) {

@@ -43,11 +43,16 @@ import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.common.Keys.PAGE_TYPE
 import onlymash.flexbooru.common.Keys.POST_POSITION
 import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.common.Settings.GRID_MODE_KEY
+import onlymash.flexbooru.common.Settings.GRID_MODE_RECTANGLE
+import onlymash.flexbooru.common.Settings.GRID_RATIO_KEY
 import onlymash.flexbooru.common.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.common.Settings.PAGE_LIMIT_KEY
 import onlymash.flexbooru.common.Settings.SAFE_MODE_KEY
 import onlymash.flexbooru.common.Settings.SHOW_ALL_TAGS_KEY
 import onlymash.flexbooru.common.Settings.SHOW_INFO_BAR_KEY
+import onlymash.flexbooru.common.Settings.gridMode
+import onlymash.flexbooru.common.Settings.gridRatio
 import onlymash.flexbooru.common.Settings.gridWidthResId
 import onlymash.flexbooru.common.Settings.isLargeWidth
 import onlymash.flexbooru.common.Settings.isShowAllTags
@@ -88,8 +93,7 @@ import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.erased.instance
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
 import kotlin.math.roundToInt
 
 private const val SCALE_DAY = "day"
@@ -172,8 +176,6 @@ class PostFragment : SearchBarFragment() {
         val glide = GlideApp.with(this)
         postAdapter = PostAdapter(
             glide = glide,
-            showInfoBar = showInfoBar,
-            isLargeItemWidth = isLargeWidth,
             clickItemCallback = { view, position, tranName ->
                 activity?.let {
                     sharedElement = view
@@ -189,6 +191,7 @@ class PostFragment : SearchBarFragment() {
         }
         postViewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
             postList?.let {
+                mainList.stopScroll()
                 postAdapter.submitList(it)
                 if (progressBar.isVisible && it.size > 0) {
                     progressBar.isVisible = false
@@ -551,6 +554,14 @@ class PostFragment : SearchBarFragment() {
                 action.limit = pageLimit
                 postViewModel.show(action)
             }
+            GRID_MODE_KEY -> {
+                postAdapter.isRectangle = gridMode == GRID_MODE_RECTANGLE
+                postAdapter.notifyDataSetChanged()
+            }
+            GRID_RATIO_KEY -> {
+                postAdapter.itemRatio = gridRatio
+                postAdapter.notifyDataSetChanged()
+            }
             GRID_WIDTH_KEY -> {
                 postAdapter.isLargeItemWidth = isLargeWidth
                 mainList.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
@@ -560,7 +571,7 @@ class PostFragment : SearchBarFragment() {
                 updateActionAndRefresh(action)
             }
             SHOW_INFO_BAR_KEY -> {
-                postAdapter.showInfoBar = showInfoBar
+                postAdapter.isShowBar = showInfoBar
                 postAdapter.notifyDataSetChanged()
             }
         }

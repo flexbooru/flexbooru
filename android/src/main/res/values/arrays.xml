@@ -89,6 +89,24 @@
         <item>larger</item>
         <item>origin</item>
     </string-array>
+    <string-array name="settings_grid_mode_entries">
+        <item>@string/settings_grid_mode_rectangle</item>
+        <item>@string/settings_grid_mode_staggered</item>
+    </string-array>
+    <string-array name="settings_grid_mode_entries_values">
+        <item>rectangle</item>
+        <item>staggered</item>
+    </string-array>
+    <string-array name="settings_grid_ratio_entries">
+        <item>@string/settings_grid_ratio_1_1</item>
+        <item>@string/settings_grid_ratio_3_4</item>
+        <item>@string/settings_grid_ratio_4_3</item>
+    </string-array>
+    <string-array name="settings_grid_ratio_entries_values">
+        <item>1:1</item>
+        <item>3:4</item>
+        <item>4:3</item>
+    </string-array>
     <string-array name="settings_grid_width_entries">
         <item>@string/settings_grid_width_small</item>
         <item>@string/settings_grid_width_normal</item>
