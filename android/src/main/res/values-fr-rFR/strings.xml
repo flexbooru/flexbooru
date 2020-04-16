@@ -170,6 +170,10 @@
     <string name="settings_post_size_sample">Échantillon</string>
     <string name="settings_post_size_larger">Plus grand</string>
     <string name="settings_post_size_origin">Origine</string>
+    <string name="settings_grid_mode">Grid mode</string>
+    <string name="settings_grid_mode_fixed">Fixed ratio</string>
+    <string name="settings_grid_mode_staggered">Staggered</string>
+    <string name="settings_grid_ratio">Grid ratio</string>
     <string name="settings_grid_width">Largeur de la grille</string>
     <string name="settings_grid_width_small">Petit</string>
     <string name="settings_grid_width_normal">Normal</string>
