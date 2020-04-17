@@ -87,7 +87,6 @@ import org.kodein.di.erased.instance
 class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
-        private const val SETUP_NAV_KEY = "nav_setup"
         private const val BOORUS_LIMIT = 3
         private const val HEADER_ITEM_ID_BOORU_MANAGE = -100L
         private const val DRAWER_ITEM_ID_ACCOUNT = 1L
@@ -202,16 +201,11 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             initDrawerHeader()
         })
         booruViewModel.booru.observe(this, Observer { booru: Booru? ->
-            if (booru != null && currentBooru != booru) {
+            if (booru != null) {
                 currentBooru = booru
-                when {
-                    savedInstanceState == null || savedInstanceState.getBoolean(SETUP_NAV_KEY, true) -> {
-                        setupNavigationMenu(booru.type)
-                    }
-                    else -> {
-                        savedInstanceState.putBoolean(SETUP_NAV_KEY, true)
-                    }
-                }
+                setupNavigationMenu(booru.type)
+            } else {
+                navController.graph = navController.navInflater.inflate(R.navigation.main_navigation)
             }
         })
         if (savedInstanceState == null) {
@@ -251,7 +245,10 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             bottomNavigationView.inflateMenu(menuRes)
         }
         navController.graph = navController.navInflater.inflate(navRes)
-        bottomNavigationView.selectedItemId = navController.graph.startDestination
+        val currentId = navController.currentDestination?.id ?: R.id.nav_posts
+        if (currentId != bottomNavigationView.selectedItemId) {
+            bottomNavigationView.selectedItemId = currentId
+        }
         forceShowNavBar()
     }
 
@@ -538,10 +535,5 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (behavior is HideBottomViewOnScrollBehavior) {
             behavior.slideUp(bottomNavigationView)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean(SETUP_NAV_KEY, false)
-        super.onSaveInstanceState(outState)
     }
 }
