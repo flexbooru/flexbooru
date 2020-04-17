@@ -25,7 +25,6 @@ import android.os.Bundle
 import android.provider.DocumentsContract
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AlertDialog
@@ -98,7 +97,7 @@ private const val ACTION_SAVE_AS = 12
 private const val ACTION_SET_AS = 13
 private const val ACTION_SEND = 14
 
-class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Toolbar.OnMenuItemClickListener {
+class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Toolbar.OnMenuItemClickListener {
 
     companion object {
         const val ACTION_DETAIL_POST_POSITION = "detail_post_position"
@@ -205,11 +204,7 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun initInsets() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            window.attributes.layoutInDisplayCutoutMode =
-                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-        }
-        window.showBar()
+        window.isShowBar = true
         findViewById<View>(android.R.id.content).setOnApplyWindowInsetsListener { _, insets ->
             toolbar_container.minimumHeight = toolbar_transparent.height + insets.systemWindowInsetTop
             toolbar_container.updatePadding(
@@ -233,17 +228,11 @@ class DetailActivity : BaseActivity(), DismissFrameLayout.OnDismissListener, Too
             dismissListener = this,
             ioExecutor = ioExecutor,
             clickCallback = {
-                if (toolbar_container.isVisible) {
-                    window.hideBar()
-                    toolbar_container.isVisible = false
-                    bottom_bar_container.isVisible = false
-                    shadow.isVisible = false
-                } else {
-                    window.showBar()
-                    toolbar_container.isVisible = true
-                    bottom_bar_container.isVisible = true
-                    shadow.isVisible = true
-                }
+                val isVisible = !toolbar_container.isVisible
+                window.isShowBar = isVisible
+                toolbar_container.isVisible = isVisible
+                bottom_bar_container.isVisible = isVisible
+                shadow.isVisible = isVisible
             },
             longClickCallback = {
                 createLongClickDialog()

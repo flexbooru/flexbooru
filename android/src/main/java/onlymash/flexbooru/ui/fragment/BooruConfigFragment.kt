@@ -37,7 +37,7 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
-import onlymash.flexbooru.widget.ListListener
+import onlymash.flexbooru.extension.ListListener
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein

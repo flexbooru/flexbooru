@@ -23,6 +23,7 @@
         <item name="android:statusBarColor">@color/colorStatusBar</item>
         <item name="android:navigationBarColor">@color/colorNavigationBar</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
@@ -109,12 +110,10 @@
     <style name="AppTheme.NoActionBar.Scrim.NoAnimation.Detail">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/transparent</item>
-        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
     </style>
 
     <style name="AppTheme.AlertDialog.DayNight" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">

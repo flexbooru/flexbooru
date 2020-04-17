@@ -40,7 +40,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.util.Logger
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt
-class ScannerActivity : AppCompatActivity(), BarcodeRetriever {
+class ScannerActivity : BaseActivity(), BarcodeRetriever {
     companion object {
         private const val TAG = "ScannerActivity"
         private const val REQUEST_GOOGLE_API = 4

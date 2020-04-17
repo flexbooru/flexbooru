@@ -18,9 +18,9 @@ package onlymash.flexbooru.ui.activity
 import android.os.Bundle
 import android.view.MenuItem
 import onlymash.flexbooru.R
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : PathActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

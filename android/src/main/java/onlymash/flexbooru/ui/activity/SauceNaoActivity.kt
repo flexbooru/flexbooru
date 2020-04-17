@@ -25,7 +25,6 @@ import android.view.*
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -47,15 +46,15 @@ import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Settings.sauceNaoApiKey
+import onlymash.flexbooru.di.kodeinCommon
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.saucenao.api.SauceNaoApi
-import onlymash.flexbooru.saucenao.di.kodeinSauceNao
 import onlymash.flexbooru.saucenao.model.Result
 import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
 import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import org.kodein.di.erased.instance
 import java.io.IOException
 
@@ -63,7 +62,7 @@ const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
 
 private const val READ_IMAGE_REQUEST_CODE = 147
 
-class SauceNaoActivity : AppCompatActivity() {
+class SauceNaoActivity : BaseActivity() {
 
     companion object {
         fun startSearch(context: Context, url: String) {
@@ -75,7 +74,7 @@ class SauceNaoActivity : AppCompatActivity() {
         }
     }
 
-    private val api by kodeinSauceNao.instance<SauceNaoApi>("SauceNaoApi")
+    private val api by kodeinCommon.instance<SauceNaoApi>("SauceNaoApi")
 
     private lateinit var sauceNaoViewModel: SauceNaoViewModel
     private var response: SauceNaoResponse? = null

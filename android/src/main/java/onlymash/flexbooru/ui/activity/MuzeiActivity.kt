@@ -53,7 +53,7 @@ import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import org.kodein.di.erased.instance
 

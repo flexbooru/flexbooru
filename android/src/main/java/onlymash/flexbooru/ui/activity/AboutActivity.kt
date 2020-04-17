@@ -17,11 +17,10 @@ package onlymash.flexbooru.ui.activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 
-class AboutActivity : AppCompatActivity() {
+class AboutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

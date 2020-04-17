@@ -22,8 +22,6 @@ import android.content.Intent
 import android.net.Uri
 import android.text.StaticLayout
 import android.util.DisplayMetrics
-import android.view.View
-import android.view.Window
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -56,22 +54,6 @@ fun StaticLayout.textWidth(): Int {
  */
 fun lerp(a: Float, b: Float, t: Float): Float {
     return a + (b - a) * t
-}
-
-fun Window.showBar() {
-    val uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-    decorView.systemUiVisibility = uiFlags
-}
-
-fun Window.hideBar() {
-    val uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_IMMERSIVE
-    decorView.systemUiVisibility = uiFlags
 }
 
 fun Activity.getWindowWidth(): Int {

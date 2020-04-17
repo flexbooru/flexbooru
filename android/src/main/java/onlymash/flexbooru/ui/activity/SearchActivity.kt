@@ -21,9 +21,9 @@ import android.os.Bundle
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_QUERY
 import onlymash.flexbooru.ui.fragment.PostFragment
-import onlymash.flexbooru.widget.setupInsets
+import onlymash.flexbooru.extension.setupInsets
 
-class SearchActivity : BaseActivity() {
+class SearchActivity : PathActivity() {
 
     companion object {
         fun startSearch(context: Context, query: String) {

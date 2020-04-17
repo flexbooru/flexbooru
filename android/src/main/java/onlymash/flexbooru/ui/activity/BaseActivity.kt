@@ -15,28 +15,18 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.app.Activity
-import android.content.Intent
-import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
-import onlymash.flexbooru.extension.toDecodedString
+import android.os.Build
+import android.os.Bundle
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 
-abstract class BaseActivity : KodeinActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data ?: return
-            val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            contentResolver.apply {
-                persistedUriPermissions.forEach { permission ->
-                    if (permission.isWritePermission && permission.uri != uri) {
-                        releasePersistableUriPermission(permission.uri, flags)
-                    }
-                }
-                takePersistableUriPermission(uri, flags)
-            }
-            Settings.downloadDirPath = uri.toDecodedString()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
     }
 }

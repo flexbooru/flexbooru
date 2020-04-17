@@ -18,11 +18,10 @@ package onlymash.flexbooru.ui.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 
-class BooruConfigActivity : AppCompatActivity() {
+class BooruConfigActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_BOORU_UID = "extra_booru_uid"

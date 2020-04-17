@@ -30,7 +30,7 @@ import androidx.core.view.updatePadding
 import kotlinx.android.synthetic.main.activity_copyright.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 
 class CopyrightActivity : BaseActivity() {
 

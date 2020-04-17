@@ -40,7 +40,7 @@ import onlymash.flexbooru.extension.getTreeUri
 import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.extension.trim
-import onlymash.flexbooru.widget.ListListener
+import onlymash.flexbooru.extension.ListListener
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein

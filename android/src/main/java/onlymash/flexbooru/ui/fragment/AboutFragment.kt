@@ -27,7 +27,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.activity.CopyrightActivity
-import onlymash.flexbooru.widget.ListListener
+import onlymash.flexbooru.extension.ListListener
 
 
 class AboutFragment : PreferenceFragmentCompat() {

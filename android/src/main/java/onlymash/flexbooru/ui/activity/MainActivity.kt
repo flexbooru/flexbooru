@@ -79,10 +79,10 @@ import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.ui.fragment.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.widget.setupInsets
+import onlymash.flexbooru.extension.setupInsets
 import org.kodein.di.erased.instance
 
-class MainActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private const val SETUP_NAV_KEY = "nav_setup"

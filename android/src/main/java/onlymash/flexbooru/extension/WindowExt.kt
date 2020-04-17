@@ -13,29 +13,56 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.widget
+package onlymash.flexbooru.extension
 
 import android.view.View
+import android.view.Window
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
 
+fun View.toFullscreenStable() {
+    systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+}
+
+fun View.toFullscreenImmersive() {
+    systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_IMMERSIVE
+}
+
+
+inline var Window.isShowBar: Boolean
+    get() = (decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LAYOUT_STABLE) != 0
+    set(value) {
+        if (value) {
+            decorView.toFullscreenStable()
+        } else {
+            decorView.toFullscreenImmersive()
+        }
+    }
+
 fun AppCompatActivity.setupInsets(insetsCallback: (insets: WindowInsets) -> Unit) {
     findViewById<View>(android.R.id.content).apply {
+        toFullscreenStable()
         setOnApplyWindowInsetsListener { _, insets ->
-            updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            updatePadding(
+                left = insets.systemWindowInsetLeft,
+                right = insets.systemWindowInsetRight
+            )
             insetsCallback(insets)
             insets
         }
-        systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
     }
 }
 
 fun AppCompatActivity.drawNavBar(insetsCallback: (insets: WindowInsets) -> Unit) {
     findViewById<View>(android.R.id.content).apply {
-        systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        toFullscreenStable()
         setOnApplyWindowInsetsListener { _, insets ->
             updatePadding(
                 top = insets.systemWindowInsetTop,

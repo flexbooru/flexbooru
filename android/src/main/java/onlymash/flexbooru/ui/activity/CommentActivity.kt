@@ -52,7 +52,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import org.kodein.di.erased.instance
 
 class CommentActivity : KodeinActivity() {

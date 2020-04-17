@@ -37,7 +37,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import org.kodein.di.erased.instance
 
 class TagBlacklistActivity : KodeinActivity() {

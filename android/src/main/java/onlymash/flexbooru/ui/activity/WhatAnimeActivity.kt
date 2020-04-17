@@ -24,7 +24,6 @@ import android.graphics.ImageDecoder
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -55,32 +54,32 @@ import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Settings.safeMode
+import onlymash.flexbooru.di.kodeinCommon
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.tracemoe.api.TraceMoeApi
-import onlymash.flexbooru.tracemoe.di.kodeinTraceMoe
 import onlymash.flexbooru.tracemoe.model.Doc
 import onlymash.flexbooru.ui.fragment.BaseBottomSheetDialogFragment
 import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import org.kodein.di.erased.instance
 import java.io.ByteArrayOutputStream
 
 private const val READ_IMAGE_REQUEST_CODE = 147
 private const val PREVIEW_VIDEO_URL_KEY = "preview_video_url"
 
-class WhatAnimeActivity : AppCompatActivity() {
+class WhatAnimeActivity : BaseActivity() {
 
     private val docs: MutableList<Doc> = mutableListOf()
 
     private lateinit var whatAnimeAdapter: WhatAnimeAdapter
     private lateinit var traceMoeViiewModel: TraceMoeViewModel
 
-    private val api by kodeinTraceMoe.instance<TraceMoeApi>("TraceMoeApi")
+    private val api by kodeinCommon.instance<TraceMoeApi>("TraceMoeApi")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

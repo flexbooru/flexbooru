@@ -52,12 +52,12 @@ import onlymash.flexbooru.ui.helper.ItemTouchCallback
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import org.kodein.di.erased.instance
 import java.io.IOException
 import java.io.InputStream
 
-class BooruActivity : BaseActivity() {
+class BooruActivity : KodeinActivity() {
 
     private val booruDao by instance<BooruDao>()
 

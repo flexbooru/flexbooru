@@ -34,7 +34,7 @@ import onlymash.flexbooru.ui.adapter.HistoryAdapter
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.HistoryViewModel
 import onlymash.flexbooru.ui.viewmodel.getHistoryViewModel
-import onlymash.flexbooru.widget.drawNavBar
+import onlymash.flexbooru.extension.drawNavBar
 import org.kodein.di.erased.instance
 
 class HistoryActivity : KodeinActivity() {

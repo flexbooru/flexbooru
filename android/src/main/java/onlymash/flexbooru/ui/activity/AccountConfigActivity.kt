@@ -43,7 +43,7 @@ import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import onlymash.flexbooru.data.repository.user.UserRepository
 import org.kodein.di.erased.instance
 
-class AccountConfigActivity : BaseActivity() {
+class AccountConfigActivity : KodeinActivity() {
 
     private val booruApis by instance<BooruApis>()
 

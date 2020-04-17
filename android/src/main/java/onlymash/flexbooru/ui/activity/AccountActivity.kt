@@ -43,7 +43,7 @@ import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import org.kodein.di.erased.instance
 
-class AccountActivity : BaseActivity() {
+class AccountActivity : PathActivity() {
 
     companion object {
         const val USER_ID_KEY = "user_id"
