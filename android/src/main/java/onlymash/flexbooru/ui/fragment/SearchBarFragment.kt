@@ -99,7 +99,6 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
             systemUiBottomSize = insets.systemWindowInsetBottom
             (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
                 resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + systemUiTopSize
-            progressBarHorizontal.updatePadding(bottom = systemUiBottomSize)
             setupMainListPadding()
             setupSwipeRefreshOffset()
             insets
@@ -156,10 +155,13 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         if (activity is MainActivity) {
             val paddingBottom = systemUiBottomSize + resources.getDimensionPixelSize(R.dimen.nav_bar_height)
             searchLayout.updatePadding(top = paddingTop, bottom = paddingBottom)
-            mainList.updatePadding(top = paddingTop, bottom = if (autoHideBottomBar) systemUiBottomSize else paddingBottom)
+            val paddingBottomAuto = if (autoHideBottomBar) systemUiBottomSize else paddingBottom
+            mainList.updatePadding(top = paddingTop, bottom = paddingBottomAuto)
+            progressBarHorizontal.updatePadding(bottom = paddingBottomAuto)
         } else {
             searchLayout.updatePadding(top = paddingTop, bottom = systemUiBottomSize)
             mainList.updatePadding(top = paddingTop, bottom = systemUiBottomSize)
+            progressBarHorizontal.updatePadding(bottom = systemUiBottomSize)
         }
     }
 
