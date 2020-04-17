@@ -617,8 +617,8 @@ class PostFragment : SearchBarFragment() {
         )
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         activity?.unregisterReceiver(broadcastReceiver)
     }
 }
