@@ -37,6 +37,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagedList
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
 
@@ -159,19 +160,15 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun syncInfo(post: Post?) {
-        play(post)
         if (post == null) {
             return
         }
-        actionVote.postId = post.id
+        play(post)
         setVoteItemIcon(post.isFavored)
         toolbar_transparent.title = "Post ${post.id}"
     }
 
-    private fun play(post: Post?) {
-        if (post == null) {
-            return
-        }
+    private fun play(post: Post) {
         val playerView = playerView ?: return
         oldPlayerView?.player = null
         oldPlayerView = playerView
@@ -243,20 +240,33 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             registerOnPageChangeCallback(pageChangeCallback)
         }
         detailViewModel = getDetailViewModel(postDao, booru.uid, query)
-        detailViewModel.posts.observe(this, Observer {
-            detailAdapter.submitList(it)
-            if (initPosition != POSITION_INITED) {
-                if (detailAdapter.itemCount > 0) {
-                    detail_pager.setCurrentItem(initPosition, false)
-                    lifecycleScope.launch {
-                        delay(100)
-                        startPostponedEnterTransition()
-                        syncInfo(currentPost)
-                    }
-                }
-                initPosition = POSITION_INITED
-            }
+        detailViewModel.posts.observe(this, Observer { postList ->
+            updatePosts(postList)
         })
+    }
+
+    private fun updatePosts(postList: PagedList<Post>?) {
+        if (postList == null) {
+            return
+        }
+        detailAdapter.submitList(postList)
+        if (initPosition != POSITION_INITED) {
+            if (initPosition >= 0 && initPosition < postList.size) {
+                detail_pager.setCurrentItem(initPosition, false)
+                delayExecute {
+                    startPostponedEnterTransition()
+                    syncInfo(currentPost)
+                }
+            }
+            initPosition = POSITION_INITED
+        }
+    }
+
+    private fun delayExecute(callback: () -> Unit) {
+        lifecycleScope.launch {
+            delay(100L)
+            callback()
+        }
     }
 
     private fun initToolbar() {
@@ -296,35 +306,31 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             }
         }
         post_fav.setOnClickListener {
-            if (booru.type == BOORU_TYPE_SHIMMIE) {
-                Toast.makeText(this, getString(R.string.msg_not_supported), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            vote()
+        }
+    }
+
+    private fun vote() {
+        if (booru.type == BOORU_TYPE_SHIMMIE) {
+            showToast(getString(R.string.msg_not_supported))
+            return
+        }
+        if (booru.user == null) {
+            startActivity(Intent(this, AccountConfigActivity::class.java))
+            finish()
+            return
+        }
+        val post = currentPost ?: return
+        actionVote.postId = post.id
+        lifecycleScope.launch {
+            val result = if (post.isFavored) {
+                voteRepository.removeFav(actionVote)
+            } else {
+                voteRepository.addFav(actionVote)
             }
-            if (booru.user == null) {
-                startActivity(Intent(this, AccountConfigActivity::class.java))
-                finish()
-                return@setOnClickListener
-            }
-            currentPost?.let {
-                if (it.isFavored) {
-                    lifecycleScope.launch {
-                        val result = voteRepository.removeFav(actionVote)
-                        if (result is NetResult.Error) {
-                            Toast.makeText(this@DetailActivity, result.errorMsg, Toast.LENGTH_SHORT).show()
-                        }
-                        delay(100)
-                        setVoteItemIcon(currentPost?.isFavored == true)
-                    }
-                } else {
-                    lifecycleScope.launch {
-                        val result = voteRepository.addFav(actionVote)
-                        if (result is NetResult.Error) {
-                            Toast.makeText(this@DetailActivity, result.errorMsg, Toast.LENGTH_SHORT).show()
-                        }
-                        delay(100)
-                        setVoteItemIcon(currentPost?.isFavored == true)
-                    }
-                }
+            when {
+                result is NetResult.Error -> showToast(result.errorMsg)
+                currentPost?.id == post.id -> setVoteItemIcon(!post.isFavored)
             }
         }
     }
@@ -464,9 +470,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         }
         val uri = getSaveUri(fileName) ?: return
         if (copyFile(file = source, desUri = uri)) {
-            Toast.makeText(this,
-                getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
-                Toast.LENGTH_SHORT).show()
+            showToast(getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)))
         }
     }
 
@@ -580,8 +584,9 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         playerHolder.create(applicationContext)
         currentPost?.origin?.let { url ->
             if (url.isVideo()) {
-                val playerView = playerView ?: return@let
-                playerHolder.start(applicationContext, url.toUri(), playerView)
+                playerView?.apply {
+                    playerHolder.start(applicationContext, url.toUri(), this)
+                }
             }
         }
     }
@@ -605,12 +610,14 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             val file = tmpFile ?: return
             lifecycleScope.launch {
                 if (copyFile(file, uri)) {
-                    Toast.makeText(this@DetailActivity,
-                        getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)),
-                        Toast.LENGTH_SHORT).show()
+                    showToast(getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)))
                 }
                 tmpFile = null
             }
         }
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }
