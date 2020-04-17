@@ -583,7 +583,7 @@ class PostFragment : SearchBarFragment() {
             if (query != bundle.getString(POST_QUERY)) return
             val position = bundle.getInt(POST_POSITION, -1)
             if (position >= 0 && position < postAdapter.itemCount) {
-                mainList.scrollToPosition(position)
+                mainList.smoothScrollToPosition(position)
                 sharedElement = mainList.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.preview)
             }
         }
@@ -607,11 +607,7 @@ class PostFragment : SearchBarFragment() {
         super.onResume()
         val activity = activity ?: return
         activity.setExitSharedElementCallback(sharedElementCallback)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        activity?.registerReceiver(
+        activity.registerReceiver(
             broadcastReceiver,
             IntentFilter(DetailActivity.ACTION_DETAIL_POST_POSITION)
         )

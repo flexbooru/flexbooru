@@ -507,8 +507,12 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun getCurrentFragment(): Fragment? {
-        return (supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-                as? NavHostFragment)?.childFragmentManager?.fragments?.last()
+        val fragments = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                as? NavHostFragment)?.childFragmentManager?.fragments
+        if (fragments.isNullOrEmpty()) {
+            return null
+        }
+        return fragments.last()
     }
 
     fun openDrawer() {
