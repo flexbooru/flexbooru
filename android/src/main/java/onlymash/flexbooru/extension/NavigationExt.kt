@@ -57,7 +57,9 @@ private fun onNavDestinationSelected(
             navController.navigate(itemId, null, options)
         }
         true
-    } catch (e: IllegalArgumentException) {
+    } catch (_: IllegalArgumentException) {
+        false
+    } catch (_: IllegalStateException) {
         false
     }
 }
