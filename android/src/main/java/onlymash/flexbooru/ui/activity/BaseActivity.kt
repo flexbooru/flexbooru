@@ -19,14 +19,64 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.isNightThemeDark
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    private fun getThemeRes(): Int {
+        return when (this) {
+            is MainActivity -> {
+                if (isNightThemeDark) {
+                    R.style.AppTheme_NoActionBar_Scrim_Main
+                } else {
+                    R.style.AppTheme_Black_NoActionBar_Scrim_Main
+                }
+            }
+            is DetailActivity -> {
+                if (isNightThemeDark) {
+                    R.style.AppTheme_NoActionBar_Scrim_NoAnimation_Detail
+                } else {
+                    R.style.AppTheme_Black_NoActionBar_Scrim_NoAnimation_Detail
+                }
+            }
+            is SearchActivity -> {
+                if (isNightThemeDark) {
+                    R.style.AppTheme_NoActionBar_Scrim_NoAnimation
+                } else {
+                    R.style.AppTheme_Black_NoActionBar_Scrim_NoAnimation
+                }
+            }
+            is AccountConfigActivity -> {
+                if (isNightThemeDark) {
+                    R.style.AppTheme_NoActionBar_Animation
+                } else {
+                    R.style.AppTheme_Black_NoActionBar_Animation
+                }
+            }
+            is ScannerActivity -> {
+                if (isNightThemeDark) {
+                    R.style.AppTheme_Animation
+                } else {
+                    R.style.AppTheme_Black_Animation
+                }
+            }
+            else -> {
+                if (isNightThemeDark) {
+                    R.style.AppTheme_ScrimNavBar_Animation
+                } else {
+                    R.style.AppTheme_Black_ScrimNavBar_Animation
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             window.attributes.layoutInDisplayCutoutMode =
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
+        setTheme(getThemeRes())
+        super.onCreate(savedInstanceState)
     }
 }

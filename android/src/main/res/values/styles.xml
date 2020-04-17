@@ -13,122 +13,46 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ns2="http://schemas.android.com/tools">
-
-    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/is_light_status_bar</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/is_light_navigation_bar</item>
-        <item name="android:statusBarColor">@color/colorStatusBar</item>
-        <item name="android:navigationBarColor">@color/colorNavigationBar</item>
-        <item name="actionBarStyle">@style/ActionBarStyle</item>
-        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
-    </style>
+<resources>
 
     <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
         <item name="background">@color/colorBackground</item>
     </style>
 
-    <style name="AppTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorError">@color/colorError</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSecondaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSurface">@color/colorSurface</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorOnBackground">@color/colorOnBackground</item>
-        <item name="colorOnError">@color/colorOnError</item>
-        <item name="colorOnSurface">@color/colorOnSurface</item>
-        <item name="scrimBackground">@color/scrimBackground</item>
-        <item name="preferenceTheme">@style/PreferenceTheme</item>
-        <item name="alertDialogTheme">@style/AppTheme.AlertDialog.DayNight</item>
-        <item name="actionOverflowMenuStyle">@style/Widget.OverflowMenuStyle.DayNight</item>
-        <item name="android:actionOverflowMenuStyle">@style/Widget.OverflowMenuStyle.DayNight</item>
-        <item name="android:popupWindowStyle">@style/Widget.PopupWindowStyle</item>
-        <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Scrim">
-        <item name="android:statusBarColor">@color/colorStatusBarScrim</item>
-        <item name="android:navigationBarColor">@color/colorNavigationBarScrim</item>
-    </style>
-
-    <style name="AppTheme.ScrimNavBar">
-        <item name="android:navigationBarColor">@color/colorNavigationBarScrim</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Launcher">
-        <item name="android:windowBackground">@drawable/background_launcher</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Scrim.Main">
-        <!-- MaterialDrawer specific values -->
-        <item name="materialDrawerStyle">@style/MaterialDrawerStyle</item>
-        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle</item>
+    <style name="ActionBarStyle.Black">
+        <item name="background">@color/colorBackgroundBlack</item>
     </style>
 
     <style name="MaterialDrawerStyle" parent="Widget.MaterialDrawerStyle">
-        <item name="materialDrawerBackground">@color/colorCardBackground</item>
+        <item name="materialDrawerBackground">?android:colorBackground</item>
         <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
     </style>
 
-    <style name="AppTheme.ScrimNavBar.Animation">
-        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Animation">
-        <item name="android:windowAnimationStyle">@style/Animation.RightInRightOutAnim</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Scrim.NoAnimation">
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:activityOpenEnterAnimation">@null</item>
-        <item name="android:activityOpenExitAnimation">@null</item>
-        <item name="android:activityCloseEnterAnimation">@null</item>
-        <item name="android:activityCloseExitAnimation">@null</item>
-        <item name="android:taskOpenEnterAnimation">@null</item>
-        <item name="android:taskOpenExitAnimation">@null</item>
-        <item name="android:taskCloseEnterAnimation">@null</item>
-        <item name="android:taskCloseExitAnimation">@null</item>
-        <item name="android:taskToFrontEnterAnimation">@null</item>
-        <item name="android:taskToFrontExitAnimation">@null</item>
-        <item name="android:taskToBackEnterAnimation">@null</item>
-        <item name="android:taskToBackExitAnimation">@null</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Scrim.NoAnimation.Detail">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:navigationBarColor">@color/transparent</item>
-    </style>
-
-    <style name="AppTheme.AlertDialog.DayNight" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+    <style name="AlertDialog.DayNight" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.Button.TextButton.Dialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
 
-    <style name="Widget.CardView" parent="Widget.MaterialComponents.CardView">
+    <style name="MyCardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
         <item name="cardUseCompatPadding">false</item>
         <item name="cardElevation">@dimen/elevation_size</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="contentPadding">0dp</item>
         <item name="cardBackgroundColor">@color/colorCardBackground</item>
+    </style>
+
+    <style name="MyCardView.Searchbar">
+        <item name="cardBackgroundColor">@color/colorSearchBar</item>
+    </style>
+
+    <style name="MyCardView.Black">
+        <item name="cardBackgroundColor">@color/colorCardBackgroundBlack</item>
+    </style>
+
+    <style name="MyCardView.Black.Searchbar">
+        <item name="cardBackgroundColor">@color/colorSearchBarBlack</item>
     </style>
 
     <style name="TransparentBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
@@ -151,7 +75,7 @@
 
     <style name="Widget.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">@color/colorBackground</item>
-        <item name="android:elevation" ns2:ignore="NewApi">@dimen/elevation_appbar</item>
+        <item name="android:elevation">@dimen/elevation_appbar</item>
         <item name="android:theme">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
         <item name="popupTheme">@style/PopupOverlay</item>
     </style>
@@ -217,5 +141,4 @@
         <item name="actionIcon">@drawable/tag_dot</item>
         <item name="showIcon">true</item>
     </style>
-    <style name="AppTheme.Text" parent="TextAppearance.MaterialComponents.Body1"/>
 </resources>

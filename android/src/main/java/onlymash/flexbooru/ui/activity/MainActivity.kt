@@ -56,6 +56,7 @@ import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.AUTO_HIDE_BOTTOM_BAR_KEY
 import onlymash.flexbooru.common.Settings.BOORU_UID_ACTIVATED_KEY
+import onlymash.flexbooru.common.Settings.NIGHT_THEME_KEY
 import onlymash.flexbooru.common.Settings.ORDER_SUCCESS_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Settings.autoHideBottomBar
@@ -80,6 +81,7 @@ import onlymash.flexbooru.ui.fragment.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import onlymash.flexbooru.extension.setupInsets
+import onlymash.flexbooru.ui.helper.isNightEnable
 import org.kodein.di.erased.instance
 
 class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -171,7 +173,6 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar_Scrim_Main)
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val windowHeight = resources.displayMetrics.heightPixels
@@ -439,6 +440,11 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
+            NIGHT_THEME_KEY -> {
+                if (resources.configuration.isNightEnable()) {
+                    recreate()
+                }
+            }
             BOORU_UID_ACTIVATED_KEY -> {
                 val identifier = headerView.activeProfile?.identifier ?: -1
                 val uid = activatedBooruUid

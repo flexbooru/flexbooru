@@ -20,6 +20,7 @@
     <color name="colorSecondary">@color/color_light_secondary</color>
     <color name="colorAccent">@color/color_light_accent</color>
     <color name="colorBackground">@color/color_light_background</color>
+    <color name="colorBackgroundBlack">@color/color_light_background</color>
     <color name="colorError">@color/color_light_error</color>
     <color name="colorPrimaryVariant">@color/color_light_primary_variant</color>
     <color name="colorSecondaryVariant">@color/color_light_secondary_variant</color>
@@ -37,20 +38,25 @@
     <color name="colorDividerItem">@color/grey_300</color>
     <color name="colorButtonText">@color/colorPrimary</color>
     <color name="colorCardBackground">@color/background_card_light</color>
+    <color name="colorCardBackgroundBlack">@color/background_card_light</color>
     <color name="colorStatusBar">@color/system_bar_dark_scrim</color>
     <color name="colorNavigationBar">@color/system_bar_dark_scrim</color>
     <color name="colorStatusBarScrim">@color/system_bar_dark_scrim</color>
     <color name="colorNavigationBarScrim">@color/system_bar_dark_scrim</color>
-    <color name="colorNavigationBarDivider">#DCDCDC</color>
+    <color name="colorStatusBarBlack">@color/system_bar_dark_scrim</color>
+    <color name="colorNavigationBarBlack">@color/system_bar_dark_scrim</color>
+    <color name="colorSearchBar">@color/white</color>
+    <color name="colorSearchBarBlack">@color/white</color>
 
     <color name="system_bar_light">@color/color_light_background</color>
     <color name="system_bar_dark">@color/color_dark_background</color>
+    <color name="system_bar_black">@color/black</color>
     <color name="system_bar_light_scrim">#ccffffff</color>
     <color name="system_bar_dark_scrim">#55000000</color>
     <color name="background_tint_account_action">@color/colorPrimary</color>
 
     <color name="background_card_light">@color/white</color>
-    <color name="background_card_dark">@color/grey</color>
+    <color name="background_card_dark">@color/grey_850</color>
 
     <color name="background_text_info">@color/grey_5</color>
     <color name="background_button">@color/colorPrimary</color>
@@ -65,7 +71,10 @@
     <color name="red">#FFFF4444</color>
 
     <color name="brown_50">#EFEBE9</color>
+    <color name="brown_900">#3e2723</color>
     <color name="blue_grey_50">#ECEFF1</color>
+    <color name="blue_grey_800">#37474f</color>
+    <color name="blue_grey_900">#263238</color>
 
     <color name="rating_e">@color/brown_50</color>
     <color name="rating_q">@color/blue_grey_50</color>
@@ -80,6 +89,7 @@
     <color name="grey_800">#424242</color>
     <color name="grey_850">#313131</color>
     <color name="grey_900">#212121</color>
+    <color name="grey_950">#121212</color>
 
     <color name="dark_level_1">#313131</color>
     <color name="dark_level_2">#272727</color>
@@ -121,11 +131,10 @@
 
     <color name="muzei">#3C6CAF</color>
 
-    <color name="grey">@color/grey_900</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="scrim">#52000000</color>
-    <color name="dark">#121212</color>
+    <color name="dark">@color/grey_900</color>
     <color name="transparent">@android:color/transparent</color>
 
     <color name="color_primary">#673AB7</color>

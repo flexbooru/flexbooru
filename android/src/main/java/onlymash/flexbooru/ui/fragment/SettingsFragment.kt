@@ -32,6 +32,7 @@ import onlymash.flexbooru.common.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.common.Settings.GRID_MODE_KEY
 import onlymash.flexbooru.common.Settings.GRID_RATIO_KEY
 import onlymash.flexbooru.common.Settings.NIGHT_MODE_KEY
+import onlymash.flexbooru.common.Settings.NIGHT_THEME_KEY
 import onlymash.flexbooru.common.Settings.downloadDirPath
 import onlymash.flexbooru.common.Settings.gridMode
 import onlymash.flexbooru.common.Settings.nightMode
@@ -41,6 +42,7 @@ import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.extension.trim
 import onlymash.flexbooru.extension.ListListener
+import onlymash.flexbooru.ui.helper.isNightEnable
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -63,6 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
         addPreferencesFromResource(R.xml.pref_settings)
         gridRatioPreference = findPreference(GRID_RATIO_KEY)
         gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
+        findPreference<Preference>(NIGHT_THEME_KEY)?.isVisible = resources.configuration.isNightEnable()
         downloadDirPath = context?.contentResolver?.getTreeUri()?.toDecodedString()
         initPathSummary()
         sp.registerOnSharedPreferenceChangeListener(this)
@@ -70,6 +73,11 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
+            NIGHT_THEME_KEY -> {
+                if (resources.configuration.isNightEnable()) {
+                    activity?.recreate()
+                }
+            }
             DOWNLOAD_PATH_KEY -> {
                 initPathSummary()
             }

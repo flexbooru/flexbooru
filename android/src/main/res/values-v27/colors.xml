@@ -17,4 +17,5 @@
 <resources>
     <color name="colorNavigationBar">@color/system_bar_light</color>
     <color name="colorNavigationBarScrim">@color/system_bar_light_scrim</color>
+    <color name="colorNavigationBarBlack">@color/system_bar_light</color>
 </resources>

@@ -34,7 +34,8 @@ object Settings {
     const val NIGHT_MODE_OFF = "off"
     const val NIGHT_MODE_SYSTEM = "system"
     const val NIGHT_MODE_BATTERY = "battery"
-    const val THEME_KEY = "settings_theme"
+    const val NIGHT_THEME_KEY = "settings_night_theme"
+    const val NIGHT_THEME_DARK = "dark"
     const val MUZEI_SIZE_KEY = "settings_muzei_size"
     const val POST_SIZE_SAMPLE = "sample"
     const val POST_SIZE_LARGER = "larger"
@@ -53,7 +54,6 @@ object Settings {
     const val SHOW_ALL_TAGS_KEY = "settings_show_all_tags"
     const val AUTO_HIDE_BOTTOM_BAR_KEY = "settings_auto_hide_bottom_bar"
     const val CLEAR_CACHE_KEY = "settings_clear_cache"
-    const val CLEAR_HISTORY_KEY = "settings_clear_history"
     const val LATEST_VERSION_CODE_KEY = "settings_latest_version_code"
     const val LATEST_VERSION_NAME_KEY = "settings_latest_version_name"
     const val LATEST_VERSION_URL_KEY = "settings_latest_version_url"
@@ -120,6 +120,15 @@ object Settings {
             NIGHT_MODE_BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
+
+    val isNightModeOn: Boolean
+        get() = nightModeString == NIGHT_MODE_ON
+
+    private val nightThemeString: String
+        get() = sp.getString(NIGHT_THEME_KEY, NIGHT_THEME_DARK) ?: NIGHT_THEME_DARK
+
+    val isNightThemeDark: Boolean
+        get() = nightThemeString == NIGHT_THEME_DARK
 
     val gridMode: String
         get() = sp.getString(GRID_MODE_KEY, GRID_MODE_FIXED) ?: GRID_MODE_FIXED

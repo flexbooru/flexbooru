@@ -33,4 +33,6 @@
         <attr name="showIcon" format="boolean" />
     </declare-styleable>
     <attr name="tagFilterViewStyle" format="reference" />
+    <attr name="cardStyle" format="reference"/>
+    <attr name="cardStyleSearchBar" format="reference"/>
 </resources>

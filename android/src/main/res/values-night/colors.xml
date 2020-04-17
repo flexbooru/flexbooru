@@ -20,6 +20,7 @@
     <color name="colorSecondary">@color/color_dark_secondary</color>
     <color name="colorAccent">@color/color_dark_accent</color>
     <color name="colorBackground">@color/color_dark_background</color>
+    <color name="colorBackgroundBlack">@color/black</color>
     <color name="colorError">@color/color_dark_error</color>
     <color name="colorPrimaryVariant">@color/color_dark_primary_variant</color>
     <color name="colorSecondaryVariant">@color/color_dark_secondary_variant</color>
@@ -36,20 +37,24 @@
     <color name="colorFastScrollBar">@color/grey_700</color>
     <color name="colorButtonText">@color/white</color>
     <color name="colorDividerItem">@color/grey_800</color>
-    <color name="colorCardBackground">@color/background_card_dark</color>
     <color name="colorStatusBar">@color/system_bar_dark</color>
     <color name="colorNavigationBar">@color/system_bar_dark</color>
     <color name="colorStatusBarScrim">@color/system_bar_dark_scrim</color>
     <color name="colorNavigationBarScrim">@color/system_bar_dark_scrim</color>
-    <color name="colorNavigationBarDivider">@color/color_dark_background</color>
+    <color name="colorStatusBarBlack">@color/system_bar_black</color>
+    <color name="colorNavigationBarBlack">@color/system_bar_black</color>
+    <color name="colorCardBackground">@color/background_card_dark</color>
+    <color name="colorCardBackgroundBlack">@color/grey_950</color>
+    <color name="colorSearchBar">@color/grey_900</color>
+    <color name="colorSearchBarBlack">@color/grey_950</color>
 
     <color name="background_text_info">@color/background_card_dark</color>
     <color name="background_quote">@color/grey_700</color>
     <color name="background_comment">@color/grey_800</color>
     <color name="background_tint_account_action">@color/dark_level_1</color>
-    <color name="rating_e">@color/grey_900</color>
-    <color name="rating_q">@color/grey_850</color>
-    <color name="rating_s">@color/grey_800</color>
+    <color name="rating_e">@color/brown_900</color>
+    <color name="rating_q">@color/blue_grey_900</color>
+    <color name="rating_s">@color/blue_grey_800</color>
     <color name="muzei">@color/dark_level_1</color>
 
 </resources>
