@@ -159,9 +159,9 @@
     <string name="settings_night_mode_off">关闭</string>
     <string name="settings_night_mode_system">跟随系统</string>
     <string name="settings_night_mode_battery">跟随省电模式</string>
-    <string name="settings_night_theme">Night theme</string>
-    <string name="settings_night_theme_dark">Dark</string>
-    <string name="settings_night_theme_black">Black</string>
+    <string name="settings_night_theme">夜间主题</string>
+    <string name="settings_night_theme_dark">暗色</string>
+    <string name="settings_night_theme_black">黑色</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每页限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
