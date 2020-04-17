@@ -172,13 +172,4 @@
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
 
-    <style name="AppTheme.Black.NoActionBar.Scrim.NoAnimation.Detail">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:navigationBarColor">@color/transparent</item>
-    </style>
-
 </resources>

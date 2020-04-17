@@ -24,7 +24,7 @@ import onlymash.flexbooru.common.Settings.isNightThemeDark
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    private fun getThemeRes(): Int {
+    private fun getThemeRes(): Int? {
         return when (this) {
             is MainActivity -> {
                 if (isNightThemeDark) {
@@ -33,13 +33,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     R.style.AppTheme_Black_NoActionBar_Scrim_Main
                 }
             }
-            is DetailActivity -> {
-                if (isNightThemeDark) {
-                    R.style.AppTheme_NoActionBar_Scrim_NoAnimation_Detail
-                } else {
-                    R.style.AppTheme_Black_NoActionBar_Scrim_NoAnimation_Detail
-                }
-            }
+            is DetailActivity -> null
             is SearchActivity -> {
                 if (isNightThemeDark) {
                     R.style.AppTheme_NoActionBar_Scrim_NoAnimation
@@ -76,7 +70,9 @@ abstract class BaseActivity : AppCompatActivity() {
             window.attributes.layoutInDisplayCutoutMode =
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
-        setTheme(getThemeRes())
+        getThemeRes()?.apply {
+            setTheme(this)
+        }
         super.onCreate(savedInstanceState)
     }
 }

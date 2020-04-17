@@ -603,18 +603,22 @@ class PostFragment : SearchBarFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val activity = activity ?: return
-        activity.setExitSharedElementCallback(sharedElementCallback)
-        activity.registerReceiver(
+    override fun onStart() {
+        super.onStart()
+        setActivityExitSharedElementCallback(sharedElementCallback)
+        context?.registerReceiver(
             broadcastReceiver,
             IntentFilter(DetailActivity.ACTION_DETAIL_POST_POSITION)
         )
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        activity?.unregisterReceiver(broadcastReceiver)
+    override fun onStop() {
+        super.onStop()
+        setActivityExitSharedElementCallback(null)
+        context?.unregisterReceiver(broadcastReceiver)
+    }
+
+    private fun setActivityExitSharedElementCallback(callback: SharedElementCallback?) {
+         activity?.setExitSharedElementCallback(callback)
     }
 }
