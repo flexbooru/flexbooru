@@ -160,6 +160,9 @@
     <string name="settings_night_mode_off">Off</string>
     <string name="settings_night_mode_system">Follow system</string>
     <string name="settings_night_mode_battery">Follow battery saver</string>
+    <string name="settings_night_theme">Night theme</string>
+    <string name="settings_night_theme_dark">Dark</string>
+    <string name="settings_night_theme_black">Black</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Límite de páginas</string>
     <string name="settings_muzei_limit">Límite Muzei</string>
