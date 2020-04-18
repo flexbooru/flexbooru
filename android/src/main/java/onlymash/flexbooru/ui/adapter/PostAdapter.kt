@@ -28,6 +28,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.common.Settings.gridMode
@@ -35,7 +36,6 @@ import onlymash.flexbooru.common.Settings.gridRatio
 import onlymash.flexbooru.common.Settings.isLargeWidth
 import onlymash.flexbooru.common.Settings.showInfoBar
 import onlymash.flexbooru.data.model.common.Post
-import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.extension.isStillImage
 import onlymash.flexbooru.glide.GlideRequests
 
@@ -137,6 +137,7 @@ class PostAdapter(
                 post.preview
             glide.load(url)
                 .placeholder(placeholderDrawable)
+                .transition(withCrossFade())
                 .into(preview)
         }
     }
