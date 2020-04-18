@@ -557,18 +557,21 @@ class PostFragment : SearchBarFragment() {
             GRID_MODE_KEY -> {
                 postAdapter.isRatioFixed = gridMode == GRID_MODE_FIXED
                 postAdapter.notifyDataSetChanged()
+                toListTop()
             }
             GRID_RATIO_KEY -> {
                 postAdapter.itemRatio = gridRatio
                 postAdapter.notifyDataSetChanged()
+                toListTop()
             }
             GRID_WIDTH_KEY -> {
                 postAdapter.isLargeItemWidth = isLargeWidth
-                mainList.layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
+                (mainList.layoutManager as? StaggeredGridLayoutManager)?.spanCount = spanCount
             }
             SAFE_MODE_KEY -> {
                 action.isSafeMode = safeMode
                 updateActionAndRefresh(action)
+                toListTop()
             }
             SHOW_INFO_BAR_KEY -> {
                 postAdapter.isShowBar = showInfoBar

@@ -35,7 +35,11 @@ class DownloadNotificationClickReceiver : BroadcastReceiver() {
                         newIntent,
                         context.getString(R.string.share_via)
                     ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            } catch (_: ActivityNotFoundException) {}
+            } catch (_: ActivityNotFoundException) {
+
+            } catch (_: RuntimeException) {
+
+            }
         }
     }
 }

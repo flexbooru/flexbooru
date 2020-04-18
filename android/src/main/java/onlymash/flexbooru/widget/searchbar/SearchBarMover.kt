@@ -68,7 +68,7 @@ class SearchBarMover(private val helper: Helper,
             return
         }
 
-        val show = if (helper.forceShowSearchBar()) {
+        val show = if (helper.isForceShowSearchBar) {
             true
         } else {
             val recyclerView = helper.validRecyclerView
@@ -192,9 +192,9 @@ class SearchBarMover(private val helper: Helper,
 
         val validRecyclerView: RecyclerView
 
-        fun isValidView(recyclerView: RecyclerView): Boolean
+        val isForceShowSearchBar: Boolean
 
-        fun forceShowSearchBar(): Boolean
+        fun isValidView(recyclerView: RecyclerView): Boolean
     }
 
 }

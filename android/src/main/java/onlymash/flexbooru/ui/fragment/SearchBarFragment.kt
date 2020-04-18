@@ -194,17 +194,26 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     val currentState: Int
         get() =  searchBar.currentState
 
-    fun toExpandState() {
+    private fun forceShowNavBar() {
         val activity = activity
         if (activity is MainActivity) {
             activity.forceShowNavBar()
         }
+    }
+
+    private fun forceShowSearchBar() {
+        searchBarMover.showSearchBar()
+    }
+
+    fun toExpandState() {
+        forceShowNavBar()
         searchBar.toExpandState()
     }
 
     fun toNormalState() {
         searchBar.toNormalState()
-        searchBarMover.showSearchBar(true)
+        forceShowSearchBar()
+        forceShowNavBar()
     }
 
     fun clearSearchBarText() {
@@ -281,14 +290,13 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     override val validRecyclerView: RecyclerView
         get() = mainList
 
+    override val isForceShowSearchBar: Boolean
+        get() = (searchBar.currentState == SearchBar.STATE_SEARCH) ||
+                (searchBar.currentState == SearchBar.STATE_EXPAND)
+
     override fun isValidView(recyclerView: RecyclerView): Boolean =
         searchBar.currentState == SearchBar.STATE_NORMAL &&
                 recyclerView == mainList
-
-    override fun forceShowSearchBar(): Boolean {
-        return (searchBar.currentState == SearchBar.STATE_SEARCH) ||
-                (searchBar.currentState == SearchBar.STATE_EXPAND)
-    }
 
     open fun onBackPressed(): Boolean = true
 
