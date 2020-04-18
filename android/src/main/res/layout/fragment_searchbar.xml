@@ -16,6 +16,7 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/searchbar_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -25,6 +26,16 @@
     <include layout="@layout/progress_bar"/>
 
     <include layout="@layout/progress_bar_horizontal"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/action_to_top"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_baseline_vertical_align_top_24"
+        style="@style/Widget.FloatingActionButton"/>
 
     <include layout="@layout/search_layout"/>
 

@@ -25,10 +25,14 @@ import android.widget.ProgressBar
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.AUTO_HIDE_BOTTOM_BAR_KEY
 import onlymash.flexbooru.common.Settings.activatedBooruUid
@@ -45,6 +49,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.ui.activity.MainActivity
+import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewmodel.*
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
@@ -72,6 +77,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     internal lateinit var progressBar: ProgressBar
     internal lateinit var progressBarHorizontal: ProgressBar
     private lateinit var container: CoordinatorLayout
+    private lateinit var fabToListTop: FloatingActionButton
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
 
@@ -94,15 +100,20 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         progressBar = view.findViewById(R.id.progress_bar)
         progressBarHorizontal = view.findViewById(R.id.progress_bar_horizontal)
+        fabToListTop = view.findViewById(R.id.action_to_top)
         container.setOnApplyWindowInsetsListener { _, insets ->
             systemUiTopSize = insets.systemWindowInsetTop
             systemUiBottomSize = insets.systemWindowInsetBottom
             (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
                 resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + systemUiTopSize
+            (fabToListTop.layoutParams as CoordinatorLayout.LayoutParams).updateMargins(
+                bottom = systemUiBottomSize + resources.getDimensionPixelSize(R.dimen.margin_normal)
+            )
             setupMainListPadding()
             setupSwipeRefreshOffset()
             insets
         }
+        setupFabToListTop()
         setupSwipeRefreshColor()
         initSearchBar()
         booruViewModel.booru.observe(viewLifecycleOwner, Observer {
@@ -122,6 +133,17 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
             searchBar.updateSuggestions(it)
         })
         sp.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun setupFabToListTop() {
+        if (activity is SearchActivity) {
+            fabToListTop.isVisible = true
+            (fabToListTop.layoutParams as CoordinatorLayout.LayoutParams).behavior =
+                HideBottomViewOnScrollBehavior<FloatingActionButton>()
+            fabToListTop.setOnClickListener {
+                toListTop()
+            }
+        }
     }
 
     private fun setupSwipeRefreshColor() {
@@ -284,6 +306,8 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
         if (activity is MainActivity) {
             toggleArrowLeftDrawable()
+        } else {
+            fabToListTop.isVisible = newState != SearchBar.STATE_EXPAND
         }
     }
 
