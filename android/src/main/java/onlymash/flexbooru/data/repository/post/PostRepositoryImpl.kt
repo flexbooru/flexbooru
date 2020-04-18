@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import androidx.room.withTransaction
 import kotlinx.coroutines.*
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
@@ -112,11 +113,9 @@ class PostRepositoryImpl(
                     networkState.value = NetworkState.error(result.errorMsg)
                 }
                 is NetResult.Success -> {
-                    withContext(Dispatchers.IO) {
-                        db.runInTransaction {
-                            db.postDao().deletePosts(booruUid = action.booru.uid, query = action.query)
-                            insertResultIntoDb(result.data)
-                        }
+                    db.withTransaction {
+                        db.postDao().deletePosts(booruUid = action.booru.uid, query = action.query)
+                        insertResultIntoDb(result.data)
                     }
                     networkState.postValue(NetworkState.LOADED)
                 }

@@ -47,7 +47,6 @@ import onlymash.flexbooru.ui.activity.PurchaseActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.*
-import java.util.concurrent.Executors
 
 class App : Application(), KodeinAware {
 
@@ -66,7 +65,6 @@ class App : Application(), KodeinAware {
         bind() from singleton { instance<MyDatabase>().postDao() }
         bind() from singleton { instance<MyDatabase>().historyDao() }
         bind() from singleton { BooruApis() }
-        bind() from singleton { Executors.newSingleThreadExecutor() }
     }
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {

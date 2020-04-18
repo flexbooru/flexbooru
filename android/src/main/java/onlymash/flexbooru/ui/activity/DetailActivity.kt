@@ -44,12 +44,9 @@ import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
 import kotlinx.android.synthetic.main.toolbar_transparent.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_POSITION
 import onlymash.flexbooru.common.Keys.POST_QUERY
@@ -118,7 +115,6 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private val postDao by instance<PostDao>()
-    private val ioExecutor by instance<Executor>()
     private val booruApis by instance<BooruApis>()
     private val voteRepository: VoteRepository by lazy { VoteRepositoryImpl(booruApis, postDao) }
 
@@ -223,7 +219,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         detailAdapter = DetailAdapter(
             glide = glide,
             dismissListener = this,
-            ioExecutor = ioExecutor,
+            ioExecutor = Dispatchers.IO.asExecutor(),
             clickCallback = {
                 val isVisible = !toolbar_container.isVisible
                 window.isShowBar = isVisible

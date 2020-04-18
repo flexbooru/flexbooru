@@ -15,18 +15,31 @@
 
 package onlymash.flexbooru
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Before
+import java.util.concurrent.Executor
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
+class DispatchersIOUnitTest {
+
+    private lateinit var exe1: Executor
+    private lateinit var exe2: Executor
+
+    @Before
+    fun setup() {
+        exe1 = Dispatchers.IO.asExecutor()
+        exe2 = Dispatchers.IO.asExecutor()
+    }
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun checkExecutor() {
+        val code1 = exe1.hashCode()
+        val code2 = exe2.hashCode()
+        println(code1)
+        println(code2)
+        assertEquals(code1, code2)
     }
 }

@@ -20,6 +20,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import onlymash.flexbooru.common.Values.DB_FILE_NAME
 import onlymash.flexbooru.data.model.common.*
 import onlymash.flexbooru.data.database.dao.*
@@ -49,6 +51,8 @@ abstract class MyDatabase : RoomDatabase() {
                     MyMigration(1, 2),
                     MyMigration(2, 3)
                 )
+                .setQueryExecutor(Dispatchers.IO.asExecutor())
+                .setTransactionExecutor(Dispatchers.IO.asExecutor())
                 .build()
     }
 
