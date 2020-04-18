@@ -374,7 +374,7 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
 
     companion object {
         private const val MUZEI_MENU_GROUP_ID = 101
-        private const val MUZEI_MENU_ITEM_ID = 101
+        private const val MUZEI_MENU_ITEM_ID = 102
         private const val MUZEI_MENU_ORDER = 0
     }
 }
