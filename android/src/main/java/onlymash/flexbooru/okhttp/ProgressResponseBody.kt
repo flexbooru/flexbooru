@@ -25,10 +25,10 @@ class ProgressResponseBody(url: String, private val responseBody: ResponseBody) 
 
     private var bufferedSource: BufferedSource? = null
 
-    private var listener: ProgressListener? = null
+    private var callback: ((Int) -> Unit)? = null
 
     init {
-        listener = ProgressInterceptor.LISTENER_MAP[url]
+        callback = ProgressInterceptor.LISTENER_MAP[url]
     }
 
     override fun contentType(): MediaType? {
@@ -63,10 +63,10 @@ class ProgressResponseBody(url: String, private val responseBody: ResponseBody) 
             }
             val progress = (100f * totalBytesRead / fullLength).toInt()
             if (progress != currentProgress) {
-                listener?.onProgress(progress)
+                callback?.invoke(progress)
             }
             if (totalBytesRead == fullLength) {
-                listener = null
+                callback = null
             }
             currentProgress = progress
             return bytesRead

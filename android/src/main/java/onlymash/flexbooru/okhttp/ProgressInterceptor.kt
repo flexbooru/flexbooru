@@ -34,16 +34,30 @@ class ProgressInterceptor : Interceptor {
 
     companion object {
 
-        val LISTENER_MAP: MutableMap<String, ProgressListener> = HashMap()
+        val LISTENER_MAP: MutableMap<String, (Int) -> Unit> = HashMap()
 
         //注册下载监听
-        fun addListener(url: String, listener: ProgressListener) {
-            LISTENER_MAP[url] = listener
+        fun addListener(url: String, callback: (Int) -> Unit) {
+            LISTENER_MAP[url] = callback
         }
 
         //取消注册下载监听
         fun removeListener(url: String) {
             LISTENER_MAP.remove(url)
+        }
+
+        fun bindUrlWithInterval(url: String, interval: Long, callback: (Int) -> Unit) {
+            var startTime = 0L
+            var elapsedTime = interval
+            addListener(url) { progress ->
+                if (elapsedTime >= interval) {
+                    callback.invoke(progress)
+                    startTime = System.currentTimeMillis()
+                    elapsedTime = 0L
+                } else {
+                    elapsedTime = System.currentTimeMillis() - startTime
+                }
+            }
         }
     }
 }

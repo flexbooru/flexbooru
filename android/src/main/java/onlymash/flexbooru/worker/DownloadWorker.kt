@@ -30,7 +30,6 @@ import onlymash.flexbooru.common.App
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.okhttp.ProgressInterceptor
-import onlymash.flexbooru.okhttp.ProgressListener
 import java.io.FileInputStream
 import java.io.IOException
 import onlymash.flexbooru.R
@@ -179,21 +178,10 @@ class DownloadWorker(
                     applicationContext.getString(R.string.post_download))
                 val title = "$host - $id"
                 val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
-                var startTime = 0L
-                var elapsedTime = 500L
-                ProgressInterceptor.addListener(url, object :
-                    ProgressListener {
-                    override fun onProgress(progress: Int) {
-                        if (elapsedTime >= 500L) {
-                            downloadingNotificationBuilder.setProgress(100, progress, false)
-                            notificationManager.notify(id, downloadingNotificationBuilder.build())
-                            startTime = System.currentTimeMillis()
-                            elapsedTime = 0L
-                        } else {
-                            elapsedTime = System.currentTimeMillis() - startTime
-                        }
-                    }
-                })
+                ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
+                    downloadingNotificationBuilder.setProgress(100, progress, false)
+                    notificationManager.notify(id, downloadingNotificationBuilder.build())
+                }
                 val file = try {
                     GlideApp.with(applicationContext)
                         .downloadOnly()
@@ -252,22 +240,10 @@ class DownloadWorker(
                     applicationContext.getString(R.string.pool_download))
                 val title = "$host - pool: $id"
                 val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
-                var startTime = 0L
-                var elapsedTime = 500L
-                ProgressInterceptor.addListener(
-                    url,
-                    object : ProgressListener {
-                        override fun onProgress(progress: Int) {
-                            if (elapsedTime >= 500L) {
-                                downloadingNotificationBuilder.setProgress(100, progress, false)
-                                notificationManager.notify(id, downloadingNotificationBuilder.build())
-                                startTime = System.currentTimeMillis()
-                                elapsedTime = 0L
-                            } else {
-                                elapsedTime = System.currentTimeMillis() - startTime
-                            }
-                        }
-                    })
+                ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
+                    downloadingNotificationBuilder.setProgress(100, progress, false)
+                    notificationManager.notify(id, downloadingNotificationBuilder.build())
+                }
                 var `is`: InputStream? = null
                 val os = applicationContext.contentResolver.openOutputStream(desUri)
                 try {
