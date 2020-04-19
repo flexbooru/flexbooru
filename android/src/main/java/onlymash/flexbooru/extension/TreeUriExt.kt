@@ -65,16 +65,22 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
     }
     val treeId = DocumentsContract.getTreeDocumentId(treeUri)
     val dirId = getDocumentFileId(treeId, dirName)
-    var dirUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirId)
+    val dirUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirId) ?: return null
     val dir = DocumentFile.fromSingleUri(this, dirUri)
+    var tmpUri: Uri? = null
     try {
         if (dir == null || !dir.exists()) {
-            dirUri = treeDir.createDirectory(dirName)?.uri ?: return null
+            tmpUri = treeDir.createDirectory(dirName)?.uri ?: return null
         } else if (dir.isFile) {
             dir.delete()
-            dirUri = treeDir.createDirectory(dirName)?.uri ?: return null
+            tmpUri = treeDir.createDirectory(dirName)?.uri ?: return null
         }
     } catch (_: Exception) {
+        return null
+    }
+    if (tmpUri != null && tmpUri != dirUri) {
+        Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
+        openDocumentTree()
         return null
     }
     val fileId= getDocumentFileId(dirId, fileName)
