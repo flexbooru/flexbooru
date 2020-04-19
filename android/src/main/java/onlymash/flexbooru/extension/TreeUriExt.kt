@@ -65,24 +65,24 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
     }
     val treeId = DocumentsContract.getTreeDocumentId(treeUri)
     val dirId = getDocumentFileId(treeId, dirName)
-    val dirUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirId)
+    var dirUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, dirId)
     val dir = DocumentFile.fromSingleUri(this, dirUri)
     try {
         if (dir == null || !dir.exists()) {
-            treeDir.createDirectory(dirName) ?: return null
+            dirUri = treeDir.createDirectory(dirName)?.uri ?: return null
         } else if (dir.isFile) {
             dir.delete()
-            treeDir.createDirectory(dirName) ?: return null
+            dirUri = treeDir.createDirectory(dirName)?.uri ?: return null
         }
     } catch (_: Exception) {
         return null
     }
     val fileId= getDocumentFileId(dirId, fileName)
-    val fileUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, fileId)
-    val file = DocumentFile.fromSingleUri(this, fileUri)
+    var fileUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, fileId)
+    var file = DocumentFile.fromSingleUri(this, fileUri)
     try {
         if (file == null || !file.exists()) {
-            DocumentsContract.createDocument(
+            fileUri = DocumentsContract.createDocument(
                 contentResolver,
                 dirUri,
                 fileName.getMimeType(),
@@ -90,7 +90,7 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
             ) ?: return null
         } else if (file.isDirectory) {
             file.delete()
-            DocumentsContract.createDocument(
+            fileUri = DocumentsContract.createDocument(
                 contentResolver,
                 dirUri,
                 fileName.getMimeType(),
@@ -98,6 +98,10 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
             ) ?: return null
         }
     } catch (_: Exception) {
+        return null
+    }
+    file = DocumentFile.fromSingleUri(this, fileUri)
+    if (file == null || !file.exists() || !file.canWrite()) {
         return null
     }
     return fileUri
