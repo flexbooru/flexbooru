@@ -42,7 +42,7 @@ data class PostMoe(
     @SerialName("file_size")
     val fileSize: Int?,
     @SerialName("file_url")
-    val fileUrl: String?,
+    val fileUrl: String? = null,
     @SerialName("preview_url")
     val previewUrl: String,
     @SerialName("preview_width")
@@ -50,7 +50,7 @@ data class PostMoe(
     @SerialName("preview_height")
     val previewHeight: Int,
     @SerialName("sample_url")
-    val sampleUrl: String?,
+    val sampleUrl: String? = null,
     @SerialName("sample_width")
     val sampleWidth: Int,
     @SerialName("sample_height")
@@ -58,7 +58,7 @@ data class PostMoe(
     @SerialName("sample_file_size")
     val sampleFileSize: Int?,
     @SerialName("jpeg_url")
-    val jpegUrl: String?,
+    val jpegUrl: String? = null,
     @SerialName("jpeg_width")
     val jpegWidth: Int?,
     @SerialName("jpeg_height")
