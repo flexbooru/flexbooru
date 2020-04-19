@@ -26,7 +26,6 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
-import java.io.IOException
 import java.util.*
 
 fun Activity.getSaveUri(fileName: String): Uri? = getFileUri("save", fileName)
@@ -58,7 +57,8 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
         return null
     }
     val treeDir = DocumentFile.fromTreeUri(this, treeUri)
-    if (treeDir == null || !treeDir.canWrite()) {
+    if (treeDir == null || !treeDir.exists() || treeDir.isFile ||
+        !treeDir.canRead() || !treeDir.canWrite()) {
         Toast.makeText(this, getString(R.string.msg_path_denied), Toast.LENGTH_LONG).show()
         openDocumentTree()
         return null
@@ -74,7 +74,7 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
             dir.delete()
             treeDir.createDirectory(dirName) ?: return null
         }
-    } catch (_: IOException) {
+    } catch (_: Exception) {
         return null
     }
     val fileId= getDocumentFileId(dirId, fileName)
@@ -97,7 +97,7 @@ private fun Activity.getFileUri(dirName: String, fileName: String): Uri? {
                 fileName
             ) ?: return null
         }
-    } catch (_: IOException) {
+    } catch (_: Exception) {
         return null
     }
     return fileUri
