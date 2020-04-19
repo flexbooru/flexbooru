@@ -122,6 +122,7 @@
     <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Partager le lien</string>
     <string name="browse_open_in_browser">Ouvrir dans le navigateur</string>
+    <string name="browse_unsupported_format">Unsupported format: %s</string>
     <string name="browse_tags">Tags</string>
     <string name="browse_info">Informations</string>
     <string name="browse_recommended">Recommandé</string>
