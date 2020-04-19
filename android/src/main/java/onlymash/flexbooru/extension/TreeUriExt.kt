@@ -140,6 +140,9 @@ fun String.getMimeType(): String {
 fun String.fileExt(): String {
     val start = lastIndexOf('.') + 1
     val end = indexOfFirst { it == '?' }
+    if (start == 0) {
+        return ""
+    }
     return if (end > start) {
         substring(start, end)
     } else {

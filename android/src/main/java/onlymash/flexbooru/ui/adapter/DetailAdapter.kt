@@ -26,6 +26,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.annotation.IntRange
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +50,7 @@ import onlymash.flexbooru.common.Settings.detailSize
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.decoder.CustomDecoder
 import onlymash.flexbooru.decoder.CustomRegionDecoder
+import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.isGifImage
 import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.extension.isVideo
@@ -128,6 +131,12 @@ class DetailAdapter(
                     }
                 }
                 layout.addView(playerView)
+            }
+            else -> {
+                val textView = LayoutInflater.from(layout.context).inflate(R.layout.item_unsupported_format, null) as AppCompatTextView
+                textView.text = String.format(layout.context.getString(R.string.browse_unsupported_format), url.fileExt())
+                textView.transitionName = String.format("post_%d", post.id)
+                layout.addView(textView)
             }
         }
     }
