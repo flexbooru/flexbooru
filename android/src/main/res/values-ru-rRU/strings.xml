@@ -123,6 +123,7 @@
     <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Поделиться ссылкой</string>
     <string name="browse_open_in_browser">Открыть в браузере</string>
+    <string name="browse_unsupported_format">Unsupported format: %s</string>
     <string name="browse_tags">Теги</string>
     <string name="browse_info">Информация</string>
     <string name="browse_recommended">Рекомендуемые</string>
