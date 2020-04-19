@@ -122,7 +122,7 @@
     <string name="browse_save_as">另存为…</string>
     <string name="browse_share_link">分享链接</string>
     <string name="browse_open_in_browser">在浏览器中打开</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">不支持的格式：%s</string>
     <string name="browse_tags">标签</string>
     <string name="browse_info">信息</string>
     <string name="browse_recommended">个性推荐</string>
