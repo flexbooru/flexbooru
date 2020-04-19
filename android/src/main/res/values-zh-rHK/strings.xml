@@ -122,6 +122,7 @@
     <string name="browse_save_as">儲存為...</string>
     <string name="browse_share_link">分享連結</string>
     <string name="browse_open_in_browser">在瀏覽器開啟</string>
+    <string name="browse_unsupported_format">Unsupported format: %s</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
     <string name="browse_recommended">推薦</string>
