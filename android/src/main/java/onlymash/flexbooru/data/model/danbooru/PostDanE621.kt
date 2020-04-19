@@ -31,17 +31,17 @@ data class PostDanE621(
     @SerialName("fav_count")
     val favCount: Int,
     @SerialName("file")
-    val `file`: File,
+    val file: FileInfo,
     @SerialName("id")
     val id: Int,
     @SerialName("is_favorited")
     val isFavorited: Boolean,
     @SerialName("preview")
-    val preview: Preview,
+    val preview: FileInfo,
     @SerialName("rating")
     val rating: String,
     @SerialName("sample")
-    val sample: Sample,
+    val sample: FileInfo,
     @SerialName("score")
     val score: Score,
     @SerialName("sources")
@@ -54,39 +54,17 @@ data class PostDanE621(
     val uploaderId: Int
 ) {
     @Serializable
-    data class File(
-        @SerialName("ext")
-        val ext: String,
+    data class FileInfo(
+        @SerialName("url")
+        val url: String?,
+        @SerialName("width")
+        val width: Int,
         @SerialName("height")
         val height: Int,
         @SerialName("size")
-        val size: Int,
-        @SerialName("url")
-        val url: String?,
-        @SerialName("width")
-        val width: Int
-    )
-
-    @Serializable
-    data class Preview(
-        @SerialName("height")
-        val height: Int,
-        @SerialName("url")
-        val url: String?,
-        @SerialName("width")
-        val width: Int
-    )
-
-    @Serializable
-    data class Sample(
-        @SerialName("has")
-        val has: Boolean,
-        @SerialName("height")
-        val height: Int,
-        @SerialName("url")
-        val url: String?,
-        @SerialName("width")
-        val width: Int
+        val size: Int = 0,
+        @SerialName("ext")
+        val ext: String? = null
     )
 
     @Serializable

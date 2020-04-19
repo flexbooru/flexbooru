@@ -74,7 +74,10 @@ interface DanbooruApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addConverterFactory(Json(JsonConfiguration(ignoreUnknownKeys = true))
+                .addConverterFactory(Json(JsonConfiguration(
+                    ignoreUnknownKeys = true,
+                    isLenient = true
+                ))
                     .asConverterFactory(contentType))
                 .build()
                 .create(DanbooruApi::class.java)
