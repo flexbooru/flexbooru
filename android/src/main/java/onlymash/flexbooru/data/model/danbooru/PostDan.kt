@@ -17,10 +17,10 @@ package onlymash.flexbooru.data.model.danbooru
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import onlymash.flexbooru.data.utils.formatDateDan
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
+import onlymash.flexbooru.data.utils.getDanDateMillis
 import onlymash.flexbooru.data.utils.toSafeUrl
 
 @Serializable
@@ -101,7 +101,7 @@ data class PostDan(
             score = score,
             rating = rating,
             isFavored = isFavorited,
-            date = createdAt.formatDateDan().toString(),
+            time = createdAt.getDanDateMillis(),
             tags = getTags(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),

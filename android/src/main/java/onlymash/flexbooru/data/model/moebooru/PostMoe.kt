@@ -21,7 +21,6 @@ import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
-import onlymash.flexbooru.extension.formatDate
 
 @Serializable
 data class PostMoe(
@@ -104,7 +103,7 @@ data class PostMoe(
             size = fileSize ?: 0,
             score = score,
             rating = rating,
-            date = (createdAt * 1000L).formatDate().toString(),
+            time = createdAt * 1000L,
             tags = tags?.getTags() ?: listOf(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),

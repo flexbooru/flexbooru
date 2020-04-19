@@ -20,7 +20,7 @@ import kotlinx.serialization.SerialName
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
-import onlymash.flexbooru.data.utils.formatDateDan
+import onlymash.flexbooru.data.utils.getDanDateMillis
 
 @Serializable
 data class PostDanE621(
@@ -108,7 +108,7 @@ data class PostDanE621(
         score = score.total,
         rating = rating,
         isFavored = isFavorited,
-        date = createdAt?.formatDateDan().toString(),
+        time = createdAt?.getDanDateMillis(),
         tags = getTags(),
         preview = preview.url ?: "",
         sample = sample.url ?: "",

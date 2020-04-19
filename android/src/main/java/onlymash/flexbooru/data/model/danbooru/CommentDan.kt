@@ -21,6 +21,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.data.utils.formatDateDan
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.data.model.common.User
+import onlymash.flexbooru.data.utils.getDanDateMillis
 
 @Serializable
 data class CommentDan(
@@ -45,7 +46,7 @@ data class CommentDan(
             id = id,
             postId = postId,
             body = body,
-            date = createdAt.formatDateDan().toString(),
+            time = createdAt.getDanDateMillis(),
             creatorId = creator?.id ?: creatorId ?: -1,
             creatorName = creator?.name ?: creatorName ?: ""
         )

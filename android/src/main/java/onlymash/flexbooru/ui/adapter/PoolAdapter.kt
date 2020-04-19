@@ -31,6 +31,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Pool
+import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
@@ -116,7 +117,7 @@ class PoolAdapter(
             poolIdCount.text = String.format(context.getString(R.string.pool_info_id_and_count), pool.id, pool.count)
             poolDescription.text = pool.description
             expandBottom.isVisible = pool.description.isNotBlank()
-            poolDate.text = pool.date
+            poolDate.text = itemView.context.formatDate(pool.time)
             when (pool.booruType) {
                 BOORU_TYPE_MOE -> {
                     glide.load(String.format(context.getString(R.string.account_user_avatars), pool.scheme, pool.host, pool.creatorId))

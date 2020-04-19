@@ -19,9 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.model.common.Comment
-import onlymash.flexbooru.extension.formatDate
-import java.text.SimpleDateFormat
-import java.util.*
+import onlymash.flexbooru.extension.parseDate
 
 @Serializable
 data class CommentMoe(
@@ -38,13 +36,18 @@ data class CommentMoe(
     @SerialName("body")
     val body: String
 ) {
-    private fun date(): CharSequence {
-        val date =  when {
-            createdAt.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(createdAt)
-            createdAt.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(createdAt)
-            else -> throw IllegalStateException("Unknown date format: $createdAt")
-        } ?: return ""
-        return date.time.formatDate()
+
+    private fun getPattern(): String? {
+        return when {
+            createdAt.contains("T") -> "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+            createdAt.contains(" ") -> "yyyy-MM-dd HH:mm:ss"
+            else -> null
+        }
+    }
+
+    private fun date(): Long? {
+        val pattern = getPattern() ?: return null
+        return createdAt.parseDate(pattern)
     }
 
     fun toComment(): Comment {
@@ -53,7 +56,7 @@ data class CommentMoe(
             id = id,
             postId = postId,
             body = body,
-            date = date().toString(),
+            time = date(),
             creatorId = creatorId,
             creatorName = creator
         )

@@ -35,6 +35,18 @@ fun String.toSafeUrl(scheme: String, host: String): String {
     }
 }
 
+fun String.getDanDateMillis(): Long? {
+    val sdf = SimpleDateFormat(PATTERN_DAN, Locale.US)
+    sdf.timeZone = TimeZone.getTimeZone("GMT-04:00")
+    return sdf.parse(this)?.time
+}
+
+fun String.getGelDateMillis(): Long? =
+    SimpleDateFormat(PATTERN_GEL, Locale.ENGLISH).parse(this)?.time
+
+fun String.getShimmieDateMillis(): Long? =
+    SimpleDateFormat(DATE_PATTERN_SHIMMIE, Locale.ENGLISH).parse(this)?.time
+
 fun String.formatDateDan(): CharSequence? =
     SimpleDateFormat(PATTERN_DAN, Locale.ENGLISH)
         .parse(this)?.time?.formatDate()

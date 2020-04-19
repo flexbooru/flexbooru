@@ -17,10 +17,10 @@ package onlymash.flexbooru.data.model.gelbooru
 
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
-import onlymash.flexbooru.data.utils.formatDateGel
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
+import onlymash.flexbooru.data.utils.getGelDateMillis
 import onlymash.flexbooru.data.utils.toSafeUrl
 
 @Xml(name = "post")
@@ -87,7 +87,7 @@ data class PostGel(
             size = 0,
             score = getIntScore(),
             rating = rating,
-            date = createdAt.formatDateGel().toString(),
+            time = createdAt.getGelDateMillis(),
             tags = tags.getTags(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),

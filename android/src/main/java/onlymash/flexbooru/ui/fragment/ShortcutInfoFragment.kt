@@ -44,6 +44,7 @@ import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.copyText
+import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountActivity
@@ -218,7 +219,7 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
                     else -> getString(R.string.browse_info_rating_explicit)
                 }
                 score.text = post.score.toString()
-                date.text = post.date
+                date.text = date.context.formatDate(post.time)
             }
         })
         return dialog

@@ -61,14 +61,13 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/user_id"
                     android:gravity="center_vertical|start"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="15dp"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textColor="@color/secondary_text_dark"
                     app:layout_constraintTop_toBottomOf="@+id/user_name"
                     app:layout_constraintStart_toEndOf="@id/user_avatar"
-                    app:layout_constraintEnd_toStartOf="@id/created_date"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -79,6 +78,7 @@
                     android:layout_marginEnd="10dp"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textColor="@color/secondary_text_dark"
+                    android:singleLine="true"
                     app:layout_constraintTop_toTopOf="@+id/user_id"
                     app:layout_constraintStart_toEndOf="@id/user_id"
                     app:layout_constraintEnd_toEndOf="parent"

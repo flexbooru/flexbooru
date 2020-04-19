@@ -28,6 +28,11 @@ class MyMigration(startVersion: Int, endVersion: Int) : Migration(startVersion, 
                 database.execSQL("CREATE TABLE IF NOT EXISTS `history` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
                 database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_history_booru_uid_query` ON `history` (`booru_uid`, `query`)")
             }
+            startVersion == 3 && endVersion == 4 -> {
+                database.execSQL("DROP TABLE IF EXISTS `posts`")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `posts` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `index` INTEGER NOT NULL, `query` TEXT NOT NULL, `id` INTEGER NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `size` INTEGER NOT NULL, `score` INTEGER NOT NULL, `rating` TEXT NOT NULL, `is_favored` INTEGER NOT NULL, `time` INTEGER, `tags` TEXT NOT NULL, `preview` TEXT NOT NULL, `sample` TEXT NOT NULL, `medium` TEXT NOT NULL, `origin` TEXT NOT NULL, `pixiv_id` INTEGER, `source` TEXT, `uploader` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_posts_booru_uid_query_id` ON `posts` (`booru_uid`, `query`, `id`)")
+            }
         }
     }
 }

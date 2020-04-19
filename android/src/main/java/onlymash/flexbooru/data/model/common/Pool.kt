@@ -22,7 +22,7 @@ data class Pool(
     val id: Int,
     val name: String,
     val count: Int,
-    val date: CharSequence,
+    val time: Long?,
     val description: String,
     val creatorId: Int = -1,
     val creatorName: String? = null,

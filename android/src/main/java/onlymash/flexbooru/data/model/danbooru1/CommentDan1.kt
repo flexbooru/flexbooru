@@ -18,7 +18,9 @@ package onlymash.flexbooru.data.model.danbooru1
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.common.Values.DATE_PATTERN
 import onlymash.flexbooru.data.model.common.Comment
+import onlymash.flexbooru.extension.parseDate
 
 @Serializable
 data class CommentDan1(
@@ -43,7 +45,7 @@ data class CommentDan1(
             id = id,
             postId = postId,
             body = body,
-            date = createdAt,
+            time = createdAt.parseDate(DATE_PATTERN),
             creatorId = creatorId,
             creatorName = creator
         )

@@ -49,8 +49,8 @@ data class Post(
     val rating: String,
     @ColumnInfo(name = "is_favored")
     var isFavored: Boolean = false,
-    @ColumnInfo(name = "date")
-    val date: String,
+    @ColumnInfo(name = "time")
+    val time: Long?,
     @ColumnInfo(name = "tags")
     val tags: List<TagBase>,
     @ColumnInfo(name = "preview")

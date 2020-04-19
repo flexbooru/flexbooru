@@ -20,6 +20,7 @@ object Values {
 
     const val BASE_URL = "http://fiepi.me"
 
+    const val DATE_PATTERN = "yyyy-MM-dd HH:mm"
     const val DATE_PATTERN_DAN = "yyyy-MM-dd'T'HH:mm:ss.sss"
     const val DATE_PATTERN_GEL = "EEE MMM dd HH:mm:ss Z yyyy"
     const val DATE_PATTERN_SHIMMIE = "yyyy-MM-dd HH:mm:ss"

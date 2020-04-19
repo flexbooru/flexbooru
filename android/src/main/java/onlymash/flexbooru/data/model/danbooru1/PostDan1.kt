@@ -23,7 +23,6 @@ import onlymash.flexbooru.data.model.common.Date
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
-import onlymash.flexbooru.extension.formatDate
 
 @Serializable
 data class PostDan1(
@@ -90,7 +89,7 @@ data class PostDan1(
             size = fileSize,
             score = score,
             rating = rating,
-            date = (createdAt.s * 1000L).formatDate().toString(),
+            time = createdAt.s * 1000L,
             tags = getTags(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),

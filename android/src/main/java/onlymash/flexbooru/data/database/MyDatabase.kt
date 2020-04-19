@@ -31,7 +31,7 @@ import onlymash.flexbooru.data.database.dao.*
         (Booru::class), (Post::class), (TagFilter::class),
         (Muzei::class), (Cookie::class), (History::class)
     ],
-    version = 3,
+    version = 4,
     exportSchema = true)
 @TypeConverters(MyConverters::class)
 abstract class MyDatabase : RoomDatabase() {
@@ -49,7 +49,8 @@ abstract class MyDatabase : RoomDatabase() {
                 .allowMainThreadQueries()
                 .addMigrations(
                     MyMigration(1, 2),
-                    MyMigration(2, 3)
+                    MyMigration(2, 3),
+                    MyMigration(3, 4)
                 )
                 .setQueryExecutor(Dispatchers.IO.asExecutor())
                 .setTransactionExecutor(Dispatchers.IO.asExecutor())

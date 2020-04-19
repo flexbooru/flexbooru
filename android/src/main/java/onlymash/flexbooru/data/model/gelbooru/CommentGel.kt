@@ -19,6 +19,7 @@ import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Comment
+import onlymash.flexbooru.extension.parseDate
 
 @Xml(name = "comment")
 data class CommentGel(
@@ -41,7 +42,7 @@ data class CommentGel(
             id = id,
             postId = postId,
             body = body,
-            date = createdAt,
+            time = createdAt.parseDate(),
             creatorId = creatorId,
             creatorName = creator
         )

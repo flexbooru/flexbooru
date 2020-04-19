@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.data.utils.toSafeUrl
+import onlymash.flexbooru.extension.parseDate
 
 @Serializable
 data class CommentSankaku(
@@ -46,7 +47,7 @@ data class CommentSankaku(
             id = id,
             postId = postId,
             body = body,
-            date = createdAt,
+            time = createdAt.parseDate(),
             creatorId = creatorId,
             creatorName = creator,
             creatorAvatar = creatorAvatar?.toSafeUrl(scheme, host)

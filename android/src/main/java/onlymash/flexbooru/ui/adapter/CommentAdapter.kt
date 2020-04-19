@@ -32,6 +32,7 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Comment
+import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
@@ -119,7 +120,7 @@ class CommentAdapter(
             comment = data ?: return
             userName.text = data.creatorName
             postIdView.text = String.format("Post %d", data.postId)
-            commentDate.text = data.date
+            commentDate.text = itemView.context.formatDate(data.time)
             commentView.setComment(data.body)
             val user = booru.user
             if (user != null && data.booruType != BOORU_TYPE_GEL) {

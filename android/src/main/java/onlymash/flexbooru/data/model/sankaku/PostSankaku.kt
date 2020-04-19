@@ -23,7 +23,6 @@ import onlymash.flexbooru.data.model.common.Date
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.toSafeUrl
-import onlymash.flexbooru.extension.formatDate
 
 
 @Serializable
@@ -105,7 +104,7 @@ data class PostSankaku(
             size = fileSize,
             score = totalScore,
             rating = rating ?: "e",
-            date = (createdAt.s * 1000L).formatDate().toString(),
+            time = createdAt.s * 1000L,
             tags = tags.toTags(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),

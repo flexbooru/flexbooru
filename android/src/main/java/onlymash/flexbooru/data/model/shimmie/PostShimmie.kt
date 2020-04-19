@@ -20,7 +20,7 @@ import com.tickaroo.tikxml.annotation.Xml
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
-import onlymash.flexbooru.data.utils.formatDateShimmie
+import onlymash.flexbooru.data.utils.getShimmieDateMillis
 import onlymash.flexbooru.data.utils.toSafeUrl
 
 
@@ -66,7 +66,7 @@ data class PostShimmie(
             size = 0,
             score = score,
             rating = rating,
-            date = date.formatDateShimmie().toString(),
+            time = date.getShimmieDateMillis(),
             tags = tags.split(" ").map { TagBase(it, -1) },
             preview = previewUrl?.toSafeUrl(scheme, host) ?: "",
             sample = fileUrl?.toSafeUrl(scheme, host) ?: "",

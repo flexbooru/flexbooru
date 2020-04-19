@@ -18,8 +18,10 @@ package onlymash.flexbooru.data.model.sankaku
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.common.Values.DATE_PATTERN
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.data.utils.toSafeUrl
+import onlymash.flexbooru.extension.parseDate
 
 @Serializable
 data class PoolSankaku(
@@ -70,7 +72,7 @@ data class PoolSankaku(
             id = id,
             name = name,
             count = postCount,
-            date = updatedAt,
+            time = updatedAt.parseDate(DATE_PATTERN),
             description = description,
             creatorId = author.id,
             creatorName = author.name,

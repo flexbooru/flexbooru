@@ -47,7 +47,7 @@ data class PoolDan1(
             id = id,
             name = name,
             count = postCount,
-            date = (updatedAt.s * 1000L).formatDate(),
+            time = updatedAt.s * 1000L,
             description = "",
             creatorId = userId
         )

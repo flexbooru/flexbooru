@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.model.common.Pool
-import onlymash.flexbooru.extension.formatDate
+import onlymash.flexbooru.extension.parseDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,15 +42,17 @@ data class PoolMoe(
     @SerialName("description")
     val description: String
 ) {
-    private fun date(): CharSequence {
-        val date =  when {
-            updatedAt.contains("T") -> SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.ENGLISH).parse(updatedAt)
-            updatedAt.contains(" ") -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updatedAt)
-            else -> {
-                throw IllegalStateException("Unknown date format: $updatedAt")
-            }
-        } ?: return ""
-        return date.time.formatDate()
+    private fun getPattern(): String? {
+        return when {
+            updatedAt.contains("T") -> "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+            updatedAt.contains(" ") -> "yyyy-MM-dd HH:mm:ss"
+            else -> null
+        }
+    }
+
+    private fun date(): Long? {
+        val pattern = getPattern() ?: return null
+        return updatedAt.parseDate(pattern)
     }
 
     fun toPool(scheme: String, host: String): Pool {
@@ -61,7 +63,7 @@ data class PoolMoe(
             id = id,
             name = name,
             count = postCount,
-            date = date(),
+            time = date(),
             description = description,
             creatorId = userId
         )
