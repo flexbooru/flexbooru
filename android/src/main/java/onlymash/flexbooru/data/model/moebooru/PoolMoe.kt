@@ -35,8 +35,6 @@ data class PoolMoe(
     val updatedAt: String,
     @SerialName("user_id")
     val userId: Int,
-    @SerialName("is_public")
-    val isPublic: Boolean,
     @SerialName("post_count")
     val postCount: Int,
     @SerialName("description")
