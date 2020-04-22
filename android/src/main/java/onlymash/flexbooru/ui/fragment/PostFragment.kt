@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.fragment
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.*
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -616,6 +617,8 @@ class PostFragment : SearchBarFragment() {
     }
 
     private fun setActivityExitSharedElementCallback(callback: SharedElementCallback?) {
-         activity?.setExitSharedElementCallback(callback)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            activity?.setExitSharedElementCallback(callback)
+        }
     }
 }

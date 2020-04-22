@@ -102,12 +102,16 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
                 putExtra(POST_QUERY, query)
                 putExtra(POST_POSITION, position)
             }
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity,
-                view,
-                tranName
-            ).toBundle()
-            activity.startActivity(intent, options)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    activity,
+                    view,
+                    tranName
+                ).toBundle()
+                activity.startActivity(intent, options)
+            } else {
+                activity.startActivity(intent)
+            }
         }
     }
 
@@ -194,7 +198,9 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             booru = booru,
             postId = -1
         )
-        postponeEnterTransition()
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            postponeEnterTransition()
+        }
         setContentView(binding.root)
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         binding.root.background = colorDrawable
@@ -258,7 +264,9 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             if (initPosition >= 0 && initPosition < postList.size) {
                 detailPager.setCurrentItem(initPosition, false)
                 delayExecute {
-                    startPostponedEnterTransition()
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                        startPostponedEnterTransition()
+                    }
                     syncInfo(currentPost)
                 }
             }
@@ -283,7 +291,11 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         )
         toolbar.setOnMenuItemClickListener(this)
         toolbar.setNavigationOnClickListener {
-            finishAfterTransition()
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                finishAfterTransition()
+            } else {
+                finish()
+            }
         }
     }
 
@@ -354,7 +366,11 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
 
     override fun onDismissed() {
         playerHolder.pause()
-        finishAfterTransition()
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition()
+        } else {
+            finish()
+        }
     }
 
     override fun onDismissCancel() {
