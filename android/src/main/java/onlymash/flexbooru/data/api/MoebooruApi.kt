@@ -15,79 +15,15 @@
 
 package onlymash.flexbooru.data.api
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.HttpUrl
-import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Keys.HEADER_COOKIE
-import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.common.Values.BASE_URL
-import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.model.common.BoolResponse
-import onlymash.flexbooru.data.database.CookieManager
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.model.moebooru.*
-import onlymash.flexbooru.extension.userAgent
-import onlymash.flexbooru.util.Logger
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.*
-import java.util.concurrent.TimeUnit
 
 interface MoebooruApi {
-
-    companion object {
-        /**
-         * return [MoebooruApi]
-         * */
-        operator fun invoke(): MoebooruApi {
-
-            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Logger.d("MoebooruApi", message)
-                }
-            }).apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
-
-            val interceptor = Interceptor { chain ->
-                val builder =  chain.request()
-                    .newBuilder()
-                    .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, userAgent)
-                CookieManager.getCookieByBooruUid(activatedBooruUid)?.cookie?.let {
-                    builder.addHeader(HEADER_COOKIE, it)
-                }
-
-                chain.proceed(builder.build())
-            }
-
-            val client = OkHttpClient.Builder().apply {
-                connectTimeout(10, TimeUnit.SECONDS)
-                readTimeout(10, TimeUnit.SECONDS)
-                writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)
-                    .addInterceptor(logger)
-            }
-                .build()
-            val contentType = "application/json".toMediaType()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(Json(JsonConfiguration(
-                    ignoreUnknownKeys = true,
-                    isLenient = true
-                ))
-                    .asConverterFactory(contentType))
-                .build()
-                .create(MoebooruApi::class.java)
-        }
-    }
 
     @GET
     suspend fun getPosts(@Url httpUrl: HttpUrl): Response<List<PostMoe>>

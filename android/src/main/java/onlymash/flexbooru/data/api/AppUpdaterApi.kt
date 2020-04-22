@@ -15,24 +15,12 @@
 
 package onlymash.flexbooru.data.api
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.data.model.app.UpdateInfo
-import onlymash.flexbooru.extension.userAgent
-import onlymash.flexbooru.util.Logger
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.GET
-import java.util.concurrent.TimeUnit
 
 /**
  * App update api
@@ -40,48 +28,11 @@ import java.util.concurrent.TimeUnit
 interface AppUpdaterApi {
 
     companion object {
-        private const val BASE_URL = "https://raw.githubusercontent.com"
-        operator fun invoke(): AppUpdaterApi {
-
-            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Logger.d("AppUpdaterApi", message)
-                }
-            }).apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
-
-            val interceptor = Interceptor { chain ->
-                val requests =  chain.request().newBuilder()
-                    .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, userAgent)
-                    .build()
-                chain.proceed(requests)
-            }
-
-            val client = OkHttpClient.Builder().apply {
-                connectTimeout(10, TimeUnit.SECONDS)
-                readTimeout(10, TimeUnit.SECONDS)
-                writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)
-                    .addInterceptor(logger)
-            }
-                .build()
-
-            val contentType = "application/json".toMediaType()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(Json(JsonConfiguration(ignoreUnknownKeys = true))
-                    .asConverterFactory(contentType))
-                .build()
-                .create(AppUpdaterApi::class.java)
-        }
 
         suspend fun checkUpdate() {
             withContext(Dispatchers.IO) {
                 try {
-                    val response = AppUpdaterApi().checkUpdate()
+                    val response = createApi<AppUpdaterApi>().checkUpdate()
                     val data = response.body()
                     if (response.isSuccessful && data != null) {
                         Settings.latestVersionUrl = data.url

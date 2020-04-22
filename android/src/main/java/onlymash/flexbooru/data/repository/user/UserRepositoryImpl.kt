@@ -18,17 +18,14 @@ package onlymash.flexbooru.data.repository.user
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.api.BooruApis
-import onlymash.flexbooru.data.database.CookieManager
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.util.Logger
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
@@ -42,13 +39,6 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
         password: String,
         booru: Booru
     ): NetResult<User> {
-        val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                Logger.d("GelbooruLogin", message)
-            }
-        }).apply {
-            level = HttpLoggingInterceptor.Level.BASIC
-        }
         val url = HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
@@ -68,7 +58,6 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                     return cookiesStore[booru.host] ?: listOf()
                 }
             })
-            .addInterceptor(logger)
             .build()
         val formBody = FormBody.Builder()
             .add("user", username)
@@ -100,12 +89,6 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                                 name = username,
                                 id = userId,
                                 token = passHash
-                            )
-                            CookieManager.createCookie(
-                                onlymash.flexbooru.data.model.common.Cookie(
-                                    booruUid = booru.uid,
-                                    cookie = "user_id=$userId; pass_hash=$passHash"
-                                )
                             )
                             NetResult.Success(user)
                         }

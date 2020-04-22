@@ -33,7 +33,6 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.data.database.CookieManager
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.User
@@ -153,9 +152,6 @@ class AccountActivity : PathActivity() {
             .setPositiveButton(R.string.dialog_yes) {_, _ ->
                 booru.user = null
                 BooruManager.updateBooru(booru)
-                if (booru.type == BOORU_TYPE_GEL) {
-                    CookieManager.deleteByBooruUid(booru.uid)
-                }
                 finish()
             }
             .setNegativeButton(R.string.dialog_no, null)

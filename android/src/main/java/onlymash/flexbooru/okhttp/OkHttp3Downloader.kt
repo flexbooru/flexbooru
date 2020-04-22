@@ -23,11 +23,9 @@ import java.io.IOException
 import android.os.StatFs
 import androidx.annotation.VisibleForTesting
 import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Keys.HEADER_REFERER
 import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.extension.userAgent
-import onlymash.flexbooru.util.Logger
 import kotlin.math.max
 import kotlin.math.min
 
@@ -143,13 +141,6 @@ class OkHttp3Downloader : Downloader {
             return max(min(size, MAX_DISK_CACHE_SIZE.toLong()), MIN_DISK_CACHE_SIZE.toLong())
         }
         private fun createOkHttpClient(cacheDir: File, maxSize: Long): OkHttpClient {
-            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Logger.d("OkHttp3Downloader", message)
-                }
-            }).apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
             val interceptor = Interceptor {
                 val url = it.request().url
                 val scheme = url.scheme
@@ -164,7 +155,6 @@ class OkHttp3Downloader : Downloader {
             return OkHttpClient.Builder()
                 .cache(Cache(cacheDir, maxSize))
                 .addInterceptor(interceptor)
-                .addInterceptor(logger)
                 .addInterceptor(ProgressInterceptor())
                 .build()
         }

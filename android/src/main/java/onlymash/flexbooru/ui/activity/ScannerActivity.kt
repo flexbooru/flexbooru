@@ -37,7 +37,6 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.base.BaseActivity
-import onlymash.flexbooru.util.Logger
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt
 class ScannerActivity : BaseActivity(), BarcodeRetriever {
@@ -114,9 +113,7 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
     }
     override fun onRetrievedMultiple(closetToClick: Barcode?, barcode: MutableList<BarcodeGraphic>?) = check(false)
     override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) { }
-    override fun onRetrievedFailed(reason: String?) {
-        Logger.e(TAG, reason.toString())
-    }
+    override fun onRetrievedFailed(reason: String?) { }
     override fun onPermissionRequestDenied() {
         Toast.makeText(this, R.string.scaner_add_booru_permission_required, Toast.LENGTH_SHORT).show()
     }

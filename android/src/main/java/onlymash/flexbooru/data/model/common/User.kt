@@ -28,4 +28,7 @@ data class User(
     var token: String = "",
     @SerialName("avatar")
     var avatar: String? = null
-)
+) {
+    val gelCookie: String
+        get() = "user_id=$id; pass_hash=$token"
+}

@@ -15,77 +15,18 @@
 
 package onlymash.flexbooru.data.api
 
-import com.tickaroo.tikxml.TikXml
-import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.common.Settings.activatedBooruUid
-import onlymash.flexbooru.common.Values.BASE_URL
-import onlymash.flexbooru.data.database.CookieManager
+import onlymash.flexbooru.common.Keys
 import onlymash.flexbooru.data.model.gelbooru.CommentGelResponse
 import onlymash.flexbooru.data.model.gelbooru.PostGelResponse
 import onlymash.flexbooru.data.model.gelbooru.TagGelResponse
-import onlymash.flexbooru.extension.userAgent
-import onlymash.flexbooru.util.Logger
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Url
-import java.util.concurrent.TimeUnit
 
 interface GelbooruApi {
-    companion object {
-        /**
-         * return [GelbooruApi]
-         * */
-        operator fun invoke(): GelbooruApi {
-
-            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Logger.d("GelbooruApi", message)
-                }
-            }).apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
-
-            val interceptor = Interceptor { chain ->
-                val builder =  chain.request().newBuilder()
-                    .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, userAgent)
-                val cookie = CookieManager.getCookieByBooruUid(activatedBooruUid)?.cookie
-                if (!cookie.isNullOrEmpty()) {
-                    builder.addHeader("cookie", cookie)
-                }
-                chain.proceed(builder.build())
-            }
-
-            val client = OkHttpClient.Builder().apply {
-                connectTimeout(10, TimeUnit.SECONDS)
-                readTimeout(10, TimeUnit.SECONDS)
-                writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)
-                    .addInterceptor(logger)
-            }
-                .build()
-
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(
-                    TikXmlConverterFactory.create(
-                        TikXml.Builder()
-                            .exceptionOnUnreadXml(false)
-                            .build()
-                    )
-                )
-                .build()
-                .create(GelbooruApi::class.java)
-        }
-    }
 
     @GET
     suspend fun getPosts(@Url httpUrl: HttpUrl): Response<PostGelResponse>
@@ -97,5 +38,8 @@ interface GelbooruApi {
     suspend fun getComments(@Url httpUrl: HttpUrl): Response<CommentGelResponse>
 
     @GET
-    suspend fun favPost(@Url httpUrl: HttpUrl): Response<ResponseBody>
+    suspend fun favPost(
+        @Header(Keys.HEADER_COOKIE) cookie: String? = null,
+        @Url httpUrl: HttpUrl
+    ): Response<ResponseBody>
 }

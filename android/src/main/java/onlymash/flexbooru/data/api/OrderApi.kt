@@ -15,72 +15,23 @@
 
 package onlymash.flexbooru.data.api
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.data.model.app.OrderResponse
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.extension.userAgent
-import onlymash.flexbooru.util.Logger
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.util.concurrent.TimeUnit
 
 interface OrderApi {
 
     companion object {
-        private const val BASE_URL = "https://flexbooru-pay.fiepi.com"
-        operator fun invoke(): OrderApi {
-
-            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Logger.d("OrderApi", message)
-                }
-            }).apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
-
-            val interceptor = Interceptor { chain ->
-                val requests =  chain.request().newBuilder()
-                    .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, userAgent)
-                    .build()
-                chain.proceed(requests)
-            }
-
-            val client = OkHttpClient.Builder().apply {
-                connectTimeout(10, TimeUnit.SECONDS)
-                readTimeout(10, TimeUnit.SECONDS)
-                writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)
-                    .addInterceptor(logger)
-            }
-                .build()
-
-            val contentType = "application/json".toMediaType()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(Json(JsonConfiguration(ignoreUnknownKeys = true))
-                    .asConverterFactory(contentType))
-                .build()
-                .create(OrderApi::class.java)
-        }
 
         suspend fun orderChecker(orderId: String, deviceId: String) {
             withContext(Dispatchers.IO) {
                 try {
-                    val response = OrderApi().checker(orderId, deviceId)
+                    val response = createApi<OrderApi>().checker(orderId, deviceId)
                     val data = response.body()
                     if (response.isSuccessful && data != null) {
                         if (data.success) {
@@ -96,7 +47,7 @@ interface OrderApi {
         suspend fun orderRegister(orderId: String, deviceId: String): NetResult<OrderResponse> {
             return withContext(Dispatchers.IO) {
                 try {
-                    val response = OrderApi().register(orderId, deviceId)
+                    val response = createApi<OrderApi>().register(orderId, deviceId)
                     val data = response.body()
                     if (response.isSuccessful && data != null) {
                         NetResult.Success(data)

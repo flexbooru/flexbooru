@@ -57,7 +57,10 @@ class VoteRepositoryImpl(
     private suspend fun addGelFav(action: ActionVote): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.gelApi.favPost(action.getGelAddFavUrl())
+                val response = booruApis.gelApi.favPost(
+                    cookie = action.booru.user?.gelCookie,
+                    httpUrl = action.getGelAddFavUrl()
+                )
                 if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
                     NetResult.Success(true)

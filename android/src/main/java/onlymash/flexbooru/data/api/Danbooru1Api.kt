@@ -15,16 +15,7 @@
 
 package onlymash.flexbooru.data.api
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.HttpUrl
-import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.common.Values.BASE_URL
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
@@ -33,52 +24,10 @@ import onlymash.flexbooru.data.model.danbooru1.CommentDan1
 import onlymash.flexbooru.data.model.danbooru1.PoolDan1
 import onlymash.flexbooru.data.model.danbooru1.PostDan1
 import onlymash.flexbooru.data.model.danbooru1.TagDan1
-import onlymash.flexbooru.extension.userAgent
-import onlymash.flexbooru.util.Logger
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.*
-import java.util.concurrent.TimeUnit
 
 interface Danbooru1Api {
-
-    companion object {
-        /**
-         * return [Danbooru1Api]
-         * */
-        operator fun invoke(): Danbooru1Api {
-            val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Logger.d("DanbooruOneApi", message)
-                }
-            }).apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
-            val interceptor = Interceptor {
-                it.proceed(it.request()
-                    .newBuilder()
-                    .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, userAgent)
-                    .build())
-            }
-            val client = OkHttpClient.Builder().apply {
-                connectTimeout(10, TimeUnit.SECONDS)
-                readTimeout(10, TimeUnit.SECONDS)
-                writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)
-                    .addInterceptor(logger)
-            }
-                .build()
-            val contentType = "application/json".toMediaType()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(Json(JsonConfiguration(ignoreUnknownKeys = true))
-                    .asConverterFactory(contentType))
-                .build()
-                .create(Danbooru1Api::class.java)
-        }
-    }
 
     @GET
     suspend fun getPosts(@Url httpUrl: HttpUrl): Response<List<PostDan1>>
