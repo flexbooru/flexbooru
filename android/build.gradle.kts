@@ -26,7 +26,7 @@ plugins {
     kotlin("plugin.serialization")
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.gms.google-services")
-    id("io.fabric")
+    id("com.google.firebase.crashlytics")
 }
 
 val releaseStoreFile = file("../.gradle/flexbooru_play.jks")
@@ -65,7 +65,7 @@ android {
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = mapOf("backupApiKey" to "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw")
+        manifestPlaceholders(mapOf("backupApiKey" to "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"))
         resConfigs(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL",
             "pt-rBR", "es-rES", "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU",
             "ja-rJP", "in-rID", "de-rDE"))
@@ -107,7 +107,7 @@ android {
         )
     }
     compileOptions {
-        coreLibraryDesugaringEnabled = true
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -121,9 +121,7 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
     testOptions {
-        unitTests.apply {
-            isIncludeAndroidResources = true
-        }
+        unitTests.isIncludeAndroidResources = true
     }
 }
 
@@ -197,9 +195,8 @@ dependencies {
     implementation("com.mikepenz:materialdrawer:8.0.1")
     implementation("com.github.kenglxn.QRGen:android:2.6.0")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
-    implementation("com.google.firebase:firebase-core:17.3.0")
-    implementation("com.google.firebase:firebase-analytics:17.3.0")
-    implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
+    implementation("com.google.firebase:firebase-analytics-ktx:17.3.0")
+    implementation("com.google.firebase:firebase-crashlytics:17.0.0-beta04")
     implementation("com.google.android.gms:play-services-vision:20.0.0")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.android.billingclient:billing:2.2.0")
@@ -221,8 +218,8 @@ dependencies {
     testImplementation("junit:junit:4.13")
     testImplementation("org.robolectric:robolectric:4.3.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.3.0-alpha05")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2-alpha05")
-    androidTestImplementation("androidx.test:runner:1.3.0-alpha05")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0-alpha05")
+    androidTestImplementation("androidx.test:core:1.3.0-beta01")
+    androidTestImplementation("androidx.test.ext:junit:1.1.2-beta01")
+    androidTestImplementation("androidx.test:runner:1.3.0-beta01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0-beta01")
 }
