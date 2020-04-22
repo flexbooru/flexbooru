@@ -51,7 +51,8 @@
         android:layout_margin="@dimen/margin_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@null"
         app:srcCompat="@drawable/ic_search_24dp"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-        style="@style/Widget.FloatingActionButton"/>
+        style="@style/Widget.FloatingActionButton" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
