@@ -15,16 +15,14 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.History
+import onlymash.flexbooru.databinding.ItemHistoryBinding
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.helper.ItemTouchCallback
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class HistoryAdapter(
     private val deleteHistoryCallback: (History) -> Unit
@@ -68,9 +66,9 @@ class HistoryAdapter(
     override val isSwipeEnabled: Boolean
         get() = true
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder =
-        HistoryViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_history, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int): HistoryViewHolder = HistoryViewHolder(parent)
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.bind(data[position])
@@ -78,9 +76,11 @@ class HistoryAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class HistoryViewHolder(binding: ItemHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val queryText: AppCompatTextView = itemView.findViewById(R.id.history_query_text)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemHistoryBinding::inflate))
+
+        private val queryText = binding.historyQueryText
         private var history: History? = null
 
         init {

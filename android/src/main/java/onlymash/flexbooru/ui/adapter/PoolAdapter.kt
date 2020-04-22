@@ -16,26 +16,24 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.content.Intent
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Pool
+import onlymash.flexbooru.databinding.ItemPoolBinding
 import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.ui.base.BasePagedListAdapter
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
@@ -43,7 +41,7 @@ class PoolAdapter(
     private val glide: GlideRequests,
     private val downloadPoolCallback: (Int) -> Unit,
     retryCallback: () -> Unit
-) : BasePagedListAdapter<Pool, RecyclerView.ViewHolder>(POOL_COMPARATOR, retryCallback) {
+) : BasePagedListAdapter<Pool>(POOL_COMPARATOR, retryCallback) {
     companion object {
         val POOL_COMPARATOR = object : DiffUtil.ItemCallback<Pool>() {
             override fun areContentsTheSame(oldItem: Pool, newItem: Pool): Boolean =
@@ -53,12 +51,13 @@ class PoolAdapter(
         }
     }
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        PoolViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_pool, parent, false))
+    override fun onCreateItemViewHolder(
+        parent: ViewGroup,
+        viewType: Int): RecyclerView.ViewHolder = PoolViewHolder(parent)
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as PoolViewHolder).apply {
-            val pool = getItem(position)
+            val pool = getItemSafe(position)
             bind(pool)
             itemView.setOnClickListener {
                 pool?.let {
@@ -83,15 +82,17 @@ class PoolAdapter(
         }
     }
 
-    inner class PoolViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class PoolViewHolder(binding: ItemPoolBinding): RecyclerView.ViewHolder(binding.root) {
 
-        val userAvatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
-        private val poolName: AppCompatTextView = itemView.findViewById(R.id.pool_name)
-        private val poolIdCount: AppCompatTextView = itemView.findViewById(R.id.pool_id_and_count)
-        private val poolDescription: AppCompatTextView = itemView.findViewById(R.id.pool_description)
-        private val poolDate: AppCompatTextView = itemView.findViewById(R.id.pool_date)
-        private val expandBottom: ImageButton = itemView.findViewById(R.id.bt_expand)
-        private val descriptionContainer: LinearLayout = itemView.findViewById(R.id.description_container)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemPoolBinding::inflate))
+
+        val userAvatar = binding.userAvatar
+        private val poolName = binding.poolName
+        private val poolIdCount = binding.poolIdAndCount
+        private val poolDescription = binding.poolDescription
+        private val poolDate = binding.poolDate
+        private val expandBottom = binding.btExpand
+        private val descriptionContainer = binding.descriptionContainer
         private var isShowing = false
 
 

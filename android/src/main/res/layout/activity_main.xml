@@ -40,11 +40,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_normal"
             android:background="@drawable/shadow"
-            app:layout_anchor="@id/navigation"
+            app:layout_anchor="@id/bottom_nav_view"
             app:layout_anchorGravity="top"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
+            android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

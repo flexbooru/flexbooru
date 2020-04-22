@@ -35,6 +35,7 @@ import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.artist.ArtistRepositoryImpl
 import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.ui.adapter.ArtistAdapter
+import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.ArtistViewModel
 import onlymash.flexbooru.ui.viewmodel.getArtistViewModel
 

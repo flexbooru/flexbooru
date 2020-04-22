@@ -21,11 +21,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/refreshable_list"/>
+    <include
+        layout="@layout/refreshable_list"
+        android:id="@+id/refreshable_list"/>
 
-    <include layout="@layout/progress_bar"/>
+    <include
+        layout="@layout/progress_bar"
+        android:id="@+id/progress_circular"/>
 
-    <include layout="@layout/progress_bar_horizontal"/>
+    <include
+        layout="@layout/progress_bar_horizontal"
+        android:id="@+id/progress_horizontal"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/action_to_top"
@@ -34,10 +40,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:contentDescription="@null"
         app:srcCompat="@drawable/ic_baseline_vertical_align_top_24"
         style="@style/Widget.FloatingActionButton"/>
 
-    <include layout="@layout/search_layout"/>
+    <include
+        layout="@layout/search_layout"
+        android:id="@+id/search_layout"/>
 
     <onlymash.flexbooru.widget.searchbar.SearchBar
         android:id="@+id/search_bar"

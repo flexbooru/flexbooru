@@ -17,12 +17,8 @@ package onlymash.flexbooru.ui.fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -36,12 +32,15 @@ import onlymash.flexbooru.common.Values.Tags
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.model.common.*
+import onlymash.flexbooru.databinding.FragmentBottomSheetTagBinding
+import onlymash.flexbooru.databinding.ItemTagBrowseBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.ui.base.BaseBottomSheetDialogFragment
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.viewmodel.ShortcutViewModel
 import onlymash.flexbooru.ui.viewmodel.getShortcutViewModel
 import org.kodein.di.erased.instance
@@ -65,7 +64,7 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
     private var post: Post? = null
 
     private lateinit var booru: Booru
-
+    private lateinit var binding: FragmentBottomSheetTagBinding
     private lateinit var shortcutViewModel: ShortcutViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,15 +82,15 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        val view = View.inflate(context, R.layout.fragment_bottom_sheet_tag, null)
-        dialog.setContentView(view)
-        view.findViewById<Toolbar>(R.id.toolbar).apply {
+        binding = FragmentBottomSheetTagBinding.inflate(layoutInflater)
+        dialog.setContentView(binding.root)
+        binding.toolbarLayout.toolbar.apply {
             setTitle(R.string.title_tags)
             setOnClickListener {
                 dismiss()
             }
         }
-        behavior = BottomSheetBehavior.from(view.parent as View)
+        behavior = BottomSheetBehavior.from(binding.root.parent as View)
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
@@ -104,7 +103,7 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
 
         })
         val tagListAdapter = TagListAdapter()
-        view.findViewById<RecyclerView>(R.id.tags_list).apply {
+        binding.tagsList.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             adapter = tagListAdapter
         }
@@ -130,18 +129,21 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
             (holder as TagListViewHolder).bind(tag)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return TagListViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_tag_browse, parent, false))
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int): RecyclerView.ViewHolder {
+            return TagListViewHolder(parent)
         }
     }
 
-    inner class TagListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TagListViewHolder(binding: ItemTagBrowseBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val dot: AppCompatImageView = itemView.findViewById(R.id.dot)
-        private val tagName: AppCompatTextView = itemView.findViewById(R.id.tag_name)
-        private val tagExclude: AppCompatImageView = itemView.findViewById(R.id.tag_exclude)
-        private val tagInclude: AppCompatImageView = itemView.findViewById(R.id.tag_include)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemTagBrowseBinding::inflate))
+
+        private val dot = binding.dot
+        private val tagName = binding.tagName
+        private val tagExclude = binding.tagExclude
+        private val tagInclude = binding.tagInclude
 
         private var tag: TagBase? = null
 
@@ -149,13 +151,10 @@ class ShortcutTagFragment : BaseBottomSheetDialogFragment() {
             TooltipCompat.setTooltipText(tagExclude, tagExclude.contentDescription)
             TooltipCompat.setTooltipText(tagInclude, tagInclude.contentDescription)
             itemView.setOnClickListener {
-                val query = tag?.name ?: return@setOnClickListener
-                HistoryManager.createHistory(History(
-                    booruUid = booru.uid,
-                    query = query
-                ))
-                SearchActivity.startSearch(itemView.context, query)
-                dismiss()
+                tag?.name?.let { query ->
+                    SearchActivity.startSearch(itemView.context, query)
+                    dismiss()
+                }
             }
             itemView.setOnLongClickListener {
                 itemView.context.copyText(tagName.text)

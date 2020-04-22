@@ -27,7 +27,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.annotation.IntRange
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -89,7 +88,7 @@ class DetailAdapter(
         }
     }
 
-    fun getPost(@IntRange(from = 0) position: Int) = try {
+    fun getItemSafe(@IntRange(from = 0) position: Int) = try {
         getItem(position)
     } catch (_: IndexOutOfBoundsException) {
         null
@@ -101,7 +100,7 @@ class DetailAdapter(
         if (layout.childCount > 0) {
             layout.removeAllViews()
         }
-        val post = getPost(position) ?: return
+        val post = getItemSafe(position) ?: return
         val url = when (size) {
             POST_SIZE_SAMPLE -> post.sample
             POST_SIZE_LARGER -> post.medium

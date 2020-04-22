@@ -123,6 +123,9 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 androidExtensions.isExperimental = true

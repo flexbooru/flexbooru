@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.activity
+package onlymash.flexbooru.ui.base
 
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +21,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.isNightThemeDark
+import onlymash.flexbooru.ui.activity.*
 
 abstract class BaseActivity : AppCompatActivity() {
 

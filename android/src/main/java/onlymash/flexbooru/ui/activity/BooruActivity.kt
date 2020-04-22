@@ -31,7 +31,6 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_list_common.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -46,6 +45,7 @@ import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Values
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.databinding.ActivityListCommonBinding
 import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.helper.ItemTouchCallback
@@ -53,6 +53,9 @@ import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.fragment.QRCodeDialog
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 import java.io.IOException
 import java.io.InputStream
@@ -61,7 +64,11 @@ class BooruActivity : KodeinActivity() {
 
     private val booruDao by instance<BooruDao>()
 
-    private val booruAdapter by lazy { BooruAdapter(this) }
+    private val binding by viewBinding(ActivityListCommonBinding::inflate)
+
+    private val list get() = binding.list
+
+    private lateinit var booruAdapter: BooruAdapter
 
     private lateinit var booruViewModel: BooruViewModel
 
@@ -88,7 +95,7 @@ class BooruActivity : KodeinActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_common)
+        setContentView(binding.root)
         drawNavBar { insets ->
             list.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
@@ -99,6 +106,12 @@ class BooruActivity : KodeinActivity() {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         val animator = DefaultItemAnimator().apply {
             supportsChangeAnimations = false
+        }
+        booruAdapter = BooruAdapter {
+            supportFragmentManager
+                .beginTransaction()
+                .add(QRCodeDialog(it), "qr")
+                .commitAllowingStateLoss()
         }
         list.apply {
             setLayoutManager(layoutManager)
@@ -242,10 +255,10 @@ class BooruActivity : KodeinActivity() {
             if (booru != null) {
                 booruViewModel.createBooru(booru)
             } else {
-                Snackbar.make(list, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
             }
         } else {
-            Snackbar.make(list, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.booru_add_error, Snackbar.LENGTH_LONG).show()
         }
     }
 

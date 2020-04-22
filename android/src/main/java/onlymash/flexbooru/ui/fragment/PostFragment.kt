@@ -66,11 +66,9 @@ import onlymash.flexbooru.common.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.action.ActionVote
-import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
@@ -84,6 +82,7 @@ import onlymash.flexbooru.ui.activity.SauceNaoActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
+import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.ui.viewmodel.getPostViewModel
@@ -532,11 +531,6 @@ class PostFragment : SearchBarFragment() {
 
     private fun search(query: String) {
         val context = context ?: return
-        val uid = action?.booru?.uid ?: return
-        HistoryManager.createHistory(History(
-            booruUid = uid,
-            query = query
-        ))
         SearchActivity.startSearch(context, query)
     }
 

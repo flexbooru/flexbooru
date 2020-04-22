@@ -15,24 +15,23 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.R
 import onlymash.flexbooru.data.model.common.Artist
+import onlymash.flexbooru.databinding.ItemArtistBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.ui.base.BasePagedListAdapter
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class ArtistAdapter(retryCallback: () -> Unit) :
-    BasePagedListAdapter<Artist, RecyclerView.ViewHolder>(ARTIST_COMPARATOR, retryCallback) {
+    BasePagedListAdapter<Artist>(ARTIST_COMPARATOR, retryCallback) {
     companion object {
         val ARTIST_COMPARATOR = object : DiffUtil.ItemCallback<Artist>() {
             override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean =
@@ -42,11 +41,12 @@ class ArtistAdapter(retryCallback: () -> Unit) :
         }
     }
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        ArtistViewHolder.create(parent)
+    override fun onCreateItemViewHolder(
+        parent: ViewGroup,
+        viewType: Int): RecyclerView.ViewHolder = ArtistViewHolder(parent)
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val artist = getItem(position)
+        val artist = getItemSafe(position)
         (holder as ArtistViewHolder).apply {
             bind(artist)
             itemView.setOnClickListener {
@@ -61,20 +61,15 @@ class ArtistAdapter(retryCallback: () -> Unit) :
         }
     }
 
-    class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): ArtistViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_artist, parent, false)
-                return ArtistViewHolder(view)
-            }
-        }
+    class ArtistViewHolder(binding: ItemArtistBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val artistName: AppCompatTextView = itemView.findViewById(R.id.artist_name)
-        private val artistId: AppCompatTextView = itemView.findViewById(R.id.artist_id)
-        private val btExpand: ImageButton = itemView.findViewById(R.id.bt_expand)
-        private val urlsContainer: View = itemView.findViewById(R.id.urls_container)
-        private val artistUrls: AppCompatTextView = itemView.findViewById(R.id.artist_urls)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemArtistBinding::inflate))
+
+        private val artistName = binding.artistName
+        private val artistId = binding.artistId
+        private val btExpand = binding.btExpand
+        private val urlsContainer = binding.urlsContainer
+        private val artistUrls = binding.artistUrls
         private var isShowing = false
         private var artist: Artist? = null
 

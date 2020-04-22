@@ -25,16 +25,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_list_common.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.HistoryDao
 import onlymash.flexbooru.data.database.dao.PostDao
+import onlymash.flexbooru.databinding.ActivityListCommonBinding
 import onlymash.flexbooru.ui.adapter.HistoryAdapter
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.HistoryViewModel
 import onlymash.flexbooru.ui.viewmodel.getHistoryViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 
 class HistoryActivity : KodeinActivity() {
@@ -42,14 +44,16 @@ class HistoryActivity : KodeinActivity() {
     private val historyDao by instance<HistoryDao>()
     private val postDao by instance<PostDao>()
 
+    private val binding by viewBinding(ActivityListCommonBinding::inflate)
+
     private lateinit var historyAdapter: HistoryAdapter
     private lateinit var historyViewModel: HistoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_common)
-        drawNavBar {  insets ->
-            list.updatePadding(bottom = insets.systemWindowInsetBottom)
+        setContentView(binding.list)
+        drawNavBar { insets ->
+            binding.list.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -59,7 +63,7 @@ class HistoryActivity : KodeinActivity() {
         historyAdapter = HistoryAdapter { history ->
             historyViewModel.deleteByUid(history)
         }
-        list.apply {
+        binding.list.apply {
             layoutManager = LinearLayoutManager(this@HistoryActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@HistoryActivity, RecyclerView.VERTICAL))
             adapter = historyAdapter
@@ -90,6 +94,9 @@ class HistoryActivity : KodeinActivity() {
     }
 
     private fun clearAll() {
+        if (isFinishing) {
+            return
+        }
         AlertDialog.Builder(this)
             .setTitle(R.string.history_clear_all)
             .setMessage(R.string.history_clear_all_content)

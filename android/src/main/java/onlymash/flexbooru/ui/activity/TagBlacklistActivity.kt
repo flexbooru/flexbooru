@@ -29,30 +29,33 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_tag_blacklist.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.databinding.ActivityTagBlacklistBinding
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 
 class TagBlacklistActivity : KodeinActivity() {
 
     private val booruDao by instance<BooruDao>()
+    private val binding by viewBinding(ActivityTagBlacklistBinding::inflate)
     private lateinit var booruViewModel: BooruViewModel
     private lateinit var tagBlacklistAdapter: TagBlacklistAdapter
     private var booru: Booru? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tag_blacklist)
+        setContentView(binding.root)
         drawNavBar {
-            tag_blacklist_list.updatePadding(bottom = it.systemWindowInsetBottom)
-            add_button.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            binding.list.updatePadding(bottom = it.systemWindowInsetBottom)
+            binding.fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = it.systemWindowInsetBottom +
                         resources.getDimensionPixelSize(R.dimen.margin_normal)
             }
@@ -68,7 +71,7 @@ class TagBlacklistActivity : KodeinActivity() {
                 }
             }
         }
-        tag_blacklist_list.apply {
+        binding.list.apply {
             layoutManager = LinearLayoutManager(this@TagBlacklistActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@TagBlacklistActivity, RecyclerView.VERTICAL))
             adapter = tagBlacklistAdapter
@@ -79,7 +82,7 @@ class TagBlacklistActivity : KodeinActivity() {
             tagBlacklistAdapter.updateData(it.blacklists)
         })
         booruViewModel.loadBooru(activatedBooruUid)
-        add_button.setOnClickListener {
+        binding.fab.setOnClickListener {
             createInputDialog()
         }
     }
@@ -109,7 +112,7 @@ class TagBlacklistActivity : KodeinActivity() {
                     }
                 } else {
                     Snackbar.make(
-                        tag_blacklist_container,
+                        binding.root,
                         getString(R.string.muzei_input_cant_be_empty),
                         Snackbar.LENGTH_LONG
                     ).show()

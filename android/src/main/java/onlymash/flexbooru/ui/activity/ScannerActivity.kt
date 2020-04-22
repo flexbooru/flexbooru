@@ -26,7 +26,6 @@ import android.os.Bundle
 import android.util.SparseArray
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture
@@ -37,6 +36,7 @@ import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.util.Logger
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt

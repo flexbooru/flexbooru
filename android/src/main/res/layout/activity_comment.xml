@@ -20,10 +20,16 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.BooruActivity">
 
-    <include layout="@layout/refreshable_list"/>
+    <include
+        layout="@layout/refreshable_list"
+        android:id="@+id/refreshable_list"/>
 
-    <include layout="@layout/progress_bar" />
+    <include
+        layout="@layout/progress_bar"
+        android:id="@+id/progress_circular"/>
 
-    <include layout="@layout/progress_bar_horizontal" />
+    <include
+        layout="@layout/progress_bar_horizontal"
+        android:id="@+id/progress_horizontal"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

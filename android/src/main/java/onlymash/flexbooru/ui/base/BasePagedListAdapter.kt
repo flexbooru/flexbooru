@@ -13,9 +13,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.adapter
+package onlymash.flexbooru.ui.base
 
 import android.view.ViewGroup
+import androidx.annotation.IntRange
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -23,12 +24,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.isFailed
-import onlymash.flexbooru.ui.viewholder.NetworkStateViewHolder
 
-abstract class BasePagedListAdapter<T, VH : RecyclerView.ViewHolder>(
+abstract class BasePagedListAdapter<T>(
     diffCallback: DiffUtil.ItemCallback<T>,
     private val retryCallback: () -> Unit
-) : PagedListAdapter<T, VH>(diffCallback) {
+) : PagedListAdapter<T, RecyclerView.ViewHolder>(diffCallback) {
 
     private var networkState: NetworkState? = null
 
@@ -46,19 +46,26 @@ abstract class BasePagedListAdapter<T, VH : RecyclerView.ViewHolder>(
         }
     }
 
-    abstract fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): VH
+    fun getItemSafe(@IntRange(from = 0) position: Int): T? {
+        return try {
+            getItem(position)
+        } catch (_: IndexOutOfBoundsException) {
+            null
+        }
+    }
 
-    abstract fun onBindItemViewHolder(holder: VH, position: Int)
+    abstract fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
 
-    @Suppress("UNCHECKED_CAST")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+    abstract fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback) as VH
+            R.layout.item_network_state -> NetworkStateViewHolder(parent, retryCallback)
             else -> onCreateItemViewHolder(parent, viewType)
         }
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.item_network_state -> {
                 val layoutParams = holder.itemView.layoutParams

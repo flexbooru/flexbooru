@@ -15,10 +15,7 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
@@ -29,10 +26,13 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Tag
+import onlymash.flexbooru.databinding.ItemTagBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.ui.base.BasePagedListAdapter
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
-class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, RecyclerView.ViewHolder>(TAG_COMPARATOR, retryCallback) {
+class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag>(TAG_COMPARATOR, retryCallback) {
     companion object {
         val TAG_COMPARATOR = object : DiffUtil.ItemCallback<Tag>() {
             override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean =
@@ -42,11 +42,12 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
         }
     }
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        TagViewHolder.create(parent)
+    override fun onCreateItemViewHolder(
+        parent: ViewGroup,
+        viewType: Int): RecyclerView.ViewHolder = TagViewHolder(parent)
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val tag = getItem(position)
+        val tag = getItemSafe(position)
         (holder as TagViewHolder).apply {
             bind(tag)
             itemView.setOnClickListener {
@@ -61,18 +62,13 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag, Recycler
         }
     }
 
-    class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag, parent, false)
-                return TagViewHolder(view)
-            }
-        }
+    class TagViewHolder(binding: ItemTagBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val tagName: AppCompatTextView = itemView.findViewById(R.id.tag_name)
-        private val tagType: AppCompatTextView = itemView.findViewById(R.id.tag_type)
-        private val count: AppCompatTextView = itemView.findViewById(R.id.post_count)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemTagBinding::inflate))
+
+        private val tagName = binding.tagName
+        private val tagType = binding.tagType
+        private val count = binding.postCount
 
         fun bind(data: Tag?) {
             val res = itemView.resources

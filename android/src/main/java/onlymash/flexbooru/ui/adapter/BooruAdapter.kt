@@ -15,14 +15,9 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.app.Activity
 import android.content.Intent
-import android.view.LayoutInflater
 import android.view.MenuInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
@@ -35,13 +30,12 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.databinding.ItemBooruBinding
 import onlymash.flexbooru.extension.copyText
-import onlymash.flexbooru.ui.activity.BooruActivity
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
-import onlymash.flexbooru.ui.fragment.QRCodeDialog
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
-class BooruAdapter(private val activity: Activity
-) : RecyclerView.Adapter<BooruAdapter.BooruViewHolder>() {
+class BooruAdapter(private val qrCallabck: (String) -> Unit) : RecyclerView.Adapter<BooruAdapter.BooruViewHolder>() {
 
     companion object {
         fun booruDiffCallback(oldBoorus: List<Booru>, newBoorus: List<Booru>) = object : DiffUtil.Callback() {
@@ -73,9 +67,9 @@ class BooruAdapter(private val activity: Activity
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooruViewHolder =
-        BooruViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_booru, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int): BooruViewHolder = BooruViewHolder(parent)
 
     override fun getItemCount(): Int = _boorus.size
 
@@ -96,14 +90,16 @@ class BooruAdapter(private val activity: Activity
 
     fun getBoorus() = _boorus
 
-    inner class BooruViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class BooruViewHolder(binding: ItemBooruBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemBooruBinding::inflate))
 
         private lateinit var booru: Booru
 
-        private val booruName: AppCompatTextView = itemView.findViewById(R.id.booru_name)
-        private val booruActionMenuView: ActionMenuView = itemView.findViewById(R.id.booru_action_menu)
-        private val booruUrl: AppCompatTextView = itemView.findViewById(R.id.booru_url)
-        private val booruType: AppCompatTextView = itemView.findViewById(R.id.booru_type)
+        private val booruName = binding.booruName
+        private val booruActionMenuView = binding.booruActionMenu
+        private val booruUrl = binding.booruUrl
+        private val booruType = binding.booruType
 
         init {
             itemView.setOnClickListener {
@@ -119,15 +115,8 @@ class BooruAdapter(private val activity: Activity
             MenuInflater(itemView.context).inflate(R.menu.booru_action_menu, booruActionMenuView.menu)
             booruActionMenuView.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.action_booru_share_qr_code -> {
-                        (activity as BooruActivity).supportFragmentManager
-                            .beginTransaction()
-                            .add(QRCodeDialog(booru.toString()), "")
-                            .commitAllowingStateLoss()
-                    }
-                    R.id.action_booru_share_clipboard -> {
-                        itemView.context.copyText(booru.toString())
-                    }
+                    R.id.action_booru_share_qr_code -> qrCallabck.invoke(booru.toString())
+                    R.id.action_booru_share_clipboard -> itemView.context.copyText(booru.toString())
                     R.id.action_booru_edit -> startConfig(booru.uid)
                     R.id.action_booru_delete -> BooruManager.deleteBooru(booru.uid)
                 }

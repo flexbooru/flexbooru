@@ -20,13 +20,19 @@ import android.content.Intent
 import android.os.Bundle
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.data.database.HistoryManager
+import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.ui.fragment.PostFragment
 import onlymash.flexbooru.extension.setupInsets
+import onlymash.flexbooru.ui.base.PathActivity
 
 class SearchActivity : PathActivity() {
 
     companion object {
         fun startSearch(context: Context, query: String) {
+            HistoryManager.createHistory(
+                History(booruUid = activatedBooruUid, query = query))
             context.startActivity(Intent(context, SearchActivity::class.java)
                 .putExtra(POST_QUERY, query))
         }
@@ -35,9 +41,7 @@ class SearchActivity : PathActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        setupInsets {
-
-        }
+        setupInsets { }
     }
 
     override fun onBackPressed() {

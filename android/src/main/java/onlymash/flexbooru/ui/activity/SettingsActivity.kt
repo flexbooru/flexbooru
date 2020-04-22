@@ -19,13 +19,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.PathActivity
 
 class SettingsActivity : PathActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        drawNavBar {}
+        drawNavBar { }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_settings)

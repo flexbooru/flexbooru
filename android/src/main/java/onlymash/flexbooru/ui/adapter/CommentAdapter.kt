@@ -16,27 +16,24 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.content.Intent
-import android.view.LayoutInflater
 import android.view.MenuInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import de.hdodenhof.circleimageview.CircleImageView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Comment
+import onlymash.flexbooru.databinding.ItemCommentBinding
 import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.widget.CommentView
+import onlymash.flexbooru.ui.base.BasePagedListAdapter
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class CommentAdapter(
     private val glide: GlideRequests,
@@ -45,7 +42,7 @@ class CommentAdapter(
     private val quoteCallback: (Int, String) -> Unit,
     private val deleteCallback: (Int) -> Unit,
     retryCallback: () -> Unit
-) : BasePagedListAdapter<Comment, RecyclerView.ViewHolder>(COMMENT_COMPARATOR, retryCallback) {
+) : BasePagedListAdapter<Comment>(COMMENT_COMPARATOR, retryCallback) {
 
     companion object {
         val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<Comment>() {
@@ -56,22 +53,24 @@ class CommentAdapter(
         }
     }
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        CommentViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_comment, parent, false))
+    override fun onCreateItemViewHolder(
+        parent: ViewGroup,
+        viewType: Int): RecyclerView.ViewHolder = CommentViewHolder(parent)
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as CommentViewHolder).bind(getItem(position))
+        (holder as CommentViewHolder).bind(getItemSafe(position))
     }
 
-    inner class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CommentViewHolder(binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val avatar: CircleImageView = itemView.findViewById(R.id.user_avatar)
-        private val userName: AppCompatTextView = itemView.findViewById(R.id.user_name)
-        private val postIdView: AppCompatTextView = itemView.findViewById(R.id.post_id)
-        private val commentDate: AppCompatTextView = itemView.findViewById(R.id.comment_date)
-        private val commentView: CommentView = itemView.findViewById(R.id.comment_view)
-        private val menuView: ActionMenuView = itemView.findViewById(R.id.menu_view)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemCommentBinding::inflate))
+
+        private val avatar = binding.userAvatar
+        private val userName = binding.userName
+        private val postIdView = binding.postId
+        private val commentDate = binding.commentDate
+        private val commentView = binding.commentView
+        private val menuView = binding.menuView
 
         private var comment: Comment? = null
 

@@ -37,6 +37,7 @@ import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.tag.TagRepositoryImpl
 import onlymash.flexbooru.ui.adapter.TagAdapter
+import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.TagViewModel
 import onlymash.flexbooru.ui.viewmodel.getTagViewModel
 

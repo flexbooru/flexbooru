@@ -39,6 +39,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountConfigActivity
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
+import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
 import onlymash.flexbooru.ui.viewmodel.getPoolViewModel
 import onlymash.flexbooru.worker.DownloadWorker

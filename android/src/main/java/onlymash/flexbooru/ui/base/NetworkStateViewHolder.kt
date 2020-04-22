@@ -13,27 +13,26 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.viewholder
+package onlymash.flexbooru.ui.base
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.R
 import onlymash.flexbooru.data.repository.*
+import onlymash.flexbooru.databinding.ItemNetworkStateBinding
 import onlymash.flexbooru.extension.toVisibility
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
-class NetworkStateViewHolder(itemView: View,
-                             private val retryCallback: () -> Unit) : RecyclerView.ViewHolder(itemView) {
+class NetworkStateViewHolder(binding: ItemNetworkStateBinding, retryCallback: () -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
-    private val retry: Button = itemView.findViewById(R.id.retry_button)
-    private val errorMsg: AppCompatTextView = itemView.findViewById(R.id.error_msg)
+    constructor(parent: ViewGroup, retryCallback: () -> Unit): this(
+        parent.viewBinding(ItemNetworkStateBinding::inflate), retryCallback)
+
+    private val retry = binding.retryButton
+    private val errorMsg = binding.errorMsg
 
     init {
         retry.setOnClickListener {
-            retryCallback()
+            retryCallback.invoke()
         }
     }
 
@@ -41,14 +40,5 @@ class NetworkStateViewHolder(itemView: View,
         retry.toVisibility(networkState.isFailed())
         errorMsg.toVisibility(networkState.hasMsg())
         errorMsg.text = networkState?.msg
-    }
-
-    companion object {
-
-        fun create(parent: ViewGroup, retryCallback: () -> Unit): NetworkStateViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_network_state, parent, false)
-            return NetworkStateViewHolder(view, retryCallback)
-        }
     }
 }

@@ -23,7 +23,9 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.SauceNaoActivity">
 
-    <include layout="@layout/common_list"/>
+    <include
+        layout="@layout/common_list"
+        android:id="@+id/common"/>
 
     <com.dekoservidoni.omfm.OneMoreFabMenu
             android:id="@+id/sauce_nao_search_fab"

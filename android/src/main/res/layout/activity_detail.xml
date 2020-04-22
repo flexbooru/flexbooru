@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<merge
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -49,8 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/actionBarSize">
-        <include layout="@layout/toolbar_transparent"/>
+        <include
+            layout="@layout/toolbar_transparent"
+            android:id="@+id/toolbar"/>
     </FrameLayout>
 
-    <include layout="@layout/bottom_shortcut_bar"/>
-</merge>
+    <include
+        layout="@layout/bottom_shortcut_bar"
+        android:id="@+id/bottom_shortcut"/>
+</FrameLayout>

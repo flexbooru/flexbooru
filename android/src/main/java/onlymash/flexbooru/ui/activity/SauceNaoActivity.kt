@@ -25,8 +25,6 @@ import android.view.*
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -35,17 +33,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_sauce_nao.*
-import kotlinx.android.synthetic.main.common_list.*
-import kotlinx.android.synthetic.main.progress_bar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Settings.sauceNaoApiKey
+import onlymash.flexbooru.databinding.ActivitySauceNaoBinding
+import onlymash.flexbooru.databinding.ItemSauceNaoBinding
 import onlymash.flexbooru.di.kodeinCommon
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
@@ -55,6 +53,8 @@ import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
 import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.BaseActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 import java.io.IOException
 
@@ -75,6 +75,9 @@ class SauceNaoActivity : BaseActivity() {
     }
 
     private val api by kodeinCommon.instance<SauceNaoApi>("SauceNaoApi")
+    private val binding by viewBinding(ActivitySauceNaoBinding::inflate)
+    private val fab get() = binding.sauceNaoSearchFab
+    private val errorMsg get() = binding.common.errorMsg
 
     private lateinit var sauceNaoViewModel: SauceNaoViewModel
     private var response: SauceNaoResponse? = null
@@ -88,10 +91,12 @@ class SauceNaoActivity : BaseActivity() {
             finish()
             return
         }
-        setContentView(R.layout.activity_sauce_nao)
+        setContentView(binding.root)
+        val list = binding.common.list
+        val progressBar = binding.common.progress.progressBar
         drawNavBar {
             list.updatePadding(bottom = it.systemWindowInsetBottom)
-            sauce_nao_search_fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = it.systemWindowInsetBottom +
                         resources.getDimensionPixelSize(R.dimen.margin_normal)
             }
@@ -112,24 +117,24 @@ class SauceNaoActivity : BaseActivity() {
             sauceNaoAdapter.notifyDataSetChanged()
         })
         sauceNaoViewModel.isLoading.observe(this, Observer {
-            progress_bar.isVisible = it
-            if (it && error_msg.isVisible) {
-                error_msg.isVisible = false
+            progressBar.isVisible = it
+            if (it && errorMsg.isVisible) {
+                errorMsg.isVisible = false
             }
         })
         sauceNaoViewModel.error.observe(this, Observer {
             if (!it.isNullOrBlank()) {
-                error_msg.isVisible = true
-                error_msg.text = it
+                errorMsg.isVisible = true
+                errorMsg.text = it
             } else {
-                error_msg.isVisible = false
+                errorMsg.isVisible = false
             }
         })
         val url = intent?.getStringExtra(SAUCE_NAO_SEARCH_URL_KEY)
         if (!url.isNullOrEmpty()) {
             search(url)
         }
-        sauce_nao_search_fab.setOptionsClick(object : OneMoreFabMenu.OptionsClick {
+        fab.setOptionsClick(object : OneMoreFabMenu.OptionsClick {
             override fun onOptionClick(optionId: Int?) {
                 when (optionId) {
                     R.id.option_url -> searchByUrl()
@@ -168,12 +173,15 @@ class SauceNaoActivity : BaseActivity() {
         if (apiKey.isNotEmpty()) {
             sauceNaoViewModel.searchByUrl(imageUrl = url, apiKey = apiKey)
         } else {
-            error_msg.toVisibility(true)
-            error_msg.setText(R.string.sauce_nao_api_key_unset)
+            errorMsg.toVisibility(true)
+            errorMsg.setText(R.string.sauce_nao_api_key_unset)
         }
     }
 
     private fun searchByUrl() {
+        if (isFinishing) {
+            return
+        }
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_mlarge)
         val layout = FrameLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -189,7 +197,7 @@ class SauceNaoActivity : BaseActivity() {
                 if (url.startsWith("http")) {
                     search(url)
                 } else {
-                    Snackbar.make(root_container, R.string.sauce_nao_invalid_image_url, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, R.string.sauce_nao_invalid_image_url, Snackbar.LENGTH_LONG).show()
                 }
             }
             .setNegativeButton(R.string.dialog_cancel, null)
@@ -219,8 +227,8 @@ class SauceNaoActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (sauce_nao_search_fab.isExpanded()) {
-            sauce_nao_search_fab.collapse()
+        if (fab.isExpanded()) {
+            fab.collapse()
         } else {
             super.onBackPressed()
         }
@@ -245,8 +253,8 @@ class SauceNaoActivity : BaseActivity() {
                 }
             }
         } else {
-            error_msg.isVisible = true
-            error_msg.setText(R.string.sauce_nao_api_key_unset)
+            errorMsg.isVisible = true
+            errorMsg.setText(R.string.sauce_nao_api_key_unset)
         }
     }
 
@@ -267,10 +275,10 @@ class SauceNaoActivity : BaseActivity() {
                 val key = (editText.text ?: "").toString().trim()
                 sauceNaoApiKey = key
                 if (key.isEmpty()) {
-                    error_msg.toVisibility(true)
-                    error_msg.setText(R.string.sauce_nao_api_key_unset)
+                    errorMsg.toVisibility(true)
+                    errorMsg.setText(R.string.sauce_nao_api_key_unset)
                 } else {
-                    error_msg.toVisibility(false)
+                    errorMsg.toVisibility(false)
                 }
             }
             .setNegativeButton(R.string.dialog_cancel, null)
@@ -282,22 +290,46 @@ class SauceNaoActivity : BaseActivity() {
 
         override fun getItemCount(): Int = response?.results?.size ?: 0
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            SauceNaoViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_sauce_nao, parent, false))
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int): RecyclerView.ViewHolder = SauceNaoViewHolder(parent)
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val result = response?.results?.get(position) ?: return
             (holder as SauceNaoViewHolder).bind(result)
         }
 
-        inner class SauceNaoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class SauceNaoViewHolder(binding: ItemSauceNaoBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            private val thumbnail: AppCompatImageView = itemView.findViewById(R.id.thumbnail)
-            private val title: AppCompatTextView = itemView.findViewById(R.id.title)
-            private val similarity: AppCompatTextView = itemView.findViewById(R.id.similarity)
-            private val info1: AppCompatTextView = itemView.findViewById(R.id.info_1)
-            private val info2: AppCompatTextView = itemView.findViewById(R.id.info_2)
+            constructor(parent: ViewGroup): this(parent.viewBinding(ItemSauceNaoBinding::inflate))
+
+            private val thumbnail = binding.thumbnail
+            private val title = binding.title
+            private val similarity = binding.similarity
+            private val info1 = binding.info1
+            private val info2 = binding.info2
+
+            private var urls: Array<String>? = null
+
+            init {
+                itemView.setOnClickListener {
+                    showDialog()
+                }
+            }
+
+            private fun showDialog() {
+                val urls = urls
+                if (urls.isNullOrEmpty() || isFinishing) {
+                    return
+                }
+                AlertDialog.Builder(itemView.context)
+                    .setTitle(R.string.sauce_nao_source)
+                    .setItems(urls) { _, which ->
+                        launchUrl(urls[which])
+                    }
+                    .create()
+                    .show()
+            }
 
             fun bind(result: Result) {
                 similarity.text = result.header.similarity
@@ -330,19 +362,9 @@ class SauceNaoActivity : BaseActivity() {
                 }
                 GlideApp.with(itemView.context)
                     .load(result.header.thumbnail)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(thumbnail)
-                val urls = result.data.extUrls?.toTypedArray()
-                if (!urls.isNullOrEmpty()) {
-                    itemView.setOnClickListener {
-                        AlertDialog.Builder(itemView.context)
-                            .setTitle(R.string.sauce_nao_source)
-                            .setItems(urls) { _, which ->
-                                launchUrl(urls[which])
-                            }
-                            .create()
-                            .show()
-                    }
-                }
+                urls = result.data.extUrls?.toTypedArray()
             }
         }
     }

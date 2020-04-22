@@ -31,7 +31,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -49,7 +48,6 @@ import com.mikepenz.materialdrawer.util.addItems
 import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
-import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.BuildConfig
@@ -76,12 +74,15 @@ import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.common.Values.BOORU_TYPE_UNKNOWN
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.databinding.ActivityMainBinding
 import onlymash.flexbooru.extension.*
-import onlymash.flexbooru.ui.fragment.SearchBarFragment
+import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import onlymash.flexbooru.extension.setupInsets
+import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 
 class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -102,12 +103,14 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 8
     }
 
+    private val binding by viewBinding(ActivityMainBinding::inflate)
+
     private var currentBooru: Booru? = null
     private var boorus: MutableList<Booru> = mutableListOf()
 
-    private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var drawerSliderView: MaterialDrawerSliderView
-    private lateinit var drawerLayout: DrawerLayout
+    private val bottomNavView get() = binding.bottomNavView
+    private val drawerSliderView get() = binding.slider
+    private val drawerLayout get() = binding.drawerLayout
     private lateinit var headerView: AccountHeaderView
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
@@ -180,13 +183,10 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             val gestureOffset = resources.getDimensionPixelSize(R.dimen.gesture_exclusion_offset)
             window.decorView.systemGestureExclusionRects = listOf(Rect(0, windowHeight - gestureHeight - gestureOffset, gestureWidth, windowHeight - gestureOffset))
         }
-        setContentView(R.layout.activity_main)
-        bottomNavigationView = findViewById(R.id.navigation)
-        drawerLayout = findViewById(R.id.drawer_layout)
-        drawerSliderView = findViewById(R.id.slider)
+        setContentView(binding.root)
         navController = findNavController(R.id.nav_host_fragment)
         setupNavigationBarBehavior()
-        bottomNavigationView.setup(navController) {
+        bottomNavView.setup(navController) {
             toListTop()
         }
         booruViewModel = getBooruViewModel(booruDao)
@@ -240,14 +240,14 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun setupNavigationMenu(menuSize: Int, @MenuRes menuRes: Int, @NavigationRes navRes: Int) {
-        if (bottomNavigationView.menu.size() != menuSize) {
-            bottomNavigationView.menu.clear()
-            bottomNavigationView.inflateMenu(menuRes)
+        if (bottomNavView.menu.size() != menuSize) {
+            bottomNavView.menu.clear()
+            bottomNavView.inflateMenu(menuRes)
         }
         navController.graph = navController.navInflater.inflate(navRes)
         val currentId = navController.currentDestination?.id ?: R.id.nav_posts
-        if (currentId != bottomNavigationView.selectedItemId) {
-            bottomNavigationView.selectedItemId = currentId
+        if (currentId != bottomNavView.selectedItemId) {
+            bottomNavView.selectedItemId = currentId
         }
         forceShowNavBar()
     }
@@ -479,11 +479,11 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else if (isFragmentCanBack()) {
-            val startId = navController.graph.startDestination
+            val startId = R.id.nav_posts
             if (navController.currentDestination?.id == startId) {
                 super.onBackPressed()
             } else {
-                bottomNavigationView.selectedItemId = startId
+                bottomNavView.selectedItemId = startId
             }
         }
     }
@@ -517,23 +517,23 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun setupNavigationBarBehavior() {
-        val layoutParams = bottomNavigationView.layoutParams as CoordinatorLayout.LayoutParams
+        val layoutParams = bottomNavView.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
         layoutParams.behavior =
             if (autoHideBottomBar) {
                 HideBottomViewOnScrollBehavior<BottomNavigationView>()
             } else {
                 if (behavior is HideBottomViewOnScrollBehavior) {
-                    behavior.slideUp(bottomNavigationView)
+                    behavior.slideUp(bottomNavView)
                 }
                 null
             }
     }
 
     fun forceShowNavBar() {
-        val behavior = (bottomNavigationView.layoutParams as CoordinatorLayout.LayoutParams).behavior
+        val behavior = (bottomNavView.layoutParams as CoordinatorLayout.LayoutParams).behavior
         if (behavior is HideBottomViewOnScrollBehavior) {
-            behavior.slideUp(bottomNavigationView)
+            behavior.slideUp(bottomNavView)
         }
     }
 }

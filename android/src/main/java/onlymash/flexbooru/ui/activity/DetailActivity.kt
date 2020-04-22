@@ -41,9 +41,6 @@ import androidx.paging.PagedList
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
 
-import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.bottom_shortcut_bar.*
-import kotlinx.android.synthetic.main.toolbar_transparent.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -64,26 +61,26 @@ import onlymash.flexbooru.common.Values.REQUEST_CODE_SAVE_FILE
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.favorite.VoteRepository
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
+import onlymash.flexbooru.databinding.ActivityDetailBinding
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
+import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.fragment.ShortcutInfoFragment
 import onlymash.flexbooru.ui.fragment.ShortcutTagFragment
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
 import onlymash.flexbooru.widget.DismissFrameLayout
 import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.erased.instance
 import java.io.*
-import java.util.concurrent.Executor
 
 private const val ALPHA_MAX = 0xFF
 private const val ALPHA_MIN = 0x00
@@ -118,7 +115,18 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     private val booruApis by instance<BooruApis>()
     private val voteRepository: VoteRepository by lazy { VoteRepositoryImpl(booruApis, postDao) }
 
+    private val binding by viewBinding(ActivityDetailBinding::inflate)
     private val playerHolder by lazy { PlayerHolder() }
+    private val detailPager get() = binding.detailPager
+    private val toolbar get() = binding.toolbar.toolbarTransparent
+    private val toolbarContainer get() = binding.toolbarContainer
+    private val shadow get() = binding.shadow
+    private val bottomSpace get() = binding.bottomShortcut.spaceNavBar
+    private val shortcut get() = binding.bottomShortcut.bottomBarContainer
+    private val favButton get() = binding.bottomShortcut.postFav
+    private val infoButton get() = binding.bottomShortcut.postInfo
+    private val tagsButton get() = binding.bottomShortcut.postTags
+    private val saveButton get() = binding.bottomShortcut.postSave
 
     private lateinit var booru: Booru
     private lateinit var actionVote: ActionVote
@@ -130,12 +138,12 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     private var tmpFile: File? = null
 
     private val currentPost: Post?
-        get() = detailAdapter.getPost(detail_pager.currentItem)
+        get() = detailAdapter.getItemSafe(detailPager.currentItem)
 
     private var oldPlayerView: PlayerView? = null
 
     private val playerView: PlayerView?
-        get() = detail_pager.findViewWithTag(String.format("player_%d", detail_pager.currentItem))
+        get() = detailPager.findViewWithTag(String.format("player_%d", detailPager.currentItem))
 
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
@@ -144,7 +152,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             }
         }
         override fun onPageSelected(position: Int) {
-            val post = detailAdapter.getPost(position)
+            val post = detailAdapter.getItemSafe(position)
             syncInfo(post)
             if (post == null) return
             val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
@@ -161,7 +169,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         }
         play(post)
         setVoteItemIcon(post.isFavored)
-        toolbar_transparent.title = "Post ${post.id}"
+        toolbar.title = "Post ${post.id}"
     }
 
     private fun play(post: Post) {
@@ -187,9 +195,9 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             postId = -1
         )
         postponeEnterTransition()
-        setContentView(R.layout.activity_detail)
+        setContentView(binding.root)
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
-        findViewById<View>(android.R.id.content).background = colorDrawable
+        binding.root.background = colorDrawable
         initInsets()
         initPager()
         initToolbar()
@@ -199,13 +207,13 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     private fun initInsets() {
         window.isShowBar = true
         findViewById<View>(android.R.id.content).setOnApplyWindowInsetsListener { _, insets ->
-            toolbar_container.minimumHeight = toolbar_transparent.height + insets.systemWindowInsetTop
-            toolbar_container.updatePadding(
+            toolbarContainer.minimumHeight = toolbar.height + insets.systemWindowInsetTop
+            toolbarContainer.updatePadding(
                 left = insets.systemWindowInsetLeft,
                 top = insets.systemWindowInsetTop,
                 right = insets.systemWindowInsetRight
             )
-            space_nav_bar.minimumHeight = insets.systemWindowInsetBottom
+            bottomSpace.minimumHeight = insets.systemWindowInsetBottom
             insets
         }
     }
@@ -221,17 +229,17 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             dismissListener = this,
             ioExecutor = Dispatchers.IO.asExecutor(),
             clickCallback = {
-                val isVisible = !toolbar_container.isVisible
+                val isVisible = !toolbarContainer.isVisible
                 window.isShowBar = isVisible
-                toolbar_container.isVisible = isVisible
-                bottom_bar_container.isVisible = isVisible
+                toolbarContainer.isVisible = isVisible
+                shortcut.isVisible = isVisible
                 shadow.isVisible = isVisible
             },
             longClickCallback = {
                 createLongClickDialog()
             }
         )
-        detail_pager.apply {
+        detailPager.apply {
             adapter = detailAdapter
             registerOnPageChangeCallback(pageChangeCallback)
         }
@@ -248,7 +256,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         detailAdapter.submitList(postList)
         if (initPosition != POSITION_INITED) {
             if (initPosition >= 0 && initPosition < postList.size) {
-                detail_pager.setCurrentItem(initPosition, false)
+                detailPager.setCurrentItem(initPosition, false)
                 delayExecute {
                     startPostponedEnterTransition()
                     syncInfo(currentPost)
@@ -266,42 +274,42 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun initToolbar() {
-        toolbar_transparent.inflateMenu(
+        toolbar.inflateMenu(
             when (booru.type) {
                 BOORU_TYPE_SANKAKU -> R.menu.detail_sankaku
                 BOORU_TYPE_SHIMMIE -> R.menu.detail_shimmie
                 else -> R.menu.detail
             }
         )
-        toolbar_transparent.setOnMenuItemClickListener(this)
-        toolbar_transparent.setNavigationOnClickListener {
+        toolbar.setOnMenuItemClickListener(this)
+        toolbar.setNavigationOnClickListener {
             finishAfterTransition()
         }
     }
 
     private fun initShortcutBar() {
-        TooltipCompat.setTooltipText(post_tags, post_tags.contentDescription)
-        TooltipCompat.setTooltipText(post_info, post_info.contentDescription)
-        TooltipCompat.setTooltipText(post_fav, post_fav.contentDescription)
-        TooltipCompat.setTooltipText(post_save, post_save.contentDescription)
-        post_tags.setOnClickListener {
+        TooltipCompat.setTooltipText(tagsButton, tagsButton.contentDescription)
+        TooltipCompat.setTooltipText(infoButton, infoButton.contentDescription)
+        TooltipCompat.setTooltipText(favButton, favButton.contentDescription)
+        TooltipCompat.setTooltipText(saveButton, saveButton.contentDescription)
+        tagsButton.setOnClickListener {
             currentPost?.let {
                 ShortcutTagFragment.create(it.id)
                     .show(supportFragmentManager, "tag")
             }
         }
-        post_info.setOnClickListener {
+        infoButton.setOnClickListener {
             currentPost?.let {
                 ShortcutInfoFragment.create(it.id)
                     .show(supportFragmentManager, "info")
             }
         }
-        post_save.setOnClickListener {
+        saveButton.setOnClickListener {
             currentPost?.let {
                 saveAndAction(it, ACTION_SAVE)
             }
         }
-        post_fav.setOnClickListener {
+        favButton.setOnClickListener {
             vote()
         }
     }
@@ -332,7 +340,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun setVoteItemIcon(checked: Boolean) {
-        post_fav.setImageResource(if (checked) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp)
+        favButton.setImageResource(if (checked) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp)
     }
 
     override fun onDismissStart() {
@@ -367,10 +375,6 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
             R.id.action_browse_share -> shareLink(post)
             R.id.action_browse_recommended -> {
                 val query = "recommended_for_post:${post.id}"
-                HistoryManager.createHistory(History(
-                    booruUid = booru.uid,
-                    query = query)
-                )
                 SearchActivity.startSearch(this, query)
             }
             R.id.action_browse_open_browser -> openBrowser(post)

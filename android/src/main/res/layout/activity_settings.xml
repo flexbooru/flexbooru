@@ -14,12 +14,11 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<fragment
+<androidx.fragment.app.FragmentContainerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:name="onlymash.flexbooru.ui.fragment.SettingsFragment"
-    tools:context="onlymash.flexbooru.ui.activity.SettingsActivity"
-    tools:ignore="FragmentTagUsage" />
+    tools:viewBindingIgnore="true" />

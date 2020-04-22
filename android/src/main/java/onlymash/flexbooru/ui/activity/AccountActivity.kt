@@ -23,7 +23,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
@@ -41,6 +40,9 @@ import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
+import onlymash.flexbooru.databinding.ActivityAccountBinding
+import onlymash.flexbooru.ui.base.PathActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 
 class AccountActivity : PathActivity() {
@@ -52,6 +54,8 @@ class AccountActivity : PathActivity() {
     }
 
     private val booruApis by instance<BooruApis>()
+
+    private val binding by viewBinding(ActivityAccountBinding::inflate)
 
     private lateinit var booru: Booru
     private lateinit var user: User
@@ -69,7 +73,7 @@ class AccountActivity : PathActivity() {
             return
         }
         this.booru = booru
-        setContentView(R.layout.activity_account)
+        setContentView(binding.root)
         supportActionBar?.apply {
             title = String.format(getString(R.string.title_account_and_booru), booru.name)
             setDisplayHomeAsUpEnabled(true)
@@ -160,20 +164,20 @@ class AccountActivity : PathActivity() {
     }
 
     private fun init() {
-        username.text = user.name
-        user_id.text = String.format(getString(R.string.account_user_id), user.id)
+        binding.username.text = user.name
+        binding.userId.text = String.format(getString(R.string.account_user_id), user.id)
         if (booru.type == BOORU_TYPE_MOE) {
             GlideApp.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
                 .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
-                .into(user_avatar)
+                .into(binding.userAvatar)
         } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatar.isNullOrEmpty()) {
             GlideApp.with(this)
                 .load(user.avatar)
                 .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
-                .into(user_avatar)
+                .into(binding.userAvatar)
         }
-        fav_action_button.setOnClickListener {
+        binding.favActionButton.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
                 val url = "${booru.scheme}://${booru.host}/index.php?page=favorites&s=view&id=${user.id}"
                 launchUrl(url)
@@ -183,42 +187,49 @@ class AccountActivity : PathActivity() {
                     BOORU_TYPE_DAN1,
                     BOORU_TYPE_SANKAKU -> String.format("fav:%s", user.name)
                     BOORU_TYPE_MOE -> String.format("vote:3:%s order:vote", user.name)
-                    else -> throw IllegalStateException("unknown booru type: ${booru.type}")
+                    else -> null
                 }
-                SearchActivity.startSearch(this, query)
+                searchPost(query)
             }
         }
-        posts_action_button.setOnClickListener {
+        binding.postsActionButton.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
-                Snackbar.make(root_container, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
             } else {
                 val query = String.format("user:%s", user.name)
-                SearchActivity.startSearch(this, query)
+                searchPost(query)
             }
         }
-        comments_action_button.setOnClickListener {
+        binding.commentsActionButton.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL) {
-                Snackbar.make(root_container, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
             } else {
                 val query = if (booru.type != BOORU_TYPE_DAN) "user:${user.name}" else user.name
                 CommentActivity.startActivity(this, query = query)
             }
         }
         if (booru.type == BOORU_TYPE_SANKAKU) {
-            recommended_action_button.setOnClickListener {
+            binding.recommendedActionButton.setOnClickListener {
                 val query = String.format("recommended_for:%s", user.name)
-                SearchActivity.startSearch(this, query)
+                searchPost(query)
             }
         } else {
-            recommended_action_button_container.visibility = View.GONE
+            binding.recommendedActionButtonContainer.visibility = View.GONE
         }
+    }
+
+    private fun searchPost(query: String?) {
+        if (query == null) {
+            return
+        }
+        SearchActivity.startSearch(this, query)
     }
 
     private fun handlerResult(result: NetResult<User>) {
         when (result) {
             is NetResult.Success -> {
                 user.name = result.data.name
-                username.text = user.name
+                binding.username.text = user.name
             }
             is NetResult.Error -> {
                 Snackbar.make(this.findViewById(R.id.root_container), result.errorMsg, Snackbar.LENGTH_LONG).show()

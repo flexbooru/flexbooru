@@ -34,7 +34,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_muzei.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Values
@@ -45,6 +44,7 @@ import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.dao.MuzeiDao
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
+import onlymash.flexbooru.databinding.ActivityMuzeiBinding
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
 import onlymash.flexbooru.ui.helper.ItemTouchCallback
@@ -54,6 +54,8 @@ import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import org.kodein.di.erased.instance
 
@@ -61,6 +63,8 @@ class MuzeiActivity : KodeinActivity() {
 
     private val muzeiDao by instance<MuzeiDao>()
     private val booruApis by instance<BooruApis>()
+
+    private val binding by viewBinding(ActivityMuzeiBinding::inflate)
 
     private lateinit var muzeiViewModel: MuzeiViewModel
     private lateinit var muzeiAdapter: MuzeiAdapter
@@ -88,7 +92,7 @@ class MuzeiActivity : KodeinActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_muzei)
+        setContentView(binding.root)
         val booru = BooruManager.getBooruByUid(activatedBooruUid)
         if (booru == null) {
             finish()
@@ -113,9 +117,11 @@ class MuzeiActivity : KodeinActivity() {
     }
 
     private fun initView() {
+        val list = binding.muzeiList
+        val fabMuzei = binding.muzeiButton
         drawNavBar { insets ->
-            muzei_list.updatePadding(bottom = insets.systemWindowInsetBottom)
-            muzei_button.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            list.updatePadding(bottom = insets.systemWindowInsetBottom)
+            fabMuzei.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = resources.getDimensionPixelSize(R.dimen.margin_normal) + insets.systemWindowInsetBottom
             }
         }
@@ -123,7 +129,7 @@ class MuzeiActivity : KodeinActivity() {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_muzei)
         }
-        muzei_button.setOnClickListener {
+        fabMuzei.setOnClickListener {
             val muzeiPackageName = "net.nurik.roman.muzei"
             try {
                 val intent = packageManager.getLaunchIntentForPackage(muzeiPackageName)
@@ -141,7 +147,7 @@ class MuzeiActivity : KodeinActivity() {
         muzeiAdapter = MuzeiAdapter {
             muzeiViewModel.deleteByUid(it)
         }
-        muzei_list.apply {
+        list.apply {
             layoutManager = LinearLayoutManager(this@MuzeiActivity, RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@MuzeiActivity, RecyclerView.VERTICAL))
             adapter = muzeiAdapter

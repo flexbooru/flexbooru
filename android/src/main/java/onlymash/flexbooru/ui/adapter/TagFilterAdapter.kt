@@ -15,11 +15,8 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
@@ -28,6 +25,9 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.model.common.TagFilter
+import onlymash.flexbooru.databinding.ItemTagFilterSubheadBinding
+import onlymash.flexbooru.ui.viewbinding.viewBinding
+import onlymash.flexbooru.ui.base.BaseTagFilterViewHolder
 import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterAdapter(private val orders: Array<String>,
@@ -167,12 +167,12 @@ class TagFilterAdapter(private val orders: Array<String>,
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            VIEW_TYPE_ADD -> TagFilterAddViewHolder.create(parent)
-            VIEW_TYPE_NORMAL -> TagFilterViewHolder.create(parent)
-            VIEW_TYPE_ORDER -> TagFilterOrderViewHolder.create(parent)
-            VIEW_TYPE_RATING -> TagFilterRatingViewHolder.create(parent)
-            VIEW_TYPE_THRESHOLD -> TagFilterThresholdViewHolder.create(parent)
-            else -> TagFilterSubheadViewHolder.create(parent)
+            VIEW_TYPE_ADD -> TagFilterAddViewHolder(parent)
+            VIEW_TYPE_NORMAL -> TagFilterViewHolder(parent)
+            VIEW_TYPE_ORDER -> TagFilterOrderViewHolder(parent)
+            VIEW_TYPE_RATING -> TagFilterRatingViewHolder(parent)
+            VIEW_TYPE_THRESHOLD -> TagFilterThresholdViewHolder(parent)
+            else -> TagFilterSubheadViewHolder(parent)
         }
 
     override fun getItemViewType(position: Int): Int {
@@ -311,16 +311,9 @@ class TagFilterAdapter(private val orders: Array<String>,
         }
     }
 
-    class TagFilterAddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagFilterAddViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag_filter, parent, false)
-                return TagFilterAddViewHolder(view)
-            }
-        }
+    class TagFilterAddViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
         init {
-            (itemView as TagFilterView).apply {
+            tagFilterView.apply {
                 text = itemView.context.getString(R.string.tag_filter_add_text)
                 color = ContextCompat.getColor(context, R.color.colorAccent)
                 selectedTextColor = ContextCompat.getColor(context, R.color.white)
@@ -328,81 +321,47 @@ class TagFilterAdapter(private val orders: Array<String>,
         }
     }
 
-    class TagFilterOrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagFilterOrderViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag_filter, parent, false)
-                return TagFilterOrderViewHolder(view)
-            }
-        }
+    class TagFilterOrderViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
         init {
-            (itemView as TagFilterView).apply {
+            tagFilterView.apply {
                 color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
             }
         }
     }
 
-    class TagFilterRatingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagFilterRatingViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag_filter, parent, false)
-                return TagFilterRatingViewHolder(view)
-            }
-        }
+    class TagFilterRatingViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
         init {
-            (itemView as TagFilterView).apply {
+            tagFilterView.apply {
                 color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
             }
         }
     }
 
-    class TagFilterSubheadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagFilterSubheadViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag_filter_subhead, parent, false)
-                return TagFilterSubheadViewHolder(view)
-            }
-        }
-        private val subhead = itemView.findViewById<AppCompatTextView>(R.id.subhead)
-        fun bind(name: String) {
-            subhead.text = name
-        }
-    }
-
-    class TagFilterThresholdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagFilterThresholdViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag_filter, parent, false)
-                return TagFilterThresholdViewHolder(view)
-            }
-        }
+    class TagFilterThresholdViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
         init {
-            (itemView as TagFilterView).apply {
+            tagFilterView.apply {
                 color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
             }
         }
     }
 
-    class TagFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun create(parent: ViewGroup): TagFilterViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_tag_filter, parent, false)
-                return TagFilterViewHolder(view)
-            }
-        }
+    class TagFilterViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
         init {
-            (itemView as TagFilterView).apply {
+            tagFilterView.apply {
                 color = ContextCompat.getColor(context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(context, R.color.white)
             }
+        }
+    }
+
+    class TagFilterSubheadViewHolder(binding: ItemTagFilterSubheadBinding) : RecyclerView.ViewHolder(binding.root) {
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemTagFilterSubheadBinding::inflate))
+        private val subhead = binding.subhead
+        fun bind(name: String) {
+            subhead.text = name
         }
     }
 }

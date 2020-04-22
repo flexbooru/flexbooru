@@ -13,21 +13,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.fragment
+package onlymash.flexbooru.ui.base
 
-import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import onlymash.flexbooru.R
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import onlymash.flexbooru.databinding.ItemTagFilterBinding
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
-abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), KodeinAware {
-
-    override val kodein: Kodein by kodein()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.TransparentBottomSheetDialogTheme)
-    }
+abstract class BaseTagFilterViewHolder(binding: ItemTagFilterBinding) : RecyclerView.ViewHolder(binding.root) {
+    constructor(parent: ViewGroup): this(parent.viewBinding(ItemTagFilterBinding::inflate))
+    val tagFilterView = binding.root
 }

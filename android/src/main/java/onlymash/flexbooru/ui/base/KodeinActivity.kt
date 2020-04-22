@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.activity
+package onlymash.flexbooru.ui.base
 
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein

@@ -15,16 +15,14 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.view.LayoutInflater
 import android.view.MenuInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.databinding.ItemTagBlacklistBinding
 import onlymash.flexbooru.extension.copyText
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 
 class TagBlacklistAdapter(
@@ -53,9 +51,9 @@ class TagBlacklistAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        TagBlacklistViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_tag_blacklist, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int): RecyclerView.ViewHolder = TagBlacklistViewHolder(parent)
 
     override fun getItemCount(): Int = data.size
 
@@ -63,10 +61,14 @@ class TagBlacklistAdapter(
         (holder as TagBlacklistViewHolder).bind(data[position])
     }
 
-    inner class TagBlacklistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tagTextView = itemView.findViewById<AppCompatTextView>(R.id.tag_blacklist)
-        private val actionMenu = itemView.findViewById<ActionMenuView>(R.id.action_menu)
+    inner class TagBlacklistViewHolder(binding: ItemTagBlacklistBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemTagBlacklistBinding::inflate))
+
+        private val tagTextView = binding.tagBlacklist
+        private val actionMenu = binding.actionMenu
         private lateinit var tag: String
+
         init {
             MenuInflater(itemView.context).inflate(R.menu.tag_blacklist_item, actionMenu.menu)
             actionMenu.setOnMenuItemClickListener { menuItem ->
@@ -81,6 +83,7 @@ class TagBlacklistAdapter(
                 true
             }
         }
+
         fun bind(tag: String) {
             this.tag = tag
             tagTextView.text = tag

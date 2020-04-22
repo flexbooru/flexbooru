@@ -20,7 +20,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/toolbar_bottom_sheet_dialog"/>
+    <include
+        layout="@layout/toolbar_bottom_sheet_dialog"
+        android:id="@+id/toolbar_layout"/>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

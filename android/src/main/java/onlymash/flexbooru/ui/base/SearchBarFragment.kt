@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.fragment
+package onlymash.flexbooru.ui.base
 
 import android.animation.ValueAnimator
 import android.content.SharedPreferences
@@ -21,16 +21,15 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
-import android.widget.ProgressBar
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import onlymash.flexbooru.R
@@ -48,36 +47,39 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
+import onlymash.flexbooru.databinding.FragmentSearchbarBinding
 import onlymash.flexbooru.ui.activity.MainActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.viewmodel.*
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
 
-abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
-    SearchBar.StateListener, SearchBarMover.Helper, ActionMode.Callback,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
+    SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper,
+    ActionMode.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val sp by instance<SharedPreferences>()
     val booruApis by instance<BooruApis>()
     private val booruDao by instance<BooruDao>()
 
+    private val binding by viewBinding(FragmentSearchbarBinding::bind)
+
     private var actionTag: ActionTag? = null
 
     private lateinit var booruViewModel: BooruViewModel
     private lateinit var suggestionViewModel: SuggestionViewModel
-
-    private lateinit var searchBar: SearchBar
     private lateinit var searchBarMover: SearchBarMover
     private lateinit var leftDrawable: DrawerArrowDrawable
-    internal lateinit var mainList: RecyclerView
-    internal lateinit var searchLayout: CoordinatorLayout
-    internal lateinit var swipeRefresh: SwipeRefreshLayout
-    internal lateinit var progressBar: ProgressBar
-    internal lateinit var progressBarHorizontal: ProgressBar
-    private lateinit var container: CoordinatorLayout
-    private lateinit var fabToListTop: FloatingActionButton
+
+    internal val mainList get() = binding.refreshableList.list
+    internal val searchLayout get() = binding.searchLayout.searchLayoutContainer
+    internal val swipeRefresh get() = binding.refreshableList.swipeRefresh
+    internal val progressBar get() = binding.progressCircular.progressBar
+    internal val progressBarHorizontal get() = binding.progressHorizontal.progressBarHorizontal
+    private val searchBar get() = binding.searchBar
+    private val fabToListTop get() = binding.actionToTop
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
 
@@ -88,27 +90,20 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     ): View? {
         booruViewModel = getBooruViewModel(booruDao)
         suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
-        return inflater.inflate(R.layout.fragment_searchbar, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        container = view.findViewById(R.id.searchbar_fragment_container)
-        mainList = view.findViewById(R.id.list)
-        searchBar = view.findViewById(R.id.search_bar)
-        searchLayout = view.findViewById(R.id.search_layout)
-        swipeRefresh = view.findViewById(R.id.swipe_refresh)
-        progressBar = view.findViewById(R.id.progress_bar)
-        progressBarHorizontal = view.findViewById(R.id.progress_bar_horizontal)
-        fabToListTop = view.findViewById(R.id.action_to_top)
-        container.setOnApplyWindowInsetsListener { _, insets ->
+        binding.root.setOnApplyWindowInsetsListener { _, insets ->
             systemUiTopSize = insets.systemWindowInsetTop
             systemUiBottomSize = insets.systemWindowInsetBottom
-            (searchBar.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
-                resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + systemUiTopSize
-            (fabToListTop.layoutParams as CoordinatorLayout.LayoutParams).updateMargins(
-                bottom = systemUiBottomSize + resources.getDimensionPixelSize(R.dimen.margin_normal)
-            )
+            searchBar.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                topMargin = resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + systemUiTopSize
+            }
+            fabToListTop.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                updateMargins(bottom = systemUiBottomSize + resources.getDimensionPixelSize(R.dimen.margin_normal))
+            }
             setupMainListPadding()
             setupSwipeRefreshOffset()
             insets
@@ -138,8 +133,9 @@ abstract class SearchBarFragment : BaseFragment(), SearchBar.Helper,
     private fun setupFabToListTop() {
         if (activity is SearchActivity) {
             fabToListTop.isVisible = true
-            (fabToListTop.layoutParams as CoordinatorLayout.LayoutParams).behavior =
-                HideBottomViewOnScrollBehavior<FloatingActionButton>()
+            fabToListTop.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                behavior = HideBottomViewOnScrollBehavior<FloatingActionButton>()
+            }
             fabToListTop.setOnClickListener {
                 toListTop()
             }

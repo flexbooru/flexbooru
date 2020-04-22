@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import onlymash.flexbooru.R
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.BaseActivity
 
 class AboutActivity : BaseActivity() {
 

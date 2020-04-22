@@ -15,19 +15,17 @@
 
 package onlymash.flexbooru.ui.adapter
 
-import android.view.LayoutInflater
 import android.view.MenuInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activeMuzeiUid
 import onlymash.flexbooru.data.model.common.Muzei
+import onlymash.flexbooru.databinding.ItemMuzeiBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class MuzeiAdapter(
     private val deleteMuzeiCallback: (Long) -> Unit
@@ -67,8 +65,9 @@ class MuzeiAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        MuzeiViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_muzei, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int): RecyclerView.ViewHolder = MuzeiViewHolder(parent)
 
     override fun getItemCount(): Int = data.size
 
@@ -76,10 +75,12 @@ class MuzeiAdapter(
         (holder as MuzeiViewHolder).bind(data[position])
     }
 
-    inner class MuzeiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MuzeiViewHolder(binding: ItemMuzeiBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val keyword = itemView.findViewById<AppCompatTextView>(R.id.muzei_keyword)
-        private val actionMenu = itemView.findViewById<ActionMenuView>(R.id.action_menu)
+        constructor(parent: ViewGroup): this(parent.viewBinding(ItemMuzeiBinding::inflate))
+
+        private val keyword = binding.muzeiKeyword
+        private val actionMenu = binding.actionMenu
         private lateinit var muzei: Muzei
 
         init {

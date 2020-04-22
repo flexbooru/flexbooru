@@ -15,24 +15,27 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/root_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.activity.WhatAnimeActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.WhatAnimeActivity">
 
-    <include layout="@layout/common_list"/>
+    <include
+        layout="@layout/common_list"
+        android:id="@+id/common"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/what_anime_search_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/margin_normal"
-            android:src="@drawable/ic_add_long_24dp"
-            style="@style/Widget.FloatingActionButton"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_add_long_24dp"
+        style="@style/Widget.FloatingActionButton"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

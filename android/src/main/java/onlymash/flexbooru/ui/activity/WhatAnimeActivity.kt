@@ -28,8 +28,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.view.*
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -45,15 +43,15 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_what_anime.*
-import kotlinx.android.synthetic.main.common_list.*
-import kotlinx.android.synthetic.main.progress_bar.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.isOrderSuccess
 import onlymash.flexbooru.common.Settings.safeMode
+import onlymash.flexbooru.databinding.ActivityWhatAnimeBinding
+import onlymash.flexbooru.databinding.FragmentAnimePlayerBinding
+import onlymash.flexbooru.databinding.ItemWhatAnimeBinding
 import onlymash.flexbooru.di.kodeinCommon
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.copyText
@@ -62,10 +60,12 @@ import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.tracemoe.api.TraceMoeApi
 import onlymash.flexbooru.tracemoe.model.Doc
-import onlymash.flexbooru.ui.fragment.BaseBottomSheetDialogFragment
+import onlymash.flexbooru.ui.base.BaseBottomSheetDialogFragment
 import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.BaseActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 import java.io.ByteArrayOutputStream
 
@@ -81,6 +81,10 @@ class WhatAnimeActivity : BaseActivity() {
 
     private val api by kodeinCommon.instance<TraceMoeApi>("TraceMoeApi")
 
+    private val binding by viewBinding(ActivityWhatAnimeBinding::inflate)
+    private val progressBar get() = binding.common.progress.progressBar
+    private val errorMsg get() = binding.common.errorMsg
+        
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!isOrderSuccess) {
@@ -88,10 +92,12 @@ class WhatAnimeActivity : BaseActivity() {
             finish()
             return
         }
-        setContentView(R.layout.activity_what_anime)
+        setContentView(binding.root)
+        val list = binding.common.list
+        val fab = binding.fab
         drawNavBar {
             list.updatePadding(bottom = it.systemWindowInsetBottom)
-            what_anime_search_fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = it.systemWindowInsetBottom +
                         resources.getDimensionPixelSize(R.dimen.margin_normal)
             }
@@ -122,20 +128,20 @@ class WhatAnimeActivity : BaseActivity() {
             whatAnimeAdapter.notifyDataSetChanged()
         })
         traceMoeViiewModel.isLoading.observe(this, Observer {
-            progress_bar.isVisible = it
-            if (it && error_msg.isVisible) {
-                error_msg.isVisible = false
+            progressBar.isVisible = it
+            if (it && errorMsg.isVisible) {
+                errorMsg.isVisible = false
             }
         })
         traceMoeViiewModel.error.observe(this, Observer {
             if (!it.isNullOrBlank()) {
-                error_msg.isVisible = true
-                error_msg.text = it
+                errorMsg.isVisible = true
+                errorMsg.text = it
             } else {
-                error_msg.isVisible = false
+                errorMsg.isVisible = false
             }
         })
-        what_anime_search_fab.setOnClickListener {
+        fab.setOnClickListener {
             try {
                 startActivityForResult(
                     Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -151,7 +157,7 @@ class WhatAnimeActivity : BaseActivity() {
     private fun search(uri: Uri) {
         docs.clear()
         whatAnimeAdapter.notifyDataSetChanged()
-        progress_bar.toVisibility(true)
+        progressBar.toVisibility(true)
         val ext = uri.toString().fileExt()
         val head = "data:image/jpeg;base64,"
         if (ext == "gif" || ext == "GIF") {
@@ -160,7 +166,7 @@ class WhatAnimeActivity : BaseActivity() {
                 .load(uri)
                 .into(object : CustomTarget<GifDrawable>() {
                     override fun onLoadCleared(placeholder: Drawable?) {
-                        progress_bar.toVisibility(false)
+                        progressBar.toVisibility(false)
                     }
                     override fun onResourceReady(resource: GifDrawable, transition: Transition<in GifDrawable>?) {
                         val bitmap = resource.firstFrame
@@ -206,6 +212,14 @@ class WhatAnimeActivity : BaseActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == READ_IMAGE_REQUEST_CODE) {
@@ -217,9 +231,9 @@ class WhatAnimeActivity : BaseActivity() {
 
     inner class WhatAnimeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            WhatAnimeViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_what_anime, parent, false))
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int): RecyclerView.ViewHolder = WhatAnimeViewHolder(parent)
 
         override fun getItemCount(): Int = docs.size
 
@@ -227,14 +241,41 @@ class WhatAnimeActivity : BaseActivity() {
             (holder as WhatAnimeViewHolder).bind(docs[position])
         }
 
-        inner class WhatAnimeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class WhatAnimeViewHolder(binding: ItemWhatAnimeBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            private val preview: AppCompatImageView = itemView.findViewById(R.id.preview)
-            private val title: AppCompatTextView = itemView.findViewById(R.id.title)
-            private val info1: AppCompatTextView = itemView.findViewById(R.id.info_1)
-            private val info2: AppCompatTextView = itemView.findViewById(R.id.info_2)
+            constructor(parent: ViewGroup): this(parent.viewBinding(ItemWhatAnimeBinding::inflate))
+
+            private val preview = binding.preview
+            private val title = binding.title
+            private val info1 = binding.info1
+            private val info2 = binding.info2
+
+            private lateinit var data: Doc
+
+            init {
+                itemView.setOnClickListener {
+                    showPlayerDialog()
+                }
+                itemView.setOnLongClickListener {
+                    copyText(title.text)
+                    true
+                }
+            }
+
+            private fun showPlayerDialog() {
+                if (isFinishing) {
+                    return
+                }
+                AnimePlayerDialog().apply {
+                    arguments = Bundle().apply {
+                        putString(PREVIEW_VIDEO_URL_KEY, "https://media.trace.moe/video/${data.anilistId}/${Uri.encode(data.filename)}?t=${data.at}&token=${data.tokenthumb}")
+                    }
+                    show(supportFragmentManager, "player")
+                }
+            }
 
             fun bind(data: Doc) {
+                this.data = data
                 val text = data.title ?: data.filename
                 title.text = text
                 info1.text = formatTime(data.at)
@@ -246,18 +287,6 @@ class WhatAnimeActivity : BaseActivity() {
                     .placeholder(ContextCompat.getDrawable(itemView.context, placeholderId))
                     .fitCenter()
                     .into(preview)
-                itemView.setOnLongClickListener {
-                    copyText(text)
-                    true
-                }
-                itemView.setOnClickListener {
-                    AnimePlayerDialog().apply {
-                        arguments = Bundle().apply {
-                            putString(PREVIEW_VIDEO_URL_KEY, "https://media.trace.moe/video/${data.anilistId}/${Uri.encode(data.filename)}?t=${data.at}&token=${data.tokenthumb}")
-                        }
-                        show(supportFragmentManager, "player")
-                    }
-                }
             }
 
             private fun formatTime(time: Float): String {
@@ -275,8 +304,9 @@ class WhatAnimeActivity : BaseActivity() {
 
     class AnimePlayerDialog : BaseBottomSheetDialogFragment() {
 
-        private lateinit var playerView: PlayerView
+        private var playerView: PlayerView? = null
         private lateinit var behavior: BottomSheetBehavior<View>
+        private lateinit var binding: FragmentAnimePlayerBinding
 
         private var url: String? = null
 
@@ -289,10 +319,10 @@ class WhatAnimeActivity : BaseActivity() {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val dialog = super.onCreateDialog(savedInstanceState)
-            val view = View.inflate(context, R.layout.fragment_anime_player, null)
-            playerView = view.findViewById(R.id.exoplayer_view)
-            dialog.setContentView(view)
-            behavior = BottomSheetBehavior.from(view.parent as View)
+            binding = FragmentAnimePlayerBinding.inflate(layoutInflater)
+            playerView = binding.exoplayerView
+            dialog.setContentView(binding.root)
+            behavior = BottomSheetBehavior.from(binding.root.parent as View)
             behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
@@ -310,7 +340,9 @@ class WhatAnimeActivity : BaseActivity() {
             super.onResume()
             context?.apply {
                 playerHolder.create(applicationContext)
-                url?.toUri()?.let { uri ->
+                val playerView = playerView
+                val uri = url?.toUri()
+                if (playerView != null && uri != null) {
                     playerHolder.start(applicationContext, uri, playerView)
                 }
             }
@@ -323,17 +355,9 @@ class WhatAnimeActivity : BaseActivity() {
 
         override fun onStop() {
             super.onStop()
-            playerView.onPause()
-            playerView.player = null
+            playerView?.onPause()
+            playerView?.player = null
             playerHolder.release()
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

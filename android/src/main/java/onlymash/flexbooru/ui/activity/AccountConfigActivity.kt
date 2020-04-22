@@ -22,7 +22,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 
-import kotlinx.android.synthetic.main.activity_account_config.*
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings
@@ -41,11 +40,16 @@ import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.extension.sha1
 import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import onlymash.flexbooru.data.repository.user.UserRepository
+import onlymash.flexbooru.databinding.ActivityAccountConfigBinding
+import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 
 class AccountConfigActivity : KodeinActivity() {
 
     private val booruApis by instance<BooruApis>()
+
+    private val binding by viewBinding(ActivityAccountConfigBinding::inflate)
 
     private lateinit var booru: Booru
     private var username = ""
@@ -58,7 +62,7 @@ class AccountConfigActivity : KodeinActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account_config)
+        setContentView(binding.root)
         val b = BooruManager.getBooruByUid(Settings.activatedBooruUid)
         if (b == null) {
             Toast.makeText(this, "ERROR: Booru not found", Toast.LENGTH_LONG).show()
@@ -66,12 +70,12 @@ class AccountConfigActivity : KodeinActivity() {
             return
         }
         booru = b
-        account_config_title.text = String.format(getString(R.string.title_account_config_and_booru), booru.name)
+        binding.accountConfigTitle.text = String.format(getString(R.string.title_account_config_and_booru), booru.name)
         if (booru.type == BOORU_TYPE_DAN) {
-            password_edit_container.hint = getString(R.string.account_api_key)
-            forgot_auth.setText(R.string.account_forgot_api_key)
+            binding.passwordEditContainer.hint = getString(R.string.account_api_key)
+            binding.forgotAuth.setText(R.string.account_forgot_api_key)
         }
-        forgot_auth.setOnClickListener {
+        binding.forgotAuth.setOnClickListener {
             when (booru.type) {
                 BOORU_TYPE_DAN -> {
                     launchUrl(String.format("%s://%s/session/new", booru.scheme, booru.host))
@@ -87,17 +91,17 @@ class AccountConfigActivity : KodeinActivity() {
                 }
             }
         }
-        set_account.setOnClickListener {
+        binding.setAccount.setOnClickListener {
             attemptSetAccount()
         }
     }
 
     private fun attemptSetAccount() {
         if (requesting) return
-        username = username_edit.text.toString()
-        userToken = password_edit.text.toString()
+        username = binding.usernameEdit.text.toString()
+        userToken = binding.passwordEdit.text.toString()
         if (username.isBlank() || userToken.isBlank()) {
-            Snackbar.make(account_config_title, getString(R.string.account_config_msg_tip_empty), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.accountConfigTitle, getString(R.string.account_config_msg_tip_empty), Snackbar.LENGTH_LONG).show()
             return
         }
         val hashSalt = booru.hashSalt
@@ -106,8 +110,8 @@ class AccountConfigActivity : KodeinActivity() {
                     || booru.type == BOORU_TYPE_SANKAKU) && hashSalt.isNotBlank()) {
             userToken = hashSalt.replace(HASH_SALT_CONTAINED, userToken).sha1()
         }
-        set_account.isVisible = false
-        progress_bar.isVisible = true
+        binding.setAccount.isVisible = false
+        binding.progressBar.isVisible = true
         when (booru.type) {
             BOORU_TYPE_GEL -> {
                 lifecycleScope.launch {
@@ -144,9 +148,9 @@ class AccountConfigActivity : KodeinActivity() {
                 finish()
             }
             is NetResult.Error -> {
-                error_msg.text = result.errorMsg
-                progress_bar.isVisible = false
-                set_account.isVisible = true
+                binding.errorMsg.text = result.errorMsg
+                binding.progressBar.isVisible = false
+                binding.setAccount.isVisible = true
             }
         }
     }

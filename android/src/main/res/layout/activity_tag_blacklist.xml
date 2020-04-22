@@ -24,7 +24,7 @@
     tools:coadntext=".ui.TagBlacklistActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tag_blacklist_list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -36,13 +36,14 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_button"
+        android:id="@+id/fab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_normal"
+        android:contentDescription="@null"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
         app:srcCompat="@drawable/ic_add_long_24dp"
-        style="@style/Widget.FloatingActionButton"/>
+        style="@style/Widget.FloatingActionButton" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

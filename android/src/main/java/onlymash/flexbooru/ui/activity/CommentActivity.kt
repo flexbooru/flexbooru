@@ -31,9 +31,6 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.progress_bar.*
-import kotlinx.android.synthetic.main.progress_bar_horizontal.*
-import kotlinx.android.synthetic.main.refreshable_list.*
 import onlymash.flexbooru.R
 import onlymash.flexbooru.common.Settings.activatedBooruUid
 import onlymash.flexbooru.common.Settings.pageLimit
@@ -47,12 +44,15 @@ import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.comment.CommentRepositoryImpl
 import onlymash.flexbooru.data.repository.isRunning
+import onlymash.flexbooru.databinding.ActivityCommentBinding
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 
 class CommentActivity : KodeinActivity() {
@@ -69,6 +69,12 @@ class CommentActivity : KodeinActivity() {
     }
 
     private val booruApis by instance<BooruApis>()
+    private val binding by viewBinding(ActivityCommentBinding::inflate)
+    private val list get() = binding.refreshableList.list
+    private val refresh get() = binding.refreshableList.swipeRefresh
+    private val progressBarCircular get() = binding.progressCircular.progressBar
+    private val progressBarHorizontal get() = binding.progressHorizontal.progressBarHorizontal
+
     private lateinit var commentViewModel: CommentViewModel
     private lateinit var action: ActionComment
     private lateinit var commentAdapter: CommentAdapter
@@ -88,7 +94,7 @@ class CommentActivity : KodeinActivity() {
             action.postId = it.getIntExtra(POST_ID_KEY, -1)
             action.query = it.getStringExtra(QUERY_KEY) ?: ""
         }
-        setContentView(R.layout.activity_comment)
+        setContentView(binding.root)
         initView()
         initViewModel()
     }
@@ -105,7 +111,7 @@ class CommentActivity : KodeinActivity() {
         drawNavBar {
             val bottomPadding = it.systemWindowInsetBottom
             list.updatePadding(bottom = bottomPadding)
-            progress_bar_horizontal.updatePadding(bottom = bottomPadding)
+            progressBarHorizontal.updatePadding(bottom = bottomPadding)
         }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -140,14 +146,14 @@ class CommentActivity : KodeinActivity() {
             adapter = commentAdapter
             updatePadding(top = 0)
         }
-        swipe_refresh.setColorSchemeResources(
+        refresh.setColorSchemeResources(
             R.color.blue,
             R.color.purple,
             R.color.green,
             R.color.orange,
             R.color.red
         )
-        swipe_refresh.setOnRefreshListener {
+        refresh.setOnRefreshListener {
             commentViewModel.refresh()
         }
     }
@@ -189,12 +195,12 @@ class CommentActivity : KodeinActivity() {
         commentViewModel.networkState.observe(this, Observer {
             commentAdapter.setNetworkState(it)
             val isRunning = it.isRunning()
-            progress_bar_horizontal.isVisible = isRunning
-            progress_bar.isVisible = isRunning && commentAdapter.itemCount == 0
+            progressBarHorizontal.isVisible = isRunning
+            progressBarCircular.isVisible = isRunning && commentAdapter.itemCount == 0
         })
         commentViewModel.refreshState.observe(this, Observer {
             if (it != NetworkState.LOADING) {
-                swipe_refresh.isRefreshing = false
+                refresh.isRefreshing = false
             }
         })
         commentViewModel.show(action)

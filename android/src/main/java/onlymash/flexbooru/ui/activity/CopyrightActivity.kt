@@ -27,24 +27,28 @@ import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.core.view.updatePadding
-import kotlinx.android.synthetic.main.activity_copyright.*
 import onlymash.flexbooru.R
+import onlymash.flexbooru.databinding.ActivityCopyrightBinding
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.extension.drawNavBar
+import onlymash.flexbooru.ui.base.BaseActivity
+import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class CopyrightActivity : BaseActivity() {
 
+    private val binding by viewBinding(ActivityCopyrightBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_copyright)
+        setContentView(binding.root)
         drawNavBar {
-            scroll_view.updatePadding(bottom = it.systemWindowInsetBottom)
+            binding.scrollView.updatePadding(bottom = it.systemWindowInsetBottom)
         }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_copyright)
         }
-        copyright.apply {
+        binding.copyright.apply {
             text = SpannableStringBuilder(resources.openRawResource(R.raw.copyright).bufferedReader().readText()
                 .parseAsHtml(HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST)).apply {
                 for (span in getSpans(0, length, URLSpan::class.java)) {
