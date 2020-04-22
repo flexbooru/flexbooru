@@ -24,7 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Keys
 import onlymash.flexbooru.common.Values
 import onlymash.flexbooru.data.model.shimmie.PostShimmieResponse
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -48,7 +48,7 @@ interface ShimmieApi {
             val interceptor = Interceptor { chain ->
                 val builder =  chain.request().newBuilder()
                     .removeHeader(Keys.HEADER_USER_AGENT)
-                    .addHeader(Keys.HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(Keys.HEADER_USER_AGENT, userAgent)
                 chain.proceed(builder.build())
             }
 

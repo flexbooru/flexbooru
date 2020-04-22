@@ -28,7 +28,7 @@ import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.common.Settings
 import onlymash.flexbooru.data.model.app.OrderResponse
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -53,7 +53,7 @@ interface OrderApi {
             val interceptor = Interceptor { chain ->
                 val requests =  chain.request().newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(HEADER_USER_AGENT, userAgent)
                     .build()
                 chain.proceed(requests)
             }

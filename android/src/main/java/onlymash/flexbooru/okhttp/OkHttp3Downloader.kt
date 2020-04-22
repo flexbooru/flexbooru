@@ -26,7 +26,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.common.Keys.HEADER_REFERER
 import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import onlymash.flexbooru.util.Logger
 import kotlin.math.max
 import kotlin.math.min
@@ -157,7 +157,7 @@ class OkHttp3Downloader : Downloader {
                 it.proceed(it.request()
                     .newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(HEADER_USER_AGENT, userAgent)
                     .addHeader(HEADER_REFERER, "$scheme://$host/post")
                     .build())
             }

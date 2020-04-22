@@ -33,7 +33,7 @@ import onlymash.flexbooru.data.model.danbooru1.CommentDan1
 import onlymash.flexbooru.data.model.danbooru1.PoolDan1
 import onlymash.flexbooru.data.model.danbooru1.PostDan1
 import onlymash.flexbooru.data.model.danbooru1.TagDan1
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -58,7 +58,7 @@ interface Danbooru1Api {
                 it.proceed(it.request()
                     .newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(HEADER_USER_AGENT, userAgent)
                     .build())
             }
             val client = OkHttpClient.Builder().apply {

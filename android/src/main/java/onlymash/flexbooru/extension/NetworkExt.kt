@@ -30,13 +30,15 @@ sealed class NetResult<out T : Any> {
     }
 }
 
+val userAgent by lazy { createUserAgent() }
+
 
 /**
  * Constructs a User-Agent string including application name and version,
  * system build version, model and Id
  * @return User-Agent string.
  */
-fun getUserAgent(): String {
+private fun createUserAgent(): String {
 
     val builder = StringBuilder().apply {
         append("Mozilla/5.0 (Linux; U; Android ")

@@ -29,7 +29,7 @@ import onlymash.flexbooru.common.Values.BASE_URL
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.model.danbooru.*
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -56,7 +56,7 @@ interface DanbooruApi {
             val interceptor = Interceptor { chain ->
                 val requests =  chain.request().newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(HEADER_USER_AGENT, userAgent)
                     .build()
                 chain.proceed(requests)
             }

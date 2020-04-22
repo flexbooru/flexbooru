@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import onlymash.flexbooru.common.App.Companion.app
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import java.io.File
 
 /**
@@ -57,7 +57,7 @@ class PlayerHolder {
     private var player: SimpleExoPlayer? = null
 
     private fun createExtractorMediaSource(context: Context, uri: Uri): MediaSource {
-        val sourceFactory = DefaultDataSourceFactory(context, getUserAgent())
+        val sourceFactory = DefaultDataSourceFactory(context, userAgent)
         val cacheSourceFactory = CacheDataSourceFactory(cache(), sourceFactory)
         return ProgressiveMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
     }

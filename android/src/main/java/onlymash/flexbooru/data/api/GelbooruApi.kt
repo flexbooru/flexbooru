@@ -29,7 +29,7 @@ import onlymash.flexbooru.data.database.CookieManager
 import onlymash.flexbooru.data.model.gelbooru.CommentGelResponse
 import onlymash.flexbooru.data.model.gelbooru.PostGelResponse
 import onlymash.flexbooru.data.model.gelbooru.TagGelResponse
-import onlymash.flexbooru.extension.getUserAgent
+import onlymash.flexbooru.extension.userAgent
 import onlymash.flexbooru.util.Logger
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -55,7 +55,7 @@ interface GelbooruApi {
             val interceptor = Interceptor { chain ->
                 val builder =  chain.request().newBuilder()
                     .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, getUserAgent())
+                    .addHeader(HEADER_USER_AGENT, userAgent)
                 val cookie = CookieManager.getCookieByBooruUid(activatedBooruUid)?.cookie
                 if (!cookie.isNullOrEmpty()) {
                     builder.addHeader("cookie", cookie)
