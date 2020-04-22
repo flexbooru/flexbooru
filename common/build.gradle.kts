@@ -13,6 +13,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -54,7 +56,7 @@ dependencies {
     commonMainImplementation("io.ktor:ktor-client-core:$ktorVersion")
     commonMainImplementation("io.ktor:ktor-client-json:$ktorVersion")
     commonMainImplementation("io.ktor:ktor-client-serialization:$ktorVersion")
-    jvmMainImplementation(kotlin("stdlib-jdk8"))
+    jvmMainImplementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
     jvmMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     jvmMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
     jvmMainImplementation("org.kodein.di:kodein-di-erased-jvm:$kodeinVersion")
