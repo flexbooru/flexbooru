@@ -18,7 +18,6 @@ package onlymash.flexbooru.data.model.danbooru
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
-import onlymash.flexbooru.data.utils.formatDateDan
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.data.utils.getDanDateMillis
 

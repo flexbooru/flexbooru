@@ -20,7 +20,6 @@ import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.model.common.Date
 import onlymash.flexbooru.data.model.common.Pool
-import onlymash.flexbooru.extension.formatDate
 
 @Serializable
 data class PoolDan1(

@@ -79,6 +79,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:tint="?android:attr/textColorSecondary"
+                    android:contentDescription="@null"
                     app:srcCompat="@drawable/ic_favorite_24dp"
                     style="@style/Widget.Account.FloatingActionButton"/>
 
@@ -104,6 +105,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:tint="?android:attr/textColorSecondary"
+                    android:contentDescription="@null"
                     app:srcCompat="@drawable/ic_photo_24dp"
                     style="@style/Widget.Account.FloatingActionButton"/>
 
@@ -129,6 +131,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:tint="?android:attr/textColorSecondary"
+                    android:contentDescription="@null"
                     app:srcCompat="@drawable/ic_comment_24dp"
                     style="@style/Widget.Account.FloatingActionButton"/>
 
@@ -159,6 +162,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:tint="?android:attr/textColorSecondary"
+                android:contentDescription="@null"
                 app:srcCompat="@drawable/ic_sentiment_very_satisfied_24dp"
                 style="@style/Widget.Account.FloatingActionButton"/>
 

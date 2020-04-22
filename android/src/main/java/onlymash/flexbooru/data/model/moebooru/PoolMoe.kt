@@ -20,8 +20,6 @@ import kotlinx.serialization.Serializable
 import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.extension.parseDate
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Serializable
 data class PoolMoe(
