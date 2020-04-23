@@ -15,11 +15,10 @@
 
 package onlymash.flexbooru.ui.base
 
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 
-abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId), KodeinAware {
+abstract class KadeinFragment : Fragment(), KodeinAware {
     override val kodein by kodein()
 }

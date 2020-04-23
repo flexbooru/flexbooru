@@ -23,4 +23,5 @@
     android:layout_height="match_parent"
     android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
     app:gvb_auto_focus="true"
-    tools:ignore="FragmentTagUsage"/>
+    tools:viewBindingIgnore="true"
+    tools:ignore="FragmentTagUsage" />

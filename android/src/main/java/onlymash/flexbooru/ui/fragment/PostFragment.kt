@@ -76,7 +76,6 @@ import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
-import onlymash.flexbooru.extension.isInitialized
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.DetailActivity
@@ -441,7 +440,7 @@ class PostFragment : SearchBarFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        if(!isInitialized()) {
+        if(!isViewCreated) {
             return true
         }
         return if (currentState == SearchBar.STATE_EXPAND) {

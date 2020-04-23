@@ -48,16 +48,14 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.databinding.FragmentSearchbarBinding
-import onlymash.flexbooru.extension.isInitialized
 import onlymash.flexbooru.ui.activity.MainActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.viewmodel.*
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
 
-abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
+abstract class SearchBarFragment : KadeinFragment(),
     SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper,
     ActionMode.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -65,7 +63,12 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     val booruApis by instance<BooruApis>()
     private val booruDao by instance<BooruDao>()
 
-    private val binding by viewBinding(FragmentSearchbarBinding::bind)
+    private var _binding: FragmentSearchbarBinding? = null
+
+    val isViewCreated
+        get() = _binding != null
+
+    private val binding get() = _binding!!
 
     private var actionTag: ActionTag? = null
 
@@ -91,7 +94,8 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     ): View? {
         booruViewModel = getBooruViewModel(booruDao)
         suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
-        return super.onCreateView(inflater, container, savedInstanceState)
+        _binding = FragmentSearchbarBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -170,6 +174,9 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     }
 
     private fun setupMainListPadding() {
+        if (!isViewCreated) {
+            return
+        }
         val paddingTop = systemUiTopSize + resources.getDimensionPixelSize(R.dimen.header_item_height)
         if (activity is MainActivity) {
             val paddingBottom = systemUiBottomSize + resources.getDimensionPixelSize(R.dimen.nav_bar_height)
@@ -225,17 +232,26 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     }
 
     fun toExpandState() {
+        if (!isViewCreated) {
+            return
+        }
         forceShowNavBar()
         searchBar.toExpandState()
     }
 
     fun toNormalState() {
+        if (!isViewCreated) {
+            return
+        }
         searchBar.toNormalState()
         forceShowSearchBar()
         forceShowNavBar()
     }
 
     fun clearSearchBarText() {
+        if (!isViewCreated) {
+            return
+        }
         searchBar.clearText()
     }
 
@@ -274,7 +290,10 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     }
 
     override fun onFetchSuggestion(query: String) {
-        val action = actionTag ?: return
+        val action = actionTag
+        if (!isViewCreated || action == null) {
+            return
+        }
         if (action.booru.type == BOORU_TYPE_SHIMMIE) return
         if (searchBar.currentState == SearchBar.STATE_SEARCH) {
             action.query = when (action.booru.type) {
@@ -304,6 +323,9 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
         if (activity is MainActivity) {
             toggleArrowLeftDrawable()
         } else {
+            if (!isViewCreated) {
+                return
+            }
             fabToListTop.isVisible = newState != SearchBar.STATE_EXPAND
         }
     }
@@ -322,7 +344,7 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     open fun onBackPressed(): Boolean = true
 
     fun toListTop() {
-        if (!isInitialized()) {
+        if (!isViewCreated) {
             return
         }
         val itemCount = mainList.adapter?.itemCount
@@ -362,8 +384,9 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     }
 
     override fun onDestroy() {
-        sp.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
+        sp.unregisterOnSharedPreferenceChangeListener(this)
+        _binding = null
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

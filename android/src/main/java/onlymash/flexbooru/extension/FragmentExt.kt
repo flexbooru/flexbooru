@@ -19,6 +19,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 
 fun Fragment.isInitialized(): Boolean {
-    return viewLifecycleOwner.lifecycle
-        .currentState.isAtLeast(Lifecycle.State.INITIALIZED)
+    return try {
+        viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)
+    } catch (_: IllegalStateException) {
+        false
+    }
 }
