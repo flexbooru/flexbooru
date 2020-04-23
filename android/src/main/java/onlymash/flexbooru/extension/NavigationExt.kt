@@ -22,13 +22,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.ui.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-fun BottomNavigationView.setup(
-    navController: NavController,
-    clickItemCallback: () -> Unit) {
+fun BottomNavigationView.setup(navController: NavController) {
 
     setOnNavigationItemSelectedListener { menuItem ->
         if (menuItem.itemId == navController.currentDestination?.id) {
-            clickItemCallback()
             true
         } else {
             onNavDestinationSelected(menuItem.itemId, navController)

@@ -20,13 +20,13 @@ import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
-    kotlin("plugin.serialization")
-    id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.android.gms.oss-licenses-plugin")
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("plugin.serialization")
+    kotlin("kapt")
 }
 
 val releaseStoreFile = file("../.gradle/flexbooru_play.jks")
@@ -37,7 +37,7 @@ if (storePropertyFile.exists()) {
     properties.load(storePropertyFile.inputStream())
 }
 val byteOut = ByteArrayOutputStream()
-project.exec {
+exec {
     commandLine = "git rev-list HEAD --first-parent --count".split(" ")
     standardOutput = byteOut
 }

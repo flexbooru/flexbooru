@@ -186,7 +186,8 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_fragment)
         setupNavigationBarBehavior()
-        bottomNavView.setup(navController) {
+        bottomNavView.setup(navController)
+        bottomNavView.setOnNavigationItemReselectedListener {
             toListTop()
         }
         booruViewModel = getBooruViewModel(booruDao)
@@ -264,7 +265,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             addProfile(profileSettingDrawerItem, profiles?.size ?: 0)
             onAccountHeaderListener = { _: View?, profile: IProfile, _: Boolean ->
                 when (val uid = profile.identifier) {
-                    HEADER_ITEM_ID_BOORU_MANAGE -> startActivity(Intent(this@MainActivity, BooruActivity::class.java))
+                    HEADER_ITEM_ID_BOORU_MANAGE -> toActivity(BooruActivity::class.java)
                     else -> activatedBooruUid = uid
                 }
                 false
