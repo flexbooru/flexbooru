@@ -366,7 +366,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         GlobalScope.launch {
             AppUpdaterApi.checkUpdate()
         }
-        if (BuildConfig.VERSION_CODE < latestVersionCode) {
+        if (BuildConfig.VERSION_CODE < latestVersionCode && !isFinishing) {
             AlertDialog.Builder(this)
                 .setTitle(R.string.update_found_update)
                 .setMessage(getString(R.string.update_version, latestVersionName))

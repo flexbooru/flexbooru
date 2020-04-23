@@ -48,6 +48,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.databinding.FragmentSearchbarBinding
+import onlymash.flexbooru.extension.isInitialized
 import onlymash.flexbooru.ui.activity.MainActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
@@ -321,6 +322,9 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     open fun onBackPressed(): Boolean = true
 
     fun toListTop() {
+        if (!isInitialized()) {
+            return
+        }
         val itemCount = mainList.adapter?.itemCount
         if (itemCount != null && itemCount > 0) {
             mainList.scrollToPosition(0)
@@ -358,8 +362,8 @@ abstract class SearchBarFragment : BaseFragment(R.layout.fragment_searchbar),
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         sp.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
