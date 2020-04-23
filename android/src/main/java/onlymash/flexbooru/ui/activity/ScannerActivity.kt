@@ -49,9 +49,9 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
 
     private fun fallback() {
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=tw.com.quickmark")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://com.github.sumimakito.awesomeqrsample")))
         } catch (_: ActivityNotFoundException) { }
-        onBackPressed()
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +109,7 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
         Booru.url2Booru(barcode.rawValue)?.let {
             BooruManager.createBooru(it)
         }
-        onBackPressed()
+        finish()
     }
     override fun onRetrievedMultiple(closetToClick: Barcode?, barcode: MutableList<BarcodeGraphic>?) = check(false)
     override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) { }
