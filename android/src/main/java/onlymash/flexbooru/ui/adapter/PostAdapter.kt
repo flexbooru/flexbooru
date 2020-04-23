@@ -60,10 +60,22 @@ class PostAdapter(
         }
     }
 
-    var isShowBar = showInfoBar
     var isLargeItemWidth = isLargeWidth
+    var isShowBar = showInfoBar
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     var isRatioFixed = gridMode == GRID_MODE_FIXED
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     var itemRatio = gridRatio
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateItemViewHolder(
         parent: ViewGroup,

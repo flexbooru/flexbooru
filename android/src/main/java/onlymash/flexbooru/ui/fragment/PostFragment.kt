@@ -410,6 +410,9 @@ class PostFragment : SearchBarFragment() {
 
     override fun onStateChange(newState: Int, oldState: Int, animation: Boolean) {
         super.onStateChange(newState, oldState, animation)
+        if (!isViewCreated) {
+            return
+        }
         rightButton?.rotate(ROTATION_DEGREE)
         when {
             oldState == SearchBar.STATE_NORMAL && newState == SearchBar.STATE_EXPAND -> {
@@ -554,12 +557,10 @@ class PostFragment : SearchBarFragment() {
             }
             GRID_MODE_KEY -> {
                 postAdapter.isRatioFixed = gridMode == GRID_MODE_FIXED
-                postAdapter.notifyDataSetChanged()
                 toListTop()
             }
             GRID_RATIO_KEY -> {
                 postAdapter.itemRatio = gridRatio
-                postAdapter.notifyDataSetChanged()
                 toListTop()
             }
             GRID_WIDTH_KEY -> {
@@ -571,10 +572,7 @@ class PostFragment : SearchBarFragment() {
                 updateActionAndRefresh(action)
                 toListTop()
             }
-            SHOW_INFO_BAR_KEY -> {
-                postAdapter.isShowBar = showInfoBar
-                postAdapter.notifyDataSetChanged()
-            }
+            SHOW_INFO_BAR_KEY -> postAdapter.isShowBar = showInfoBar
         }
     }
 
