@@ -122,7 +122,7 @@
     <string name="browse_save_as">Salvar como…</string>
     <string name="browse_share_link">Compartilhar link</string>
     <string name="browse_open_in_browser">Abrir no Navegador</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">Formato não suportado: %s</string>
     <string name="browse_tags">Marcadores</string>
     <string name="browse_info">Informações</string>
     <string name="browse_recommended">Recomendado</string>
@@ -160,9 +160,9 @@
     <string name="settings_night_mode_off">Desligado</string>
     <string name="settings_night_mode_system">Seguir sistema</string>
     <string name="settings_night_mode_battery">Seguir economia de bateria</string>
-    <string name="settings_night_theme">Night theme</string>
-    <string name="settings_night_theme_dark">Dark</string>
-    <string name="settings_night_theme_black">Black</string>
+    <string name="settings_night_theme">Tema escuro</string>
+    <string name="settings_night_theme_dark">Escuro</string>
+    <string name="settings_night_theme_black">Preto</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Limite de página</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
