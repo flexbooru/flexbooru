@@ -365,27 +365,28 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         GlobalScope.launch {
             AppUpdaterApi.checkUpdate()
         }
-        if (BuildConfig.VERSION_CODE < latestVersionCode && !isFinishing) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.update_found_update)
-                .setMessage(getString(R.string.update_version, latestVersionName))
-                .setPositiveButton(R.string.dialog_update) { _, _ ->
-                    if (isGoogleSign && isAvailableOnStore) {
-                        openAppInMarket(applicationContext.packageName)
-                    } else {
-                        launchUrl(latestVersionUrl)
-                    }
-                    finish()
-                }
-                .setNegativeButton(R.string.dialog_exit) { _, _ ->
-                    finish()
-                }
-                .create().apply {
-                    setCancelable(false)
-                    setCanceledOnTouchOutside(false)
-                    show()
-                }
+        if (BuildConfig.VERSION_CODE >= latestVersionCode || isFinishing) {
+            return
         }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.update_found_update)
+            .setMessage(getString(R.string.update_version, latestVersionName))
+            .setPositiveButton(R.string.dialog_update) { _, _ ->
+                if (isGoogleSign && isAvailableOnStore) {
+                    openAppInMarket(applicationContext.packageName)
+                } else {
+                    launchUrl(latestVersionUrl)
+                }
+                finish()
+            }
+            .setNegativeButton(R.string.dialog_exit) { _, _ ->
+                finish()
+            }
+            .create().apply {
+                setCancelable(false)
+                setCanceledOnTouchOutside(false)
+                show()
+            }
     }
 
     private fun initDrawerHeader() {

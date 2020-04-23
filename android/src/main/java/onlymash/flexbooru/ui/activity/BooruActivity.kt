@@ -156,18 +156,19 @@ class BooruActivity : KodeinActivity() {
 
     private fun handleShareIntent(intent: Intent) {
         val sharedStr = intent.data?.toString()
-        if (sharedStr.isNullOrEmpty()) return
-        Booru.url2Booru(sharedStr)?.let {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.booru_add_title_dialog)
-                .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                    booruViewModel.createBooru(it)
-                }
-                .setNegativeButton(R.string.dialog_no, null)
-                .setMessage(sharedStr)
-                .create()
-                .show()
+        if (sharedStr.isNullOrEmpty() || isFinishing) {
+            return
         }
+        val booru = Booru.url2Booru(sharedStr) ?: return
+        AlertDialog.Builder(this)
+            .setTitle(R.string.booru_add_title_dialog)
+            .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                booruViewModel.createBooru(booru)
+            }
+            .setNegativeButton(R.string.dialog_no, null)
+            .setMessage(sharedStr)
+            .create()
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
