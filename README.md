@@ -31,7 +31,6 @@ Click the icon below to translate this app.
 - [KotlinxSerializationConverter:](https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter) A Retrofit 2 Converter.Factory for Kotlin serialization.
 - [TikXml:](https://github.com/Tickaroo/tikxml) Modern XML Parser for Android.
 - [Glide:](https://github.com/bumptech/glide) An image loading and caching library for Android focused on smooth scrolling.
-- [Picasso:](https://github.com/square/picasso) A powerful image downloading and caching library for Android.
 - [MaterialDrawer:](https://github.com/mikepenz/MaterialDrawer) A drawer with material 2 design.
 - [SimpleMenuPreference:](https://github.com/takisoft/preferencex-android) A preference displaying a simple menu, originally implemented by RikkaW. On pre-Lollipop devices it falls back to a ListPreference as the older devices can't handle elevation and animation properly introduced in API 21.
 - [FlexboxLayout:](https://github.com/google/flexbox-layout) A library project which brings the similar capabilities of CSS Flexible Box Layout Module to Android.
