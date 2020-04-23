@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -30,6 +31,7 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import onlymash.flexbooru.R
@@ -77,13 +79,14 @@ abstract class SearchBarFragment : KadeinFragment(),
     private lateinit var searchBarMover: SearchBarMover
     private lateinit var leftDrawable: DrawerArrowDrawable
 
-    internal val mainList get() = binding.refreshableList.list
-    internal val searchLayout get() = binding.searchLayout.searchLayoutContainer
-    internal val swipeRefresh get() = binding.refreshableList.swipeRefresh
-    internal val progressBar get() = binding.progressCircular.progressBar
-    internal val progressBarHorizontal get() = binding.progressHorizontal.progressBarHorizontal
-    private val searchBar get() = binding.searchBar
-    private val fabToListTop get() = binding.actionToTop
+    internal lateinit var mainList: RecyclerView
+    internal lateinit var searchLayout: CoordinatorLayout
+    internal lateinit var swipeRefresh: SwipeRefreshLayout
+    internal lateinit var progressBar: ProgressBar
+    internal lateinit var progressBarHorizontal: ProgressBar
+    private lateinit var searchBar: SearchBar
+    private lateinit var fabToListTop: FloatingActionButton
+
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
 
@@ -100,7 +103,14 @@ abstract class SearchBarFragment : KadeinFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.root.setOnApplyWindowInsetsListener { _, insets ->
+        mainList = binding.refreshableList.list
+        searchLayout = binding.searchLayout.searchLayoutContainer
+        swipeRefresh = binding.refreshableList.swipeRefresh
+        progressBar = binding.progressCircular.progressBar
+        progressBarHorizontal = binding.progressHorizontal.progressBarHorizontal
+        searchBar = binding.searchBar
+        fabToListTop = binding.actionToTop
+        view.setOnApplyWindowInsetsListener { _, insets ->
             systemUiTopSize = insets.systemWindowInsetTop
             systemUiBottomSize = insets.systemWindowInsetBottom
             searchBar.updateLayoutParams<CoordinatorLayout.LayoutParams> {
@@ -334,12 +344,10 @@ abstract class SearchBarFragment : KadeinFragment(),
         get() = mainList
 
     override val isForceShowSearchBar: Boolean
-        get() = (searchBar.currentState == SearchBar.STATE_SEARCH) ||
-                (searchBar.currentState == SearchBar.STATE_EXPAND)
+        get() = searchBar.currentState == SearchBar.STATE_SEARCH || searchBar.currentState == SearchBar.STATE_EXPAND
 
     override fun isValidView(recyclerView: RecyclerView): Boolean =
-        searchBar.currentState == SearchBar.STATE_NORMAL &&
-                recyclerView == mainList
+        searchBar.currentState == SearchBar.STATE_NORMAL && recyclerView == mainList
 
     open fun onBackPressed(): Boolean = true
 
@@ -383,9 +391,9 @@ abstract class SearchBarFragment : KadeinFragment(),
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         sp.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroyView()
         _binding = null
     }
 

@@ -5,6 +5,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import onlymash.flexbooru.data.api.ShimmieApi
+import onlymash.flexbooru.data.api.createApi
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +28,7 @@ class ShimmieApiTest {
             .addPathSegments("api/danbooru/find_posts")
             .addQueryParameter("limit", "2")
             .build()
-        shimmieApi = ShimmieApi.invoke()
+        shimmieApi = createApi()
     }
 
     @Test
