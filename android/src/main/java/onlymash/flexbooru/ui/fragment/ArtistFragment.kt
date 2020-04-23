@@ -63,8 +63,7 @@ class ArtistFragment : SearchBarFragment() {
     override fun getSearchBarHint(): CharSequence =
         getString(R.string.search_bar_hint_search_artists)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_artists))
         artistAdapter = ArtistAdapter {
             artistViewModel.retry()

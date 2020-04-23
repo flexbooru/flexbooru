@@ -138,12 +138,15 @@ abstract class SearchBarFragment : KadeinFragment(),
             }
             onBooruLoaded(it)
         })
-        booruViewModel.loadBooru(activatedBooruUid)
         suggestionViewModel.suggestions.observe(viewLifecycleOwner, Observer {
             searchBar.updateSuggestions(it)
         })
+        onBaseViewCreated(view, savedInstanceState)
+        booruViewModel.loadBooru(activatedBooruUid)
         sp.registerOnSharedPreferenceChangeListener(this)
     }
+
+    abstract fun onBaseViewCreated(view: View, savedInstanceState: Bundle?)
 
     private fun setupFabToListTop() {
         if (activity is SearchActivity) {

@@ -16,24 +16,22 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
+import onlymash.flexbooru.common.Settings.isShowAllTags
 import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
-import onlymash.flexbooru.data.database.TagFilterManager
+import onlymash.flexbooru.common.Values.BOORU_TYPE_UNKNOWN
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.databinding.ItemTagFilterSubheadBinding
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.base.BaseTagFilterViewHolder
 import onlymash.flexbooru.widget.TagFilterView
 
-class TagFilterAdapter(private val orders: Array<String>,
-                       private val ratings: Array<String>,
-                       private val thresholds: Array<String>,
-                       private val booruType: Int,
+class TagFilterAdapter(private val ratings: Array<String>,
+                       private val deleteTagCallback: (TagFilter) -> Unit,
                        private val addSearchBarTextCallback: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -59,10 +57,24 @@ class TagFilterAdapter(private val orders: Array<String>,
         }
     }
 
+    private var orders: Array<String> = arrayOf()
+    private var thresholds: Array<String> = arrayOf()
+    private var booruType: Int = BOORU_TYPE_UNKNOWN
     private var orderSelected = ""
     private var ratingSelected = ""
     private var thresholdSelected = ""
     private val tagsSelected: MutableList<String> = mutableListOf()
+    private var booruUid: Long = -1
+    var isShowAll = isShowAllTags
+        set(value) {
+            field = value
+            if (!value) {
+                tagsSelected.clear()
+                refreshData(reset = true)
+            } else {
+                refreshData()
+            }
+        }
 
     private var refreshingOrder = false
     private var refreshingRating = false
@@ -90,6 +102,14 @@ class TagFilterAdapter(private val orders: Array<String>,
         }
     }
 
+    fun updateBooru(booruUid: Long, booruType: Int, orders: Array<String>, thresholds: Array<String>) {
+        this.booruUid = booruUid
+        this.booruType = booruType
+        this.orders = orders
+        this.thresholds = thresholds
+        refreshData(reset = true)
+    }
+
     private fun refreshOrder(order: String) {
         val index = orders.indexOfFirst { it == order }
         refreshingOrder = true
@@ -108,30 +128,20 @@ class TagFilterAdapter(private val orders: Array<String>,
         notifyItemChanged(tags.size + orders.size + ratings.size + index + 4)
     }
 
-    fun updateData(newTags: List<TagFilter>, booruUid: Long, showAll: Boolean) {
+    fun updateData(newTags: List<TagFilter>) {
         allTags.clear()
         allTags.addAll(newTags)
-        val oldTags: MutableList<TagFilter> = mutableListOf()
-        oldTags.addAll(tags)
-        tags.clear()
-        if (showAll) {
-            tags.addAll(newTags)
-        } else {
-            newTags.forEach {
-                if (it.booruUid == booruUid) {
-                    tags.add(it)
-                }
-            }
-        }
-        val diffResult = DiffUtil.calculateDiff(tagFilterDiffCallback(oldTags, tags))
-        diffResult.dispatchUpdatesTo(listUpdateCallback)
+        refreshData()
     }
-    fun updateData(booruUid: Long, showAll: Boolean) {
-        tagsSelected.clear()
+
+    private fun refreshData(reset: Boolean = false) {
+        if (booruType == BOORU_TYPE_UNKNOWN) {
+            return
+        }
         val oldTags: MutableList<TagFilter> = mutableListOf()
         oldTags.addAll(tags)
         tags.clear()
-        if (showAll) {
+        if (isShowAll) {
             tags.addAll(allTags)
         } else {
             allTags.forEach {
@@ -140,8 +150,12 @@ class TagFilterAdapter(private val orders: Array<String>,
                 }
             }
         }
-        val diffResult = DiffUtil.calculateDiff(tagFilterDiffCallback(oldTags, tags))
-        diffResult.dispatchUpdatesTo(listUpdateCallback)
+        if (reset) {
+            notifyDataSetChanged()
+        } else {
+            val diffResult = DiffUtil.calculateDiff(tagFilterDiffCallback(oldTags, tags))
+            diffResult.dispatchUpdatesTo(listUpdateCallback)
+        }
     }
 
     fun getSelectedTagsString(): String {
@@ -192,6 +206,9 @@ class TagFilterAdapter(private val orders: Array<String>,
     }
 
     override fun getItemCount(): Int {
+        if (booruType == BOORU_TYPE_UNKNOWN) {
+            return 0
+        }
         var count = tags.size + orders.size + ratings.size + 3
         if (thresholds.isNotEmpty()) {
             count += thresholds.size + 1
@@ -201,43 +218,7 @@ class TagFilterAdapter(private val orders: Array<String>,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is TagFilterAddViewHolder -> {
-                holder.itemView.setOnClickListener {
-                    addSearchBarTextCallback()
-                }
-            }
-            is TagFilterViewHolder -> {
-                val tag = tags[position - 1]
-                val name = tag.name
-                (holder.itemView as TagFilterView).apply {
-                    text = name
-                    isChecked = tagsSelected.contains(name)
-                    setOnClickListener {
-                        if (tagsSelected.contains(name)) {
-                            animateCheckedAndInvoke(false) {
-                                tagsSelected.remove(name)
-                            }
-                        } else {
-                            animateCheckedAndInvoke(true) {
-                                tagsSelected.add(name)
-                            }
-                        }
-                    }
-                    setOnLongClickListener {
-                        val context = holder.itemView.context ?: return@setOnLongClickListener true
-                        AlertDialog.Builder(context)
-                            .setTitle(context.getString(R.string.tag_delete_title))
-                            .setMessage(String.format(context.getString(R.string.tag_delete_content), name))
-                            .setPositiveButton(R.string.dialog_yes) { _, _ ->
-                                TagFilterManager.deleteTagFilter(tag)
-                            }
-                            .setNegativeButton(R.string.dialog_no, null)
-                            .create()
-                            .show()
-                        true
-                    }
-                }
-            }
+            is TagFilterViewHolder -> holder.bindTo(tags[position - 1])
             is TagFilterSubheadViewHolder -> {
                 when (position) {
                     tags.size + 1 -> holder.bind(holder.itemView.context.getString(R.string.order))
@@ -245,114 +226,163 @@ class TagFilterAdapter(private val orders: Array<String>,
                     else -> holder.bind(holder.itemView.context.getString(R.string.threshold))
                 }
             }
-            is TagFilterOrderViewHolder -> {
-                val order = orders[position - tags.size - 2]
-                val checkedState = order == orderSelected
-                (holder.itemView as TagFilterView).apply {
-                    text = order
-                    tag = order
-                    if (refreshingOrder) {
-                        refreshingOrder = false
-                        animateCheckedAndInvoke(checkedState) {}
-                    } else {
-                        isChecked = checkedState
-                    }
-                    setOnClickListener {
-                        val checked = !isChecked
-                        animateCheckedAndInvoke(checked) {}
-                        val oldSelected = orderSelected
-                        orderSelected = if (checked) order else ""
-                        if (oldSelected.isNotEmpty()) refreshOrder(oldSelected)
-                    }
-                }
-            }
-            is TagFilterRatingViewHolder -> {
-                val rating = ratings[position - tags.size - orders.size - 3]
-                val checkedState = rating == ratingSelected
-                (holder.itemView as TagFilterView).apply {
-                    text = rating
-                    tag = rating
-                    if (refreshingRating) {
-                        refreshingRating = false
-                        animateCheckedAndInvoke(checkedState) {}
-                    } else {
-                        isChecked = checkedState
-                    }
-                    setOnClickListener {
-                        val checked = !isChecked
-                        animateCheckedAndInvoke(checked) {}
-                        val oldSelected = ratingSelected
-                        ratingSelected = if (checked) rating else ""
-                        if (oldSelected.isNotEmpty()) refreshRating(oldSelected)
-                    }
-                }
-            }
-            is TagFilterThresholdViewHolder -> {
-                val threshold = thresholds[position - tags.size - orders.size - ratings.size - 4]
-                val checkedState = threshold == thresholdSelected
-                (holder.itemView as TagFilterView).apply {
-                    text = threshold
-                    tag = threshold
-                    if (refreshingThreshold) {
-                        refreshingThreshold = false
-                        animateCheckedAndInvoke(checkedState) {}
-                    } else {
-                        isChecked = checkedState
-                    }
-                    setOnClickListener {
-                        val checked = !isChecked
-                        animateCheckedAndInvoke(checked) {}
-                        val oldSelected = thresholdSelected
-                        thresholdSelected = if (checked) threshold else ""
-                        if (oldSelected.isNotEmpty()) refreshThreshold(oldSelected)
-                    }
-                }
-            }
+            is TagFilterOrderViewHolder -> holder.bindTo(orders[position - tags.size - 2])
+            is TagFilterRatingViewHolder -> holder.bindTo(ratings[position - tags.size - orders.size - 3])
+            is TagFilterThresholdViewHolder -> holder.bindTo(thresholds[position - tags.size - orders.size - ratings.size - 4])
         }
     }
 
-    class TagFilterAddViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+    inner class TagFilterAddViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
         init {
             tagFilterView.apply {
                 text = itemView.context.getString(R.string.tag_filter_add_text)
                 color = ContextCompat.getColor(context, R.color.colorAccent)
                 selectedTextColor = ContextCompat.getColor(context, R.color.white)
+                setOnClickListener {
+                    addSearchBarTextCallback.invoke()
+                }
             }
         }
     }
 
-    class TagFilterOrderViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+    inner class TagFilterOrderViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+        private var order: String = ""
         init {
             tagFilterView.apply {
                 color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
+                setOnClickListener {
+                    val checked = !isChecked
+                    animateCheckedAndInvoke(checked) {}
+                    val oldSelected = orderSelected
+                    orderSelected = if (checked) order else ""
+                    if (oldSelected.isNotEmpty()) refreshOrder(oldSelected)
+                }
+            }
+        }
+        fun bindTo(order: String) {
+            this.order = order
+            val checkedState = order == orderSelected
+            tagFilterView.apply {
+                text = order
+                tag = order
+                if (refreshingOrder) {
+                    refreshingOrder = false
+                    animateCheckedAndInvoke(checkedState) {}
+                } else {
+                    isChecked = checkedState
+                }
             }
         }
     }
 
-    class TagFilterRatingViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+    inner class TagFilterRatingViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+        private var rating: String = ""
         init {
             tagFilterView.apply {
                 color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
+                setOnClickListener {
+                    val checked = !isChecked
+                    animateCheckedAndInvoke(checked) {}
+                    val oldSelected = ratingSelected
+                    ratingSelected = if (checked) rating else ""
+                    if (oldSelected.isNotEmpty()) refreshRating(oldSelected)
+                }
+            }
+        }
+        fun bindTo(rating: String) {
+            this.rating = rating
+            val checkedState = rating == ratingSelected
+            tagFilterView.apply {
+                text = rating
+                tag = rating
+                if (refreshingRating) {
+                    refreshingRating = false
+                    animateCheckedAndInvoke(checkedState) {}
+                } else {
+                    isChecked = checkedState
+                }
             }
         }
     }
 
-    class TagFilterThresholdViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+    inner class TagFilterThresholdViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+        private var threshold: String = ""
         init {
             tagFilterView.apply {
                 color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
+                setOnClickListener {
+                    val checked = !isChecked
+                    animateCheckedAndInvoke(checked) {}
+                    val oldSelected = thresholdSelected
+                    thresholdSelected = if (checked) threshold else ""
+                    if (oldSelected.isNotEmpty()) refreshThreshold(oldSelected)
+                }
+            }
+        }
+        fun bindTo(threshold: String) {
+            this.threshold = threshold
+            val checkedState = threshold == thresholdSelected
+            tagFilterView.apply {
+                text = threshold
+                tag = threshold
+                if (refreshingThreshold) {
+                    refreshingThreshold = false
+                    animateCheckedAndInvoke(checkedState) {}
+                } else {
+                    isChecked = checkedState
+                }
             }
         }
     }
 
-    class TagFilterViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+    private fun TagFilterView.onClick(text: String?) {
+        if (text == null) {
+            return
+        }
+        if (tagsSelected.contains(text)) {
+            animateCheckedAndInvoke(false) {
+                tagsSelected.remove(text)
+            }
+        } else {
+            animateCheckedAndInvoke(true) {
+                tagsSelected.add(text)
+            }
+        }
+    }
+
+    private fun deleteTag(tag: TagFilter?) {
+        if (tag == null) {
+            return
+        }
+        tagsSelected.remove(tag.name)
+        deleteTagCallback.invoke(tag)
+    }
+
+    inner class TagFilterViewHolder(parent: ViewGroup) : BaseTagFilterViewHolder(parent = parent) {
+        private var tagFilter: TagFilter? = null
         init {
             tagFilterView.apply {
                 color = ContextCompat.getColor(context, R.color.colorPrimary)
                 selectedTextColor = ContextCompat.getColor(context, R.color.white)
+                setOnClickListener {
+                    onClick(tagFilter?.name)
+                }
+                setOnLongClickListener {
+                    deleteTag(tagFilter)
+                    true
+                }
+            }
+        }
+
+        fun bindTo(tag: TagFilter) {
+            tagFilter = tag
+            val name = tag.name
+            tagFilterView.apply {
+                text = name
+                isChecked = tagsSelected.contains(name)
             }
         }
     }

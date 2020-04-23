@@ -117,11 +117,10 @@ class PostFragment : SearchBarFragment() {
     private var action: ActionPost? = null
     private var currentPageType: Int = PAGE_TYPE_POSTS
     private lateinit var query: String
-    private lateinit var postViewModel: PostViewModel
-
-    private lateinit var tagFilterViewModel: TagFilterViewModel
-
     private lateinit var postAdapter: PostAdapter
+    private lateinit var postViewModel: PostViewModel
+    private lateinit var tagFilterAdapter: TagFilterAdapter
+    private lateinit var tagFilterViewModel: TagFilterViewModel
 
     private lateinit var viewTransition: ViewTransition
 
@@ -157,8 +156,7 @@ class PostFragment : SearchBarFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
         if (isPopularPage()) {
             setSearchBarTitle(getString(R.string.title_popular))
         } else if (activity is SearchActivity) {
@@ -169,6 +167,7 @@ class PostFragment : SearchBarFragment() {
         leftButton = getSearchBarLeftButton()
         tagsFilterList = view.findViewById(R.id.tags_filter_list)
         viewTransition = ViewTransition(swipeRefresh, searchLayout)
+        initFilterList()
         initPostsList()
     }
 
@@ -239,42 +238,20 @@ class PostFragment : SearchBarFragment() {
                     rightButton?.rotation = ROTATION_DEGREE
                 }
             }
-            if (tagsFilterList.adapter == null) {
-                initFilterList(booru)
-            }
+            updateTagsFilterBooru(booru.uid, booru.type)
         } else {
             action = null
         }
         postViewModel.show(action)
     }
 
-    private fun initFilterList(booru: Booru) {
-        val orders = resources.getStringArray(when(booru.type) {
-            BOORU_TYPE_DAN -> R.array.filter_order_danbooru
-            BOORU_TYPE_SANKAKU -> R.array.filter_order_sankaku
-            else -> R.array.filter_order
-        })
+    private fun initFilterList() {
         val ratings = resources.getStringArray(R.array.filter_rating)
-        val thresholds =
-            if (booru.type == BOORU_TYPE_SANKAKU)
-                resources.getStringArray(R.array.filter_threshold)
-            else arrayOf()
-        val tagFilterAdapter = TagFilterAdapter(
-            orders = orders,
+        tagFilterAdapter = TagFilterAdapter(
             ratings = ratings,
-            thresholds = thresholds,
-            booruType = booru.type
-        ) {
-            val text = getEditQuery()
-            if (text.isNotEmpty()) {
-                TagFilterManager.createTagFilter(
-                    TagFilter(
-                        booruUid = booru.uid,
-                        name = text
-                    )
-                )
-            }
-        }
+            deleteTagCallback = { deleteTagFilter(it) },
+            addSearchBarTextCallback = { createTagFilter() }
+        )
         tagsFilterList.apply {
             layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexWrap = FlexWrap.WRAP
@@ -284,7 +261,7 @@ class PostFragment : SearchBarFragment() {
             adapter = tagFilterAdapter
         }
         tagFilterViewModel.loadTags().observe(viewLifecycleOwner, Observer {
-            tagFilterAdapter.updateData(it, booruUid = booru.uid, showAll = isShowAllTags)
+            tagFilterAdapter.updateData(it)
         })
         searchLayout.findViewById<FloatingActionButton>(R.id.action_search).setOnClickListener {
             val tagString = tagFilterAdapter.getSelectedTagsString()
@@ -292,6 +269,50 @@ class PostFragment : SearchBarFragment() {
                 search(tagString)
             }
         }
+    }
+
+    private fun updateTagsFilterBooru(booruUid: Long, booruType: Int) {
+        val orders = resources.getStringArray(when(booruType) {
+            BOORU_TYPE_DAN -> R.array.filter_order_danbooru
+            BOORU_TYPE_SANKAKU -> R.array.filter_order_sankaku
+            else -> R.array.filter_order
+        })
+        val thresholds = if (booruType == BOORU_TYPE_SANKAKU) {
+            resources.getStringArray(R.array.filter_threshold)
+        } else {
+            arrayOf()
+        }
+        tagFilterAdapter.updateBooru(booruUid, booruType, orders, thresholds)
+    }
+
+    private fun createTagFilter() {
+        val uid = action?.booru?.uid
+        val text = getEditQuery()
+        if (uid == null || text.isEmpty()) {
+            return
+        }
+        TagFilterManager.createTagFilter(
+            TagFilter(
+                booruUid = uid,
+                name = text
+            )
+        )
+    }
+
+    private fun deleteTagFilter(tag: TagFilter) {
+        val activity = activity
+        if (activity == null || activity.isFinishing) {
+            return
+        }
+        AlertDialog.Builder(activity)
+            .setTitle(activity.getString(R.string.tag_delete_title))
+            .setMessage(String.format(getString(R.string.tag_delete_content), tag.name))
+            .setPositiveButton(R.string.dialog_yes) { _, _ ->
+                TagFilterManager.deleteTagFilter(tag)
+            }
+            .setNegativeButton(R.string.dialog_no, null)
+            .create()
+            .show()
     }
 
     private fun initDate() {
@@ -548,7 +569,7 @@ class PostFragment : SearchBarFragment() {
             SHOW_ALL_TAGS_KEY -> {
                 val adapter = tagsFilterList.adapter
                 if (adapter is TagFilterAdapter) {
-                    adapter.updateData(action.booru.uid, isShowAllTags)
+                    adapter.isShowAll = isShowAllTags
                 }
             }
             PAGE_LIMIT_KEY -> {

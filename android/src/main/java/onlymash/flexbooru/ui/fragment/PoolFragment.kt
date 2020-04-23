@@ -63,8 +63,7 @@ class PoolFragment : SearchBarFragment() {
     override fun getSearchBarHint(): CharSequence =
         getString(R.string.search_bar_hint_search_pools)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_pools))
         poolAdapter = PoolAdapter(GlideApp.with(this),
             downloadPoolCallback = { poolId ->
