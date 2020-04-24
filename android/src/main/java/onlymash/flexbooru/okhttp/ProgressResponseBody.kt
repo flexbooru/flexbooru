@@ -18,58 +18,48 @@ package onlymash.flexbooru.okhttp
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import okio.*
-
 import java.io.IOException
 
-class ProgressResponseBody(url: String, private val responseBody: ResponseBody) : ResponseBody() {
+class ProgressResponseBody(
+    private val responseBody: ResponseBody,
+    private val progressListener: ProgressListener
+) : ResponseBody() {
+
 
     private var bufferedSource: BufferedSource? = null
-
-    private var callback: ((Int) -> Unit)? = null
-
-    init {
-        callback = ProgressInterceptor.LISTENER_MAP[url]
-    }
 
     override fun contentType(): MediaType? {
         return responseBody.contentType()
     }
 
+    @Throws(IOException::class)
     override fun contentLength(): Long {
         return responseBody.contentLength()
     }
 
+    @Throws(IOException::class)
     override fun source(): BufferedSource {
         if (bufferedSource == null) {
-            bufferedSource = ProgressSource(responseBody.source()).buffer()
+            bufferedSource = source(responseBody.source()).buffer()
         }
         return bufferedSource!!
     }
 
-    private inner class ProgressSource internal constructor(source: Source) : ForwardingSource(source) {
-
-        internal var totalBytesRead = 0L
-
-        internal var currentProgress = 0
-
-        @Throws(IOException::class)
-        override fun read(sink: Buffer, byteCount: Long): Long {
-            val bytesRead = super.read(sink, byteCount)
-            val fullLength = responseBody.contentLength()
-            if (bytesRead == -1L) {
-                totalBytesRead = fullLength
-            } else {
-                totalBytesRead += bytesRead
+    private fun source(source: Source): Source {
+        return object : ForwardingSource(source) {
+            var totalBytesRead = 0L
+            @Throws(IOException::class)
+            override fun read(sink: Buffer, byteCount: Long): Long {
+                val bytesRead = super.read(sink, byteCount)
+                // read() returns the number of bytes read, or -1 if this source is exhausted.
+                totalBytesRead += if (bytesRead != -1L) bytesRead else 0
+                progressListener.onUpdate(
+                    totalBytesRead,
+                    responseBody.contentLength(),
+                    bytesRead == -1L
+                )
+                return bytesRead
             }
-            val progress = (100f * totalBytesRead / fullLength).toInt()
-            if (progress != currentProgress) {
-                callback?.invoke(progress)
-            }
-            if (totalBytesRead == fullLength) {
-                callback = null
-            }
-            currentProgress = progress
-            return bytesRead
         }
     }
 }
