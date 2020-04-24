@@ -62,8 +62,9 @@ class DownloadWorker(
         private const val PASSWORD_HASH_KEY = "password_hash"
 
         const val DOC_ID_KEY = "doc_id"
+        const val INPUT_DATA_KEY = "input_data"
 
-        internal fun downloadPost(post: Post?, host: String, activity: Activity) {
+        fun downloadPost(post: Post?, host: String, activity: Activity) {
             if (post == null) return
             val url = when (Settings.downloadSize) {
                 Settings.POST_SIZE_SAMPLE -> post.sample
@@ -75,53 +76,33 @@ class DownloadWorker(
             if (!fileName.contains(' ')) fileName = "${post.id} - $fileName"
             val docUri = activity.getDownloadUri(host, fileName) ?: return
             val docId = DocumentsContract.getDocumentId(docUri)
-            val workManager = WorkManager.getInstance(App.app)
-            workManager.enqueue(
-                OneTimeWorkRequestBuilder<DownloadWorker>()
-                    .setInputData(
-                        workDataOf(
-                            URL_KEY to url,
-                            HOST_KEY to host,
-                            POST_ID_KEY to post.id,
-                            TYPE_KEY to TYPE_POST,
-                            DOC_ID_KEY to docId
-                        )
-                    )
-                    .setConstraints(
-                        Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .build())
-                    .build()
+            val data = workDataOf(
+                URL_KEY to url,
+                HOST_KEY to host,
+                POST_ID_KEY to post.id,
+                TYPE_KEY to TYPE_POST,
+                DOC_ID_KEY to docId
             )
+            runWork(data)
         }
 
-        internal fun download(url: String, postId: Int, host: String, activity: Activity) {
+        fun download(url: String, postId: Int, host: String, activity: Activity) {
             if (url.isEmpty()) return
             var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
             val docUri = activity.getDownloadUri(host, fileName) ?: return
             val docId = DocumentsContract.getDocumentId(docUri)
-            val workManager = WorkManager.getInstance(App.app)
-            workManager.enqueue(
-                OneTimeWorkRequestBuilder<DownloadWorker>()
-                    .setInputData(
-                        workDataOf(
-                            URL_KEY to url,
-                            HOST_KEY to host,
-                            POST_ID_KEY to postId,
-                            TYPE_KEY to TYPE_POST,
-                            DOC_ID_KEY to docId
-                        )
-                    )
-                    .setConstraints(
-                        Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .build())
-                    .build()
+            val data = workDataOf(
+                URL_KEY to url,
+                HOST_KEY to host,
+                POST_ID_KEY to postId,
+                TYPE_KEY to TYPE_POST,
+                DOC_ID_KEY to docId
             )
+            runWork(data)
         }
 
-        internal fun downloadPool(
+        fun downloadPool(
             activity: Activity,
             poolId: Int,
             type: Int,
@@ -139,137 +120,141 @@ class DownloadWorker(
             }
             val docUri = activity.getPoolUri(fileName) ?: return
             val docId = DocumentsContract.getDocumentId(docUri)
-            val workManager = WorkManager.getInstance(App.app)
-            workManager.enqueue(
-                OneTimeWorkRequestBuilder<DownloadWorker>()
-                    .setInputData(
-                        workDataOf(
-                            SCHEME_KEY to scheme,
-                            HOST_KEY to host,
-                            POOL_ID_KEY to poolId,
-                            POOL_DOWNLOAD_TYPE_KEY to type,
-                            TYPE_KEY to TYPE_POOL,
-                            USERNAME_KEY to booru.user?.name,
-                            PASSWORD_HASH_KEY to booru.user?.token,
-                            DOC_ID_KEY to docId
-                        )
-                    )
-                    .setConstraints(
-                        Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .build())
-                    .build()
+            val data = workDataOf(
+                SCHEME_KEY to scheme,
+                HOST_KEY to host,
+                POOL_ID_KEY to poolId,
+                POOL_DOWNLOAD_TYPE_KEY to type,
+                TYPE_KEY to TYPE_POOL,
+                USERNAME_KEY to booru.user?.name,
+                PASSWORD_HASH_KEY to booru.user?.token,
+                DOC_ID_KEY to docId
             )
+            runWork(data)
+        }
+        fun runWork(data: Data) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+            val work = OneTimeWorkRequestBuilder<DownloadWorker>()
+                .setInputData(data)
+                .setConstraints(constraints)
+                .build()
+            WorkManager.getInstance(App.app).enqueue(work)
         }
     }
 
     override fun doWork(): Result {
-        when (inputData.getString(TYPE_KEY)) {
-            TYPE_POST -> {
-                val url = inputData.getString(URL_KEY)
-                val id = inputData.getInt(POST_ID_KEY, -1)
-                val host = inputData.getString(HOST_KEY)
-                val docId =  inputData.getString(DOC_ID_KEY)
-                if (url == null || id < 0 || host == null || docId == null) return Result.failure()
-                val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
-                val channelId = applicationContext.packageName + ".download"
-                val notificationManager = getNotificationManager(
-                    channelId,
-                    applicationContext.getString(R.string.post_download))
-                val title = "$host - $id"
-                val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
-                ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
-                    downloadingNotificationBuilder.setProgress(100, progress, false)
-                    notificationManager.notify(id, downloadingNotificationBuilder.build())
-                }
-                val file = try {
-                    GlideApp.with(applicationContext)
-                        .downloadOnly()
-                        .load(url)
-                        .submit()
-                        .get()
-                } catch (_: Exception) {
-                    null
-                }
-                ProgressInterceptor.removeListener(url)
-                if (file == null || !file.exists()) {
-                    notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
-                    return Result.failure()
-                }
-                val `is` = FileInputStream(file)
-                val os = applicationContext.contentResolver.openOutputStream(desUri)
-                try {
-                    `is`.copyTo(os)
-                } catch (_: IOException) {
-                    return Result.failure()
-                } finally {
-                    `is`.safeCloseQuietly()
-                    os?.safeCloseQuietly()
-                }
-                notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, desUri = desUri).build())
-                return Result.success()
-            }
-            TYPE_POOL -> {
-                val id = inputData.getInt(POOL_ID_KEY, -1)
-                val scheme = inputData.getString(SCHEME_KEY)
-                val host = inputData.getString(HOST_KEY)
-                val type = inputData.getInt(
-                    POOL_DOWNLOAD_TYPE_KEY,
-                    POOL_DOWNLOAD_TYPE_JPGS
-                )
-                val username = inputData.getString(USERNAME_KEY)
-                val passwordHash = inputData.getString(PASSWORD_HASH_KEY)
-                val docId =  inputData.getString(DOC_ID_KEY)
-                if (id < 0 || scheme.isNullOrEmpty() ||
-                    host.isNullOrEmpty() || username.isNullOrEmpty() ||
-                    passwordHash.isNullOrEmpty() || docId == null)
-                    return Result.failure()
-                var url = when (type) {
-                    POOL_DOWNLOAD_TYPE_JPGS -> {
-                        applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
-                    }
-                    else -> {
-                        applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
-                    }
-                }
-                url = "$url&login=$username&password_hash=$passwordHash"
-                val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
-                val channelId = applicationContext.packageName + ".download_pool"
-                val notificationManager = getNotificationManager(
-                    channelId,
-                    applicationContext.getString(R.string.pool_download))
-                val title = "$host - pool: $id"
-                val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
-                ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
-                    downloadingNotificationBuilder.setProgress(100, progress, false)
-                    notificationManager.notify(id, downloadingNotificationBuilder.build())
-                }
-                var `is`: InputStream? = null
-                val os = applicationContext.contentResolver.openOutputStream(desUri)
-                try {
-                    `is` = OkHttp3Downloader(applicationContext)
-                        .load(url)
-                        .body?.source()?.inputStream()
-                    `is`?.copyTo(os)
-                } catch (_: IOException) {
-                    return Result.failure()
-                } finally {
-                    ProgressInterceptor.removeListener(url)
-                    `is`?.safeCloseQuietly()
-                    os?.safeCloseQuietly()
-                }
-                notificationManager.notify(
-                    id,
-                    getDownloadedNotificationBuilder(
-                        title = title,
-                        channelId = channelId,
-                        desUri = desUri
-                    ).build()
-                )
-                return Result.success()
-            }
+        return when (inputData.getString(TYPE_KEY)) {
+            TYPE_POST -> downloadPost()
+            TYPE_POOL -> downloadPool()
+            else -> Result.failure()
         }
-        return Result.failure()
+    }
+
+    private fun downloadPost(): Result {
+        val url = inputData.getString(URL_KEY)
+        val id = inputData.getInt(POST_ID_KEY, -1)
+        val host = inputData.getString(HOST_KEY)
+        val docId =  inputData.getString(DOC_ID_KEY)
+        if (url == null || id < 0 || host == null || docId == null) return Result.failure()
+        val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
+        val channelId = applicationContext.packageName + ".download"
+        val notificationManager = getNotificationManager(
+            channelId,
+            applicationContext.getString(R.string.post_download))
+        val title = "$host - $id"
+        val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
+        ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
+            downloadingNotificationBuilder.setProgress(100, progress, false)
+            notificationManager.notify(id, downloadingNotificationBuilder.build())
+        }
+        val file = try {
+            GlideApp.with(applicationContext)
+                .downloadOnly()
+                .load(url)
+                .submit()
+                .get()
+        } catch (_: Exception) {
+            null
+        }
+        ProgressInterceptor.removeListener(url)
+        if (file == null || !file.exists()) {
+            notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
+            return Result.failure()
+        }
+        val `is` = FileInputStream(file)
+        val os = applicationContext.contentResolver.openOutputStream(desUri)
+        try {
+            `is`.copyTo(os)
+        } catch (_: IOException) {
+            return Result.failure()
+        } finally {
+            `is`.safeCloseQuietly()
+            os?.safeCloseQuietly()
+        }
+        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, desUri = desUri).build())
+        return Result.success()
+    }
+
+    private fun downloadPool(): Result {
+            val id = inputData.getInt(POOL_ID_KEY, -1)
+            val scheme = inputData.getString(SCHEME_KEY)
+            val host = inputData.getString(HOST_KEY)
+            val type = inputData.getInt(
+                POOL_DOWNLOAD_TYPE_KEY,
+                POOL_DOWNLOAD_TYPE_JPGS
+            )
+            val username = inputData.getString(USERNAME_KEY)
+            val passwordHash = inputData.getString(PASSWORD_HASH_KEY)
+            val docId =  inputData.getString(DOC_ID_KEY)
+            if (id < 0 || scheme.isNullOrEmpty() ||
+                host.isNullOrEmpty() || username.isNullOrEmpty() ||
+                passwordHash.isNullOrEmpty() || docId == null)
+                return Result.failure()
+            var url = when (type) {
+                POOL_DOWNLOAD_TYPE_JPGS -> {
+                    applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
+                }
+                else -> {
+                    applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
+                }
+            }
+            url = "$url&login=$username&password_hash=$passwordHash"
+            val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
+            val channelId = applicationContext.packageName + ".download_pool"
+            val notificationManager = getNotificationManager(
+                channelId,
+                applicationContext.getString(R.string.pool_download))
+            val title = "$host - pool: $id"
+            val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
+            ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
+                downloadingNotificationBuilder.setProgress(100, progress, false)
+                notificationManager.notify(id, downloadingNotificationBuilder.build())
+            }
+            var `is`: InputStream? = null
+            val os = applicationContext.contentResolver.openOutputStream(desUri)
+            try {
+                `is` = OkHttp3Downloader(applicationContext)
+                    .load(url)
+                    .body?.source()?.inputStream()
+                `is`?.copyTo(os)
+            } catch (_: IOException) {
+                return Result.failure()
+            } finally {
+                ProgressInterceptor.removeListener(url)
+                `is`?.safeCloseQuietly()
+                os?.safeCloseQuietly()
+            }
+            notificationManager.notify(
+                id,
+                getDownloadedNotificationBuilder(
+                    title = title,
+                    channelId = channelId,
+                    desUri = desUri
+                ).build()
+            )
+            return Result.success()
     }
 
     private fun getNotificationManager(channelId: String, channelName: String): NotificationManager {
@@ -299,7 +284,11 @@ class DownloadWorker(
     private fun getDownloadedNotificationBuilder(title: String, channelId: String, desUri: Uri): NotificationCompat.Builder {
         val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
         intent.data = desUri
-        val pendingIntent = PendingIntent.getBroadcast(applicationContext, System.currentTimeMillis().toInt(), intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT)
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download_done)
             .setContentTitle(title)
@@ -310,11 +299,24 @@ class DownloadWorker(
     }
 
     private fun getDownloadErrorNotificationBuilder(title: String, channelId: String): NotificationCompat.Builder {
+        val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
+        intent.putExtra(INPUT_DATA_KEY, inputData.toByteArray())
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setContentTitle(title)
             .setContentText(applicationContext.getString(R.string.msg_download_failed))
             .setOngoing(false)
             .setAutoCancel(true)
+            .addAction(
+                android.R.drawable.stat_sys_download,
+                applicationContext.getString(R.string.retry),
+                pendingIntent
+            )
     }
 }
