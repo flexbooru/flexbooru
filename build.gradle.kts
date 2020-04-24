@@ -41,10 +41,10 @@ buildscript {
         val kotlinVersion = "1.3.72"
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:4.1.0-alpha06")
+        classpath("com.android.tools.build:gradle:4.1.0-alpha07")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.2")
         classpath("com.google.gms:google-services:4.3.3")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta04")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.0.0")
     }
 }
 
