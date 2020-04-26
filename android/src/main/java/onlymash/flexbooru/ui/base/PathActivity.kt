@@ -17,8 +17,8 @@ package onlymash.flexbooru.ui.base
 
 import android.app.Activity
 import android.content.Intent
-import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
+import onlymash.flexbooru.app.Settings
+import onlymash.flexbooru.app.Values.REQUEST_CODE_OPEN_DIRECTORY
 import onlymash.flexbooru.extension.toDecodedString
 
 abstract class PathActivity : KodeinActivity() {

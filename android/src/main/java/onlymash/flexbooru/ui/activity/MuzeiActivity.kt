@@ -35,9 +35,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.activatedBooruUid
-import onlymash.flexbooru.common.Values
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
+import onlymash.flexbooru.app.Settings.activatedBooruUid
+import onlymash.flexbooru.app.Values
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager

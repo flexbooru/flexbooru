@@ -25,10 +25,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.pageLimit
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.app.Settings.pageLimit
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.repository.NetworkState

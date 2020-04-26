@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.databinding.ActivityTagBlacklistBinding

@@ -13,20 +13,16 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.model
+package onlymash.flexbooru.common.saucenao.model
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HeaderIndex(
-    @SerialName("id")
-    val id: Int,
-    @SerialName("parent_id")
-    val parentId: Int,
+data class SauceNaoResponse(
+    @SerialName("header")
+    val header: Header,
     @SerialName("results")
-    var results: Int = 0,
-    @SerialName("status")
-    val status: Int
+    var results: List<Result> = emptyList()
 )

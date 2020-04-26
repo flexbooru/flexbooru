@@ -30,7 +30,7 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Keys.BOORU_URL
+import onlymash.flexbooru.app.Keys.BOORU_URL
 import java.nio.charset.StandardCharsets
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ProfilesFragment.kt

@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.common
+package onlymash.flexbooru.app
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
@@ -73,44 +73,55 @@ object Settings {
 
     var activatedBooruUid: Long
         get() = sp.getLong(BOORU_UID_ACTIVATED_KEY, -1L)
-        set(value) = sp.edit().putLong(BOORU_UID_ACTIVATED_KEY, value).apply()
+        set(value) = sp.edit().putLong(
+            BOORU_UID_ACTIVATED_KEY, value).apply()
 
     var safeMode: Boolean
         get() = sp.getBoolean(SAFE_MODE_KEY, true)
-        set(value) = sp.edit().putBoolean(SAFE_MODE_KEY, value).apply()
+        set(value) = sp.edit().putBoolean(
+            SAFE_MODE_KEY, value).apply()
 
     var pageLimit: Int
         get() = sp.getString(PAGE_LIMIT_KEY, "10")!!.toInt()
-        set(value) = sp.edit().putString(PAGE_LIMIT_KEY, value.toString()).apply()
+        set(value) = sp.edit().putString(
+            PAGE_LIMIT_KEY, value.toString()).apply()
 
     var muzeiLimit: Int
         get() = sp.getString(MUZEI_LIMIT_KEY, "10")!!.toInt()
-        set(value) = sp.edit().putString(MUZEI_LIMIT_KEY, value.toString()).apply()
+        set(value) = sp.edit().putString(
+            MUZEI_LIMIT_KEY, value.toString()).apply()
 
     var detailSize: String
         get() = sp.getString(
             DETAIL_SIZE_KEY,
             POST_SIZE_SAMPLE
         ) ?: POST_SIZE_SAMPLE
-        set(value) = sp.edit().putString(DETAIL_SIZE_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            DETAIL_SIZE_KEY, value).apply()
 
     var downloadSize: String
         get() = sp.getString(
             DOWNLOAD_SIZE_KEY,
             POST_SIZE_SAMPLE
         ) ?: POST_SIZE_LARGER
-        set(value) = sp.edit().putString(DOWNLOAD_SIZE_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            DOWNLOAD_SIZE_KEY, value).apply()
 
     var muzeiSize: String
         get() = sp.getString(
             MUZEI_SIZE_KEY,
             POST_SIZE_SAMPLE
         ) ?: POST_SIZE_LARGER
-        set(value) = sp.edit().putString(MUZEI_SIZE_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            MUZEI_SIZE_KEY, value).apply()
 
     private var nightModeString: String
-        get() = sp.getString(NIGHT_MODE_KEY, NIGHT_MODE_SYSTEM) ?: NIGHT_MODE_SYSTEM
-        set(value) = sp.edit().putString(NIGHT_MODE_KEY, value).apply()
+        get() = sp.getString(
+            NIGHT_MODE_KEY,
+            NIGHT_MODE_SYSTEM
+        ) ?: NIGHT_MODE_SYSTEM
+        set(value) = sp.edit().putString(
+            NIGHT_MODE_KEY, value).apply()
 
     @AppCompatDelegate.NightMode
     val nightMode: Int
@@ -125,16 +136,25 @@ object Settings {
         get() = nightModeString == NIGHT_MODE_ON
 
     private val nightThemeString: String
-        get() = sp.getString(NIGHT_THEME_KEY, NIGHT_THEME_DARK) ?: NIGHT_THEME_DARK
+        get() = sp.getString(
+            NIGHT_THEME_KEY,
+            NIGHT_THEME_DARK
+        ) ?: NIGHT_THEME_DARK
 
     val isNightThemeDark: Boolean
         get() = nightThemeString == NIGHT_THEME_DARK
 
     val gridMode: String
-        get() = sp.getString(GRID_MODE_KEY, GRID_MODE_FIXED) ?: GRID_MODE_FIXED
+        get() = sp.getString(
+            GRID_MODE_KEY,
+            GRID_MODE_FIXED
+        ) ?: GRID_MODE_FIXED
 
     val gridRatio: String
-        get() = sp.getString(GRID_RATIO_KEY, GRID_RATIO_1_1) ?: GRID_RATIO_1_1
+        get() = sp.getString(
+            GRID_RATIO_KEY,
+            GRID_RATIO_1_1
+        ) ?: GRID_RATIO_1_1
 
     val gridWidthResId: Int
         get() = when (gridWidthString) {
@@ -148,79 +168,97 @@ object Settings {
             GRID_WIDTH_KEY,
             GRID_WIDTH_NORMAL
         ) ?: GRID_WIDTH_NORMAL
-        set(value) = sp.edit().putString(GRID_WIDTH_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            GRID_WIDTH_KEY, value).apply()
 
     val isLargeWidth: Boolean
         get() = gridWidthString == GRID_WIDTH_LARGE
 
     var activeMuzeiUid: Long
         get() = sp.getLong(ACTIVE_MUZEI_UID_KEY, 0L)
-        set(value) = sp.edit().putLong(ACTIVE_MUZEI_UID_KEY, value).apply()
+        set(value) = sp.edit().putLong(
+            ACTIVE_MUZEI_UID_KEY, value).apply()
 
     var showInfoBar: Boolean
         get() = sp.getBoolean(SHOW_INFO_BAR_KEY, false)
-        set(value) = sp.edit().putBoolean(SHOW_INFO_BAR_KEY, value).apply()
+        set(value) = sp.edit().putBoolean(
+            SHOW_INFO_BAR_KEY, value).apply()
 
     var isShowAllTags: Boolean
         get() = sp.getBoolean(SHOW_ALL_TAGS_KEY, false)
-        set(value) = sp.edit().putBoolean(SHOW_ALL_TAGS_KEY, value).apply()
+        set(value) = sp.edit().putBoolean(
+            SHOW_ALL_TAGS_KEY, value).apply()
 
     var autoHideBottomBar: Boolean
         get() = sp.getBoolean(AUTO_HIDE_BOTTOM_BAR_KEY, false)
-        set(value) = sp.edit().putBoolean(AUTO_HIDE_BOTTOM_BAR_KEY, value).apply()
+        set(value) = sp.edit().putBoolean(
+            AUTO_HIDE_BOTTOM_BAR_KEY, value).apply()
 
     var downloadDirPath: String?
         get() = sp.getString(DOWNLOAD_PATH_KEY, "")
-        set(value) = sp.edit().putString(DOWNLOAD_PATH_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            DOWNLOAD_PATH_KEY, value).apply()
 
     var latestVersionCode: Long
         get() = sp.getLong(LATEST_VERSION_CODE_KEY, -1L)
-        set(value) = sp.edit().putLong(LATEST_VERSION_CODE_KEY, value).apply()
+        set(value) = sp.edit().putLong(
+            LATEST_VERSION_CODE_KEY, value).apply()
 
     var latestVersionName: String
         get() = sp.getString(LATEST_VERSION_NAME_KEY, " ") ?: " "
-        set(value) = sp.edit().putString(LATEST_VERSION_NAME_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            LATEST_VERSION_NAME_KEY, value).apply()
 
     var latestVersionUrl: String
         get() = sp.getString(LATEST_VERSION_URL_KEY, "") ?: ""
-        set(value) = sp.edit().putString(LATEST_VERSION_URL_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            LATEST_VERSION_URL_KEY, value).apply()
 
     var isAvailableOnStore: Boolean
         get() = sp.getBoolean(IS_AVAILABLE_STORE, false)
-        set(value) = sp.edit().putBoolean(IS_AVAILABLE_STORE, value).apply()
+        set(value) = sp.edit().putBoolean(
+            IS_AVAILABLE_STORE, value).apply()
 
     var orderId: String
         get() = sp.getString(ORDER_ID_KEY, "") ?: ""
-        set(value) = sp.edit().putString(ORDER_ID_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            ORDER_ID_KEY, value).apply()
 
     var orderTime: Long
         get() = sp.getLong(ORDER_TIME_KEY, -1L)
-        set(value) = sp.edit().putLong(ORDER_TIME_KEY, value).apply()
+        set(value) = sp.edit().putLong(
+            ORDER_TIME_KEY, value).apply()
 
     var orderToken: String
         get() = sp.getString(ORDER_TOKEN_KEY, "") ?: ""
-        set(value) = sp.edit().putString(ORDER_TOKEN_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            ORDER_TOKEN_KEY, value).apply()
 
     var isOrderSuccess: Boolean
         get() = sp.getBoolean(ORDER_SUCCESS_KEY, false)
-        set(value) = sp.edit().putBoolean(ORDER_SUCCESS_KEY, value).apply()
+        set(value) = sp.edit().putBoolean(
+            ORDER_SUCCESS_KEY, value).apply()
 
     var orderDeviceId: String
         get() {
-            var id = sp.getString(ORDER_DEVICE_ID_KEY, "") ?: ""
+            var id = sp.getString(
+                ORDER_DEVICE_ID_KEY, "") ?: ""
             if (id.isEmpty()) {
                 id = UUID.randomUUID().toString()
                 orderDeviceId = id
             }
             return id
         }
-        set(value) = sp.edit().putString(ORDER_DEVICE_ID_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            ORDER_DEVICE_ID_KEY, value).apply()
 
     var isGoogleSign: Boolean
         get() = sp.getBoolean(GOOGLE_SIGN_KEY, false)
-        set(value) = sp.edit().putBoolean(GOOGLE_SIGN_KEY, value).apply()
+        set(value) = sp.edit().putBoolean(
+            GOOGLE_SIGN_KEY, value).apply()
 
     var sauceNaoApiKey: String
         get() = sp.getString(SAUCE_NAO_API_KEY_KEY, "") ?: ""
-        set(value) = sp.edit().putString(SAUCE_NAO_API_KEY_KEY, value).apply()
+        set(value) = sp.edit().putString(
+            SAUCE_NAO_API_KEY_KEY, value).apply()
 }

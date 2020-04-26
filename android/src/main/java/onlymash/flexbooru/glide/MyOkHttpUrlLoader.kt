@@ -22,7 +22,7 @@ import com.bumptech.glide.load.model.Headers
 import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.load.model.ModelLoader
 import okhttp3.OkHttpClient
-import onlymash.flexbooru.common.Keys
+import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.extension.userAgent
 import java.io.InputStream
 import java.net.URL

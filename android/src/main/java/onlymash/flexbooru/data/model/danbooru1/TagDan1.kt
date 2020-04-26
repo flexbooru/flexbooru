@@ -17,7 +17,7 @@ package onlymash.flexbooru.data.model.danbooru1
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.model.common.Tag
 
 @Serializable

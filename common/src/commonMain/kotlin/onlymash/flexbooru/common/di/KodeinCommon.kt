@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.di
+package onlymash.flexbooru.common.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpCallValidator
@@ -22,10 +22,10 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
-import onlymash.flexbooru.saucenao.api.SauceNaoApi
-import onlymash.flexbooru.saucenao.api.SauceNaoApiService
-import onlymash.flexbooru.tracemoe.api.TraceMoeApi
-import onlymash.flexbooru.tracemoe.api.TraceMoeApiService
+import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
+import onlymash.flexbooru.common.saucenao.api.SauceNaoApiService
+import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
+import onlymash.flexbooru.common.tracemoe.api.TraceMoeApiService
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -60,6 +60,9 @@ val kodeinCommon = Kodein.lazy {
         bind<TraceMoeApi>("TraceMoeApi") with provider {
             val client by kodein.instance<HttpClient>()
             val baseUrl by kodein.instance<String>("TraceMoeBaseUrl")
-            TraceMoeApiService(client = client, baseUrl = baseUrl)
+            TraceMoeApiService(
+                client = client,
+                baseUrl = baseUrl
+            )
         }
     }

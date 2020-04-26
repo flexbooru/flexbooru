@@ -13,18 +13,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.model
+package onlymash.flexbooru.common.tracemoe.api
 
+import onlymash.flexbooru.common.tracemoe.model.TraceResponse
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class Result(
-
-    @SerialName("header")
-    val header: ResultHeader,
-
-    @SerialName("data")
-    val `data`: ResultData
-)
+interface TraceMoeApi {
+    suspend fun fetch(base64Image: String): TraceResponse
+}

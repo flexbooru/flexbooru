@@ -17,7 +17,7 @@ package onlymash.flexbooru.data.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import onlymash.flexbooru.common.Keys
+import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.extension.userAgent
 
 class ApiInterceptor : Interceptor {

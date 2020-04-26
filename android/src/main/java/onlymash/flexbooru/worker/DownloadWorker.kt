@@ -26,8 +26,8 @@ import android.os.Build
 import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import androidx.work.*
-import onlymash.flexbooru.common.App
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.app.App
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.FileInputStream

@@ -13,24 +13,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.model
+package onlymash.flexbooru.app
 
+object Keys {
+    const val HEADER_COOKIE = "Cookie"
+    const val HEADER_USER_AGENT = "User-Agent"
+    const val HEADER_REFERER = "Referer"
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+    const val BOORU_TYPE = "booru_type"
 
-@Serializable
-data class ResultHeader(
+    const val BOORU_URL = "booru_url"
 
-    @SerialName("similarity")
-    val similarity: String,
+    const val PAGE_TYPE = "page_type"
 
-    @SerialName("thumbnail")
-    val thumbnail: String,
-
-    @SerialName("index_id")
-    val indexId: Int,
-
-    @SerialName("index_name")
-    val indexName: String
-)
+    const val POST_QUERY = "post_query"
+    const val POST_POSITION = "post_position"
+    const val POST_ID = "post_id"
+}

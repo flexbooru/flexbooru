@@ -18,7 +18,7 @@ package onlymash.flexbooru.extension
 import android.content.Context
 import android.text.format.DateFormat
 import android.text.format.DateUtils
-import onlymash.flexbooru.common.Values.DATE_PATTERN
+import onlymash.flexbooru.app.Values.DATE_PATTERN
 import java.text.SimpleDateFormat
 import java.util.*
 

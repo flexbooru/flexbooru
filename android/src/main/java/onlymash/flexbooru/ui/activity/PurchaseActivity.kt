@@ -30,7 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.data.api.OrderApi
 import onlymash.flexbooru.databinding.ActivityPurchaseBinding
 import onlymash.flexbooru.extension.NetResult

@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.api
+package onlymash.flexbooru.common.saucenao.api
 
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
@@ -22,7 +22,7 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.takeFrom
-import onlymash.flexbooru.saucenao.model.SauceNaoResponse
+import onlymash.flexbooru.common.saucenao.model.SauceNaoResponse
 
 class SauceNaoApiService(
     private val client: HttpClient,

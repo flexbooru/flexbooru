@@ -20,7 +20,7 @@ import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Keys.POST_QUERY
+import onlymash.flexbooru.app.Keys.POST_QUERY
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.worker.MuzeiArtWorker

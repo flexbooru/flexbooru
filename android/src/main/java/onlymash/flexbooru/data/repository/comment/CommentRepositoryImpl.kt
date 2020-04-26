@@ -22,9 +22,9 @@ import androidx.paging.toLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Comment

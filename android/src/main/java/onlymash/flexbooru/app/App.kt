@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.common
+package onlymash.flexbooru.app
 
 import android.app.Application
 import android.content.Context
@@ -32,11 +32,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.isGoogleSign
-import onlymash.flexbooru.common.Settings.isOrderSuccess
-import onlymash.flexbooru.common.Settings.nightMode
-import onlymash.flexbooru.common.Settings.orderDeviceId
-import onlymash.flexbooru.common.Settings.orderId
+import onlymash.flexbooru.app.Settings.isGoogleSign
+import onlymash.flexbooru.app.Settings.isOrderSuccess
+import onlymash.flexbooru.app.Settings.nightMode
+import onlymash.flexbooru.app.Settings.orderDeviceId
+import onlymash.flexbooru.app.Settings.orderId
 import onlymash.flexbooru.crash.CrashHandler
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.api.OrderApi

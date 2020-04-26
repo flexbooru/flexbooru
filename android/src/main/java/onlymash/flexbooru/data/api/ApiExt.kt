@@ -25,7 +25,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.BuildConfig
-import onlymash.flexbooru.common.Values
+import onlymash.flexbooru.app.Values
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 

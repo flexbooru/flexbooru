@@ -17,7 +17,7 @@ package onlymash.flexbooru.data.model.gelbooru
 
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.extension.parseDate
 

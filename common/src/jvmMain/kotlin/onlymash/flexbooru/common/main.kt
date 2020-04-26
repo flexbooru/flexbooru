@@ -13,12 +13,12 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru
+package onlymash.flexbooru.common
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import onlymash.flexbooru.di.kodeinCommon
-import onlymash.flexbooru.saucenao.api.SauceNaoApi
+import onlymash.flexbooru.common.di.kodeinCommon
+import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
 import org.kodein.di.erased.instance
 
 fun main() {

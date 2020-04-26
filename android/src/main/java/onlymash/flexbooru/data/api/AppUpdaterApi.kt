@@ -17,7 +17,7 @@ package onlymash.flexbooru.data.api
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import onlymash.flexbooru.common.Settings
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.data.model.app.UpdateInfo
 import retrofit2.Response
 import retrofit2.http.GET

@@ -16,11 +16,11 @@
 package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
-import onlymash.flexbooru.common.Values.ONLY_FIELD_POSTS_DAN
-import onlymash.flexbooru.common.Values.PAGE_TYPE_POSTS
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.app.Values.ONLY_FIELD_POSTS_DAN
+import onlymash.flexbooru.app.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.model.common.Booru
 
 private const val SAFE_MODE_TAG = "rating:safe"

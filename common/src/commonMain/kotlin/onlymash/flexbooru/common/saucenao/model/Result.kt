@@ -13,16 +13,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.model
+package onlymash.flexbooru.common.saucenao.model
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SauceNaoResponse(
+data class Result(
+
     @SerialName("header")
-    val header: Header,
-    @SerialName("results")
-    var results: List<Result> = emptyList()
+    val header: ResultHeader,
+
+    @SerialName("data")
+    val `data`: ResultData
 )

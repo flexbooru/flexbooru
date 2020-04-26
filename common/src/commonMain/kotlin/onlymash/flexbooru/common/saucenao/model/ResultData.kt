@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.model
+package onlymash.flexbooru.common.saucenao.model
 
 
 import kotlinx.serialization.SerialName

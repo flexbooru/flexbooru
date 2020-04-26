@@ -20,7 +20,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.isNightThemeDark
+import onlymash.flexbooru.app.Settings.isNightThemeDark
 import onlymash.flexbooru.ui.activity.*
 
 abstract class BaseActivity : AppCompatActivity() {

@@ -22,7 +22,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
-import onlymash.flexbooru.common.Values.DB_FILE_NAME
+import onlymash.flexbooru.app.Values.DB_FILE_NAME
 import onlymash.flexbooru.data.model.common.*
 import onlymash.flexbooru.data.database.dao.*
 

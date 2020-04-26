@@ -22,9 +22,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.databinding.ItemCommentBinding

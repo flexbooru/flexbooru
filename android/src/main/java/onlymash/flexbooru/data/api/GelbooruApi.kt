@@ -17,7 +17,7 @@ package onlymash.flexbooru.data.api
 
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
-import onlymash.flexbooru.common.Keys
+import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.data.model.gelbooru.CommentGelResponse
 import onlymash.flexbooru.data.model.gelbooru.PostGelResponse
 import onlymash.flexbooru.data.model.gelbooru.TagGelResponse

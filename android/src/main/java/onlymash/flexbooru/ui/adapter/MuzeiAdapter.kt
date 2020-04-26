@@ -20,7 +20,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.activeMuzeiUid
+import onlymash.flexbooru.app.Settings.activeMuzeiUid
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.databinding.ItemMuzeiBinding
 import onlymash.flexbooru.extension.copyText

@@ -25,7 +25,7 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Values.REQUEST_CODE_OPEN_DIRECTORY
+import onlymash.flexbooru.app.Values.REQUEST_CODE_OPEN_DIRECTORY
 import java.util.*
 
 fun Activity.getSaveUri(fileName: String): Uri? = getFileUri("save", fileName)

@@ -23,11 +23,11 @@ import androidx.paging.Config
 import androidx.paging.toLiveData
 import androidx.room.withTransaction
 import kotlinx.coroutines.*
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SHIMMIE
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi

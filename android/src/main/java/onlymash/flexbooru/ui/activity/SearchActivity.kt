@@ -19,8 +19,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Keys.POST_QUERY
-import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.app.Keys.POST_QUERY
+import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.model.common.History
 import onlymash.flexbooru.ui.fragment.PostFragment

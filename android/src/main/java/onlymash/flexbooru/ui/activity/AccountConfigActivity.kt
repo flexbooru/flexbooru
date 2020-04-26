@@ -24,13 +24,13 @@ import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN1
-import onlymash.flexbooru.common.Values.BOORU_TYPE_GEL
-import onlymash.flexbooru.common.Values.BOORU_TYPE_MOE
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
-import onlymash.flexbooru.common.Values.HASH_SALT_CONTAINED
+import onlymash.flexbooru.app.Settings
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.app.Values.HASH_SALT_CONTAINED
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru

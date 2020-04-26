@@ -23,8 +23,8 @@ import java.io.IOException
 import android.os.StatFs
 import androidx.annotation.VisibleForTesting
 import okhttp3.*
-import onlymash.flexbooru.common.Keys.HEADER_REFERER
-import onlymash.flexbooru.common.Keys.HEADER_USER_AGENT
+import onlymash.flexbooru.app.Keys.HEADER_REFERER
+import onlymash.flexbooru.app.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.extension.userAgent
 import kotlin.math.max
 import kotlin.math.min

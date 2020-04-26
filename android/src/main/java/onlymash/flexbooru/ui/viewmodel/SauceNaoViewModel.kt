@@ -23,8 +23,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.saucenao.api.SauceNaoApi
-import onlymash.flexbooru.saucenao.model.SauceNaoResponse
+import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
+import onlymash.flexbooru.common.saucenao.model.SauceNaoResponse
 
 class SauceNaoViewModel(private val sauceNaoApi: SauceNaoApi) : ScopeViewModel() {
 

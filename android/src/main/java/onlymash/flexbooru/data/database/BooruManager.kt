@@ -16,7 +16,7 @@
 package onlymash.flexbooru.data.database
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
-import onlymash.flexbooru.common.App
+import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import org.kodein.di.erased.instance

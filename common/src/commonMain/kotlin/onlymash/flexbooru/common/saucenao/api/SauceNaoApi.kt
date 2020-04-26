@@ -13,10 +13,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.tracemoe.api
+package onlymash.flexbooru.common.saucenao.api
 
-import onlymash.flexbooru.tracemoe.model.TraceResponse
+import onlymash.flexbooru.common.saucenao.model.SauceNaoResponse
 
-interface TraceMoeApi {
-    suspend fun fetch(base64Image: String): TraceResponse
+interface SauceNaoApi {
+
+    suspend fun searchByUrl(
+        url: String,
+        apiKey: String): SauceNaoResponse
+
+    suspend fun searchByImage(
+        apiKey: String,
+        byteArray: ByteArray,
+        fileExt: String
+    ): SauceNaoResponse
 }

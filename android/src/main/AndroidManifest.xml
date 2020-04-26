@@ -37,7 +37,7 @@
         tools:node="remove"/>
 
     <application
-        android:name=".common.App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:fullBackupOnly="true"

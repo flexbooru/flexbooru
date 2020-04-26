@@ -27,11 +27,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.GRID_MODE_FIXED
-import onlymash.flexbooru.common.Settings.gridMode
-import onlymash.flexbooru.common.Settings.gridRatio
-import onlymash.flexbooru.common.Settings.isLargeWidth
-import onlymash.flexbooru.common.Settings.showInfoBar
+import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
+import onlymash.flexbooru.app.Settings.gridMode
+import onlymash.flexbooru.app.Settings.gridRatio
+import onlymash.flexbooru.app.Settings.isLargeWidth
+import onlymash.flexbooru.app.Settings.showInfoBar
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.databinding.ItemPostBinding
 import onlymash.flexbooru.extension.isStillImage

@@ -16,11 +16,38 @@
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
+    id("com.android.library")
     kotlin("multiplatform")
     kotlin("plugin.serialization")
 }
+
+val ext = rootProject.extra
+val ktorVersion = ext.get("ktor_version") as String
+val kodeinVersion = ext.get("kodein_version") as String
+val coroutinesVersion = ext.get("coroutines_version") as String
+val serializationVersion = ext.get("serialization_version") as String
+
+android {
+    compileSdkVersion(29)
+    buildToolsVersion = "29.0.3"
+    defaultConfig {
+        minSdkVersion(21)
+        targetSdkVersion(29)
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+        }
+    }
+}
+
 kotlin {
     jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+    }
+    android {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
         }
@@ -36,33 +63,34 @@ kotlin {
             }
         }
     }
-}
-
-fun DependencyHandler.jvmMainImplementation(dependencyNotation: Any): Dependency? =
-    add("jvmMainImplementation", dependencyNotation)
-
-dependencies {
-    val ext = rootProject.extra
-    val ktorVersion = ext.get("ktor_version") as String
-    val kodeinVersion = ext.get("kodein_version") as String
-    val coroutinesVersion = ext.get("coroutines_version") as String
-    val serializationVersion = ext.get("serialization_version") as String
-
-    commonMainImplementation(kotlin("stdlib-common"))
-    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
-    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
-    commonMainImplementation("org.kodein.di:kodein-di-core:$kodeinVersion")
-    commonMainImplementation("org.kodein.di:kodein-di-erased:$kodeinVersion")
-    commonMainImplementation("io.ktor:ktor-client-core:$ktorVersion")
-    commonMainImplementation("io.ktor:ktor-client-json:$ktorVersion")
-    commonMainImplementation("io.ktor:ktor-client-serialization:$ktorVersion")
-    jvmMainImplementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-    jvmMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    jvmMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-    jvmMainImplementation("org.kodein.di:kodein-di-erased-jvm:$kodeinVersion")
-    jvmMainImplementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
-    jvmMainImplementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-    jvmMainImplementation("io.ktor:ktor-client-json-jvm:$ktorVersion")
-    jvmMainImplementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
-
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                implementation("org.kodein.di:kodein-di-core:$kodeinVersion")
+                implementation("org.kodein.di:kodein-di-erased:$kodeinVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                implementation("org.kodein.di:kodein-di-erased-jvm:$kodeinVersion")
+                implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation("io.ktor:ktor-client-json-jvm:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
+            }
+        }
+        val androidMain by getting {
+            dependsOn(commonMain)
+            dependsOn(jvmMain)
+        }
+    }
 }

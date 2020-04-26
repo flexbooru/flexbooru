@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.activatedBooruUid
+import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.dao.HistoryDao
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.databinding.ActivityListCommonBinding

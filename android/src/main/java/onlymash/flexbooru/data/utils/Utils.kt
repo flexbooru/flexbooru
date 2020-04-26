@@ -15,9 +15,9 @@
 
 package onlymash.flexbooru.data.utils
 
-import onlymash.flexbooru.common.Values.DATE_PATTERN_SHIMMIE
-import onlymash.flexbooru.common.Values.DATE_PATTERN_DAN as PATTERN_DAN
-import onlymash.flexbooru.common.Values.DATE_PATTERN_GEL as PATTERN_GEL
+import onlymash.flexbooru.app.Values.DATE_PATTERN_SHIMMIE
+import onlymash.flexbooru.app.Values.DATE_PATTERN_DAN as PATTERN_DAN
+import onlymash.flexbooru.app.Values.DATE_PATTERN_GEL as PATTERN_GEL
 import onlymash.flexbooru.extension.formatDate
 import java.text.SimpleDateFormat
 import java.util.*

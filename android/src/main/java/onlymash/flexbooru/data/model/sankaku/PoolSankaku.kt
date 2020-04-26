@@ -17,8 +17,8 @@ package onlymash.flexbooru.data.model.sankaku
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
-import onlymash.flexbooru.common.Values.DATE_PATTERN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.app.Values.DATE_PATTERN
 import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.data.utils.toSafeUrl
 import onlymash.flexbooru.extension.parseDate

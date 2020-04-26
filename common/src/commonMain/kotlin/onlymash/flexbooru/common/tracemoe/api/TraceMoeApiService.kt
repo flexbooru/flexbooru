@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.tracemoe.api
+package onlymash.flexbooru.common.tracemoe.api
 
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
@@ -22,7 +22,7 @@ import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.HttpMethod
 import io.ktor.http.takeFrom
-import onlymash.flexbooru.tracemoe.model.TraceResponse
+import onlymash.flexbooru.common.tracemoe.model.TraceResponse
 
 class TraceMoeApiService(
     private val client: HttpClient,

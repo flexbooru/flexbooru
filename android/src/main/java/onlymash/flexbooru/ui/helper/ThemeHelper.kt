@@ -16,7 +16,7 @@
 package onlymash.flexbooru.ui.helper
 
 import android.content.res.Configuration
-import onlymash.flexbooru.common.Settings.isNightModeOn
+import onlymash.flexbooru.app.Settings.isNightModeOn
 
 fun Configuration.isNightEnable(): Boolean =
     isNightModeOn || (uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)

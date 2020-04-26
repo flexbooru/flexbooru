@@ -40,9 +40,9 @@ import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.parseList
 import kotlinx.serialization.stringify
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Settings.activatedBooruUid
-import onlymash.flexbooru.common.Settings.isOrderSuccess
-import onlymash.flexbooru.common.Values
+import onlymash.flexbooru.app.Settings.activatedBooruUid
+import onlymash.flexbooru.app.Settings.isOrderSuccess
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.databinding.ActivityListCommonBinding

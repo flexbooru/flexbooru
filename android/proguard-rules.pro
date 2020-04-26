@@ -79,24 +79,24 @@
 
 -dontnote kotlinx.serialization.SerializationKt
 -keep,includedescriptorclasses class onlymash.flexbooru.data.model.**$$serializer { *; }
--keep,includedescriptorclasses class onlymash.flexbooru.saucenao.model.**$$serializer { *; }
--keep,includedescriptorclasses class onlymash.flexbooru.tracemoe.model.**$$serializer { *; }
+-keep,includedescriptorclasses class onlymash.flexbooru.common.saucenao.model.**$$serializer { *; }
+-keep,includedescriptorclasses class onlymash.flexbooru.common.tracemoe.model.**$$serializer { *; }
 -keepclassmembers class onlymash.flexbooru.data.model.** {
     *** Companion;
 }
--keepclassmembers class onlymash.flexbooru.saucenao.model.** {
+-keepclassmembers class onlymash.flexbooru.common.saucenao.model.** {
     *** Companion;
 }
--keepclassmembers class onlymash.flexbooru.tracemoe.model.** {
+-keepclassmembers class onlymash.flexbooru.common.tracemoe.model.** {
     *** Companion;
 }
 -keepclasseswithmembers class onlymash.flexbooru.data.model.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
--keepclasseswithmembers class onlymash.flexbooru.saucenao.model** {
+-keepclasseswithmembers class onlymash.flexbooru.common.saucenao.model** {
     kotlinx.serialization.KSerializer serializer(...);
 }
--keepclasseswithmembers class onlymash.flexbooru.tracemoe.model.** {
+-keepclasseswithmembers class onlymash.flexbooru.common.tracemoe.model.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

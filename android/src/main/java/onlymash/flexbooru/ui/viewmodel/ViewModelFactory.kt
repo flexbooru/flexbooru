@@ -30,8 +30,8 @@ import onlymash.flexbooru.data.repository.suggestion.SuggestionRepository
 import onlymash.flexbooru.data.repository.tag.TagRepository
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepository
 import onlymash.flexbooru.extension.getViewModel
-import onlymash.flexbooru.saucenao.api.SauceNaoApi
-import onlymash.flexbooru.tracemoe.api.TraceMoeApi
+import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
+import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
 
 
 fun ViewModelStoreOwner.getBooruViewModel(booruDao: BooruDao): BooruViewModel =

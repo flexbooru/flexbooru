@@ -26,11 +26,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.R
-import onlymash.flexbooru.common.Keys
-import onlymash.flexbooru.common.Settings.activatedBooruUid
-import onlymash.flexbooru.common.Values.Tags
-import onlymash.flexbooru.common.Values.BOORU_TYPE_DAN
-import onlymash.flexbooru.common.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.app.Keys
+import onlymash.flexbooru.app.Settings.activatedBooruUid
+import onlymash.flexbooru.app.Values.Tags
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.TagFilterManager
 import onlymash.flexbooru.data.database.dao.PostDao

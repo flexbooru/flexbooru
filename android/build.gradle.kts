@@ -79,23 +79,21 @@ android {
             }
     }
     buildTypes {
-        buildTypes {
-            getByName("release") {
-                isShrinkResources = true
-                isMinifyEnabled = true
-                val config = try {
-                    signingConfigs.getByName("release")
-                } catch (_: UnknownDomainObjectException) {
-                    null
-                }
-                if (config != null) {
-                    signingConfig = config
-                }
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        getByName("release") {
+            isShrinkResources = true
+            isMinifyEnabled = true
+            val config = try {
+                signingConfigs.getByName("release")
+            } catch (_: UnknownDomainObjectException) {
+                null
             }
-            getByName("debug") {
-                applicationIdSuffix = ".debug"
+            if (config != null) {
+                signingConfig = config
             }
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
         }
     }
     kotlinOptions {

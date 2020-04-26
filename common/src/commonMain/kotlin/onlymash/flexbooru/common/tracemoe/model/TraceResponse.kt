@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.tracemoe.model
+package onlymash.flexbooru.common.tracemoe.model
 
 
 import kotlinx.serialization.SerialName

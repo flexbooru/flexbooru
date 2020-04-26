@@ -13,19 +13,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.saucenao.api
+package onlymash.flexbooru.common.saucenao.model
 
-import onlymash.flexbooru.saucenao.model.SauceNaoResponse
 
-interface SauceNaoApi {
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-    suspend fun searchByUrl(
-        url: String,
-        apiKey: String): SauceNaoResponse
-
-    suspend fun searchByImage(
-        apiKey: String,
-        byteArray: ByteArray,
-        fileExt: String
-    ): SauceNaoResponse
-}
+@Serializable
+data class HeaderIndex(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("parent_id")
+    val parentId: Int,
+    @SerialName("results")
+    var results: Int = 0,
+    @SerialName("status")
+    val status: Int
+)
