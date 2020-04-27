@@ -182,6 +182,7 @@
     <string name="settings_grid_width_small">Kicsi</string>
     <string name="settings_grid_width_normal">Normál</string>
     <string name="settings_grid_width_large">Óriás</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">Információs sáv megjelenítése</string>
     <string name="settings_show_all_tags">Minden oldalhoz mutasson címkét</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
