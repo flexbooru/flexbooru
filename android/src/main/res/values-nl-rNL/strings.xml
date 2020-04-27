@@ -182,6 +182,7 @@
     <string name="settings_grid_width_small">Klein</string>
     <string name="settings_grid_width_normal">Normaal</string>
     <string name="settings_grid_width_large">Groot</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">Toon infobalk</string>
     <string name="settings_show_all_tags">Show tags for all sites</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
