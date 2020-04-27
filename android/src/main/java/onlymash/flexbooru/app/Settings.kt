@@ -40,6 +40,7 @@ object Settings {
     const val POST_SIZE_SAMPLE = "sample"
     const val POST_SIZE_LARGER = "larger"
     const val POST_SIZE_ORIGIN = "origin"
+    const val GRID_ROUNDED_KEY = "settings_grid_rounded"
     const val GRID_MODE_KEY = "settings_grid_mode"
     const val GRID_MODE_FIXED = "fixed"
     const val GRID_MODE_STAGGERED = "staggered"
@@ -143,6 +144,9 @@ object Settings {
 
     val isNightThemeDark: Boolean
         get() = nightThemeString == NIGHT_THEME_DARK
+
+    val isRoundedGrid: Boolean
+        get() = sp.getBoolean(GRID_ROUNDED_KEY, false)
 
     val gridMode: String
         get() = sp.getString(

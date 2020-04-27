@@ -29,6 +29,7 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +48,7 @@ import onlymash.flexbooru.app.Keys.POST_QUERY
 import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.app.Settings.GRID_MODE_KEY
 import onlymash.flexbooru.app.Settings.GRID_RATIO_KEY
+import onlymash.flexbooru.app.Settings.GRID_ROUNDED_KEY
 import onlymash.flexbooru.app.Settings.GRID_WIDTH_KEY
 import onlymash.flexbooru.app.Settings.PAGE_LIMIT_KEY
 import onlymash.flexbooru.app.Settings.SAFE_MODE_KEY
@@ -56,6 +58,7 @@ import onlymash.flexbooru.app.Settings.gridMode
 import onlymash.flexbooru.app.Settings.gridRatio
 import onlymash.flexbooru.app.Settings.gridWidthResId
 import onlymash.flexbooru.app.Settings.isLargeWidth
+import onlymash.flexbooru.app.Settings.isRoundedGrid
 import onlymash.flexbooru.app.Settings.isShowAllTags
 import onlymash.flexbooru.app.Settings.pageLimit
 import onlymash.flexbooru.app.Settings.safeMode
@@ -185,6 +188,7 @@ class PostFragment : SearchBarFragment() {
             longClickItemCallback = { handleLongClick(it) },
             retryCallback = { postViewModel.retry() }
         )
+        setupListPadding(isRoundedGrid)
         mainList.apply {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
             adapter = postAdapter
@@ -210,6 +214,15 @@ class PostFragment : SearchBarFragment() {
         swipeRefresh.setOnRefreshListener {
             postViewModel.refresh()
         }
+    }
+
+    private fun setupListPadding(isRounded: Boolean) {
+        val paddingResId = if (isRounded) R.dimen.list_padding_horizontal else R.dimen.list_padding_horizontal_reverse
+        val paddingHorizontal =  resources.getDimensionPixelSize(paddingResId)
+        mainList.updatePadding(
+            left = paddingHorizontal,
+            right = paddingHorizontal
+        )
     }
 
     override fun onBooruLoaded(booru: Booru?) {
@@ -577,6 +590,11 @@ class PostFragment : SearchBarFragment() {
             PAGE_LIMIT_KEY -> {
                 action.limit = pageLimit
                 postViewModel.show(action)
+            }
+            GRID_ROUNDED_KEY -> {
+                val isRounded = isRoundedGrid
+                setupListPadding(isRounded)
+                postAdapter.isRounded = isRounded
             }
             GRID_MODE_KEY -> {
                 postAdapter.isRatioFixed = gridMode == GRID_MODE_FIXED

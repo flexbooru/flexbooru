@@ -18,22 +18,28 @@ package onlymash.flexbooru.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.app.Settings.gridMode
 import onlymash.flexbooru.app.Settings.gridRatio
 import onlymash.flexbooru.app.Settings.isLargeWidth
+import onlymash.flexbooru.app.Settings.isRoundedGrid
 import onlymash.flexbooru.app.Settings.showInfoBar
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.databinding.ItemPostBinding
+import onlymash.flexbooru.databinding.ItemPostRoundedBinding
 import onlymash.flexbooru.extension.isStillImage
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.base.BasePagedListAdapter
@@ -76,6 +82,11 @@ class PostAdapter(
             field = value
             notifyDataSetChanged()
         }
+    var isRounded = isRoundedGrid
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateItemViewHolder(
         parent: ViewGroup,
@@ -87,18 +98,34 @@ class PostAdapter(
         (holder as PostViewHolder).bindTo(post)
     }
 
-    inner class PostViewHolder(binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PostViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        constructor(parent: ViewGroup): this(parent.viewBinding(ItemPostBinding::inflate))
+        constructor(parent: ViewGroup): this(
+            if (isRounded) {
+                parent.viewBinding(ItemPostRoundedBinding::inflate)
+            } else {
+                parent.viewBinding(ItemPostBinding::inflate)
+            }
+        )
 
-        private val preview = binding.preview
-        private val infoContainer = binding.infoContainer
-        private val postId = binding.postId
-        private val postSize = binding.postSize
+        private val preview: AppCompatImageView
+        private val infoContainer: LinearLayout
+        private val postId: AppCompatTextView
+        private val postSize: AppCompatTextView
 
         private var post: Post? = null
 
         init {
+            val itemBinding = if (binding is ItemPostBinding) {
+                binding
+            } else {
+                (binding as ItemPostRoundedBinding).layoutItemPost
+            }
+            preview = itemBinding.preview
+            infoContainer = itemBinding.infoContainer
+            postId = itemBinding.postId
+            postSize = itemBinding.postSize
+
             infoContainer.isVisible = isShowBar
             itemView.setOnClickListener {
                 post?.let {

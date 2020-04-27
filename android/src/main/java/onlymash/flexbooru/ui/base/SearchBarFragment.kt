@@ -396,8 +396,8 @@ abstract class SearchBarFragment : KadeinFragment(),
 
     override fun onDestroyView() {
         sp.unregisterOnSharedPreferenceChangeListener(this)
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
