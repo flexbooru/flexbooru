@@ -182,7 +182,7 @@
     <string name="settings_grid_width_small">小</string>
     <string name="settings_grid_width_normal">正常</string>
     <string name="settings_grid_width_large">大</string>
-    <string name="settings_grid_rounded">Rounded grid</string>
+    <string name="settings_grid_rounded">圆角网格</string>
     <string name="settings_show_info_bar">显示信息栏</string>
     <string name="settings_show_all_tags">显示所有站点的标签</string>
     <string name="settings_auto_hide_bottom_bar">自动隐藏底栏</string>
