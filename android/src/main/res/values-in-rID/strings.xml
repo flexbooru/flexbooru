@@ -183,6 +183,7 @@
     <string name="settings_grid_width_small">Kecil</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Large</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">Show info bar</string>
     <string name="settings_show_all_tags">Show tags for all sites</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
