@@ -183,6 +183,7 @@
     <string name="settings_grid_width_small">Pequeño</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Grande</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">Mostrar barra de información</string>
     <string name="settings_show_all_tags">Mostrar etiquetas para todos los sitios</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
