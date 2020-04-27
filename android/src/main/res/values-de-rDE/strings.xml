@@ -183,6 +183,7 @@
     <string name="settings_grid_width_small">Klein</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Groß</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">Infoleiste anzeigen</string>
     <string name="settings_show_all_tags">Tags für alle Seiten anzeigen</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
