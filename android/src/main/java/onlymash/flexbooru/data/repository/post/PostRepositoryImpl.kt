@@ -69,10 +69,11 @@ class PostRepositoryImpl(
             .toLiveData(
                 config = Config(
                     pageSize = action.limit,
-                    enablePlaceholders = true,
+                    enablePlaceholders = false,
                     maxSize = 150
                 ),
-                boundaryCallback = postBoundaryCallback
+                boundaryCallback = postBoundaryCallback,
+                fetchExecutor = Dispatchers.IO.asExecutor()
             )
         return Listing(
             pagedList = livePagedList,

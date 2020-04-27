@@ -63,6 +63,7 @@ import onlymash.flexbooru.app.Settings.showInfoBar
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
+import onlymash.flexbooru.app.Values.BOORU_TYPE_UNKNOWN
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.action.ActionPost
@@ -241,6 +242,7 @@ class PostFragment : SearchBarFragment() {
             updateTagsFilterBooru(booru.uid, booru.type)
         } else {
             action = null
+            tagFilterAdapter.updateBooru(-1L, BOORU_TYPE_UNKNOWN, arrayOf(), arrayOf())
         }
         postViewModel.show(action)
     }

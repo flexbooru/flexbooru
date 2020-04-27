@@ -57,8 +57,8 @@ class TagFilterAdapter(private val ratings: Array<String>,
         }
     }
 
-    private var orders: Array<String> = arrayOf()
-    private var thresholds: Array<String> = arrayOf()
+    private var orders: MutableList<String> = mutableListOf()
+    private var thresholds: MutableList<String> = mutableListOf()
     private var booruType: Int = BOORU_TYPE_UNKNOWN
     private var orderSelected = ""
     private var ratingSelected = ""
@@ -105,8 +105,14 @@ class TagFilterAdapter(private val ratings: Array<String>,
     fun updateBooru(booruUid: Long, booruType: Int, orders: Array<String>, thresholds: Array<String>) {
         this.booruUid = booruUid
         this.booruType = booruType
-        this.orders = orders
-        this.thresholds = thresholds
+        this.orders.apply {
+            clear()
+            addAll(orders)
+        }
+        this.thresholds.apply {
+            clear()
+            addAll(thresholds)
+        }
         refreshData(reset = true)
     }
 
@@ -136,6 +142,7 @@ class TagFilterAdapter(private val ratings: Array<String>,
 
     private fun refreshData(reset: Boolean = false) {
         if (booruType == BOORU_TYPE_UNKNOWN) {
+            notifyDataSetChanged()
             return
         }
         val oldTags: MutableList<TagFilter> = mutableListOf()
@@ -206,10 +213,11 @@ class TagFilterAdapter(private val ratings: Array<String>,
     }
 
     override fun getItemCount(): Int {
+        var count = 0
         if (booruType == BOORU_TYPE_UNKNOWN) {
-            return 0
+            return count
         }
-        var count = tags.size + orders.size + ratings.size + 3
+        count += tags.size + orders.size + ratings.size + 3
         if (thresholds.isNotEmpty()) {
             count += thresholds.size + 1
         }
