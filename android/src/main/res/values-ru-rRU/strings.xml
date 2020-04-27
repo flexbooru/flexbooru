@@ -183,6 +183,7 @@
     <string name="settings_grid_width_small">Маленькая</string>
     <string name="settings_grid_width_normal">Нормальная</string>
     <string name="settings_grid_width_large">Большая</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">Отображать информацию</string>
     <string name="settings_show_all_tags">Отображать теги для всех сайтов</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>

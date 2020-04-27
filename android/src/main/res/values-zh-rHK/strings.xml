@@ -182,6 +182,7 @@
     <string name="settings_grid_width_small">小</string>
     <string name="settings_grid_width_normal">一般</string>
     <string name="settings_grid_width_large">大</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">顯示資訊列</string>
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
     <string name="settings_auto_hide_bottom_bar">自動隱藏底列</string>

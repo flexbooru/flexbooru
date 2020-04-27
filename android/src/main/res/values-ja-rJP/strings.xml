@@ -182,6 +182,7 @@
     <string name="settings_grid_width_small">小さく</string>
     <string name="settings_grid_width_normal">ノーマル</string>
     <string name="settings_grid_width_large">大</string>
+    <string name="settings_grid_rounded">Rounded grid</string>
     <string name="settings_show_info_bar">情報バーを表示:</string>
     <string name="settings_show_all_tags">すべてのサイトにタグを表示</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
