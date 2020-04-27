@@ -182,7 +182,7 @@
     <string name="settings_grid_width_small">Pequeno</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Grande</string>
-    <string name="settings_grid_rounded">Rounded grid</string>
+    <string name="settings_grid_rounded">Grade arredondada</string>
     <string name="settings_show_info_bar">Mostrar Barra de Informação</string>
     <string name="settings_show_all_tags">Mostrar tags para todos os sites</string>
     <string name="settings_auto_hide_bottom_bar">Ocultar a barra inferior automaticamente</string>
