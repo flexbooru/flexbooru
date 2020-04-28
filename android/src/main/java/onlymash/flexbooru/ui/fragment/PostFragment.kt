@@ -195,7 +195,6 @@ class PostFragment : SearchBarFragment() {
         }
         postViewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
             postList?.let {
-                mainList.stopScroll()
                 postAdapter.submitList(it)
                 if (progressBar.isVisible && it.size > 0) {
                     progressBar.isVisible = false

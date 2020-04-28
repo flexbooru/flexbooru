@@ -69,8 +69,9 @@ class PostRepositoryImpl(
             .toLiveData(
                 config = Config(
                     pageSize = action.limit,
-                    enablePlaceholders = false,
-                    maxSize = 150
+                    maxSize = 300,
+                    initialLoadSizeHint = action.limit * 2,
+                    enablePlaceholders = true
                 ),
                 boundaryCallback = postBoundaryCallback,
                 fetchExecutor = Dispatchers.IO.asExecutor()
