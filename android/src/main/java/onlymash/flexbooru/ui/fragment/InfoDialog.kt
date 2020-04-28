@@ -26,7 +26,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.databinding.DialogInfoBinding
-import onlymash.flexbooru.ui.activity.DetailActivity
 import onlymash.flexbooru.ui.adapter.InfoAdapter
 import onlymash.flexbooru.ui.base.BaseBottomSheetDialog
 
@@ -87,7 +86,6 @@ class InfoDialog : BaseBottomSheetDialog() {
 
     override fun onDestroyView() {
         _binding = null
-        (activity as? DetailActivity)?.isDialogShowing = false
         super.onDestroyView()
     }
 

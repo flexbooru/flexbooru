@@ -40,7 +40,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
@@ -92,8 +91,8 @@ private const val ACTION_SAVE_AS = 12
 private const val ACTION_SET_AS = 13
 private const val ACTION_SEND = 14
 
-class DetailActivity : PathActivity(), Toolbar.OnMenuItemClickListener,
-    DismissFrameLayout.OnDismissListener, DismissFrameLayout.OnSwipeUpListener {
+class DetailActivity : PathActivity(),
+    Toolbar.OnMenuItemClickListener, DismissFrameLayout.OnDismissListener {
 
     companion object {
         const val ACTION_DETAIL_POST_POSITION = "detail_post_position"
@@ -139,8 +138,6 @@ class DetailActivity : PathActivity(), Toolbar.OnMenuItemClickListener,
     private lateinit var colorDrawable: ColorDrawable
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
-
-    var isDialogShowing = false
 
     private var tmpFile: File? = null
 
@@ -235,7 +232,6 @@ class DetailActivity : PathActivity(), Toolbar.OnMenuItemClickListener,
         val glide = GlideApp.with(this)
         detailAdapter = DetailAdapter(
             glide = glide,
-            swipeUpListener = this,
             dismissListener = this,
             ioExecutor = Dispatchers.IO.asExecutor(),
             clickCallback = { setupBarVisable() },
@@ -382,13 +378,6 @@ class DetailActivity : PathActivity(), Toolbar.OnMenuItemClickListener,
 
     override fun onDismissCancel() {
         colorDrawable.alpha = ALPHA_MAX
-    }
-
-    override fun onSwipeUp(dy: Float) {
-        if (!isDialogShowing && dy < -200) {
-            isDialogShowing = true
-            createInfoDialog()
-        }
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

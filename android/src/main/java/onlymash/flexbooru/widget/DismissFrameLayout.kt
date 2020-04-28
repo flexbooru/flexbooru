@@ -18,7 +18,6 @@ package onlymash.flexbooru.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -39,7 +38,6 @@ class DismissFrameLayout @JvmOverloads constructor(
     private val dragHelper: ViewDragHelper
     private val minimumFlingVelocity: Int
     private var dismissListener: OnDismissListener? = null
-    private var swipeUpListener: OnSwipeUpListener? = null
 
     init {
         dragHelper = ViewDragHelper.create(this, 1f / 8f, ViewDragCallback())
@@ -56,11 +54,8 @@ class DismissFrameLayout @JvmOverloads constructor(
                 val dx = ev.x - lastX
                 val dy = ev.y - lastY
                 val angle = atan2(dy, dx) * 180 / PI
-                if (angle in 20.0..160.0 || angle in -160.0..-20.0) {
+                if (angle in 20.0..160.0) {
                     parent.requestDisallowInterceptTouchEvent(true)
-                    if (dy < 0) {
-                        swipeUpListener?.onSwipeUp(dy)
-                    }
                 }
             }
         }
@@ -82,14 +77,6 @@ class DismissFrameLayout @JvmOverloads constructor(
         if (dragHelper.continueSettling(true)) {
             ViewCompat.postInvalidateOnAnimation(this)
         }
-    }
-
-    fun setSwipeUpListener(listener: OnSwipeUpListener) {
-        swipeUpListener = listener
-    }
-
-    interface OnSwipeUpListener {
-        fun onSwipeUp(dy: Float)
     }
 
     fun setDismissListener(dismissListener: OnDismissListener) {

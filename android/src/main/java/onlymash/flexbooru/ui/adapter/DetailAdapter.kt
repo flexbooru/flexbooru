@@ -62,7 +62,6 @@ import java.util.concurrent.Executor
 class DetailAdapter(
     private val glide: GlideRequests,
     private val dismissListener: DismissFrameLayout.OnDismissListener,
-    private val swipeUpListener: DismissFrameLayout.OnSwipeUpListener,
     private val ioExecutor: Executor,
     private val clickCallback: () -> Unit,
     private val longClickCallback: () -> Unit) : PagedListAdapter<Post, RecyclerView.ViewHolder>(DETAIL_POST_COMPARATOR) {
@@ -96,7 +95,6 @@ class DetailAdapter(
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             setDismissListener(dismissListener)
-            setSwipeUpListener(swipeUpListener)
         }) {
 
         }
