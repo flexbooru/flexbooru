@@ -16,4 +16,4 @@
 
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#40ffffff" />
+    android:color="@color/color_ripple_black" />

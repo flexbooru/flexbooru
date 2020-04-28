@@ -14,27 +14,18 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/action_browse_set_as"
-        android:title="@string/browse_set_as"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_browse_share"
-        android:title="@string/browse_share_link"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_browse_send"
-        android:title="@string/browse_send_file"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_browse_open_browser"
-        android:title="@string/browse_open_in_browser"
-        app:showAsAction="never"/>
-
-</menu>
+<androidx.recyclerview.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tags_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:spanCount="@integer/span_count_tags_list"
+    app:reverseLayout="false"
+    app:fastScrollEnabled="true"
+    app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+    app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+    app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+    app:fastScrollVerticalTrackDrawable="@drawable/line_drawable" />

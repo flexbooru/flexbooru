@@ -137,6 +137,8 @@
     <color name="dark">@color/grey_900</color>
     <color name="transparent">@android:color/transparent</color>
 
+    <color name="color_ripple_black">#40ffffff</color>
+
     <color name="color_primary">#673AB7</color>
     <color name="color_primary_light">#9A67EA</color>
     <color name="color_primary_dark">#320B86</color>

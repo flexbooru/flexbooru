@@ -60,7 +60,7 @@ import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
 import onlymash.flexbooru.common.tracemoe.model.Doc
-import onlymash.flexbooru.ui.base.BaseBottomSheetDialogFragment
+import onlymash.flexbooru.ui.base.BaseBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
 import onlymash.flexbooru.extension.drawNavBar
@@ -302,7 +302,7 @@ class WhatAnimeActivity : BaseActivity() {
         }
     }
 
-    class AnimePlayerDialog : BaseBottomSheetDialogFragment() {
+    class AnimePlayerDialog : BaseBottomSheetDialog() {
 
         private var playerView: PlayerView? = null
         private lateinit var behavior: BottomSheetBehavior<View>

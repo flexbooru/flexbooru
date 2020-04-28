@@ -29,6 +29,7 @@ import androidx.annotation.IntRange
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.net.toUri
 import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -61,9 +62,21 @@ import java.util.concurrent.Executor
 class DetailAdapter(
     private val glide: GlideRequests,
     private val dismissListener: DismissFrameLayout.OnDismissListener,
+    private val swipeUpListener: DismissFrameLayout.OnSwipeUpListener,
     private val ioExecutor: Executor,
     private val clickCallback: () -> Unit,
-    private val longClickCallback: () -> Unit) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostAdapter.POST_COMPARATOR) {
+    private val longClickCallback: () -> Unit) : PagedListAdapter<Post, RecyclerView.ViewHolder>(DETAIL_POST_COMPARATOR) {
+
+    companion object {
+        val DETAIL_POST_COMPARATOR = object : DiffUtil.ItemCallback<Post>() {
+            override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
+                oldItem.id == newItem.id
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
+                oldItem.booruUid == newItem.booruUid &&
+                        oldItem.query == newItem.query &&
+                        oldItem.id == newItem.id
+        }
+    }
 
     private val size = detailSize
     private val colorMatrix = ColorMatrix().apply {
@@ -83,6 +96,7 @@ class DetailAdapter(
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             setDismissListener(dismissListener)
+            setSwipeUpListener(swipeUpListener)
         }) {
 
         }

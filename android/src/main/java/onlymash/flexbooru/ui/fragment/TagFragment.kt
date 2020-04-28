@@ -64,7 +64,7 @@ class TagFragment : SearchBarFragment() {
     override fun getSearchBarHint(): CharSequence =
         getString(R.string.search_bar_hint_search_tags)
 
-    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_tags))
         tagAdapter = TagAdapter {
             tagViewModel.retry()
@@ -95,6 +95,7 @@ class TagFragment : SearchBarFragment() {
     }
 
     override fun onBooruLoaded(booru: Booru?) {
+        super.onBooruLoaded(booru)
         if (booru == null) {
             action = null
             tagViewModel.show(null)

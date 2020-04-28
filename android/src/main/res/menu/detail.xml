@@ -42,8 +42,4 @@
             android:title="@string/browse_open_in_browser"
             app:showAsAction="never"/>
 
-    <item
-            android:id="@+id/action_browse_download"
-            android:title="@string/browse_download"
-            app:showAsAction="never"/>
 </menu>

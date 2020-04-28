@@ -13,16 +13,21 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.ui.viewmodel
+package onlymash.flexbooru.ui.adapter
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import onlymash.flexbooru.data.database.dao.PostDao
-import onlymash.flexbooru.data.model.common.Post
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import onlymash.flexbooru.ui.fragment.ShortcutInfoFragment
+import onlymash.flexbooru.ui.fragment.ShortcutTagFragment
 
-class ShortcutViewModel(private val postDao: PostDao) : ViewModel() {
+class InfoAdapter(private val postId: Int, fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    fun loadPost(booruUid: Long, postId: Int): LiveData<Post?> {
-        return postDao.getFirstPostLiveData(booruUid, postId)
+    override fun createFragment(position: Int): Fragment {
+        return when (position) {
+            0 -> ShortcutInfoFragment.create(postId)
+            else -> ShortcutTagFragment.create(postId)
+        }
     }
+
+    override fun getItemCount(): Int = 2
 }

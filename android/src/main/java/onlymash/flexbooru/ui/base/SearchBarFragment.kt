@@ -45,7 +45,6 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.MuzeiManager
-import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Muzei
 import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
@@ -57,24 +56,15 @@ import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.erased.instance
 
-abstract class SearchBarFragment : KadeinFragment(),
+abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
     SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper,
     ActionMode.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val sp by instance<SharedPreferences>()
     val booruApis by instance<BooruApis>()
-    private val booruDao by instance<BooruDao>()
-
-    private var _binding: FragmentSearchbarBinding? = null
-
-    val isViewCreated
-        get() = _binding != null
-
-    private val binding get() = _binding!!
 
     private var actionTag: ActionTag? = null
 
-    private lateinit var booruViewModel: BooruViewModel
     private lateinit var suggestionViewModel: SuggestionViewModel
     private lateinit var searchBarMover: SearchBarMover
     private lateinit var leftDrawable: DrawerArrowDrawable
@@ -90,19 +80,15 @@ abstract class SearchBarFragment : KadeinFragment(),
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
 
-    override fun onCreateView(
+    override fun onCreateBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        booruViewModel = getBooruViewModel(booruDao)
+        container: ViewGroup?
+    ): FragmentSearchbarBinding {
         suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
-        _binding = FragmentSearchbarBinding.inflate(inflater, container, false)
-        return binding.root
+        return FragmentSearchbarBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
         mainList = binding.refreshableList.list
         searchLayout = binding.searchLayout.searchLayoutContainer
         swipeRefresh = binding.refreshableList.swipeRefresh
@@ -126,27 +112,26 @@ abstract class SearchBarFragment : KadeinFragment(),
         setupFabToListTop()
         setupSwipeRefreshColor()
         initSearchBar()
-        booruViewModel.booru.observe(viewLifecycleOwner, Observer {
-            actionTag = if (it == null) {
-                null
-            } else {
-                ActionTag(
-                    booru = it,
-                    limit = 6,
-                    order = "count"
-                )
-            }
-            onBooruLoaded(it)
-        })
         suggestionViewModel.suggestions.observe(viewLifecycleOwner, Observer {
             searchBar.updateSuggestions(it)
         })
-        onBaseViewCreated(view, savedInstanceState)
-        booruViewModel.loadBooru(activatedBooruUid)
+        onSearchBarViewCreated(view, savedInstanceState)
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
-    abstract fun onBaseViewCreated(view: View, savedInstanceState: Bundle?)
+    abstract fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?)
+
+    override fun onBooruLoaded(booru: Booru?) {
+        actionTag = if (booru == null) {
+            null
+        } else {
+            ActionTag(
+                booru = booru,
+                limit = 6,
+                order = "count"
+            )
+        }
+    }
 
     private fun setupFabToListTop() {
         if (activity is SearchActivity) {
@@ -287,8 +272,6 @@ abstract class SearchBarFragment : KadeinFragment(),
         }
     }
 
-    abstract fun onBooruLoaded(booru: Booru?)
-
 
     override fun onApplySearch(query: String) {
 
@@ -396,7 +379,6 @@ abstract class SearchBarFragment : KadeinFragment(),
 
     override fun onDestroyView() {
         sp.unregisterOnSharedPreferenceChangeListener(this)
-        _binding = null
         super.onDestroyView()
     }
 

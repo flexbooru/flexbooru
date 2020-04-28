@@ -15,10 +15,14 @@
 
 package onlymash.flexbooru.ui.base
 
-import androidx.fragment.app.Fragment
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
+import android.os.Bundle
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import onlymash.flexbooru.R
 
-abstract class KadeinFragment : Fragment(), KodeinAware {
-    override val kodein by kodein()
+abstract class BaseBottomSheetDialog : BottomSheetDialogFragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.TransparentBottomSheetDialogTheme)
+    }
 }

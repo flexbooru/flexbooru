@@ -160,7 +160,7 @@ class PostFragment : SearchBarFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?) {
         if (isPopularPage()) {
             setSearchBarTitle(getString(R.string.title_popular))
         } else if (activity is SearchActivity) {
@@ -225,6 +225,7 @@ class PostFragment : SearchBarFragment() {
     }
 
     override fun onBooruLoaded(booru: Booru?) {
+        super.onBooruLoaded(booru)
         if (booru != null) {
             if (action == null) {
                 action = ActionPost(

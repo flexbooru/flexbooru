@@ -15,64 +15,64 @@
   -->
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/bottom_bar_container"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_bar_container"
+    android:layout_gravity="bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-            android:layout_gravity="top"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/browse_bottom_bar_height">
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/browse_bottom_bar_height">
 
         <ImageButton
-                android:id="@+id/post_tags"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_bookmark_border_24dp"
-                android:tint="@color/white"
-                android:background="@drawable/background_selectable_item_black"
-                android:contentDescription="@string/browse_tags"/>
+            android:id="@+id/post_info"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_info_outline_24dp"
+            android:tint="@color/white"
+            android:background="@drawable/background_selectable_item_black"
+            android:contentDescription="@string/browse_info"/>
 
         <ImageButton
-                android:id="@+id/post_info"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_info_outline_24dp"
-                android:tint="@color/white"
-                android:background="@drawable/background_selectable_item_black"
-                android:contentDescription="@string/browse_info"/>
+            android:id="@+id/post_download"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_file_download_24dp"
+            android:tint="@color/white"
+            android:background="@drawable/background_selectable_item_black"
+            android:contentDescription="@string/browse_download"/>
 
         <ImageButton
-                android:id="@+id/post_save"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_save_outline_24dp"
-                android:tint="@color/white"
-                android:background="@drawable/background_selectable_item_black"
-                android:contentDescription="@string/browse_save_file"/>
+            android:id="@+id/post_save"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_save_outline_24dp"
+            android:tint="@color/white"
+            android:background="@drawable/background_selectable_item_black"
+            android:contentDescription="@string/browse_save_file"/>
 
         <ImageButton
-                android:id="@+id/post_fav"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_star_border_24dp"
-                android:tint="@color/white"
-                android:background="@drawable/background_selectable_item_black"
-                android:contentDescription="@string/browse_add_to_fav"/>
+            android:id="@+id/post_fav"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_star_border_24dp"
+            android:tint="@color/white"
+            android:background="@drawable/background_selectable_item_black"
+            android:contentDescription="@string/browse_add_to_fav"/>
 
     </LinearLayout>
 
     <Space
-            android:id="@+id/space_nav_bar"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/space_nav_bar"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

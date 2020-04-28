@@ -40,6 +40,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
@@ -72,8 +73,7 @@ import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
 import onlymash.flexbooru.ui.base.PathActivity
-import onlymash.flexbooru.ui.fragment.ShortcutInfoFragment
-import onlymash.flexbooru.ui.fragment.ShortcutTagFragment
+import onlymash.flexbooru.ui.fragment.InfoDialog
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
@@ -92,7 +92,8 @@ private const val ACTION_SAVE_AS = 12
 private const val ACTION_SET_AS = 13
 private const val ACTION_SEND = 14
 
-class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Toolbar.OnMenuItemClickListener {
+class DetailActivity : PathActivity(), Toolbar.OnMenuItemClickListener,
+    DismissFrameLayout.OnDismissListener, DismissFrameLayout.OnSwipeUpListener {
 
     companion object {
         const val ACTION_DETAIL_POST_POSITION = "detail_post_position"
@@ -129,7 +130,7 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     private val shortcut get() = binding.bottomShortcut.bottomBarContainer
     private val favButton get() = binding.bottomShortcut.postFav
     private val infoButton get() = binding.bottomShortcut.postInfo
-    private val tagsButton get() = binding.bottomShortcut.postTags
+    private val downloadButton get() = binding.bottomShortcut.postDownload
     private val saveButton get() = binding.bottomShortcut.postSave
 
     private lateinit var booru: Booru
@@ -138,6 +139,8 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     private lateinit var colorDrawable: ColorDrawable
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
+
+    var isDialogShowing = false
 
     private var tmpFile: File? = null
 
@@ -232,18 +235,11 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         val glide = GlideApp.with(this)
         detailAdapter = DetailAdapter(
             glide = glide,
+            swipeUpListener = this,
             dismissListener = this,
             ioExecutor = Dispatchers.IO.asExecutor(),
-            clickCallback = {
-                val isVisible = !toolbarContainer.isVisible
-                window.isShowBar = isVisible
-                toolbarContainer.isVisible = isVisible
-                shortcut.isVisible = isVisible
-                shadow.isVisible = isVisible
-            },
-            longClickCallback = {
-                createLongClickDialog()
-            }
+            clickCallback = { setupBarVisable() },
+            longClickCallback = { createLongClickDialog() }
         )
         detailPager.apply {
             adapter = detailAdapter
@@ -253,6 +249,14 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         detailViewModel.posts.observe(this, Observer { postList ->
             updatePosts(postList)
         })
+    }
+
+    private fun setupBarVisable() {
+        val isVisible = !toolbarContainer.isVisible
+        window.isShowBar = isVisible
+        toolbarContainer.isVisible = isVisible
+        shortcut.isVisible = isVisible
+        shadow.isVisible = isVisible
     }
 
     private fun updatePosts(postList: PagedList<Post>?) {
@@ -300,20 +304,14 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
     }
 
     private fun initShortcutBar() {
-        TooltipCompat.setTooltipText(tagsButton, tagsButton.contentDescription)
+        TooltipCompat.setTooltipText(downloadButton, downloadButton.contentDescription)
         TooltipCompat.setTooltipText(infoButton, infoButton.contentDescription)
         TooltipCompat.setTooltipText(favButton, favButton.contentDescription)
         TooltipCompat.setTooltipText(saveButton, saveButton.contentDescription)
-        tagsButton.setOnClickListener {
+        infoButton.setOnClickListener { createInfoDialog() }
+        downloadButton.setOnClickListener {
             currentPost?.let {
-                ShortcutTagFragment.create(it.id)
-                    .show(supportFragmentManager, "tag")
-            }
-        }
-        infoButton.setOnClickListener {
-            currentPost?.let {
-                ShortcutInfoFragment.create(it.id)
-                    .show(supportFragmentManager, "info")
+                download(it)
             }
         }
         saveButton.setOnClickListener {
@@ -323,6 +321,15 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         }
         favButton.setOnClickListener {
             vote()
+        }
+    }
+
+    private fun createInfoDialog() {
+        if (isFinishing) {
+            return
+        }
+        currentPost?.let {
+            InfoDialog.create(it.id).show(supportFragmentManager, "info")
         }
     }
 
@@ -377,6 +384,13 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
         colorDrawable.alpha = ALPHA_MAX
     }
 
+    override fun onSwipeUp(dy: Float) {
+        if (!isDialogShowing && dy < -200) {
+            isDialogShowing = true
+            createInfoDialog()
+        }
+    }
+
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         val post = currentPost ?: return true
         when (item?.itemId) {
@@ -385,7 +399,6 @@ class DetailActivity : PathActivity(), DismissFrameLayout.OnDismissListener, Too
                     CommentActivity.startActivity(this, postId = it.id)
                 }
             }
-            R.id.action_browse_download -> download(post)
             R.id.action_browse_set_as -> saveAndAction(post, ACTION_SET_AS)
             R.id.action_browse_send -> saveAndAction(post, ACTION_SEND)
             R.id.action_browse_share -> shareLink(post)

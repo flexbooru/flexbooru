@@ -15,106 +15,59 @@
 
 package onlymash.flexbooru.ui.fragment
 
-import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.Formatter
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import onlymash.flexbooru.R
-import onlymash.flexbooru.app.Keys.POST_ID
-import onlymash.flexbooru.app.Settings.activatedBooruUid
-import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
-import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
-import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
-import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
-import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.data.database.dao.PostDao
+import onlymash.flexbooru.app.Keys
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
-import onlymash.flexbooru.databinding.FragmentBottomSheetInfoBinding
+import onlymash.flexbooru.databinding.FragmentShortcutInfoBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountActivity
-import onlymash.flexbooru.ui.base.BaseBottomSheetDialogFragment
-import onlymash.flexbooru.ui.viewmodel.ShortcutViewModel
-import onlymash.flexbooru.ui.viewmodel.getShortcutViewModel
+import onlymash.flexbooru.ui.base.ShortcutFragment
 import onlymash.flexbooru.widget.LinkTransformationMethod
 import onlymash.flexbooru.worker.DownloadWorker
-import org.kodein.di.erased.instance
 
-class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
+enum class UrlType {
+    SAMPLE,
+    MEDIUM,
+    ORIGIN,
+}
+
+class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
 
     companion object {
         fun create(postId: Int): ShortcutInfoFragment {
             return ShortcutInfoFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(POST_ID, postId)
+                    putInt(Keys.POST_ID, postId)
                 }
             }
         }
     }
-
-    enum class UrlType {
-        SAMPLE,
-        MEDIUM,
-        ORIGIN,
-    }
-
-    private lateinit var behavior: BottomSheetBehavior<View>
-
-    private val postDao by instance<PostDao>()
-
-    private var postId = -1
+    
+    private lateinit var booru: Booru
     private var post: Post? = null
 
-    private lateinit var booru: Booru
-    private lateinit var binding: FragmentBottomSheetInfoBinding
-    private lateinit var shortcutViewModel: ShortcutViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.apply {
-            postId = getInt(POST_ID, -1)
-        }
-        val booru = BooruManager.getBooruByUid(activatedBooruUid)
-        if (booru == null) {
-            dismiss()
-            return
-        }
-        this.booru = booru
+    override fun onCreateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentShortcutInfoBinding {
+        return FragmentShortcutInfoBinding.inflate(inflater, container, false)
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        binding = FragmentBottomSheetInfoBinding.inflate(layoutInflater)
-        dialog.setContentView(binding.root)
-        behavior = BottomSheetBehavior.from(binding.root.parent as View)
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    dismiss()
-                }
-            }
-
-        })
-        binding.toolbarLayout.toolbar.apply {
-            setTitle(R.string.browse_info_title)
-            setNavigationOnClickListener {
-                dismiss()
-            }
-        }
+    override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.sourceUrl.transformationMethod = LinkTransformationMethod()
         binding.sourceContainer.apply {
             setOnClickListener {
@@ -129,8 +82,8 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
                 true
             }
         }
-        binding.urlSampleSize.text = "not data"
-        binding.urlLargerSize.text = "not data"
+        binding.urlSampleSize.text = "Unknown"
+        binding.urlLargerSize.text = "Unknown"
         setupCopyUrlListener(binding.urlSampleContainer, UrlType.SAMPLE)
         setupCopyUrlListener(binding.urlLargerContainer, UrlType.MEDIUM)
         setupCopyUrlListener(binding.urlOriginContainer, UrlType.ORIGIN)
@@ -140,11 +93,15 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
         setupDownloadUrlListener(binding.urlSampleDownload, UrlType.SAMPLE)
         setupDownloadUrlListener(binding.urlLargerDownload, UrlType.MEDIUM)
         setupDownloadUrlListener(binding.urlOriginDownload, UrlType.ORIGIN)
-        shortcutViewModel = getShortcutViewModel(postDao, booru.uid, postId)
-        shortcutViewModel.post.observe(this, Observer { post ->
-            bindData(post)
-        })
-        return dialog
+    }
+
+    override fun onBooruLoaded(booru: Booru?) {
+        super.onBooruLoaded(booru)
+        this.booru = booru ?: return
+    }
+
+    override fun onPostLoaded(post: Post?) {
+        bindData(post)
     }
 
     private fun bindData(post: Post?) {
@@ -153,22 +110,21 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
         binding.userId.text = post.uploader.id.toString()
         binding.sourceUrl.text = post.source
         binding.urlOriginSize.text = getSize(post.width, post.height, post.size)
-        if (booru.type != BOORU_TYPE_GEL && booru.type != BOORU_TYPE_SHIMMIE) {
+        if (booru.type != Values.BOORU_TYPE_GEL && booru.type != Values.BOORU_TYPE_SHIMMIE) {
             binding.userContainer.setOnClickListener {
                 startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
                     putExtra(AccountActivity.USER_ID_KEY, post.uploader.id)
                     putExtra(AccountActivity.USER_NAME_KEY, post.uploader.name)
                     putExtra(AccountActivity.USER_AVATAR_KEY, post.uploader.avatar)
                 })
-                dismiss()
             }
         }
-        if (booru.type == BOORU_TYPE_MOE && post.uploader.id > 0) {
+        if (booru.type == Values.BOORU_TYPE_MOE && post.uploader.id > 0) {
             GlideApp.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, post.uploader.id))
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
                 .into(binding.userAvatar)
-        } else if (booru.type == BOORU_TYPE_SANKAKU && !post.uploader.avatar.isNullOrBlank()) {
+        } else if (booru.type == Values.BOORU_TYPE_SANKAKU && !post.uploader.avatar.isNullOrBlank()) {
             GlideApp.with(this)
                 .load(post.uploader.avatar)
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
@@ -187,11 +143,6 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
         return "$width x $height ${Formatter.formatFileSize(context, size.toLong())}"
     }
 
-    override fun onStart() {
-        super.onStart()
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
     private fun setupDownloadUrlListener(view: View, type: UrlType) {
         view.setOnClickListener {
             downloadUrl(type)
@@ -206,24 +157,31 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
 
     private fun setupCopyUrlListener(view: View, type: UrlType) {
         view.setOnLongClickListener{
-            context?.copyText(getUrl(type))
+            copyUrl(type)
             true
         }
     }
+    
+    private fun copyUrl(type: UrlType) {
+        val post = post ?: return
+        context?.copyText(getUrl(post, type))
+    }
 
     private fun downloadUrl(type: UrlType) {
+        val post = post ?: return
         val activity = activity ?: return
-        val url = getUrl(type) ?: return
+        val url = getUrl(post, type)
         DownloadWorker.download(
             url = url,
-            postId = postId,
+            postId = post.id,
             host = booru.host,
             activity = activity
         )
     }
 
     private fun openUrl(type: UrlType) {
-        val url = getUrl(type) ?: return
+        val post = post ?: return
+        val url = getUrl(post, type)
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -234,8 +192,7 @@ class ShortcutInfoFragment : BaseBottomSheetDialogFragment() {
         } catch (_: ActivityNotFoundException) {}
     }
 
-    private fun getUrl(type: UrlType): String? {
-        val post = post ?: return null
+    private fun getUrl(post: Post, type: UrlType): String {
         return when (type) {
             UrlType.SAMPLE -> post.sample
             UrlType.MEDIUM -> post.medium

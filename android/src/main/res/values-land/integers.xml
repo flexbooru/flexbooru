@@ -14,27 +14,6 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/action_browse_set_as"
-        android:title="@string/browse_set_as"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_browse_share"
-        android:title="@string/browse_share_link"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_browse_send"
-        android:title="@string/browse_send_file"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_browse_open_browser"
-        android:title="@string/browse_open_in_browser"
-        app:showAsAction="never"/>
-
-</menu>
+<resources>
+    <integer name="span_count_tags_list">2</integer>
+</resources>
