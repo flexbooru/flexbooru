@@ -53,7 +53,6 @@ allprojects {
         google()
         jcenter()
         maven(url = "https://jitpack.io")
-        maven(url = "https://kotlin.bintray.com/kotlinx/")
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile::class.java) {
@@ -61,7 +60,6 @@ allprojects {
         }
     }
 }
-
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
