@@ -260,27 +260,25 @@
     <string name="comment_send">Kirim</string>
     <string name="comment_cancel">Batal</string>
     <string name="comment_hint">Masukkan komentar</string>
-    <string name="purchase_title">Remove ads &amp; feature unlock</string>
-    <string name="purchase_info_title">Remove ads and unlock full features</string>
-    <string name="purchase_info_remove_ads">* Remove ads</string>
-    <string name="purchase_info_unlock_full_features">* Unlock full features</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
-    <string name="purchase_pay_title">Pay/Restore purchase</string>
+    <string name="purchase_title">Hapus iklan &amp; dapatkan fitur lebih</string>
+    <string name="purchase_info_title">Hapus iklan dan dapatkan fitur penuh</string>
+    <string name="purchase_info_remove_ads">* Hapus iklan</string>
+    <string name="purchase_info_unlock_full_features">* Buka semua fitur</string>
+    <string name="purchase_info_features">1. Hapus limit booru yang tersedia.\n2. Unduh pool arsip zip moebooru.\n3. Candangkan &amp; pulihkan booru dari berkas.\n4. Pencarian dengan gambar dengan SauceNao.    </string>
+    <string name="purchase_pay_title">Pulihkan pembelian</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
     <string name="tab_start_date">Tanggal mulai</string>
     <string name="tab_end_date">Tanggal akhir</string>
     <string name="sauce_nao_help">Bantuan</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
+    <string name="sauce_nao_change_api_key">Ganti kunci api</string>
+    <string name="sauce_nao_get_api_key">Dapatkan kunci api</string>
+    <string name="sauce_nao_remaining_times_today">Sisa kesempatan hari ini: %01$d</string>
+    <string name="sauce_nao_api_key_unset">Kunci api SauceNao belum disetel.</string>
+    <string name="sauce_nao_image_url">Tautan gambar</string>
+    <string name="sauce_nao_invalid_image_url">Tautan gambar tidak valid.</string>
     <string name="sauce_nao_source">Sumber</string>
     <string name="sauce_nao_search_from_url">Url</string>
     <string name="sauce_nao_search_from_file">Berkas</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="action_add_to_muzei">Tambah ke Muzei</string>
 </resources>
