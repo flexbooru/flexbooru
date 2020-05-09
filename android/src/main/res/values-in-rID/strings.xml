@@ -259,7 +259,7 @@
     <string name="comment_delete">Hapus</string>
     <string name="comment_send">Kirim</string>
     <string name="comment_cancel">Batal</string>
-    <string name="comment_hint">Input comment</string>
+    <string name="comment_hint">Masukkan komentar</string>
     <string name="purchase_title">Remove ads &amp; feature unlock</string>
     <string name="purchase_info_title">Remove ads and unlock full features</string>
     <string name="purchase_info_remove_ads">* Remove ads</string>
