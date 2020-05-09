@@ -14,8 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.
-    </string>
+    <string name="app_description">Klien booru untuk Android, mendukung Danbooru, Moebooru, Gelbooru, Sankaku, dll.    </string>
     <string name="title_posts">Posting</string>
     <string name="title_search">Cari</string>
     <string name="title_popular">Populer</string>
@@ -37,7 +36,7 @@
     <string name="title_what_anime">Cari Anime</string>
     <string name="title_history">Riwayat</string>
     <string name="history_clear_all">Hapus semua</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="history_clear_all_content">Semua riwayat akan dihapus.</string>
     <string name="about_app_version">Versi</string>
     <string name="about_app_rate">Beri nilai app ini</string>
     <string name="about_app_translation">Terjemahan</string>
@@ -50,9 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">Email</string>
-    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
+    <string name="about_copyright_and_licenses">Hak Cipta dan Lisensi</string>
     <string name="about_copyright">Hak Cipta</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">Hak Cipta Aplikasi</string>
     <string name="about_licenses">Lisensi</string>
     <string name="about_open_source_licenses">Lisensi Sumber Terbuka</string>
     <string name="snackbar_copy_text">` %s ` berhasil disalin</string>
