@@ -163,6 +163,9 @@
     <string name="settings_night_theme">Tema escuro</string>
     <string name="settings_night_theme_dark">Escuro</string>
     <string name="settings_night_theme_black">Preto</string>
+    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_dns_over_https_summary">Restart takes effect</string>
+    <string name="settings_dns_over_https_dns">DNS Provider</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Limite de página</string>
     <string name="settings_muzei_limit">Limite de Muzei</string>
