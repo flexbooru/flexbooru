@@ -163,6 +163,9 @@
     <string name="settings_night_theme">夜间主题</string>
     <string name="settings_night_theme_dark">暗色</string>
     <string name="settings_night_theme_black">黑色</string>
+    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_dns_over_https_summary">Restart takes effect</string>
+    <string name="settings_dns_over_https_dns">DNS Provider</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每页限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
