@@ -73,6 +73,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.fragment.InfoDialog
+import onlymash.flexbooru.ui.helper.CreateFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
@@ -138,6 +139,7 @@ class DetailActivity : PathActivity(),
     private lateinit var colorDrawable: ColorDrawable
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
+    private lateinit var createFileObserver: CreateFileLifecycleObserver
 
     private var tmpFile: File? = null
 
@@ -204,10 +206,24 @@ class DetailActivity : PathActivity(),
         setContentView(binding.root)
         colorDrawable = ColorDrawable(ContextCompat.getColor(this, R.color.black))
         binding.root.background = colorDrawable
+        createFileObserver = CreateFileLifecycleObserver(activityResultRegistry){ uri ->
+            saveFile(uri)
+        }
+        lifecycle.addObserver(createFileObserver)
         initInsets()
         initPager()
         initToolbar()
         initShortcutBar()
+    }
+
+    private fun saveFile(uri: Uri) {
+        val file = tmpFile ?: return
+        lifecycleScope.launch {
+            if (copyFile(file, uri)) {
+                showToast(getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)))
+            }
+            tmpFile = null
+        }
     }
 
     private fun initInsets() {
@@ -497,15 +513,7 @@ class DetailActivity : PathActivity(),
             return
         }
         tmpFile = source
-        val intent = Intent().apply {
-            action = Intent.ACTION_CREATE_DOCUMENT
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = fileName.getMimeType()
-            putExtra(Intent.EXTRA_TITLE, fileName)
-        }
-        try {
-            startActivityForResult(intent, REQUEST_CODE_SAVE_FILE)
-        } catch (_: ActivityNotFoundException) {}
+        createFileObserver.createDocument(fileName)
     }
 
     private suspend fun setFileAs(source: File?, fileName: String) {
@@ -615,24 +623,6 @@ class DetailActivity : PathActivity(),
             player = null
         }
         playerHolder.release()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != Activity.RESULT_OK || data == null) {
-            tmpFile = null
-            return
-        }
-        if (requestCode == REQUEST_CODE_SAVE_FILE) {
-            val uri = data.data ?: return
-            val file = tmpFile ?: return
-            lifecycleScope.launch {
-                if (copyFile(file, uri)) {
-                    showToast(getString(R.string.msg_file_save_success, DocumentsContract.getDocumentId(uri)))
-                }
-                tmpFile = null
-            }
-        }
     }
 
     private fun showToast(msg: String) {

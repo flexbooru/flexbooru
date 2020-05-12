@@ -38,10 +38,10 @@ import onlymash.flexbooru.app.Settings.gridMode
 import onlymash.flexbooru.app.Settings.nightMode
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.getTreeUri
-import onlymash.flexbooru.extension.openDocumentTree
 import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.extension.trim
 import onlymash.flexbooru.extension.ListListener
+import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -78,15 +78,9 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
                     activity?.recreate()
                 }
             }
-            DOWNLOAD_PATH_KEY -> {
-                initPathSummary()
-            }
-            NIGHT_MODE_KEY -> {
-                AppCompatDelegate.setDefaultNightMode(nightMode)
-            }
-            GRID_MODE_KEY -> {
-                gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
-            }
+            DOWNLOAD_PATH_KEY -> initPathSummary()
+            NIGHT_MODE_KEY -> AppCompatDelegate.setDefaultNightMode(nightMode)
+            GRID_MODE_KEY -> gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
         }
     }
 
@@ -105,7 +99,7 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            DOWNLOAD_PATH_KEY -> activity?.openDocumentTree()
+            DOWNLOAD_PATH_KEY -> (activity as? PathActivity)?.pickDir()
             CLEAR_CACHE_KEY -> createClearDialog()
         }
         return super.onPreferenceTreeClick(preference)

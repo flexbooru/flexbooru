@@ -34,34 +34,13 @@
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
--dontwarn io.fabric.sdk.android.**
-
-### Exoplayer2
--dontwarn com.google.android.exoplayer2.**
 
 ### Kotlin Coroutine
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
 
--dontwarn androidx.room.paging.LimitOffsetDataSource
-
 -keep class com.google.android.gms.** { *; }
--dontwarn com.google.android.gms.**
-
-# JSR 305 annotations are for embedding nullability information.
--dontwarn javax.annotation.**
-
--dontwarn okhttp3.**
--dontwarn okio.**
--dontwarn org.conscrypt.**
-# A resource is loaded with a relative path so the package of this class must be preserved.
--keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-# OkHttp platform used only on JVM and when Conscrypt dependency is available.
--dontwarn okhttp3.internal.platform.ConscryptPlatform
-# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
--dontwarn org.codehaus.mojo.animal_sniffer.*
 
 #https://github.com/Tickaroo/tikxml/blob/master/docs/AnnotatingModelClasses.md
 -keep class com.tickaroo.tikxml.** { *; }
@@ -73,7 +52,6 @@
 -keepclasseswithmembernames class * {
     @com.tickaroo.tikxml.* <methods>;
 }
--dontwarn com.tickaroo.tikxml.**
 
 -keep class com.android.vending.billing.**
 
@@ -98,15 +76,4 @@
 }
 -keepclasseswithmembers class onlymash.flexbooru.common.tracemoe.model.** {
     kotlinx.serialization.KSerializer serializer(...);
-}
-
-# ServiceLoader support
--keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
--keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
--keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
--keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
-
-# Most of volatile fields are updated with AFU and should not be mangled
--keepclassmembernames class kotlinx.** {
-    volatile <fields>;
 }

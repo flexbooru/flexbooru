@@ -39,6 +39,7 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountConfigActivity
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
+import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
 import onlymash.flexbooru.ui.viewmodel.getPoolViewModel
@@ -139,7 +140,7 @@ class PoolFragment : SearchBarFragment() {
         if (booru.type != BOORU_TYPE_MOE) {
             return
         }
-        val activity = activity ?: return
+        val activity = activity as? PathActivity ?: return
         AlertDialog.Builder(activity)
             .setTitle("Pool $poolId")
             .setItems(activity.resources.getStringArray(R.array.pool_item_action)) { _, which ->

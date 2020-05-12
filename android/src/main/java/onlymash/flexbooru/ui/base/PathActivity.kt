@@ -15,18 +15,19 @@
 
 package onlymash.flexbooru.ui.base
 
-import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import onlymash.flexbooru.app.Settings
-import onlymash.flexbooru.app.Values.REQUEST_CODE_OPEN_DIRECTORY
 import onlymash.flexbooru.extension.toDecodedString
+import onlymash.flexbooru.ui.helper.StorageFolderLifecycleObserver
 
 abstract class PathActivity : KodeinActivity() {
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data ?: return
+    private lateinit var observer: StorageFolderLifecycleObserver
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observer = StorageFolderLifecycleObserver(activityResultRegistry) { uri ->
             val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             contentResolver.apply {
                 persistedUriPermissions.forEach { permission ->
@@ -38,5 +39,10 @@ abstract class PathActivity : KodeinActivity() {
             }
             Settings.downloadDirPath = uri.toDecodedString()
         }
+        lifecycle.addObserver(observer)
+    }
+
+    fun pickDir() {
+        observer.openDocumentTree(this)
     }
 }

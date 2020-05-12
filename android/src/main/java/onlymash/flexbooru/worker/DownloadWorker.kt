@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.worker
 
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -38,6 +37,7 @@ import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.receiver.DownloadNotificationClickReceiver
 import onlymash.flexbooru.okhttp.OkHttp3Downloader
+import onlymash.flexbooru.ui.base.PathActivity
 import java.io.InputStream
 
 class DownloadWorker(
@@ -64,7 +64,7 @@ class DownloadWorker(
         const val DOC_ID_KEY = "doc_id"
         const val INPUT_DATA_KEY = "input_data"
 
-        fun downloadPost(post: Post?, host: String, activity: Activity) {
+        fun downloadPost(post: Post?, host: String, activity: PathActivity) {
             if (post == null) return
             val url = when (Settings.downloadSize) {
                 Settings.POST_SIZE_SAMPLE -> post.sample
@@ -86,7 +86,7 @@ class DownloadWorker(
             runWork(data)
         }
 
-        fun download(url: String, postId: Int, host: String, activity: Activity) {
+        fun download(url: String, postId: Int, host: String, activity: PathActivity) {
             if (url.isEmpty()) return
             var fileName = url.fileName()
             if (!fileName.contains(' ')) fileName = "$postId - $fileName"
@@ -103,7 +103,7 @@ class DownloadWorker(
         }
 
         fun downloadPool(
-            activity: Activity,
+            activity: PathActivity,
             poolId: Int,
             type: Int,
             booru: Booru

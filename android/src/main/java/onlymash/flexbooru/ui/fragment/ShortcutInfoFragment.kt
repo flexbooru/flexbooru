@@ -35,6 +35,7 @@ import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountActivity
+import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.ShortcutFragment
 import onlymash.flexbooru.widget.LinkTransformationMethod
 import onlymash.flexbooru.worker.DownloadWorker
@@ -169,7 +170,7 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
 
     private fun downloadUrl(type: UrlType) {
         val post = post ?: return
-        val activity = activity ?: return
+        val activity = activity as? PathActivity ?: return
         val url = getUrl(post, type)
         DownloadWorker.download(
             url = url,

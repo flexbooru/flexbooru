@@ -15,9 +15,7 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -55,6 +53,8 @@ import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.fragment.QRCodeDialog
+import onlymash.flexbooru.ui.helper.CreateFileLifecycleObserver
+import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 import java.io.IOException
@@ -65,12 +65,11 @@ class BooruActivity : KodeinActivity() {
     private val booruDao by instance<BooruDao>()
 
     private val binding by viewBinding(ActivityListCommonBinding::inflate)
-
     private val list get() = binding.list
-
     private lateinit var booruAdapter: BooruAdapter
-
     private lateinit var booruViewModel: BooruViewModel
+    private lateinit var createFileObserver: CreateFileLifecycleObserver
+    private lateinit var openFileObserver: OpenFileLifecycleObserver
 
     private val clipboard by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
@@ -132,6 +131,14 @@ class BooruActivity : KodeinActivity() {
                 }
             }
         })
+        createFileObserver = CreateFileLifecycleObserver(activityResultRegistry) { uri ->
+            saveFile(uri)
+        }
+        openFileObserver = OpenFileLifecycleObserver(activityResultRegistry) { uri ->
+            openFile(uri)
+        }
+        lifecycle.addObserver(createFileObserver)
+        lifecycle.addObserver(openFileObserver)
         if (intent != null) {
             handleShareIntent(intent)
         }
@@ -211,17 +218,7 @@ class BooruActivity : KodeinActivity() {
             startActivity(Intent(this, PurchaseActivity::class.java))
             return
         }
-        val intent = Intent().apply {
-            action = Intent.ACTION_CREATE_DOCUMENT
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/octet-stream"
-            putExtra(Intent.EXTRA_TITLE, "boorus.json")
-        }
-        try {
-            startActivityForResult(intent,
-                REQUEST_CODE_BACKUP_TO_FILE
-            )
-        } catch (_: ActivityNotFoundException) {}
+        createFileObserver.createDocument("boorus.json")
     }
 
     private fun restoreFromFile() {
@@ -229,16 +226,8 @@ class BooruActivity : KodeinActivity() {
             startActivity(Intent(this, PurchaseActivity::class.java))
             return
         }
-        val intent = Intent().apply {
-            action = Intent.ACTION_OPEN_DOCUMENT
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) "application/json" else "application/octet-stream"
-        }
-        try {
-            startActivityForResult(intent,
-                REQUEST_CODE_RESTORE_FROM_FILE
-            )
-        } catch (_: ActivityNotFoundException) {}
+        val mimeType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) "application/json" else "application/octet-stream"
+        openFileObserver.openDocument(mimeType)
     }
 
     private fun addConfig() {
@@ -263,60 +252,48 @@ class BooruActivity : KodeinActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != Activity.RESULT_OK || data == null) return
-        when (requestCode) {
-            REQUEST_CODE_BACKUP_TO_FILE -> {
-                val uri = data.data ?: return
-                GlobalScope.launch(Dispatchers.Main) {
-                    val success = withContext(Dispatchers.IO) {
-                        val boorus = booruAdapter.getBoorus()
-                        if (boorus.isNullOrEmpty()) return@withContext false
-                        val outputStream = contentResolver.openOutputStream(uri) ?: return@withContext false
-                        var inputStream: InputStream? = null
-                        try {
-                            inputStream = Json(JsonConfiguration(
-                                ignoreUnknownKeys = true,
-                                prettyPrint = true
-                            )).stringify(boorus).byteInputStream()
-                            inputStream.copyTo(outputStream)
-                        } catch (_:IOException) {
-                            return@withContext false
-                        } finally {
-                            inputStream?.safeCloseQuietly()
-                            outputStream.safeCloseQuietly()
-                        }
-                        return@withContext true
-                    }
-                    if (success) {
-                        Toast.makeText(this@BooruActivity, "Success: ${uri.path}", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@BooruActivity, "Save failed!", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-            REQUEST_CODE_RESTORE_FROM_FILE -> {
-                val uri = data.data ?: return
-                val inputStream = contentResolver.openInputStream(uri) ?: return
-                var boorus: List<Booru>? = null
+    private fun saveFile(uri: Uri) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val success = withContext(Dispatchers.IO) {
+                val boorus = booruAdapter.getBoorus()
+                if (boorus.isNullOrEmpty()) return@withContext false
+                val outputStream = contentResolver.openOutputStream(uri) ?: return@withContext false
+                var inputStream: InputStream? = null
                 try {
-                    val jsonString = inputStream.readBytes().toString(Charsets.UTF_8)
-                    boorus = Json(JsonConfiguration(ignoreUnknownKeys = true)).parseList(jsonString)
-                } catch (_: Exception) {
-
+                    inputStream = Json(JsonConfiguration(
+                        ignoreUnknownKeys = true,
+                        prettyPrint = true
+                    )).stringify(boorus).byteInputStream()
+                    inputStream.copyTo(outputStream)
+                } catch (_:IOException) {
+                    return@withContext false
                 } finally {
-                    inputStream.close()
+                    inputStream?.safeCloseQuietly()
+                    outputStream.safeCloseQuietly()
                 }
-                boorus?.let {
-                    booruViewModel.createBoorus(it)
-                }
+                return@withContext true
+            }
+            if (success) {
+                Toast.makeText(this@BooruActivity, "Success: ${uri.path}", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this@BooruActivity, "Save failed!", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    companion object {
-        private const val REQUEST_CODE_BACKUP_TO_FILE = 11
-        private const val REQUEST_CODE_RESTORE_FROM_FILE = 12
+    private fun openFile(uri: Uri) {
+        val inputStream = contentResolver.openInputStream(uri) ?: return
+        var boorus: List<Booru>? = null
+        try {
+            val jsonString = inputStream.readBytes().toString(Charsets.UTF_8)
+            boorus = Json(JsonConfiguration(ignoreUnknownKeys = true)).parseList(jsonString)
+        } catch (_: Exception) {
+
+        } finally {
+            inputStream.close()
+        }
+        boorus?.let {
+            booruViewModel.createBoorus(it)
+        }
     }
 }

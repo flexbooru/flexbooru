@@ -15,8 +15,6 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -54,13 +52,12 @@ import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
 import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
 import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
+import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 import java.io.IOException
 
 const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
-
-private const val READ_IMAGE_REQUEST_CODE = 147
 
 class SauceNaoActivity : BaseActivity() {
 
@@ -79,10 +76,10 @@ class SauceNaoActivity : BaseActivity() {
     private val fab get() = binding.sauceNaoSearchFab
     private val errorMsg get() = binding.common.errorMsg
 
-    private lateinit var sauceNaoViewModel: SauceNaoViewModel
     private var response: SauceNaoResponse? = null
-
+    private lateinit var sauceNaoViewModel: SauceNaoViewModel
     private lateinit var sauceNaoAdapter: SauceNaoAdapter
+    private lateinit var openFileObserver: OpenFileLifecycleObserver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +139,10 @@ class SauceNaoActivity : BaseActivity() {
                 }
             }
         })
+        openFileObserver = OpenFileLifecycleObserver(activityResultRegistry) { uri ->
+            search(uri)
+        }
+        lifecycle.addObserver(openFileObserver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -206,24 +207,7 @@ class SauceNaoActivity : BaseActivity() {
     }
 
     private fun searchByFile() {
-        try {
-            startActivityForResult(
-                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "image/*"
-                },
-                READ_IMAGE_REQUEST_CODE
-            )
-        } catch (_: ActivityNotFoundException) {}
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == READ_IMAGE_REQUEST_CODE) {
-            data?.data?.also {
-                search(it)
-            }
-        }
+        openFileObserver.openDocument("image/*")
     }
 
     override fun onBackPressed() {

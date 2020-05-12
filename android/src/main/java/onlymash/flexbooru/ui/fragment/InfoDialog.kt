@@ -19,6 +19,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.Window
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -58,6 +59,7 @@ class InfoDialog : BaseBottomSheetDialog() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         _binding = DialogInfoBinding.inflate(layoutInflater)
         dialog.setContentView(binding.root)
         behavior = dialog.behavior

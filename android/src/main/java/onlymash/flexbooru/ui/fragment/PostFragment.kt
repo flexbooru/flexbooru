@@ -87,6 +87,7 @@ import onlymash.flexbooru.ui.activity.SauceNaoActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
+import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.PostViewModel
 import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
@@ -372,7 +373,7 @@ class PostFragment : SearchBarFragment() {
 
 
     private fun handleLongClick(post: Post) {
-        val activity = activity
+        val activity = activity as? PathActivity
         if (activity == null || activity.isFinishing) {
             return
         }

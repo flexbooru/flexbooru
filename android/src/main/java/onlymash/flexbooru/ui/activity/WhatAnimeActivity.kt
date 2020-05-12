@@ -15,9 +15,7 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -65,11 +63,11 @@ import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
 import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
+import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.erased.instance
 import java.io.ByteArrayOutputStream
 
-private const val READ_IMAGE_REQUEST_CODE = 147
 private const val PREVIEW_VIDEO_URL_KEY = "preview_video_url"
 
 class WhatAnimeActivity : BaseActivity() {
@@ -78,6 +76,7 @@ class WhatAnimeActivity : BaseActivity() {
 
     private lateinit var whatAnimeAdapter: WhatAnimeAdapter
     private lateinit var traceMoeViiewModel: TraceMoeViewModel
+    private lateinit var openFileObserver: OpenFileLifecycleObserver
 
     private val api by kodeinCommon.instance<TraceMoeApi>("TraceMoeApi")
 
@@ -141,16 +140,12 @@ class WhatAnimeActivity : BaseActivity() {
                 errorMsg.isVisible = false
             }
         })
+        openFileObserver = OpenFileLifecycleObserver(activityResultRegistry) { uri ->
+            search(uri)
+        }
+        lifecycle.addObserver(openFileObserver)
         fab.setOnClickListener {
-            try {
-                startActivityForResult(
-                    Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                        type = "image/*"
-                    },
-                    READ_IMAGE_REQUEST_CODE
-                )
-            } catch (_: ActivityNotFoundException) {}
+            openFileObserver.openDocument("image/*")
         }
     }
 
@@ -218,15 +213,6 @@ class WhatAnimeActivity : BaseActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == READ_IMAGE_REQUEST_CODE) {
-            data?.data?.also {
-                search(it)
-            }
-        }
     }
 
     inner class WhatAnimeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
