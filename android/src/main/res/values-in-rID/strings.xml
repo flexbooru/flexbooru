@@ -163,6 +163,9 @@
     <string name="settings_night_theme">Tema malam</string>
     <string name="settings_night_theme_dark">Gelap</string>
     <string name="settings_night_theme_black">Hitam</string>
+    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_dns_over_https_summary">Restart takes effect</string>
+    <string name="settings_dns_over_https_dns">DNS Provider</string>
     <string name="settings_safe_mode">Mode aman</string>
     <string name="settings_page_limit">Batas halaman</string>
     <string name="settings_muzei_limit">Batas Muzei</string>
