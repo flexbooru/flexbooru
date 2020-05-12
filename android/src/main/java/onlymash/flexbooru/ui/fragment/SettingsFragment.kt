@@ -23,10 +23,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
+import com.takisoft.preferencex.SimpleMenuPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.CLEAR_CACHE_KEY
+import onlymash.flexbooru.app.Settings.DNS_OVER_HTTPS
+import onlymash.flexbooru.app.Settings.DNS_OVER_HTTPS_PROVIDER
 import onlymash.flexbooru.app.Settings.DOWNLOAD_PATH_KEY
 import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.app.Settings.GRID_MODE_KEY
@@ -35,6 +39,7 @@ import onlymash.flexbooru.app.Settings.NIGHT_MODE_KEY
 import onlymash.flexbooru.app.Settings.NIGHT_THEME_KEY
 import onlymash.flexbooru.app.Settings.downloadDirPath
 import onlymash.flexbooru.app.Settings.gridMode
+import onlymash.flexbooru.app.Settings.isDohEnable
 import onlymash.flexbooru.app.Settings.nightMode
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.getTreeUri
@@ -68,6 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
         findPreference<Preference>(NIGHT_THEME_KEY)?.isVisible = resources.configuration.isNightEnable()
         downloadDirPath = context?.contentResolver?.getTreeUri()?.toDecodedString()
         initPathSummary()
+        setupDnsPreference()
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -89,6 +95,17 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
         sp.unregisterOnSharedPreferenceChangeListener(this)
     }
 
+    private fun setupDnsPreference(changed: Boolean = false) {
+        findPreference<SimpleMenuPreference>(DNS_OVER_HTTPS_PROVIDER)?.isVisible = isDohEnable
+        if (changed) {
+            findPreference<SwitchPreference>(DNS_OVER_HTTPS)?.apply {
+                val tipSummary = getString(R.string.settings_dns_over_https_summary)
+                summaryOff = tipSummary
+                summaryOn = tipSummary
+            }
+        }
+    }
+
     private fun initPathSummary() {
         var path = downloadDirPath
         if (path.isNullOrEmpty()) {
@@ -101,6 +118,8 @@ class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferen
         when (preference?.key) {
             DOWNLOAD_PATH_KEY -> (activity as? PathActivity)?.pickDir()
             CLEAR_CACHE_KEY -> createClearDialog()
+            DNS_OVER_HTTPS,
+            DNS_OVER_HTTPS_PROVIDER -> setupDnsPreference(true)
         }
         return super.onPreferenceTreeClick(preference)
     }

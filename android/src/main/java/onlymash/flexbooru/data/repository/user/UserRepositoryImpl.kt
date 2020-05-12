@@ -18,6 +18,7 @@ package onlymash.flexbooru.data.repository.user
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
@@ -48,7 +49,7 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
             .addQueryParameter("code", "00")
             .build()
         val cookiesStore = HashMap<String, List<Cookie>>()
-        val client = OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .cookieJar(object : CookieJar {
                 override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
@@ -58,7 +59,10 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                     return cookiesStore[booru.host] ?: listOf()
                 }
             })
-            .build()
+        if (Settings.isDohEnable) {
+            builder.dns(Settings.doh)
+        }
+        val client = builder.build()
         val formBody = FormBody.Builder()
             .add("user", username)
             .add("pass", password)

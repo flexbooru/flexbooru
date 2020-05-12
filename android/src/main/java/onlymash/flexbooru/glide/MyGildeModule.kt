@@ -11,6 +11,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.OkHttpClient
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.InputStream
 
@@ -25,10 +26,11 @@ class MyGildeModule : AppGlideModule() {
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        val client = OkHttpClient.Builder()
-            .addInterceptor(ProgressInterceptor())
-            .build()
-        registry.replace(GlideUrl::class.java, InputStream::class.java, MyOkHttpUrlLoaderFactory(client))
+        val builder = OkHttpClient.Builder().addInterceptor(ProgressInterceptor())
+        if (Settings.isDohEnable) {
+            builder.dns(Settings.doh)
+        }
+        registry.replace(GlideUrl::class.java, InputStream::class.java, MyOkHttpUrlLoaderFactory(builder.build()))
     }
 
     override fun isManifestParsingEnabled(): Boolean = false

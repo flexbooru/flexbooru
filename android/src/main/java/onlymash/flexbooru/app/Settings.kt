@@ -17,12 +17,17 @@ package onlymash.flexbooru.app
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import okhttp3.OkHttpClient
+import okhttp3.dnsoverhttps.DnsOverHttps
 import onlymash.flexbooru.R
+import onlymash.flexbooru.okhttp.DohProviders
 import org.kodein.di.erased.instance
 import java.util.*
 
 object Settings {
 
+    const val DNS_OVER_HTTPS = "settings_dns_over_https"
+    const val DNS_OVER_HTTPS_PROVIDER = "settings_dns_over_https_dns"
     const val SAFE_MODE_KEY = "settings_safe_mode"
     const val PAGE_LIMIT_KEY = "settings_page_limit"
     const val MUZEI_LIMIT_KEY = "settings_muzei_limit"
@@ -265,4 +270,16 @@ object Settings {
         get() = sp.getString(SAUCE_NAO_API_KEY_KEY, "") ?: ""
         set(value) = sp.edit().putString(
             SAUCE_NAO_API_KEY_KEY, value).apply()
+
+    val isDohEnable: Boolean get() = sp.getBoolean(DNS_OVER_HTTPS, true)
+
+    val doh: DnsOverHttps
+        get() {
+            return when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
+                "google" -> DohProviders.buildGoogle(OkHttpClient())
+                "powerdns" -> DohProviders.buildPowerDns(OkHttpClient())
+                "cleanbrowsing" -> DohProviders.buildCleanBrowsing(OkHttpClient())
+                else -> DohProviders.buildCloudflare(OkHttpClient())
+            }
+        }
 }

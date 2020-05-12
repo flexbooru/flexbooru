@@ -25,6 +25,7 @@ import androidx.annotation.VisibleForTesting
 import okhttp3.*
 import onlymash.flexbooru.app.Keys.HEADER_REFERER
 import onlymash.flexbooru.app.Keys.HEADER_USER_AGENT
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.extension.userAgent
 import kotlin.math.max
 import kotlin.math.min
@@ -152,11 +153,14 @@ class OkHttp3Downloader : Downloader {
                     .addHeader(HEADER_REFERER, "$scheme://$host/post")
                     .build())
             }
-            return OkHttpClient.Builder()
+            val builder = OkHttpClient.Builder()
                 .cache(Cache(cacheDir, maxSize))
                 .addInterceptor(interceptor)
                 .addInterceptor(ProgressInterceptor())
-                .build()
+            if (Settings.isDohEnable) {
+                builder.dns(Settings.doh)
+            }
+            return builder.build()
         }
     }
 }

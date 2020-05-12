@@ -98,6 +98,21 @@
         app:title="@string/settings_options">
 
         <SwitchPreference
+            app:key="settings_dns_over_https"
+            app:title="@string/settings_dns_over_https"
+            app:defaultValue="true"
+            app:summaryOn="@string/switch_on"
+            app:summaryOff="@string/switch_off"/>
+
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:key="settings_dns_over_https_dns"
+            app:entries="@array/settings_dns_over_https_dns_entries"
+            app:entryValues="@array/settings_dns_over_https_dns_entries_values"
+            app:defaultValue="cloudflare"
+            app:title="@string/settings_dns_over_https_dns"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreference
             app:key="settings_safe_mode"
             app:title="@string/settings_safe_mode"
             app:defaultValue="true"

@@ -178,6 +178,13 @@
     <string name="settings_night_theme">Night theme</string>
     <string name="settings_night_theme_dark">Dark</string>
     <string name="settings_night_theme_black">Black</string>
+    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_dns_over_https_summary">Restart takes effect</string>
+    <string name="settings_dns_over_https_dns">DNS Provider</string>
+    <string name="settings_dns_over_https_google" translatable="false">dns.google</string>
+    <string name="settings_dns_over_https_cloudflare" translatable="false">cloudflare-dns.com</string>
+    <string name="settings_dns_over_https_cleanbrowsing" translatable="false">doh.cleanbrowsing.org</string>
+    <string name="settings_dns_over_https_powerdns" translatable="false">doh.powerdns.org</string>
     <string name="settings_safe_mode">Safe mode</string>
     <string name="settings_page_limit">Page limit</string>
     <string name="settings_muzei_limit">Muzei limit</string>

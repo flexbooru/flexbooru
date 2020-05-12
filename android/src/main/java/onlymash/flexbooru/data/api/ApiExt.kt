@@ -25,6 +25,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.BuildConfig
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
@@ -34,6 +35,10 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
         .writeTimeout(10, TimeUnit.SECONDS)
+
+    if (Settings.isDohEnable) {
+        builder.dns(Settings.doh)
+    }
 
     if (isSankaku) {
         builder.addInterceptor(ApiSankakuInterceptor())
