@@ -25,14 +25,14 @@
     <string name="title_account">Cuenta</string>
     <string name="title_account_and_booru">Cuenta - %s</string>
     <string name="title_artists">Artistas</string>
-    <string name="title_pools">Pools</string>
+    <string name="title_pools">Grupos</string>
     <string name="title_tags">Etiquetas</string>
     <string name="title_comments">Comentarios</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_night_mode">Modo Noche</string>
     <string name="title_copyright">Copyright</string>
     <string name="title_about">Acerca de</string>
-    <string name="title_tag_blacklist">Etiquetar lista negra</string>
+    <string name="title_tag_blacklist">Lista negra de etiquetas</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Qué Anime</string>
     <string name="title_history">Historial</string>
@@ -235,8 +235,8 @@
     <string name="artist_order_name">Nombre</string>
     <string name="artist_order_count">Contador</string>
     <string name="artist_order_default">Predefinido</string>
-    <string name="search_bar_hint_search_posts">Buscar posts</string>
-    <string name="search_bar_hint_search_pools">Buscar pools</string>
+    <string name="search_bar_hint_search_posts">Buscar publicaciones</string>
+    <string name="search_bar_hint_search_pools">Buscar grupos</string>
     <string name="search_bar_hint_search_tags">Buscar etiquetas</string>
     <string name="search_bar_hint_search_artists">Buscar artistas</string>
     <string name="tag_filter_add_text">Añadir ↑️</string>
@@ -253,7 +253,7 @@
     <string name="muzei_fetch">Obtener imagen</string>
     <string name="muzei_input_cant_be_empty">La entrada no puede estar vacía.</string>
     <string name="muzei_action_view_post">Ver post en Flexbooru</string>
-    <string name="muzei_action_search_posts">Buscar posts en Flexbooru</string>
+    <string name="muzei_action_search_posts">Buscar publicaciones en Flexbooru</string>
     <string name="muzei_attribution">Post de Flexbooru</string>
     <string name="tag_blacklist_copy">Copiar</string>
     <string name="tag_blacklist_delete">Eliminar</string>
