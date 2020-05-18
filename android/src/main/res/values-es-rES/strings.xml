@@ -17,7 +17,7 @@
     <string name="app_description">Un cliente booru para Android, soporte Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Posts</string>
-    <string name="title_search">Search</string>
+    <string name="title_search">Buscar</string>
     <string name="title_popular">Popular</string>
     <string name="title_manage_boorus">Administrar boorus</string>
     <string name="title_settings">Ajustes</string>
@@ -35,9 +35,9 @@
     <string name="title_tag_blacklist">Etiquetar lista negra</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Qué Anime</string>
-    <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="title_history">Historial</string>
+    <string name="history_clear_all">Borrar todo</string>
+    <string name="history_clear_all_content">Todo el historial será eliminado.</string>
     <string name="about_app_version">Versión</string>
     <string name="about_app_rate">Calificar esta aplicación</string>
     <string name="about_app_translation">Traducción</string>
@@ -50,9 +50,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">E-mail</string>
-    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
+    <string name="about_copyright_and_licenses">Copyright &amp; Licencias</string>
     <string name="about_copyright">Derechos de autor</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">Copyright de la aplicación</string>
     <string name="about_licenses">Licencias</string>
     <string name="about_open_source_licenses">Licencias Open Source</string>
     <string name="snackbar_copy_text">` %s ` han sido copiados al portapapeles.</string>
@@ -103,7 +103,7 @@
     <string name="booru_config_info">Información de Booru</string>
     <string name="booru_config_scheme">Esquema</string>
     <string name="booru_config_host">Host</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">Ubicación</string>
     <string name="booru_config_type">Tipo</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">El nombre no puede estar vacío.</string>
@@ -120,10 +120,10 @@
     <string name="browse_set_as">Establecer como</string>
     <string name="browse_send_file">Enviar archivo</string>
     <string name="browse_save_file">Guardar archivo</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">Guardar como...</string>
     <string name="browse_share_link">Compartir enlace</string>
     <string name="browse_open_in_browser">Abrir en el navegador</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">Formato no soportado: %s</string>
     <string name="browse_tags">Etiquetas</string>
     <string name="browse_info">Información</string>
     <string name="browse_recommended">Recomendado</string>
@@ -156,7 +156,7 @@
     <string name="account_comments">Comentarios</string>
     <string name="account_config_msg_tip_empty">Nombre de usuario o contraseña / La clave API no puede estar vacía.</string>
     <string name="account_recommended">Recomendado</string>
-    <string name="settings_night_mode">Night mode</string>
+    <string name="settings_night_mode">Modo Noche</string>
     <string name="settings_night_mode_on">On</string>
     <string name="settings_night_mode_off">Off</string>
     <string name="settings_night_mode_system">Follow system</string>
