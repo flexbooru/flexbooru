@@ -147,7 +147,7 @@
     <string name="account_api_key">Clave API</string>
     <string name="account_forgot_password">Olvidó su contraseña?</string>
     <string name="account_forgot_api_key">Qué es la clave API?</string>
-    <string name="account_set">Configurar cuenta</string>
+    <string name="account_set">Iniciar cuenta</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">Eliminar cuenta</string>
     <string name="account_user_dialog_title_remove">Está seguro de que quiere eliminar esta cuenta?</string>
@@ -206,13 +206,13 @@
     <string name="switch_no">No</string>
     <string name="pool_description_is_empty">La descripción está vacía.</string>
     <string name="pool_download">Descargar publicación</string>
-    <string name="pool_download_jpgs">Descargar JPG</string>
-    <string name="pool_download_pngs">Descargar PNG</string>
+    <string name="pool_download_jpgs">Descargar JPGs</string>
+    <string name="pool_download_pngs">Descargar PNGs</string>
     <string name="tag_type">Tipo</string>
-    <string name="tag_type_all">Todos los tipos</string>
+    <string name="tag_type_all">Todos</string>
     <string name="tag_type_general">General</string>
     <string name="tag_type_artist">Artista</string>
-    <string name="tag_type_copyright">Copyright</string>
+    <string name="tag_type_copyright">Derechos de autor</string>
     <string name="tag_type_character">Personaje</string>
     <string name="tag_type_circle">Círculo</string>
     <string name="tag_type_faults">Defecto</string>
@@ -226,14 +226,14 @@
     <string name="tag_order">Orden</string>
     <string name="tag_order_date">Fecha</string>
     <string name="tag_order_name">Nombre</string>
-    <string name="tag_order_count">Contador</string>
+    <string name="tag_order_count">Cantidad</string>
     <string name="tag_delete_title">Borrar etiqueta</string>
-    <string name="tag_delete_content">%s serán eliminados.</string>
-    <string name="artist_urls_is_empty">URL está vacía.</string>
+    <string name="tag_delete_content">`%s` serán eliminados.</string>
+    <string name="artist_urls_is_empty">Urls están vacías.</string>
     <string name="artist_order">Orden</string>
     <string name="artist_order_date">Fecha</string>
     <string name="artist_order_name">Nombre</string>
-    <string name="artist_order_count">Contador</string>
+    <string name="artist_order_count">Cantidad</string>
     <string name="artist_order_default">Predefinido</string>
     <string name="search_bar_hint_search_posts">Buscar publicaciones</string>
     <string name="search_bar_hint_search_pools">Buscar grupos</string>
@@ -266,7 +266,7 @@
     <string name="comment_hint">Comentario de entrada</string>
     <string name="purchase_title">Quitar anuncios y desbloquear características</string>
     <string name="purchase_info_title">Quitar anuncios y desbloquear características</string>
-    <string name="purchase_info_remove_ads">Eliminar anuncios</string>
+    <string name="purchase_info_remove_ads">* Quitar anuncios</string>
     <string name="purchase_info_unlock_full_features">* Desbloquear todas las características</string>
     <string name="purchase_info_features">1. Quita el límite del booru disponible.\n2. Descarga el archivo zip del pool de
         moebooru.\n3. Copia de seguridad &amp; Restaurar boorus desde el archivo.\n. Búsqueda invertida por SauceNao.
@@ -276,9 +276,9 @@
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">AliPay</string>
     <string name="tab_start_date">Fecha de inicio</string>
-    <string name="tab_end_date">Fecha fin</string>
+    <string name="tab_end_date">Fecha de finalizacion</string>
     <string name="sauce_nao_help">Ayuda</string>
-    <string name="sauce_nao_change_api_key">Cambiar clave api</string>
+    <string name="sauce_nao_change_api_key">Cambiar Clave api</string>
     <string name="sauce_nao_get_api_key">Obtener clave api</string>
     <string name="sauce_nao_remaining_times_today">Tiempo restante hoy: %01$d</string>
     <string name="sauce_nao_api_key_unset">La clave Api de SauceNao no está establecida.</string>
