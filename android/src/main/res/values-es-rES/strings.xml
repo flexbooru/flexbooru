@@ -30,7 +30,7 @@
     <string name="title_comments">Comentarios</string>
     <string name="title_muzei">Muzei</string>
     <string name="title_night_mode">Modo Noche</string>
-    <string name="title_copyright">Copyright</string>
+    <string name="title_copyright">Derechos de autor</string>
     <string name="title_about">Acerca de</string>
     <string name="title_tag_blacklist">Lista negra de etiquetas</string>
     <string name="title_sauce_nao">SauceNao</string>
@@ -64,7 +64,7 @@
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Descargar publicación</string>
     <string name="post_add_to_fav">Añadir a favoritos</string>
-    <string name="post_search_by_sauce_nao">Búsqueda por SauceNao</string>
+    <string name="post_search_by_sauce_nao">Buscar por SauceNao</string>
     <string name="msg_download_must_enable">Se requiere Gestor de Descargas.</string>
     <string name="msg_path_denied">¡Error al guardar! No hay acceso a la ruta actual.</string>
     <string name="msg_download_failed">Descarga fallida</string>
@@ -74,7 +74,7 @@
     <string name="popular_week">Semana</string>
     <string name="popular_month">Mes</string>
     <string name="popular_date">Fecha</string>
-    <string name="popular_date_range">Rango de fechas</string>
+    <string name="popular_date_range">Intervalo de fechas</string>
     <string name="dialog_yes">Sí</string>
     <string name="dialog_no">No</string>
     <string name="dialog_ok">Aceptar</string>
@@ -102,7 +102,7 @@
     <string name="booru_config_name">Nombre</string>
     <string name="booru_config_info">Información de Booru</string>
     <string name="booru_config_scheme">Esquema</string>
-    <string name="booru_config_host">Host</string>
+    <string name="booru_config_host">Host/Servidor</string>
     <string name="booru_config_path">Ubicación</string>
     <string name="booru_config_type">Tipo</string>
     <string name="booru_config_hash_salt">Hash salt</string>
