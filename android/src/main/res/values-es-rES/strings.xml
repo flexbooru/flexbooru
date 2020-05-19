@@ -149,8 +149,8 @@
     <string name="account_forgot_api_key">Qué es la clave API?</string>
     <string name="account_set">Iniciar cuenta</string>
     <string name="account_user_id">ID: %d</string>
-    <string name="account_user_remove">Eliminar cuenta</string>
-    <string name="account_user_dialog_title_remove">Está seguro de que quiere eliminar esta cuenta?</string>
+    <string name="account_user_remove">Cerrar sesión</string>
+    <string name="account_user_dialog_title_remove">¿Está seguro de que quiere eliminar esta cuenta?</string>
     <string name="account_favorites">Favoritos</string>
     <string name="account_posts">Publicaciones</string>
     <string name="account_comments">Comentarios</string>
