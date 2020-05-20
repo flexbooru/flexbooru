@@ -177,7 +177,7 @@
     <string name="settings_download_path_not_set">Ruta no establecida</string>
     <string name="settings_post_size_sample">Ejemplo</string>
     <string name="settings_post_size_larger">Más grande</string>
-    <string name="settings_post_size_origin">Origen</string>
+    <string name="settings_post_size_origin">Original</string>
     <string name="settings_grid_mode">Modo Cuadrícula</string>
     <string name="settings_grid_mode_fixed">Proporción</string>
     <string name="settings_grid_mode_staggered">Escalonado</string>
@@ -269,7 +269,7 @@
     <string name="purchase_info_remove_ads">* Quitar anuncios</string>
     <string name="purchase_info_unlock_full_features">* Desbloquear todas las características</string>
     <string name="purchase_info_features">1. Quita el límite del booru disponible.\n2. Descarga el archivo zip del pool de
-        moebooru.\n3. Copia de seguridad &amp; Restaurar boorus desde el archivo.\n. Búsqueda invertida por SauceNao.
+        moebooru.\n3. Copia de seguridad &amp; Restaurar boorus desde el archivo.\n4. Búsqueda invertida por SauceNao.
     
     </string>
     <string name="purchase_pay_title">Pagar/Restaurar compra</string>
