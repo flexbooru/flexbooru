@@ -170,7 +170,7 @@
     <string name="settings_page_limit">Paginalimiet</string>
     <string name="settings_muzei_limit">Muzeilimiet</string>
     <string name="settings_muzei_size">Muzeigrootte</string>
-    <string name="settings_detail_size">Detail grootte</string>
+    <string name="settings_detail_size">Detailgrootte</string>
     <string name="settings_download_size">Downloadgrootte</string>
     <string name="settings_download_path">Downloadmap</string>
     <string name="settings_download_path_not_set">Pad niet ingesteld</string>
