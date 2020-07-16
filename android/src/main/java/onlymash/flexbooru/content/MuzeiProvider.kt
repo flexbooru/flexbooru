@@ -15,8 +15,11 @@
 
 package onlymash.flexbooru.content
 
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import com.google.android.apps.muzei.api.UserCommand
+import androidx.core.app.RemoteActionCompat
+import androidx.core.graphics.drawable.IconCompat
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.R
@@ -29,38 +32,43 @@ import java.io.IOException
 import java.io.InputStream
 
 class MuzeiProvider : MuzeiArtProvider() {
-    companion object {
-        private const val COMMAND_ID_VIEW_POST = 1
-        private const val COMMAND_ID_SEARCH_POSTS = 2
-    }
+
     override fun onLoadRequested(initial: Boolean) {
         MuzeiArtWorker.enqueueLoad()
     }
 
-    override fun getCommands(artwork: Artwork): MutableList<UserCommand> =
-        context?.run {
-            listOf(
-                UserCommand(COMMAND_ID_VIEW_POST, getString(R.string.muzei_action_view_post)),
-                UserCommand(COMMAND_ID_SEARCH_POSTS, getString(R.string.muzei_action_search_posts)))
-        } as MutableList<UserCommand>? ?: super.getCommands(artwork)
+    override fun getCommandActions(artwork: Artwork): List<RemoteActionCompat> {
+        val context = context ?: return super.getCommandActions(artwork)
+        return listOf(
+            RemoteActionCompat(
+                IconCompat.createWithResource(context, R.drawable.ic_search_24dp),
+                context.getString(R.string.muzei_action_view_post),
+                "",
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    getIntent(context, artwork.token ?: ""),
+                    PendingIntent.FLAG_ONE_SHOT
+                )
+            ),
+            RemoteActionCompat(
+                IconCompat.createWithResource(context, R.drawable.ic_search_24dp),
+                context.getString(R.string.muzei_action_search_posts),
+                "",
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    getIntent(context, artwork.byline ?: ""),
+                    PendingIntent.FLAG_ONE_SHOT
+                )
+            )
+        )
+    }
 
-    override fun onCommand(artwork: Artwork, id: Int) {
-        val context = context ?: return
-        when (id) {
-            COMMAND_ID_VIEW_POST -> {
-                val query = artwork.token ?: return
-                context.startActivity(
-                    Intent(context, SearchActivity::class.java)
-                        .putExtra(POST_QUERY, query)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            }
-            COMMAND_ID_SEARCH_POSTS -> {
-                val query = artwork.byline ?: return
-                context.startActivity(
-                    Intent(context, SearchActivity::class.java)
-                        .putExtra(POST_QUERY, query)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            }
+    private fun getIntent(context: Context, query: String): Intent {
+        return Intent(context, SearchActivity::class.java).apply {
+            putExtra(POST_QUERY, query)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
     }
 

@@ -21,7 +21,7 @@ import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
 import onlymash.flexbooru.R
 import onlymash.flexbooru.okhttp.DohProviders
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.util.*
 
 object Settings {

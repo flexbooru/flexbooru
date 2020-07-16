@@ -60,7 +60,7 @@ class PostRepositoryImpl(
             scope = scope,
             handleResponse = this::insertResultIntoDb
         )
-        val refreshTrigger = MutableLiveData<Unit>()
+        val refreshTrigger = MutableLiveData<Unit?>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refreshPosts(action, scope)
         }

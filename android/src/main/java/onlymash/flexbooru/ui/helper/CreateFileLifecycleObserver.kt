@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.helper
 
 import android.net.Uri
-import androidx.activity.invoke
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,6 +38,6 @@ class CreateFileLifecycleObserver(
     }
 
     fun createDocument(filename: String) {
-        createFile.invoke(filename)
+        createFile.launch(filename)
     }
 }

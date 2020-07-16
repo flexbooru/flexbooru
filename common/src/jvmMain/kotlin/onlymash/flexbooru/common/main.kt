@@ -17,12 +17,12 @@ package onlymash.flexbooru.common
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import onlymash.flexbooru.common.di.kodeinCommon
+import onlymash.flexbooru.common.di.diCommon
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 fun main() {
-    val api by kodeinCommon.instance<SauceNaoApi>("SauceNaoApi")
+    val api by diCommon.instance<SauceNaoApi>("SauceNaoApi")
     GlobalScope.launch {
         val response = try {
             api.searchByUrl(url = "https://i.pximg.net/img-master/img/2019/04/13/00/00/01/74170729_p0_master1200.jpg", apiKey = "bbfa3e504bacf627a130b07ac3ec2d1b94e3f2c4")

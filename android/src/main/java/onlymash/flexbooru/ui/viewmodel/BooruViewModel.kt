@@ -24,18 +24,20 @@ import onlymash.flexbooru.data.model.common.Booru
 
 class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
 
-    private val _boorus: MediatorLiveData<List<Booru>> = MediatorLiveData()
+    private val _boorus = MediatorLiveData<List<Booru>>()
 
-    private val _uid: MutableLiveData<Long> = MutableLiveData(-1)
-    val booru: MediatorLiveData<Booru> = MediatorLiveData()
+    private val _uid = MutableLiveData<Long>(-1)
+    val booru = MediatorLiveData<Booru>()
 
     fun loadBoorus(): LiveData<List<Booru>> {
         viewModelScope.launch {
             val boorus = withContext(Dispatchers.IO) {
                 booruDao.getAllLiveData()
             }
-            _boorus.addSource(boorus) {
-                _boorus.postValue(it)
+            _boorus.addSource(boorus) { data ->
+                if (data != null) {
+                    _boorus.value = data
+                }
             }
         }
         return _boorus
@@ -47,11 +49,13 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
         }
         _uid.value = uid
         viewModelScope.launch {
-            val data = withContext(Dispatchers.IO) {
+            val result = withContext(Dispatchers.IO) {
                 booruDao.getBooruByUidLiveData(uid)
             }
-            booru.addSource(data) {
-                booru.postValue(it)
+            booru.addSource(result) { data ->
+                if (data != null) {
+                    booru.postValue(data)
+                }
             }
         }
         return true

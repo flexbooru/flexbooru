@@ -20,7 +20,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.storage.StorageManager
 import android.provider.DocumentsContract
-import androidx.activity.invoke
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,7 +45,7 @@ class StorageFolderLifecycleObserver(
     }
 
     fun openDocumentTree(context: Context) {
-        getDocumentTree.invoke(context.getRootUri())
+        getDocumentTree.launch(context.getRootUri())
     }
 
     private fun Context.getRootUri(): Uri? {

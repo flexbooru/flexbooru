@@ -26,7 +26,7 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 abstract class BooruFragment<T: ViewBinding> : KodeinFragment<T>() {
 

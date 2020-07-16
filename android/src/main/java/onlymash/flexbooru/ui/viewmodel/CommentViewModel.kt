@@ -25,21 +25,21 @@ import onlymash.flexbooru.extension.NetResult
 
 class CommentViewModel(private val repository: CommentRepository) : ScopeViewModel() {
 
-    private val _action: MutableLiveData<ActionComment> = MutableLiveData()
+    private val _action = MutableLiveData<ActionComment?>()
 
-    private val _result = Transformations.map(_action) {
-        repository.getComments(viewModelScope, it)
+    private val _result = Transformations.map(_action) { action ->
+        if (action != null) repository.getComments(viewModelScope, action) else null
     }
 
-    val comments = Transformations.switchMap(_result) { it.pagedList }
+    val comments = Transformations.switchMap(_result) { it?.pagedList }
 
-    val networkState = Transformations.switchMap(_result) { it.networkState }
+    val networkState = Transformations.switchMap(_result) { it?.networkState }
 
-    val refreshState = Transformations.switchMap(_result) { it.refreshState }
+    val refreshState = Transformations.switchMap(_result) { it?.refreshState }
 
-    val commentState: MutableLiveData<NetResult<Boolean>> = MutableLiveData()
+    val commentState = MutableLiveData<NetResult<Boolean>>()
 
-    fun show(action: ActionComment?): Boolean {
+    fun show(action: ActionComment): Boolean {
         if (_action.value == action) {
             return false
         }

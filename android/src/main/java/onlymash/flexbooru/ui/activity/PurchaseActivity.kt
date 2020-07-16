@@ -64,13 +64,8 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                 .setListener(this)
                 .build()
             billingClient?.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult?) {
-
-                }
-
-                override fun onBillingServiceDisconnected() {
-
-                }
+                override fun onBillingSetupFinished(billingResult: BillingResult) { }
+                override fun onBillingServiceDisconnected() { }
             })
             binding.payGooglePlay.setOnClickListener {
                 orderByGooglePlay()
@@ -86,8 +81,8 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         }
     }
 
-    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
-        val responseCode = billingResult?.responseCode ?: return
+    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
+        val responseCode = billingResult.responseCode
         if ((responseCode == BillingClient.BillingResponseCode.OK ||
                     responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) && !purchases.isNullOrEmpty()) {
             val index = purchases.indexOfFirst { it.sku == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }

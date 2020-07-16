@@ -54,7 +54,7 @@ import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewmodel.*
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
     SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper,

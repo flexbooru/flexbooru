@@ -23,7 +23,7 @@ import onlymash.flexbooru.data.repository.suggestion.SuggestionRepository
 
 class SuggestionViewModel(private val repo: SuggestionRepository) : ScopeViewModel() {
 
-    val suggestions: MutableLiveData<List<String>> = MutableLiveData()
+    val suggestions = MutableLiveData<List<String>>()
 
     fun fetchSuggestions(actionTag: ActionTag) {
         viewModelScope.launch {

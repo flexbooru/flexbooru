@@ -42,7 +42,7 @@ import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import onlymash.flexbooru.databinding.ActivityAccountBinding
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 class AccountActivity : PathActivity() {
 

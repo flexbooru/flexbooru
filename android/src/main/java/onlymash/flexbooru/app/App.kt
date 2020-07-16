@@ -16,14 +16,11 @@
 package onlymash.flexbooru.app
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import com.android.billingclient.api.*
 import com.bumptech.glide.Glide
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
@@ -44,26 +41,17 @@ import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.PurchaseActivity
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.erased.*
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 
-class App : Application(), KodeinAware {
+class App : Application(), DIAware {
 
     companion object {
         lateinit var app: App
     }
 
-    override val kodein by Kodein.lazy {
-        bind<Context>() with instance(this@App)
-        bind<SharedPreferences>() with provider { PreferenceManager.getDefaultSharedPreferences(instance()) }
-        bind() from singleton { MyDatabase(instance()) }
-        bind() from singleton { instance<MyDatabase>().booruDao() }
-        bind() from singleton { instance<MyDatabase>().tagFilterDao() }
-        bind() from singleton { instance<MyDatabase>().muzeiDao() }
-        bind() from singleton { instance<MyDatabase>().postDao() }
-        bind() from singleton { instance<MyDatabase>().historyDao() }
-        bind() from singleton { BooruApis() }
+    override val di by DI.lazy {
+        import(appModule(this@App))
     }
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
@@ -119,11 +107,11 @@ class App : Application(), KodeinAware {
             .setListener { _, _ ->  }
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult?) {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingClient.isReady) {
                     val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
                     isOrderSuccess = if (purchases.isNullOrEmpty()) {
-                       false
+                        false
                     } else {
                         val index = purchases.indexOfFirst {
                             it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED

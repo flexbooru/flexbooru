@@ -19,17 +19,17 @@ plugins {
 
 buildscript {
     extra.apply {
-        set("nav_version", "2.3.0-alpha06")
-        set("room_version", "2.2.5")
-        set("work_version", "2.4.0-alpha03")
+        set("nav_version", "2.3.0")
+        set("room_version", "2.3.0-alpha01")
+        set("work_version", "2.4.0-rc01")
         set("glide_version", "4.11.0")
-        set("lifecycle_version", "2.3.0-alpha02")
-        set("exoplayer_version", "2.11.4")
-        set("okhttp_version", "4.6.0")
-        set("retrofit_version", "2.8.1")
+        set("lifecycle_version", "2.3.0-alpha05")
+        set("exoplayer_version", "2.11.7")
+        set("okhttp_version", "4.8.0")
+        set("retrofit_version", "2.9.0")
         set("tikxml_version", "0.8.13")
-        set("kodein_version", "6.5.5")
-        set("coroutines_version", "1.3.6")
+        set("kodein_version", "7.0.0")
+        set("coroutines_version", "1.3.7")
         set("serialization_version", "0.20.0")
         set("ktor_version", "1.3.2")
     }
@@ -41,10 +41,10 @@ buildscript {
         val kotlinVersion = "1.3.72"
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:4.1.0-alpha09")
+        classpath("com.android.tools.build:gradle:4.1.0-beta03")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.2")
         classpath("com.google.gms:google-services:4.3.3")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.1.0")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.2.0")
     }
 }
 

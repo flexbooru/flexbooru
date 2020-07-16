@@ -35,7 +35,7 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 
 class MuzeiArtWorker(
@@ -63,18 +63,18 @@ class MuzeiArtWorker(
             applicationContext, applicationContext.packageName + ".muzei")
         val attributionString = applicationContext.getString(R.string.muzei_attribution)
         val artworks = posts.map { post ->
-            Artwork().apply {
-                token = "id:${post.id}"
-                title = "Post ${post.id}"
-                byline = post.query
-                attribution = attributionString
+            Artwork(
+                token = "id:${post.id}",
+                title = "Post ${post.id}",
+                byline = post.query,
+                attribution = attributionString,
                 persistentUri = when (muzeiSize) {
                     POST_SIZE_SAMPLE -> post.sample.toUri()
                     POST_SIZE_LARGER -> post.medium.toUri()
                     else -> post.origin.toUri()
-                }
+                },
                 webUri = getWebUri(booru, post.id)
-            }
+            )
         }
         providerClient.setArtwork(artworks)
         return Result.success()

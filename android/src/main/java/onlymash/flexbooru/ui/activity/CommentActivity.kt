@@ -53,7 +53,7 @@ import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
 import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 class CommentActivity : KodeinActivity() {
 

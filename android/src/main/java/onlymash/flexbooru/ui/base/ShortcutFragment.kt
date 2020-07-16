@@ -27,7 +27,7 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.ui.viewmodel.ShortcutViewModel
 import onlymash.flexbooru.ui.viewmodel.getShortcutViewModel
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 abstract class ShortcutFragment<T: ViewBinding> : BooruFragment<T>() {
 

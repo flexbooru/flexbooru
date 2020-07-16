@@ -43,7 +43,7 @@ import onlymash.flexbooru.data.repository.user.UserRepository
 import onlymash.flexbooru.databinding.ActivityAccountConfigBinding
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 class AccountConfigActivity : KodeinActivity() {
 

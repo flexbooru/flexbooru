@@ -16,9 +16,9 @@
 package onlymash.flexbooru.ui.base
 
 import androidx.viewbinding.ViewBinding
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
 
-abstract class KodeinFragment<T: ViewBinding> : BindingFragment<T>(), KodeinAware {
-    override val kodein by kodein()
+abstract class KodeinFragment<T: ViewBinding> : BindingFragment<T>(), DIAware {
+    final override val di by di()
 }

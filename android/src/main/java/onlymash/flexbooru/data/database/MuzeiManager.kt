@@ -18,7 +18,7 @@ package onlymash.flexbooru.data.database
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.MuzeiDao
 import onlymash.flexbooru.data.model.common.Muzei
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.io.IOException
 import java.sql.SQLException
 

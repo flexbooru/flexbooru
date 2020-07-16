@@ -15,11 +15,10 @@
 
 package onlymash.flexbooru.ui.base
 
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
+import org.kodein.di.DIAware
+import org.kodein.di.android.di
 
-abstract class KodeinActivity : BaseActivity(), KodeinAware {
+abstract class KodeinActivity : BaseActivity(), DIAware {
 
-    override val kodein by kodein()
-
+    final override val di by di()
 }

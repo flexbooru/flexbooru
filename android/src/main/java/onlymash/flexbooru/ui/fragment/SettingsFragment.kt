@@ -48,14 +48,13 @@ import onlymash.flexbooru.extension.trim
 import onlymash.flexbooru.extension.ListListener
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.erased.instance
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
-class SettingsFragment : PreferenceFragmentCompat(), KodeinAware, SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    override val kodein: Kodein by kodein()
+    override val di by di()
     private val postDao by instance<PostDao>()
     private val sp by instance<SharedPreferences>()
 

@@ -79,7 +79,7 @@ import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
 import onlymash.flexbooru.widget.DismissFrameLayout
 import onlymash.flexbooru.worker.DownloadWorker
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.io.*
 
 private const val ALPHA_MAX = 0xFF

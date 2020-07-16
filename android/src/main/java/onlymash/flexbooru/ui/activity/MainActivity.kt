@@ -82,7 +82,7 @@ import onlymash.flexbooru.extension.setupInsets
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 

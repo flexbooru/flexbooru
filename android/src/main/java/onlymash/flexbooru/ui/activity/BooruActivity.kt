@@ -56,7 +56,7 @@ import onlymash.flexbooru.ui.fragment.QRCodeDialog
 import onlymash.flexbooru.ui.helper.CreateFileLifecycleObserver
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.io.IOException
 import java.io.InputStream
 

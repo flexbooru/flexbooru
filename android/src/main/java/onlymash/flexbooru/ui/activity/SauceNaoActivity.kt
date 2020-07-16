@@ -42,7 +42,7 @@ import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.app.Settings.sauceNaoApiKey
 import onlymash.flexbooru.databinding.ActivitySauceNaoBinding
 import onlymash.flexbooru.databinding.ItemSauceNaoBinding
-import onlymash.flexbooru.common.di.kodeinCommon
+import onlymash.flexbooru.common.di.diCommon
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
@@ -54,7 +54,7 @@ import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.io.IOException
 
 const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
@@ -71,7 +71,7 @@ class SauceNaoActivity : BaseActivity() {
         }
     }
 
-    private val api by kodeinCommon.instance<SauceNaoApi>("SauceNaoApi")
+    private val api by diCommon.instance<SauceNaoApi>("SauceNaoApi")
     private val binding by viewBinding(ActivitySauceNaoBinding::inflate)
     private val fab get() = binding.sauceNaoSearchFab
     private val errorMsg get() = binding.common.errorMsg

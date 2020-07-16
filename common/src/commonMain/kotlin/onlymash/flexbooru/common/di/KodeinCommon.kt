@@ -26,13 +26,13 @@ import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApiService
 import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
 import onlymash.flexbooru.common.tracemoe.api.TraceMoeApiService
-import org.kodein.di.Kodein
-import org.kodein.di.erased.bind
-import org.kodein.di.erased.instance
-import org.kodein.di.erased.provider
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
+import org.kodein.di.provider
 
 @UnstableDefault
-val kodeinCommon = Kodein.lazy {
+val diCommon = DI.lazy {
         bind<HttpClient>() with provider {
             HttpClient {
                 install(JsonFeature) {
@@ -53,13 +53,13 @@ val kodeinCommon = Kodein.lazy {
         bind<String>("SauceNaoBaseUrl") with provider { "https://saucenao.com" }
         bind<String>("TraceMoeBaseUrl") with provider { "https://trace.moe" }
         bind<SauceNaoApi>("SauceNaoApi") with provider {
-            val client by kodein.instance<HttpClient>()
-            val baseUrl by kodein.instance<String>("SauceNaoBaseUrl")
+            val client by di.instance<HttpClient>()
+            val baseUrl by di.instance<String>("SauceNaoBaseUrl")
             SauceNaoApiService(client = client, baseUrl = baseUrl)
         }
         bind<TraceMoeApi>("TraceMoeApi") with provider {
-            val client by kodein.instance<HttpClient>()
-            val baseUrl by kodein.instance<String>("TraceMoeBaseUrl")
+            val client by di.instance<HttpClient>()
+            val baseUrl by di.instance<String>("TraceMoeBaseUrl")
             TraceMoeApiService(
                 client = client,
                 baseUrl = baseUrl

@@ -97,7 +97,7 @@ import onlymash.flexbooru.util.ViewTransition
 import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.worker.DownloadWorker
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.util.*
 import kotlin.math.roundToInt
 

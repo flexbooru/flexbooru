@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import java.io.IOException
 import java.sql.SQLException
 

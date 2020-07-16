@@ -38,10 +38,9 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
 import onlymash.flexbooru.extension.ListListener
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.erased.instance
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
 private const val CONFIG_NAME_KEY = "booru_config_name"
 private const val CONFIG_TYPE_KEY = "booru_config_type"
@@ -57,10 +56,10 @@ private const val CONFIG_TYPE_GEL = "gelbooru"
 private const val CONFIG_TYPE_SANKAKU = "sankaku"
 private const val CONFIG_TYPE_SHIMMIE = "shimmie"
 
-class BooruConfigFragment : PreferenceFragmentCompat(), KodeinAware,
+class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
     SharedPreferences.OnSharedPreferenceChangeListener, BooruConfigActivity.MenuListener {
 
-    override val kodein: Kodein by kodein()
+    override val di by di()
     private val booruDao by instance<BooruDao>()
     private val sp by instance<SharedPreferences>()
 
