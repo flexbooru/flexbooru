@@ -114,7 +114,6 @@ class PostBoundaryCallback(
     }
 
     private suspend fun insertItemsIntoDb(posts: List<Post>) {
-        lastResponseSize = posts.size
         withContext(Dispatchers.IO) {
             handleResponse(posts)
         }
@@ -126,7 +125,10 @@ class PostBoundaryCallback(
                 val response = booruApis.danApi.getPosts(
                     action.getDanPostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.mapIndexed { index, postDan ->
+                    val raw = response.body()?.toMutableList()
+                    lastResponseSize = raw?.size ?: 0
+                    raw?.removeIf { it.id == -1 }
+                    val posts = raw?.mapIndexed { index, postDan ->
                         postDan.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -151,7 +153,10 @@ class PostBoundaryCallback(
                 val response = booruApis.danApi.getPostsE621(
                     action.getDanPostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.posts?.mapIndexed { index, postDan ->
+                    val raw = response.body()?.posts?.toMutableList()
+                    lastResponseSize = raw?.size ?: 0
+                    raw?.removeIf { it.id == -1 }
+                    val posts = raw?.mapIndexed { index, postDan ->
                         postDan.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -174,7 +179,9 @@ class PostBoundaryCallback(
                 val response = booruApis.dan1Api.getPosts(
                     action.getDan1PostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.mapIndexed { index, postDan1 ->
+                    val raw = response.body()
+                    lastResponseSize = raw?.size ?: 0
+                    val posts = raw?.mapIndexed { index, postDan1 ->
                         postDan1.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -200,7 +207,9 @@ class PostBoundaryCallback(
                 val response = booruApis.moeApi.getPosts(
                     action.getMoePostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.mapIndexed { index, postMoe ->
+                    val raw = response.body()
+                    lastResponseSize = raw?.size ?: 0
+                    val posts = raw?.mapIndexed { index, postMoe ->
                         postMoe.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -226,7 +235,9 @@ class PostBoundaryCallback(
                 val response = booruApis.gelApi.getPosts(
                     action.getGelPostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.posts?.mapIndexed { index, postGel ->
+                    val raw = response.body()?.posts
+                    lastResponseSize = raw?.size ?: 0
+                    val posts = raw?.mapIndexed { index, postGel ->
                         postGel.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -251,7 +262,9 @@ class PostBoundaryCallback(
                 val response = booruApis.sankakuApi.getPosts(
                     action.getSankakuPostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.mapIndexed { index, postSankaku ->
+                    val raw = response.body()
+                    lastResponseSize = raw?.size ?: 0
+                    val posts = raw?.mapIndexed { index, postSankaku ->
                         postSankaku.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -277,7 +290,9 @@ class PostBoundaryCallback(
                 val response = booruApis.shimmieApi.getPosts(
                     action.getShimmiePostsUrl(page))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.posts?.mapIndexed { index, postShimmie ->
+                    val raw = response.body()?.posts
+                    lastResponseSize = raw?.size ?: 0
+                    val posts = raw?.mapIndexed { index, postShimmie ->
                         postShimmie.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,

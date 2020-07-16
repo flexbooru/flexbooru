@@ -26,7 +26,7 @@ import onlymash.flexbooru.data.utils.toSafeUrl
 @Serializable
 data class PostDan(
     @SerialName("id")
-    val id: Int,
+    val id: Int = -1,
     @SerialName("pixiv_id")
     val pixivId: Int? = null,
     @SerialName("parent_id")
@@ -43,8 +43,6 @@ data class PostDan(
     val imageHeight: Int,
     @SerialName("image_width")
     val imageWidth: Int,
-    @SerialName("file_ext")
-    val fileExt: String? = null,
     @SerialName("file_size")
     val fileSize: Int,
     @SerialName("preview_file_url")

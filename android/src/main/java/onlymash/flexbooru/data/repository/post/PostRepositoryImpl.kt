@@ -131,7 +131,7 @@ class PostRepositoryImpl(
             try {
                 val response = booruApis.danApi.getPosts(action.getDanPostsUrl(1))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.mapIndexed { index, post ->
+                    val posts = (response.body()?.mapIndexed { index, post ->
                         post.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -139,7 +139,8 @@ class PostRepositoryImpl(
                             host = action.booru.host,
                             index = index
                         )
-                    } ?: listOf()
+                    } ?: listOf()).toMutableList()
+                    posts.removeIf { it.id == -1 }
                     NetResult.Success(posts)
                 } else {
                     NetResult.Error("code: ${response.code()}")
