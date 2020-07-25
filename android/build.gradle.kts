@@ -61,7 +61,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(29)
         versionCode = verCode
-        versionName = "2.5.2"
+        versionName = "2.5.3"
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -155,13 +155,13 @@ dependencies {
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
     implementation("androidx.annotation:annotation:1.2.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.3.0-alpha01")
-    implementation("androidx.activity:activity-ktx:1.2.0-alpha06")
-    implementation("androidx.fragment:fragment-ktx:1.3.0-alpha06")
+    implementation("androidx.activity:activity-ktx:1.2.0-alpha07")
+    implementation("androidx.fragment:fragment-ktx:1.3.0-alpha07")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.core:core-ktx:1.5.0-alpha01")
-    implementation("androidx.recyclerview:recyclerview:1.2.0-alpha04")
+    implementation("androidx.recyclerview:recyclerview:1.2.0-alpha05")
     implementation("androidx.viewpager2:viewpager2:1.1.0-alpha01")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.browser:browser:1.3.0-alpha04")
@@ -187,9 +187,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
     implementation("androidx.paging:paging-runtime-ktx:2.1.2")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.3.0-alpha01")
+    implementation("com.google.android.material:material:1.3.0-alpha02")
     implementation("com.google.android:flexbox:2.0.1")
-    implementation("com.google.android.apps.muzei:muzei-api:3.4.0-alpha02")
+    implementation("com.google.android.apps.muzei:muzei-api:3.4.0")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("com.github.onlymash:subsampling-scale-image-view:3.10.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
