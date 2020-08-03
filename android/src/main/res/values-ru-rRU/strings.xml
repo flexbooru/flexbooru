@@ -179,8 +179,8 @@
     <string name="settings_post_size_larger">Большой</string>
     <string name="settings_post_size_origin">Оригинал</string>
     <string name="settings_grid_mode">Режим плитки</string>
-    <string name="settings_grid_mode_fixed">Fixed ratio</string>
-    <string name="settings_grid_mode_staggered">Staggered</string>
+    <string name="settings_grid_mode_fixed">Соотношение сторон</string>
+    <string name="settings_grid_mode_staggered">В шахматном порядке</string>
     <string name="settings_grid_ratio">Соотношение сетки</string>
     <string name="settings_grid_width">Ширина сетки</string>
     <string name="settings_grid_width_small">Маленькая</string>
