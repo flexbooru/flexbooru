@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">一個 Booru 安卓客戶端，支持Danbooru, Moebooru, Gelbooru, Sankaku, 之類的 Booru 系圖站。    </string>
+    <string name="app_description">支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 的 Android 用戶端。    </string>
     <string name="title_posts">貼圖</string>
     <string name="title_search">Search</string>
     <string name="title_popular">熱門</string>
@@ -68,7 +68,7 @@
     <string name="msg_path_denied">保存失敗！ 無權訪問當前路徑。</string>
     <string name="msg_download_failed">下載失敗</string>
     <string name="msg_download_complete">下載完畢</string>
-    <string name="msg_password_or_hash_salt_wrong">密碼或哈希值有誤</string>
+    <string name="msg_password_or_hash_salt_wrong">密碼或雜湊值有誤。</string>
     <string name="popular_day">日</string>
     <string name="popular_week">週</string>
     <string name="popular_month">月</string>
@@ -83,13 +83,13 @@
     <string name="update_found_update">有新的更新可用</string>
     <string name="update_version">版本: %s</string>
     <string name="booru_add">新增 Booru</string>
-    <string name="booru_add_from_qr_code">掃描二維碼</string>
+    <string name="booru_add_from_qr_code">掃描 QR Code</string>
     <string name="booru_add_from_clipboard">從剪貼簿匯入</string>
     <string name="booru_add_from_manual_settings">手動設定</string>
     <string name="booru_add_error">錯誤: 無效的資料</string>
     <string name="booru_add_title_dialog">要新增這個 Booru 嗎？</string>
     <string name="booru_name">Booru 名稱</string>
-    <string name="booru_share_by_qr_code">二維碼</string>
+    <string name="booru_share_by_qr_code">QR Code</string>
     <string name="booru_share_by_clipboard">匯出至剪貼簿</string>
     <string name="booru_edit">編輯</string>
     <string name="booru_delete">篩除</string>
@@ -104,15 +104,15 @@
     <string name="booru_config_host">主機</string>
     <string name="booru_config_path">Path</string>
     <string name="booru_config_type">類型</string>
-    <string name="booru_config_hash_salt">哈希值</string>
+    <string name="booru_config_hash_salt">雜湊值</string>
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
     <string name="booru_config_host_cant_empty">主機不可為空白。</string>
     <string name="booru_config_host_invalid">無效的主機名稱</string>
     <string name="booru_config_hash_salt_cant_empty">哈希值不可為空白。</string>
     <string name="booru_config_dialog_title_delete">你確定要移除這個 Booru 嗎？</string>
     <string name="booru_config_hash_salt_must_contain_yp">哈希值必須包含文字： 你的-密碼</string>
-    <string name="scaner_scan_qr_code">掃描二維碼</string>
-    <string name="scaner_add_booru_permission_required">掃描二維碼需要相機權限。</string>
+    <string name="scaner_scan_qr_code">掃描 QR Code</string>
+    <string name="scaner_add_booru_permission_required">掃描 QR Code 需要相機權限。</string>
     <string name="browse_toolbar_title">貼圖</string>
     <string name="browse_add_to_fav">加到收藏</string>
     <string name="browse_download">下載</string>
