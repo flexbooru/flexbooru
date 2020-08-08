@@ -178,8 +178,8 @@
     <string name="settings_post_size_larger">較大</string>
     <string name="settings_post_size_origin">原圖</string>
     <string name="settings_grid_mode">Grid mode</string>
-    <string name="settings_grid_mode_fixed">Fixed ratio</string>
-    <string name="settings_grid_mode_staggered">Staggered</string>
+    <string name="settings_grid_mode_fixed">固定比例</string>
+    <string name="settings_grid_mode_staggered">瀑布流</string>
     <string name="settings_grid_ratio">Grid ratio</string>
     <string name="settings_grid_width">圖牆欄寬</string>
     <string name="settings_grid_width_small">小</string>
