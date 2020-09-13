@@ -171,12 +171,12 @@
     <string name="settings_page_limit">Límite de páginas</string>
     <string name="settings_muzei_limit">Límite Muzei</string>
     <string name="settings_muzei_size">Tamaño de Muzei</string>
-    <string name="settings_detail_size">Detalles de tamaño</string>
-    <string name="settings_download_size">Tamaño de la descarga</string>
+    <string name="settings_detail_size">Calidad de imagen</string>
+    <string name="settings_download_size">Calidad de descarga</string>
     <string name="settings_download_path">Ruta de descarga</string>
     <string name="settings_download_path_not_set">Ruta no establecida</string>
-    <string name="settings_post_size_sample">Ejemplo</string>
-    <string name="settings_post_size_larger">Más grande</string>
+    <string name="settings_post_size_sample">Baja</string>
+    <string name="settings_post_size_larger">Alta</string>
     <string name="settings_post_size_origin">Original</string>
     <string name="settings_grid_mode">Modo Cuadrícula</string>
     <string name="settings_grid_mode_fixed">Proporción</string>
