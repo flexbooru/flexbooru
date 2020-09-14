@@ -59,7 +59,7 @@
     <string name="retry">Reintentar</string>
     <string name="msg_not_supported">No soportado</string>
     <string name="msg_file_save_success">El archivo se ha guardado como %s</string>
-    <string name="msg_your_api_key_is_wrong">¡Tu Clave Api está equivocada!</string>
+    <string name="msg_your_api_key_is_wrong">Tu Clave Api es incorrecta!</string>
     <string name="post_expand_or_clear">Expandir o borrar</string>
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Descargar publicación</string>
@@ -146,7 +146,7 @@
     <string name="account_password">Contraseña</string>
     <string name="account_api_key">Clave API</string>
     <string name="account_forgot_password">Olvidó su contraseña?</string>
-    <string name="account_forgot_api_key">Qué es la clave API?</string>
+    <string name="account_forgot_api_key">Cuál es mi clave API?</string>
     <string name="account_set">Iniciar cuenta</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">Cerrar sesión</string>
