@@ -246,7 +246,7 @@
     <string name="order">Orden</string>
     <string name="rating">Calificación</string>
     <string name="threshold">Límite</string>
-    <string name="muzei_copy">Copia</string>
+    <string name="muzei_copy">Copiar</string>
     <string name="muzei_delete">Eliminar</string>
     <string name="muzei_search">Buscar</string>
     <string name="muzei_search_hint">Añadir etiqueta…</string>
@@ -254,7 +254,7 @@
     <string name="muzei_input_cant_be_empty">La entrada no puede estar vacía.</string>
     <string name="muzei_action_view_post">Ver post en Flexbooru</string>
     <string name="muzei_action_search_posts">Buscar publicaciones en Flexbooru</string>
-    <string name="muzei_attribution">Post de Flexbooru</string>
+    <string name="muzei_attribution">Publicación de Flexbooru</string>
     <string name="tag_blacklist_copy">Copiar</string>
     <string name="tag_blacklist_delete">Eliminar</string>
     <string name="tag_blacklist_add">Añadir</string>
@@ -276,7 +276,7 @@
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">AliPay</string>
     <string name="tab_start_date">Fecha de inicio</string>
-    <string name="tab_end_date">Fecha de finalizacion</string>
+    <string name="tab_end_date">Fecha de finalización</string>
     <string name="sauce_nao_help">Ayuda</string>
     <string name="sauce_nao_change_api_key">Cambiar Clave api</string>
     <string name="sauce_nao_get_api_key">Obtener clave api</string>
