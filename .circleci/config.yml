@@ -10,7 +10,7 @@ jobs:
     docker:
       - image: circleci/android:api-29-node
     environment:
-      GRADLE_OPTS: -Dorg.gradle.workers.max=1 -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy="in-process" -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      GRADLE_OPTS: -Dorg.gradle.workers.max=1 -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy="in-process" -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport
     steps:
       - checkout
       - restore_cache:
