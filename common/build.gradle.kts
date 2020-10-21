@@ -67,7 +67,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.kodein.di:kodein-di:$kodeinVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-json:$ktorVersion")
@@ -78,7 +78,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.kodein.di:kodein-di-jvm:$kodeinVersion")
                 implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")

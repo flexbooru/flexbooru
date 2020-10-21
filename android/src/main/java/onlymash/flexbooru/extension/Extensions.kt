@@ -23,6 +23,7 @@ import android.net.Uri
 import android.text.StaticLayout
 import android.util.DisplayMetrics
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
@@ -70,7 +71,9 @@ fun Context.safeOpenIntent(intent: Intent) {
 
 private fun getCustomTabsIntent(context: Context): CustomTabsIntent {
     return CustomTabsIntent.Builder()
-        .setToolbarColor(ContextCompat.getColor(context, R.color.colorBackground))
+        .setDefaultColorSchemeParams(CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(ContextCompat.getColor(context, R.color.colorBackground))
+            .build())
         .build()
 }
 

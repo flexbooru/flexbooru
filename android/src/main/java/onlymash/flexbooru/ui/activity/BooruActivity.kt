@@ -33,10 +33,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.parseList
-import kotlinx.serialization.stringify
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Settings.isOrderSuccess
@@ -260,10 +259,10 @@ class BooruActivity : KodeinActivity() {
                 val outputStream = contentResolver.openOutputStream(uri) ?: return@withContext false
                 var inputStream: InputStream? = null
                 try {
-                    inputStream = Json(JsonConfiguration(
-                        ignoreUnknownKeys = true,
+                    inputStream = Json {
+                        ignoreUnknownKeys = true
                         prettyPrint = true
-                    )).stringify(boorus).byteInputStream()
+                    }.encodeToString(boorus).byteInputStream()
                     inputStream.copyTo(outputStream)
                 } catch (_:IOException) {
                     return@withContext false
@@ -286,7 +285,9 @@ class BooruActivity : KodeinActivity() {
         var boorus: List<Booru>? = null
         try {
             val jsonString = inputStream.readBytes().toString(Charsets.UTF_8)
-            boorus = Json(JsonConfiguration(ignoreUnknownKeys = true)).parseList(jsonString)
+            boorus = Json {
+                ignoreUnknownKeys = true
+            }.decodeFromString(jsonString)
         } catch (_: Exception) {
 
         } finally {

@@ -14,12 +14,13 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
-    app:chipIconTint="?colorPrimary"
-    app:chipMinHeight="38dp"
-    style="@style/Widget.FilterChip.Selectable" />
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+    <path
+        android:pathData="M6,6L18,18M18,6L6,18Z"
+        android:strokeColor="#000"
+        android:strokeWidth="2" />
+</vector>

@@ -14,37 +14,37 @@
  */
 
 plugins {
-    id("com.github.ben-manes.versions") version("0.29.0")
+    id("com.github.ben-manes.versions") version("0.33.0")
 }
 
 buildscript {
     extra.apply {
-        set("nav_version", "2.3.0")
-        set("room_version", "2.3.0-alpha02")
-        set("work_version", "2.4.0")
+        set("nav_version", "2.3.1")
+        set("room_version", "2.3.0-alpha03")
+        set("work_version", "2.5.0-alpha03")
         set("glide_version", "4.11.0")
-        set("lifecycle_version", "2.3.0-alpha06")
-        set("exoplayer_version", "2.11.7")
-        set("okhttp_version", "4.8.0")
+        set("lifecycle_version", "2.3.0-beta01")
+        set("exoplayer_version", "2.12.0")
+        set("okhttp_version", "4.10.0-RC1")
         set("retrofit_version", "2.9.0")
         set("tikxml_version", "0.8.13")
-        set("kodein_version", "7.0.0")
+        set("kodein_version", "7.1.0")
         set("coroutines_version", "1.3.8")
-        set("serialization_version", "0.20.0")
-        set("ktor_version", "1.3.2")
+        set("serialization_version", "1.0.0")
+        set("ktor_version", "1.4.1")
     }
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        val kotlinVersion = "1.3.72"
+        val kotlinVersion = "1.4.10"
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:4.1.0-beta05")
+        classpath("com.android.tools.build:gradle:4.1.0")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.2")
-        classpath("com.google.gms:google-services:4.3.3")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.2.0")
+        classpath("com.google.gms:google-services:4.3.4")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
     }
 }
 
@@ -63,12 +63,4 @@ allprojects {
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
-}
-
-tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
-    // optional parameters
-    checkForGradleUpdate = true
-    outputFormatter = "json"
-    outputDir = "build/dependencyUpdates"
-    reportfileName = "report"
 }

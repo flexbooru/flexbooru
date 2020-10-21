@@ -14,12 +14,8 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
-    app:chipIconTint="?colorPrimary"
-    app:chipMinHeight="38dp"
-    style="@style/Widget.FilterChip.Selectable" />
+<resources>
+    <!-- Vector paths -->
+    <string name="chip_dot_path" translatable="false">M12,8l0,0c-2.21,0 -4,1.79 -4,4c0,2.21 1.79,4 4,4c2.21,0 4,-1.79 4,-4c0,-2.21 -1.79,-4 -4,-4l0,0z</string>
+    <string name="chip_check_path" translatable="false">M9,16.2l-4.2,-4.2c0,0 -1.4,1.4 -1.4,1.4c0,0 5.6,5.6 5.6,5.6c0,0 12,-12 12,-12c0,0 -1.4,-1.4 -1.4,-1.4l-10.6,10.6z</string>
+</resources>

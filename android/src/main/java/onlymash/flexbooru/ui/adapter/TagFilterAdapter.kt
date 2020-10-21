@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.adapter
 
+import android.content.res.ColorStateList
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -28,7 +29,6 @@ import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.databinding.ItemTagFilterSubheadBinding
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.base.BaseTagFilterViewHolder
-import onlymash.flexbooru.widget.TagFilterView
 
 class TagFilterAdapter(private val ratings: Array<String>,
                        private val deleteTagCallback: (TagFilter) -> Unit,
@@ -76,10 +76,6 @@ class TagFilterAdapter(private val ratings: Array<String>,
             }
         }
 
-    private var refreshingOrder = false
-    private var refreshingRating = false
-    private var refreshingThreshold = false
-
     private var tags: MutableList<TagFilter> = mutableListOf()
     private var allTags: MutableList<TagFilter> = mutableListOf()
 
@@ -118,19 +114,16 @@ class TagFilterAdapter(private val ratings: Array<String>,
 
     private fun refreshOrder(order: String) {
         val index = orders.indexOfFirst { it == order }
-        refreshingOrder = true
         notifyItemChanged(tags.size + index + 2)
     }
 
     private fun refreshRating(rating: String) {
         val index = ratings.indexOfFirst { it == rating }
-        refreshingRating = true
         notifyItemChanged(tags.size + orders.size + index + 3)
     }
 
     private fun refreshThreshold(threshold: String) {
         val index = thresholds.indexOfFirst { it == threshold }
-        refreshingThreshold = true
         notifyItemChanged(tags.size + orders.size + ratings.size + index + 4)
     }
 
@@ -244,8 +237,8 @@ class TagFilterAdapter(private val ratings: Array<String>,
         init {
             tagFilterView.apply {
                 text = itemView.context.getString(R.string.tag_filter_add_text)
-                color = ContextCompat.getColor(context, R.color.colorAccent)
-                selectedTextColor = ContextCompat.getColor(context, R.color.white)
+                isCheckable = false
+                chipIconTint = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorAccent))
                 setOnClickListener {
                     addSearchBarTextCallback.invoke()
                 }
@@ -257,14 +250,13 @@ class TagFilterAdapter(private val ratings: Array<String>,
         private var order: String = ""
         init {
             tagFilterView.apply {
-                color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
-                selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
                 setOnClickListener {
-                    val checked = !isChecked
-                    animateCheckedAndInvoke(checked) {}
-                    val oldSelected = orderSelected
-                    orderSelected = if (checked) order else ""
-                    if (oldSelected.isNotEmpty()) refreshOrder(oldSelected)
+                    orderSelected = if (isChecked) {
+                        if (orderSelected.isNotBlank() && order != orderSelected) {
+                            refreshOrder(orderSelected)
+                        }
+                        order
+                    } else { "" }
                 }
             }
         }
@@ -274,12 +266,7 @@ class TagFilterAdapter(private val ratings: Array<String>,
             tagFilterView.apply {
                 text = order
                 tag = order
-                if (refreshingOrder) {
-                    refreshingOrder = false
-                    animateCheckedAndInvoke(checkedState) {}
-                } else {
-                    isChecked = checkedState
-                }
+                isChecked = checkedState
             }
         }
     }
@@ -288,14 +275,13 @@ class TagFilterAdapter(private val ratings: Array<String>,
         private var rating: String = ""
         init {
             tagFilterView.apply {
-                color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
-                selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
-                setOnClickListener {
-                    val checked = !isChecked
-                    animateCheckedAndInvoke(checked) {}
-                    val oldSelected = ratingSelected
-                    ratingSelected = if (checked) rating else ""
-                    if (oldSelected.isNotEmpty()) refreshRating(oldSelected)
+                setOnCheckedChangeListener { _, isChecked ->
+                    ratingSelected = if (isChecked) {
+                        if (ratingSelected.isNotBlank() && rating != ratingSelected) {
+                            refreshRating(ratingSelected)
+                        }
+                        rating
+                    } else { "" }
                 }
             }
         }
@@ -305,12 +291,7 @@ class TagFilterAdapter(private val ratings: Array<String>,
             tagFilterView.apply {
                 text = rating
                 tag = rating
-                if (refreshingRating) {
-                    refreshingRating = false
-                    animateCheckedAndInvoke(checkedState) {}
-                } else {
-                    isChecked = checkedState
-                }
+                isChecked = checkedState
             }
         }
     }
@@ -319,14 +300,13 @@ class TagFilterAdapter(private val ratings: Array<String>,
         private var threshold: String = ""
         init {
             tagFilterView.apply {
-                color = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
-                selectedTextColor = ContextCompat.getColor(itemView.context, R.color.white)
                 setOnClickListener {
-                    val checked = !isChecked
-                    animateCheckedAndInvoke(checked) {}
-                    val oldSelected = thresholdSelected
-                    thresholdSelected = if (checked) threshold else ""
-                    if (oldSelected.isNotEmpty()) refreshThreshold(oldSelected)
+                    thresholdSelected = if (isChecked) {
+                        if (thresholdSelected.isNotBlank() && threshold != thresholdSelected) {
+                            refreshThreshold(thresholdSelected)
+                        }
+                        threshold
+                    } else { "" }
                 }
             }
         }
@@ -336,27 +316,7 @@ class TagFilterAdapter(private val ratings: Array<String>,
             tagFilterView.apply {
                 text = threshold
                 tag = threshold
-                if (refreshingThreshold) {
-                    refreshingThreshold = false
-                    animateCheckedAndInvoke(checkedState) {}
-                } else {
-                    isChecked = checkedState
-                }
-            }
-        }
-    }
-
-    private fun TagFilterView.onClick(text: String?) {
-        if (text == null) {
-            return
-        }
-        if (tagsSelected.contains(text)) {
-            animateCheckedAndInvoke(false) {
-                tagsSelected.remove(text)
-            }
-        } else {
-            animateCheckedAndInvoke(true) {
-                tagsSelected.add(text)
+                isChecked = checkedState
             }
         }
     }
@@ -373,10 +333,14 @@ class TagFilterAdapter(private val ratings: Array<String>,
         private var tagFilter: TagFilter? = null
         init {
             tagFilterView.apply {
-                color = ContextCompat.getColor(context, R.color.colorPrimary)
-                selectedTextColor = ContextCompat.getColor(context, R.color.white)
                 setOnClickListener {
-                    onClick(tagFilter?.name)
+                    tagFilter?.name?.let {
+                        if (isChecked) {
+                            tagsSelected.add(it)
+                        } else {
+                            tagsSelected.remove(it)
+                        }
+                    }
                 }
                 setOnLongClickListener {
                     deleteTag(tagFilter)

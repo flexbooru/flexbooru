@@ -16,9 +16,9 @@
 package onlymash.flexbooru.data.database
 
 import androidx.room.TypeConverter
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.parseList
-import kotlinx.serialization.stringify
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
 
@@ -28,39 +28,39 @@ import onlymash.flexbooru.data.model.common.User
 class MyConverters {
 
     @TypeConverter
-    fun fromStringToStringList(value: String) =
-        Json.parseList<String>(value)
+    fun fromStringToStringList(value: String): List<String> =
+        Json.decodeFromString(value)
 
     @TypeConverter
-    fun fromStringListToString(list: List<String>) =
-        Json.stringify(list)
+    fun fromStringListToString(list: List<String>): String =
+        Json.encodeToString(list)
 
 
     @TypeConverter
     fun fromUserToString(user: User?): String? {
         if (user == null) return null
-        return Json.stringify(User.serializer(), user)
+        return Json.encodeToString(User.serializer(), user)
     }
 
     @TypeConverter
     fun fromStringToUser(value: String?): User? {
         if (value == null) return null
-        return Json.parse(User.serializer(), value)
+        return Json.decodeFromString(User.serializer(), value)
     }
 
     @TypeConverter
-    fun formStringToTagBase(value: String) =
-        Json.parse(TagBase.serializer(), value)
+    fun formStringToTagBase(value: String): TagBase =
+        Json.decodeFromString(TagBase.serializer(), value)
 
     @TypeConverter
-    fun formTagBaseToString(tagBase: TagBase) =
-        Json.stringify(TagBase.serializer(), tagBase)
+    fun formTagBaseToString(tagBase: TagBase): String =
+        Json.encodeToString(TagBase.serializer(), tagBase)
 
     @TypeConverter
-    fun formStringToTagBaseList(value: String) =
-        Json.parseList<TagBase>(value)
+    fun formStringToTagBaseList(value: String): List<TagBase> =
+        Json.decodeFromString(value)
 
     @TypeConverter
     fun formTagBaseListToString(tags: List<TagBase>) =
-        Json.stringify(tags)
+        Json.encodeToString(tags)
 }

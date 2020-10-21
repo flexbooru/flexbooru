@@ -29,6 +29,14 @@ import java.net.URL
 
 class MyOkHttpUrlLoader(client: OkHttpClient) : OkHttpUrlLoader(client) {
 
+    companion object {
+        private const val SANKAKU_REFERER = "beta.sankakucomplex.com"
+        private val SANKAKU_HOSTS = arrayOf(
+            "cs.sankakucomplex.com",
+            "s.sankakucomplex.com"
+        )
+    }
+
     override fun buildLoadData(
         model: GlideUrl,
         width: Int,
@@ -43,8 +51,8 @@ class MyOkHttpUrlLoader(client: OkHttpClient) : OkHttpUrlLoader(client) {
     private fun getHeaders(url: URL): Headers {
         val scheme = url.protocol
         var host = url.host
-        if (host != null && host.startsWith("cs.")) {
-            host = host.replaceFirst("cs.", "beta.")
+        if (host in SANKAKU_HOSTS) {
+            host = SANKAKU_REFERER
         }
         return LazyHeaders.Builder()
             .addHeader(Keys.HEADER_USER_AGENT, userAgent)

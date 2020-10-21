@@ -77,3 +77,10 @@
 -keepclasseswithmembers class onlymash.flexbooru.common.tracemoe.model.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
+# kotlinx-serialization-json specific. Add this if you have java.lang.NoClassDefFoundError kotlinx.serialization.json.JsonObjectSerializer
+-keepclassmembers class kotlinx.serialization.json.** {
+    *** Companion;
+}
+-keepclasseswithmembers class kotlinx.serialization.json.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}

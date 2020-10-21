@@ -20,7 +20,6 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -77,11 +76,10 @@ inline fun <reified T> createApi(): T {
         }
         else -> {
             val contentType = "application/json".toMediaType()
-            val jsonConfiguration = JsonConfiguration(
-                ignoreUnknownKeys = true,
+            Json {
+                ignoreUnknownKeys = true
                 isLenient = true
-            )
-            Json(jsonConfiguration).asConverterFactory(contentType)
+            }.asConverterFactory(contentType)
         }
     }
     val isSankaku = classJava == SankakuApi::class.java

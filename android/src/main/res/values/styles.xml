@@ -73,6 +73,8 @@
 
     <style name="PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
 
+    <style name="Widget" parent="@android:style/Widget.Material"/>
+
     <style name="Widget.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">@color/colorBackground</item>
         <item name="android:elevation">@dimen/elevation_appbar</item>
@@ -131,14 +133,26 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <style name="TagFilters">
-        <item name="android:padding">@dimen/spacing_normal</item>
-        <item name="android:strokeColor">?android:attr/textColorTertiary</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">14sp</item>
-        <item name="outlineWidth">1dp</item>
-        <item name="foreground">?selectableItemBackground</item>
-        <item name="actionIcon">@drawable/tag_dot</item>
-        <item name="showIcon">true</item>
+    <style name="Widget.FilterChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.FilterChip.Selectable</item>
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="chipIcon">@drawable/asld_chip_icon</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="textStartPadding">0dp</item>
     </style>
+
+    <style name="Widget.FilterChip.Selectable">
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.FilterChip.Closeable">
+        <item name="android:clickable">false</item>
+        <item name="chipIcon">@drawable/chip_dot</item>
+        <item name="closeIcon">@drawable/ic_filter_clear</item>
+        <item name="closeIconVisible">true</item>
+        <item name="textEndPadding">2dp</item>
+    </style>
+
+    <style name="TextAppearance.FilterChip.Selectable" parent="TextAppearance.MaterialComponents.Body2"/>
 </resources>

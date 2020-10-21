@@ -18,6 +18,7 @@ package onlymash.flexbooru.exoplayer
 import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.LoopingMediaSource
@@ -25,7 +26,7 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import onlymash.flexbooru.app.App.Companion.app
@@ -58,15 +59,18 @@ class PlayerHolder {
 
     private fun createExtractorMediaSource(context: Context, uri: Uri): MediaSource {
         val sourceFactory = DefaultDataSourceFactory(context, userAgent)
-        val cacheSourceFactory = CacheDataSourceFactory(cache(), sourceFactory)
-        return ProgressiveMediaSource.Factory(cacheSourceFactory).createMediaSource(uri)
+        val cacheSourceFactory = CacheDataSource.Factory().apply {
+            setCache(cache())
+            setUpstreamDataSourceFactory(sourceFactory)
+        }
+        return ProgressiveMediaSource.Factory(cacheSourceFactory)
+            .createMediaSource(MediaItem.Builder().setUri(uri).build())
     }
 
     //start play
     fun start(context: Context, uri: Uri, playerView: PlayerView) {
         playerView.player = player
         val mediaSource = createExtractorMediaSource(context, uri)
-        val loopingSource = LoopingMediaSource(mediaSource)
         val index = playerStates.indexOfFirst { it.uri == uri }
         currentPlayerState = if (index >= 0) {
             playerStates[index]
@@ -76,7 +80,8 @@ class PlayerHolder {
             }
         }
         player?.apply {
-            prepare(loopingSource)
+            setMediaSource(mediaSource)
+            previous()
             playWhenReady = true
             // Restore state (after onResume()/onStart())
             currentPlayerState?.apply {

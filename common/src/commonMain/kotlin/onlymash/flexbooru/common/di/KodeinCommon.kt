@@ -19,9 +19,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpCallValidator
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
-import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApiService
 import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
@@ -31,20 +29,17 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
 
-@UnstableDefault
 val diCommon = DI.lazy {
         bind<HttpClient>() with provider {
             HttpClient {
                 install(JsonFeature) {
                     serializer = KotlinxSerializer(
-                        Json(
-                            JsonConfiguration(
-                                isLenient = true,
-                                ignoreUnknownKeys = true,
-                                serializeSpecialFloatingPointValues = true,
-                                useArrayPolymorphism = true
-                            )
-                        )
+                        Json {
+                            isLenient = true
+                            ignoreUnknownKeys = true
+                            allowSpecialFloatingPointValues = true
+                            useArrayPolymorphism = true
+                        }
                     )
                 }
                 install(HttpCallValidator)
