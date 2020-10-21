@@ -59,7 +59,7 @@
     <string name="retry">Reintentar</string>
     <string name="msg_not_supported">No soportado</string>
     <string name="msg_file_save_success">El archivo se ha guardado como %s</string>
-    <string name="msg_your_api_key_is_wrong">¡Tu Clave Api está equivocada!</string>
+    <string name="msg_your_api_key_is_wrong">Tu Clave Api es incorrecta!</string>
     <string name="post_expand_or_clear">Expandir o borrar</string>
     <string name="post_add_search_to_muzei">` %s ` se han guardado a Muzei.</string>
     <string name="post_download">Descargar publicación</string>
@@ -146,7 +146,7 @@
     <string name="account_password">Contraseña</string>
     <string name="account_api_key">Clave API</string>
     <string name="account_forgot_password">Olvidó su contraseña?</string>
-    <string name="account_forgot_api_key">Qué es la clave API?</string>
+    <string name="account_forgot_api_key">Cuál es mi clave API?</string>
     <string name="account_set">Iniciar cuenta</string>
     <string name="account_user_id">ID: %d</string>
     <string name="account_user_remove">Cerrar sesión</string>
@@ -171,12 +171,12 @@
     <string name="settings_page_limit">Límite de páginas</string>
     <string name="settings_muzei_limit">Límite Muzei</string>
     <string name="settings_muzei_size">Tamaño de Muzei</string>
-    <string name="settings_detail_size">Detalles de tamaño</string>
-    <string name="settings_download_size">Tamaño de la descarga</string>
+    <string name="settings_detail_size">Calidad de imagen</string>
+    <string name="settings_download_size">Calidad de descarga</string>
     <string name="settings_download_path">Ruta de descarga</string>
     <string name="settings_download_path_not_set">Ruta no establecida</string>
-    <string name="settings_post_size_sample">Ejemplo</string>
-    <string name="settings_post_size_larger">Más grande</string>
+    <string name="settings_post_size_sample">Baja</string>
+    <string name="settings_post_size_larger">Alta</string>
     <string name="settings_post_size_origin">Original</string>
     <string name="settings_grid_mode">Modo Cuadrícula</string>
     <string name="settings_grid_mode_fixed">Proporción</string>
@@ -246,7 +246,7 @@
     <string name="order">Orden</string>
     <string name="rating">Calificación</string>
     <string name="threshold">Límite</string>
-    <string name="muzei_copy">Copia</string>
+    <string name="muzei_copy">Copiar</string>
     <string name="muzei_delete">Eliminar</string>
     <string name="muzei_search">Buscar</string>
     <string name="muzei_search_hint">Añadir etiqueta…</string>
@@ -254,7 +254,7 @@
     <string name="muzei_input_cant_be_empty">La entrada no puede estar vacía.</string>
     <string name="muzei_action_view_post">Ver post en Flexbooru</string>
     <string name="muzei_action_search_posts">Buscar publicaciones en Flexbooru</string>
-    <string name="muzei_attribution">Post de Flexbooru</string>
+    <string name="muzei_attribution">Publicación de Flexbooru</string>
     <string name="tag_blacklist_copy">Copiar</string>
     <string name="tag_blacklist_delete">Eliminar</string>
     <string name="tag_blacklist_add">Añadir</string>
@@ -276,7 +276,7 @@
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">AliPay</string>
     <string name="tab_start_date">Fecha de inicio</string>
-    <string name="tab_end_date">Fecha de finalizacion</string>
+    <string name="tab_end_date">Fecha de finalización</string>
     <string name="sauce_nao_help">Ayuda</string>
     <string name="sauce_nao_change_api_key">Cambiar Clave api</string>
     <string name="sauce_nao_get_api_key">Obtener clave api</string>
