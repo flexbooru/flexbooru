@@ -15,110 +15,110 @@
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="?attr/selectableItemBackground">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="?attr/selectableItemBackground">
 
     <FrameLayout
-            android:id="@+id/user_avatar_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+        android:id="@+id/user_avatar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
         <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_avatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/avatar_account"
-                app:civ_border_color="@color/grey_10"
-                app:civ_border_width="2dp"/>
+            android:id="@+id/user_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/avatar_account"
+            app:civ_border_color="@color/grey_10"
+            app:civ_border_width="2dp"/>
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/pool_name"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textColor="?android:attr/textColorPrimary"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/user_avatar_container"
-            app:layout_constraintEnd_toStartOf="@id/bt_expand"
-            app:layout_constraintBottom_toTopOf="@+id/pool_id_and_count"/>
+        android:id="@+id/pool_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/user_avatar_container"
+        app:layout_constraintEnd_toStartOf="@id/bt_expand"
+        app:layout_constraintBottom_toTopOf="@+id/pool_id_and_count"/>
 
     <ImageButton
-            android:id="@+id/bt_expand"
-            android:layout_width="40dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="6dp"
-            android:layout_gravity="center_vertical"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@color/grey_60"
-            android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_expand_more_24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/pool_date"/>
+        android:id="@+id/bt_expand"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="6dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@null"
+        app:tint="@color/grey_60"
+        app:srcCompat="@drawable/ic_expand_more_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/pool_date"/>
 
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/pool_id_and_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="?android:attr/textColorSecondary"
-            app:layout_constraintStart_toEndOf="@id/user_avatar_container"
-            app:layout_constraintBottom_toBottomOf="@+id/user_avatar_container"/>
+        android:id="@+id/pool_id_and_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintStart_toEndOf="@id/user_avatar_container"
+        app:layout_constraintBottom_toBottomOf="@+id/user_avatar_container"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:layout_marginEnd="6dp"
-            android:id="@+id/pool_date"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="?android:attr/textColorSecondary"
-            app:layout_constraintBottom_toBottomOf="@id/user_avatar_container"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/pool_id_and_count"/>
+        android:layout_marginEnd="6dp"
+        android:id="@+id/pool_date"
+        android:gravity="end"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintBottom_toBottomOf="@id/user_avatar_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/pool_id_and_count"/>
 
     <LinearLayout
-            android:id="@+id/description_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/background_text_info"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/user_avatar_container"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+        android:id="@+id/description_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/background_text_info"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/user_avatar_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/pool_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:textIsSelectable="true"
-                android:layout_margin="@dimen/spacing_middle"
-                android:lineSpacingMultiplier="1.1"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"/>
+            android:id="@+id/pool_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:textIsSelectable="true"
+            android:layout_margin="@dimen/spacing_middle"
+            android:lineSpacingMultiplier="1.1"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary"/>
     </LinearLayout>
 
     <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/colorDividerItem"
-            app:layout_constraintTop_toBottomOf="@+id/description_container"
-            app:layout_constraintStart_toEndOf="@id/user_avatar_container"
-            app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorDividerItem"
+        app:layout_constraintTop_toBottomOf="@+id/description_container"
+        app:layout_constraintStart_toEndOf="@id/user_avatar_container"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

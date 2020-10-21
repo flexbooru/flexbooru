@@ -14,8 +14,8 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_bar_container"
     android:layout_gravity="bottom"
     android:layout_width="match_parent"
@@ -34,9 +34,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_info_outline_24dp"
-            android:tint="@color/white"
             android:background="@drawable/background_selectable_item_black"
-            android:contentDescription="@string/browse_info"/>
+            android:contentDescription="@string/browse_info"
+            app:tint="@color/white"/>
 
         <ImageButton
             android:id="@+id/post_download"
@@ -44,9 +44,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_file_download_24dp"
-            android:tint="@color/white"
             android:background="@drawable/background_selectable_item_black"
-            android:contentDescription="@string/browse_download"/>
+            android:contentDescription="@string/browse_download"
+            app:tint="@color/white"/>
 
         <ImageButton
             android:id="@+id/post_save"
@@ -54,9 +54,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_save_outline_24dp"
-            android:tint="@color/white"
             android:background="@drawable/background_selectable_item_black"
-            android:contentDescription="@string/browse_save_file"/>
+            android:contentDescription="@string/browse_save_file"
+            app:tint="@color/white"/>
 
         <ImageButton
             android:id="@+id/post_fav"
@@ -64,9 +64,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_star_border_24dp"
-            android:tint="@color/white"
             android:background="@drawable/background_selectable_item_black"
-            android:contentDescription="@string/browse_add_to_fav"/>
+            android:contentDescription="@string/browse_add_to_fav"
+            app:tint="@color/white"/>
 
     </LinearLayout>
 

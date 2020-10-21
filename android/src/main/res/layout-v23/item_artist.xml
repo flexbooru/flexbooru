@@ -15,78 +15,78 @@
   -->
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:foreground="?attr/selectableItemBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:minHeight="?listPreferredItemHeight">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:minHeight="?listPreferredItemHeight">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="?listPreferredItemHeight">
+        android:layout_width="match_parent"
+        android:layout_height="?listPreferredItemHeight">
 
         <FrameLayout
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent">
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/artist_name"
-                    android:gravity="center_vertical"
-                    android:maxLines="2"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textAppearance="?attr/textAppearanceBody1"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/artist_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_gravity="bottom"
-                    android:textAppearance="?attr/textAppearanceCaption"/>
-        </FrameLayout>
-
-        <ImageButton
-                android:id="@+id/bt_expand"
+                android:id="@+id/artist_name"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:padding="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/grey_60"
-                android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_expand_more_24dp"/>
+                android:textAppearance="?attr/textAppearanceBody1"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/artist_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="bottom"
+                android:textAppearance="?attr/textAppearanceCaption"/>
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/bt_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@null"
+            app:tint="@color/grey_60"
+            app:srcCompat="@drawable/ic_expand_more_24dp"/>
     </LinearLayout>
 
     <FrameLayout
-            android:id="@+id/urls_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background_text_info"
-            android:visibility="gone">
+        android:id="@+id/urls_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_text_info"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/artist_urls"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:textIsSelectable="true"
-                android:layout_margin="@dimen/spacing_middle"
-                android:lineSpacingMultiplier="1.2"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="?android:attr/textColorSecondary"/>
+            android:id="@+id/artist_urls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:textIsSelectable="true"
+            android:layout_margin="@dimen/spacing_middle"
+            android:lineSpacingMultiplier="1.2"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="?android:attr/textColorSecondary"/>
     </FrameLayout>
 
     <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorDividerItem"/>
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDividerItem"/>
 
 </LinearLayout>
