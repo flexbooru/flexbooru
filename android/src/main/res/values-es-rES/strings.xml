@@ -50,11 +50,11 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">E-mail</string>
-    <string name="about_copyright_and_licenses">Copyright &amp; Licencias</string>
+    <string name="about_copyright_and_licenses">Derechos &amp; Licencias</string>
     <string name="about_copyright">Derechos de autor</string>
-    <string name="about_app_copyright">Copyright de la aplicación</string>
+    <string name="about_app_copyright">Derechos de autor de la aplicación</string>
     <string name="about_licenses">Licencias</string>
-    <string name="about_open_source_licenses">Licencias Open Source</string>
+    <string name="about_open_source_licenses">Licencias de código abierto</string>
     <string name="snackbar_copy_text">` %s ` han sido copiados al portapapeles.</string>
     <string name="retry">Reintentar</string>
     <string name="msg_not_supported">No soportado</string>
@@ -186,7 +186,7 @@
     <string name="settings_grid_width_small">Pequeño</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Grande</string>
-    <string name="settings_grid_rounded">Rejilla redondeada</string>
+    <string name="settings_grid_rounded">Bordes redondeado</string>
     <string name="settings_show_info_bar">Mostrar barra de información</string>
     <string name="settings_show_all_tags">Mostrar etiquetas para todos los sitios</string>
     <string name="settings_auto_hide_bottom_bar">Auto ocultar barra inferior</string>
