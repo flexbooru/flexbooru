@@ -21,7 +21,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.LoopingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
@@ -81,7 +80,7 @@ class PlayerHolder {
         }
         player?.apply {
             setMediaSource(mediaSource)
-            previous()
+            prepare()
             playWhenReady = true
             // Restore state (after onResume()/onStart())
             currentPlayerState?.apply {
