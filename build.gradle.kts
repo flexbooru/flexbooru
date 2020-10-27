@@ -24,7 +24,7 @@ buildscript {
         set("work_version", "2.5.0-alpha03")
         set("glide_version", "4.11.0")
         set("lifecycle_version", "2.3.0-beta01")
-        set("exoplayer_version", "2.12.0")
+        set("exoplayer_version", "2.12.1")
         set("okhttp_version", "4.10.0-RC1")
         set("retrofit_version", "2.9.0")
         set("tikxml_version", "0.8.13")
