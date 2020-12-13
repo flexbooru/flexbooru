@@ -24,7 +24,6 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("plugin.serialization")
     kotlin("kapt")
 }
@@ -54,12 +53,12 @@ android {
             }
         }
     }
-    compileSdkVersion(29)
-    buildToolsVersion = "29.0.3"
+    compileSdkVersion(30)
+    buildToolsVersion = "30.0.3"
     defaultConfig {
         applicationId = "onlymash.flexbooru.play"
         minSdkVersion(21)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = verCode
         versionName = "2.6.1"
         versionNameSuffix = ".c$verCode"
@@ -125,8 +124,6 @@ android {
     }
 }
 
-androidExtensions.isExperimental = true
-
 dependencies {
     val ext = rootProject.extra
     val kodeinVersion = ext.get("kodein_version") as String
@@ -142,7 +139,7 @@ dependencies {
     val retrofitVersion = ext.get("retrofit_version") as String
     val tikxmlVersion = ext.get("tikxml_version") as String
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.10")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":common"))
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
@@ -154,16 +151,16 @@ dependencies {
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
     implementation("androidx.annotation:annotation:1.2.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.3.0-alpha02")
-    implementation("androidx.activity:activity-ktx:1.2.0-beta01")
-    implementation("androidx.fragment:fragment-ktx:1.3.0-beta01")
+    implementation("androidx.activity:activity-ktx:1.2.0-beta02")
+    implementation("androidx.fragment:fragment-ktx:1.3.0-beta02")
     implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.core:core-ktx:1.5.0-alpha04")
-    implementation("androidx.recyclerview:recyclerview:1.2.0-alpha06")
+    implementation("androidx.core:core-ktx:1.5.0-alpha05")
+    implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
     implementation("androidx.viewpager2:viewpager2:1.1.0-alpha01")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.browser:browser:1.3.0-alpha06")
+    implementation("androidx.browser:browser:1.3.0")
     implementation("androidx.drawerlayout:drawerlayout:1.1.1")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
@@ -171,7 +168,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0-alpha1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     // Lifecycles only (without ViewModel or LiveData)
@@ -186,21 +183,21 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
     implementation("androidx.paging:paging-runtime-ktx:2.1.2")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.3.0-alpha03")
+    implementation("com.google.android.material:material:1.3.0-alpha04")
     implementation("com.google.android:flexbox:2.0.1")
     implementation("com.google.android.apps.muzei:muzei-api:3.4.0")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("com.github.onlymash:subsampling-scale-image-view:3.10.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.onlymash:OMFM:1.1.4")
-    implementation("com.mikepenz:materialdrawer:8.1.7")
+    implementation("com.mikepenz:materialdrawer:8.2.0")
     implementation("com.google.zxing:core:3.4.1")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
-    implementation("com.google.firebase:firebase-analytics-ktx:17.6.0")
-    implementation("com.google.firebase:firebase-crashlytics:17.2.2")
-    implementation("com.google.android.gms:play-services-vision:20.1.2")
+    implementation("com.google.firebase:firebase-analytics-ktx:18.0.0")
+    implementation("com.google.firebase:firebase-crashlytics:17.3.0")
+    implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.android.billingclient:billing:3.0.1")
+    implementation("com.android.billingclient:billing:3.0.2")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
@@ -220,8 +217,8 @@ dependencies {
     testImplementation("junit:junit:4.13.1")
     testImplementation("org.robolectric:robolectric:4.4")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.3.1-alpha01")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3-alpha01")
-    androidTestImplementation("androidx.test:runner:1.3.1-alpha01")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-alpha01")
+    androidTestImplementation("androidx.test:core:1.3.1-alpha02")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3-alpha02")
+    androidTestImplementation("androidx.test:runner:1.3.1-alpha02")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-alpha02")
 }

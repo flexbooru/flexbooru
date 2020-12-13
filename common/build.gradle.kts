@@ -28,11 +28,11 @@ val coroutinesVersion = ext.get("coroutines_version") as String
 val serializationVersion = ext.get("serialization_version") as String
 
 android {
-    compileSdkVersion(29)
-    buildToolsVersion = "29.0.3"
+    compileSdkVersion(30)
+    buildToolsVersion = "30.0.3"
     defaultConfig {
         minSdkVersion(21)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -66,7 +66,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.kodein.di:kodein-di:$kodeinVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -77,7 +77,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.kodein.di:kodein-di-jvm:$kodeinVersion")
                 implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
