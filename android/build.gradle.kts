@@ -47,9 +47,9 @@ android {
         if (storePropertyFile.exists() && releaseStoreFile.exists()) {
             create("release") {
                 storeFile = releaseStoreFile
-                keyAlias = properties["KEY_ALIAS"] as? String
-                keyPassword = properties["KEY_PASS"] as? String
-                storePassword = properties["STORE_PASS"] as? String
+                keyAlias = properties.getProperty("KEY_ALIAS")
+                keyPassword = properties.getProperty("KEY_PASS")
+                storePassword = properties.getProperty("STORE_PASS")
             }
         }
     }
@@ -65,11 +65,16 @@ android {
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["backupApiKey"] = "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"
-        resourceConfigurations.apply {
-            clear()
-            addAll(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL", "pt-rBR", "es-rES", "pl-rPL",
-                "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP", "in-rID", "de-rDE"))
+        resourceConfigurations.addAll(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL", "pt-rBR", "es-rES",
+                "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP", "in-rID", "de-rDE"))
+    }
+    applicationVariants.all {
+        outputs.map {
+            it as BaseVariantOutputImpl
         }
+            .forEach { output ->
+                output.outputFileName = "flexbooru_${defaultConfig.versionName}${defaultConfig.versionNameSuffix}.apk"
+            }
     }
     buildTypes {
         getByName("release") {
@@ -199,7 +204,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
-    implementation("com.squareup.okio:okio:3.0.0-alpha.6")
+    implementation("com.squareup.okio:okio:2.10.0")
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion")
     kapt("com.github.bumptech.glide:compiler:$glideVersion")

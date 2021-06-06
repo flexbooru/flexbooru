@@ -25,7 +25,7 @@ buildscript {
         set("glide_version", "4.12.0")
         set("lifecycle_version", "2.4.0-alpha01")
         set("exoplayer_version", "2.14.0")
-        set("okhttp_version", "5.0.0-alpha.2")
+        set("okhttp_version", "4.9.0")
         set("retrofit_version", "2.9.0")
         set("tikxml_version", "0.8.13")
         set("kodein_version", "7.6.0")
@@ -41,7 +41,7 @@ buildscript {
         val kotlinVersion = "1.5.10"
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:7.0.0-beta03")
+        classpath("com.android.tools.build:gradle:4.2.1")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.4")
         classpath("com.google.gms:google-services:4.3.8")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.7.0")
