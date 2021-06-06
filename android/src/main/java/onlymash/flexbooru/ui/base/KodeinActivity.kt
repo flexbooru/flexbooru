@@ -16,9 +16,9 @@
 package onlymash.flexbooru.ui.base
 
 import org.kodein.di.DIAware
-import org.kodein.di.android.di
+import org.kodein.di.android.closestDI
 
 abstract class KodeinActivity : BaseActivity(), DIAware {
 
-    final override val di by di()
+    final override val di by closestDI()
 }

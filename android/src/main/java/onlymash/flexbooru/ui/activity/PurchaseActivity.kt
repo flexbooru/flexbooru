@@ -85,7 +85,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         val responseCode = billingResult.responseCode
         if ((responseCode == BillingClient.BillingResponseCode.OK ||
                     responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) && !purchases.isNullOrEmpty()) {
-            val index = purchases.indexOfFirst { it.sku == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
+            val index = purchases.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
             if (index >= 0) {
                 val purchase = purchases[index]
                 val ackParams = AcknowledgePurchaseParams.newBuilder()

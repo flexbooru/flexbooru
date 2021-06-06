@@ -39,7 +39,7 @@ import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
 import onlymash.flexbooru.extension.ListListener
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 import org.kodein.di.instance
 
 private const val CONFIG_NAME_KEY = "booru_config_name"
@@ -59,7 +59,7 @@ private const val CONFIG_TYPE_SHIMMIE = "shimmie"
 class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
     SharedPreferences.OnSharedPreferenceChangeListener, BooruConfigActivity.MenuListener {
 
-    override val di by di()
+    override val di by closestDI()
     private val booruDao by instance<BooruDao>()
     private val sp by instance<SharedPreferences>()
 

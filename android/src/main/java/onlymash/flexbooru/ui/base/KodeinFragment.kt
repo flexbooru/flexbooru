@@ -17,8 +17,8 @@ package onlymash.flexbooru.ui.base
 
 import androidx.viewbinding.ViewBinding
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 
 abstract class KodeinFragment<T: ViewBinding> : BindingFragment<T>(), DIAware {
-    final override val di by di()
+    final override val di by closestDI()
 }

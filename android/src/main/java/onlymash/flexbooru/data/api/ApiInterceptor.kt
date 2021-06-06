@@ -18,6 +18,7 @@ package onlymash.flexbooru.data.api
 import okhttp3.Interceptor
 import okhttp3.Response
 import onlymash.flexbooru.app.Keys
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.extension.userAgent
 
 class ApiInterceptor : Interceptor {
@@ -32,15 +33,9 @@ class ApiInterceptor : Interceptor {
 
 class ApiSankakuInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val url = chain.request().url
-        val scheme = url.scheme
-        var host = url.host
-        if (host.startsWith("capi-v2.")) host = host.replaceFirst("capi-v2.", "chan.")
         val requests =  chain.request().newBuilder()
             .removeHeader(Keys.HEADER_USER_AGENT)
-            .addHeader(Keys.HEADER_USER_AGENT, userAgent)
-            .addHeader("Origin", "$scheme://$host")
-            .addHeader(Keys.HEADER_REFERER, "$scheme://$host/post")
+            .addHeader(Keys.HEADER_USER_AGENT, Values.PC_USER_AGENT)
             .build()
         return chain.proceed(requests)
     }

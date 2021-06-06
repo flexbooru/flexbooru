@@ -25,11 +25,12 @@ import org.kodein.di.*
 fun appModule(applicationContext: Context) = DI.Module("AppModule") {
     bind<Context>() with singleton { applicationContext }
     bind<SharedPreferences>() with provider { PreferenceManager.getDefaultSharedPreferences(instance()) }
-    bind() from singleton { MyDatabase(instance()) }
-    bind() from singleton { instance<MyDatabase>().booruDao() }
-    bind() from singleton { instance<MyDatabase>().tagFilterDao() }
-    bind() from singleton { instance<MyDatabase>().muzeiDao() }
-    bind() from singleton { instance<MyDatabase>().postDao() }
-    bind() from singleton { instance<MyDatabase>().historyDao() }
-    bind() from singleton { BooruApis() }
+    bind { singleton { MyDatabase(instance()) } }
+    bind { singleton { instance<MyDatabase>().booruDao() } }
+    bind { singleton { instance<MyDatabase>().tagFilterDao() } }
+    bind { singleton { instance<MyDatabase>().muzeiDao() } }
+    bind { singleton { instance<MyDatabase>().postDao() } }
+    bind { singleton { instance<MyDatabase>().historyDao() } }
+    bind { singleton { instance<MyDatabase>().nextDao() } }
+    bind { singleton { BooruApis() } }
 }

@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.Config.NONE
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28], manifest = NONE)
+@Config(sdk = [29], manifest = NONE)
 class ShimmieApiTest {
 
     private lateinit var url: HttpUrl

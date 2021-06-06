@@ -121,7 +121,7 @@ private fun getDocumentFileId(prentId: String, fileName: String): String {
 fun String.getMimeType(): String {
     var extension = fileExt()
     // Convert the URI string to lower case to ensure compatibility with MimeTypeMap (see CB-2185).
-    extension = extension.toLowerCase(Locale.getDefault())
+    extension = extension.lowercase(Locale.getDefault())
     return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: ""
 }
 

@@ -22,14 +22,26 @@ import onlymash.flexbooru.data.model.common.Tag
 
 @Serializable
 data class TagSankaku(
+    @SerialName("count")
+    val count: Int,
     @SerialName("id")
     val id: Int,
+    @SerialName("locale")
+    val locale: String,
     @SerialName("name")
     val name: String,
+    @SerialName("name_en")
+    val nameEn: String,
+    @SerialName("name_ja")
+    val nameJa: String?,
+    @SerialName("pool_count")
+    val poolCount: Int,
+    @SerialName("post_count")
+    val postCount: Int,
+    @SerialName("rating")
+    val rating: String? = "e",
     @SerialName("type")
-    val type: Int,
-    @SerialName("count")
-    val count: Int
+    val type: Int
 ) {
     fun toTag(): Tag {
         return Tag(

@@ -27,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 fun BottomNavigationView.setup(navController: NavController) {
 
-    setOnNavigationItemSelectedListener { menuItem ->
+    setOnItemSelectedListener { menuItem ->
         if (menuItem.itemId == navController.currentDestination?.id) {
             true
         } else {

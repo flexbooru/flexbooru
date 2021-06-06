@@ -30,6 +30,8 @@ import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi
+import onlymash.flexbooru.data.database.NextManager
+import onlymash.flexbooru.data.model.common.Next
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.PagingRequestHelper
 import onlymash.flexbooru.extension.NetResult
@@ -65,20 +67,31 @@ class PostBoundaryCallback(
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: Post) {
-        if (action.pageType == PAGE_TYPE_POPULAR &&
-            action.booru.type != BOORU_TYPE_SANKAKU) {
-            return
-        }
-        val indexInNext = itemAtEnd.index + 1
-        val limit = action.limit
-        if (lastResponseSize == limit) {
-            scope.launch {
-                helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { callback ->
-                    val page = when (action.booru.type) {
-                        BOORU_TYPE_GEL -> indexInNext/limit
-                        else -> indexInNext/limit + 1
+        when {
+            action.pageType == PAGE_TYPE_POPULAR &&
+                    action.booru.type != BOORU_TYPE_SANKAKU -> return
+            action.booru.type == BOORU_TYPE_SANKAKU -> {
+                NextManager.getNext(action.booru.uid, action.query)?.next?.let { next ->
+                    scope.launch {
+                        helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { callback ->
+                            createCallback(indexInNext = itemAtEnd.index + 1, callback = callback, next = next)
+                        }
                     }
-                    createCallback(page, indexInNext, callback)
+                }
+            }
+            else -> {
+                val indexInNext = itemAtEnd.index + 1
+                val limit = action.limit
+                if (lastResponseSize == limit) {
+                    scope.launch {
+                        helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { callback ->
+                            val page = when (action.booru.type) {
+                                BOORU_TYPE_GEL -> indexInNext/limit
+                                else -> indexInNext/limit + 1
+                            }
+                            createCallback(page, indexInNext, callback)
+                        }
+                    }
                 }
             }
         }
@@ -88,7 +101,7 @@ class PostBoundaryCallback(
 
     }
 
-    private fun createCallback(page: Int, indexInNext: Int, callback: PagingRequestHelper.Callback) {
+    private fun createCallback(page: Int = 1, indexInNext: Int, callback: PagingRequestHelper.Callback, next: String = "") {
         scope.launch {
             when (val result = when (action.booru.type) {
                 BOORU_TYPE_DAN -> {
@@ -102,7 +115,7 @@ class PostBoundaryCallback(
                 BOORU_TYPE_MOE -> getPostsMoe(page, indexInNext)
                 BOORU_TYPE_GEL -> getPostsGel(page, indexInNext)
                 BOORU_TYPE_SHIMMIE -> getPostsShimmie(page, indexInNext)
-                else -> getPostsSankaku(page, indexInNext)
+                else -> getPostsSankaku(next, indexInNext)
             }) {
                 is NetResult.Success -> {
                     callback.recordSuccess()
@@ -256,13 +269,13 @@ class PostBoundaryCallback(
         }
     }
 
-    private suspend fun getPostsSankaku(page: Int, indexInNext: Int): NetResult<List<Post>> {
+    private suspend fun getPostsSankaku(next: String, indexInNext: Int): NetResult<List<Post>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.sankakuApi.getPosts(
-                    action.getSankakuPostsUrl(page))
+                val response = booruApis.sankakuApi.getPosts(if (indexInNext == 0) action.getSankakuPostsUrl() else action.getSankakuUrlNext(next))
                 if (response.isSuccessful) {
-                    val raw = response.body()
+                    val data = response.body()
+                    val raw = data?.posts
                     lastResponseSize = raw?.size ?: 0
                     val posts = raw?.mapIndexed { index, postSankaku ->
                         postSankaku.toPost(
@@ -274,6 +287,7 @@ class PostBoundaryCallback(
                             isFavored = isFavored
                         )
                     } ?: listOf()
+                    NextManager.create(Next(booruUid = action.booru.uid, query = action.query, next = data?.meta?.next))
                     NetResult.Success(posts)
                 } else {
                     NetResult.Error("code: ${response.code()}")

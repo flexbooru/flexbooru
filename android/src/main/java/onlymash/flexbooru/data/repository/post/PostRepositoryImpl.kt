@@ -32,6 +32,8 @@ import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi
 import onlymash.flexbooru.data.database.MyDatabase
+import onlymash.flexbooru.data.database.NextManager
+import onlymash.flexbooru.data.model.common.Next
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.Listing
 import onlymash.flexbooru.data.repository.NetworkState
@@ -250,9 +252,11 @@ class PostRepositoryImpl(
     private suspend fun refreshSankaku(action: ActionPost): NetResult<List<Post>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.sankakuApi.getPosts(action.getSankakuPostsUrl(1))
-                if (response.isSuccessful) {
-                    val posts = response.body()?.mapIndexed { index, post ->
+                val response = booruApis.sankakuApi.getPosts(action.getSankakuPostsUrl())
+                val netResult = if (response.isSuccessful) {
+                    val data = response.body()
+                    val next = data?.meta?.next
+                    val posts = data?.posts?.mapIndexed { index, post ->
                         post.toPost(
                             booruUid = action.booru.uid,
                             query = action.query,
@@ -262,10 +266,12 @@ class PostRepositoryImpl(
                             isFavored = action.isFavoredQuery()
                         )
                     } ?: listOf()
+                    NextManager.create(Next(booruUid = action.booru.uid, query = action.query, next = next))
                     NetResult.Success(posts)
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
+                netResult
             } catch (e: Exception) {
                 NetResult.Error(e.message.toString())
             }

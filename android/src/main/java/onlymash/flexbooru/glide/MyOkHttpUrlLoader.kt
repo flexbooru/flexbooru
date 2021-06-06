@@ -23,6 +23,7 @@ import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.load.model.ModelLoader
 import okhttp3.OkHttpClient
 import onlymash.flexbooru.app.Keys
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.extension.userAgent
 import java.io.InputStream
 import java.net.URL
@@ -30,7 +31,7 @@ import java.net.URL
 class MyOkHttpUrlLoader(client: OkHttpClient) : OkHttpUrlLoader(client) {
 
     companion object {
-        private const val SANKAKU_REFERER = "beta.sankakucomplex.com"
+        private const val SANKAKU_REFERER = "https://sankaku.app/"
         private val SANKAKU_HOSTS = arrayOf(
             "cs.sankakucomplex.com",
             "s.sankakucomplex.com"
@@ -50,13 +51,16 @@ class MyOkHttpUrlLoader(client: OkHttpClient) : OkHttpUrlLoader(client) {
 
     private fun getHeaders(url: URL): Headers {
         val scheme = url.protocol
-        var host = url.host
-        if (host in SANKAKU_HOSTS) {
-            host = SANKAKU_REFERER
-        }
+        val host = url.host
+        var referer = "$scheme://$host/post"
+        val ua = if (host in SANKAKU_HOSTS) {
+            referer = SANKAKU_REFERER
+            Values.PC_USER_AGENT
+        } else
+            userAgent
         return LazyHeaders.Builder()
-            .addHeader(Keys.HEADER_USER_AGENT, userAgent)
-            .addHeader(Keys.HEADER_REFERER, "$scheme://$host/post")
+            .addHeader(Keys.HEADER_USER_AGENT, ua)
+            .addHeader(Keys.HEADER_REFERER, referer)
             .build()
     }
 }

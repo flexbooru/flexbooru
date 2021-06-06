@@ -25,7 +25,7 @@ import retrofit2.http.*
 interface SankakuApi {
 
     @GET
-    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<List<PostSankaku>>
+    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<ResponseSankaku>
 
     @GET
     suspend fun getUsers(@Url httpUrl: HttpUrl): Response<List<User>>

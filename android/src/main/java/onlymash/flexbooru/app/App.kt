@@ -35,9 +35,7 @@ import onlymash.flexbooru.app.Settings.nightMode
 import onlymash.flexbooru.app.Settings.orderDeviceId
 import onlymash.flexbooru.app.Settings.orderId
 import onlymash.flexbooru.crash.CrashHandler
-import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.api.OrderApi
-import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.PurchaseActivity
@@ -109,23 +107,24 @@ class App : Application(), DIAware {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingClient.isReady) {
-                    val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
-                    isOrderSuccess = if (purchases.isNullOrEmpty()) {
-                        false
-                    } else {
-                        val index = purchases.indexOfFirst {
-                            it.sku == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
-                        }
-                        if (index >= 0) {
-                            val purchase = purchases[index]
-                            if (!purchase.isAcknowledged) {
-                                val ackParams = AcknowledgePurchaseParams.newBuilder()
-                                    .setPurchaseToken(purchase.purchaseToken)
-                                    .build()
-                                billingClient.acknowledgePurchase(ackParams){}
+                    billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP) { _, purchases ->
+                        isOrderSuccess = if (purchases.isNullOrEmpty()) {
+                            false
+                        } else {
+                            val index = purchases.indexOfFirst {
+                                it.skus[0] == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
                             }
-                            true
-                        } else false
+                            if (index >= 0) {
+                                val purchase = purchases[index]
+                                if (!purchase.isAcknowledged) {
+                                    val ackParams = AcknowledgePurchaseParams.newBuilder()
+                                        .setPurchaseToken(purchase.purchaseToken)
+                                        .build()
+                                    billingClient.acknowledgePurchase(ackParams){}
+                                }
+                                true
+                            } else false
+                        }
                     }
                     billingClient.endConnection()
                 }

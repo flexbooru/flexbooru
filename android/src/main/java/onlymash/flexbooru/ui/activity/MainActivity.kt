@@ -186,7 +186,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         navController = findNavController(R.id.nav_host_fragment)
         setupNavigationBarBehavior()
         bottomNavView.setup(navController)
-        bottomNavView.setOnNavigationItemReselectedListener {
+        bottomNavView.setOnItemReselectedListener {
             toListTop()
         }
         booruViewModel = getBooruViewModel(booruDao)

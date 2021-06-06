@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
+ * Copyright (C) 2021. by onlymash <im@fiepi.me>, All rights reserved
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -14,18 +14,17 @@
  */
 
 package onlymash.flexbooru.data.model.sankaku
-
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+import kotlinx.serialization.SerialName
+
+
 @Serializable
-data class AuthorSankaku(
-    @SerialName("avatar")
-    val avatar: String? = null,
-    @SerialName("avatar_rating")
-    val avatarRating: String? = "e",
-    @SerialName("id")
-    val id: Int,
-    @SerialName("name")
-    val name: String
+data class ResponseSankaku(
+    @SerialName("data")
+    val posts: List<PostSankaku>,
+    @SerialName("meta")
+    val meta: MetaSankaku
 )
+
+

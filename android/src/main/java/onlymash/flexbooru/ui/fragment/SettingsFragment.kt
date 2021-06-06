@@ -49,12 +49,12 @@ import onlymash.flexbooru.extension.ListListener
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 import org.kodein.di.instance
 
 class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    override val di by di()
+    override val di by closestDI()
     private val postDao by instance<PostDao>()
     private val sp by instance<SharedPreferences>()
 

@@ -15,7 +15,6 @@
 
 package onlymash.flexbooru.data.model.sankaku
 
-import androidx.room.ColumnInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import onlymash.flexbooru.data.model.common.Post
@@ -29,42 +28,64 @@ import onlymash.flexbooru.data.utils.toSafeUrl
 data class PostSankaku(
     @SerialName("author")
     val author: AuthorSankaku,
+    @SerialName("change")
+    val change: Int,
+    @SerialName("comment_count")
+    val commentCount: Int?,
     @SerialName("created_at")
     val createdAt: Date,
     @SerialName("fav_count")
     val favCount: Int,
     @SerialName("file_size")
     val fileSize: Int,
+    @SerialName("file_type")
+    val fileType: String,
     @SerialName("file_url")
-    val fileUrl: String,
+    val fileUrl: String?,
     @SerialName("has_children")
     val hasChildren: Boolean,
+    @SerialName("has_comments")
+    val hasComments: Boolean,
+    @SerialName("has_notes")
+    val hasNotes: Boolean,
     @SerialName("height")
-    val height: Int,
+    val height: Int?,
     @SerialName("id")
     val id: Int,
+    @SerialName("in_visible_pool")
+    val inVisiblePool: Boolean,
     @SerialName("is_favorited")
     val isFavorited: Boolean,
+    @SerialName("is_premium")
+    val isPremium: Boolean,
+    @SerialName("md5")
+    val md5: String,
     @SerialName("parent_id")
-    val parentId: Int?,
+    val parentId: Long?,
     @SerialName("preview_height")
-    val previewHeight: Int,
+    val previewHeight: Int?,
     @SerialName("preview_url")
-    val previewUrl: String,
+    val previewUrl: String?,
     @SerialName("preview_width")
-    val previewWidth: Int,
+    val previewWidth: Int?,
     @SerialName("rating")
     val rating: String?,
+    @SerialName("recommended_posts")
+    val recommendedPosts: Int,
+    @SerialName("recommended_score")
+    val recommendedScore: Int,
+    @SerialName("redirect_to_signup")
+    val redirectToSignup: Boolean,
     @SerialName("sample_height")
-    val sampleHeight: Int,
+    val sampleHeight: Int?,
     @SerialName("sample_url")
-    val sampleUrl: String,
-    @ColumnInfo(name = "sample_width")
+    val sampleUrl: String?,
     @SerialName("sample_width")
-    val sampleWidth: Int,
-    @ColumnInfo(name = "source")
+    val sampleWidth: Int?,
     @SerialName("source")
     val source: String?,
+    @SerialName("status")
+    val status: String,
     @SerialName("tags")
     val tags: List<TagSankaku>,
     @SerialName("total_score")
@@ -72,19 +93,19 @@ data class PostSankaku(
     @SerialName("vote_count")
     val voteCount: Int,
     @SerialName("width")
-    val width: Int
+    val width: Int?
 ) {
 
     private fun previewUrl(scheme: String, host: String) =
-        previewUrl.toSafeUrl(scheme, host)
+        previewUrl?.toSafeUrl(scheme, host)
 
     private fun sampleUrl(scheme: String, host: String) =
-        sampleUrl.toSafeUrl(scheme, host)
+        sampleUrl?.toSafeUrl(scheme, host)
 
     private fun mediumUrl(scheme: String, host: String) = sampleUrl(scheme, host)
 
     private fun originUrl(scheme: String, host: String) =
-        fileUrl.toSafeUrl(scheme, host)
+        fileUrl?.toSafeUrl(scheme, host)
 
     private fun String.getTags(): List<TagBase> =
         trim().split(" ").map { TagBase(it, -1) }
@@ -99,17 +120,17 @@ data class PostSankaku(
             query = query,
             index = index,
             id = id,
-            width = width,
-            height = height,
+            width = width ?: 0,
+            height = height ?: 0,
             size = fileSize,
             score = totalScore,
             rating = rating ?: "e",
             time = createdAt.s * 1000L,
             tags = tags.toTags(),
-            preview = previewUrl(scheme, host),
-            sample = sampleUrl(scheme, host),
-            medium = mediumUrl(scheme, host),
-            origin = originUrl(scheme, host),
+            preview = previewUrl(scheme, host) ?: "",
+            sample = sampleUrl(scheme, host)  ?: "",
+            medium = mediumUrl(scheme, host)  ?: "",
+            origin = originUrl(scheme, host)  ?: "",
             source = source,
             isFavored = isFavored,
             uploader = User(id = author.id, name = author.name, avatar = author.avatar)

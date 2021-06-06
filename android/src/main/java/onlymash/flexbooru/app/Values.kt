@@ -45,6 +45,8 @@ object Values {
 
     const val REQUEST_CODE_OPEN_DIRECTORY = 101
     const val REQUEST_CODE_SAVE_FILE = 102
+
+    const val PC_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
     
     object Tags {
         const val TYPE_ALL = -1
