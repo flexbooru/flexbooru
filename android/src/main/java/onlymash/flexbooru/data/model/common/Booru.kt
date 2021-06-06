@@ -59,7 +59,10 @@ data class Booru(
     var user: User? = null,
     @ColumnInfo(name = "path")
     @SerialName("path")
-    var path: String? = null
+    var path: String? = null,
+    @ColumnInfo(name = "auth")
+    @SerialName("auth")
+    var auth: String? = null
 ) {
     fun getBlacklistsString(): String {
         var tagsString = ""

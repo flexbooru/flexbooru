@@ -36,6 +36,8 @@ class ApiSankakuInterceptor : Interceptor {
         val requests =  chain.request().newBuilder()
             .removeHeader(Keys.HEADER_USER_AGENT)
             .addHeader(Keys.HEADER_USER_AGENT, Values.PC_USER_AGENT)
+            .addHeader(Keys.HEADER_ORIGIN, Values.SANKAKU_ORIGIN)
+            .addHeader(Keys.HEADER_REFERER, Values.SANKAKU_REFERER)
             .build()
         return chain.proceed(requests)
     }

@@ -252,7 +252,11 @@ class PostRepositoryImpl(
     private suspend fun refreshSankaku(action: ActionPost): NetResult<List<Post>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.sankakuApi.getPosts(action.getSankakuPostsUrl())
+                val auth = action.booru.auth
+                val response = if (auth.isNullOrBlank())
+                    booruApis.sankakuApi.getPosts(action.getSankakuPostsUrl())
+                else
+                    booruApis.sankakuApi.getPostsAuth(action.getSankakuPostsUrl(), auth)
                 val netResult = if (response.isSuccessful) {
                     val data = response.body()
                     val next = data?.meta?.next

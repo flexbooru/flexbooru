@@ -40,6 +40,9 @@ class MyMigration(startVersion: Int, endVersion: Int) : Migration(startVersion, 
                 database.execSQL("CREATE TABLE IF NOT EXISTS `next` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, `next` TEXT, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
                 database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_next_booru_uid_query` ON `next` (`booru_uid`, `query`)")
             }
+            startVersion == 6 && endVersion == 7 -> {
+                database.execSQL("ALTER TABLE  `boorus` ADD COLUMN `auth` TEXT")
+            }
         }
     }
 }

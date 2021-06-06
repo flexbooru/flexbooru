@@ -174,18 +174,10 @@
         <item>id</item>
         <item>id_desc</item>
         <item>random</item>
-        <item>popular</item>
+        <item>popularity</item>
         <item>quality</item>
         <item>fav</item>
-        <item>wide</item>
-        <item>nonwide</item>
-        <item>mpixels</item>
-        <item>mpixels_asc</item>
-        <item>landscape</item>
-        <item>portrait</item>
         <item>vote</item>
-        <item>favcount</item>
-        <item>viewcount</item>
         <item>tagcount</item>
         <item>tagcount_asc</item>
         <item>filesize</item>

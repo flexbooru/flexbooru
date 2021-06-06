@@ -19,6 +19,8 @@ object Keys {
     const val HEADER_COOKIE = "Cookie"
     const val HEADER_USER_AGENT = "User-Agent"
     const val HEADER_REFERER = "Referer"
+    const val HEADER_ORIGIN = "Origin"
+    const val HEADER_AUTH = "Authorization"
 
     const val BOORU_TYPE = "booru_type"
 

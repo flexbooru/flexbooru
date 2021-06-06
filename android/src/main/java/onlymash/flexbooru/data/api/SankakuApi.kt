@@ -16,6 +16,7 @@
 package onlymash.flexbooru.data.api
 
 import okhttp3.HttpUrl
+import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.model.sankaku.*
@@ -26,6 +27,12 @@ interface SankakuApi {
 
     @GET
     suspend fun getPosts(@Url httpUrl: HttpUrl): Response<ResponseSankaku>
+
+    @GET
+    suspend fun getPostsAuth(
+        @Url httpUrl: HttpUrl,
+        @Header(Keys.HEADER_AUTH) auth: String
+    ): Response<ResponseSankaku>
 
     @GET
     suspend fun getUsers(@Url httpUrl: HttpUrl): Response<List<User>>

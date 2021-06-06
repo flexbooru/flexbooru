@@ -48,6 +48,7 @@ private const val CONFIG_SCHEME_KEY = "booru_config_scheme"
 private const val CONFIG_HOST_KEY = "booru_config_host"
 private const val CONFIG_PATH_KEY = "booru_config_path"
 private const val CONFIG_HASH_SALT_KEY = "booru_config_hash_salt"
+private const val CONFIG_AUTH_KEY = "booru_config_auth"
 
 private const val CONFIG_TYPE_DAN = "danbooru"
 private const val CONFIG_TYPE_DAN1 = "danbooru1"
@@ -73,6 +74,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
 
     private var hashSaltPreferences: Preference? = null
     private var pathPreferences: Preference? = null
+    private var authPreferences: Preference? = null
 
     private var name: String
         get() = sp.getString(CONFIG_NAME_KEY, "") ?: ""
@@ -97,6 +99,10 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
     private var hashSalt: String
         get() = sp.getString(CONFIG_HASH_SALT_KEY, "") ?: ""
         set(value) = sp.edit().putString(CONFIG_HASH_SALT_KEY, value).apply()
+
+    private var auth: String
+        get() = sp.getString(CONFIG_AUTH_KEY, "") ?: ""
+        set(value) = sp.edit().putString(CONFIG_AUTH_KEY, value).apply()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -134,6 +140,8 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
         hashSaltPreferences?.isVisible = type in hashBoorus
         pathPreferences = findPreference(CONFIG_PATH_KEY)
         pathPreferences?.isVisible = type == BOORU_TYPE_SHIMMIE
+        authPreferences = findPreference(CONFIG_AUTH_KEY)
+        authPreferences?.isVisible = type == BOORU_TYPE_SANKAKU
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -182,6 +190,9 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
                         if (booru.type != BOORU_TYPE_SHIMMIE) {
                             booru.path = null
                         }
+                        if (booru.type != BOORU_TYPE_SANKAKU) {
+                            booru.auth = null
+                        }
                         if (booru.uid == 0L) {
                             booruDao.insert(booru)
                         } else {
@@ -205,9 +216,11 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
                 booru?.type = type
                 hashSaltPreferences?.isVisible = type in hashBoorus
                 pathPreferences?.isVisible = type == BOORU_TYPE_SHIMMIE
+                authPreferences?.isVisible = type == BOORU_TYPE_SANKAKU
             }
             CONFIG_HASH_SALT_KEY -> booru?.hashSalt = hashSalt
             CONFIG_PATH_KEY -> booru?.path = path
+            CONFIG_AUTH_KEY -> booru?.auth = auth
         }
     }
 

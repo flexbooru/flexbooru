@@ -195,7 +195,7 @@ data class ActionPost(
             .addQueryParameter("default_threshold", "1")
             .addQueryParameter("hide_posts_in_books", "in-larger-tags")
             .addQueryParameter("limit", limit.toString())
-        val tags = "order:popular date:${date.getDateRangeString()} ${booru.getBlacklistsString()}".trim()
+        val tags = "order:popularity date:${date.getDateRangeString()} ${booru.getBlacklistsString()}".trim()
         if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
             builder.addQueryParameter("tags", "$tags $SAFE_MODE_TAG")
         } else {

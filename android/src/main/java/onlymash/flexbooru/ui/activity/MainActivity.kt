@@ -402,13 +402,15 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             if (i == -1 && booru.uid == uid) {
                 i = index
             }
-            var host = booru.host
-            if (booru.type == BOORU_TYPE_SANKAKU && host.startsWith("capi-v2.")) {
-                host = host.replaceFirst("capi-v2.", "beta.")
+            val host = booru.host
+            val url = if (booru.type == BOORU_TYPE_SANKAKU && host.startsWith("capi-v2.")) {
+                "https://sankaku.app/images/192x192.png"
+            } else {
+                String.format("%s://%s/favicon.ico", booru.scheme, host)
             }
             headerView.addProfile(
                 ProfileDrawerItem().apply {
-                    icon = ImageHolder(Uri.parse(String.format("%s://%s/favicon.ico", booru.scheme, host)))
+                    icon = ImageHolder(Uri.parse(url))
                     name = StringHolder(booru.name)
                     description = StringHolder(String.format("%s://%s", booru.scheme, booru.host))
                     identifier = booru.uid

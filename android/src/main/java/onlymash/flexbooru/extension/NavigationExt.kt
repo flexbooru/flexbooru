@@ -50,7 +50,7 @@ private fun onNavDestinationSelected(
         .build()
 
     return try {
-        val index = navController.backStack.indexOfFirst { it.destination.id == itemId }
+        val index = navController.backQueue.indexOfFirst { it.destination.id == itemId }
         if (index >= 0) {
             navController.popBackStack(itemId, false)
         } else {

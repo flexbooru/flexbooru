@@ -272,7 +272,12 @@ class PostBoundaryCallback(
     private suspend fun getPostsSankaku(next: String, indexInNext: Int): NetResult<List<Post>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.sankakuApi.getPosts(if (indexInNext == 0) action.getSankakuPostsUrl() else action.getSankakuUrlNext(next))
+                val url = if (indexInNext == 0) action.getSankakuPostsUrl() else action.getSankakuUrlNext(next)
+                val auth = action.booru.auth
+                val response = if (auth.isNullOrBlank())
+                    booruApis.sankakuApi.getPosts(url)
+                else
+                    booruApis.sankakuApi.getPostsAuth(url, auth)
                 if (response.isSuccessful) {
                     val data = response.body()
                     val raw = data?.posts

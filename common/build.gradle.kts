@@ -28,11 +28,11 @@ val coroutinesVersion = ext.get("coroutines_version") as String
 val serializationVersion = ext.get("serialization_version") as String
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     buildToolsVersion = "30.0.3"
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
