@@ -20,6 +20,7 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.ONLY_FIELD_POSTS_DAN
+import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.model.common.Booru
 
@@ -168,49 +169,44 @@ data class ActionPost(
         return builder.build()
     }
 
-    private fun getSankakuUrl(): HttpUrl {
+    fun getSankakuPostsUrl(): HttpUrl {
         val builder = HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
             .addPathSegments("posts/keyset")
             .addQueryParameter("lang", "en")
-            .addQueryParameter("default_threshold", "1")
+            .addQueryParameter("default_threshold", "3")
             .addQueryParameter("hide_posts_in_books", "in-larger-tags")
             .addQueryParameter("limit", limit.toString())
-
-        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-            builder.addQueryParameter("tags", "$query $SAFE_MODE_TAG ${booru.getBlacklistsString()}".trim())
-        } else {
-            builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
+        var tags = "$query ${booru.getBlacklistsString()}".trim()
+        if (pageType == PAGE_TYPE_POPULAR) {
+            tags = "$tags order:popularity date:${date.getDateRangeString()}"
         }
-        return builder.build()
+        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
+            tags = "$tags $SAFE_MODE_TAG"
+        }
+        return builder.addQueryParameter("tags", tags).build()
     }
 
-    private fun getPopularSankakuUrl(): HttpUrl {
+    fun getSankakuUrlNext(next: String): HttpUrl {
         val builder = HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
             .addPathSegments("posts/keyset")
             .addQueryParameter("lang", "en")
-            .addQueryParameter("default_threshold", "1")
+            .addQueryParameter("default_threshold", "3")
             .addQueryParameter("hide_posts_in_books", "in-larger-tags")
-            .addQueryParameter("limit", limit.toString())
-        val tags = "order:popularity date:${date.getDateRangeString()} ${booru.getBlacklistsString()}".trim()
-        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-            builder.addQueryParameter("tags", "$tags $SAFE_MODE_TAG")
-        } else {
-            builder.addQueryParameter("tags", tags)
-        }
-        return builder.build()
-    }
-
-    fun getSankakuUrlNext(next: String) = HttpUrl.Builder()
-            .scheme(booru.scheme)
-            .host(booru.host)
-            .addPathSegments("posts/keyset")
-            .addQueryParameter("lang", "en")
             .addQueryParameter("next", next)
-            .build()
+            .addQueryParameter("limit", limit.toString())
+        var tags = "$query ${booru.getBlacklistsString()}".trim()
+        if (pageType == PAGE_TYPE_POPULAR) {
+            tags = "$tags order:popularity date:${date.getDateRangeString()}"
+        }
+        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
+            tags = "$tags $SAFE_MODE_TAG"
+        }
+        return builder.addQueryParameter("tags", tags).build()
+    }
 
     private fun getPopularDanUrl(): HttpUrl {
         val builder = HttpUrl.Builder()
@@ -300,7 +296,4 @@ data class ActionPost(
         }
         return builder.build()
     }
-
-    fun getSankakuPostsUrl() =
-        if (pageType == PAGE_TYPE_POSTS) getSankakuUrl() else getPopularSankakuUrl()
 }
