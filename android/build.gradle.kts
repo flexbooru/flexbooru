@@ -122,6 +122,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    lintOptions {
+        isAbortOnError = false
+    }
 }
 
 dependencies {
