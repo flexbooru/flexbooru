@@ -30,6 +30,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -224,8 +225,9 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             )
         }
         setupInsets { insets ->
-            drawerSliderView.recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
-            drawerSliderView.stickyFooterView?.updatePadding(bottom = insets.systemWindowInsetBottom)
+            val bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            drawerSliderView.recyclerView.updatePadding(bottom = bottom)
+            drawerSliderView.stickyFooterView?.updatePadding(bottom = bottom)
         }
         checkUpdate()
     }

@@ -49,7 +49,6 @@ import onlymash.flexbooru.ui.helper.ItemTouchCallback
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.fragment.QRCodeDialog
 import onlymash.flexbooru.ui.helper.CreateFileLifecycleObserver
@@ -94,9 +93,6 @@ class BooruActivity : KodeinActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        drawNavBar { insets ->
-            list.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
         supportActionBar?.apply {
             setTitle(R.string.title_manage_boorus)
             setDisplayHomeAsUpEnabled(true)

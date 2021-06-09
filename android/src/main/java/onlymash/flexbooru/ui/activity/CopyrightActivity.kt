@@ -30,7 +30,6 @@ import androidx.core.view.updatePadding
 import onlymash.flexbooru.R
 import onlymash.flexbooru.databinding.ActivityCopyrightBinding
 import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
@@ -41,9 +40,6 @@ class CopyrightActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        drawNavBar {
-            binding.scrollView.updatePadding(bottom = it.systemWindowInsetBottom)
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_copyright)

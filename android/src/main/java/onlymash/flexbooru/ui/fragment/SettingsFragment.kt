@@ -45,7 +45,6 @@ import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.getTreeUri
 import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.extension.trim
-import onlymash.flexbooru.extension.ListListener
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
 import org.kodein.di.DIAware
@@ -59,11 +58,6 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
     private val sp by instance<SharedPreferences>()
 
     private var gridRatioPreference: Preference? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        listView.setOnApplyWindowInsetsListener(ListListener)
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_settings)

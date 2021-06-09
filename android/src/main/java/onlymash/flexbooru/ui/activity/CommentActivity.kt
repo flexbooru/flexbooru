@@ -50,7 +50,6 @@ import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.instance
@@ -108,11 +107,6 @@ class CommentActivity : KodeinActivity() {
     }
 
     private fun initView() {
-        drawNavBar {
-            val bottomPadding = it.systemWindowInsetBottom
-            list.updatePadding(bottom = bottomPadding)
-            progressBarHorizontal.updatePadding(bottom = bottomPadding)
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_comments)

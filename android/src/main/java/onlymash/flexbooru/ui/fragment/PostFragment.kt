@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.*
 import android.os.Build
 import android.os.Bundle
@@ -38,6 +37,9 @@ import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
@@ -94,7 +96,6 @@ import onlymash.flexbooru.ui.viewmodel.TagFilterViewModel
 import onlymash.flexbooru.ui.viewmodel.getPostViewModel
 import onlymash.flexbooru.ui.viewmodel.getTagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
-import onlymash.flexbooru.widget.DateRangePickerDialogFragment
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.worker.DownloadWorker
 import org.kodein.di.instance
@@ -332,8 +333,8 @@ class PostFragment : SearchBarFragment() {
     }
 
     private fun initDate() {
-        val calendar = Calendar.getInstance(Locale.US).apply {
-            timeInMillis = System.currentTimeMillis()
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
         }
         val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
         val currentMonth = calendar.get(Calendar.MONTH)
@@ -363,7 +364,12 @@ class PostFragment : SearchBarFragment() {
 
     private fun Activity.getWindowWidth(): Int {
         val outMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(outMetrics)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            display?.getRealMetrics(outMetrics)
+        } else {
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(outMetrics)
+        }
         return outMetrics.widthPixels
     }
 
@@ -492,76 +498,73 @@ class PostFragment : SearchBarFragment() {
     }
 
     private fun pickDate() {
-        val context = context ?: return
-        val currentTimeMillis = System.currentTimeMillis()
-        val minCalendar = Calendar.getInstance(Locale.US).apply {
-            timeInMillis = currentTimeMillis
-            add(Calendar.YEAR, -20)
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            set(Calendar.YEAR, date.yearEnd)
+            set(Calendar.MONTH, date.monthEnd)
+            set(Calendar.DAY_OF_MONTH, date.dayEnd)
         }
-        DatePickerDialog(
-            context,
-            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                date.yearEnd = year
-                date.monthEnd = month
-                date.dayEnd = dayOfMonth
-                action?.let {
-                    it.date = date
-                    updateActionAndRefresh(it)
-                }
-            },
-            date.yearEnd,
-            date.monthEnd,
-            date.dayEnd
-        ).apply {
-            datePicker.apply {
-                minDate = minCalendar.timeInMillis
-                maxDate = currentTimeMillis
+        val selectedTime = calendar.timeInMillis
+        val calendarConstraints = CalendarConstraints.Builder()
+            .setOpenAt(selectedTime)
+            .setValidator(DateValidatorPointBackward.now())
+            .build()
+        val dialog = MaterialDatePicker.Builder.datePicker()
+            .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+            .setCalendarConstraints(calendarConstraints)
+            .setSelection(selectedTime)
+            .build()
+        dialog.addOnPositiveButtonClickListener { time ->
+            calendar.timeInMillis = time
+            date.yearEnd = calendar.get(Calendar.YEAR)
+            date.monthEnd = calendar.get(Calendar.MONTH)
+            date.dayEnd = calendar.get(Calendar.DAY_OF_MONTH)
+            action?.let {
+                it.date = date
+                updateActionAndRefresh(it)
             }
         }
-            .show()
+        dialog.show(childFragmentManager, "date_picker")
     }
 
     private fun pickDateRange() {
-        val currentTimeMillis = System.currentTimeMillis()
-        val minCalendar = Calendar.getInstance(Locale.US).apply {
-            timeInMillis = currentTimeMillis
-            add(Calendar.YEAR, -20)
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            set(Calendar.YEAR, date.yearStart)
+            set(Calendar.MONTH, date.monthStart)
+            set(Calendar.DAY_OF_MONTH, date.dayStart)
         }
-        val callback = object : DateRangePickerDialogFragment.OnDateRangeSetListener {
-            override fun onDateRangeSet(
-                startDay: Int,
-                startMonth: Int,
-                startYear: Int,
-                endDay: Int,
-                endMonth: Int,
-                endYear: Int
-            ) {
-                date.apply {
-                    dayStart = startDay
-                    monthStart = startMonth
-                    yearStart = startYear
-                    dayEnd = endDay
-                    monthEnd = endMonth
-                    yearEnd = endYear
-                }
-                action?.let {
-                    it.date = date
-                    updateActionAndRefresh(it)
-                }
+        val selectionStart = calendar.timeInMillis
+        calendar.apply {
+            set(Calendar.YEAR, date.yearEnd)
+            set(Calendar.MONTH, date.monthEnd)
+            set(Calendar.DAY_OF_MONTH, date.dayEnd)
+        }
+        val selectionEnd = calendar.timeInMillis
+        val selection = androidx.core.util.Pair(selectionStart, selectionEnd)
+        val calendarConstraints = CalendarConstraints.Builder()
+            .setOpenAt(selectionEnd)
+            .setValidator(DateValidatorPointBackward.now())
+            .build()
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTheme(R.style.MaterialCalendarTheme)
+            .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+            .setCalendarConstraints(calendarConstraints)
+            .setSelection(selection)
+            .build()
+        picker.addOnPositiveButtonClickListener { times ->
+            calendar.timeInMillis = times.first
+            date.yearStart = calendar.get(Calendar.YEAR)
+            date.monthStart = calendar.get(Calendar.MONTH)
+            date.dayStart = calendar.get(Calendar.DAY_OF_MONTH)
+            calendar.timeInMillis = times.second
+            date.yearEnd = calendar.get(Calendar.YEAR)
+            date.monthEnd = calendar.get(Calendar.MONTH)
+            date.dayEnd = calendar.get(Calendar.DAY_OF_MONTH)
+            action?.let {
+                it.date = date
+                updateActionAndRefresh(it)
             }
         }
-        DateRangePickerDialogFragment.newInstance(
-            listener = callback,
-            startDay = date.dayStart,
-            startMonth = date.monthStart,
-            startYear = date.yearStart,
-            endDay = date.dayEnd,
-            endMonth = date.monthEnd,
-            endYear = date.yearEnd,
-            minDate = minCalendar.timeInMillis,
-            maxDate = currentTimeMillis
-        )
-            .show(childFragmentManager, "DateRangePicker")
+        picker.show(childFragmentManager, "date_range_picker")
     }
 
     private fun updateActionAndRefresh(action: ActionPost) {

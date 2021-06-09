@@ -16,7 +16,6 @@
 package onlymash.flexbooru.ui.activity
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -25,6 +24,7 @@ import android.os.Bundle
 import android.provider.DocumentsContract
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AlertDialog
@@ -33,8 +33,7 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
+import androidx.core.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
@@ -57,7 +56,6 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
-import onlymash.flexbooru.app.Values.REQUEST_CODE_SAVE_FILE
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
@@ -227,15 +225,17 @@ class DetailActivity : PathActivity(),
     }
 
     private fun initInsets() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         window.isShowBar = true
-        findViewById<View>(android.R.id.content).setOnApplyWindowInsetsListener { _, insets ->
-            toolbarContainer.minimumHeight = toolbar.height + insets.systemWindowInsetTop
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { _, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            toolbarContainer.minimumHeight = toolbar.height + systemBarsInsets.top
             toolbarContainer.updatePadding(
-                left = insets.systemWindowInsetLeft,
-                top = insets.systemWindowInsetTop,
-                right = insets.systemWindowInsetRight
+                left = systemBarsInsets.left,
+                top = systemBarsInsets.top,
+                right = systemBarsInsets.right
             )
-            bottomSpace.minimumHeight = insets.systemWindowInsetBottom
+            bottomSpace.minimumHeight = systemBarsInsets.bottom
             insets
         }
     }
@@ -628,4 +628,14 @@ class DetailActivity : PathActivity(),
     private fun showToast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
+
+    private var Window.isShowBar: Boolean
+        get() = isStatusBarShown
+        set(value) {
+            if (value) {
+                showSystemBars()
+            } else {
+                hideSystemBars()
+            }
+        }
 }

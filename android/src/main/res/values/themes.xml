@@ -47,6 +47,7 @@
         <item name="materialButtonStyle">@style/Widget.Button.TextButton</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="cardStyle">@style/MyCardView</item>
+        <item name="materialCalendarTheme">@style/MaterialCalendarTheme</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

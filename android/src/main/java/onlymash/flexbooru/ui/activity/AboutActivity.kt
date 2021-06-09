@@ -18,7 +18,6 @@ package onlymash.flexbooru.ui.activity
 import android.os.Bundle
 import android.view.MenuItem
 import onlymash.flexbooru.R
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
 
 class AboutActivity : BaseActivity() {
@@ -26,7 +25,6 @@ class AboutActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
-        drawNavBar {}
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_about)

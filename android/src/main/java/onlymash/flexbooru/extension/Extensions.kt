@@ -57,12 +57,6 @@ fun lerp(a: Float, b: Float, t: Float): Float {
     return a + (b - a) * t
 }
 
-fun Activity.getWindowWidth(): Int {
-    val outMetrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(outMetrics)
-    return outMetrics.widthPixels
-}
-
 fun Context.safeOpenIntent(intent: Intent) {
     try {
         startActivity(intent)
@@ -95,12 +89,6 @@ fun Context.redirectToDownloadManagerSettings() {
         startActivity(intent)
         Toast.makeText(this, getString(R.string.msg_download_must_enable), Toast.LENGTH_LONG).show()
     }
-}
-
-fun Activity.getWidth(): Int {
-    val outMetrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(outMetrics)
-    return outMetrics.widthPixels
 }
 
 fun Activity.openAppInMarket(packageName: String) {

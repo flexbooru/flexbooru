@@ -16,6 +16,7 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
@@ -93,7 +94,12 @@ class InfoDialog : BaseBottomSheetDialog() {
 
     private fun getWindowHeight(): Int {
         val displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            activity?.display?.getRealMetrics(displayMetrics)
+        } else {
+            @Suppress("DEPRECATION")
+            activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        }
         return displayMetrics.heightPixels
     }
 }

@@ -34,7 +34,6 @@ import onlymash.flexbooru.ui.adapter.HistoryAdapter
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.HistoryViewModel
 import onlymash.flexbooru.ui.viewmodel.getHistoryViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.instance
@@ -52,9 +51,6 @@ class HistoryActivity : KodeinActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.list)
-        drawNavBar { insets ->
-            binding.list.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_history)

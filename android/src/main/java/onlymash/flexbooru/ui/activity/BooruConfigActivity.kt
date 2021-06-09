@@ -19,7 +19,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import onlymash.flexbooru.R
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
 
 class BooruConfigActivity : BaseActivity() {
@@ -33,7 +32,6 @@ class BooruConfigActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booru_config)
-        drawNavBar {}
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_booru_config)

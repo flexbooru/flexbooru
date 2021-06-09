@@ -53,7 +53,6 @@ import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.worker.MuzeiArtWorker
@@ -119,12 +118,6 @@ class MuzeiActivity : KodeinActivity() {
     private fun initView() {
         val list = binding.muzeiList
         val fabMuzei = binding.muzeiButton
-        drawNavBar { insets ->
-            list.updatePadding(bottom = insets.systemWindowInsetBottom)
-            fabMuzei.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                bottomMargin = resources.getDimensionPixelSize(R.dimen.margin_normal) + insets.systemWindowInsetBottom
-            }
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_muzei)

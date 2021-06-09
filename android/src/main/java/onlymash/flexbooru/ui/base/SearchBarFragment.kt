@@ -25,10 +25,7 @@ import android.widget.ProgressBar
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
-import androidx.core.view.updateMargins
-import androidx.core.view.updatePadding
+import androidx.core.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -96,9 +93,10 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         progressBarHorizontal = binding.progressHorizontal.progressBarHorizontal
         searchBar = binding.searchBar
         fabToListTop = binding.actionToTop
-        view.setOnApplyWindowInsetsListener { _, insets ->
-            systemUiTopSize = insets.systemWindowInsetTop
-            systemUiBottomSize = insets.systemWindowInsetBottom
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            systemUiTopSize = systemBarsInsets.top
+            systemUiBottomSize = systemBarsInsets.bottom
             searchBar.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 topMargin = resources.getDimensionPixelSize(R.dimen.search_bar_vertical_margin) + systemUiTopSize
             }

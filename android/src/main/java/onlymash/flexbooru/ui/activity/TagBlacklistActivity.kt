@@ -37,7 +37,6 @@ import onlymash.flexbooru.databinding.ActivityTagBlacklistBinding
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import org.kodein.di.instance
@@ -53,13 +52,6 @@ class TagBlacklistActivity : KodeinActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        drawNavBar {
-            binding.list.updatePadding(bottom = it.systemWindowInsetBottom)
-            binding.fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                bottomMargin = it.systemWindowInsetBottom +
-                        resources.getDimensionPixelSize(R.dimen.margin_normal)
-            }
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_tag_blacklist)

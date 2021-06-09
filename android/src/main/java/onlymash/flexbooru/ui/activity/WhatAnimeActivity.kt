@@ -61,7 +61,6 @@ import onlymash.flexbooru.common.tracemoe.model.Doc
 import onlymash.flexbooru.ui.base.BaseBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
@@ -94,13 +93,6 @@ class WhatAnimeActivity : BaseActivity() {
         setContentView(binding.root)
         val list = binding.common.list
         val fab = binding.fab
-        drawNavBar {
-            list.updatePadding(bottom = it.systemWindowInsetBottom)
-            fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                bottomMargin = it.systemWindowInsetBottom +
-                        resources.getDimensionPixelSize(R.dimen.margin_normal)
-            }
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_what_anime)

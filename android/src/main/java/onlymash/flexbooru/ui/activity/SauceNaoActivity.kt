@@ -50,7 +50,6 @@ import onlymash.flexbooru.common.saucenao.model.Result
 import onlymash.flexbooru.common.saucenao.model.SauceNaoResponse
 import onlymash.flexbooru.ui.viewmodel.SauceNaoViewModel
 import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
-import onlymash.flexbooru.extension.drawNavBar
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
@@ -91,13 +90,6 @@ class SauceNaoActivity : BaseActivity() {
         setContentView(binding.root)
         val list = binding.common.list
         val progressBar = binding.common.progress.progressBar
-        drawNavBar {
-            list.updatePadding(bottom = it.systemWindowInsetBottom)
-            fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                bottomMargin = it.systemWindowInsetBottom +
-                        resources.getDimensionPixelSize(R.dimen.margin_normal)
-            }
-        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.title_sauce_nao)

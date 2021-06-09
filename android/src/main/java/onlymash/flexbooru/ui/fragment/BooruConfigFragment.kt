@@ -37,7 +37,6 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
-import onlymash.flexbooru.extension.ListListener
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.closestDI
 import org.kodein.di.instance
@@ -103,11 +102,6 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
     private var auth: String
         get() = sp.getString(CONFIG_AUTH_KEY, "") ?: ""
         set(value) = sp.edit().putString(CONFIG_AUTH_KEY, value).apply()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        listView.setOnApplyWindowInsetsListener(ListListener)
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val activity = activity as BooruConfigActivity
