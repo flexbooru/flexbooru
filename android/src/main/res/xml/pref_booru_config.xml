@@ -66,12 +66,6 @@
             app:icon="@drawable/ic_enhanced_encryption_24dp"
             app:useSimpleSummaryProvider="true"/>
 
-        <EditTextPreference
-            app:key="booru_config_auth"
-            app:title="@string/booru_config_auth"
-            app:singleLine="false"
-            app:useSimpleSummaryProvider="true"/>
-
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -82,4 +82,18 @@ interface SankakuApi {
                        @Field("id") commentId: Int,
                        @Field("login") username: String,
                        @Field("password_hash") passwordHash: String): Response<BoolResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST
+    suspend fun login(
+        @Url url: HttpUrl,
+        @Body loginBody: LoginBody
+    ): Response<UserSankaku>
+
+    @Headers("Content-Type: application/json")
+    @POST
+    suspend fun refreshToken(
+        @Url url: HttpUrl,
+        @Body refreshTokenBody: RefreshTokenBody
+    ): Response<UserSankaku>
 }

@@ -118,7 +118,6 @@
     <string name="booru_config_path">Path</string>
     <string name="booru_config_type">Type</string>
     <string name="booru_config_hash_salt">Hash salt</string>
-    <string name="booru_config_auth" translatable="false">Authorization</string>
     <string name="booru_config_name_cant_empty">The name cannot be empty.</string>
     <string name="booru_config_host_cant_empty">The host cannot be empty.</string>
     <string name="booru_config_host_invalid">Invalid host.</string>

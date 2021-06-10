@@ -126,6 +126,15 @@ data class Booru(
             .addQueryParameter("name", username)
             .build()
     }
+
+    fun getSankakuTokenUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(scheme)
+            .host(host)
+            .addPathSegment("auth")
+            .addPathSegment("token")
+            .build()
+    }
     
     override fun toString(): String = toUri().toString()
 

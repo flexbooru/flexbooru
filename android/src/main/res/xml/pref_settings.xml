@@ -100,7 +100,7 @@
         <SwitchPreference
             app:key="settings_dns_over_https"
             app:title="@string/settings_dns_over_https"
-            app:defaultValue="true"
+            app:defaultValue="false"
             app:summaryOn="@string/switch_on"
             app:summaryOff="@string/switch_off"/>
 
@@ -123,7 +123,7 @@
             app:key="settings_page_limit"
             app:entries="@array/settings_page_limit_entries"
             app:entryValues="@array/settings_page_limit_entries_values"
-            app:defaultValue="10"
+            app:defaultValue="20"
             app:title="@string/settings_page_limit"
             app:useSimpleSummaryProvider="true"/>
 
@@ -152,7 +152,7 @@
             app:key="settings_muzei_limit"
             app:entries="@array/settings_muzei_limit_entries"
             app:entryValues="@array/settings_muzei_limit_entries_values"
-            app:defaultValue="10"
+            app:defaultValue="20"
             app:title="@string/settings_muzei_limit"
             app:useSimpleSummaryProvider="true"/>
 

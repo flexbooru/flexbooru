@@ -27,8 +27,17 @@ data class User(
     @SerialName("token")
     var token: String = "",
     @SerialName("avatar")
-    var avatar: String? = null
+    var avatar: String? = null,
+    @SerialName("access_token")
+    val accessToken: String = "",
+    @SerialName("refresh_token")
+    val refreshToken: String = "",
+    @SerialName("token_type")
+    val tokenType: String = ""
 ) {
     val gelCookie: String
         get() = "user_id=$id; pass_hash=$token"
+
+    val getAuth: String
+        get() = "Bearer $accessToken"
 }

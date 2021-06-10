@@ -30,12 +30,15 @@ import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.api.DanbooruApi
+import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.NextManager
 import onlymash.flexbooru.data.model.common.Next
 import onlymash.flexbooru.data.model.common.Post
+import onlymash.flexbooru.data.model.sankaku.RefreshTokenBody
 import onlymash.flexbooru.data.repository.PagingRequestHelper
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.extension.createStatusLiveData
+import retrofit2.HttpException
 
 class PostBoundaryCallback(
     private val action: ActionPost,
@@ -273,7 +276,7 @@ class PostBoundaryCallback(
         return withContext(Dispatchers.IO) {
             try {
                 val url = if (indexInNext == 0) action.getSankakuPostsUrl() else action.getSankakuPostsUrlNext(next)
-                val auth = action.booru.auth
+                val auth = action.booru.user?.getAuth
                 val response = if (auth.isNullOrBlank())
                     booruApis.sankakuApi.getPosts(url)
                 else
@@ -295,10 +298,34 @@ class PostBoundaryCallback(
                     NextManager.create(Next(booruUid = action.booru.uid, query = action.query, next = data?.meta?.next))
                     NetResult.Success(posts)
                 } else {
-                    NetResult.Error("code: ${response.code()}")
+                    val code = response.code()
+                    if (code == 401) {
+                        refreshSankakuToken()
+                    }
+                    NetResult.Error("code: $code")
                 }
             } catch (e: Exception) {
+                if (e is HttpException && e.code() == 401) {
+                    refreshSankakuToken()
+                }
                 NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun refreshSankakuToken() {
+        val refreshToken = action.booru.user?.refreshToken
+        if (refreshToken != null) {
+            try {
+                val user = booruApis.sankakuApi
+                    .refreshToken(action.booru.getSankakuTokenUrl(), RefreshTokenBody(refreshToken))
+                    .body()?.toUser()
+                if (user != null) {
+                    action.booru.user = user
+                    BooruManager.updateBooru(action.booru)
+                }
+            } catch (_: Exception) {
+
             }
         }
     }

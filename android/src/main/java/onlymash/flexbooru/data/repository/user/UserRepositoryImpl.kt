@@ -26,6 +26,8 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.User
+import onlymash.flexbooru.data.model.sankaku.LoginBody
+import onlymash.flexbooru.data.model.sankaku.RefreshTokenBody
 import onlymash.flexbooru.extension.NetResult
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
@@ -250,6 +252,42 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                     } else {
                         NetResult.Error("User not found!")
                     }
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
+            }
+        }
+    }
+
+    override suspend fun sankakuLogin(
+        username: String,
+        password: String,
+        booru: Booru
+    ): NetResult<User> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.sankakuApi.login(booru.getSankakuTokenUrl(), LoginBody(username, password))
+                val sankakuUser = response.body()
+                if (response.isSuccessful && sankakuUser != null) {
+                    NetResult.Success(sankakuUser.toUser())
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
+            }
+        }
+    }
+
+    override suspend fun sankakuRefreshToken(refreshToken: String, booru: Booru): NetResult<User> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.sankakuApi.refreshToken(booru.getSankakuTokenUrl(), RefreshTokenBody(refreshToken))
+                val sankakuUser = response.body()
+                if (response.isSuccessful && sankakuUser != null) {
+                    NetResult.Success(sankakuUser.toUser())
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
