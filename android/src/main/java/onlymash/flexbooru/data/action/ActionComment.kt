@@ -201,7 +201,7 @@ data class ActionComment(
             .addPathSegment("comments")
             .addQueryParameter("lang", "en")
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("limit", "25")
+            .addQueryParameter("limit", "40")
             .addQueryParameter("order", "recently_commented")
             .build()
     }
@@ -213,7 +213,7 @@ data class ActionComment(
             .addPathSegments("comments/recent")
             .addQueryParameter("lang", "en")
             .addQueryParameter("page", page.toString())
-            .addQueryParameter("limit", "25")
+            .addQueryParameter("limit", "40")
             .addQueryParameter("order", "recently_commented")
             .build()
     }

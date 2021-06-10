@@ -18,7 +18,7 @@ data class CommentSankakuItem(
     @SerialName("id")
     val id: Int,
     @SerialName("post_id")
-    val postId: Int,
+    val postId: Int = 0,
 ) {
     fun toComment(scheme: String, host: String): Comment {
         return Comment(

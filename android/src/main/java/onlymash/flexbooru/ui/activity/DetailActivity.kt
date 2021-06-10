@@ -300,7 +300,6 @@ class DetailActivity : PathActivity(),
     private fun initToolbar() {
         toolbar.inflateMenu(
             when (booru.type) {
-                BOORU_TYPE_SANKAKU -> R.menu.detail_sankaku
                 BOORU_TYPE_SHIMMIE -> R.menu.detail_shimmie
                 else -> R.menu.detail
             }
@@ -407,10 +406,6 @@ class DetailActivity : PathActivity(),
             R.id.action_browse_set_as -> saveAndAction(post, ACTION_SET_AS)
             R.id.action_browse_send -> saveAndAction(post, ACTION_SEND)
             R.id.action_browse_share -> shareLink(post)
-            R.id.action_browse_recommended -> {
-                val query = "recommended_for_post:${post.id}"
-                SearchActivity.startSearch(this, query)
-            }
             R.id.action_browse_open_browser -> openBrowser(post)
         }
         return true
