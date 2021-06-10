@@ -43,20 +43,17 @@ interface SankakuApi {
     @GET
     suspend fun getTags(@Url httpUrl: HttpUrl): Response<List<TagSankaku>>
 
-    @FormUrlEncoded
+    @Headers("Content-Type: application/json; charset=utf-8")
     @POST
-    suspend fun favPost(@Url url: String,
-                     @Field("id") postId: Int,
-                     @Field("login") username: String,
-                     @Field("password_hash") passwordHash: String): Response<VoteSankaku>
+    suspend fun favPost(
+        @Url url: HttpUrl,
+        @Header(Keys.HEADER_AUTH) auth: String): Response<VoteSankaku>
 
-    @FormUrlEncoded
-    @HTTP(method = "POST", hasBody = true)
-    suspend fun removeFavPost(@Url url: String,
-                           @Field("id") postId: Int,
-                           @Field("login") username: String,
-                           @Field("password_hash") passwordHash: String): Response<VoteSankaku>
-
+    @Headers("Content-Type: application/json; charset=utf-8")
+    @DELETE
+    suspend fun removeFavPost(
+        @Url url: HttpUrl,
+        @Header(Keys.HEADER_AUTH) auth: String): Response<VoteSankaku>
 
     @GET
     suspend fun getComments(@Url url: HttpUrl): Response<List<CommentSankaku>>

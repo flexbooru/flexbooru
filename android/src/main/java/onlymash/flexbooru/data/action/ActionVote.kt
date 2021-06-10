@@ -66,11 +66,14 @@ data class ActionVote(
     fun getMoeVoteUrl(): String =
         String.format("%s://%s/post/vote.json", booru.scheme, booru.host)
 
-    fun getSankakuAddFavUrl(): String =
-        String.format("%s://%s/favorite/create.json", booru.scheme,
-            booru.host.replaceFirst("capi-v2.", "chan."))
-
-    fun getSankakuRemoveFavUrl(): String =
-        String.format("%s://%s/favorite/destroy.json", booru.scheme,
-            booru.host.replaceFirst("capi-v2.", "chan."))
+    fun getSankakuFavUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegment("posts")
+            .addPathSegment(postId.toString())
+            .addPathSegment("favorite")
+            .addQueryParameter("lang", "en")
+            .build()
+    }
 }
