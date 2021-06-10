@@ -176,7 +176,7 @@ data class ActionPost(
                 .host(booru.host)
                 .addPathSegments("posts/keyset")
                 .addQueryParameter("lang", "en")
-                .addQueryParameter("default_threshold", "3")
+                .addQueryParameter("default_threshold", "1")
                 .addQueryParameter("hide_posts_in_books", "in-larger-tags")
                 .addQueryParameter("limit", limit.toString())
             var tags = if (pageType == PAGE_TYPE_POPULAR) {
