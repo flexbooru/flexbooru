@@ -193,69 +193,48 @@ data class ActionComment(
         String.format("%s://%s/comment/destroy.json", booru.scheme, booru.host)
 
     fun getSankakuPostCommentUrl(page: Int): HttpUrl {
-        val builder = HttpUrl.Builder()
+        return HttpUrl.Builder()
             .scheme(booru.scheme)
-            .host(booru.host.replaceFirst("capi-v2.", "chan."))
-            .addPathSegment("comment")
-            .addPathSegment("index.json")
-            .addQueryParameter("post_id", postId.toString())
+            .host(booru.host)
+            .addPathSegment("posts")
+            .addPathSegment(postId.toString())
+            .addPathSegment("comments")
+            .addQueryParameter("lang", "en")
             .addQueryParameter("page", page.toString())
-        booru.user?.let {
-            builder.addQueryParameter("login", it.name)
-            builder.addQueryParameter("password_hash", it.token)
-        }
-        return builder.build()
+            .addQueryParameter("limit", "25")
+            .addQueryParameter("order", "recently_commented")
+            .build()
     }
 
     fun getSankakuPostsCommentUrl(page: Int): HttpUrl {
-        val builder = HttpUrl.Builder()
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegments("comments/recent")
+            .addQueryParameter("lang", "en")
+            .addQueryParameter("page", page.toString())
+            .addQueryParameter("limit", "25")
+            .addQueryParameter("order", "recently_commented")
+            .build()
+    }
+
+    fun getSankakuCreateCommentUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegment("posts")
+            .addPathSegment(postId.toString())
+            .addPathSegment("comments")
+            .addQueryParameter("lang", "en")
+            .build()
+    }
+
+    fun getSankakuDestroyCommentUrl(): HttpUrl {
+        return HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
             .addPathSegment("comments")
-            .addQueryParameter("page", page.toString())
-            .addQueryParameter("limit", "25")
-        booru.user?.let {
-            builder.addQueryParameter("login", it.name)
-            builder.addQueryParameter("password_hash", it.token)
-        }
-        return builder.build()
+            .addPathSegment(commentId.toString())
+            .build()
     }
-
-    fun getSankakuPostsCommentIndexUrl(page: Int): HttpUrl {
-        val builder = HttpUrl.Builder()
-            .scheme(booru.scheme)
-            .host(booru.host.replaceFirst("capi-v2.", "chan."))
-            .addPathSegment("comment")
-            .addPathSegment("index.json")
-            .addQueryParameter("page", page.toString())
-        booru.user?.let {
-            builder.addQueryParameter("login", it.name)
-            builder.addQueryParameter("password_hash", it.token)
-        }
-        return builder.build()
-    }
-
-    fun getSankakuPostsCommentSearchUrl(page: Int): HttpUrl {
-        val builder = HttpUrl.Builder()
-            .scheme(booru.scheme)
-            .host(booru.host.replaceFirst("capi-v2.", "chan."))
-            .addPathSegment("comment")
-            .addPathSegment("search.json")
-            .addQueryParameter("query", query)
-            .addQueryParameter("page", page.toString())
-        booru.user?.let {
-            builder.addQueryParameter("login", it.name)
-            builder.addQueryParameter("password_hash", it.token)
-        }
-        return builder.build()
-    }
-
-    fun getSankakuCreateCommentUrl(): String =
-        String.format("%s://%s/comment/create.json", booru.scheme,
-            booru.host.replaceFirst("capi-v2.", "chan."))
-
-
-    fun getSankakuDestroyCommentUrl(): String =
-        String.format("%s://%s/comment/destroy.json", booru.scheme,
-            booru.host.replaceFirst("capi-v2.", "chan."))
 }

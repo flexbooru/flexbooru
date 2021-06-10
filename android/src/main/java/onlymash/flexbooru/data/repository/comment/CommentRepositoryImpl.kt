@@ -28,6 +28,7 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Comment
+import onlymash.flexbooru.data.model.sankaku.CommentBody
 import onlymash.flexbooru.data.repository.Listing
 import onlymash.flexbooru.extension.NetResult
 
@@ -142,12 +143,8 @@ class CommentRepositoryImpl(private val booruApis: BooruApis) : CommentRepositor
             try {
                 val response = booruApis.sankakuApi.createComment(
                     url = action.getSankakuCreateCommentUrl(),
-                    body = action.body,
-                    anonymous = action.anonymous,
-                    username = action.booru.user?.name ?: "",
-                    passwordHash = action.booru.user?.token ?: "",
-                    postId = action.postId
-                )
+                    comment = CommentBody.createBody(action.body),
+                    auth = action.booru.user?.getAuth.toString())
                 if (response.isSuccessful) {
                     NetResult.Success(true)
                 } else {
@@ -223,10 +220,7 @@ class CommentRepositoryImpl(private val booruApis: BooruApis) : CommentRepositor
             try {
                 val response = booruApis.sankakuApi.destroyComment(
                     url = action.getSankakuDestroyCommentUrl(),
-                    commentId = action.commentId,
-                    username = action.booru.user?.name ?: "",
-                    passwordHash = action.booru.user?.token ?: ""
-                )
+                    auth = action.booru.user?.getAuth.toString())
                 if (response.isSuccessful) {
                     NetResult.Success(true)
                 } else {

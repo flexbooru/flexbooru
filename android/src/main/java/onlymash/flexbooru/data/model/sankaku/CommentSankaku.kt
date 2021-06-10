@@ -17,40 +17,10 @@ package onlymash.flexbooru.data.model.sankaku
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
-import onlymash.flexbooru.data.model.common.Comment
-import onlymash.flexbooru.data.utils.toSafeUrl
-import onlymash.flexbooru.extension.parseDate
+
 
 @Serializable
 data class CommentSankaku(
-    @SerialName("body")
-    val body: String,
-    @SerialName("created_at")
-    val createdAt: String,
-    @SerialName("creator")
-    val creator: String,
-    @SerialName("creator_avatar")
-    val creatorAvatar: String?,
-    @SerialName("creator_id")
-    val creatorId: Int,
-    @SerialName("id")
-    val id: Int,
-    @SerialName("post_id")
-    val postId: Int,
-    @SerialName("score")
-    val score: Int
-) {
-    fun toComment(scheme: String, host: String): Comment {
-        return Comment(
-            booruType = BOORU_TYPE_SANKAKU,
-            id = id,
-            postId = postId,
-            body = body,
-            time = createdAt.parseDate(),
-            creatorId = creatorId,
-            creatorName = creator,
-            creatorAvatar = creatorAvatar?.toSafeUrl(scheme, host)
-        )
-    }
-}
+    @SerialName("comments")
+    val comments: List<CommentSankakuItem>,
+)

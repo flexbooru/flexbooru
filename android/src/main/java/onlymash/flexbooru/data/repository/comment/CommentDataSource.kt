@@ -142,21 +142,13 @@ class CommentDataSource(
     private fun ActionComment.getGelUrl(page: Int): HttpUrl =
         if (postId > 0) getGelPostCommentUrl(page) else getGelPostsCommentUrl(page)
 
-    private fun ActionComment.getSankakuUrl(page: Int): HttpUrl {
-        return when {
-            postId > 0 -> getSankakuPostCommentUrl(page)
-            query.isNotBlank() -> getSankakuPostsCommentSearchUrl(page)
-            else -> getSankakuPostsCommentIndexUrl(page)
-        }
-    }
-
     private suspend fun getDanComments(action: ActionComment, page: Int): NetResult<List<Comment>> {
         return withContext(Dispatchers.IO) {
             try {
                 val response =  booruApis.danApi.getComments(action.getDanUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toComment() } ?: listOf()
-                    NetResult.Success(pools)
+                    val comments = response.body()?.map { it.toComment() } ?: listOf()
+                    NetResult.Success(comments)
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
@@ -171,8 +163,8 @@ class CommentDataSource(
             try {
                 val response =  booruApis.dan1Api.getComments(action.getDan1Url(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toComment() } ?: listOf()
-                    NetResult.Success(pools)
+                    val comments = response.body()?.map { it.toComment() } ?: listOf()
+                    NetResult.Success(comments)
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
@@ -187,8 +179,8 @@ class CommentDataSource(
             try {
                 val response =  booruApis.moeApi.getComments(action.getMoeUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toComment() } ?: listOf()
-                    NetResult.Success(pools)
+                    val comments = response.body()?.map { it.toComment() } ?: listOf()
+                    NetResult.Success(comments)
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
@@ -199,14 +191,51 @@ class CommentDataSource(
     }
 
     private suspend fun getSankakuComments(action: ActionComment, page: Int): NetResult<List<Comment>> {
+        return when {
+            action.postId > 0 -> getSankakuPostComments(action, page)
+            else -> getSankakuPostsComments(action, page)
+        }
+    }
+
+    private suspend fun getSankakuPostComments(action: ActionComment, page: Int): NetResult<List<Comment>> {
         return withContext(Dispatchers.IO) {
             try {
                 val scheme = action.booru.scheme
                 val host = action.booru.host
-                val response =  booruApis.sankakuApi.getComments(action.getSankakuUrl(page))
+                val response =  booruApis.sankakuApi.getPostComments(
+                    url = action.getSankakuPostCommentUrl(page),
+                    auth = action.booru.user?.getAuth.toString()
+                )
                 if (response.isSuccessful) {
-                    val pools = response.body()?.map { it.toComment(scheme, host) } ?: listOf()
-                    NetResult.Success(pools)
+                    val comments = response.body()?.map { it.toComment(scheme, host) } ?: listOf()
+                    NetResult.Success(comments)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun getSankakuPostsComments(action: ActionComment, page: Int): NetResult<List<Comment>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val scheme = action.booru.scheme
+                val host = action.booru.host
+                val response =  booruApis.sankakuApi.getPostsComments(
+                    url = action.getSankakuPostsCommentUrl(page),
+                    auth = action.booru.user?.getAuth.toString()
+                )
+                if (response.isSuccessful) {
+                    val posts = response.body() ?: listOf()
+                    val comments = mutableListOf<Comment>()
+                    posts.forEach { comment ->
+                        if (comment.comments.isNotEmpty()) {
+                            comments.add(comment.comments[0].toComment(scheme, host))
+                        }
+                    }
+                    NetResult.Success(comments)
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
@@ -221,8 +250,8 @@ class CommentDataSource(
             try {
                 val response =  booruApis.gelApi.getComments(action.getGelUrl(page))
                 if (response.isSuccessful) {
-                    val pools = response.body()?.comments?.map { it.toComment() } ?: listOf()
-                    NetResult.Success(pools)
+                    val comments = response.body()?.comments?.map { it.toComment() } ?: listOf()
+                    NetResult.Success(comments)
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
