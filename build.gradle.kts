@@ -21,10 +21,10 @@ buildscript {
     extra.apply {
         set("nav_version", "2.4.0-alpha02")
         set("room_version", "2.4.0-alpha02")
-        set("work_version", "2.7.0-alpha03")
+        set("work_version", "2.7.0-alpha04")
         set("glide_version", "4.12.0")
         set("lifecycle_version", "2.4.0-alpha01")
-        set("exoplayer_version", "2.14.0")
+        set("exoplayer_version", "2.14.1")
         set("okhttp_version", "4.9.0")
         set("retrofit_version", "2.9.0")
         set("tikxml_version", "0.8.13")

@@ -220,8 +220,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.5.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.4.0-beta01")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3-beta01")
-    androidTestImplementation("androidx.test:runner:1.4.0-beta01")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-beta01")
+    androidTestImplementation("androidx.test:core:1.4.0-beta02")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3-beta02")
+    androidTestImplementation("androidx.test:runner:1.4.0-beta02")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-beta02")
 }
