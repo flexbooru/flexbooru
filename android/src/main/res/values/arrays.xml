@@ -52,7 +52,6 @@
         <item>@string/booru_type_moebooru</item>
         <item>@string/booru_type_danbooru_one</item>
         <item>@string/booru_type_gelbooru</item>
-        <item>@string/booru_type_sankaku</item>
         <item>@string/booru_type_shimmie</item>
     </string-array>
     <string-array name="booru_type_entries_values">
@@ -60,7 +59,6 @@
         <item>moebooru</item>
         <item>danbooru1</item>
         <item>gelbooru</item>
-        <item>sankaku</item>
         <item>shimmie</item>
     </string-array>
     <string-array name="booru_scheme_entries">
