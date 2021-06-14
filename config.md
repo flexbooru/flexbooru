@@ -20,8 +20,6 @@ nav_order: 2
 
 * [gelbooru](booru://R2VsYm9vcnVAQEBodHRwc0BAQGdlbGJvb3J1LmNvbUBAQDNAQEA)
 
-* [sankaku channel](booru://U2Fua2FrdUBAQGh0dHBzQEBAY2FwaS12Mi5zYW5rYWt1Y29tcGxleC5jb21AQEA0QEBAY2hvdWppbi1zdGVpbmVyLS15b3VyLXBhc3N3b3JkLS0)
-
 * [hypnohub](booru://aHlwbm9odWJAQEBodHRwc0BAQGh5cG5vaHViLm5ldEBAQDFAQEAtLXlvdXItcGFzc3dvcmQtLQ)
 
 * [e621](booru://ZTYyMS5uZXRAQEBodHRwc0BAQGU2MjEubmV0QEBAMEBAQA)
