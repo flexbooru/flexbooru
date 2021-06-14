@@ -123,7 +123,7 @@ android {
         viewBinding = true
     }
     lintOptions {
-        isAbortOnError = false
+        disable("DialogFragmentCallbacksDetector")
     }
 }
 
