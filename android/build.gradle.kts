@@ -60,7 +60,7 @@ android {
         minSdk = 21
         targetSdk = 30
         versionCode = verCode
-        versionName = "2.7.4"
+        versionName = "2.7.5"
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
