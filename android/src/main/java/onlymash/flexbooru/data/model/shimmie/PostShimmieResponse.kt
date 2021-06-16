@@ -15,16 +15,18 @@
 
 package onlymash.flexbooru.data.model.shimmie
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Xml(name = "posts")
+@Serializable
+@SerialName("posts")
 data class PostShimmieResponse(
-    @Attribute(name = "offset")
+    @SerialName("offset")
     val offset: Int,
-    @Attribute(name = "count")
+    @SerialName("count")
     val count: Int,
-    @Element
-    val posts: List<PostShimmie>? = null
+    @SerialName("post")
+    val post: List<PostShimmie>? = null,
+    @SerialName("tag")
+    val tag: List<PostShimmieTag>? = null
 )

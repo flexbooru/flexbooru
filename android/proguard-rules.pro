@@ -42,17 +42,6 @@
 
 -keep class com.google.android.gms.** { *; }
 
-#https://github.com/Tickaroo/tikxml/blob/master/docs/AnnotatingModelClasses.md
--keep class com.tickaroo.tikxml.** { *; }
--keep @com.tickaroo.tikxml.annotation.Xml public class *
--keep class **$$TypeAdapter { *; }
--keepclasseswithmembernames class * {
-    @com.tickaroo.tikxml.* <fields>;
-}
--keepclasseswithmembernames class * {
-    @com.tickaroo.tikxml.* <methods>;
-}
-
 -keep class com.android.vending.billing.**
 
 -dontnote kotlinx.serialization.SerializationKt

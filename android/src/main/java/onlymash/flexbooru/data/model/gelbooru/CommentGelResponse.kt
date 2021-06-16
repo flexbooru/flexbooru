@@ -15,14 +15,14 @@
 
 package onlymash.flexbooru.data.model.gelbooru
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Xml(name = "comments")
+@Serializable
+@SerialName("comments")
 data class CommentGelResponse(
-    @Attribute(name = "type")
+    @SerialName("type")
     val type: String,
-    @Element
+    @SerialName("comment")
     val comments: List<CommentGel>?
 )

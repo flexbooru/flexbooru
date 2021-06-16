@@ -314,15 +314,32 @@ class PostRepositoryImpl(
             try {
                 val response = booruApis.shimmieApi.getPosts(action.getShimmiePostsUrl(1))
                 if (response.isSuccessful) {
-                    val posts = response.body()?.posts?.mapIndexed { index, post ->
-                        post.toPost(
-                            booruUid = action.booru.uid,
-                            query = action.query,
-                            scheme = action.booru.scheme,
-                            host = action.booru.host,
-                            index = index
-                        )
-                    } ?: listOf()
+                    val data = response.body()
+                    val posts = when {
+                        data?.post != null -> {
+                            data.post.mapIndexed { index, post ->
+                                post.toPost(
+                                    booruUid = action.booru.uid,
+                                    query = action.query,
+                                    scheme = action.booru.scheme,
+                                    host = action.booru.host,
+                                    index = index
+                                )
+                            }
+                        }
+                        data?.tag != null -> {
+                            data.tag.mapIndexed { index, post ->
+                                post.toPost(
+                                    booruUid = action.booru.uid,
+                                    query = action.query,
+                                    scheme = action.booru.scheme,
+                                    host = action.booru.host,
+                                    index = index
+                                )
+                            }
+                        }
+                        else -> listOf()
+                    }
                     NetResult.Success(posts)
                 } else {
                     NetResult.Error("code: ${response.code()}")

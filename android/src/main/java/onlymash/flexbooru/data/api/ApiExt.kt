@@ -17,9 +17,8 @@ package onlymash.flexbooru.data.api
 
 import android.util.Log
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.tickaroo.tikxml.TikXml
-import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import kotlinx.serialization.json.Json
+import nl.adaptivity.xmlutil.serialization.XML
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -46,11 +45,7 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     }
 
     if (BuildConfig.DEBUG) {
-        val logger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                Log.d("Api", message)
-            }
-        }).apply {
+        val logger = HttpLoggingInterceptor { message -> Log.d("Api", message) }.apply {
             level = HttpLoggingInterceptor.Level.BASIC
         }
         builder.addInterceptor(logger)
@@ -69,17 +64,13 @@ inline fun <reified T> createApi(): T {
     val converterFactory = when (classJava) {
         GelbooruApi::class.java,
         ShimmieApi::class.java-> {
-            val tikXml = TikXml.Builder()
-                .exceptionOnUnreadXml(false)
-                .build()
-            TikXmlConverterFactory.create(tikXml)
+            XML().asConverterFactory("application/xml".toMediaType())
         }
         else -> {
-            val contentType = "application/json".toMediaType()
             Json {
                 ignoreUnknownKeys = true
                 isLenient = true
-            }.asConverterFactory(contentType)
+            }.asConverterFactory("application/json".toMediaType())
         }
     }
     val isSankaku = classJava == SankakuApi::class.java

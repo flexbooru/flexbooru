@@ -336,17 +336,33 @@ class PostBoundaryCallback(
                 val response = booruApis.shimmieApi.getPosts(
                     action.getShimmiePostsUrl(page))
                 if (response.isSuccessful) {
-                    val raw = response.body()?.posts
-                    lastResponseSize = raw?.size ?: 0
-                    val posts = raw?.mapIndexed { index, postShimmie ->
-                        postShimmie.toPost(
-                            booruUid = action.booru.uid,
-                            query = action.query,
-                            scheme = action.booru.scheme,
-                            host = action.booru.host,
-                            index = indexInNext + index
-                        )
-                    } ?: listOf()
+                    val data = response.body()
+                    val posts = when {
+                        data?.post != null -> {
+                            data.post.mapIndexed { index, post ->
+                                post.toPost(
+                                    booruUid = action.booru.uid,
+                                    query = action.query,
+                                    scheme = action.booru.scheme,
+                                    host = action.booru.host,
+                                    index = indexInNext + index
+                                )
+                            }
+                        }
+                        data?.tag != null -> {
+                            data.tag.mapIndexed { index, post ->
+                                post.toPost(
+                                    booruUid = action.booru.uid,
+                                    query = action.query,
+                                    scheme = action.booru.scheme,
+                                    host = action.booru.host,
+                                    index = indexInNext + index
+                                )
+                            }
+                        }
+                        else -> listOf()
+                    }
+                    lastResponseSize = posts.size
                     NetResult.Success(posts)
                 } else {
                     NetResult.Error("code: ${response.code()}")

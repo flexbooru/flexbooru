@@ -15,14 +15,14 @@
 
 package onlymash.flexbooru.data.model.gelbooru
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Xml(name = "tags")
+@Serializable
+@SerialName("tags")
 data class TagGelResponse(
-    @Attribute(name = "type")
+    @SerialName("type")
     val type: String,
-    @Element
+    @SerialName("tag")
     val tags: List<TagGel>?
 )

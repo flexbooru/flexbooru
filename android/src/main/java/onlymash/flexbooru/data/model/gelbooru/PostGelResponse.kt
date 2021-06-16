@@ -15,16 +15,16 @@
 
 package onlymash.flexbooru.data.model.gelbooru
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Xml(name = "posts")
+@Serializable
+@SerialName("posts")
 data class PostGelResponse (
-    @Attribute(name = "count")
+    @SerialName("count")
     val count: Int,
-    @Attribute(name = "offset")
+    @SerialName("offset")
     val offset: Int,
-    @Element
+    @SerialName("post")
     val posts: MutableList<PostGel>? = null
 )

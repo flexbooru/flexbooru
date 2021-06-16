@@ -29,7 +29,7 @@ Click the icon below to translate this app.
 - [Ktor:](https://github.com/ktorio/ktor) A framework for quickly creating web applications in Kotlin with minimal effort.
 - [Retrofit:](https://github.com/square/retrofit) Type-safe HTTP client for Android and Java by Square.
 - [KotlinxSerializationConverter:](https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter) A Retrofit 2 Converter.Factory for Kotlin serialization.
-- [TikXml:](https://github.com/Tickaroo/tikxml) Modern XML Parser for Android.
+- [xmlutil:](https://github.com/pdvrieze/xmlutil) XML Serialization library for Kotlin.
 - [Glide:](https://github.com/bumptech/glide) An image loading and caching library for Android focused on smooth scrolling.
 - [MaterialDrawer:](https://github.com/mikepenz/MaterialDrawer) A drawer with material 2 design.
 - [SimpleMenuPreference:](https://github.com/takisoft/preferencex-android) A preference displaying a simple menu, originally implemented by RikkaW. On pre-Lollipop devices it falls back to a ListPreference as the older devices can't handle elevation and animation properly introduced in API 21.

@@ -15,25 +15,26 @@
 
 package onlymash.flexbooru.data.model.gelbooru
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.extension.parseDate
 
-@Xml(name = "comment")
+@Serializable
+@SerialName("comment")
 data class CommentGel(
-    @Attribute(name = "id")
+    @SerialName("id")
     val id: Int,
-    @Attribute(name = "created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @Attribute(name = "post_id")
+    @SerialName("post_id")
     val postId: Int,
-    @Attribute(name = "creator")
+    @SerialName("creator")
     val creator: String,
-    @Attribute(name = "creator_id")
+    @SerialName("creator_id")
     val creatorId: Int,
-    @Attribute(name = "body")
+    @SerialName("body")
     val body: String
 ) {
     fun toComment(): Comment {

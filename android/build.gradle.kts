@@ -140,7 +140,7 @@ dependencies {
     val exoplayerVersion = ext.get("exoplayer_version") as String
     val okhttpVersion = ext.get("okhttp_version") as String
     val retrofitVersion = ext.get("retrofit_version") as String
-    val tikxmlVersion = ext.get("tikxml_version") as String
+    val xmlutilVersion = ext.get("xmlutil_version") as String
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -213,10 +213,8 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
     implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion")
-    implementation("com.tickaroo.tikxml:annotation:$tikxmlVersion")
-    implementation("com.tickaroo.tikxml:core:$tikxmlVersion")
-    implementation("com.tickaroo.tikxml:retrofit-converter:$tikxmlVersion")
-    kapt("com.tickaroo.tikxml:processor:$tikxmlVersion")
+    implementation("io.github.pdvrieze.xmlutil:core-android:$xmlutilVersion")
+    implementation("io.github.pdvrieze.xmlutil:serialization-android:$xmlutilVersion")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.5.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")

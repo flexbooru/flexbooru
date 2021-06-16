@@ -27,7 +27,7 @@ buildscript {
         set("exoplayer_version", "2.14.1")
         set("okhttp_version", "4.9.0")
         set("retrofit_version", "2.9.0")
-        set("tikxml_version", "0.8.13")
+        set("xmlutil_version", "0.82.0")
         set("kodein_version", "7.6.0")
         set("coroutines_version", "1.5.0")
         set("serialization_version", "1.2.1")
@@ -35,8 +35,6 @@ buildscript {
     }
     repositories {
         google()
-        mavenCentral()
-        jcenter()
     }
     dependencies {
         val kotlinVersion = "1.5.10"
@@ -55,6 +53,7 @@ allprojects {
         mavenCentral()
         jcenter()
         maven(url = "https://jitpack.io")
+        maven(url = "https://s01.oss.sonatype.org/content/repositories/releases/")
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile::class.java) {

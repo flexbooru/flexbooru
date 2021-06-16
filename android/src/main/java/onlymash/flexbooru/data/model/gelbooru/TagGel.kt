@@ -15,22 +15,23 @@
 
 package onlymash.flexbooru.data.model.gelbooru
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Tag
 
-@Xml(name = "tag")
+@Serializable
+@SerialName("tag")
 data class TagGel(
-    @Attribute(name = "id")
+    @SerialName("id")
     val id: Int,
-    @Attribute(name = "name")
+    @SerialName("name")
     val name: String,
-    @Attribute(name = "count")
+    @SerialName("count")
     val count: Int,
-    @Attribute(name = "type")
+    @SerialName("type")
     val type: Int,
-    @Attribute(name = "ambiguous")
+    @SerialName("ambiguous")
     val ambiguous: Boolean
 ) {
     fun toTag(): Tag {

@@ -15,49 +15,50 @@
 
 package onlymash.flexbooru.data.model.gelbooru
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.utils.getGelDateMillis
 import onlymash.flexbooru.data.utils.toSafeUrl
 
-@Xml(name = "post")
+@Serializable
+@SerialName("post")
 data class PostGel(
-    @Attribute(name = "id")
+    @SerialName("id")
     val id: Int,
-    @Attribute(name = "width")
+    @SerialName("width")
     val width: Int,
-    @Attribute(name = "height")
+    @SerialName("height")
     val height: Int,
-    @Attribute(name = "score")
+    @SerialName("score")
     val score: String,
-    @Attribute(name = "file_url")
+    @SerialName("file_url")
     val fileUrl: String,
-    @Attribute(name = "sample_url")
+    @SerialName("sample_url")
     val sampleUrl: String,
-    @Attribute(name = "sample_width")
+    @SerialName("sample_width")
     val sampleWidth: Int,
-    @Attribute(name = "sample_height")
+    @SerialName("sample_height")
     val sampleHeight: Int,
-    @Attribute(name = "preview_url")
+    @SerialName("preview_url")
     val previewUrl: String,
-    @Attribute(name = "rating")
+    @SerialName("rating")
     val rating: String,
-    @Attribute(name = "tags")
+    @SerialName("tags")
     val tags: String,
-    @Attribute(name = "creator_id")
+    @SerialName("creator_id")
     val creatorId: Int,
-    @Attribute(name = "has_children")
+    @SerialName("has_children")
     val hasChildren: Boolean,
-    @Attribute(name = "created_at")
+    @SerialName("created_at")
     val createdAt:	String,
-    @Attribute(name = "source")
+    @SerialName("source")
     val source: String,
-    @Attribute(name = "preview_width")
+    @SerialName("preview_width")
     val previewWidth: Int,
-    @Attribute(name = "preview_height")
+    @SerialName("preview_height")
     val previewHeight: Int
 ) {
     private fun previewUrl(scheme: String, host: String) =
