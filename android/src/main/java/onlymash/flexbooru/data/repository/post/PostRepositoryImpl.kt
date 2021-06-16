@@ -142,7 +142,8 @@ class PostRepositoryImpl(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = index
+                            index = index,
+                            isFavored = action.isFavoredQuery()
                         )
                     } ?: listOf()).toMutableList()
                     posts.removeIf { it.id == -1 }
@@ -269,8 +270,7 @@ class PostRepositoryImpl(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = index,
-                            isFavored = action.isFavoredQuery()
+                            index = index
                         )
                     } ?: listOf()
                     NextManager.create(Next(booruUid = action.booru.uid, query = action.query, next = next))

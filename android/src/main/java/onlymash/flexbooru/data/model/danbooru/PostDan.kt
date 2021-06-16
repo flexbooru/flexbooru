@@ -67,8 +67,6 @@ data class PostDan(
     val createdAt: String,
     @SerialName("updated_at")
     val updatedAt: String?,
-    @SerialName("is_favorited")
-    val isFavorited: Boolean = false,
     @SerialName("uploader")
     val uploader: UploaderDan? = null,
     @SerialName("uploader_id")
@@ -87,7 +85,7 @@ data class PostDan(
     private fun originUrl(scheme: String, host: String) =
         fileUrl?.toSafeUrl(scheme, host) ?: sampleUrl(scheme, host)
 
-    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int): Post {
+    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int, isFavored: Boolean): Post {
         return Post(
             booruUid = booruUid,
             query = query,
@@ -98,7 +96,7 @@ data class PostDan(
             size = fileSize,
             score = score,
             rating = rating,
-            isFavored = isFavorited,
+            isFavored = isFavored,
             time = createdAt.getDanDateMillis(),
             tags = getTags(),
             preview = previewUrl(scheme, host),

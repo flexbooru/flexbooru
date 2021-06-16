@@ -150,7 +150,8 @@ class PostBoundaryCallback(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = indexInNext + index
+                            index = indexInNext + index,
+                            isFavored = isFavored
                         )
                     } ?: listOf()
                     NetResult.Success(posts)
@@ -291,8 +292,7 @@ class PostBoundaryCallback(
                             query = action.query,
                             scheme = action.booru.scheme,
                             host = action.booru.host,
-                            index = indexInNext + index,
-                            isFavored = isFavored
+                            index = indexInNext + index
                         )
                     } ?: listOf()
                     NextManager.create(Next(booruUid = action.booru.uid, query = action.query, next = data?.meta?.next))

@@ -36,8 +36,6 @@ object Values {
     const val BOORU_TYPE_SHIMMIE = 5
     const val BOORU_TYPE_UNKNOWN = -1
 
-    const val ONLY_FIELD_POSTS_DAN = "id,created_at,score,source,parent_id,preview_file_url,large_file_url,file_url,rating,image_width,image_height,updated_at,created_at,tag_string,tag_string_general,tag_string_character,tag_string_copyright,tag_string_artist,tag_string_meta,is_favorited?,children_ids,pixiv_id,file_size,fav_count,file_ext,uploader"
-
     const val PAGE_TYPE_POSTS = 0
     const val PAGE_TYPE_POPULAR = 1
 
@@ -58,7 +56,7 @@ object Values {
         const val TYPE_CHARACTER = 4
         const val TYPE_CIRCLE = 5
         const val TYPE_FAULTS = 6
-        const val TYPE_META = 5 
+        const val TYPE_META = 5
         const val TYPE_MODEL = 5
         const val TYPE_PHOTO_SET = 6
         const val TYPE_META_SANKAKU = 9
