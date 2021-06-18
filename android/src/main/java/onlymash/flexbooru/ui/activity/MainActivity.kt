@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikepenz.materialdrawer.holder.ImageHolder
@@ -186,7 +187,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_fragment)
         setupNavigationBarBehavior()
-        bottomNavView.setup(navController)
+        bottomNavView.setupWithNavController(navController)
         bottomNavView.setOnItemReselectedListener {
             toListTop()
         }
@@ -484,12 +485,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else if (isFragmentCanBack()) {
-            val startId = R.id.nav_posts
-            if (navController.currentDestination?.id == startId) {
-                super.onBackPressed()
-            } else {
-                bottomNavView.selectedItemId = startId
-            }
+            super.onBackPressed()
         }
     }
 
