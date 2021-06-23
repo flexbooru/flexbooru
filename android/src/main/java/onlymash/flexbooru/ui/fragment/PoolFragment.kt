@@ -87,12 +87,10 @@ class PoolFragment : SearchBarFragment() {
                 poolAdapter.submitData(it)
             }
         }
-        lifecycleScope.launchWhenCreated {
-            poolAdapter.loadStateFlow.collectLatest { loadStates ->
-                swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
-                progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
-                updateState(loadStates.source.refresh)
-            }
+        poolAdapter.addLoadStateListener { loadStates ->
+            swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
+            progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+            updateState(loadStates.source.refresh)
         }
         lifecycleScope.launchWhenCreated {
             poolAdapter.loadStateFlow

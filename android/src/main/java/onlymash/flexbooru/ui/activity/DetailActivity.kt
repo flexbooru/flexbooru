@@ -166,7 +166,6 @@ class DetailActivity : PathActivity(),
     }
 
     private fun syncInfo(post: Post, position: Int) {
-        play(post)
         setVoteItemIcon(post.isFavored)
         toolbar.title = "Post ${post.id}"
         val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
@@ -174,15 +173,28 @@ class DetailActivity : PathActivity(),
             putExtra(POST_POSITION, position)
         }
         sendBroadcast(intent)
+        if (post.origin.isVideo()) {
+            playVideo(post.origin)
+        }
     }
 
-    private fun play(post: Post) {
-        val playerView = playerView ?: return
+    private fun playVideo(url: String) {
+        val playerView = playerView
+        if (playerView == null) {
+            delayExecute {
+                playVideo(url)
+            }
+            return
+        }
         oldPlayerView?.player = null
         oldPlayerView = playerView
-        val url = post.origin
-        if (url.isVideo()) {
-            playerHolder.start(applicationContext, url.toUri(), playerView)
+        playerHolder.start(applicationContext, url.toUri(), playerView)
+    }
+
+    private fun delayExecute(callback: () -> Unit) {
+        lifecycleScope.launch {
+            delay(200L)
+            callback()
         }
     }
 

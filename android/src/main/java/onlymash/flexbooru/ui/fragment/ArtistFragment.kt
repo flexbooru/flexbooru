@@ -80,12 +80,10 @@ class ArtistFragment : SearchBarFragment() {
                 artistAdapter.submitData(it)
             }
         }
-        lifecycleScope.launchWhenCreated {
-            artistAdapter.loadStateFlow.collectLatest { loadStates ->
-                swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
-                progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
-                updateState(loadStates.source.refresh)
-            }
+        artistAdapter.addLoadStateListener { loadStates ->
+            swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
+            progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+            updateState(loadStates.source.refresh)
         }
         lifecycleScope.launchWhenCreated {
             artistAdapter.loadStateFlow

@@ -190,10 +190,8 @@ class CommentActivity : KodeinActivity() {
                 commentAdapter.submitData(it)
             }
         }
-        lifecycleScope.launchWhenCreated {
-            commentAdapter.loadStateFlow.collectLatest { loadStates ->
-                updateStates(loadStates)
-            }
+        commentAdapter.addLoadStateListener { loadStates ->
+            updateStates(loadStates)
         }
         if (commentViewModel.show(action)) {
             commentAdapter.refresh()

@@ -55,8 +55,7 @@ kotlin {
         compilations.all {
             kotlinOptions {
                 freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-Xopt-in=kotlinx.serialization.UnstableDefault",
-                    "-Xopt-in=kotlinx.serialization.ImplicitReflectionSerializer",
+                    "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi",
                     "-Xuse-experimental=kotlin.Experimental"
                 )
             }

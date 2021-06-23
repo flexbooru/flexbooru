@@ -206,11 +206,6 @@ class PostFragment : SearchBarFragment() {
             updateState(loadStates.mediator?.refresh)
         }
         lifecycleScope.launchWhenCreated {
-            postAdapter.loadStateFlow.collectLatest { loadStates ->
-
-            }
-        }
-        lifecycleScope.launchWhenCreated {
             postViewModel.posts.collectLatest {
                 postAdapter.submitData(it)
             }

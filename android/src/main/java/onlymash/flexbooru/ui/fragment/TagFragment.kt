@@ -81,12 +81,10 @@ class TagFragment : SearchBarFragment() {
                 tagAdapter.submitData(it)
             }
         }
-        lifecycleScope.launchWhenCreated {
-            tagAdapter.loadStateFlow.collectLatest { loadStates ->
-                swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
-                progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
-                updateState(loadStates.source.refresh)
-            }
+        tagAdapter.addLoadStateListener { loadStates ->
+            swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
+            progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+            updateState(loadStates.source.refresh)
         }
         lifecycleScope.launchWhenCreated {
             tagAdapter.loadStateFlow
