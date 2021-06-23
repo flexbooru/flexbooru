@@ -19,6 +19,7 @@ import android.content.Intent
 import android.view.MenuInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
@@ -32,7 +33,6 @@ import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.ui.base.BasePagedListAdapter
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class CommentAdapter(
@@ -40,9 +40,8 @@ class CommentAdapter(
     private val booru: Booru,
     private val replyCallback: (Int) -> Unit,
     private val quoteCallback: (Int, String) -> Unit,
-    private val deleteCallback: (Int) -> Unit,
-    retryCallback: () -> Unit
-) : BasePagedListAdapter<Comment>(COMMENT_COMPARATOR, retryCallback) {
+    private val deleteCallback: (Int) -> Unit
+) : PagingDataAdapter<Comment, CommentAdapter.CommentViewHolder>(COMMENT_COMPARATOR) {
 
     companion object {
         val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<Comment>() {
@@ -53,12 +52,12 @@ class CommentAdapter(
         }
     }
 
-    override fun onCreateItemViewHolder(
-        parent: ViewGroup,
-        viewType: Int): RecyclerView.ViewHolder = CommentViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
+        return CommentViewHolder(parent)
+    }
 
-    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as CommentViewHolder).bind(getItemSafe(position))
+    override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     inner class CommentViewHolder(binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -26,6 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -42,7 +43,6 @@ import onlymash.flexbooru.databinding.ItemPostBinding
 import onlymash.flexbooru.databinding.ItemPostRoundedBinding
 import onlymash.flexbooru.extension.isStillImage
 import onlymash.flexbooru.glide.GlideRequests
-import onlymash.flexbooru.ui.base.BasePagedListAdapter
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
@@ -51,9 +51,8 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 class PostAdapter(
     private val glide: GlideRequests,
     private val clickItemCallback: (View, Int, String) -> Unit,
-    private val longClickItemCallback: (Post) -> Unit,
-    retryCallback: () -> Unit
-) : BasePagedListAdapter<Post>(POST_COMPARATOR, retryCallback) {
+    private val longClickItemCallback: (Post) -> Unit
+) : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(POST_COMPARATOR) {
 
     companion object {
         val POST_COMPARATOR = object : DiffUtil.ItemCallback<Post>() {
@@ -88,14 +87,12 @@ class PostAdapter(
             notifyDataSetChanged()
         }
 
-    override fun onCreateItemViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder = PostViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+        return PostViewHolder(parent)
+    }
 
-    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val post = getItemSafe(position)
-        (holder as PostViewHolder).bindTo(post)
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        holder.bindTo(getItem(position))
     }
 
     inner class PostViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -16,8 +16,12 @@
 package onlymash.flexbooru.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.repository.comment.CommentRepository
@@ -25,24 +29,24 @@ import onlymash.flexbooru.extension.NetResult
 
 class CommentViewModel(private val repository: CommentRepository) : ScopeViewModel() {
 
-    private val _action = MutableLiveData<ActionComment?>()
+    private val _action = MutableLiveData<ActionComment>()
 
-    private val _result = Transformations.map(_action) { action ->
-        if (action != null) repository.getComments(viewModelScope, action) else null
-    }
-
-    val comments = Transformations.switchMap(_result) { it?.pagedList }
-
-    val networkState = Transformations.switchMap(_result) { it?.networkState }
-
-    val refreshState = Transformations.switchMap(_result) { it?.refreshState }
+    private val _clearListCh = Channel<Unit>(Channel.CONFLATED)
 
     val commentState = MutableLiveData<NetResult<Boolean>>()
 
+    val comments = flowOf(
+        _clearListCh.receiveAsFlow().map { PagingData.empty() },
+        _action.asFlow()
+            .flatMapLatest { action ->
+                repository.getComments(action)
+            }
+            .cachedIn(viewModelScope)
+    ).flattenMerge(2)
+
     fun show(action: ActionComment): Boolean {
-        if (_action.value == action) {
-            return false
-        }
+        if (_action.value == action) return false
+        _clearListCh.trySend(Unit)
         _action.value = action
         return true
     }
@@ -57,13 +61,5 @@ class CommentViewModel(private val repository: CommentRepository) : ScopeViewMod
         viewModelScope.launch {
             commentState.postValue(repository.destroyComment(action))
         }
-    }
-
-    fun refresh() {
-        _result.value?.refresh?.invoke()
-    }
-
-    fun retry() {
-        _result.value?.retry?.invoke()
     }
 }

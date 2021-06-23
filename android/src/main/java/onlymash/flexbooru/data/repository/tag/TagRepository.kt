@@ -15,11 +15,11 @@
 
 package onlymash.flexbooru.data.repository.tag
 
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.model.common.Tag
-import onlymash.flexbooru.data.repository.Listing
 
 interface TagRepository {
-    fun getTags(scope: CoroutineScope, action: ActionTag): Listing<Tag>
+    fun getTags(action: ActionTag): Flow<PagingData<Tag>>
 }

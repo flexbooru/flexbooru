@@ -15,12 +15,31 @@
 
 package onlymash.flexbooru.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.paging.toLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import onlymash.flexbooru.data.database.dao.PostDao
 
-class DetailViewModel(postDao: PostDao, booruUid: Long, query: String) : ViewModel() {
+class DetailViewModel(postDao: PostDao, booruUid: Long, query: String) : ScopeViewModel() {
 
-    val posts = postDao.getPosts(booruUid, query).toLiveData(pageSize = 1)
+    val posts = Pager(
+        config = PagingConfig(
+            pageSize = 30,
+            enablePlaceholders = true
+        )
+    ) {
+        postDao.getPosts(booruUid, query)
+    }
+        .flow
+        .cachedIn(viewModelScope)
 
+    private val _currentPosition = MutableLiveData<Int>()
+
+    var currentPosition: Int
+        get() = _currentPosition.value ?: -1
+        set(value) {
+            _currentPosition.value = value
+        }
 }

@@ -15,11 +15,11 @@
 
 package onlymash.flexbooru.data.repository.artist
 
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.model.common.Artist
-import onlymash.flexbooru.data.repository.Listing
 
 interface ArtistRepository {
-    fun getArtists(scope: CoroutineScope, action: ActionArtist): Listing<Artist>
+    fun getArtists(action: ActionArtist): Flow<PagingData<Artist>>
 }

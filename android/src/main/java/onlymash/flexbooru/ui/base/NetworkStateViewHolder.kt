@@ -16,10 +16,10 @@
 package onlymash.flexbooru.ui.base
 
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
-import onlymash.flexbooru.data.repository.*
 import onlymash.flexbooru.databinding.ItemNetworkStateBinding
-import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class NetworkStateViewHolder(binding: ItemNetworkStateBinding, retryCallback: () -> Unit) : RecyclerView.ViewHolder(binding.root) {
@@ -27,18 +27,14 @@ class NetworkStateViewHolder(binding: ItemNetworkStateBinding, retryCallback: ()
     constructor(parent: ViewGroup, retryCallback: () -> Unit): this(
         parent.viewBinding(ItemNetworkStateBinding::inflate), retryCallback)
 
-    private val retry = binding.retryButton
+    private val retry = binding.retryButton.also {
+        it.setOnClickListener { retryCallback() }
+    }
     private val errorMsg = binding.errorMsg
 
-    init {
-        retry.setOnClickListener {
-            retryCallback.invoke()
-        }
-    }
-
-    fun bindTo(networkState: NetworkState?) {
-        retry.toVisibility(networkState.isFailed())
-        errorMsg.toVisibility(networkState.hasMsg())
-        errorMsg.text = networkState?.msg
+    fun bindTo(loadState: LoadState) {
+        retry.isVisible = loadState is LoadState.Error
+        errorMsg.isVisible = !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
+        errorMsg.text = (loadState as? LoadState.Error)?.error?.message
     }
 }

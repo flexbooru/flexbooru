@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
@@ -32,16 +33,15 @@ import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.ui.base.BasePagedListAdapter
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class PoolAdapter(
     private val glide: GlideRequests,
-    private val downloadPoolCallback: (Int) -> Unit,
-    retryCallback: () -> Unit
-) : BasePagedListAdapter<Pool>(POOL_COMPARATOR, retryCallback) {
+    private val downloadPoolCallback: (Int) -> Unit
+) : PagingDataAdapter<Pool, PoolAdapter.PoolViewHolder>(POOL_COMPARATOR) {
+
     companion object {
         val POOL_COMPARATOR = object : DiffUtil.ItemCallback<Pool>() {
             override fun areContentsTheSame(oldItem: Pool, newItem: Pool): Boolean =
@@ -51,35 +51,12 @@ class PoolAdapter(
         }
     }
 
-    override fun onCreateItemViewHolder(
-        parent: ViewGroup,
-        viewType: Int): RecyclerView.ViewHolder = PoolViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoolViewHolder {
+        return PoolViewHolder(parent)
+    }
 
-    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PoolViewHolder).apply {
-            val pool = getItemSafe(position)
-            bind(pool)
-            itemView.setOnClickListener {
-                pool?.let {
-                    SearchActivity.startSearch(itemView.context, "pool:${it.id}")
-                }
-            }
-            itemView.setOnLongClickListener {
-                pool?.let {
-                    downloadPoolCallback(it.id)
-                }
-                true
-            }
-            userAvatar.setOnClickListener {
-                if (pool?.booruType == BOORU_TYPE_MOE || pool?.booruType == BOORU_TYPE_SANKAKU) {
-                    itemView.context.startActivity(Intent(itemView.context, AccountActivity::class.java).apply {
-                        putExtra(AccountActivity.USER_ID_KEY, pool.creatorId)
-                        putExtra(AccountActivity.USER_NAME_KEY, pool.creatorName)
-                        putExtra(AccountActivity.USER_AVATAR_KEY, pool.creatorAvatar)
-                    })
-                }
-            }
-        }
+    override fun onBindViewHolder(holder: PoolViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     inner class PoolViewHolder(binding: ItemPoolBinding): RecyclerView.ViewHolder(binding.root) {
@@ -94,6 +71,7 @@ class PoolAdapter(
         private val expandBottom = binding.btExpand
         private val descriptionContainer = binding.descriptionContainer
         private var isShowing = false
+        private var pool: Pool? = null
 
 
         init {
@@ -103,10 +81,33 @@ class PoolAdapter(
                 }
             }
             poolDescription.transformationMethod = LinkTransformationMethod()
-
+            itemView.apply {
+                setOnClickListener {
+                    pool?.let {
+                        SearchActivity.startSearch(itemView.context, "pool:${it.id}")
+                    }
+                }
+                setOnLongClickListener {
+                    pool?.let {
+                        downloadPoolCallback(it.id)
+                    }
+                    true
+                }
+            }
+            userAvatar.setOnClickListener {
+                val pool = pool
+                if (pool?.booruType == BOORU_TYPE_MOE || pool?.booruType == BOORU_TYPE_SANKAKU) {
+                    itemView.context.startActivity(Intent(itemView.context, AccountActivity::class.java).apply {
+                        putExtra(AccountActivity.USER_ID_KEY, pool.creatorId)
+                        putExtra(AccountActivity.USER_NAME_KEY, pool.creatorName)
+                        putExtra(AccountActivity.USER_AVATAR_KEY, pool.creatorAvatar)
+                    })
+                }
+            }
         }
 
         fun bind(pool: Pool?) {
+            this.pool = pool
             if (descriptionContainer.visibility == View.VISIBLE) {
                 isShowing = false
                 expandBottom.toggleArrow(show = false, delay = false)

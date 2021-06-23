@@ -16,7 +16,7 @@
 package onlymash.flexbooru.data.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.*
 import onlymash.flexbooru.data.model.common.Post
 
@@ -30,7 +30,10 @@ interface PostDao {
     fun insert(post: Post)
 
     @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC")
-    fun getPosts(booruUid: Long, query: String) : DataSource.Factory<Int, Post>
+    fun getPosts(booruUid: Long, query: String) : PagingSource<Int, Post>
+
+    @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query AND `index` = :index")
+    fun getPost(booruUid: Long, query: String, index: Int): Post?
 
     @Query("SELECT * FROM `posts` WHERE `booru_uid` = :booruUid AND `query` = :query ORDER BY `index` ASC LIMIT :limit")
     fun getPostsRaw(booruUid: Long, query: String, limit: Int) : List<Post>

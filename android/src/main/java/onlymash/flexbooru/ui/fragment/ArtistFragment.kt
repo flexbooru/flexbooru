@@ -21,9 +21,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.pageLimit
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
@@ -31,10 +36,10 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.artist.ArtistRepositoryImpl
-import onlymash.flexbooru.data.repository.isRunning
+import onlymash.flexbooru.extension.asMergedLoadStates
 import onlymash.flexbooru.ui.adapter.ArtistAdapter
+import onlymash.flexbooru.ui.adapter.StateAdapter
 import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.ArtistViewModel
 import onlymash.flexbooru.ui.viewmodel.getArtistViewModel
@@ -65,39 +70,43 @@ class ArtistFragment : SearchBarFragment() {
 
     override fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_artists))
-        artistAdapter = ArtistAdapter {
-            artistViewModel.retry()
-        }
+        artistAdapter = ArtistAdapter()
         mainList.apply {
             layoutManager = LinearLayoutManager(this@ArtistFragment.context, RecyclerView.VERTICAL, false)
-            adapter = artistAdapter
+            adapter = artistAdapter.withLoadStateFooter(StateAdapter(artistAdapter))
         }
-        artistViewModel.artists.observe(viewLifecycleOwner, Observer { artistList ->
-            artistList?.let {
-                artistAdapter.submitList(it)
+        lifecycleScope.launchWhenCreated {
+            artistViewModel.artists.collectLatest {
+                artistAdapter.submitData(it)
             }
-        })
-        artistViewModel.networkState.observe(viewLifecycleOwner, Observer {
-            artistAdapter.setNetworkState(it)
-            val isRunning = it.isRunning()
-            progressBarHorizontal.isVisible = isRunning
-            progressBar.isVisible = isRunning && artistAdapter.itemCount == 0
-        })
-        artistViewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            if (it != NetworkState.LOADING) {
-                swipeRefresh.isRefreshing = false
+        }
+        lifecycleScope.launchWhenCreated {
+            artistAdapter.loadStateFlow.collectLatest { loadStates ->
+                swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
+                progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+                updateState(loadStates.source.refresh)
             }
-        })
+        }
+        lifecycleScope.launchWhenCreated {
+            artistAdapter.loadStateFlow
+                .asMergedLoadStates()
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { mainList.scrollToPosition(0) }
+        }
         swipeRefresh.setOnRefreshListener {
-            artistViewModel.refresh()
+            artistAdapter.refresh()
         }
+    }
+
+    override fun retry() {
+        artistAdapter.refresh()
     }
 
     override fun onBooruLoaded(booru: Booru?) {
         super.onBooruLoaded(booru)
         if (booru == null) {
             action = null
-            artistViewModel.show(null)
             return
         }
         if (action == null) {
@@ -117,7 +126,11 @@ class ArtistFragment : SearchBarFragment() {
                 it.limit = artistLimit(booru.type)
             }
         }
-        artistViewModel.show(action)
+        action?.let {
+            if (artistViewModel.show(it)) {
+                artistAdapter.refresh()
+            }
+        }
     }
 
     private fun artistLimit(booruType: Int): Int {
@@ -131,14 +144,14 @@ class ArtistFragment : SearchBarFragment() {
         super.onApplySearch(query)
         action?.let {
             it.query = query
-            artistViewModel.show(action)
-            artistViewModel.refresh()
+            artistViewModel.show(it)
+            artistAdapter.refresh()
         }
     }
 
     private fun updateActionAndRefresh(action: ActionArtist) {
         artistViewModel.show(action)
-        artistViewModel.refresh()
+        artistAdapter.refresh()
     }
 
     override fun onMenuItemClick(menuItem: MenuItem) {

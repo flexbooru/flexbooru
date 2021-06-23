@@ -16,42 +16,33 @@
 package onlymash.flexbooru.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import onlymash.flexbooru.data.action.ActionPost
 import onlymash.flexbooru.data.repository.post.PostRepository
 
 class PostViewModel(private val repository: PostRepository) : ScopeViewModel() {
 
-    private val _action: MutableLiveData<ActionPost?> = MutableLiveData()
+    private val _action: MutableLiveData<ActionPost> = MutableLiveData()
 
-    private val _result = Transformations.map(_action) { action ->
-        if (action != null) {
-            repository.getPosts(viewModelScope, action)
-        } else {
-            null
-        }
-    }
+    private val _clearListCh = Channel<Unit>(Channel.CONFLATED)
 
-    val posts = Transformations.switchMap(_result) { it?.pagedList }
+    val posts = flowOf(
+        _clearListCh.receiveAsFlow().map { PagingData.empty() },
+        _action.asFlow()
+            .flatMapLatest { action ->
+                repository.getPosts(action)
+            }
+            .cachedIn(viewModelScope)
+    ).flattenMerge(2)
 
-    val networkState = Transformations.switchMap(_result) { it?.networkState }
-
-    val refreshState = Transformations.switchMap(_result) { it?.refreshState }
-
-    fun show(action: ActionPost?): Boolean {
-        if (_action.value == action) {
-            return false
-        }
+    fun show(action: ActionPost) {
+        if (_action.value == action) return
+        _clearListCh.trySend(Unit)
         _action.value = action
-        return true
-    }
-
-    fun refresh() {
-        _result.value?.refresh?.invoke()
-    }
-
-    fun retry() {
-        _result.value?.retry?.invoke()
     }
 }

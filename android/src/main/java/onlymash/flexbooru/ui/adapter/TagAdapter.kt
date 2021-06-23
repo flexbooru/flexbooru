@@ -16,6 +16,7 @@
 package onlymash.flexbooru.ui.adapter
 
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
@@ -29,10 +30,10 @@ import onlymash.flexbooru.data.model.common.Tag
 import onlymash.flexbooru.databinding.ItemTagBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.ui.base.BasePagedListAdapter
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
-class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag>(TAG_COMPARATOR, retryCallback) {
+class TagAdapter : PagingDataAdapter<Tag, TagAdapter.TagViewHolder>(TAG_COMPARATOR) {
+
     companion object {
         val TAG_COMPARATOR = object : DiffUtil.ItemCallback<Tag>() {
             override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean =
@@ -42,24 +43,12 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag>(TAG_COMP
         }
     }
 
-    override fun onCreateItemViewHolder(
-        parent: ViewGroup,
-        viewType: Int): RecyclerView.ViewHolder = TagViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
+        return TagViewHolder(parent)
+    }
 
-    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val tag = getItemSafe(position)
-        (holder as TagViewHolder).apply {
-            bind(tag)
-            itemView.setOnClickListener {
-                tag?.let { t ->
-                    SearchActivity.startSearch(itemView.context, t.name)
-                }
-            }
-            itemView.setOnLongClickListener {
-                itemView.context.copyText(tag?.name)
-                true
-            }
-        }
+    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     class TagViewHolder(binding: ItemTagBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -69,8 +58,24 @@ class TagAdapter(retryCallback: () -> Unit) : BasePagedListAdapter<Tag>(TAG_COMP
         private val tagName = binding.tagName
         private val tagType = binding.tagType
         private val count = binding.postCount
+        private var data: Tag? = null
+
+        init {
+            itemView.apply {
+                setOnClickListener {
+                    data?.let { d ->
+                        SearchActivity.startSearch(context, d.name)
+                    }
+                }
+                setOnLongClickListener {
+                    context.copyText(data?.name)
+                    true
+                }
+            }
+        }
 
         fun bind(data: Tag?) {
+            this.data = data
             val res = itemView.resources
             when (data?.booruType) {
                 BOORU_TYPE_DAN -> {

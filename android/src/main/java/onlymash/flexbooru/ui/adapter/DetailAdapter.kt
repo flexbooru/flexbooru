@@ -25,10 +25,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
-import androidx.annotation.IntRange
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.net.toUri
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
@@ -64,7 +63,7 @@ class DetailAdapter(
     private val dismissListener: DismissFrameLayout.OnDismissListener,
     private val ioExecutor: Executor,
     private val clickCallback: () -> Unit,
-    private val longClickCallback: () -> Unit) : PagedListAdapter<Post, RecyclerView.ViewHolder>(DETAIL_POST_COMPARATOR) {
+    private val longClickCallback: () -> Unit) : PagingDataAdapter<Post, RecyclerView.ViewHolder>(DETAIL_POST_COMPARATOR) {
 
     companion object {
         val DETAIL_POST_COMPARATOR = object : DiffUtil.ItemCallback<Post>() {
@@ -95,15 +94,11 @@ class DetailAdapter(
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             setDismissListener(dismissListener)
-        }) {
-
-        }
+        }) { }
     }
 
-    fun getItemSafe(@IntRange(from = 0) position: Int) = try {
-        getItem(position)
-    } catch (_: IndexOutOfBoundsException) {
-        null
+    fun getPost(position: Int): Post? {
+        return if (position in 0 until itemCount) getItem(position) else null
     }
 
     @SuppressLint("InflateParams")
@@ -112,7 +107,7 @@ class DetailAdapter(
         if (layout.childCount > 0) {
             layout.removeAllViews()
         }
-        val post = getItemSafe(position) ?: return
+        val post = getItem(position) ?: return
         val url = when (size) {
             POST_SIZE_SAMPLE -> post.sample
             POST_SIZE_LARGER -> post.medium

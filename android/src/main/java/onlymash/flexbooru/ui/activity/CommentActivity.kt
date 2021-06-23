@@ -29,8 +29,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collectLatest
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Settings.pageLimit
@@ -41,13 +45,12 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.data.repository.NetworkState
 import onlymash.flexbooru.data.repository.comment.CommentRepositoryImpl
-import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.databinding.ActivityCommentBinding
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.CommentAdapter
+import onlymash.flexbooru.ui.adapter.StateAdapter
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
 import onlymash.flexbooru.ui.base.KodeinActivity
@@ -71,7 +74,6 @@ class CommentActivity : KodeinActivity() {
     private val binding by viewBinding(ActivityCommentBinding::inflate)
     private val list get() = binding.refreshableList.list
     private val refresh get() = binding.refreshableList.swipeRefresh
-    private val progressBarCircular get() = binding.progressCircular.progressBar
     private val progressBarHorizontal get() = binding.progressHorizontal.progressBarHorizontal
 
     private lateinit var commentViewModel: CommentViewModel
@@ -130,14 +132,11 @@ class CommentActivity : KodeinActivity() {
             },
             deleteCallback = { id ->
                 delete(id)
-            },
-            retryCallback = {
-                commentViewModel.retry()
             }
         )
         list.apply {
             layoutManager = LinearLayoutManager(this@CommentActivity, RecyclerView.VERTICAL, false)
-            adapter = commentAdapter
+            adapter = commentAdapter.withLoadStateFooter(StateAdapter(commentAdapter))
             updatePadding(top = 0)
         }
         refresh.setColorSchemeResources(
@@ -148,7 +147,10 @@ class CommentActivity : KodeinActivity() {
             R.color.red
         )
         refresh.setOnRefreshListener {
-            commentViewModel.refresh()
+            commentAdapter.refresh()
+        }
+        binding.networkState.retryButton.setOnClickListener {
+            commentAdapter.refresh()
         }
     }
 
@@ -183,31 +185,41 @@ class CommentActivity : KodeinActivity() {
 
     private fun initViewModel() {
         commentViewModel = getCommentViewModel(CommentRepositoryImpl(booruApis))
-        commentViewModel.comments.observe(this, Observer {
-            commentAdapter.submitList(it)
-        })
-        commentViewModel.networkState.observe(this, Observer {
-            commentAdapter.setNetworkState(it)
-            val isRunning = it.isRunning()
-            progressBarHorizontal.isVisible = isRunning
-            progressBarCircular.isVisible = isRunning && commentAdapter.itemCount == 0
-        })
-        commentViewModel.refreshState.observe(this, Observer {
-            if (it != NetworkState.LOADING) {
-                refresh.isRefreshing = false
+        lifecycleScope.launchWhenCreated {
+            commentViewModel.comments.collectLatest {
+                commentAdapter.submitData(it)
             }
-        })
-        commentViewModel.show(action)
+        }
+        lifecycleScope.launchWhenCreated {
+            commentAdapter.loadStateFlow.collectLatest { loadStates ->
+                updateStates(loadStates)
+            }
+        }
+        if (commentViewModel.show(action)) {
+            commentAdapter.refresh()
+        }
         commentViewModel.commentState.observe(this, Observer {
             when (it) {
                 is NetResult.Success -> {
-                    commentViewModel.refresh()
+                    commentAdapter.refresh()
                 }
                 is NetResult.Error -> {
                     Toast.makeText(this, it.errorMsg, Toast.LENGTH_LONG).show()
                 }
             }
         })
+    }
+
+    private fun updateStates(loadStates: CombinedLoadStates) {
+        progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+        val refreshState = loadStates.source.refresh
+        refresh.isRefreshing = refreshState is LoadState.Loading
+        if (refreshState is LoadState.Error && commentAdapter.itemCount == 0) {
+            binding.networkState.networkStateContainer.isVisible = true
+            binding.networkState.errorMsg.text = refreshState.error.message
+        } else {
+            binding.networkState.networkStateContainer.isVisible = false
+        }
     }
 
     private fun reply(postId: Int, qoute: String = "") {

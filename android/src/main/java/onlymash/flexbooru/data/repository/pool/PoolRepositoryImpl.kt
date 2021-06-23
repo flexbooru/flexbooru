@@ -15,44 +15,23 @@
 
 package onlymash.flexbooru.data.repository.pool
 
-import androidx.annotation.MainThread
-import androidx.lifecycle.Transformations
-import androidx.paging.Config
-import androidx.paging.toLiveData
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.*
+import kotlinx.coroutines.flow.Flow
 import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Pool
-import onlymash.flexbooru.data.repository.Listing
 
 class PoolRepositoryImpl(private val booruApis: BooruApis) : PoolRepository {
 
-    @MainThread
-    override fun getPools(scope: CoroutineScope, action: ActionPool): Listing<Pool> {
-
-        val sourceFactory = PoolDataSourceFactory(action, booruApis, scope)
-
-        val livePagedList = sourceFactory.toLiveData(
-            config = Config(
+    override fun getPools(action: ActionPool): Flow<PagingData<Pool>> {
+        return Pager(
+            config = PagingConfig(
                 pageSize = action.limit,
                 enablePlaceholders = true
-            )
-        )
-
-        val refreshState = Transformations
-            .switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
-
-        return Listing(
-            pagedList = livePagedList,
-            networkState = Transformations
-                .switchMap(sourceFactory.sourceLiveData) { it.networkState },
-            retry = {
-                sourceFactory.sourceLiveData.value?.retryAllFailed()
-            },
-            refresh = {
-                sourceFactory.sourceLiveData.value?.invalidate()
-            },
-            refreshState = refreshState
-        )
+            ),
+            initialKey = 1
+        ) {
+            PoolPagingSource(action, booruApis)
+        }.flow
     }
 }

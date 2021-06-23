@@ -15,15 +15,15 @@
 
 package onlymash.flexbooru.data.repository.comment
 
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.model.common.Comment
-import onlymash.flexbooru.data.repository.Listing
 import onlymash.flexbooru.extension.NetResult
 
 interface CommentRepository {
 
-    fun getComments(scope: CoroutineScope, action: ActionComment): Listing<Comment>
+    fun getComments(action: ActionComment): Flow<PagingData<Comment>>
 
     suspend fun createComment(action: ActionComment): NetResult<Boolean>
 

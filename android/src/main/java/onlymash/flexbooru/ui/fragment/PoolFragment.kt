@@ -17,14 +17,20 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.app.Settings.pageLimit
@@ -32,13 +38,13 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.repository.NetworkState
-import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.pool.PoolRepositoryImpl
+import onlymash.flexbooru.extension.asMergedLoadStates
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountConfigActivity
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
+import onlymash.flexbooru.ui.adapter.StateAdapter
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
@@ -71,39 +77,43 @@ class PoolFragment : SearchBarFragment() {
                 action?.booru?.let {
                     handlePoolDownload(poolId, it)
                 }
-        }) {
-            poolViewModel.retry()
-        }
+        })
         mainList.apply {
             layoutManager = LinearLayoutManager(this@PoolFragment.context, RecyclerView.VERTICAL, false)
-            adapter = poolAdapter
+            adapter = poolAdapter.withLoadStateFooter(StateAdapter(poolAdapter))
         }
-        poolViewModel.pools.observe(viewLifecycleOwner, Observer { poolList ->
-            poolList?.let {
-                poolAdapter.submitList(it)
+        lifecycleScope.launchWhenCreated {
+            poolViewModel.pools.collectLatest {
+                poolAdapter.submitData(it)
             }
-        })
-        poolViewModel.networkState.observe(viewLifecycleOwner, Observer {
-            poolAdapter.setNetworkState(it)
-            val isRunning = it.isRunning()
-            progressBarHorizontal.isVisible = isRunning
-            progressBar.isVisible = isRunning && poolAdapter.itemCount == 0
-        })
-        poolViewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            if (it != NetworkState.LOADING) {
-                swipeRefresh.isRefreshing = false
+        }
+        lifecycleScope.launchWhenCreated {
+            poolAdapter.loadStateFlow.collectLatest { loadStates ->
+                swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
+                progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+                updateState(loadStates.source.refresh)
             }
-        })
+        }
+        lifecycleScope.launchWhenCreated {
+            poolAdapter.loadStateFlow
+                .asMergedLoadStates()
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { mainList.scrollToPosition(0) }
+        }
         swipeRefresh.setOnRefreshListener {
-            poolViewModel.refresh()
+            poolAdapter.refresh()
         }
+    }
+
+    override fun retry() {
+        poolAdapter.refresh()
     }
 
     override fun onBooruLoaded(booru: Booru?) {
         super.onBooruLoaded(booru)
         if (booru == null) {
             action = null
-            poolViewModel.show(null)
             return
         }
         if (action == null) {
@@ -117,7 +127,11 @@ class PoolFragment : SearchBarFragment() {
                 it.limit = poolLimit(booru.type)
             }
         }
-        poolViewModel.show(action)
+        action?.let {
+            if (poolViewModel.show(it)) {
+                poolAdapter.refresh()
+            }
+        }
     }
 
     private fun poolLimit(booruType: Int): Int {
@@ -131,8 +145,9 @@ class PoolFragment : SearchBarFragment() {
         super.onApplySearch(query)
         action?.let {
             it.query = query
-            poolViewModel.show(action)
-            poolViewModel.refresh()
+            if (poolViewModel.show(it)) {
+                poolAdapter.refresh()
+            }
         }
     }
 

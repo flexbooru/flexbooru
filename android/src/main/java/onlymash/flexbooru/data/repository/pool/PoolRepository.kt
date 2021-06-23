@@ -15,11 +15,11 @@
 
 package onlymash.flexbooru.data.repository.pool
 
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.model.common.Pool
-import onlymash.flexbooru.data.repository.Listing
 
 interface PoolRepository {
-    fun getPools(scope: CoroutineScope, action: ActionPool): Listing<Pool>
+    fun getPools(action: ActionPool): Flow<PagingData<Pool>>
 }

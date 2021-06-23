@@ -102,9 +102,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = freeCompilerArgs + listOf(
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-Xopt-in=kotlin.ExperimentalStdlibApi",
-            "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi"
+            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-Xopt-in=androidx.paging.ExperimentalPagingApi"
         )
     }
     kapt {
@@ -184,7 +187,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-service:$lifecycleVersion")
     // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
-    implementation("androidx.paging:paging-runtime-ktx:2.1.2")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.0-alpha01")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
     implementation("com.google.android.material:material:1.4.0-rc01")
     implementation("com.google.android:flexbox:2.0.1")
@@ -218,8 +221,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.5.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.4.0-beta02")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3-beta02")
-    androidTestImplementation("androidx.test:runner:1.4.0-beta02")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-beta02")
+    androidTestImplementation("androidx.test:core:1.4.0-rc01")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3-rc01")
+    androidTestImplementation("androidx.test:runner:1.4.0-rc01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-rc01")
 }

@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.data.model.common.Artist
@@ -25,13 +26,12 @@ import onlymash.flexbooru.databinding.ItemArtistBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.toggleArrow
 import onlymash.flexbooru.ui.activity.SearchActivity
-import onlymash.flexbooru.ui.base.BasePagedListAdapter
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
-class ArtistAdapter(retryCallback: () -> Unit) :
-    BasePagedListAdapter<Artist>(ARTIST_COMPARATOR, retryCallback) {
+class ArtistAdapter : PagingDataAdapter<Artist, ArtistAdapter.ArtistViewHolder>(ARTIST_COMPARATOR) {
+
     companion object {
         val ARTIST_COMPARATOR = object : DiffUtil.ItemCallback<Artist>() {
             override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean =
@@ -41,24 +41,12 @@ class ArtistAdapter(retryCallback: () -> Unit) :
         }
     }
 
-    override fun onCreateItemViewHolder(
-        parent: ViewGroup,
-        viewType: Int): RecyclerView.ViewHolder = ArtistViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistViewHolder {
+        return ArtistViewHolder(parent)
+    }
 
-    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val artist = getItemSafe(position)
-        (holder as ArtistViewHolder).apply {
-            bind(artist)
-            itemView.setOnClickListener {
-                artist?.let { a ->
-                    SearchActivity.startSearch(itemView.context, a.name)
-                }
-            }
-            itemView.setOnLongClickListener {
-                itemView.context.copyText(artist?.name)
-                true
-            }
-        }
+    override fun onBindViewHolder(holder: ArtistViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     class ArtistViewHolder(binding: ItemArtistBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -80,6 +68,17 @@ class ArtistAdapter(retryCallback: () -> Unit) :
                 }
             }
             artistUrls.transformationMethod = LinkTransformationMethod()
+            itemView.apply {
+                setOnClickListener {
+                    artist?.let { artist ->
+                        SearchActivity.startSearch(context, artist.name)
+                    }
+                }
+                setOnLongClickListener {
+                    context.copyText(artist?.name)
+                    true
+                }
+            }
         }
 
         fun bind(data: Artist?) {

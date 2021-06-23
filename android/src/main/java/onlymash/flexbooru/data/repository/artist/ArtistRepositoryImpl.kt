@@ -15,44 +15,25 @@
 
 package onlymash.flexbooru.data.repository.artist
 
-import androidx.annotation.MainThread
-import androidx.lifecycle.Transformations
-import androidx.paging.Config
-import androidx.paging.toLiveData
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import onlymash.flexbooru.data.action.ActionArtist
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Artist
-import onlymash.flexbooru.data.repository.Listing
 
 class ArtistRepositoryImpl(private val booruApis: BooruApis) : ArtistRepository {
 
-    @MainThread
-    override fun getArtists(scope: CoroutineScope, action: ActionArtist): Listing<Artist> {
-
-        val sourceFactory = ArtistDataSourceFactory(action, booruApis, scope)
-
-        val livePagedList = sourceFactory.toLiveData(
-            config = Config(
+    override fun getArtists(action: ActionArtist): Flow<PagingData<Artist>> {
+        return Pager(
+            config = PagingConfig(
                 pageSize = action.limit,
                 enablePlaceholders = true
-            )
-        )
-
-        val refreshState = Transformations
-            .switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
-
-        return Listing(
-            pagedList = livePagedList,
-            networkState = Transformations
-                .switchMap(sourceFactory.sourceLiveData) { it.networkState },
-            retry = {
-                sourceFactory.sourceLiveData.value?.retryAllFailed()
-            },
-            refresh = {
-                sourceFactory.sourceLiveData.value?.invalidate()
-            },
-            refreshState = refreshState
-        )
+            ),
+            initialKey = 1
+        ) {
+            ArtistPagingSource(action, booruApis)
+        }.flow
     }
 }

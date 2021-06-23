@@ -34,13 +34,13 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.*
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagedList
+import androidx.paging.LoadState
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ui.PlayerView
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import onlymash.flexbooru.R
@@ -82,8 +82,6 @@ import java.io.*
 
 private const val ALPHA_MAX = 0xFF
 private const val ALPHA_MIN = 0x00
-private const val POSITION_INIT = -1
-private const val POSITION_INITED = -2
 
 private const val ACTION_SAVE = 11
 private const val ACTION_SAVE_AS = 12
@@ -132,8 +130,8 @@ class DetailActivity : PathActivity(),
     private val saveButton get() = binding.bottomShortcut.postSave
 
     private lateinit var booru: Booru
+    private lateinit var query: String
     private lateinit var actionVote: ActionVote
-    private var initPosition = POSITION_INIT
     private lateinit var colorDrawable: ColorDrawable
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var detailAdapter: DetailAdapter
@@ -142,7 +140,7 @@ class DetailActivity : PathActivity(),
     private var tmpFile: File? = null
 
     private val currentPost: Post?
-        get() = detailAdapter.getItemSafe(detailPager.currentItem)
+        get() = detailAdapter.getPost(detailPager.currentItem)
 
     private var oldPlayerView: PlayerView? = null
 
@@ -156,24 +154,26 @@ class DetailActivity : PathActivity(),
             }
         }
         override fun onPageSelected(position: Int) {
-            val post = detailAdapter.getItemSafe(position)
-            syncInfo(post)
-            if (post == null) return
-            val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
-                putExtra(POST_QUERY, post.query)
-                putExtra(POST_POSITION, position)
-            }
-            sendBroadcast(intent)
+            detailViewModel.currentPosition = position
+            var post = detailAdapter.getPost(position)
+            if (post == null) {
+                post = postDao.getPost(booruUid = booru.uid, query = query, index = position)
+                if (post != null) {
+                    syncInfo(post, position)
+                }
+            } else syncInfo(post, position)
         }
     }
 
-    private fun syncInfo(post: Post?) {
-        if (post == null) {
-            return
-        }
+    private fun syncInfo(post: Post, position: Int) {
         play(post)
         setVoteItemIcon(post.isFavored)
         toolbar.title = "Post ${post.id}"
+        val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
+            putExtra(POST_QUERY, post.query)
+            putExtra(POST_POSITION, position)
+        }
+        sendBroadcast(intent)
     }
 
     private fun play(post: Post) {
@@ -241,9 +241,10 @@ class DetailActivity : PathActivity(),
     }
 
     private fun initPager() {
-        val query = intent?.getStringExtra(POST_QUERY) ?: ""
-        if (initPosition == POSITION_INIT) {
-            initPosition = intent?.getIntExtra(POST_POSITION, POSITION_INITED) ?: POSITION_INITED
+        query = intent?.getStringExtra(POST_QUERY) ?: ""
+        detailViewModel = getDetailViewModel(postDao, booru.uid, query)
+        if (detailViewModel.currentPosition < 0) {
+            detailViewModel.currentPosition = intent?.getIntExtra(POST_POSITION, -1) ?: -1
         }
         val glide = GlideApp.with(this)
         detailAdapter = DetailAdapter(
@@ -257,10 +258,20 @@ class DetailActivity : PathActivity(),
             adapter = detailAdapter
             registerOnPageChangeCallback(pageChangeCallback)
         }
-        detailViewModel = getDetailViewModel(postDao, booru.uid, query)
-        detailViewModel.posts.observe(this, Observer { postList ->
-            updatePosts(postList)
-        })
+        detailAdapter.addLoadStateListener {
+            if (it.refresh is LoadState.NotLoading) {
+                val currentPosition = detailViewModel.currentPosition
+                if (detailPager.currentItem != currentPosition && currentPosition in 0 until detailAdapter.itemCount) {
+                    detailPager.setCurrentItem(currentPosition, false)
+                }
+                startPostponedEnterTransition()
+            }
+        }
+        lifecycleScope.launch {
+            detailViewModel.posts.collectLatest {
+                detailAdapter.submitData(it)
+            }
+        }
     }
 
     private fun setupBarVisable() {
@@ -269,32 +280,6 @@ class DetailActivity : PathActivity(),
         toolbarContainer.isVisible = isVisible
         shortcut.isVisible = isVisible
         shadow.isVisible = isVisible
-    }
-
-    private fun updatePosts(postList: PagedList<Post>?) {
-        if (postList == null) {
-            return
-        }
-        detailAdapter.submitList(postList)
-        if (initPosition != POSITION_INITED) {
-            if (initPosition >= 0 && initPosition < postList.size) {
-                detailPager.setCurrentItem(initPosition, false)
-                delayExecute {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-                        startPostponedEnterTransition()
-                    }
-                    syncInfo(currentPost)
-                }
-            }
-            initPosition = POSITION_INITED
-        }
-    }
-
-    private fun delayExecute(callback: () -> Unit) {
-        lifecycleScope.launch {
-            delay(100L)
-            callback()
-        }
     }
 
     private fun initToolbar() {

@@ -15,44 +15,25 @@
 
 package onlymash.flexbooru.data.repository.tag
 
-import androidx.annotation.MainThread
-import androidx.lifecycle.Transformations
-import androidx.paging.Config
-import androidx.paging.toLiveData
-import kotlinx.coroutines.CoroutineScope
+
+import androidx.paging.*
+import kotlinx.coroutines.flow.Flow
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Tag
-import onlymash.flexbooru.data.repository.Listing
 
 class TagRepositoryImpl(private val booruApis: BooruApis) : TagRepository {
 
-    @MainThread
-    override fun getTags(scope: CoroutineScope, action: ActionTag): Listing<Tag> {
-
-        val sourceFactory = TagDataSourceFactory(action, booruApis, scope)
-
-        val livePagedList = sourceFactory.toLiveData(
-            config = Config(
+    override fun getTags(action: ActionTag): Flow<PagingData<Tag>> {
+        return Pager(
+            config = PagingConfig(
                 pageSize = action.limit,
                 enablePlaceholders = true
-            )
-        )
-
-        val refreshState = Transformations
-            .switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
-
-        return Listing(
-            pagedList = livePagedList,
-            networkState = Transformations
-                .switchMap(sourceFactory.sourceLiveData) { it.networkState },
-            retry = {
-                sourceFactory.sourceLiveData.value?.retryAllFailed()
-            },
-            refresh = {
-                sourceFactory.sourceLiveData.value?.invalidate()
-            },
-            refreshState = refreshState
-        )
+            ),
+            initialKey = if (action.booru.type == Values.BOORU_TYPE_GEL) 0 else 1
+        ) {
+            TagPagingSource(action, booruApis)
+        }.flow
     }
 }

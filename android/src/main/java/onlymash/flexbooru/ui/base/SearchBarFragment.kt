@@ -20,13 +20,13 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.widget.ImageButton
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.*
 import androidx.lifecycle.Observer
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
@@ -69,10 +69,12 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
     internal lateinit var mainList: RecyclerView
     internal lateinit var searchLayout: CoordinatorLayout
     internal lateinit var swipeRefresh: SwipeRefreshLayout
-    internal lateinit var progressBar: ProgressBar
     internal lateinit var progressBarHorizontal: ProgressBar
     private lateinit var searchBar: SearchBar
     private lateinit var fabToListTop: FloatingActionButton
+    private lateinit var networkStateContainer: LinearLayout
+    private lateinit var errorMsg: TextView
+    private lateinit var retryButton: Button
 
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
@@ -89,10 +91,12 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         mainList = binding.refreshableList.list
         searchLayout = binding.searchLayout.searchLayoutContainer
         swipeRefresh = binding.refreshableList.swipeRefresh
-        progressBar = binding.progressCircular.progressBar
         progressBarHorizontal = binding.progressHorizontal.progressBarHorizontal
         searchBar = binding.searchBar
         fabToListTop = binding.actionToTop
+        networkStateContainer = binding.networkState.networkStateContainer
+        errorMsg = binding.networkState.errorMsg
+        networkStateContainer = binding.networkState.networkStateContainer
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
             val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             systemUiTopSize = systemBarsInsets.top
@@ -113,9 +117,24 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         suggestionViewModel.suggestions.observe(viewLifecycleOwner, Observer {
             searchBar.updateSuggestions(it)
         })
+        binding.networkState.retryButton.setOnClickListener {
+            retry()
+        }
         onSearchBarViewCreated(view, savedInstanceState)
         sp.registerOnSharedPreferenceChangeListener(this)
     }
+
+    fun updateState(loadState: LoadState?) {
+        if (loadState == null) return
+        if (loadState is LoadState.Error && mainList.adapter?.itemCount == 0) {
+            networkStateContainer.isVisible = true
+            errorMsg.text = loadState.error.message
+        } else {
+            networkStateContainer.isVisible = false
+        }
+    }
+
+    abstract fun retry()
 
     abstract fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?)
 

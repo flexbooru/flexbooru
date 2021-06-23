@@ -31,6 +31,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.AlignItems
@@ -41,6 +42,10 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.animation.RippleAnimation
@@ -79,15 +84,16 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
-import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
+import onlymash.flexbooru.extension.asMergedLoadStates
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.DetailActivity
 import onlymash.flexbooru.ui.activity.SauceNaoActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.adapter.PostAdapter
+import onlymash.flexbooru.ui.adapter.StateAdapter
 import onlymash.flexbooru.ui.adapter.TagFilterAdapter
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.SearchBarFragment
@@ -187,34 +193,36 @@ class PostFragment : SearchBarFragment() {
                     DetailActivity.start(it, query, position, view, tranName)
                 }
             },
-            longClickItemCallback = { handleLongClick(it) },
-            retryCallback = { postViewModel.retry() }
+            longClickItemCallback = { handleLongClick(it) }
         )
         setupListPadding(isRoundedGrid)
         mainList.apply {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
-            adapter = postAdapter
+            adapter = postAdapter.withLoadStateFooter(StateAdapter(postAdapter))
         }
-        postViewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
-            postList?.let {
-                postAdapter.submitList(it)
-                if (progressBar.isVisible && it.size > 0) {
-                    progressBar.isVisible = false
-                }
+        postAdapter.addLoadStateListener { loadStates ->
+            swipeRefresh.isRefreshing = loadStates.mediator?.refresh is LoadState.Loading
+            progressBarHorizontal.isVisible = loadStates.mediator?.append is LoadState.Loading
+            updateState(loadStates.mediator?.refresh)
+        }
+        lifecycleScope.launchWhenCreated {
+            postAdapter.loadStateFlow.collectLatest { loadStates ->
+
             }
-        })
-        postViewModel.networkState.observe(viewLifecycleOwner, Observer {
-            postAdapter.setNetworkState(it)
-            val isRunning = it.isRunning()
-            progressBarHorizontal.isVisible = isRunning
-            progressBar.isVisible = isRunning && postAdapter.itemCount == 0
-        })
-        postViewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            swipeRefresh.isRefreshing = it.isRunning()
-        })
-        swipeRefresh.setOnRefreshListener {
-            postViewModel.refresh()
         }
+        lifecycleScope.launchWhenCreated {
+            postViewModel.posts.collectLatest {
+                postAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            postAdapter.loadStateFlow
+                .asMergedLoadStates()
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { mainList.scrollToPosition(0) }
+        }
+        swipeRefresh.setOnRefreshListener { postAdapter.refresh() }
     }
 
     private fun setupListPadding(isRounded: Boolean) {
@@ -259,7 +267,17 @@ class PostFragment : SearchBarFragment() {
             action = null
             tagFilterAdapter.updateBooru(-1L, BOORU_TYPE_UNKNOWN, arrayOf(), arrayOf())
         }
-        postViewModel.show(action)
+        fetch()
+    }
+
+    private fun fetch() {
+        action?.let {
+            postViewModel.show(it)
+        }
+    }
+
+    override fun retry() {
+        postAdapter.refresh()
     }
 
     private fun initFilterList() {
@@ -569,7 +587,7 @@ class PostFragment : SearchBarFragment() {
 
     private fun updateActionAndRefresh(action: ActionPost) {
         postViewModel.show(action)
-        postViewModel.refresh()
+        postAdapter.refresh()
     }
 
     override fun onApplySearch(query: String) {

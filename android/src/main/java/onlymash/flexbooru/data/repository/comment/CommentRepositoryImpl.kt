@@ -15,13 +15,11 @@
 
 package onlymash.flexbooru.data.repository.comment
 
-import androidx.annotation.MainThread
-import androidx.lifecycle.Transformations
-import androidx.paging.Config
-import androidx.paging.toLiveData
-import kotlinx.coroutines.CoroutineScope
+import androidx.paging.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
@@ -29,29 +27,20 @@ import onlymash.flexbooru.data.action.ActionComment
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.data.model.sankaku.CommentBody
-import onlymash.flexbooru.data.repository.Listing
 import onlymash.flexbooru.extension.NetResult
 
 class CommentRepositoryImpl(private val booruApis: BooruApis) : CommentRepository {
 
-    @MainThread
-    override fun getComments(scope: CoroutineScope, action: ActionComment): Listing<Comment> {
-        val sourceFactory = CommentDataSourceFactory(action, booruApis, scope)
-        val livePagedList = sourceFactory.toLiveData(
-            config = Config(
+    override fun getComments(action: ActionComment): Flow<PagingData<Comment>> {
+        return Pager(
+            config = PagingConfig(
                 pageSize = action.limit,
                 enablePlaceholders = true
-            )
-        )
-        val refreshState =
-            Transformations.switchMap(sourceFactory.sourceLiveData) { it.initialLoad }
-        return Listing(
-            pagedList = livePagedList,
-            networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState },
-            retry = { sourceFactory.sourceLiveData.value?.retryAllFailed() },
-            refresh = { sourceFactory.sourceLiveData.value?.invalidate() },
-            refreshState = refreshState
-        )
+            ),
+            initialKey = if (action.booru.type == Values.BOORU_TYPE_GEL) 0 else 1
+        ) {
+            CommentPagingSource(action, booruApis)
+        }.flow
     }
 
     override suspend fun createComment(action: ActionComment): NetResult<Boolean> {

@@ -26,8 +26,9 @@
         android:id="@+id/refreshable_list"/>
 
     <include
-        layout="@layout/progress_bar"
-        android:id="@+id/progress_circular"/>
+        layout="@layout/item_network_state"
+        android:visibility="gone"
+        android:id="@+id/network_state"/>
 
     <include
         layout="@layout/progress_bar_horizontal"

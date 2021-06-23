@@ -21,9 +21,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.pageLimit
 import onlymash.flexbooru.app.Values.Tags
@@ -33,9 +38,9 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.data.repository.NetworkState
-import onlymash.flexbooru.data.repository.isRunning
 import onlymash.flexbooru.data.repository.tag.TagRepositoryImpl
+import onlymash.flexbooru.extension.asMergedLoadStates
+import onlymash.flexbooru.ui.adapter.StateAdapter
 import onlymash.flexbooru.ui.adapter.TagAdapter
 import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.TagViewModel
@@ -66,39 +71,43 @@ class TagFragment : SearchBarFragment() {
 
     override fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_tags))
-        tagAdapter = TagAdapter {
-            tagViewModel.retry()
-        }
+        tagAdapter = TagAdapter()
         mainList.apply {
             layoutManager = LinearLayoutManager(this@TagFragment.context, RecyclerView.VERTICAL, false)
-            adapter = tagAdapter
+            adapter = tagAdapter.withLoadStateFooter(StateAdapter(tagAdapter))
         }
-        tagViewModel.tags.observe(viewLifecycleOwner, Observer { tagList ->
-            tagList?.let {
-                tagAdapter.submitList(it)
+        lifecycleScope.launchWhenCreated {
+            tagViewModel.tags.collectLatest {
+                tagAdapter.submitData(it)
             }
-        })
-        tagViewModel.networkState.observe(viewLifecycleOwner, Observer {
-            tagAdapter.setNetworkState(it)
-            val isRunning = it.isRunning()
-            progressBarHorizontal.isVisible = isRunning
-            progressBar.isVisible = isRunning && tagAdapter.itemCount == 0
-        })
-        tagViewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            if (it != NetworkState.LOADING) {
-                swipeRefresh.isRefreshing = false
+        }
+        lifecycleScope.launchWhenCreated {
+            tagAdapter.loadStateFlow.collectLatest { loadStates ->
+                swipeRefresh.isRefreshing = loadStates.source.refresh is LoadState.Loading
+                progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
+                updateState(loadStates.source.refresh)
             }
-        })
+        }
+        lifecycleScope.launchWhenCreated {
+            tagAdapter.loadStateFlow
+                .asMergedLoadStates()
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { mainList.scrollToPosition(0) }
+        }
         swipeRefresh.setOnRefreshListener {
-            tagViewModel.refresh()
+            tagAdapter.refresh()
         }
+    }
+
+    override fun retry() {
+        tagAdapter.refresh()
     }
 
     override fun onBooruLoaded(booru: Booru?) {
         super.onBooruLoaded(booru)
         if (booru == null) {
             action = null
-            tagViewModel.show(null)
             return
         }
         if (action == null) {
@@ -120,7 +129,11 @@ class TagFragment : SearchBarFragment() {
                 it.limit = tagLimit(booru.type)
             }
         }
-        tagViewModel.show(action)
+        action?.let {
+            if (tagViewModel.show(it)) {
+                tagAdapter.refresh()
+            }
+        }
     }
 
     private fun tagLimit(booruType: Int): Int {
@@ -134,14 +147,14 @@ class TagFragment : SearchBarFragment() {
         super.onApplySearch(query)
         action?.let {
             it.query = query
-            tagViewModel.show(action)
-            tagViewModel.refresh()
+            tagViewModel.show(it)
+            tagAdapter.refresh()
         }
     }
 
     private fun updateActionAndRefresh(action: ActionTag) {
         tagViewModel.show(action)
-        tagViewModel.refresh()
+        tagAdapter.refresh()
     }
 
     override fun onMenuItemClick(menuItem: MenuItem) {
