@@ -198,7 +198,7 @@ class PostFragment : SearchBarFragment() {
         setupListPadding(isRoundedGrid)
         mainList.apply {
             layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
-            adapter = postAdapter.withLoadStateFooter(StateAdapter(postAdapter))
+            adapter = postAdapter.withLoadStateFooterSafe(StateAdapter(postAdapter))
         }
         postAdapter.addLoadStateListener { loadStates ->
             swipeRefresh.isRefreshing = loadStates.mediator?.refresh is LoadState.Loading

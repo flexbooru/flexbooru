@@ -26,7 +26,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.paging.LoadState
+import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -93,6 +96,22 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bindTo(getItem(position))
+    }
+
+    fun withLoadStateFooterSafe(
+        footer: LoadStateAdapter<*>
+    ): ConcatAdapter {
+        val containerAdapter = ConcatAdapter(this)
+        addLoadStateListener { loadStates ->
+            footer.loadState = loadStates.append
+            if (loadStates.append is LoadState.Error && !containerAdapter.adapters.contains(footer)) {
+                containerAdapter.addAdapter(footer)
+                footer.loadState = loadStates.append
+            } else if (containerAdapter.adapters.contains(footer)){
+                containerAdapter.removeAdapter(footer)
+            }
+        }
+        return containerAdapter
     }
 
     inner class PostViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
