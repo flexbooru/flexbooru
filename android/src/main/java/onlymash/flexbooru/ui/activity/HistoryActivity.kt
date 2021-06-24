@@ -19,8 +19,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,7 +63,7 @@ class HistoryActivity : KodeinActivity() {
             adapter = historyAdapter
             ItemTouchHelper(ItemTouchHelperCallback(historyAdapter)).attachToRecyclerView(this)
         }
-        historyViewModel.loadHistory(activatedBooruUid).observe(this, Observer {
+        historyViewModel.loadHistory(activatedBooruUid).observe(this, {
             historyAdapter.updateData(it)
         })
     }

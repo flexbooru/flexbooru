@@ -46,7 +46,7 @@ abstract class BooruFragment<T: ViewBinding> : KodeinFragment<T>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onBaseViewCreated(view, savedInstanceState)
-        booruViewModel.booru.observe(viewLifecycleOwner, Observer {
+        booruViewModel.booru.observe(viewLifecycleOwner, {
             onBooruLoaded(it)
         })
         booruViewModel.loadBooru(Settings.activatedBooruUid)

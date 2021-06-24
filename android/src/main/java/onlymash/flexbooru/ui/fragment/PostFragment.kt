@@ -290,7 +290,7 @@ class PostFragment : SearchBarFragment() {
             }
             adapter = tagFilterAdapter
         }
-        tagFilterViewModel.loadTags().observe(viewLifecycleOwner, Observer {
+        tagFilterViewModel.loadTags().observe(viewLifecycleOwner, {
             tagFilterAdapter.updateData(it)
         })
         searchLayout.findViewById<FloatingActionButton>(R.id.action_search).setOnClickListener {

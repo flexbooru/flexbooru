@@ -17,7 +17,6 @@ package onlymash.flexbooru.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.core.net.toUri
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat

@@ -21,10 +21,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -69,7 +65,7 @@ class TagBlacklistActivity : KodeinActivity() {
             adapter = tagBlacklistAdapter
         }
         booruViewModel = getBooruViewModel(booruDao)
-        booruViewModel.booru.observe(this, Observer {
+        booruViewModel.booru.observe(this, {
             booru = it
             tagBlacklistAdapter.updateData(it.blacklists)
         })
@@ -98,7 +94,7 @@ class TagBlacklistActivity : KodeinActivity() {
             .setView(layout)
             .setPositiveButton(R.string.dialog_yes) { _, _ ->
                 val text = (editText.text ?: "").toString().trim()
-                if (!text.isBlank()) {
+                if (text.isNotBlank()) {
                     if (booru.blacklists.add(text)) {
                         booruViewModel.updateBooru(booru)
                     }

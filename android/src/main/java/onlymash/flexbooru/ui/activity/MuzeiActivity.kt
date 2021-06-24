@@ -24,12 +24,8 @@ import android.provider.BaseColumns
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
 import androidx.cursoradapter.widget.CursorAdapter
 import androidx.cursoradapter.widget.SimpleCursorAdapter
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -104,11 +100,11 @@ class MuzeiActivity : KodeinActivity() {
         )
         initView()
         muzeiViewModel = getMuzeiViewModel(muzeiDao)
-        muzeiViewModel.loadMuzei(booru.uid).observe(this, Observer {
+        muzeiViewModel.loadMuzei(booru.uid).observe(this, {
             muzeiAdapter.updateData(it)
         })
         suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
-        suggestionViewModel.suggestions.observe(this, Observer {
+        suggestionViewModel.suggestions.observe(this, {
             suggestions.clear()
             suggestions.addAll(it)
             handleSuggestions(it)

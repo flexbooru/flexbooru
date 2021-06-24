@@ -196,7 +196,7 @@ class CommentActivity : KodeinActivity() {
         if (commentViewModel.show(action)) {
             commentAdapter.refresh()
         }
-        commentViewModel.commentState.observe(this, Observer {
+        commentViewModel.commentState.observe(this, {
             when (it) {
                 is NetResult.Success -> {
                     commentAdapter.refresh()

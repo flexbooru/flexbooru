@@ -25,8 +25,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -115,7 +113,7 @@ class BooruActivity : KodeinActivity() {
             ItemTouchHelper(ItemTouchHelperCallback(itemTouchCallback)).attachToRecyclerView(this)
         }
         booruViewModel = getBooruViewModel(booruDao)
-        booruViewModel.loadBoorus().observe(this, Observer { boorus ->
+        booruViewModel.loadBoorus().observe(this, { boorus ->
             booruAdapter.updateBoorus(boorus)
             if (boorus.isNullOrEmpty()) {
                  activatedBooruUid = createDefaultBooru()

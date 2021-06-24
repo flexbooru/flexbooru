@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -68,6 +69,7 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
         return FragmentShortcutInfoBinding.inflate(inflater, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBaseViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.sourceUrl.transformationMethod = LinkTransformationMethod()
         binding.sourceContainer.apply {

@@ -26,7 +26,6 @@ import android.view.View
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
-import androidx.core.view.updatePadding
 import onlymash.flexbooru.R
 import onlymash.flexbooru.databinding.ActivityCopyrightBinding
 import onlymash.flexbooru.extension.launchUrl

@@ -34,10 +34,6 @@ import kotlin.system.exitProcess
 
 abstract class CrashLog : Thread.UncaughtExceptionHandler {
 
-    companion object {
-        private const val TAG = "CrashLog"
-    }
-    
     private var dateFormat: SimpleDateFormat? = null
     
     private val crashLog = LinkedHashMap<String, String>()

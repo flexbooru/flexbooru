@@ -197,12 +197,12 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
         sp.registerOnSharedPreferenceChangeListener(this)
         setupDrawer()
-        booruViewModel.loadBoorus().observe(this, Observer {
+        booruViewModel.loadBoorus().observe(this, {
             boorus.clear()
             boorus.addAll(it)
             initDrawerHeader()
         })
-        booruViewModel.booru.observe(this, Observer { booru: Booru? ->
+        booruViewModel.booru.observe(this, { booru: Booru? ->
             if (booru != null) {
                 currentBooru = booru
                 setupNavigationMenu(booru.type)

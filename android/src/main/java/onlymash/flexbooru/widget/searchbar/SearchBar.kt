@@ -318,7 +318,7 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
-    override fun onSaveInstanceState(): Parcelable? =
+    override fun onSaveInstanceState(): Parcelable =
         Bundle().apply {
             putParcelable(STATE_KEY_SUPER, super.onSaveInstanceState())
             putInt(STATE_KEY_STATE, state)

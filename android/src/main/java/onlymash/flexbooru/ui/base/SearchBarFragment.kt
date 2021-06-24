@@ -114,7 +114,7 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         setupFabToListTop()
         setupSwipeRefreshColor()
         initSearchBar()
-        suggestionViewModel.suggestions.observe(viewLifecycleOwner, Observer {
+        suggestionViewModel.suggestions.observe(viewLifecycleOwner, {
             searchBar.updateSuggestions(it)
         })
         binding.networkState.retryButton.setOnClickListener {
