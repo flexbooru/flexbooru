@@ -31,11 +31,11 @@ class PostRepositoryImpl(
         return Pager(
             config = PagingConfig(
                 pageSize = action.limit,
-                maxSize = 300,
                 initialLoadSize = action.limit,
                 enablePlaceholders = true
             ),
-            remoteMediator = PostRemoteMediator(action, db, booruApis)
+            remoteMediator = PostRemoteMediator(action, db, booruApis),
+            initialKey = 0
         ) {
             db.postDao().getPosts(booruUid = action.booru.uid, query = action.query)
         }.flow

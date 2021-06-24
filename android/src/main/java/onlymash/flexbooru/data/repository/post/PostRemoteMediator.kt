@@ -46,7 +46,6 @@ class PostRemoteMediator(
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Post>): MediatorResult {
         val posts = when (loadType) {
-
             LoadType.REFRESH -> {
                 try {
                     fetchPosts(0, null)

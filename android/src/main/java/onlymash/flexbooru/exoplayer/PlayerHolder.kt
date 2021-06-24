@@ -46,7 +46,7 @@ class PlayerHolder {
             if (cache == null) {
                 cache = SimpleCache(
                     File(app.cacheDir, "video"),
-                    LeastRecentlyUsedCacheEvictor(1024 * 1024 * 256),
+                    LeastRecentlyUsedCacheEvictor(1024 * 1024 * 256L),
                     DefaultDatabaseProvider.databaseProvider())
             }
             return cache!!
