@@ -32,7 +32,7 @@ class PostRepositoryImpl(
             config = PagingConfig(
                 pageSize = action.limit,
                 maxSize = 300,
-                initialLoadSize = action.limit * 2,
+                initialLoadSize = action.limit,
                 enablePlaceholders = true
             ),
             remoteMediator = PostRemoteMediator(action, db, booruApis)
