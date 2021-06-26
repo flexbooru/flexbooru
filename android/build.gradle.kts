@@ -200,7 +200,7 @@ dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-analytics-ktx:19.0.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.0.1")
+    implementation("com.google.firebase:firebase-crashlytics:18.1.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.android.billingclient:billing:4.0.0")
