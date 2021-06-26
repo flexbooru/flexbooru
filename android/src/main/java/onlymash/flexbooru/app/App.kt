@@ -34,7 +34,6 @@ import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.app.Settings.nightMode
 import onlymash.flexbooru.app.Settings.orderDeviceId
 import onlymash.flexbooru.app.Settings.orderId
-import onlymash.flexbooru.crash.CrashHandler
 import onlymash.flexbooru.data.api.OrderApi
 import onlymash.flexbooru.extension.getSignMd5
 import onlymash.flexbooru.glide.GlideApp
@@ -77,7 +76,6 @@ class App : Application(), DIAware {
         if (BuildConfig.DEBUG) {
             return
         }
-        CrashHandler.getInstance().init(this)
         checkOrder()
     }
 
