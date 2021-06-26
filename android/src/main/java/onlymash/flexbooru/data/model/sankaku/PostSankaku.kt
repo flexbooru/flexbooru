@@ -39,7 +39,7 @@ data class PostSankaku(
     @SerialName("file_size")
     val fileSize: Int,
     @SerialName("file_type")
-    val fileType: String,
+    val fileType: String? = null,
     @SerialName("file_url")
     val fileUrl: String?,
     @SerialName("has_children")

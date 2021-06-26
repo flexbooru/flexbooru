@@ -71,12 +71,14 @@ class PostRemoteMediator(
                 }
             }
         }
-        db.withTransaction {
-            if (loadType == LoadType.REFRESH) {
-                postDao.deletePosts(action.booru.uid, action.query)
+        try {
+            db.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    postDao.deletePosts(action.booru.uid, action.query)
+                }
+                postDao.insert(posts)
             }
-            postDao.insert(posts)
-        }
+        } catch (_: Exception) { }
         return MediatorResult.Success(endOfPaginationReached = !hasMore())
     }
 
