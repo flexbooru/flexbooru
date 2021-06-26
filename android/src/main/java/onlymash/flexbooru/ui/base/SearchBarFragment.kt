@@ -25,7 +25,6 @@ import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.*
-import androidx.lifecycle.Observer
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout

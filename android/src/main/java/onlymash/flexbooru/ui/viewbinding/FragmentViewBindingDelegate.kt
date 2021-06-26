@@ -4,7 +4,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import onlymash.flexbooru.extension.isInitialized
 import kotlin.properties.ReadOnlyProperty

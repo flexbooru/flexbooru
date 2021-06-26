@@ -29,7 +29,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.SharedElementCallback
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
