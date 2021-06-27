@@ -4,6 +4,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
@@ -41,7 +42,10 @@ class PostRemoteMediator(
         get() = db.nextDao().getNext(action.booru.uid, action.query)?.next
 
     override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
+        return if (Settings.autoRefresh)
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        else
+            InitializeAction.SKIP_INITIAL_REFRESH
     }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Post>): MediatorResult {

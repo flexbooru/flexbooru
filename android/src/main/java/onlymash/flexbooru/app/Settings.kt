@@ -59,6 +59,7 @@ object Settings {
     const val SHOW_INFO_BAR_KEY = "settings_show_info_bar"
     const val SHOW_ALL_TAGS_KEY = "settings_show_all_tags"
     const val AUTO_HIDE_BOTTOM_BAR_KEY = "settings_auto_hide_bottom_bar"
+    private const val AUTO_REFRESH_KEY = "settings_auto_refresh"
     const val CLEAR_CACHE_KEY = "settings_clear_cache"
     const val LATEST_VERSION_CODE_KEY = "settings_latest_version_code"
     const val LATEST_VERSION_NAME_KEY = "settings_latest_version_name"
@@ -202,6 +203,10 @@ object Settings {
         get() = sp.getBoolean(AUTO_HIDE_BOTTOM_BAR_KEY, false)
         set(value) = sp.edit().putBoolean(
             AUTO_HIDE_BOTTOM_BAR_KEY, value).apply()
+
+    var autoRefresh: Boolean
+        get() = sp.getBoolean(AUTO_REFRESH_KEY, false)
+        set(value) = sp.edit().putBoolean(AUTO_REFRESH_KEY, value).apply()
 
     var downloadDirPath: String?
         get() = sp.getString(DOWNLOAD_PATH_KEY, "")
