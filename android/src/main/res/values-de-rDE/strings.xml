@@ -190,6 +190,7 @@
     <string name="settings_show_info_bar">Infoleiste anzeigen</string>
     <string name="settings_show_all_tags">Tags für alle Seiten anzeigen</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
+    <string name="settings_auto_refresh">Auto refresh</string>
     <string name="settings_clear_cache">Cache leeren</string>
     <string name="settings_clear_cache_summery">Alle gecachten Dateien entfernen.</string>
     <string name="settings_clear_cache_dialog_content">Cache wird gelöscht</string>
