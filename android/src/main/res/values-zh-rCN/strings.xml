@@ -189,7 +189,7 @@
     <string name="settings_show_info_bar">显示信息栏</string>
     <string name="settings_show_all_tags">显示所有站点的标签</string>
     <string name="settings_auto_hide_bottom_bar">自动隐藏底栏</string>
-    <string name="settings_auto_refresh">Auto refresh</string>
+    <string name="settings_auto_refresh">自动刷新</string>
     <string name="settings_clear_cache">清除缓存</string>
     <string name="settings_clear_cache_summery">清除所有的缓存文件。</string>
     <string name="settings_clear_cache_dialog_content">缓存的文件将被清除。</string>
