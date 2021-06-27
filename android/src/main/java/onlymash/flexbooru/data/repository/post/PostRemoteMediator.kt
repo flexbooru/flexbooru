@@ -61,11 +61,12 @@ class PostRemoteMediator(
                 return MediatorResult.Success(endOfPaginationReached = true)
             }
             LoadType.APPEND -> {
-                if (!hasMore()) {
+                val index = nextIndex
+                if (!hasMore() && index != 0) {
                     return MediatorResult.Success(endOfPaginationReached = true)
                 }
                 try {
-                    fetchPosts(nextIndex, nextSankakuKey)
+                    fetchPosts(index, nextSankakuKey)
                 } catch (e: Exception) {
                     return MediatorResult.Error(e)
                 }
