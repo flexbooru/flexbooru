@@ -63,10 +63,6 @@ class PostRemoteMediator(
                 try {
                     fetchPosts(nextIndex, nextSankakuKey)
                 } catch (e: Exception) {
-                    if (action.booru.type == BOORU_TYPE_SANKAKU &&
-                        e is HttpException && e.code() == 401) {
-                        refreshSankakuToken()
-                    }
                     return MediatorResult.Error(e)
                 }
             }
@@ -225,6 +221,10 @@ class PostRemoteMediator(
             booruApis.sankakuApi.getPosts(url)
         else
             booruApis.sankakuApi.getPostsAuth(url, auth)
+        if (response.code() == 401) {
+            refreshSankakuToken()
+            throw(HttpException(response))
+        }
         val data = response.body()
         val raw = data?.posts
         lastResponseSize = raw?.size ?: 0
