@@ -189,6 +189,7 @@
     <string name="settings_show_info_bar">Pokaż pasek informacyjny</string>
     <string name="settings_show_all_tags">Pokaż tagi dla wszystkich stron</string>
     <string name="settings_auto_hide_bottom_bar">Automatyczne ukryj dolny pasek</string>
+    <string name="settings_auto_refresh">Auto refresh</string>
     <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
     <string name="settings_clear_cache_summery">Usuń wszystkie zapisane grafiki.</string>
     <string name="settings_clear_cache_dialog_content">Pamięć podręczna zostanie wyczyszczona.</string>
