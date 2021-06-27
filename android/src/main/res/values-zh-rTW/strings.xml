@@ -189,6 +189,7 @@
     <string name="settings_show_info_bar">顯示影像資訊</string>
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
     <string name="settings_auto_hide_bottom_bar">自動隱藏下方工具列</string>
+    <string name="settings_auto_refresh">Auto refresh</string>
     <string name="settings_clear_cache">清除暫存</string>
     <string name="settings_clear_cache_summery">移除所有暫存檔案</string>
     <string name="settings_clear_cache_dialog_content">暫存檔案將被清除。</string>
