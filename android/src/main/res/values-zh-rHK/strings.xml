@@ -189,6 +189,7 @@
     <string name="settings_show_info_bar">顯示資訊列</string>
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
     <string name="settings_auto_hide_bottom_bar">自動隱藏底列</string>
+    <string name="settings_auto_refresh">Auto refresh</string>
     <string name="settings_clear_cache">清除緩存</string>
     <string name="settings_clear_cache_summery">清除所有緩存檔案。</string>
     <string name="settings_clear_cache_dialog_content">緩存檔案將會被清除。</string>

@@ -190,6 +190,7 @@
     <string name="settings_show_info_bar">Mostrar barra de información</string>
     <string name="settings_show_all_tags">Mostrar etiquetas para todos los sitios</string>
     <string name="settings_auto_hide_bottom_bar">Auto ocultar barra inferior</string>
+    <string name="settings_auto_refresh">Auto refresh</string>
     <string name="settings_clear_cache">Limpiar caché</string>
     <string name="settings_clear_cache_summery">Eliminar todos los archivos en caché.</string>
     <string name="settings_clear_cache_dialog_content">Se borrarán los archivos en caché.</string>

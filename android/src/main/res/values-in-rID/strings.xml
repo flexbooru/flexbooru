@@ -189,6 +189,7 @@
     <string name="settings_show_info_bar">Tampilkan info bar</string>
     <string name="settings_show_all_tags">Tampilkan tag untuk semua situs</string>
     <string name="settings_auto_hide_bottom_bar">Otomatis sembunyikan bilah bawah</string>
+    <string name="settings_auto_refresh">Auto refresh</string>
     <string name="settings_clear_cache">Hapus cache</string>
     <string name="settings_clear_cache_summery">Hapus semua cache berkas.</string>
     <string name="settings_clear_cache_dialog_content">Cache berkas akan dihapus.</string>
