@@ -28,6 +28,8 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
 
     private val _uid = MutableLiveData<Long>(-1)
     val booru = MediatorLiveData<Booru>()
+    val currentBooru: Booru?
+        get() = booru.value
 
     fun loadBoorus(): LiveData<List<Booru>> {
         viewModelScope.launch {

@@ -105,7 +105,6 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
 
-    private var currentBooru: Booru? = null
     private var boorus: MutableList<Booru> = mutableListOf()
 
     private val bottomNavView get() = binding.bottomNavView
@@ -124,7 +123,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private val drawerItemClickListener: ((v: View?, item: IDrawerItem<*>, position: Int) -> Boolean) = { _: View?, item: IDrawerItem<*>, _: Int ->
         when (item.identifier) {
             DRAWER_ITEM_ID_ACCOUNT -> {
-                currentBooru?.let {
+                booruViewModel.currentBooru?.let {
                     if (it.type != BOORU_TYPE_SHIMMIE) {
                         if (it.user == null) {
                             toActivity(AccountConfigActivity::class.java)
@@ -137,19 +136,19 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             }
             DRAWER_ITEM_ID_COMMENTS -> {
-                if (currentBooru?.type != BOORU_TYPE_SHIMMIE) {
+                if (booruViewModel.currentBooru?.type != BOORU_TYPE_SHIMMIE) {
                     toActivity(CommentActivity::class.java )
                 } else {
                     notSupportedToast()
                 }
             }
             DRAWER_ITEM_ID_HISTORY -> {
-                if (currentBooru != null) {
+                if (booruViewModel.currentBooru != null) {
                     toActivity(HistoryActivity::class.java)
                 }
             }
             DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-                if (currentBooru?.type ?: BOORU_TYPE_UNKNOWN
+                if (booruViewModel.currentBooru?.type ?: BOORU_TYPE_UNKNOWN
                     in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1, BOORU_TYPE_GEL)) {
                     toActivity(TagBlacklistActivity::class.java)
                 } else {
@@ -202,16 +201,12 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             initDrawerHeader()
         })
         booruViewModel.booru.observe(this, { booru: Booru? ->
-            if (booru != null) {
-                currentBooru = booru
+            if (booru != null)
                 setupNavigationMenu(booru.type)
-            } else {
-                navController.graph = navController.navInflater.inflate(R.navigation.main_navigation)
-            }
+            else
+                setupNavigationMenu(BOORU_TYPE_UNKNOWN)
         })
-        if (savedInstanceState == null) {
-            booruViewModel.loadBooru(activatedBooruUid)
-        }
+        booruViewModel.loadBooru(activatedBooruUid)
         if (!isOrderSuccess) {
             drawerSliderView.addItemAtPosition(
                 DRAWER_ITEM_ID_PURCHASE_POSITION,
