@@ -49,9 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">電子郵件</string>
-    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
+    <string name="about_copyright_and_licenses">著作權 &amp; 授權條款</string>
     <string name="about_copyright">版權</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">應用程式著作權</string>
     <string name="about_licenses">授權條款</string>
     <string name="about_open_source_licenses">開源授權條款</string>
     <string name="snackbar_copy_text">已將 ` %s ` 複製到剪貼簿。</string>
@@ -102,7 +102,7 @@
     <string name="booru_config_info">Booru 資訊</string>
     <string name="booru_config_scheme">協議</string>
     <string name="booru_config_host">主機</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">路徑</string>
     <string name="booru_config_type">類型</string>
     <string name="booru_config_hash_salt">雜湊值</string>
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
@@ -119,10 +119,10 @@
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送</string>
     <string name="browse_save_file">儲存檔案</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">另存為...</string>
     <string name="browse_share_link">分享</string>
     <string name="browse_open_in_browser">於瀏覽器中開啟</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">未支援的格式：%s</string>
     <string name="browse_tags">標籤</string>
     <string name="browse_info">資訊</string>
     <string name="browse_recommended">推薦</string>
@@ -159,7 +159,7 @@
     <string name="settings_night_mode_on">開啟</string>
     <string name="settings_night_mode_off">關閉</string>
     <string name="settings_night_mode_system">依據系統設定</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
+    <string name="settings_night_mode_battery">依據省電模式</string>
     <string name="settings_night_theme">夜間主題</string>
     <string name="settings_night_theme_dark">深色</string>
     <string name="settings_night_theme_black">黑色</string>
