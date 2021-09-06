@@ -273,6 +273,7 @@ class DetailActivity : PathActivity(),
         detailPager.apply {
             adapter = detailAdapter
             registerOnPageChangeCallback(pageChangeCallback)
+            offscreenPageLimit = 8
         }
         detailAdapter.addLoadStateListener {
             if (it.refresh is LoadState.NotLoading) {
