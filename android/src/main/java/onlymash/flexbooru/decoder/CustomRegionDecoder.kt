@@ -36,6 +36,7 @@ class CustomRegionDecoder : ImageRegionDecoder {
         decoder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
             BitmapRegionDecoder.newInstance(inputStream)
         else
+            @Suppress("DEPRECATION")
             BitmapRegionDecoder.newInstance(inputStream, false)
         inputStream.close()
         return Point(decoder!!.width, decoder!!.height)

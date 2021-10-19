@@ -28,6 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.databinding.DialogInfoBinding
+import onlymash.flexbooru.extension.getScreenHeightPixels
 import onlymash.flexbooru.ui.adapter.InfoAdapter
 import onlymash.flexbooru.ui.base.BaseBottomSheetDialog
 
@@ -74,7 +75,10 @@ class InfoDialog : BaseBottomSheetDialog() {
             }
 
         })
-        binding.root.layoutParams.height = getWindowHeight()
+        val height = activity?.getScreenHeightPixels()
+        if (height != null) {
+            binding.root.layoutParams.height = height
+        }
         binding.infoPager.adapter = InfoAdapter(postId, this)
         TabLayoutMediator(binding.tabs, binding.infoPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.browse_info) else getString(R.string.browse_tags)
@@ -90,16 +94,5 @@ class InfoDialog : BaseBottomSheetDialog() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    private fun getWindowHeight(): Int {
-        val displayMetrics = DisplayMetrics()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            activity?.display?.getRealMetrics(displayMetrics)
-        } else {
-            @Suppress("DEPRECATION")
-            activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        }
-        return displayMetrics.heightPixels
     }
 }

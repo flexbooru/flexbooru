@@ -72,6 +72,19 @@ fun Activity.getScreenWidthPixels(): Int {
     }
 }
 
+fun Activity.getScreenHeightPixels(): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        val windowMetrics = windowManager.currentWindowMetrics
+        val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+        windowMetrics.bounds.height() - insets.top - insets.bottom
+    } else {
+        val displayMetrics = DisplayMetrics()
+        @Suppress("DEPRECATION")
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        displayMetrics.heightPixels
+    }
+}
+
 fun Activity.getScreenWidthDp(): Int {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         val windowMetrics = windowManager.currentWindowMetrics

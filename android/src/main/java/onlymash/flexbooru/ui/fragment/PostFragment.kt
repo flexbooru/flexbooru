@@ -19,7 +19,6 @@ import android.app.Activity
 import android.content.*
 import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -86,6 +85,7 @@ import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.extension.asMergedLoadStates
+import onlymash.flexbooru.extension.getScreenWidthPixels
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.DetailActivity
@@ -370,19 +370,8 @@ class PostFragment : SearchBarFragment() {
 
     private fun Activity.getSanCount(): Int {
         val itemWidth = resources.getDimensionPixelSize(gridWidthResId)
-        val count = (getWindowWidth().toFloat() / itemWidth.toFloat()).roundToInt()
+        val count = (getScreenWidthPixels().toFloat() / itemWidth.toFloat()).roundToInt()
         return if (count < 1) 1 else count
-    }
-
-    private fun Activity.getWindowWidth(): Int {
-        val outMetrics = DisplayMetrics()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            display?.getRealMetrics(outMetrics)
-        } else {
-            @Suppress("DEPRECATION")
-            windowManager.defaultDisplay.getMetrics(outMetrics)
-        }
-        return outMetrics.widthPixels
     }
 
     override fun getSearchBarHint(): CharSequence {
