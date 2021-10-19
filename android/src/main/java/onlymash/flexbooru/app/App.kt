@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.android.billingclient.api.*
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
@@ -73,6 +75,9 @@ class App : Application(), DIAware {
     private fun initial() {
         AppCompatDelegate.setDefaultNightMode(nightMode)
         DrawerImageLoader.init(drawerImageLoader)
+        MobileAds.initialize(this) {}
+        MobileAds.setRequestConfiguration(RequestConfiguration.Builder()
+            .setTestDeviceIds(listOf("0931CAB2685198567D0A452B39435355")).build())
         if (BuildConfig.DEBUG) {
             return
         }

@@ -24,8 +24,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -35,12 +40,14 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import onlymash.flexbooru.R
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
-import onlymash.flexbooru.databinding.ActivityListCommonBinding
+import onlymash.flexbooru.databinding.ActivityBooruBinding
+import onlymash.flexbooru.extension.getScreenWidthDp
 import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
 import onlymash.flexbooru.ui.helper.ItemTouchCallback
@@ -60,7 +67,7 @@ class BooruActivity : KodeinActivity() {
 
     private val booruDao by instance<BooruDao>()
 
-    private val binding by viewBinding(ActivityListCommonBinding::inflate)
+    private val binding by viewBinding(ActivityBooruBinding::inflate)
     private val list get() = binding.list
     private lateinit var booruAdapter: BooruAdapter
     private lateinit var booruViewModel: BooruViewModel
@@ -113,17 +120,17 @@ class BooruActivity : KodeinActivity() {
             ItemTouchHelper(ItemTouchHelperCallback(itemTouchCallback)).attachToRecyclerView(this)
         }
         booruViewModel = getBooruViewModel(booruDao)
-        booruViewModel.loadBoorus().observe(this, { boorus ->
+        booruViewModel.loadBoorus().observe(this) { boorus ->
             booruAdapter.updateBoorus(boorus)
             if (boorus.isNullOrEmpty()) {
-                 activatedBooruUid = createDefaultBooru()
+                activatedBooruUid = createDefaultBooru()
             } else {
                 val uid = activatedBooruUid
                 if (boorus.indexOfFirst { it.uid == uid } < 0) {
                     activatedBooruUid = boorus[0].uid
                 }
             }
-        })
+        }
         createFileObserver = CreateFileLifecycleObserver(activityResultRegistry) { uri ->
             saveFile(uri)
         }
@@ -135,7 +142,26 @@ class BooruActivity : KodeinActivity() {
         if (intent != null) {
             handleShareIntent(intent)
         }
+        if (!Settings.isOrderSuccess) {
+            val adView = AdView(this)
+            binding.container.addView(adView, 0, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            adView.apply {
+                visibility = View.VISIBLE
+                adSize = topAdSize
+                adUnitId = "ca-app-pub-1547571472841615/5647147698"
+                loadAd(AdRequest.Builder().build())
+            }
+        }
     }
+
+    private val topAdSize: AdSize
+        get() {
+            var adWidth = binding.container.width / resources.configuration.densityDpi
+            if (adWidth == 0) {
+                adWidth = getScreenWidthDp()
+            }
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+        }
 
     private fun createDefaultBooru(): Long {
         return booruViewModel.createBooru(

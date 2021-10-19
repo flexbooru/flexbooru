@@ -65,6 +65,7 @@ android {
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["backupApiKey"] = "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"
+        manifestPlaceholders["admobAppId"] = "ca-app-pub-1547571472841615~2418349121"
         resourceConfigurations.addAll(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL", "pt-rBR", "es-rES",
                 "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP", "in-rID", "de-rDE"))
     }
@@ -202,6 +203,7 @@ dependencies {
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-analytics-ktx:19.0.2")
     implementation("com.google.firebase:firebase-crashlytics:18.2.3")
+    implementation("com.google.android.gms:play-services-ads:20.4.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.android.billingclient:billing:4.0.0")
