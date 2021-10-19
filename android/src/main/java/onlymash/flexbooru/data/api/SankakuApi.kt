@@ -16,6 +16,7 @@
 package onlymash.flexbooru.data.api
 
 import okhttp3.HttpUrl
+import okhttp3.ResponseBody
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
@@ -47,13 +48,13 @@ interface SankakuApi {
     @POST
     suspend fun favPost(
         @Url url: HttpUrl,
-        @Header(Keys.HEADER_AUTH) auth: String): Response<VoteSankaku>
+        @Header(Keys.HEADER_AUTH) auth: String): Response<ResponseBody>
 
     @Headers("Content-Type: application/json; charset=utf-8")
     @DELETE
     suspend fun removeFavPost(
         @Url url: HttpUrl,
-        @Header(Keys.HEADER_AUTH) auth: String): Response<VoteSankaku>
+        @Header(Keys.HEADER_AUTH) auth: String): Response<ResponseBody>
 
     @Headers("Content-Type: application/json; charset=utf-8")
     @GET

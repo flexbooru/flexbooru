@@ -52,7 +52,7 @@ interface DanbooruApi {
     suspend fun favPost(@Url url: String,
                 @Field("post_id") id: Int,
                 @Field("login") username: String,
-                @Field("api_key") apiKey: String): Response<VoteDan>
+                @Field("api_key") apiKey: String): Response<ResponseBody>
 
     @DELETE
     suspend fun removeFavPost(@Url httpUrl: HttpUrl): Response<ResponseBody>

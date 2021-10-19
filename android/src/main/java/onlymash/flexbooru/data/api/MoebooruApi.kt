@@ -16,6 +16,7 @@
 package onlymash.flexbooru.data.api
 
 import okhttp3.HttpUrl
+import okhttp3.ResponseBody
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
@@ -46,7 +47,7 @@ interface MoebooruApi {
                       @Field("id") id: Int,
                       @Field("score") score: Int = 3, //0-3
                       @Field("login") username: String,
-                      @Field("password_hash") passwordHash: String): Response<VoteMoe>
+                      @Field("password_hash") passwordHash: String): Response<ResponseBody>
 
     /* comment/create.json
      */

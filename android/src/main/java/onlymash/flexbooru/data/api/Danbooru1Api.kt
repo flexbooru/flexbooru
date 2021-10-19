@@ -16,10 +16,10 @@
 package onlymash.flexbooru.data.api
 
 import okhttp3.HttpUrl
+import okhttp3.ResponseBody
 import onlymash.flexbooru.data.model.common.Artist
 import onlymash.flexbooru.data.model.common.BoolResponse
 import onlymash.flexbooru.data.model.common.User
-import onlymash.flexbooru.data.model.danbooru.VoteDan
 import onlymash.flexbooru.data.model.danbooru1.CommentDan1
 import onlymash.flexbooru.data.model.danbooru1.PoolDan1
 import onlymash.flexbooru.data.model.danbooru1.PostDan1
@@ -49,14 +49,14 @@ interface Danbooru1Api {
     suspend fun favPost(@Url url: String,
                      @Field("id") id: Int,
                      @Field("login") username: String,
-                     @Field("password_hash") passwordHash: String): Response<VoteDan>
+                     @Field("password_hash") passwordHash: String): Response<ResponseBody>
 
     @FormUrlEncoded
     @HTTP(method = "POST", hasBody = true)
     suspend fun removeFavPost(@Url url: String,
                            @Field("id") postId: Int,
                            @Field("login") username: String,
-                           @Field("password_hash") passwordHash: String): Response<VoteDan>
+                           @Field("password_hash") passwordHash: String): Response<ResponseBody>
 
     /* comment/create.json
      */
