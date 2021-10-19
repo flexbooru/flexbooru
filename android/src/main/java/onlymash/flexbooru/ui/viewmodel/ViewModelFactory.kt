@@ -36,7 +36,7 @@ import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
 
 fun ViewModelStoreOwner.getBooruViewModel(booruDao: BooruDao): BooruViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return BooruViewModel(booruDao) as T
         }
@@ -44,7 +44,7 @@ fun ViewModelStoreOwner.getBooruViewModel(booruDao: BooruDao): BooruViewModel =
 
 fun ViewModelStoreOwner.getPostViewModel(repository: PostRepository): PostViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return PostViewModel(repository) as T
         }
@@ -52,7 +52,7 @@ fun ViewModelStoreOwner.getPostViewModel(repository: PostRepository): PostViewMo
 
 fun ViewModelStoreOwner.getSuggestionViewModel(repository: SuggestionRepository): SuggestionViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return SuggestionViewModel(repository) as T
         }
@@ -60,7 +60,7 @@ fun ViewModelStoreOwner.getSuggestionViewModel(repository: SuggestionRepository)
 
 fun ViewModelStoreOwner.getTagFilterViewModel(repository: TagFilterRepository): TagFilterViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return TagFilterViewModel(repository) as T
         }
@@ -68,7 +68,7 @@ fun ViewModelStoreOwner.getTagFilterViewModel(repository: TagFilterRepository): 
 
 fun ViewModelStoreOwner.getPoolViewModel(repository: PoolRepository): PoolViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return PoolViewModel(repository) as T
         }
@@ -76,7 +76,7 @@ fun ViewModelStoreOwner.getPoolViewModel(repository: PoolRepository): PoolViewMo
 
 fun ViewModelStoreOwner.getTagViewModel(repository: TagRepository): TagViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return TagViewModel(repository) as T
         }
@@ -84,7 +84,7 @@ fun ViewModelStoreOwner.getTagViewModel(repository: TagRepository): TagViewModel
 
 fun ViewModelStoreOwner.getArtistViewModel(repository: ArtistRepository): ArtistViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return ArtistViewModel(repository) as T
         }
@@ -92,7 +92,7 @@ fun ViewModelStoreOwner.getArtistViewModel(repository: ArtistRepository): Artist
 
 fun ViewModelStoreOwner.getCommentViewModel(repository: CommentRepository): CommentViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return CommentViewModel(repository) as T
         }
@@ -100,7 +100,7 @@ fun ViewModelStoreOwner.getCommentViewModel(repository: CommentRepository): Comm
 
 fun ViewModelStoreOwner.getDetailViewModel(postDao: PostDao, booruUid: Long, query: String): DetailViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return DetailViewModel(postDao, booruUid, query) as T
         }
@@ -108,7 +108,7 @@ fun ViewModelStoreOwner.getDetailViewModel(postDao: PostDao, booruUid: Long, que
 
 fun ViewModelStoreOwner.getShortcutViewModel(postDao: PostDao): ShortcutViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return ShortcutViewModel(postDao) as T
         }
@@ -116,7 +116,7 @@ fun ViewModelStoreOwner.getShortcutViewModel(postDao: PostDao): ShortcutViewMode
 
 fun ViewModelStoreOwner.getSauceNaoViewModel(sauceNaoApi: SauceNaoApi): SauceNaoViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return SauceNaoViewModel(sauceNaoApi) as T
         }
@@ -124,7 +124,7 @@ fun ViewModelStoreOwner.getSauceNaoViewModel(sauceNaoApi: SauceNaoApi): SauceNao
 
 fun ViewModelStoreOwner.getTraceMoeViewModel(traceMoeApi: TraceMoeApi): TraceMoeViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return TraceMoeViewModel(traceMoeApi) as T
         }
@@ -132,7 +132,7 @@ fun ViewModelStoreOwner.getTraceMoeViewModel(traceMoeApi: TraceMoeApi): TraceMoe
 
 fun ViewModelStoreOwner.getMuzeiViewModel(muzeiDao: MuzeiDao): MuzeiViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return MuzeiViewModel(muzeiDao) as T
         }
@@ -143,7 +143,7 @@ fun ViewModelStoreOwner.getHistoryViewModel(
     postDao: PostDao
 ): HistoryViewModel =
     getViewModel(object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return HistoryViewModel(historyDao, postDao) as T
         }

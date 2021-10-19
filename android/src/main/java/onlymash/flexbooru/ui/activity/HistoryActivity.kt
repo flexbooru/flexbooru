@@ -68,7 +68,7 @@ class HistoryActivity : KodeinActivity() {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.history, menu)
         return super.onCreateOptionsMenu(menu)
     }

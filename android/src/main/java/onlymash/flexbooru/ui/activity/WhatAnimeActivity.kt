@@ -70,7 +70,7 @@ class WhatAnimeActivity : BaseActivity() {
     private val docs: MutableList<Doc> = mutableListOf()
 
     private lateinit var whatAnimeAdapter: WhatAnimeAdapter
-    private lateinit var traceMoeViiewModel: TraceMoeViewModel
+    private lateinit var traceMoeViewModel: TraceMoeViewModel
     private lateinit var openFileObserver: OpenFileLifecycleObserver
 
     private val api by diCommon.instance<TraceMoeApi>("TraceMoeApi")
@@ -98,8 +98,8 @@ class WhatAnimeActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@WhatAnimeActivity, RecyclerView.VERTICAL, false)
             adapter = whatAnimeAdapter
         }
-        traceMoeViiewModel = getTraceMoeViewModel(api)
-        traceMoeViiewModel.data.observe(this, { response ->
+        traceMoeViewModel = getTraceMoeViewModel(api)
+        traceMoeViewModel.data.observe(this) { response ->
             docs.clear()
             if (response != null) {
                 if (safeMode) {
@@ -113,21 +113,21 @@ class WhatAnimeActivity : BaseActivity() {
                 }
             }
             whatAnimeAdapter.notifyDataSetChanged()
-        })
-        traceMoeViiewModel.isLoading.observe(this, {
+        }
+        traceMoeViewModel.isLoading.observe(this) {
             progressBar.isVisible = it
             if (it && errorMsg.isVisible) {
                 errorMsg.isVisible = false
             }
-        })
-        traceMoeViiewModel.error.observe(this, {
+        }
+        traceMoeViewModel.error.observe(this) {
             if (!it.isNullOrBlank()) {
                 errorMsg.isVisible = true
                 errorMsg.text = it
             } else {
                 errorMsg.isVisible = false
             }
-        })
+        }
         openFileObserver = OpenFileLifecycleObserver(activityResultRegistry) { uri ->
             search(uri)
         }
@@ -165,7 +165,7 @@ class WhatAnimeActivity : BaseActivity() {
                                     }
                                 }
                                 if (encodedImage != null) {
-                                    traceMoeViiewModel.fetch(head + encodedImage)
+                                    traceMoeViewModel.fetch(head + encodedImage)
                                 }
                             }
                         }
@@ -189,7 +189,7 @@ class WhatAnimeActivity : BaseActivity() {
                     }
                 }
                 if (encodedImage != null) {
-                    traceMoeViiewModel.fetch(head + encodedImage)
+                    traceMoeViewModel.fetch(head + encodedImage)
                 }
             }
         }

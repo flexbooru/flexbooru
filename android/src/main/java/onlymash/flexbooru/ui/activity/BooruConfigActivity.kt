@@ -39,7 +39,7 @@ class BooruConfigActivity : BaseActivity() {
         menuListener = supportFragmentManager.findFragmentById(R.id.fragment_booru_config) as? MenuListener
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.booru_config, menu)
         return super.onCreateOptionsMenu(menu)
     }

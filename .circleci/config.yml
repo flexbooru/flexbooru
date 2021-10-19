@@ -8,7 +8,7 @@ jobs:
         - gh-pages
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-30-node
+      - image: circleci/android:api-31-node
     environment:
       GRADLE_OPTS: -Dorg.gradle.workers.max=1 -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy="in-process" -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport
     steps:

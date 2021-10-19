@@ -144,9 +144,9 @@ class MuzeiActivity : KodeinActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.muzei, menu)
-        val searchView = menu?.findItem(R.id.action_muzei_search)?.actionView as? SearchView
+        val searchView = menu.findItem(R.id.action_muzei_search)?.actionView as? SearchView
         if (searchView != null) {
             initSearchView(searchView)
         }

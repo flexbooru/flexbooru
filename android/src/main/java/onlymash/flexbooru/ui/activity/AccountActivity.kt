@@ -122,7 +122,7 @@ class AccountActivity : PathActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (booru.user != null) {
             menuInflater.inflate(R.menu.account, menu)
         }

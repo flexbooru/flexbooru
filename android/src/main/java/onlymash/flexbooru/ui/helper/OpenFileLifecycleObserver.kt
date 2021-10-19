@@ -27,7 +27,7 @@ class OpenFileLifecycleObserver(
     private val handleUriCallback: (Uri) -> Unit
 ) : DefaultLifecycleObserver {
 
-    private lateinit var getFile: ActivityResultLauncher<Array<out String>>
+    private lateinit var getFile: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(owner: LifecycleOwner) {
         getFile = registry.register("open_dcoument_file", ActivityResultContracts.OpenDocument()) { uri ->
@@ -37,7 +37,11 @@ class OpenFileLifecycleObserver(
         }
     }
 
-    fun openDocument(vararg mimeTypes: String) {
+    fun openDocument(mimeTypes: Array<String>) {
         getFile.launch(mimeTypes)
+    }
+
+    fun openDocument(mimeType: String) {
+        openDocument(arrayOf(mimeType))
     }
 }

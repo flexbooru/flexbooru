@@ -171,7 +171,7 @@ class BooruActivity : KodeinActivity() {
             .show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.booru, menu)
         return super.onCreateOptionsMenu(menu)
     }

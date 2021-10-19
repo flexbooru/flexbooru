@@ -153,7 +153,7 @@ class CommentActivity : KodeinActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (action.postId > 0 &&
             action.booru.type != BOORU_TYPE_GEL &&
             action.booru.user != null) {

@@ -28,11 +28,11 @@ val coroutinesVersion = ext.get("coroutines_version") as String
 val serializationVersion = ext.get("serialization_version") as String
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = 31
+    buildToolsVersion = "31.0.0"
     defaultConfig {
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -56,7 +56,6 @@ kotlin {
             kotlinOptions {
                 freeCompilerArgs = freeCompilerArgs + listOf(
                     "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi",
-                    "-Xuse-experimental=kotlin.Experimental"
                 )
             }
         }

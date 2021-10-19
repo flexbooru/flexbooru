@@ -40,6 +40,7 @@
         android:name=".app.App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
+        android:dataExtractionRules="@xml/backup_descriptor"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -81,7 +82,9 @@
         <activity
             android:name=".ui.activity.BooruConfigActivity"
             android:parentActivityName=".ui.activity.BooruActivity"/>
-        <activity android:name=".ui.activity.BooruActivity">
+        <activity
+            android:name=".ui.activity.BooruActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -93,9 +96,9 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar.Launcher"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
