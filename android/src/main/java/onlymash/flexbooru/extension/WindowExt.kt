@@ -60,27 +60,28 @@ fun AppCompatActivity.setupInsets(insetsCallback: (insets: WindowInsetsCompat) -
 }
 
 fun Activity.getScreenWidthPixels(): Int {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         val windowMetrics = windowManager.currentWindowMetrics
         val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-        return windowMetrics.bounds.width() - insets.left - insets.right
+        windowMetrics.bounds.width() - insets.left - insets.right
     } else {
         val displayMetrics = DisplayMetrics()
         @Suppress("DEPRECATION")
         windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.widthPixels
+        displayMetrics.widthPixels
     }
 }
 
 fun Activity.getScreenWidthDp(): Int {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         val windowMetrics = windowManager.currentWindowMetrics
         val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-        return (windowMetrics.bounds.width() - insets.left - insets.right) / resources.displayMetrics.densityDpi
+        val width = windowMetrics.bounds.width() - insets.left - insets.right
+        (width / resources.displayMetrics.density).toInt()
     } else {
         val displayMetrics = DisplayMetrics()
         @Suppress("DEPRECATION")
         windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.widthPixels / displayMetrics.densityDpi
+        (displayMetrics.widthPixels / displayMetrics.density).toInt()
     }
 }

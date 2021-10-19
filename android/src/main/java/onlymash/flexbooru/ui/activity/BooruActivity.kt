@@ -22,10 +22,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.*
 import com.google.android.gms.ads.AdRequest
@@ -144,24 +142,21 @@ class BooruActivity : KodeinActivity() {
         }
         if (!Settings.isOrderSuccess) {
             val adView = AdView(this)
-            binding.container.addView(adView, 0, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            binding.container.addView(adView, 0, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                gravity = Gravity.CENTER_HORIZONTAL
+            })
+            var adWidth = getScreenWidthDp()
+            if (adWidth > 500) {
+                adWidth = 500
+            }
             adView.apply {
                 visibility = View.VISIBLE
-                adSize = topAdSize
+                adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this@BooruActivity, adWidth)
                 adUnitId = "ca-app-pub-1547571472841615/5647147698"
                 loadAd(AdRequest.Builder().build())
             }
         }
     }
-
-    private val topAdSize: AdSize
-        get() {
-            var adWidth = binding.container.width / resources.configuration.densityDpi
-            if (adWidth == 0) {
-                adWidth = getScreenWidthDp()
-            }
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
 
     private fun createDefaultBooru(): Long {
         return booruViewModel.createBooru(

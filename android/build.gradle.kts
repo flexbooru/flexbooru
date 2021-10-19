@@ -60,12 +60,10 @@ android {
         minSdk = 21
         targetSdk = 31
         versionCode = verCode
-        versionName = "2.8.0_beta"
+        versionName = "2.8.0"
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders["backupApiKey"] = "AEdPqrEAAAAICNAmVRgkNfsB1ObTK7LGamWWT5FMDLiGqhIcyw"
-        manifestPlaceholders["admobAppId"] = "ca-app-pub-1547571472841615~2418349121"
         resourceConfigurations.addAll(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL", "pt-rBR", "es-rES",
                 "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP", "in-rID", "de-rDE"))
     }
@@ -90,9 +88,6 @@ android {
                 signingConfig = config
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-        getByName("debug") {
-            applicationIdSuffix = ".debug"
         }
     }
     compileOptions {

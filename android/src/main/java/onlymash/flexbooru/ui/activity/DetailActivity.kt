@@ -22,10 +22,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AlertDialog
@@ -337,24 +335,21 @@ class DetailActivity : PathActivity(),
         }
         if (!Settings.isOrderSuccess) {
             val adView = AdView(this)
-            binding.bottomShortcut.bottomBarContainer.addView(adView, 0, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            binding.bottomShortcut.bottomBarContainer.addView(adView, 0, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                gravity = Gravity.CENTER_HORIZONTAL
+            })
+            var adWidth = getScreenWidthDp()
+            if (adWidth > 500) {
+                adWidth = 500
+            }
             adView.apply {
                 visibility = View.VISIBLE
-                adSize = bottomAdSize
+                adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this@DetailActivity, adWidth)
                 adUnitId = "ca-app-pub-1547571472841615/1729907816"
                 loadAd(AdRequest.Builder().build())
             }
         }
     }
-
-    private val bottomAdSize: AdSize
-        get() {
-            var adWidth = binding.bottomShortcut.bottomBarContainer.width / resources.configuration.densityDpi
-            if (adWidth == 0) {
-                adWidth = getScreenWidthDp()
-            }
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
 
     private fun createInfoDialog() {
         if (isFinishing) {
