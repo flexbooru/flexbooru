@@ -53,8 +53,7 @@ import onlymash.flexbooru.widget.searchbar.SearchBarMover
 import org.kodein.di.instance
 
 abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
-    SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper,
-    ActionMode.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+    SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper, ActionMode.Callback {
 
     private val sp by instance<SharedPreferences>()
     val booruApis by instance<BooruApis>()
@@ -113,9 +112,9 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         setupFabToListTop()
         setupSwipeRefreshColor()
         initSearchBar()
-        suggestionViewModel.suggestions.observe(viewLifecycleOwner, {
+        suggestionViewModel.suggestions.observe(viewLifecycleOwner) {
             searchBar.updateSuggestions(it)
-        })
+        }
         binding.networkState.retryButton.setOnClickListener {
             retry()
         }
@@ -399,8 +398,9 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == AUTO_HIDE_BOTTOM_BAR_KEY) {
-            setupMainListPadding()
+        super.onSharedPreferenceChanged(sharedPreferences, key)
+        when (key) {
+            AUTO_HIDE_BOTTOM_BAR_KEY -> setupMainListPadding()
         }
     }
 

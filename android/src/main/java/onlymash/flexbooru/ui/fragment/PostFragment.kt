@@ -239,9 +239,15 @@ class PostFragment : SearchBarFragment() {
                     date = date,
                     isSafeMode = safeMode,
                     query = query
-                )
+                ).also {
+                    postViewModel.show(it)
+                }
             } else {
-                action?.booru = booru
+                action?.let {
+                    it.booru = booru
+                    postViewModel.show(it)
+                    retry()
+                }
             }
             if (isPopularPage()) {
                 if (booru.type == BOORU_TYPE_SANKAKU) {
@@ -260,13 +266,6 @@ class PostFragment : SearchBarFragment() {
         } else {
             action = null
             tagFilterAdapter.updateBooru(-1L, BOORU_TYPE_UNKNOWN, arrayOf(), arrayOf())
-        }
-        fetch()
-    }
-
-    private fun fetch() {
-        action?.let {
-            postViewModel.show(it)
         }
     }
 
@@ -289,9 +288,9 @@ class PostFragment : SearchBarFragment() {
             }
             adapter = tagFilterAdapter
         }
-        tagFilterViewModel.loadTags().observe(viewLifecycleOwner, {
+        tagFilterViewModel.loadTags().observe(viewLifecycleOwner) {
             tagFilterAdapter.updateData(it)
-        })
+        }
         searchLayout.findViewById<FloatingActionButton>(R.id.action_search).setOnClickListener {
             val tagString = tagFilterAdapter.getSelectedTagsString()
             if (tagString.isNotEmpty()) {

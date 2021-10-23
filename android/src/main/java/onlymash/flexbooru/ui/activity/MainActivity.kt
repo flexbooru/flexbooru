@@ -195,17 +195,17 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
         sp.registerOnSharedPreferenceChangeListener(this)
         setupDrawer()
-        booruViewModel.loadBoorus().observe(this, {
+        booruViewModel.loadBoorus().observe(this) {
             boorus.clear()
             boorus.addAll(it)
             initDrawerHeader()
-        })
-        booruViewModel.booru.observe(this, { booru: Booru? ->
+        }
+        booruViewModel.booru.observe(this) { booru: Booru? ->
             if (booru != null)
                 setupNavigationMenu(booru.type)
             else
                 setupNavigationMenu(BOORU_TYPE_UNKNOWN)
-        })
+        }
         booruViewModel.loadBooru(activatedBooruUid)
         if (!isOrderSuccess) {
             drawerSliderView.addItemAtPosition(

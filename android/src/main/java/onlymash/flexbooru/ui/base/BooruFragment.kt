@@ -15,19 +15,21 @@
 
 package onlymash.flexbooru.ui.base
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import onlymash.flexbooru.app.Settings
+import onlymash.flexbooru.app.Settings.BOORU_UID_ACTIVATED_KEY
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
 import org.kodein.di.instance
 
-abstract class BooruFragment<T: ViewBinding> : KodeinFragment<T>() {
+abstract class BooruFragment<T: ViewBinding> : KodeinFragment<T>(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val booruDao by instance<BooruDao>()
 
@@ -45,13 +47,19 @@ abstract class BooruFragment<T: ViewBinding> : KodeinFragment<T>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onBaseViewCreated(view, savedInstanceState)
-        booruViewModel.booru.observe(viewLifecycleOwner, {
+        booruViewModel.booru.observe(viewLifecycleOwner) {
             onBooruLoaded(it)
-        })
+        }
         booruViewModel.loadBooru(Settings.activatedBooruUid)
     }
 
     abstract fun onBaseViewCreated(view: View, savedInstanceState: Bundle?)
 
     abstract fun onBooruLoaded(booru: Booru?)
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == BOORU_UID_ACTIVATED_KEY) {
+            booruViewModel.loadBooru(Settings.activatedBooruUid)
+        }
+    }
 }
