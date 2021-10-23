@@ -31,7 +31,7 @@ data class TagSankaku(
     @SerialName("name")
     val name: String,
     @SerialName("name_en")
-    val nameEn: String,
+    val nameEn: String?,
     @SerialName("name_ja")
     val nameJa: String?,
     @SerialName("pool_count")
