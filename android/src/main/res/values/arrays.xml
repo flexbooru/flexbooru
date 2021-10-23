@@ -75,6 +75,8 @@
         <item>30</item>
         <item>40</item>
         <item>50</item>
+        <item>75</item>
+        <item>100</item>
     </string-array>
     <string-array name="settings_page_limit_entries_values">
         <item>10</item>
@@ -82,6 +84,8 @@
         <item>30</item>
         <item>40</item>
         <item>50</item>
+        <item>75</item>
+        <item>100</item>
     </string-array>
     <string-array name="settings_muzei_limit_entries">
         <item>10</item>
