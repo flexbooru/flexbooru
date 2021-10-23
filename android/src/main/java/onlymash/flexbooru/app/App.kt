@@ -75,9 +75,11 @@ class App : Application(), DIAware {
     private fun initial() {
         AppCompatDelegate.setDefaultNightMode(nightMode)
         DrawerImageLoader.init(drawerImageLoader)
-        MobileAds.initialize(this) {}
-        MobileAds.setRequestConfiguration(RequestConfiguration.Builder()
-            .setTestDeviceIds(listOf("65DC68D21E774E5B6CAF511768A3E2D2")).build())
+        if (!Settings.isOrderSuccess) {
+            MobileAds.initialize(this) {}
+            MobileAds.setRequestConfiguration(RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("65DC68D21E774E5B6CAF511768A3E2D2")).build())
+        }
         if (BuildConfig.DEBUG) {
             return
         }
