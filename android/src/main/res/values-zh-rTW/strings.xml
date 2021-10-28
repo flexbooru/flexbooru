@@ -21,8 +21,8 @@
     <string name="title_manage_boorus">管理 Boorus</string>
     <string name="title_settings">設定</string>
     <string name="title_booru_config">Booru 設定</string>
-    <string name="title_account">帳號</string>
-    <string name="title_account_and_booru">帳號 - %s</string>
+    <string name="title_account">帳戶</string>
+    <string name="title_account_and_booru">帳戶 - %s</string>
     <string name="title_artists">繪師</string>
     <string name="title_pools">圖集</string>
     <string name="title_tags">標籤</string>
@@ -36,7 +36,7 @@
     <string name="title_what_anime">以圖搜番</string>
     <string name="title_history">歷史紀錄</string>
     <string name="history_clear_all">全部刪除</string>
-    <string name="history_clear_all_content">將刪除所有歷史紀錄。</string>
+    <string name="history_clear_all_content">將刪除所有歷史記錄。</string>
     <string name="about_app_version">版本</string>
     <string name="about_app_rate">評價這個 App</string>
     <string name="about_app_translation">翻譯</string>
