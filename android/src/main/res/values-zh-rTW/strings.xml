@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 的 Android 用戶端。    </string>
+    <string name="app_description">支援 Danbooru、Moebooru、Gelbooru、Sankaku 等 Booru 之 Android 用戶端。    </string>
     <string name="title_posts">貼圖</string>
     <string name="title_search">搜尋</string>
     <string name="title_popular">熱門</string>
@@ -34,7 +34,7 @@
     <string name="title_tag_blacklist">標籤黑名單</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">以圖搜番</string>
-    <string name="title_history">歷史紀錄</string>
+    <string name="title_history">歷史記錄</string>
     <string name="history_clear_all">全部刪除</string>
     <string name="history_clear_all_content">將刪除所有歷史記錄。</string>
     <string name="about_app_version">版本</string>
@@ -44,7 +44,7 @@
     <string name="about_author">作者</string>
     <string name="about_author_email">電子郵件</string>
     <string name="about_author_website">網站</string>
-    <string name="about_feedback">意見回報</string>
+    <string name="about_feedback">意見回饋</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
@@ -279,10 +279,10 @@
     <string name="sauce_nao_get_api_key">獲取 Api 金鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘時間：%01$d</string>
     <string name="sauce_nao_api_key_unset">還沒有設定 SauceNao 的 Api 金鑰</string>
-    <string name="sauce_nao_image_url">圖檔超鏈結</string>
-    <string name="sauce_nao_invalid_image_url">無效的圖檔超鏈結</string>
+    <string name="sauce_nao_image_url">圖檔超連結</string>
+    <string name="sauce_nao_invalid_image_url">無效的圖檔超連結</string>
     <string name="sauce_nao_source">來源</string>
-    <string name="sauce_nao_search_from_url">超鏈結</string>
+    <string name="sauce_nao_search_from_url">超連結</string>
     <string name="sauce_nao_search_from_file">檔案</string>
     <string name="action_add_to_muzei">釘選到 Muzei</string>
 </resources>
