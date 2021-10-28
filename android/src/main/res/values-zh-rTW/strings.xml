@@ -163,7 +163,7 @@
     <string name="settings_night_theme">夜間主題</string>
     <string name="settings_night_theme_dark">深色</string>
     <string name="settings_night_theme_black">黑色</string>
-    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_dns_over_https">安全 DNS（DoH）</string>
     <string name="settings_dns_over_https_summary">重新啟動以生效</string>
     <string name="settings_dns_over_https_dns">DNS 供應商</string>
     <string name="settings_safe_mode">安全模式</string>
@@ -174,7 +174,7 @@
     <string name="settings_download_size">下載影像大小</string>
     <string name="settings_download_path">下載路徑</string>
     <string name="settings_download_path_not_set">路徑暫未設定</string>
-    <string name="settings_post_size_sample">預覽圖</string>
+    <string name="settings_post_size_sample">樣本</string>
     <string name="settings_post_size_larger">大圖</string>
     <string name="settings_post_size_origin">原圖</string>
     <string name="settings_grid_mode">圖像模式</string>
@@ -212,7 +212,7 @@
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">一般</string>
     <string name="tag_type_artist">繪師</string>
-    <string name="tag_type_copyright">版權所有</string>
+    <string name="tag_type_copyright">著作權</string>
     <string name="tag_type_character">角色</string>
     <string name="tag_type_circle">圈子</string>
     <string name="tag_type_faults">遺漏</string>
@@ -258,10 +258,10 @@
     <string name="tag_blacklist_copy">複製</string>
     <string name="tag_blacklist_delete">刪除</string>
     <string name="tag_blacklist_add">新增</string>
-    <string name="comment_reply">回復</string>
+    <string name="comment_reply">回覆</string>
     <string name="comment_quote">引用</string>
     <string name="comment_delete">刪除</string>
-    <string name="comment_send">發送</string>
+    <string name="comment_send">送出</string>
     <string name="comment_cancel">取消</string>
     <string name="comment_hint">輸入留言</string>
     <string name="purchase_title">移除廣告 &amp; 功能解鎖</string>
@@ -271,10 +271,10 @@
     <string name="purchase_info_features">1、移除可用 Booru 的數量限制。\n2、可從 Moebooru 圖集下載 Zip 壓縮檔。\n3、可於檔案中備份&amp; 還原 Boorus 。\n4、可經由 SauceNao 進行反向搜尋。    </string>
     <string name="purchase_pay_title">支付/恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
-    <string name="purchase_pay_alipay">阿裡支付</string>
+    <string name="purchase_pay_alipay">支付寶</string>
     <string name="tab_start_date">起始日期</string>
     <string name="tab_end_date">截止日期</string>
-    <string name="sauce_nao_help">援助</string>
+    <string name="sauce_nao_help">支援</string>
     <string name="sauce_nao_change_api_key">更改 Api 金鑰</string>
     <string name="sauce_nao_get_api_key">獲取 Api 金鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘時間：%01$d</string>
