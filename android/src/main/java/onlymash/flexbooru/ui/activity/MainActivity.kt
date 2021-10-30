@@ -194,7 +194,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             activatedBooruUid = createDefaultBooru()
         }
         sp.registerOnSharedPreferenceChangeListener(this)
-        setupDrawer()
+        setupDrawer(savedInstanceState)
         booruViewModel.loadBoorus().observe(this) {
             boorus.clear()
             boorus.addAll(it)
@@ -249,7 +249,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         forceShowNavBar()
     }
 
-    private fun setupDrawer() {
+    private fun setupDrawer(savedInstanceState: Bundle?) {
         profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
             name = StringHolder(R.string.title_manage_boorus)
             identifier = HEADER_ITEM_ID_BOORU_MANAGE
@@ -266,6 +266,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
                 false
             }
+            withSavedInstance(savedInstanceState)
         }
         drawerSliderView.apply {
             addItems(
