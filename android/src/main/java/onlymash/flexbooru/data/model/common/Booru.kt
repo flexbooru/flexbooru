@@ -118,6 +118,15 @@ data class Booru(
             .addQueryParameter("id", id.toString())
             .build()
     }
+
+    fun getMoeCheckUserUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(scheme)
+            .host(host)
+            .addPathSegments("user/check.json")
+            .build()
+    }
+
     fun getSankakuUserUrl(username: String): HttpUrl {
         return HttpUrl.Builder()
             .scheme(scheme)

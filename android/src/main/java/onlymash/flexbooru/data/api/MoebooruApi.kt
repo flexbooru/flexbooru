@@ -76,4 +76,10 @@ interface MoebooruApi {
                        @Field("id") commentId: Int,
                        @Field("login") username: String,
                        @Field("password_hash") passwordHash: String): Response<BoolResponse>
+
+    @FormUrlEncoded
+    @POST
+    suspend fun check(@Url url: HttpUrl,
+                      @Field("username") username: String,
+                      @Field("password") password: String): Response<CheckMoe>
 }

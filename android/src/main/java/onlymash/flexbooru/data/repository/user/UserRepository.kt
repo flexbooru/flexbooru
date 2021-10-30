@@ -25,4 +25,5 @@ interface UserRepository {
     suspend fun gelLogin(username: String, password: String, booru: Booru): NetResult<User>
     suspend fun sankakuLogin(username: String, password: String, booru: Booru): NetResult<User>
     suspend fun sankakuRefreshToken(refreshToken: String, booru: Booru): NetResult<User>
+    suspend fun moeCheck(username: String, password: String, booru: Booru): NetResult<User>
 }

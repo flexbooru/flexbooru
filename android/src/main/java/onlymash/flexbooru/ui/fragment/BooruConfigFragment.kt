@@ -63,8 +63,6 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
 
     private var booru: Booru? = null
 
-    private val hashBoorus = arrayOf(BOORU_TYPE_DAN1, BOORU_TYPE_MOE)
-
     private var hashSaltPreferences: Preference? = null
     private var pathPreferences: Preference? = null
 
@@ -120,7 +118,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
             it.hint = "example.com"
         }
         hashSaltPreferences = findPreference(CONFIG_HASH_SALT_KEY)
-        hashSaltPreferences?.isVisible = type in hashBoorus
+        hashSaltPreferences?.isVisible = type == BOORU_TYPE_DAN1
         pathPreferences = findPreference(CONFIG_PATH_KEY)
         pathPreferences?.isVisible = type == BOORU_TYPE_SHIMMIE
         sp.registerOnSharedPreferenceChangeListener(this)
@@ -158,14 +156,14 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
                     !booru.host.isHost() -> {
                         Snackbar.make(listView, getString(R.string.booru_config_host_invalid), Snackbar.LENGTH_LONG).show()
                     }
-                    booru.type in hashBoorus && booru.hashSalt.isEmpty() -> {
+                    booru.type == BOORU_TYPE_DAN1 && booru.hashSalt.isEmpty() -> {
                         Snackbar.make(listView, R.string.booru_config_hash_salt_cant_empty, Snackbar.LENGTH_LONG).show()
                     }
-                    booru.type in hashBoorus && !booru.hashSalt.contains(HASH_SALT_CONTAINED) -> {
+                    booru.type == BOORU_TYPE_DAN1 && !booru.hashSalt.contains(HASH_SALT_CONTAINED) -> {
                         Snackbar.make(listView, getString(R.string.booru_config_hash_salt_must_contain_yp), Snackbar.LENGTH_LONG).show()
                     }
                     else -> {
-                        if (booru.type !in hashBoorus) {
+                        if (booru.type != BOORU_TYPE_DAN1) {
                             booru.hashSalt = ""
                         }
                         if (booru.type != BOORU_TYPE_SHIMMIE) {
@@ -192,7 +190,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
             CONFIG_TYPE_KEY -> {
                 val type = type
                 booru?.type = type
-                hashSaltPreferences?.isVisible = type in hashBoorus
+                hashSaltPreferences?.isVisible = type == BOORU_TYPE_DAN1
                 pathPreferences?.isVisible = type == BOORU_TYPE_SHIMMIE
             }
             CONFIG_HASH_SALT_KEY -> booru?.hashSalt = hashSalt

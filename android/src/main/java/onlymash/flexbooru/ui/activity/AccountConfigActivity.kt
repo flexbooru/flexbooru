@@ -105,7 +105,7 @@ class AccountConfigActivity : KodeinActivity() {
             return
         }
         val hashSalt = booru.hashSalt
-        if ((booru.type == BOORU_TYPE_MOE || booru.type == BOORU_TYPE_DAN1) && hashSalt.isNotBlank()) {
+        if (booru.type == BOORU_TYPE_DAN1 && hashSalt.isNotBlank()) {
             userToken = hashSalt.replace(HASH_SALT_CONTAINED, userToken).sha1()
         }
         binding.setAccount.isVisible = false
@@ -120,6 +120,12 @@ class AccountConfigActivity : KodeinActivity() {
             BOORU_TYPE_SANKAKU -> {
                 lifecycleScope.launch {
                     val result = userRepository.sankakuLogin(username, userToken, booru)
+                    handlerResult(result)
+                }
+            }
+            BOORU_TYPE_MOE -> {
+                lifecycleScope.launch {
+                    val result = userRepository.moeCheck(username = username, password = userToken, booru = booru)
                     handlerResult(result)
                 }
             }
@@ -138,7 +144,6 @@ class AccountConfigActivity : KodeinActivity() {
                 val user = result.data
                 when (booru.type) {
                     BOORU_TYPE_DAN,
-                    BOORU_TYPE_MOE,
                     BOORU_TYPE_DAN1 -> {
                         user.token = userToken
                         updateUser(user)

@@ -296,4 +296,28 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
             }
         }
     }
+
+    override suspend fun moeCheck(
+        username: String,
+        password: String,
+        booru: Booru
+    ): NetResult<User> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.moeApi.check(url = booru.getMoeCheckUserUrl(), username = username, password = password)
+                val check = response.body()
+                if (response.isSuccessful && check != null) {
+                    if (check.response != "success") {
+                        NetResult.Error(check.response)
+                    } else {
+                        NetResult.Success(check.toUser())
+                    }
+                } else {
+                    NetResult.Error(response.message())
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.toString())
+            }
+        }
+    }
 }
