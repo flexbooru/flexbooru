@@ -17,6 +17,7 @@ package onlymash.flexbooru.data.model.moebooru
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.model.common.TagBase
 import onlymash.flexbooru.data.model.common.User
@@ -89,10 +90,25 @@ data class PostMoe(
     private fun originUrl(scheme: String, host: String) =
         fileUrl?.toSafeUrl(scheme, host) ?: sampleUrl(scheme, host)
 
-    private fun String.getTags(): List<TagBase> =
-        trim().split(" ").map { TagBase(it, -1) }
+    private fun String.getTags(tagTypes: Map<String, String>): List<TagBase> =
+        trim().split(" ").map { name ->
+            val type = when(tagTypes[name]) {
+                "general" -> Values.Tags.TYPE_GENERAL
+                "artist" -> Values.Tags.TYPE_ARTIST
+                "copyright" -> Values.Tags.TYPE_COPYRIGHT
+                "character" -> Values.Tags.TYPE_CHARACTER
+                "circle" -> Values.Tags.TYPE_CIRCLE
+                "faults" -> Values.Tags.TYPE_FAULTS
+                else -> Values.Tags.TYPE_ALL
+            }
+            TagBase(name, type)
+        }
 
-    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int, isFavored: Boolean): Post {
+    private fun isFavored(votes: Map<String, Int>): Boolean {
+        return votes[id.toString()] == 3
+    }
+
+    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int, tagTypes: Map<String, String>, votes: Map<String, Int>): Post {
         return Post(
             booruUid = booruUid,
             query = query,
@@ -104,14 +120,14 @@ data class PostMoe(
             score = score,
             rating = rating,
             time = createdAt * 1000L,
-            tags = tags?.getTags() ?: listOf(),
+            tags = tags?.getTags(tagTypes) ?: listOf(),
             preview = previewUrl(scheme, host),
             sample = sampleUrl(scheme, host),
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
             uploader = User(id = creatorId ?: -1, name = author),
-            isFavored = isFavored
+            isFavored = isFavored(votes)
         )
     }
 }

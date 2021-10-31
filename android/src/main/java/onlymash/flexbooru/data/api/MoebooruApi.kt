@@ -27,7 +27,10 @@ import retrofit2.http.*
 interface MoebooruApi {
 
     @GET
-    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<List<PostMoe>>
+    suspend fun getPosts(@Url httpUrl: HttpUrl): Response<PostMoeResponse>
+
+    @GET
+    suspend fun getPostsPopular(@Url httpUrl: HttpUrl): Response<List<PostMoe>>
 
     @GET
     suspend fun getUsers(@Url httpUrl: HttpUrl): Response<List<User>>

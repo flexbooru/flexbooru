@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import onlymash.flexbooru.app.Settings
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
@@ -157,19 +158,46 @@ class PostRemoteMediator(
     }
 
     private suspend fun fetchPostsMoe(page: Int, indexInNext: Int): List<Post> {
-        val response = booruApis.moeApi.getPosts(action.getMoePostsUrl(page))
-        val raw = response.body()?.toMutableList()
-        lastResponseSize = raw?.size ?: 0
-        return raw?.mapIndexed { index, post ->
-            post.toPost(
-                booruUid = action.booru.uid,
-                query = action.query,
-                scheme = action.booru.scheme,
-                host = action.booru.host,
-                index = indexInNext + index,
-                isFavored = isFavored
-            )
-        } ?: listOf()
+        if (action.pageType == Values.PAGE_TYPE_POSTS) {
+            val response = booruApis.moeApi.getPosts(action.getPostsMoeUrl(page)).body()
+            if (response == null) {
+                lastResponseSize = 0
+                return emptyList()
+            }
+            val votes = response.votes
+            val tagTypes = response.tags
+            val posts = response.posts
+            lastResponseSize = posts.size
+            return posts.mapIndexed { index, postMoe ->
+                postMoe.toPost(
+                    booruUid = action.booru.uid,
+                    query = action.query,
+                    scheme = action.booru.scheme,
+                    host = action.booru.host,
+                    index = indexInNext + index,
+                    tagTypes = tagTypes,
+                    votes = votes
+                )
+            }
+        } else {
+            val posts = booruApis.moeApi.getPostsPopular(action.getPopularMoeUrl()).body()
+            if (posts == null) {
+                lastResponseSize = 0
+                return emptyList()
+            }
+            lastResponseSize = posts.size
+            return posts.mapIndexed { index, postMoe ->
+                postMoe.toPost(
+                    booruUid = action.booru.uid,
+                    query = action.query,
+                    scheme = action.booru.scheme,
+                    host = action.booru.host,
+                    index = indexInNext + index,
+                    tagTypes = mapOf(),
+                    votes = mapOf()
+                )
+            }
+        }
     }
 
     private suspend fun fetchPostsGel(page: Int, indexInNext: Int): List<Post> {

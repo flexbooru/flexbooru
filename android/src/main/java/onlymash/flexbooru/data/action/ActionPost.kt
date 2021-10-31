@@ -145,11 +145,14 @@ data class ActionPost(
         return builder.build()
     }
 
-    private fun getPostsMoeUrl(page: Int): HttpUrl {
+    fun getPostsMoeUrl(page: Int): HttpUrl {
         val builder = HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
             .addPathSegment("post.json")
+            .addQueryParameter("include_tags", "1")
+            .addQueryParameter("include_votes", "1")
+            .addQueryParameter("api_version", "2")
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())
 
@@ -232,7 +235,7 @@ data class ActionPost(
         return builder.build()
     }
 
-    private fun getPopularMoeUrl(): HttpUrl {
+    fun getPopularMoeUrl(): HttpUrl {
         val builder = HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
@@ -256,9 +259,6 @@ data class ActionPost(
 
     fun getDan1PostsUrl(page: Int) =
         if (pageType == PAGE_TYPE_POSTS) getPostsDan1Url(page) else getPopularDan1Url()
-
-    fun getMoePostsUrl(page: Int) =
-        if (pageType == PAGE_TYPE_POSTS) getPostsMoeUrl(page) else getPopularMoeUrl()
 
 
     fun getShimmiePostsUrl(page: Int): HttpUrl {

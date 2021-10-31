@@ -166,6 +166,17 @@ class ShortcutTagFragment : ShortcutFragment<FragmentShortcutTagsBinding>() {
                         else -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_unknown))
                     }
                 }
+                Values.BOORU_TYPE_MOE -> {
+                    when (tag.category) {
+                        Values.Tags.TYPE_GENERAL -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_general))
+                        Values.Tags.TYPE_ARTIST -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_artist))
+                        Values.Tags.TYPE_COPYRIGHT -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_copyright))
+                        Values.Tags.TYPE_CHARACTER -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_character))
+                        Values.Tags.TYPE_CIRCLE -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_circle))
+                        Values.Tags.TYPE_FAULTS -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_faults))
+                        else -> dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_unknown))
+                    }
+                }
                 else -> {
                     dot.setColorFilter(ContextCompat.getColor(itemView.context,  R.color.tag_type_unknown))
                 }
