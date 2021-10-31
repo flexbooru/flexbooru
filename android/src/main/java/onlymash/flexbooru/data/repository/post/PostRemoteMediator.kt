@@ -19,6 +19,7 @@ import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.database.MyDatabase
 import onlymash.flexbooru.data.model.common.Next
 import onlymash.flexbooru.data.model.common.Post
+import onlymash.flexbooru.data.model.moebooru.PostMoe
 import onlymash.flexbooru.data.model.sankaku.RefreshTokenBody
 import retrofit2.HttpException
 
@@ -159,14 +160,28 @@ class PostRemoteMediator(
 
     private suspend fun fetchPostsMoe(page: Int, indexInNext: Int): List<Post> {
         if (action.pageType == Values.PAGE_TYPE_POSTS) {
-            val response = booruApis.moeApi.getPosts(action.getPostsMoeUrl(page)).body()
-            if (response == null) {
-                lastResponseSize = 0
-                return emptyList()
+            val votes: Map<String, Int>
+            val tagTypes: Map<String, String>
+            val posts: List<PostMoe>
+            if (action.booru.host == "lolibooru.moe") {
+                val response = booruApis.moeApi.getPostsLoli(action.getPostsMoeUrl(page)).body()
+                if (response == null) {
+                    lastResponseSize = 0
+                    return emptyList()
+                }
+                votes = mapOf()
+                tagTypes = response.tags
+                posts = response.posts
+            } else {
+                val response = booruApis.moeApi.getPosts(action.getPostsMoeUrl(page)).body()
+                if (response == null) {
+                    lastResponseSize = 0
+                    return emptyList()
+                }
+                votes = response.votes
+                tagTypes = response.tags
+                posts = response.posts
             }
-            val votes = response.votes
-            val tagTypes = response.tags
-            val posts = response.posts
             lastResponseSize = posts.size
             return posts.mapIndexed { index, postMoe ->
                 postMoe.toPost(

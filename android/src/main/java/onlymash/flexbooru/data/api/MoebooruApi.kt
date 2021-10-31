@@ -30,6 +30,9 @@ interface MoebooruApi {
     suspend fun getPosts(@Url httpUrl: HttpUrl): Response<PostMoeResponse>
 
     @GET
+    suspend fun getPostsLoli(@Url httpUrl: HttpUrl): Response<PostMoeLoliResponse>
+
+    @GET
     suspend fun getPostsPopular(@Url httpUrl: HttpUrl): Response<List<PostMoe>>
 
     @GET

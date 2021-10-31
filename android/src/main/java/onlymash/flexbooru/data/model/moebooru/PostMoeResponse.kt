@@ -12,3 +12,11 @@ data class PostMoeResponse(
     @SerialName("votes")
     val votes: Map<String, Int>
 )
+
+@Serializable
+data class PostMoeLoliResponse(
+    @SerialName("posts")
+    val posts: List<PostMoe>,
+    @SerialName("tags")
+    val tags: Map<String, String>
+)
