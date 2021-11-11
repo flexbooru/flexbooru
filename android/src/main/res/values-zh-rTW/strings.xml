@@ -268,7 +268,7 @@
     <string name="purchase_info_title">移除廣告並解鎖所有功能</string>
     <string name="purchase_info_remove_ads">* 移除廣告</string>
     <string name="purchase_info_unlock_full_features">* 解鎖所有功能</string>
-    <string name="purchase_info_features">1、移除可用 Booru 的數量限制。\n2、可從 Moebooru 圖集下載 Zip 壓縮檔。\n3、可於檔案中備份&amp; 還原 Boorus 。\n4、可經由 SauceNao 進行反向搜尋。    </string>
+    <string name="purchase_info_features">1、移除可用 Booru 的數量限制。\n2、可從 Moebooru 圖集下載 Zip 壓縮檔。\n3、可於檔案中備份&amp; 還原 Boorus 。\n4、可透過 SauceNao 進行反向搜尋。    </string>
     <string name="purchase_pay_title">支付/恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付寶</string>
@@ -277,8 +277,8 @@
     <string name="sauce_nao_help">支援</string>
     <string name="sauce_nao_change_api_key">更改 Api 金鑰</string>
     <string name="sauce_nao_get_api_key">獲取 Api 金鑰</string>
-    <string name="sauce_nao_remaining_times_today">今日剩餘時間：%01$d</string>
-    <string name="sauce_nao_api_key_unset">還沒有設定 SauceNao 的 Api 金鑰</string>
+    <string name="sauce_nao_remaining_times_today">今日剩餘次數：%01$d</string>
+    <string name="sauce_nao_api_key_unset">未設定 SauceNao 之 Api 金鑰</string>
     <string name="sauce_nao_image_url">圖檔超連結</string>
     <string name="sauce_nao_invalid_image_url">無效的圖檔超連結</string>
     <string name="sauce_nao_source">來源</string>
