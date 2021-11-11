@@ -215,11 +215,11 @@
     <string name="tag_type_copyright">著作權</string>
     <string name="tag_type_character">角色</string>
     <string name="tag_type_circle">圈子</string>
-    <string name="tag_type_faults">遺漏</string>
-    <string name="tag_type_meta">屬性</string>
-    <string name="tag_type_model">模特</string>
+    <string name="tag_type_faults">故障</string>
+    <string name="tag_type_meta">元</string>
+    <string name="tag_type_model">模型</string>
     <string name="tag_type_photo_set">圖集</string>
-    <string name="tag_type_genre">Genre</string>
+    <string name="tag_type_genre">文類</string>
     <string name="tag_type_studio">團隊</string>
     <string name="tag_type_medium">雜項</string>
     <string name="tag_type_unknown">未知</string>
