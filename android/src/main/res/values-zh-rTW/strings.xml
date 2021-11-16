@@ -63,7 +63,7 @@
     <string name="post_add_search_to_muzei">已將 ` %s ` 存至 Muzei。</string>
     <string name="post_download">下載貼圖</string>
     <string name="post_add_to_fav">加到收藏</string>
-    <string name="post_search_by_sauce_nao">經由SauceNao搜尋</string>
+    <string name="post_search_by_sauce_nao">透過SauceNao搜尋</string>
     <string name="msg_download_must_enable">需要下載管理器。</string>
     <string name="msg_path_denied">保存失敗！ 無權訪問當前路徑。</string>
     <string name="msg_download_failed">下載失敗</string>
@@ -165,7 +165,7 @@
     <string name="settings_night_theme_black">黑色</string>
     <string name="settings_dns_over_https">安全化的域名解析（DoH）</string>
     <string name="settings_dns_over_https_summary">重新啟動以生效</string>
-    <string name="settings_dns_over_https_dns">DNS 提供者</string>
+    <string name="settings_dns_over_https_dns">DNS 供應商</string>
     <string name="settings_safe_mode">安全模式</string>
     <string name="settings_page_limit">每頁限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
@@ -229,7 +229,7 @@
     <string name="tag_order_count">數量</string>
     <string name="tag_delete_title">刪除標籤</string>
     <string name="tag_delete_content">`%s` 將會刪除。</string>
-    <string name="artist_urls_is_empty">超連結為空白。</string>
+    <string name="artist_urls_is_empty">網址為空白。</string>
     <string name="artist_order">排序</string>
     <string name="artist_order_date">日期</string>
     <string name="artist_order_name">名稱</string>
@@ -279,10 +279,10 @@
     <string name="sauce_nao_get_api_key">獲取 Api 金鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘次數：%01$d</string>
     <string name="sauce_nao_api_key_unset">未設定 SauceNao 之 Api 金鑰</string>
-    <string name="sauce_nao_image_url">圖檔超連結</string>
-    <string name="sauce_nao_invalid_image_url">無效的圖檔超連結</string>
+    <string name="sauce_nao_image_url">圖檔網址</string>
+    <string name="sauce_nao_invalid_image_url">無效的圖檔網址</string>
     <string name="sauce_nao_source">來源</string>
-    <string name="sauce_nao_search_from_url">超連結</string>
+    <string name="sauce_nao_search_from_url">網址</string>
     <string name="sauce_nao_search_from_file">檔案</string>
     <string name="action_add_to_muzei">釘選到 Muzei</string>
 </resources>
