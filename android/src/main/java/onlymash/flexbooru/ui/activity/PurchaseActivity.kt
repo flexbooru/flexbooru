@@ -64,7 +64,7 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
                 .setListener(this)
                 .build()
             billingClient?.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult) { }
+                override fun onBillingSetupFinished(billingResult: BillingResult) {}
                 override fun onBillingServiceDisconnected() { }
             })
             binding.payGooglePlay.setOnClickListener {
@@ -83,16 +83,15 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         val responseCode = billingResult.responseCode
-        if ((responseCode == BillingClient.BillingResponseCode.OK ||
-                    responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) && !purchases.isNullOrEmpty()) {
-            val index = purchases.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
-            if (index >= 0) {
+        if (responseCode == BillingClient.BillingResponseCode.OK || responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Settings.isOrderSuccess = true
+            val index = purchases?.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
+            if (index != null && index >= 0) {
                 val purchase = purchases[index]
                 val ackParams = AcknowledgePurchaseParams.newBuilder()
                     .setPurchaseToken(purchase.purchaseToken)
                     .build()
                 billingClient?.acknowledgePurchase(ackParams){}
-                Settings.isOrderSuccess = true
                 Settings.orderId = purchase.orderId
                 Settings.orderTime = purchase.purchaseTime
                 Settings.orderToken = purchase.purchaseToken
