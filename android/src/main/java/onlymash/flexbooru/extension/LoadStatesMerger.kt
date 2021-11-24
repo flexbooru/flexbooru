@@ -3,6 +3,7 @@ package onlymash.flexbooru.extension
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
+import androidx.paging.PagingSource.LoadResult.Error
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.scan
 
@@ -103,28 +104,28 @@ private class LoadStatesMerger {
         return when (currentMergedState) {
             MergedState.NOT_LOADING -> when (remoteState) {
                 is LoadState.Loading -> LoadState.Loading to MergedState.REMOTE_STARTED
-                is Error -> remoteState to MergedState.REMOTE_ERROR
+                is Error<*, *> -> remoteState to MergedState.REMOTE_ERROR
                 else -> LoadState.NotLoading(remoteState.endOfPaginationReached) to MergedState.NOT_LOADING
             }
             MergedState.REMOTE_STARTED -> when {
-                remoteState is Error -> remoteState to MergedState.REMOTE_ERROR
+                remoteState is Error<*, *> -> remoteState to MergedState.REMOTE_ERROR
                 sourceRefreshState is LoadState.Loading -> LoadState.Loading to MergedState.SOURCE_LOADING
                 else -> LoadState.Loading to MergedState.REMOTE_STARTED
             }
             MergedState.REMOTE_ERROR -> when (remoteState) {
-                is Error -> remoteState to MergedState.REMOTE_ERROR
+                is Error<*, *> -> remoteState to MergedState.REMOTE_ERROR
                 else -> LoadState.Loading to MergedState.REMOTE_STARTED
             }
             MergedState.SOURCE_LOADING -> when {
-                sourceRefreshState is Error -> sourceRefreshState to MergedState.SOURCE_ERROR
-                remoteState is Error -> remoteState to MergedState.REMOTE_ERROR
+                sourceRefreshState is Error<*, *> -> sourceRefreshState to MergedState.SOURCE_ERROR
+                remoteState is Error<*, *> -> remoteState to MergedState.REMOTE_ERROR
                 sourceRefreshState is LoadState.NotLoading -> {
                     LoadState.NotLoading(remoteState.endOfPaginationReached) to MergedState.NOT_LOADING
                 }
                 else -> LoadState.Loading to MergedState.SOURCE_LOADING
             }
             MergedState.SOURCE_ERROR -> when (sourceRefreshState) {
-                is Error -> sourceRefreshState to MergedState.SOURCE_ERROR
+                is Error<*, *> -> sourceRefreshState to MergedState.SOURCE_ERROR
                 else -> sourceRefreshState to MergedState.SOURCE_LOADING
             }
         }

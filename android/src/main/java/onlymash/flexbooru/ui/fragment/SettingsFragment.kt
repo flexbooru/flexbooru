@@ -106,8 +106,8 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
         findPreference<Preference>(DOWNLOAD_PATH_KEY)?.summary = path
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        when (preference?.key) {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        when (preference.key) {
             DOWNLOAD_PATH_KEY -> (activity as? PathActivity)?.pickDir()
             CLEAR_CACHE_KEY -> createClearDialog()
             DNS_OVER_HTTPS,
