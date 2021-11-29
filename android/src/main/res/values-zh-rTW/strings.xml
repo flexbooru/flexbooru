@@ -250,7 +250,7 @@
     <string name="muzei_delete">刪除</string>
     <string name="muzei_search">搜尋</string>
     <string name="muzei_search_hint">新增標籤...</string>
-    <string name="muzei_fetch">取得 Artwork</string>
+    <string name="muzei_fetch">擷取作品</string>
     <string name="muzei_input_cant_be_empty">輸入不可為空白。</string>
     <string name="muzei_action_view_post">在 Flexbooru 檢視貼圖</string>
     <string name="muzei_action_search_posts">在 Flexbooru 搜尋貼圖</string>
@@ -276,7 +276,7 @@
     <string name="tab_end_date">截止日期</string>
     <string name="sauce_nao_help">支援</string>
     <string name="sauce_nao_change_api_key">更改 Api 金鑰</string>
-    <string name="sauce_nao_get_api_key">獲取 Api 金鑰</string>
+    <string name="sauce_nao_get_api_key">取得 Api 金鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘次數：%01$d</string>
     <string name="sauce_nao_api_key_unset">未設定 SauceNao 之 Api 金鑰</string>
     <string name="sauce_nao_image_url">圖檔網址</string>
