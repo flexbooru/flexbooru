@@ -110,7 +110,7 @@
     <string name="booru_config_host_invalid">無效的主機名稱</string>
     <string name="booru_config_hash_salt_cant_empty">散列值不可為空白。</string>
     <string name="booru_config_dialog_title_delete">你確定要移除這個 Booru 嗎？</string>
-    <string name="booru_config_hash_salt_must_contain_yp">散列值必須包含文字： your-password</string>
+    <string name="booru_config_hash_salt_must_contain_yp">散列值必須包含字元：「your-password」</string>
     <string name="scaner_scan_qr_code">掃描 QR Code</string>
     <string name="scaner_add_booru_permission_required">掃描 QR Code 需要相機權限。</string>
     <string name="browse_toolbar_title">貼圖</string>
