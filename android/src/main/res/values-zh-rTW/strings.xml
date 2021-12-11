@@ -163,7 +163,7 @@
     <string name="settings_night_theme">夜間主題</string>
     <string name="settings_night_theme_dark">深色</string>
     <string name="settings_night_theme_black">黑色</string>
-    <string name="settings_dns_over_https">安全化的域名解析（DoH）</string>
+    <string name="settings_dns_over_https">安全化的域名解析 (DoH)</string>
     <string name="settings_dns_over_https_summary">重新啟動以生效</string>
     <string name="settings_dns_over_https_dns">DNS 供應商</string>
     <string name="settings_safe_mode">安全模式</string>
