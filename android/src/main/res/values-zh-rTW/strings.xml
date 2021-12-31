@@ -132,7 +132,7 @@
     <string name="browse_info_source">來源</string>
     <string name="browse_info_rating">評級</string>
     <string name="browse_info_rating_safe">安全的</string>
-    <string name="browse_info_rating_questionable">存疑的</string>
+    <string name="browse_info_rating_questionable">可疑的</string>
     <string name="browse_info_rating_explicit">露骨的</string>
     <string name="browse_info_score">評分</string>
     <string name="browse_info_parent">上層</string>
@@ -147,7 +147,7 @@
     <string name="account_forgot_password">忘記密碼？</string>
     <string name="account_forgot_api_key">忘記我的 Api 金鑰？</string>
     <string name="account_set">設定帳戶</string>
-    <string name="account_user_id">ID: %d</string>
+    <string name="account_user_id">ID：%d</string>
     <string name="account_user_remove">移除帳戶</string>
     <string name="account_user_dialog_title_remove">你確定要移除這個帳戶？</string>
     <string name="account_favorites">收藏</string>
@@ -188,7 +188,7 @@
     <string name="settings_grid_rounded">圓角網格</string>
     <string name="settings_show_info_bar">顯示影像資訊</string>
     <string name="settings_show_all_tags">顯示所有網站的標籤</string>
-    <string name="settings_auto_hide_bottom_bar">自動隱藏底欄</string>
+    <string name="settings_auto_hide_bottom_bar">自動隱藏底部列</string>
     <string name="settings_auto_refresh">自動重新整理</string>
     <string name="settings_clear_cache">清除快取</string>
     <string name="settings_clear_cache_summery">移除所有已快取的檔案</string>
@@ -206,8 +206,8 @@
     <string name="switch_no">否</string>
     <string name="pool_description_is_empty">空白描述檔。</string>
     <string name="pool_download">下載圖集</string>
-    <string name="pool_download_jpgs">下載JPG圖集</string>
-    <string name="pool_download_pngs">下載PNG圖集</string>
+    <string name="pool_download_jpgs">下載 JPG 圖集</string>
+    <string name="pool_download_pngs">下載 PNG 圖集</string>
     <string name="tag_type">標籤類型</string>
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">一般</string>
@@ -249,7 +249,7 @@
     <string name="muzei_copy">複製</string>
     <string name="muzei_delete">刪除</string>
     <string name="muzei_search">搜尋</string>
-    <string name="muzei_search_hint">新增標籤...</string>
+    <string name="muzei_search_hint">新增標籤…</string>
     <string name="muzei_fetch">擷取作品</string>
     <string name="muzei_input_cant_be_empty">輸入不可為空白。</string>
     <string name="muzei_action_view_post">在 Flexbooru 檢視貼圖</string>
@@ -268,7 +268,7 @@
     <string name="purchase_info_title">移除廣告並解鎖所有功能</string>
     <string name="purchase_info_remove_ads">* 移除廣告</string>
     <string name="purchase_info_unlock_full_features">* 解鎖所有功能</string>
-    <string name="purchase_info_features">1、移除可用 Booru 的數量限制。\n2、可從 Moebooru 圖集下載 Zip 壓縮檔。\n3、可於檔案中備份&amp; 還原 Boorus 。\n4、可透過 SauceNao 進行反向搜尋。    </string>
+    <string name="purchase_info_features">1、移除可用 Booru 的數量限制。\n2、可從 Moebooru 圖集下載 Zip 壓縮檔。\n3、可於檔案中備份 &amp; 還原 Boorus 。\n4、可透過 SauceNao 進行反向搜尋。    </string>
     <string name="purchase_pay_title">支付/恢復購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付寶</string>
