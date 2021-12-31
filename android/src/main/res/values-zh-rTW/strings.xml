@@ -63,9 +63,9 @@
     <string name="post_add_search_to_muzei">已將 ` %s ` 存至 Muzei。</string>
     <string name="post_download">下載貼圖</string>
     <string name="post_add_to_fav">加到收藏</string>
-    <string name="post_search_by_sauce_nao">透過SauceNao搜尋</string>
+    <string name="post_search_by_sauce_nao">透過 SauceNao 搜尋</string>
     <string name="msg_download_must_enable">需要下載管理器。</string>
-    <string name="msg_path_denied">保存失敗！ 無權訪問當前路徑。</string>
+    <string name="msg_path_denied">保存失敗！無權訪問當前路徑。</string>
     <string name="msg_download_failed">下載失敗</string>
     <string name="msg_download_complete">下載完成</string>
     <string name="msg_password_or_hash_salt_wrong">密碼或散列值有誤。</string>
@@ -81,7 +81,7 @@
     <string name="dialog_exit">離開</string>
     <string name="dialog_update">更新</string>
     <string name="update_found_update">有新的更新可用</string>
-    <string name="update_version">版本: %s</string>
+    <string name="update_version">版本：%s</string>
     <string name="booru_add">新增 Booru</string>
     <string name="booru_add_from_qr_code">掃描 QR Code</string>
     <string name="booru_add_from_clipboard">從剪貼簿匯入</string>
@@ -119,7 +119,7 @@
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送</string>
     <string name="browse_save_file">儲存</string>
-    <string name="browse_save_as">另存新檔...</string>
+    <string name="browse_save_as">另存新檔…</string>
     <string name="browse_share_link">分享</string>
     <string name="browse_open_in_browser">於瀏覽器中開啟</string>
     <string name="browse_unsupported_format">未支援的格式：%s</string>
