@@ -50,7 +50,6 @@ import onlymash.flexbooru.animation.RippleAnimation
 import onlymash.flexbooru.app.Keys.PAGE_TYPE
 import onlymash.flexbooru.app.Keys.POST_POSITION
 import onlymash.flexbooru.app.Keys.POST_QUERY
-import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.app.Settings.GRID_MODE_KEY
 import onlymash.flexbooru.app.Settings.GRID_RATIO_KEY
 import onlymash.flexbooru.app.Settings.GRID_ROUNDED_KEY
@@ -601,7 +600,7 @@ class PostFragment : SearchBarFragment() {
                 postAdapter.isRounded = isRounded
             }
             GRID_MODE_KEY -> {
-                postAdapter.isRatioFixed = gridMode == GRID_MODE_FIXED
+                postAdapter.isRatioFixed = gridMode == "fixed"
                 toListTop()
             }
             GRID_RATIO_KEY -> {

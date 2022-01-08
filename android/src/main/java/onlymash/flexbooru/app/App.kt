@@ -25,6 +25,7 @@ import com.android.billingclient.api.*
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.material.color.DynamicColors
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
@@ -73,6 +74,7 @@ class App : Application(), DIAware {
     }
 
     private fun initial() {
+        DynamicColors.applyToActivitiesIfAvailable(this)
         AppCompatDelegate.setDefaultNightMode(nightMode)
         DrawerImageLoader.init(drawerImageLoader)
         if (!Settings.isOrderSuccess) {

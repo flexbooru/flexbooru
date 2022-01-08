@@ -30,7 +30,7 @@
         android:paddingHorizontal="@dimen/spacing_large"
         android:paddingVertical="@dimen/spacing_normal"
         android:gravity="center_horizontal"
-        android:textAppearance="?attr/textAppearanceBody2"/>
+        android:textAppearance="?attr/textAppearanceBodyMedium"/>
     <Button
         android:id="@+id/retry_button"
         android:layout_width="wrap_content"

@@ -30,7 +30,7 @@
             android:gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/right"/>
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textAppearance="?attr/textAppearanceCaption"/>
+                android:textAppearance="?attr/textAppearanceBodySmall"/>
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/post_count"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textAppearance="?attr/textAppearanceCaption"/>
+                android:textAppearance="?attr/textAppearanceBodySmall"/>
     </LinearLayout>
     <View
             android:layout_width="0dp"

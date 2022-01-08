@@ -26,7 +26,7 @@
         android:paddingBottom="@dimen/spacing_medium"
         android:paddingStart="@dimen/spacing_middle"
         android:paddingEnd="@dimen/spacing_middle"
-        android:textAppearance="?attr/textAppearanceBody2"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorSecondary"
         android:textAllCaps="true"/>

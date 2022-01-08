@@ -35,7 +35,7 @@
         <com.takisoft.preferencex.SimpleMenuPreference
             app:entries="@array/settings_night_theme_entries"
             app:entryValues="@array/settings_night_theme_entries_values"
-            app:defaultValue="dark"
+            app:defaultValue="black"
             app:title="@string/settings_night_theme"
             app:key="settings_night_theme"
             app:useSimpleSummaryProvider="true"/>
@@ -51,7 +51,7 @@
             app:key="settings_grid_mode"
             app:entries="@array/settings_grid_mode_entries"
             app:entryValues="@array/settings_grid_mode_entries_values"
-            app:defaultValue="fixed"
+            app:defaultValue="staggered"
             app:title="@string/settings_grid_mode"
             app:useSimpleSummaryProvider="true" />
 
@@ -130,7 +130,7 @@
             app:key="settings_page_limit"
             app:entries="@array/settings_page_limit_entries"
             app:entryValues="@array/settings_page_limit_entries_values"
-            app:defaultValue="20"
+            app:defaultValue="30"
             app:title="@string/settings_page_limit"
             app:useSimpleSummaryProvider="true"/>
 

@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?android:attr/textColorSecondary"
                 android:background="@null"
                 android:singleLine="true"
@@ -60,7 +60,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="@string/app_name"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?android:attr/textColorSecondary"
                 android:singleLine="true"
                 android:maxLines="1"/>

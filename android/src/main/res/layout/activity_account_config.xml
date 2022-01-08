@@ -118,7 +118,7 @@
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
                         android:text="@string/account_forgot_password"
-                        android:textAppearance="?attr/textAppearanceOverline"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
                         android:textStyle="bold"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -152,6 +152,6 @@
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody2"/>
+                android:textAppearance="?attr/textAppearanceBodyMedium"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

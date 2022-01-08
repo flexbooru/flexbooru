@@ -40,26 +40,26 @@
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"/>
+                android:textAppearance="?attr/textAppearanceBodySmall"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/purchase_info_remove_ads"
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/purchase_info_unlock_full_features"
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/purchase_info_features"
                 android:paddingStart="@dimen/spacing_large"
                 android:paddingEnd="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"/>
+                android:textAppearance="?attr/textAppearanceBodySmall"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
@@ -81,7 +81,7 @@
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"/>
+                android:textAppearance="?attr/textAppearanceBodySmall"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pay_google_play"
                 android:text="@string/purchase_pay_google_play"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pay_alipay"
                 android:text="@string/purchase_pay_alipay"
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pay_redeem_code"
                 android:text="@string/purchase_pay_order_code"
@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
         </LinearLayout>
 

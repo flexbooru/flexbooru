@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/artist_id"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_gravity="bottom"
-                android:textAppearance="?attr/textAppearanceCaption"/>
+                android:textAppearance="?attr/textAppearanceBodySmall"/>
         </FrameLayout>
 
         <ImageButton
@@ -80,7 +80,7 @@
             android:textIsSelectable="true"
             android:layout_margin="@dimen/spacing_middle"
             android:lineSpacingMultiplier="1.2"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?android:attr/textColorSecondary"/>
     </FrameLayout>
 

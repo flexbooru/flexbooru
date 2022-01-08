@@ -15,7 +15,7 @@
 
 <resources>
 
-    <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
+    <style name="ActionBarStyle" parent="Widget.Material3.ActionBar.Solid">
         <item name="background">@color/colorBackground</item>
     </style>
 
@@ -28,13 +28,13 @@
         <item name="materialDrawerDividerColor">@color/colorDividerItem</item>
     </style>
 
-    <style name="AlertDialog.DayNight" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+    <style name="AlertDialog.DayNight" parent="Theme.Material3.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.Button.TextButton.Dialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
     </style>
 
-    <style name="MyCardView" parent="Widget.MaterialComponents.CardView">
+    <style name="MyCardView" parent="Widget.Material3.CardView.Filled">
         <item name="cardCornerRadius">@dimen/corner_radius</item>
         <item name="cardUseCompatPadding">false</item>
         <item name="cardElevation">@dimen/elevation_size</item>
@@ -55,7 +55,7 @@
         <item name="cardBackgroundColor">@color/colorSearchBarBlack</item>
     </style>
 
-    <style name="TransparentBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+    <style name="TransparentBottomSheetDialogTheme" parent="Theme.Material3.Dark.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
     </style>
 
@@ -71,46 +71,46 @@
         <item name="iconSpaceReserved">true</item>
     </style>
 
-    <style name="PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+    <style name="PopupOverlay" parent="ThemeOverlay.Material3.Light"/>
 
     <style name="Widget" parent="@android:style/Widget.Material"/>
 
-    <style name="Widget.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+    <style name="Widget.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/colorBackground</item>
         <item name="android:elevation">@dimen/elevation_appbar</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
+        <item name="android:theme">@style/ThemeOverlay.Material3.ActionBar</item>
         <item name="popupTheme">@style/PopupOverlay</item>
     </style>
 
     <style name="Widget.Toolbar.Transparent">
         <item name="android:background">@color/transparent</item>
         <item name="android:elevation">0dp</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+        <item name="android:theme">@style/ThemeOverlay.Material3.Dark.ActionBar</item>
     </style>
 
     <style name="Widget.PopupWindowStyle" parent="@style/Widget.AppCompat.PopupWindow">
         <item name="android:popupElevation">@dimen/elevation_size</item>
     </style>
 
-    <style name="Widget.Button" parent="Widget.MaterialComponents.Button">
+    <style name="Widget.Button" parent="Widget.Material3.Button">
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="elevation">@dimen/elevation_size</item>
         <item name="backgroundTint">@color/colorPrimary</item>
     </style>
 
-    <style name="Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.Button.TextButton" parent="Widget.Material3.Button.TextButton">
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
-    <style name="Widget.Button.TextButton.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <style name="Widget.Button.TextButton.Dialog" parent="Widget.Material3.Button.TextButton.Dialog">
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
-    <style name="Widget.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Widget.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
-    <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+    <style name="Widget.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="elevation">@dimen/elevation_fab</item>
     </style>
 
@@ -124,7 +124,7 @@
         <item name="android:popupElevation">@dimen/elevation_size</item>
     </style>
 
-    <style name="Widget.OverflowMenuStyle" parent="Widget.MaterialComponents.PopupMenu.Overflow"/>
+    <style name="Widget.OverflowMenuStyle" parent="Widget.Material3.PopupMenu.Overflow"/>
 
     <style name="Animation.RightInRightOutAnim" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
@@ -133,13 +133,14 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <style name="Widget.FilterChip" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="Widget.FilterChip" parent="Widget.Material3.Chip.Filter">
         <item name="android:textAppearance">@style/TextAppearance.FilterChip.Selectable</item>
         <item name="chipBackgroundColor">@color/chip_bg</item>
         <item name="chipIcon">@drawable/asld_chip_icon</item>
         <item name="chipIconVisible">true</item>
         <item name="chipStrokeColor">@color/chip_stroke</item>
         <item name="textStartPadding">0dp</item>
+        <item name="checkedIcon">@null</item>
     </style>
 
     <style name="Widget.FilterChip.Selectable">
@@ -154,7 +155,7 @@
         <item name="textEndPadding">2dp</item>
     </style>
 
-    <style name="TextAppearance.FilterChip.Selectable" parent="TextAppearance.MaterialComponents.Body2"/>
+    <style name="TextAppearance.FilterChip.Selectable" parent="TextAppearance.Material3.BodyMedium"/>
 
-    <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar"/>
+    <style name="MaterialCalendarTheme" parent="ThemeOverlay.Material3.MaterialCalendar"/>
 </resources>

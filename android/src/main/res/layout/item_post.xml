@@ -50,7 +50,7 @@
             android:layout_marginEnd="@dimen/spacing_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody2"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?android:attr/textColorSecondary"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/post_size"
@@ -59,7 +59,7 @@
             android:layout_marginEnd="@dimen/spacing_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody2"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?android:attr/textColorSecondary"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

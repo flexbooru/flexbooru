@@ -38,7 +38,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="@color/primary_text_dark"
             android:textStyle="bold"/>
     <androidx.appcompat.widget.AppCompatImageView

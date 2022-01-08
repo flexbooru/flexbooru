@@ -39,7 +39,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/error_msg"
-        android:textAppearance="?textAppearanceBody1"
+        android:textAppearance="?textAppearanceBodyLarge"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

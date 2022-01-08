@@ -40,14 +40,14 @@ object Settings {
     const val NIGHT_MODE_SYSTEM = "system"
     const val NIGHT_MODE_BATTERY = "battery"
     const val NIGHT_THEME_KEY = "settings_night_theme"
-    const val NIGHT_THEME_DARK = "dark"
+    const val NIGHT_THEME_DEFAULT = "black"
     const val MUZEI_SIZE_KEY = "settings_muzei_size"
     const val POST_SIZE_SAMPLE = "sample"
     const val POST_SIZE_LARGER = "larger"
     const val POST_SIZE_ORIGIN = "origin"
     const val GRID_ROUNDED_KEY = "settings_grid_rounded"
     const val GRID_MODE_KEY = "settings_grid_mode"
-    const val GRID_MODE_FIXED = "fixed"
+    const val GRID_MODE_DEFAULT = "staggered"
     const val GRID_MODE_STAGGERED = "staggered"
     const val GRID_RATIO_KEY = "settings_grid_ratio"
     const val GRID_RATIO_1_1 = "1:1"
@@ -89,12 +89,12 @@ object Settings {
             SAFE_MODE_KEY, value).apply()
 
     var pageLimit: Int
-        get() = sp.getString(PAGE_LIMIT_KEY, "10")!!.toInt()
+        get() = sp.getString(PAGE_LIMIT_KEY, "30")!!.toInt()
         set(value) = sp.edit().putString(
             PAGE_LIMIT_KEY, value.toString()).apply()
 
     var muzeiLimit: Int
-        get() = sp.getString(MUZEI_LIMIT_KEY, "10")!!.toInt()
+        get() = sp.getString(MUZEI_LIMIT_KEY, "20")!!.toInt()
         set(value) = sp.edit().putString(
             MUZEI_LIMIT_KEY, value.toString()).apply()
 
@@ -145,11 +145,11 @@ object Settings {
     private val nightThemeString: String
         get() = sp.getString(
             NIGHT_THEME_KEY,
-            NIGHT_THEME_DARK
-        ) ?: NIGHT_THEME_DARK
+            NIGHT_THEME_DEFAULT
+        ) ?: NIGHT_THEME_DEFAULT
 
     val isNightThemeDark: Boolean
-        get() = nightThemeString == NIGHT_THEME_DARK
+        get() = nightThemeString == "dark"
 
     val isRoundedGrid: Boolean
         get() = sp.getBoolean(GRID_ROUNDED_KEY, false)
@@ -157,8 +157,8 @@ object Settings {
     val gridMode: String
         get() = sp.getString(
             GRID_MODE_KEY,
-            GRID_MODE_FIXED
-        ) ?: GRID_MODE_FIXED
+            GRID_MODE_DEFAULT
+        ) ?: GRID_MODE_DEFAULT
 
     val gridRatio: String
         get() = sp.getString(

@@ -35,7 +35,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import onlymash.flexbooru.R
-import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.app.Settings.gridMode
 import onlymash.flexbooru.app.Settings.gridRatio
 import onlymash.flexbooru.app.Settings.isLargeWidth
@@ -74,7 +73,7 @@ class PostAdapter(
             field = value
             notifyDataSetChanged()
         }
-    var isRatioFixed = gridMode == GRID_MODE_FIXED
+    var isRatioFixed = gridMode == "fixed"
         set(value) {
             field = value
             notifyDataSetChanged()

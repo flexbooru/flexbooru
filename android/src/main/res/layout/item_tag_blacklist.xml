@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?android:attr/textColorPrimary"/>
 
     <androidx.appcompat.widget.ActionMenuView

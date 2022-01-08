@@ -15,7 +15,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight">
+    <style name="BaseTheme" parent="Theme.Material3.DayNight">
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/is_light_status_bar</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/is_light_navigation_bar</item>
         <item name="android:statusBarColor">@color/colorStatusBar</item>
@@ -30,8 +30,6 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorError">@color/colorError</item>
         <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSecondaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>

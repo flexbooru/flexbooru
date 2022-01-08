@@ -28,5 +28,5 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_large"
         android:textIsSelectable="true"
-        android:textAppearance="?attr/textAppearanceBody2"/>
+        android:textAppearance="?attr/textAppearanceBodyMedium"/>
 </ScrollView>

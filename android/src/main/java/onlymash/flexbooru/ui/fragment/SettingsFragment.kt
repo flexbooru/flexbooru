@@ -31,7 +31,6 @@ import onlymash.flexbooru.app.Settings.CLEAR_CACHE_KEY
 import onlymash.flexbooru.app.Settings.DNS_OVER_HTTPS
 import onlymash.flexbooru.app.Settings.DNS_OVER_HTTPS_PROVIDER
 import onlymash.flexbooru.app.Settings.DOWNLOAD_PATH_KEY
-import onlymash.flexbooru.app.Settings.GRID_MODE_FIXED
 import onlymash.flexbooru.app.Settings.GRID_MODE_KEY
 import onlymash.flexbooru.app.Settings.GRID_RATIO_KEY
 import onlymash.flexbooru.app.Settings.NIGHT_MODE_KEY
@@ -61,7 +60,7 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_settings)
         gridRatioPreference = findPreference(GRID_RATIO_KEY)
-        gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
+        gridRatioPreference?.isVisible = gridMode == "fixed"
         findPreference<Preference>(NIGHT_THEME_KEY)?.isVisible = resources.configuration.isNightEnable()
         downloadDirPath = context?.contentResolver?.getTreeUri()?.toDecodedString()
         initPathSummary()
@@ -78,7 +77,7 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
             }
             DOWNLOAD_PATH_KEY -> initPathSummary()
             NIGHT_MODE_KEY -> AppCompatDelegate.setDefaultNightMode(nightMode)
-            GRID_MODE_KEY -> gridRatioPreference?.isVisible = gridMode == GRID_MODE_FIXED
+            GRID_MODE_KEY -> gridRatioPreference?.isVisible = gridMode == "fixed"
         }
     }
 

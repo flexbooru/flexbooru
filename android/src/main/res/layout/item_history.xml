@@ -22,5 +22,5 @@
     android:paddingHorizontal="@dimen/spacing_large"
     android:gravity="center_vertical"
     android:maxLines="2"
-    android:textAppearance="?attr/textAppearanceBody1"
+    android:textAppearance="?attr/textAppearanceBodyLarge"
     android:background="@drawable/background_selectable_item"/>
