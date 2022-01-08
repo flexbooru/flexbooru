@@ -69,6 +69,7 @@
 
     <style name="AppTheme.NoActionBar.Launcher">
         <item name="android:windowBackground">@drawable/background_launcher</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/launcher_icon</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Scrim.Main">
