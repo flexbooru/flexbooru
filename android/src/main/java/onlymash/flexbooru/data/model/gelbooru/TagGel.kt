@@ -17,6 +17,7 @@ package onlymash.flexbooru.data.model.gelbooru
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.data.model.common.Tag
 
@@ -24,15 +25,17 @@ import onlymash.flexbooru.data.model.common.Tag
 @SerialName("tag")
 data class TagGel(
     @SerialName("id")
+    @XmlElement(true)
     val id: Int,
     @SerialName("name")
+    @XmlElement(true)
     val name: String,
     @SerialName("count")
+    @XmlElement(true)
     val count: Int,
     @SerialName("type")
-    val type: Int,
-    @SerialName("ambiguous")
-    val ambiguous: Boolean
+    @XmlElement(true)
+    val type: Int
 ) {
     fun toTag(): Tag {
         return Tag(
