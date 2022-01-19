@@ -202,7 +202,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:20.5.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.android.billingclient:billing:4.0.0")
+    implementation("com.android.billingclient:billing-ktx:4.0.0")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")

@@ -113,7 +113,7 @@ class App : Application(), DIAware {
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingClient.isReady) {
+                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
                     billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP) { _, purchases ->
                         isOrderSuccess = if (purchases.isNullOrEmpty()) {
                             false

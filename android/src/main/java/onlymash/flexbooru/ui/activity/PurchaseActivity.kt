@@ -38,7 +38,7 @@ import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
-class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
+class PurchaseActivity : BaseActivity() {
 
     companion object {
         const val SKU = "flexbooru_pro"
@@ -58,10 +58,27 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
         if (Settings.isGoogleSign) {
             binding.payAlipay.visibility = View.GONE
             binding.payRedeemCode.visibility = View.GONE
+            val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
+                val responseCode = billingResult.responseCode
+                if (responseCode == BillingClient.BillingResponseCode.OK || responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                    Settings.isOrderSuccess = true
+                    val index = purchases?.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
+                    if (index != null && index >= 0) {
+                        val purchase = purchases[index]
+                        val ackParams = AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.purchaseToken)
+                            .build()
+                        billingClient?.acknowledgePurchase(ackParams){}
+                        Settings.orderId = purchase.orderId
+                        Settings.orderTime = purchase.purchaseTime
+                        Settings.orderToken = purchase.purchaseToken
+                    }
+                }
+            }
             billingClient = BillingClient
                 .newBuilder(this)
                 .enablePendingPurchases()
-                .setListener(this)
+                .setListener(purchasesUpdatedListener)
                 .build()
             billingClient?.startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {}
@@ -77,24 +94,6 @@ class PurchaseActivity : BaseActivity(), PurchasesUpdatedListener {
             }
             binding.payRedeemCode.setOnClickListener {
                 submitRedeemCode()
-            }
-        }
-    }
-
-    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
-        val responseCode = billingResult.responseCode
-        if (responseCode == BillingClient.BillingResponseCode.OK || responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Settings.isOrderSuccess = true
-            val index = purchases?.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
-            if (index != null && index >= 0) {
-                val purchase = purchases[index]
-                val ackParams = AcknowledgePurchaseParams.newBuilder()
-                    .setPurchaseToken(purchase.purchaseToken)
-                    .build()
-                billingClient?.acknowledgePurchase(ackParams){}
-                Settings.orderId = purchase.orderId
-                Settings.orderTime = purchase.purchaseTime
-                Settings.orderToken = purchase.purchaseToken
             }
         }
     }
