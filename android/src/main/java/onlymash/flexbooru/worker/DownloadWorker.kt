@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.worker
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -43,7 +44,7 @@ import java.io.InputStream
 class DownloadWorker(
     context: Context,
     workerParameters: WorkerParameters
-) : Worker(context, workerParameters) {
+) : CoroutineWorker(context, workerParameters) {
 
     companion object {
         private const val URL_KEY = "url"
@@ -144,7 +145,7 @@ class DownloadWorker(
         }
     }
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         return when (inputData.getString(TYPE_KEY)) {
             TYPE_POST -> downloadPost()
             TYPE_POOL -> downloadPool()
@@ -164,10 +165,8 @@ class DownloadWorker(
             channelId,
             applicationContext.getString(R.string.post_download))
         val title = "$host - $id"
-        val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
         ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
-            downloadingNotificationBuilder.setProgress(100, progress, false)
-            notificationManager.notify(id, downloadingNotificationBuilder.build())
+            setForegroundAsync(createDownloadingInfo(title, url, channelId, id, progress))
         }
         val file = try {
             GlideApp.with(applicationContext)
@@ -180,7 +179,7 @@ class DownloadWorker(
         }
         ProgressInterceptor.removeListener(url)
         if (file == null || !file.exists()) {
-            notificationManager.notify(id, getDownloadErrorNotificationBuilder(title, channelId).build())
+            notificationManager.notify(id + 1000000, getDownloadErrorNotification(title, channelId))
             return Result.failure()
         }
         val `is` = FileInputStream(file)
@@ -193,68 +192,59 @@ class DownloadWorker(
             `is`.safeCloseQuietly()
             os?.safeCloseQuietly()
         }
-        notificationManager.notify(id, getDownloadedNotificationBuilder(title = title, channelId = channelId, desUri = desUri).build())
+        notificationManager.notify(id + 1000000, getDownloadedNotification(title = title, channelId = channelId, desUri = desUri))
         return Result.success()
     }
 
     private fun downloadPool(): Result {
-            val id = inputData.getInt(POOL_ID_KEY, -1)
-            val scheme = inputData.getString(SCHEME_KEY)
-            val host = inputData.getString(HOST_KEY)
-            val type = inputData.getInt(
-                POOL_DOWNLOAD_TYPE_KEY,
-                POOL_DOWNLOAD_TYPE_JPGS
-            )
-            val username = inputData.getString(USERNAME_KEY)
-            val passwordHash = inputData.getString(PASSWORD_HASH_KEY)
-            val docId =  inputData.getString(DOC_ID_KEY)
-            if (id < 0 || scheme.isNullOrEmpty() ||
-                host.isNullOrEmpty() || username.isNullOrEmpty() ||
-                passwordHash.isNullOrEmpty() || docId == null)
-                return Result.failure()
-            var url = when (type) {
-                POOL_DOWNLOAD_TYPE_JPGS -> {
-                    applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
-                }
-                else -> {
-                    applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
-                }
+        val id = inputData.getInt(POOL_ID_KEY, -1)
+        val scheme = inputData.getString(SCHEME_KEY)
+        val host = inputData.getString(HOST_KEY)
+        val type = inputData.getInt(
+            POOL_DOWNLOAD_TYPE_KEY,
+            POOL_DOWNLOAD_TYPE_JPGS
+        )
+        val username = inputData.getString(USERNAME_KEY)
+        val passwordHash = inputData.getString(PASSWORD_HASH_KEY)
+        val docId =  inputData.getString(DOC_ID_KEY)
+        if (id < 0 || scheme.isNullOrEmpty() ||
+            host.isNullOrEmpty() || username.isNullOrEmpty() ||
+            passwordHash.isNullOrEmpty() || docId == null)
+            return Result.failure()
+        var url = when (type) {
+            POOL_DOWNLOAD_TYPE_JPGS -> {
+                applicationContext.getString(R.string.pool_download_jpgs_url_format, scheme, host, id)
             }
-            url = "$url&login=$username&password_hash=$passwordHash"
-            val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
-            val channelId = applicationContext.packageName + ".download_pool"
-            val notificationManager = getNotificationManager(
-                channelId,
-                applicationContext.getString(R.string.pool_download))
-            val title = "$host - pool: $id"
-            val downloadingNotificationBuilder = getDownloadingNotificationBuilder(title = title, url = url, channelId = channelId)
-            ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
-                downloadingNotificationBuilder.setProgress(100, progress, false)
-                notificationManager.notify(id, downloadingNotificationBuilder.build())
+            else -> {
+                applicationContext.getString(R.string.pool_download_pngs_url_format, scheme, host, id)
             }
-            var `is`: InputStream? = null
-            val os = applicationContext.contentResolver.openOutputStream(desUri)
-            try {
-                `is` = OkHttp3Downloader(applicationContext)
-                    .load(url)
-                    .body?.source()?.inputStream()
-                `is`?.copyTo(os)
-            } catch (_: IOException) {
-                return Result.failure()
-            } finally {
-                ProgressInterceptor.removeListener(url)
-                `is`?.safeCloseQuietly()
-                os?.safeCloseQuietly()
-            }
-            notificationManager.notify(
-                id,
-                getDownloadedNotificationBuilder(
-                    title = title,
-                    channelId = channelId,
-                    desUri = desUri
-                ).build()
-            )
-            return Result.success()
+        }
+        url = "$url&login=$username&password_hash=$passwordHash"
+        val desUri = applicationContext.contentResolver.getFileUriByDocId(docId) ?: return Result.failure()
+        val channelId = applicationContext.packageName + ".download_pool"
+        val notificationManager = getNotificationManager(
+            channelId,
+            applicationContext.getString(R.string.pool_download))
+        val title = "$host - pool: $id"
+        ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
+            setForegroundAsync(createDownloadingInfo(title, url, channelId, id, progress))
+        }
+        var `is`: InputStream? = null
+        val os = applicationContext.contentResolver.openOutputStream(desUri)
+        try {
+            `is` = OkHttp3Downloader(applicationContext)
+                .load(url)
+                .body?.source()?.inputStream()
+            `is`?.copyTo(os)
+        } catch (_: IOException) {
+            return Result.failure()
+        } finally {
+            ProgressInterceptor.removeListener(url)
+            `is`?.safeCloseQuietly()
+            os?.safeCloseQuietly()
+        }
+        notificationManager.notify(id + 1000000, getDownloadedNotification(title = title, channelId = channelId, desUri = desUri))
+        return Result.success()
     }
 
     private fun getNotificationManager(channelId: String, channelName: String): NotificationManager {
@@ -270,8 +260,9 @@ class DownloadWorker(
         return notificationManager
     }
 
-    private fun getDownloadingNotificationBuilder(title: String, url: String, channelId: String): NotificationCompat.Builder {
-        return NotificationCompat.Builder(applicationContext, channelId)
+    private fun createDownloadingInfo(title: String, url: String, channelId: String, notificationId: Int, progress: Int): ForegroundInfo {
+        val cancelIntent = WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
+        val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download)
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .setContentTitle(title)
@@ -279,16 +270,28 @@ class DownloadWorker(
             .setOngoing(true)
             .setAutoCancel(false)
             .setShowWhen(false)
+            .addAction(android.R.drawable.ic_delete, applicationContext.getString(R.string.dialog_cancel), cancelIntent)
+            .setProgress(100, progress, false)
+            .build()
+        return ForegroundInfo(notificationId, notification)
     }
 
-    private fun getDownloadedNotificationBuilder(title: String, channelId: String, desUri: Uri): NotificationCompat.Builder {
+    private fun getDownloadedNotification(title: String, channelId: String, desUri: Uri): Notification {
         val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
         intent.data = desUri
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            System.currentTimeMillis().toInt(),
-            intent,
-            PendingIntent.FLAG_CANCEL_CURRENT)
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                System.currentTimeMillis().toInt(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                System.currentTimeMillis().toInt(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT)
+        }
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download_done)
             .setContentTitle(title)
@@ -296,17 +299,25 @@ class DownloadWorker(
             .setOngoing(false)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
+            .build()
     }
 
-    private fun getDownloadErrorNotificationBuilder(title: String, channelId: String): NotificationCompat.Builder {
+    private fun getDownloadErrorNotification(title: String, channelId: String): Notification {
         val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
         intent.putExtra(INPUT_DATA_KEY, inputData.toByteArray())
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            System.currentTimeMillis().toInt(),
-            intent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                System.currentTimeMillis().toInt(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                System.currentTimeMillis().toInt(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT)
+        }
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setContentTitle(title)
@@ -318,5 +329,6 @@ class DownloadWorker(
                 applicationContext.getString(R.string.retry),
                 pendingIntent
             )
+            .build()
     }
 }
