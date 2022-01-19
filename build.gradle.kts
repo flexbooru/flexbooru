@@ -20,14 +20,14 @@ plugins {
 buildscript {
     extra.apply {
         set("nav_version", "2.4.0-rc01")
-        set("room_version", "2.4.0")
+        set("room_version", "2.4.1")
         set("work_version", "2.7.1")
         set("glide_version", "4.12.0")
         set("lifecycle_version", "2.4.0")
         set("exoplayer_version", "2.16.1")
         set("okhttp_version", "5.0.0-alpha.3")
         set("retrofit_version", "2.9.0")
-        set("xmlutil_version", "0.84.0-RC1")
+        set("xmlutil_version", "0.84.0")
         set("kodein_version", "7.10.0")
         set("coroutines_version", "1.6.0")
         set("serialization_version", "1.3.2")
