@@ -35,6 +35,7 @@ import onlymash.flexbooru.app.Values.Tags
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.model.common.Booru
@@ -118,7 +119,7 @@ class TagFragment : SearchBarFragment() {
                 BOORU_TYPE_DAN1 -> R.menu.tag_dan_one
                 BOORU_TYPE_DAN -> R.menu.tag_dan
                 BOORU_TYPE_MOE -> R.menu.tag_moe
-                BOORU_TYPE_GEL -> R.menu.tag_gel
+                in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY) -> R.menu.tag_gel
                 else -> R.menu.tag_sankaku
             })
         } else {

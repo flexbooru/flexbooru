@@ -26,6 +26,7 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
@@ -137,6 +138,7 @@ class BooruAdapter(private val qrCallabck: (String) -> Unit) : RecyclerView.Adap
                     BOORU_TYPE_GEL -> R.string.booru_type_gelbooru
                     BOORU_TYPE_SANKAKU -> R.string.booru_type_sankaku
                     BOORU_TYPE_SHIMMIE -> R.string.booru_type_shimmie
+                    BOORU_TYPE_GEL_LEGACY -> R.string.booru_type_gelbooru_legacy
                     else -> R.string.booru_type_unknown
                 }
             )

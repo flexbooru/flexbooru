@@ -32,7 +32,7 @@ class CommentPagingSource(
         state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)
         }
-        return if (action.booru.type == Values.BOORU_TYPE_GEL) 0 else 1
+        return if (action.booru.type == Values.BOORU_TYPE_GEL || action.booru.type == Values.BOORU_TYPE_GEL_LEGACY) 0 else 1
     }
 
     private fun ActionComment.getDanUrl(page: Int): HttpUrl =

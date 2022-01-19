@@ -107,20 +107,38 @@ class TagPagingSource(
     }
 
     private suspend fun getGelTags(action: ActionTag, page: Int): LoadResult<Int, Tag> {
-        return try {
-            val response =  booruApis.gelApi.getTags(action.getGelTagsUrl(page))
-            if (response.isSuccessful) {
-                val tags = response.body()?.tags?.map { it.toTag() } ?: listOf()
-                LoadResult.Page(
-                    data = tags,
-                    prevKey = if (page > 0) page - 1 else null,
-                    nextKey = if (tags.size == action.limit) page + 1 else null
-                )
-            } else {
-                LoadResult.Error(Throwable("code: ${response.code()}"))
+        return if (action.booru.type == Values.BOORU_TYPE_GEL_LEGACY) {
+            try {
+                val response =  booruApis.gelApi.getTagsLegacy(action.getGelTagsUrl(page))
+                if (response.isSuccessful) {
+                    val tags = response.body()?.tags?.map { it.toTag() } ?: listOf()
+                    LoadResult.Page(
+                        data = tags,
+                        prevKey = if (page > 0) page - 1 else null,
+                        nextKey = if (tags.size == action.limit) page + 1 else null
+                    )
+                } else {
+                    LoadResult.Error(Throwable("code: ${response.code()}"))
+                }
+            } catch (e: Exception) {
+                LoadResult.Error(e)
             }
-        } catch (e: Exception) {
-            LoadResult.Error(e)
+        } else {
+            try {
+                val response =  booruApis.gelApi.getTags(action.getGelTagsUrl(page))
+                if (response.isSuccessful) {
+                    val tags = response.body()?.tags?.map { it.toTag() } ?: listOf()
+                    LoadResult.Page(
+                        data = tags,
+                        prevKey = if (page > 0) page - 1 else null,
+                        nextKey = if (tags.size == action.limit) page + 1 else null
+                    )
+                } else {
+                    LoadResult.Error(Throwable("code: ${response.code()}"))
+                }
+            } catch (e: Exception) {
+                LoadResult.Error(e)
+            }
         }
     }
 }

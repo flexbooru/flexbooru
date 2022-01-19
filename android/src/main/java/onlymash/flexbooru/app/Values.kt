@@ -32,6 +32,7 @@ object Values {
     const val BOORU_TYPE_MOE = 1
     const val BOORU_TYPE_DAN1 = 2
     const val BOORU_TYPE_GEL = 3
+    const val BOORU_TYPE_GEL_LEGACY = 6
     const val BOORU_TYPE_SANKAKU = 4
     const val BOORU_TYPE_SHIMMIE = 5
     const val BOORU_TYPE_UNKNOWN = -1

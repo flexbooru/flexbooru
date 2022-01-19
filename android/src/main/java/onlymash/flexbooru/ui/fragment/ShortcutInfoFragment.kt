@@ -113,7 +113,7 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
         binding.userId.text = post.uploader.id.toString()
         binding.sourceUrl.text = post.source
         binding.urlOriginSize.text = getSize(post.width, post.height, post.size)
-        if (booru.type != Values.BOORU_TYPE_GEL && booru.type != Values.BOORU_TYPE_SHIMMIE) {
+        if (booru.type != Values.BOORU_TYPE_GEL && booru.type != Values.BOORU_TYPE_GEL_LEGACY && booru.type != Values.BOORU_TYPE_SHIMMIE) {
             binding.userContainer.setOnClickListener {
                 startActivity(Intent(requireContext(), AccountActivity::class.java).apply {
                     putExtra(AccountActivity.USER_ID_KEY, post.uploader.id)

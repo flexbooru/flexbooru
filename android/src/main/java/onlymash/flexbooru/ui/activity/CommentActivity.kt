@@ -39,6 +39,7 @@ import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Settings.pageLimit
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.action.ActionComment
@@ -156,6 +157,7 @@ class CommentActivity : KodeinActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (action.postId > 0 &&
             action.booru.type != BOORU_TYPE_GEL &&
+            action.booru.type != BOORU_TYPE_GEL_LEGACY &&
             action.booru.user != null) {
 
             menuInflater.inflate(R.menu.comment, menu)

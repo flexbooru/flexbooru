@@ -56,6 +56,7 @@ import onlymash.flexbooru.app.Settings.detailSize
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
@@ -443,7 +444,7 @@ class DetailActivity : PathActivity(),
             BOORU_TYPE_DAN -> String.format("%s://%s/posts/%d", booru.scheme, booru.host, post.id)
             BOORU_TYPE_DAN1 -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
             BOORU_TYPE_MOE -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host, post.id)
-            BOORU_TYPE_GEL -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY) -> String.format("%s://%s/index.php?page=post&s=view&id=%d", booru.scheme, booru.host, post.id)
             BOORU_TYPE_SANKAKU -> String.format("%s://%s/post/show/%d", booru.scheme, booru.host.replace("capi-v2.", "beta."), post.id)
             BOORU_TYPE_SHIMMIE -> {
                 if (booru.path.isNullOrBlank()) {

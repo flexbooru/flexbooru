@@ -29,6 +29,7 @@ import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.api.BooruApis
@@ -174,7 +175,7 @@ class AccountActivity : PathActivity() {
                 .into(binding.userAvatar)
         }
         binding.favActionButton.setOnClickListener {
-            if (booru.type == BOORU_TYPE_GEL) {
+            if (booru.type == BOORU_TYPE_GEL || booru.type == BOORU_TYPE_GEL_LEGACY) {
                 val url = "${booru.scheme}://${booru.host}/index.php?page=favorites&s=view&id=${user.id}"
                 launchUrl(url)
             } else {
@@ -189,7 +190,7 @@ class AccountActivity : PathActivity() {
             }
         }
         binding.postsActionButton.setOnClickListener {
-            if (booru.type == BOORU_TYPE_GEL) {
+            if (booru.type == BOORU_TYPE_GEL || booru.type == BOORU_TYPE_GEL_LEGACY) {
                 Snackbar.make(binding.root, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
             } else {
                 val query = String.format("user:%s", user.name)
@@ -197,7 +198,7 @@ class AccountActivity : PathActivity() {
             }
         }
         binding.commentsActionButton.setOnClickListener {
-            if (booru.type == BOORU_TYPE_GEL) {
+            if (booru.type == BOORU_TYPE_GEL || booru.type == BOORU_TYPE_GEL_LEGACY) {
                 Snackbar.make(binding.root, getString(R.string.msg_not_supported), Snackbar.LENGTH_LONG).show()
             } else {
                 val query = if (booru.type != BOORU_TYPE_DAN) "user:${user.name}" else user.name

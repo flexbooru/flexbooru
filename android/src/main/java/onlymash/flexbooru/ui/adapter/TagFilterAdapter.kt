@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.isShowAllTags
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_UNKNOWN
 import onlymash.flexbooru.data.model.common.TagFilter
 import onlymash.flexbooru.databinding.ItemTagFilterSubheadBinding
@@ -165,7 +166,7 @@ class TagFilterAdapter(private val ratings: Array<String>,
         }
         str = str.trim()
         if (orderSelected.isNotEmpty()) {
-            str = if (booruType == BOORU_TYPE_GEL) {
+            str = if (booruType == BOORU_TYPE_GEL || booruType == BOORU_TYPE_GEL_LEGACY) {
                 "$str sort:$orderSelected"
             } else {
                 "$str order:$orderSelected"

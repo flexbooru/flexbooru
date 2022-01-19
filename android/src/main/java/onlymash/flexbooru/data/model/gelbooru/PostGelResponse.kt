@@ -28,3 +28,14 @@ data class PostGelResponse (
     @SerialName("post")
     val posts: MutableList<PostGel>? = null
 )
+
+@Serializable
+@SerialName("posts")
+data class PostGelLegacyResponse (
+    @SerialName("count")
+    val count: Int,
+    @SerialName("offset")
+    val offset: Int,
+    @SerialName("post")
+    val posts: MutableList<PostGelLegacy>? = null
+)

@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionTag
 import onlymash.flexbooru.data.api.BooruApis
@@ -34,6 +35,7 @@ class SuggestionRepositoryImpl(private val booruApis: BooruApis) : SuggestionRep
             BOORU_TYPE_DAN1 -> getDan1Tags(action)
             BOORU_TYPE_MOE -> getMoeTags(action)
             BOORU_TYPE_GEL -> getGelTags(action)
+            BOORU_TYPE_GEL_LEGACY -> getGelTagsLegacy(action)
             else -> getSankakuTags(action)
         }
     }
@@ -72,6 +74,16 @@ class SuggestionRepositoryImpl(private val booruApis: BooruApis) : SuggestionRep
         return withContext(Dispatchers.IO) {
             try {
                 booruApis.gelApi.getTags(action.getGelTagsUrl(0)).body()?.tags?.map { it.toTag() }
+            } catch (_: Exception) {
+                null
+            }
+        }
+    }
+
+    private suspend fun getGelTagsLegacy(action: ActionTag): List<Tag>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                booruApis.gelApi.getTagsLegacy(action.getGelTagsUrl(0)).body()?.tags?.map { it.toTag() }
             } catch (_: Exception) {
                 null
             }

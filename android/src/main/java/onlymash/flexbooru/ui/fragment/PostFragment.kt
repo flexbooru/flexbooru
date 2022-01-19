@@ -69,6 +69,7 @@ import onlymash.flexbooru.app.Settings.safeMode
 import onlymash.flexbooru.app.Settings.showInfoBar
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.BOORU_TYPE_UNKNOWN
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
@@ -393,7 +394,7 @@ class PostFragment : SearchBarFragment() {
                     }
                     1 -> {
                         action?.apply {
-                            if (booru.user != null && booru.type != BOORU_TYPE_GEL) {
+                            if (booru.user != null && booru.type != BOORU_TYPE_GEL && booru.type != BOORU_TYPE_GEL_LEGACY) {
                                 val actionVote = ActionVote(booru, post.id)
                                 lifecycleScope.launch {
                                     voteRepository.addFav(actionVote)

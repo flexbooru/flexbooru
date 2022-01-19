@@ -22,6 +22,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
@@ -39,7 +40,7 @@ class VoteRepositoryImpl(
             BOORU_TYPE_DAN -> addDanFav(action)
             BOORU_TYPE_DAN1 -> addDan1Fav(action)
             BOORU_TYPE_MOE -> voteMoePost(action, 3)
-            BOORU_TYPE_GEL -> addGelFav(action)
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY) -> addGelFav(action)
             else -> addSankakuFav(action)
         }
     }
@@ -49,7 +50,7 @@ class VoteRepositoryImpl(
             BOORU_TYPE_DAN -> removeDanFav(action)
             BOORU_TYPE_DAN1 -> removeDan1Fav(action)
             BOORU_TYPE_MOE -> voteMoePost(action, 0)
-            BOORU_TYPE_GEL -> removeGelFav()
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY)-> removeGelFav()
             else -> removeSankakuFav(action)
         }
     }

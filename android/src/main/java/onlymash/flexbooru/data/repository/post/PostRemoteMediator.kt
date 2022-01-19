@@ -9,6 +9,7 @@ import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
@@ -36,7 +37,7 @@ class PostRemoteMediator(
         get() = db.postDao().getNextIndex(action.booru.uid, action.query)
     private fun nextPage(nextIndex: Int): Int {
         return when (action.booru.type) {
-            BOORU_TYPE_GEL -> nextIndex/action.limit
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY) -> nextIndex/action.limit
             else -> nextIndex/action.limit + 1
         }
     }
@@ -106,6 +107,7 @@ class PostRemoteMediator(
             BOORU_TYPE_MOE -> fetchPostsMoe(nextPage(nextIndex), nextIndex)
             BOORU_TYPE_SANKAKU -> fetchPostsSankaku(next, nextIndex)
             BOORU_TYPE_GEL -> fetchPostsGel(nextPage(nextIndex), nextIndex)
+            BOORU_TYPE_GEL_LEGACY -> fetchPostsGelLegacy(nextPage(nextIndex), nextIndex)
             else -> fetchPostsShimmie(nextPage(nextIndex), nextIndex)
         }
     }
@@ -217,6 +219,21 @@ class PostRemoteMediator(
 
     private suspend fun fetchPostsGel(page: Int, indexInNext: Int): List<Post> {
         val response = booruApis.gelApi.getPosts(action.getGelPostsUrl(page))
+        val raw = response.body()?.posts?.toMutableList()
+        lastResponseSize = raw?.size ?: 0
+        return raw?.mapIndexed { index, post ->
+            post.toPost(
+                booruUid = action.booru.uid,
+                query = action.query,
+                scheme = action.booru.scheme,
+                host = action.booru.host,
+                index = indexInNext + index
+            )
+        } ?: listOf()
+    }
+
+    private suspend fun fetchPostsGelLegacy(page: Int, indexInNext: Int): List<Post> {
+        val response = booruApis.gelApi.getPostsLegacy(action.getGelPostsUrl(page))
         val raw = response.body()?.posts?.toMutableList()
         lastResponseSize = raw?.size ?: 0
         return raw?.mapIndexed { index, post ->

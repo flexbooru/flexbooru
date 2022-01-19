@@ -104,6 +104,7 @@
     <string name="booru_type_danbooru_one" translatable="false">Danbooru 1.x</string>
     <string name="booru_type_moebooru" translatable="false">Moebooru</string>
     <string name="booru_type_gelbooru" translatable="false">Gelbooru</string>
+    <string name="booru_type_gelbooru_legacy" translatable="false">Gelbooru Legacy</string>
     <string name="booru_type_sankaku" translatable="false">Sankaku</string>
     <string name="booru_type_shimmie" translatable="false">Shimmie 2.x</string>
     <string name="booru_type_unknown" translatable="false">Unknown</string>

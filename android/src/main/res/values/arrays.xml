@@ -53,6 +53,7 @@
         <item>@string/booru_type_danbooru_one</item>
         <item>@string/booru_type_gelbooru</item>
         <item>@string/booru_type_shimmie</item>
+        <item>@string/booru_type_gelbooru_legacy</item>
     </string-array>
     <string-array name="booru_type_entries_values">
         <item>danbooru</item>
@@ -60,6 +61,7 @@
         <item>danbooru1</item>
         <item>gelbooru</item>
         <item>shimmie</item>
+        <item>gelbooru_legacy</item>
     </string-array>
     <string-array name="booru_scheme_entries">
         <item>@string/booru_config_scheme_http</item>

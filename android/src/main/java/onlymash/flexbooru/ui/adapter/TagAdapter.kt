@@ -24,6 +24,7 @@ import onlymash.flexbooru.app.Values.Tags
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Tag
@@ -117,6 +118,18 @@ class TagAdapter : PagingDataAdapter<Tag, TagAdapter.TagViewHolder>(TAG_COMPARAT
                     count.text = data.count.toString()
                 }
                 BOORU_TYPE_GEL -> {
+                    tagName.text = data.name
+                    tagType.text = when (data.category) {
+                        Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)
+                        Tags.TYPE_ARTIST -> res.getString(R.string.tag_type_artist)
+                        Tags.TYPE_COPYRIGHT -> res.getString(R.string.tag_type_copyright)
+                        Tags.TYPE_CHARACTER -> res.getString(R.string.tag_type_character)
+                        Tags.TYPE_META -> res.getString(R.string.tag_type_meta)
+                        else -> res.getString(R.string.tag_type_unknown)
+                    }
+                    count.text = data.count.toString()
+                }
+                BOORU_TYPE_GEL_LEGACY -> {
                     tagName.text = data.name
                     tagType.text = when (data.category) {
                         Tags.TYPE_GENERAL -> res.getString(R.string.tag_type_general)

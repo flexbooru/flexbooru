@@ -27,6 +27,7 @@ import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
@@ -51,6 +52,7 @@ private const val CONFIG_TYPE_DAN = "danbooru"
 private const val CONFIG_TYPE_DAN1 = "danbooru1"
 private const val CONFIG_TYPE_MOE = "moebooru"
 private const val CONFIG_TYPE_GEL = "gelbooru"
+private const val CONFIG_TYPE_GEL_LEGACY = "gelbooru_legacy"
 private const val CONFIG_TYPE_SANKAKU = "sankaku"
 private const val CONFIG_TYPE_SHIMMIE = "shimmie"
 
@@ -204,6 +206,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
             BOORU_TYPE_DAN -> CONFIG_TYPE_DAN
             BOORU_TYPE_DAN1 -> CONFIG_TYPE_DAN1
             BOORU_TYPE_GEL -> CONFIG_TYPE_GEL
+            BOORU_TYPE_GEL_LEGACY -> CONFIG_TYPE_GEL_LEGACY
             BOORU_TYPE_SHIMMIE -> CONFIG_TYPE_SHIMMIE
             else -> CONFIG_TYPE_SANKAKU
         }
@@ -215,6 +218,7 @@ class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
             CONFIG_TYPE_DAN -> BOORU_TYPE_DAN
             CONFIG_TYPE_DAN1 -> BOORU_TYPE_DAN1
             CONFIG_TYPE_GEL -> BOORU_TYPE_GEL
+            CONFIG_TYPE_GEL_LEGACY -> BOORU_TYPE_GEL_LEGACY
             CONFIG_TYPE_SHIMMIE -> BOORU_TYPE_SHIMMIE
             else -> BOORU_TYPE_SANKAKU
         }

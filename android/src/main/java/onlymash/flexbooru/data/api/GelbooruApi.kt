@@ -18,9 +18,7 @@ package onlymash.flexbooru.data.api
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import onlymash.flexbooru.app.Keys
-import onlymash.flexbooru.data.model.gelbooru.CommentGelResponse
-import onlymash.flexbooru.data.model.gelbooru.PostGelResponse
-import onlymash.flexbooru.data.model.gelbooru.TagGelResponse
+import onlymash.flexbooru.data.model.gelbooru.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -33,6 +31,12 @@ interface GelbooruApi {
 
     @GET
     suspend fun getTags(@Url httpUrl: HttpUrl): Response<TagGelResponse>
+
+    @GET
+    suspend fun getPostsLegacy(@Url httpUrl: HttpUrl): Response<PostGelLegacyResponse>
+
+    @GET
+    suspend fun getTagsLegacy(@Url httpUrl: HttpUrl): Response<TagGelLegacyResponse>
 
     @GET
     suspend fun getComments(@Url httpUrl: HttpUrl): Response<CommentGelResponse>

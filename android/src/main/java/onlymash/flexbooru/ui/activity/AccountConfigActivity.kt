@@ -28,6 +28,7 @@ import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.HASH_SALT_CONTAINED
@@ -111,7 +112,7 @@ class AccountConfigActivity : KodeinActivity() {
         binding.setAccount.isVisible = false
         binding.progressBar.isVisible = true
         when (booru.type) {
-            BOORU_TYPE_GEL -> {
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY) -> {
                 lifecycleScope.launch {
                     val result = userRepository.gelLogin(username, userToken, booru)
                     handlerResult(result)

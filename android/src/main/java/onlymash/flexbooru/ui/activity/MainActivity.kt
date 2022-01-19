@@ -68,6 +68,7 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.data.api.AppUpdaterApi
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
@@ -149,7 +150,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             DRAWER_ITEM_ID_TAG_BLACKLIST -> {
                 if (booruViewModel.currentBooru?.type ?: BOORU_TYPE_UNKNOWN
-                    in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1, BOORU_TYPE_GEL)) {
+                    in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1, BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY)) {
                     toActivity(TagBlacklistActivity::class.java)
                 } else {
                     notSupportedToast()
@@ -230,7 +231,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private fun setupNavigationMenu(booruType: Int) {
         when (booruType) {
             BOORU_TYPE_SANKAKU -> setupNavigationMenu(4, R.menu.navigation_sankaku, R.navigation.main_navigation_sankaku)
-            BOORU_TYPE_GEL -> setupNavigationMenu(2, R.menu.navigation_gel, R.navigation.main_navigation_gel)
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY) -> setupNavigationMenu(2, R.menu.navigation_gel, R.navigation.main_navigation_gel)
             BOORU_TYPE_SHIMMIE -> setupNavigationMenu(1, R.menu.navigation_shimmie, R.navigation.main_navigation_shimmie)
             else -> setupNavigationMenu(5, R.menu.navigation, R.navigation.main_navigation)
         }

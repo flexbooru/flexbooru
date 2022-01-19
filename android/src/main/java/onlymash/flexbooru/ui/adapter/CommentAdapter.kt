@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.model.common.Booru
@@ -76,7 +77,7 @@ class CommentAdapter(
         init {
             avatar.setOnClickListener {
                 comment?.let {
-                    if (it.booruType != BOORU_TYPE_GEL) {
+                    if (it.booruType != BOORU_TYPE_GEL && it.booruType != BOORU_TYPE_GEL_LEGACY) {
                         val context = itemView.context
                         context.startActivity(Intent(context, AccountActivity::class.java).apply {
                             putExtra(AccountActivity.USER_ID_KEY, it.creatorId)
@@ -88,7 +89,7 @@ class CommentAdapter(
             }
             itemView.setOnClickListener {
                 comment?.let {
-                    if (it.booruType != BOORU_TYPE_GEL) {
+                    if (it.booruType != BOORU_TYPE_GEL && it.booruType != BOORU_TYPE_GEL_LEGACY) {
                         SearchActivity.startSearch(itemView.context, "id:${it.postId}")
                     }
                 }
@@ -121,7 +122,7 @@ class CommentAdapter(
             commentDate.text = itemView.context.formatDate(data.time)
             commentView.setComment(data.body)
             val user = booru.user
-            if (user != null && data.booruType != BOORU_TYPE_GEL) {
+            if (user != null && data.booruType != BOORU_TYPE_GEL && data.booruType != BOORU_TYPE_GEL_LEGACY) {
                 if (user.id == data.creatorId) {
                     menuView.menu.clear()
                     MenuInflater(itemView.context).inflate(R.menu.comment_item_me, menuView.menu)

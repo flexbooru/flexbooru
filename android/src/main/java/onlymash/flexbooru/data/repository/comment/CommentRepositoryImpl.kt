@@ -37,7 +37,7 @@ class CommentRepositoryImpl(private val booruApis: BooruApis) : CommentRepositor
                 pageSize = action.limit,
                 enablePlaceholders = true
             ),
-            initialKey = if (action.booru.type == Values.BOORU_TYPE_GEL) 0 else 1
+            initialKey = if (action.booru.type == Values.BOORU_TYPE_GEL || action.booru.type == Values.BOORU_TYPE_GEL_LEGACY) 0 else 1
         ) {
             CommentPagingSource(action, booruApis)
         }.flow

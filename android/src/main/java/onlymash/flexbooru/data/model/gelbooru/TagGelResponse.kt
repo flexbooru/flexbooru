@@ -26,3 +26,12 @@ data class TagGelResponse(
     @SerialName("tag")
     val tags: List<TagGel>?
 )
+
+@Serializable
+@SerialName("tags")
+data class TagGelLegacyResponse(
+    @SerialName("type")
+    val type: String,
+    @SerialName("tag")
+    val tags: List<TagGelLegacy>?
+)
