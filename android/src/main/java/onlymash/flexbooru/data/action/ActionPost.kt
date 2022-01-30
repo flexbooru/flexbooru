@@ -146,12 +146,13 @@ data class ActionPost(
     }
 
     fun getPostsMoeUrl(page: Int): HttpUrl {
+        val includeVotes = if (booru.host.equals("hypnohub.net", ignoreCase = true)) "0" else "1"
         val builder = HttpUrl.Builder()
             .scheme(booru.scheme)
             .host(booru.host)
             .addPathSegment("post.json")
             .addQueryParameter("include_tags", "1")
-            .addQueryParameter("include_votes", "1")
+            .addQueryParameter("include_votes", includeVotes)
             .addQueryParameter("api_version", "2")
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())

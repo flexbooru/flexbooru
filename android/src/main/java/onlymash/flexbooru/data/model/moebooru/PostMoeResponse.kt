@@ -10,7 +10,7 @@ data class PostMoeResponse(
     @SerialName("tags")
     val tags: Map<String, String>,
     @SerialName("votes")
-    val votes: Map<String, Int>
+    val votes: Map<String, Int> = mapOf()
 )
 
 @Serializable
