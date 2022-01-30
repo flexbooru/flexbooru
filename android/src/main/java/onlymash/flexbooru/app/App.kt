@@ -18,6 +18,7 @@ package onlymash.flexbooru.app
 import android.app.Application
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -74,7 +75,9 @@ class App : Application(), DIAware {
     }
 
     private fun initial() {
-        DynamicColors.applyToActivitiesIfAvailable(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            DynamicColors.applyToActivitiesIfAvailable(this)
+        }
         AppCompatDelegate.setDefaultNightMode(nightMode)
         DrawerImageLoader.init(drawerImageLoader)
         if (!Settings.isOrderSuccess) {

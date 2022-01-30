@@ -45,7 +45,7 @@
     <color name="colorNavigationBarBlack">@color/system_bar_black</color>
     <color name="colorCardBackground">@color/background_card_dark</color>
     <color name="colorCardBackgroundBlack">@color/grey_950</color>
-    <color name="colorSearchBar">@color/grey_900</color>
+    <color name="colorSearchBar">#191919</color>
     <color name="colorSearchBarBlack">@color/grey_950</color>
 
     <color name="background_text_info">@color/background_card_dark</color>

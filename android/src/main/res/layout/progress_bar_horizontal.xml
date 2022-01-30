@@ -14,13 +14,11 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<ProgressBar
+<com.google.android.material.progressindicator.LinearProgressIndicator
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/progress_bar_horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:indeterminate="true"
-    android:layout_marginBottom="@dimen/margin_vertical_progressbar"
-    android:visibility="gone"
-    style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+    android:visibility="gone" />

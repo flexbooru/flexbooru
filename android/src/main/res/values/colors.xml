@@ -56,7 +56,7 @@
     <color name="background_tint_account_action">@color/colorPrimary</color>
 
     <color name="background_card_light">@color/white</color>
-    <color name="background_card_dark">@color/grey_850</color>
+    <color name="background_card_dark">@color/grey_900</color>
 
     <color name="background_text_info">@color/grey_5</color>
     <color name="background_button">@color/colorPrimary</color>

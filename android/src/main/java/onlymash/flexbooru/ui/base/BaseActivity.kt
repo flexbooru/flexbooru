@@ -20,48 +20,19 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import onlymash.flexbooru.R
-import onlymash.flexbooru.app.Settings.isNightThemeDark
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.ui.activity.*
+import onlymash.flexbooru.ui.helper.isNightEnable
 
 abstract class BaseActivity : AppCompatActivity() {
 
     private fun getThemeRes(): Int {
         return when (this) {
-            is MainActivity -> {
-                if (isNightThemeDark) {
-                    R.style.AppTheme_NoActionBar_Scrim_Main
-                } else {
-                    R.style.AppTheme_Black_NoActionBar_Scrim_Main
-                }
-            }
-            is SearchActivity -> {
-                if (isNightThemeDark) {
-                    R.style.AppTheme_NoActionBar_Scrim_NoAnimation
-                } else {
-                    R.style.AppTheme_Black_NoActionBar_Scrim_NoAnimation
-                }
-            }
-            is AccountConfigActivity -> {
-                if (isNightThemeDark) {
-                    R.style.AppTheme_NoActionBar_Animation
-                } else {
-                    R.style.AppTheme_Black_NoActionBar_Animation
-                }
-            }
-            is ScannerActivity -> {
-                if (isNightThemeDark) {
-                    R.style.AppTheme_Animation
-                } else {
-                    R.style.AppTheme_Black_Animation
-                }
-            }
-            else -> {
-                if (isNightThemeDark) {
-                    R.style.AppTheme_ScrimNavBar_Animation
-                } else {
-                    R.style.AppTheme_Black_ScrimNavBar_Animation
-                }
-            }
+            is MainActivity -> R.style.AppTheme_Black_NoActionBar_Scrim_Main
+            is SearchActivity -> R.style.AppTheme_Black_NoActionBar_Scrim_NoAnimation
+            is AccountConfigActivity -> R.style.AppTheme_Black_NoActionBar_Animation
+            is ScannerActivity -> R.style.AppTheme_Black_Animation
+            else -> R.style.AppTheme_Black_ScrimNavBar_Animation
         }
     }
 
@@ -71,7 +42,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
         if (this !is DetailActivity) {
-            setTheme(getThemeRes())
+            if (resources.configuration.isNightEnable() && !Settings.isNightThemeDark) {
+                setTheme(getThemeRes())
+            }
         }
         super.onCreate(savedInstanceState)
     }

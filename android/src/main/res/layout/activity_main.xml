@@ -35,13 +35,6 @@
             android:layout_height="match_parent"
             app:defaultNavHost="true" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_normal"
-            android:background="@drawable/shadow"
-            app:layout_anchor="@id/bottom_nav_view"
-            app:layout_anchorGravity="top"/>
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"

@@ -26,16 +26,9 @@
     <style name="AppTheme" parent="BaseTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorError">@color/colorError</item>
         <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorSurface">@color/colorSurface</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="colorOnBackground">@color/colorOnBackground</item>
-        <item name="colorOnError">@color/colorOnError</item>
-        <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="scrimBackground">@color/scrimBackground</item>
         <item name="preferenceTheme">@style/PreferenceTheme</item>
         <item name="alertDialogTheme">@style/AlertDialog.DayNight</item>
@@ -67,12 +60,8 @@
         <item name="android:navigationBarColor">@color/colorNavigationBarScrim</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.Launcher">
-        <item name="android:windowBackground">@drawable/background_launcher</item>
-        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/launcher_icon</item>
-    </style>
-
     <style name="AppTheme.NoActionBar.Scrim.Main">
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/launcher_icon</item>
         <!-- MaterialDrawer specific values -->
         <item name="materialDrawerStyle">@style/MaterialDrawerStyle</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle</item>
@@ -138,11 +127,8 @@
         <item name="android:navigationBarColor">@color/colorNavigationBarScrim</item>
     </style>
 
-    <style name="AppTheme.Black.NoActionBar.Launcher">
-        <item name="android:windowBackground">@drawable/background_launcher</item>
-    </style>
-
     <style name="AppTheme.Black.NoActionBar.Scrim.Main">
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/launcher_icon</item>
         <!-- MaterialDrawer specific values -->
         <item name="materialDrawerStyle">@style/MaterialDrawerStyle</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle</item>

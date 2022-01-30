@@ -40,7 +40,7 @@
         <item name="cardElevation">@dimen/elevation_size</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="contentPadding">0dp</item>
-        <item name="cardBackgroundColor">@color/colorCardBackground</item>
+        <item name="cardBackgroundColor">?android:attr/colorBackground</item>
     </style>
 
     <style name="MyCardView.Searchbar">

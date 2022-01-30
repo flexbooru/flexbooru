@@ -57,5 +57,5 @@
     <dimen name="gesture_exclusion_height">190dp</dimen>
     <dimen name="gesture_exclusion_offset">60dp</dimen>
 
-    <dimen name="nav_bar_height">84dp</dimen>
+    <dimen name="nav_bar_height">80dp</dimen>
 </resources>

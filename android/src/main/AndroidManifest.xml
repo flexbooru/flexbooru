@@ -51,26 +51,48 @@
         android:theme="@style/AppTheme"
         android:hasFragileUserData="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".ui.activity.HistoryActivity" />
-        <activity android:name=".ui.activity.WhatAnimeActivity"/>
-        <activity android:name=".ui.activity.SauceNaoActivity"/>
-        <activity android:name=".ui.activity.TagBlacklistActivity"/>
-        <activity android:name=".ui.activity.PurchaseActivity"/>
-        <activity android:name=".ui.activity.AboutActivity"/>
-        <activity android:name=".ui.activity.CopyrightActivity"/>
+        <activity
+            android:name=".ui.activity.HistoryActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.WhatAnimeActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.SauceNaoActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.TagBlacklistActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.PurchaseActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.CopyrightActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
         <activity
             android:name=".ui.activity.MuzeiActivity"
-            android:exported="true"/>
-        <activity android:name=".ui.activity.CommentActivity"/>
-        <activity android:name=".ui.activity.SearchActivity"/>
-        <activity android:name=".ui.activity.SettingsActivity"/>
+            android:exported="true"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.CommentActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar.Scrim.NoAnimation"/>
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
         <activity
             android:name=".ui.activity.AccountActivity"
             android:parentActivityName=".ui.activity.MainActivity"/>
         <activity
             android:name=".ui.activity.AccountConfigActivity"
             android:label="@string/title_account_config"
-            android:parentActivityName=".ui.activity.MainActivity"/>
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.Animation"/>
         <activity
             android:name=".ui.activity.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar.Scrim.NoAnimation.Detail"
@@ -78,13 +100,16 @@
         <activity
             android:name=".ui.activity.ScannerActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".ui.activity.BooruActivity"/>
+            android:parentActivityName=".ui.activity.BooruActivity"
+            android:theme="@style/AppTheme.Animation"/>
         <activity
             android:name=".ui.activity.BooruConfigActivity"
-            android:parentActivityName=".ui.activity.BooruActivity"/>
+            android:parentActivityName=".ui.activity.BooruActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
         <activity
             android:name=".ui.activity.BooruActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -96,7 +121,7 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar.Launcher"
+            android:theme="@style/AppTheme.NoActionBar.Scrim.Main"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>

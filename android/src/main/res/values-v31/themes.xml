@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BaseTheme" parent="Theme.Material3.DayNight">
+        <item name="android:windowLightStatusBar" >@bool/is_light_status_bar</item>
+        <item name="android:windowLightNavigationBar" >@bool/is_light_navigation_bar</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:enforceNavigationBarContrast" >false</item>
+    </style>
+</resources>
