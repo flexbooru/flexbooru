@@ -152,7 +152,7 @@ object Settings {
         get() = nightThemeString == "dark"
 
     val isRoundedGrid: Boolean
-        get() = sp.getBoolean(GRID_ROUNDED_KEY, false)
+        get() = sp.getBoolean(GRID_ROUNDED_KEY, true)
 
     val gridMode: String
         get() = sp.getString(
@@ -176,8 +176,8 @@ object Settings {
     private var gridWidthString: String
         get() = sp.getString(
             GRID_WIDTH_KEY,
-            GRID_WIDTH_NORMAL
-        ) ?: GRID_WIDTH_NORMAL
+            GRID_WIDTH_SMALL
+        ) ?: GRID_WIDTH_SMALL
         set(value) = sp.edit().putString(
             GRID_WIDTH_KEY, value).apply()
 

@@ -43,7 +43,7 @@
         <SwitchPreference
             app:key="settings_grid_rounded"
             app:title="@string/settings_grid_rounded"
-            app:defaultValue="false"
+            app:defaultValue="true"
             app:summaryOn="@string/switch_yes"
             app:summaryOff="@string/switch_no"/>
 
@@ -67,7 +67,7 @@
             app:key="settings_grid_width"
             app:entries="@array/settings_grid_width_entries"
             app:entryValues="@array/settings_grid_width_entries_values"
-            app:defaultValue="normal"
+            app:defaultValue="small"
             app:title="@string/settings_grid_width"
             app:useSimpleSummaryProvider="true" />
 
