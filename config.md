@@ -8,7 +8,7 @@ nav_order: 2
 
 * [danbooru](booru://RGFuYm9vcnVAQEBodHRwc0BAQGRhbmJvb3J1LmRvbm1haS51c0BAQDBAQEA)
 
-* [safebooru](booru://U2FmZWJvb3J1QEBAaHR0cHNAQEBzYWZlYm9vcnUuZG9ubWFpLnVzQEBAMEBAQA)
+* [safebooru(danbooru)](booru://U2FmZWJvb3J1QEBAaHR0cHNAQEBzYWZlYm9vcnUuZG9ubWFpLnVzQEBAMEBAQA)
 
 * [yande.re](booru://WWFuZGUucmVAQEBodHRwc0BAQHlhbmRlLnJlQEBAMUBAQGNob3VqaW4tc3RlaW5lci0teW91ci1wYXNzd29yZC0t)
 
@@ -33,3 +33,5 @@ nav_order: 2
 * [sankaku](booru://U2Fua2FrdUBAQGh0dHBzQEBAY2FwaS12Mi5zYW5rYWt1Y29tcGxleC5jb21AQEA0QEBA)
 
 * [rule34.paheal.net](booru://cnVsZTM0LnBhaGVhbC5uZXRAQEBodHRwQEBAcnVsZTM0LnBhaGVhbC5uZXRAQEA1QEBA)
+
+* [safebooru.org](booru://c2FmZWJvb3J1Lm9yZ0BAQGh0dHBzQEBAc2FmZWJvb3J1Lm9yZ0BAQDZAQEA)
