@@ -179,7 +179,7 @@
     <string name="settings_post_size_origin">原圖</string>
     <string name="settings_grid_mode">網格模式</string>
     <string name="settings_grid_mode_fixed">固定比例</string>
-    <string name="settings_grid_mode_staggered">瀑布流</string>
+    <string name="settings_grid_mode_staggered">交錯</string>
     <string name="settings_grid_ratio">網格比例</string>
     <string name="settings_grid_width">網格欄寬</string>
     <string name="settings_grid_width_small">小</string>
