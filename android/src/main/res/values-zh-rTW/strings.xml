@@ -275,7 +275,7 @@
     <string name="tab_start_date">起始日期</string>
     <string name="tab_end_date">截止日期</string>
     <string name="sauce_nao_help">支援</string>
-    <string name="sauce_nao_change_api_key">更改 Api 金鑰</string>
+    <string name="sauce_nao_change_api_key">變更 Api 金鑰</string>
     <string name="sauce_nao_get_api_key">取得 Api 金鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘次數：%01$d</string>
     <string name="sauce_nao_api_key_unset">未設定 SauceNao 之 Api 金鑰</string>
