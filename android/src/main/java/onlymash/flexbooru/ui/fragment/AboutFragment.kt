@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
+ * Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -39,7 +39,7 @@ class AboutFragment : PreferenceFragmentCompat() {
                 context?.launchUrl("https://blog.fiepi.com")
             }
             "about_author_email" -> {
-                val email = "mailto:im@fiepi.me"
+                val email = "mailto:fiepi.dev@gmail.com"
                 context?.startActivity(Intent.createChooser(Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = email.toUri()
@@ -50,13 +50,6 @@ class AboutFragment : PreferenceFragmentCompat() {
             }
             "about_feedback_discord" -> {
                 context?.launchUrl("https://discord.gg/zxAX5Jh")
-            }
-            "about_feedback_email" -> {
-                val email = "mailto:feedback@fiepi.me"
-                context?.startActivity(Intent.createChooser(Intent().apply {
-                    action = Intent.ACTION_SENDTO
-                    data = email.toUri()
-                }, getString(R.string.share_via)))
             }
             "about_feedback_github" -> {
                 context?.launchUrl("https://github.com/flexbooru/flexbooru/issues")
