@@ -53,12 +53,12 @@ android {
             }
         }
     }
-    compileSdk = 31
-    buildToolsVersion = "31.0.0"
+    compileSdk = 32
+    buildToolsVersion = "32.0.0"
     defaultConfig {
         applicationId = "onlymash.flexbooru.play"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 32
         versionCode = verCode
         versionName = "3.0.2"
         versionNameSuffix = ".c$verCode"
@@ -104,7 +104,8 @@ android {
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-Xopt-in=kotlinx.coroutines.FlowPreview",
             "-Xopt-in=androidx.paging.ExperimentalPagingApi",
-            "-Xopt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi"
+            "-Xopt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
+            "-Xjvm-default=compatibility"
         )
     }
     kapt {
@@ -146,18 +147,18 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":common"))
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
     implementation("org.kodein.di:kodein-di-framework-android-core:$kodeinVersion")
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
-    implementation("androidx.annotation:annotation:1.4.0-alpha01")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.fragment:fragment-ktx:1.4.1")
+    implementation("androidx.annotation:annotation:1.4.0-alpha02")
+    implementation("androidx.appcompat:appcompat:1.6.0-alpha01")
+    implementation("androidx.activity:activity-ktx:1.5.0-alpha03")
+    implementation("androidx.fragment:fragment-ktx:1.5.0-alpha03")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.core:core-ktx:1.8.0-alpha03")
+    implementation("androidx.core:core-ktx:1.9.0-alpha01")
     implementation("androidx.recyclerview:recyclerview:1.3.0-alpha01")
     implementation("androidx.viewpager2:viewpager2:1.1.0-beta01")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
@@ -185,9 +186,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-service:$lifecycleVersion")
     // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
-    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.6.0-alpha02")
+    implementation("com.google.android.material:material:1.6.0-alpha03")
     implementation("com.google.android:flexbox:2.0.1")
     implementation("com.google.android.apps.muzei:muzei-api:3.4.1")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -197,12 +198,12 @@ dependencies {
     implementation("com.mikepenz:materialdrawer:9.0.0-b01")
     implementation("com.google.zxing:core:3.4.1")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
-    implementation("com.google.firebase:firebase-analytics-ktx:20.0.2")
-    implementation("com.google.firebase:firebase-crashlytics:18.2.7")
-    implementation("com.google.android.gms:play-services-ads:20.5.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:20.1.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.2.8")
+    implementation("com.google.android.gms:play-services-ads:20.6.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.android.billingclient:billing-ktx:4.0.0")
+    implementation("com.android.billingclient:billing-ktx:4.1.0")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
@@ -220,8 +221,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.7.3")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.4.1-alpha03")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4-alpha03")
-    androidTestImplementation("androidx.test:runner:1.4.1-alpha03")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-alpha03")
+    androidTestImplementation("androidx.test:core:1.4.1-alpha04")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4-alpha04")
+    androidTestImplementation("androidx.test:runner:1.5.0-alpha01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-alpha04")
 }

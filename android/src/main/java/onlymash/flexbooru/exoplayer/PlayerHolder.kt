@@ -22,7 +22,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
@@ -68,7 +68,7 @@ class PlayerHolder {
     }
 
     //start play
-    fun start(context: Context, uri: Uri, playerView: PlayerView) {
+    fun start(context: Context, uri: Uri, playerView: StyledPlayerView) {
         playerView.player = player
         val mediaSource = createExtractorMediaSource(context, uri)
         val index = playerStates.indexOfFirst { it.uri == uri }

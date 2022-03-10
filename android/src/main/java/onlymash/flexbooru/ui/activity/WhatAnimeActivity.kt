@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -278,7 +278,7 @@ class WhatAnimeActivity : BaseActivity() {
 
     class AnimePlayerDialog : BaseBottomSheetDialog() {
 
-        private var playerView: PlayerView? = null
+        private var playerView: StyledPlayerView? = null
         private lateinit var behavior: BottomSheetBehavior<View>
         private lateinit var binding: FragmentAnimePlayerBinding
 

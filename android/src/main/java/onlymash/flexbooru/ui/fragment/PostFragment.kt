@@ -16,6 +16,7 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.app.Activity
+import android.app.SharedElementCallback
 import android.content.*
 import android.os.Build
 import android.os.Bundle
@@ -25,7 +26,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.SharedElementCallback
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope

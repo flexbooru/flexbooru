@@ -40,7 +40,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.POST_SIZE_LARGER
 import onlymash.flexbooru.app.Settings.POST_SIZE_ORIGIN
@@ -128,7 +128,7 @@ class DetailAdapter(
                 }
             }
             url.isVideo() -> {
-                val playerView = LayoutInflater.from(layout.context).inflate(R.layout.item_exoplayer, null) as PlayerView
+                val playerView = LayoutInflater.from(layout.context).inflate(R.layout.item_exoplayer, null) as StyledPlayerView
                 playerView.apply {
                     tag = String.format("player_%d", position)
                     transitionName = String.format("post_%d", post.id)

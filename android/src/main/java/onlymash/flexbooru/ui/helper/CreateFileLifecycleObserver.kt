@@ -30,7 +30,7 @@ class CreateFileLifecycleObserver(
     private lateinit var createFile: ActivityResultLauncher<String>
 
     override fun onCreate(owner: LifecycleOwner) {
-        createFile = registry.register("create_dcoument_file", ActivityResultContracts.CreateDocument()) { uri ->
+        createFile = registry.register("create_dcoument_file", ActivityResultContracts.CreateDocument("*/*")) { uri ->
             if (uri != null) {
                 handleUriCallback.invoke(uri)
             }
