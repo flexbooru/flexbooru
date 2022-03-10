@@ -47,7 +47,7 @@
         <Preference
             app:key="about_author_email"
             app:title="@string/about_author_email"
-            app:summary="im@fiepi.me"/>
+            app:summary="fiepi.dev@gmail.com"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -62,10 +62,6 @@
             app:key="about_feedback_discord"
             app:title="@string/about_feedback_discord"
             app:summary="https://discord.gg/zxAX5Jh"/>
-        <Preference
-            app:key="about_feedback_email"
-            app:title="@string/about_feedback_email"
-            app:summary="feedback@fiepi.me"/>
         <Preference
             app:key="about_feedback_github"
             app:title="@string/about_feedback_github"
