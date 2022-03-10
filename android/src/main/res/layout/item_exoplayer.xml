@@ -21,4 +21,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:show_timeout="@integer/exoplayer_show_control_timeout_ms"
-    app:controller_layout_id="@layout/exoplayer_playback_control" />
+    app:controller_layout_id="@layout/exoplayer_controller" />
