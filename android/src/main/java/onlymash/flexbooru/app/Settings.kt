@@ -69,6 +69,7 @@ object Settings {
     private const val ORDER_TOKEN_KEY = "order_token"
     const val ORDER_SUCCESS_KEY = "order_success"
     const val ORDER_DEVICE_ID_KEY = "device_id"
+    private const val ORDER_CHECK_TIME = "order_check_time"
     private const val GOOGLE_SIGN_KEY = "google_sign"
     private const val IS_AVAILABLE_STORE = "is_available_store"
 
@@ -287,4 +288,8 @@ object Settings {
                 else -> DohProviders.buildCloudflare(OkHttpClient())
             }
         }
+
+    var orderCheckTime: Long
+        get() = sp.getLong(ORDER_CHECK_TIME, 0)
+        set(value) = sp.edit().putLong(ORDER_CHECK_TIME, value).apply()
 }

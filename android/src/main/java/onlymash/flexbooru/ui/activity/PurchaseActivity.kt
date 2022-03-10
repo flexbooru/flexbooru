@@ -62,6 +62,7 @@ class PurchaseActivity : BaseActivity() {
                 val responseCode = billingResult.responseCode
                 if (responseCode == BillingClient.BillingResponseCode.OK || responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                     Settings.isOrderSuccess = true
+                    Settings.orderTime = System.currentTimeMillis()
                     val index = purchases?.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
                     if (index != null && index >= 0) {
                         val purchase = purchases[index]
@@ -134,6 +135,7 @@ class PurchaseActivity : BaseActivity() {
                         val result = client.launchBillingFlow(this, billingFlowParams)
                         if (result.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                             Settings.isOrderSuccess = true
+                            Settings.orderTime = System.currentTimeMillis()
                         }
                     }
                 }

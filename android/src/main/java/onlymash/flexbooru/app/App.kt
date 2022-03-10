@@ -95,7 +95,11 @@ class App : Application(), DIAware {
         val isPlayVersion = getSignMd5() == "777296a0fe4baa88c783d1cb18bdf1f2"
         isGoogleSign = isPlayVersion
         if (isPlayVersion) {
-            checkOrderFromCache()
+            val time = System.currentTimeMillis()
+            if (!Settings.isOrderSuccess || time - Settings.orderTime > 7*24*60*60*1000) {
+                Settings.orderTime = time
+                checkOrderFromCache()
+            }
         } else {
             val id = orderId
             if (id.isNotEmpty()) {
