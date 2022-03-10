@@ -26,10 +26,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
+import okhttp3.HttpUrl
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.app.Settings.pageLimit
@@ -39,6 +39,7 @@ import onlymash.flexbooru.data.action.ActionPool
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.repository.pool.PoolRepositoryImpl
 import onlymash.flexbooru.extension.asMergedLoadStates
+import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountConfigActivity
 import onlymash.flexbooru.ui.activity.PurchaseActivity
@@ -48,7 +49,6 @@ import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.SearchBarFragment
 import onlymash.flexbooru.ui.viewmodel.PoolViewModel
 import onlymash.flexbooru.ui.viewmodel.getPoolViewModel
-import onlymash.flexbooru.worker.DownloadWorker
 
 class PoolFragment : SearchBarFragment() {
 
@@ -165,15 +165,23 @@ class PoolFragment : SearchBarFragment() {
                     return@setItems
                 }
                 when (which) {
-                    0 -> {
-                        DownloadWorker.downloadPool(activity, poolId, DownloadWorker.POOL_DOWNLOAD_TYPE_JPGS, booru)
-                    }
-                    1 -> {
-                        DownloadWorker.downloadPool(activity, poolId, DownloadWorker.POOL_DOWNLOAD_TYPE_PNGS, booru)
-                    }
+                    0 -> downloadPool(booru, poolId, "jpeg")
+                    1 -> downloadPool(booru, poolId, "png")
                 }
             }
             .create()
             .show()
+    }
+
+    private fun downloadPool(booru: Booru, poolId: Int, imageType: String) {
+        val url = HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegments("/pool/zip/$poolId")
+            .addQueryParameter(imageType, "1")
+            .addQueryParameter("login", booru.user?.name)
+            .addQueryParameter("password_hash", booru.user?.token)
+            .build()
+        context?.launchUrl(url.toString())
     }
 }
