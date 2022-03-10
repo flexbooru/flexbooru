@@ -58,7 +58,7 @@ class PlayerHolder {
     private var player: ExoPlayer? = null
 
     private fun createExtractorMediaSource(context: Context, uri: Uri): MediaSource {
-        val sourceFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory().setUserAgent(PC_USER_AGENT))
+        val sourceFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory().setUserAgent(PC_USER_AGENT).setAllowCrossProtocolRedirects(true))
         val cacheSourceFactory = CacheDataSource.Factory().apply {
             setCache(cache())
             setUpstreamDataSourceFactory(sourceFactory)
