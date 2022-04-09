@@ -17,7 +17,7 @@
     <string name="app_description">Ein Booru-Client für Android; Unterstützung für Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Beiträge</string>
-    <string name="title_search">Suche</string>
+    <string name="title_search">Suchen</string>
     <string name="title_popular">Beliebt</string>
     <string name="title_manage_boorus">Boorus verwalten</string>
     <string name="title_settings">Einstellungen</string>
@@ -35,9 +35,9 @@
     <string name="title_tag_blacklist">Tag-Blacklist</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Welcher Anime</string>
-    <string name="title_history">Geschichte</string>
+    <string name="title_history">Verlauf</string>
     <string name="history_clear_all">Alles löschen</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="history_clear_all_content">Der Verlauf wird gelöscht.</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Diese App bewerten</string>
     <string name="about_app_translation">Übersetzung</string>
@@ -103,13 +103,13 @@
     <string name="booru_config_info">Booru Info</string>
     <string name="booru_config_scheme">Schema</string>
     <string name="booru_config_host">Host</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">Pfad</string>
     <string name="booru_config_type">Typ</string>
-    <string name="booru_config_hash_salt">Hash salt</string>
+    <string name="booru_config_hash_salt">Hashsalz</string>
     <string name="booru_config_name_cant_empty">Der Name darf nicht leer sein.</string>
     <string name="booru_config_host_cant_empty">Der Host darf nicht leer sein.</string>
     <string name="booru_config_host_invalid">Ungültiger Hostname.</string>
-    <string name="booru_config_hash_salt_cant_empty">The hash salt cannot be empty.</string>
+    <string name="booru_config_hash_salt_cant_empty">Das Hashsalz darf nicht leer sein.</string>
     <string name="booru_config_dialog_title_delete">Bist du sicher, dass du diesen Booru löschen möchtest?</string>
     <string name="booru_config_hash_salt_must_contain_yp">Hashsalz muss Text enthalten: Ihr Passwort</string>
     <string name="scaner_scan_qr_code">QR-Code scannen</string>
@@ -120,7 +120,7 @@
     <string name="browse_set_as">Festlegen als</string>
     <string name="browse_send_file">Datei senden</string>
     <string name="browse_save_file">Datei speichern</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">Speichern als…</string>
     <string name="browse_share_link">Link teilen</string>
     <string name="browse_open_in_browser">Im Browser öffnen</string>
     <string name="browse_unsupported_format">Nicht unterstütztes Format: %s</string>
@@ -156,14 +156,14 @@
     <string name="account_comments">Kommentare</string>
     <string name="account_config_msg_tip_empty">Benutzername oder Passwort/Api-Schlüssel dürfen nicht leer sein.</string>
     <string name="account_recommended">Empfohlen</string>
-    <string name="settings_night_mode">Night mode</string>
-    <string name="settings_night_mode_on">On</string>
-    <string name="settings_night_mode_off">Off</string>
+    <string name="settings_night_mode">Nachtmodus</string>
+    <string name="settings_night_mode_on">An</string>
+    <string name="settings_night_mode_off">Aus</string>
     <string name="settings_night_mode_system">Follow system</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
+    <string name="settings_night_mode_battery">Batteriesparer folgen</string>
     <string name="settings_night_theme">Night theme</string>
-    <string name="settings_night_theme_dark">Dark</string>
-    <string name="settings_night_theme_black">Black</string>
+    <string name="settings_night_theme_dark">Dunkel</string>
+    <string name="settings_night_theme_black">Schwarz</string>
     <string name="settings_dns_over_https">DNS über HTTPS</string>
     <string name="settings_dns_over_https_summary">Restart takes effect</string>
     <string name="settings_dns_over_https_dns">DNS-Provider</string>
@@ -171,7 +171,7 @@
     <string name="settings_page_limit">Seitenlimit</string>
     <string name="settings_muzei_limit">Muzei Limit</string>
     <string name="settings_muzei_size">Bildergröße (Muzei)</string>
-    <string name="settings_detail_size">Detail size</string>
+    <string name="settings_detail_size">Detailgröße</string>
     <string name="settings_download_size">Download-Größe</string>
     <string name="settings_download_path">Downloadpfad</string>
     <string name="settings_download_path_not_set">Pfad nicht gesetzt</string>
@@ -179,7 +179,7 @@
     <string name="settings_post_size_larger">Größer</string>
     <string name="settings_post_size_origin">Quelle</string>
     <string name="settings_grid_mode">Grid mode</string>
-    <string name="settings_grid_mode_fixed">Fixed ratio</string>
+    <string name="settings_grid_mode_fixed">Festes Seitenverhältnis</string>
     <string name="settings_grid_mode_staggered">Staggered</string>
     <string name="settings_grid_ratio">Grid ratio</string>
     <string name="settings_grid_width">Gitter-Breite:</string>
