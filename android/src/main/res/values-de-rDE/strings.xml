@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,7 @@
     <string name="app_description">Ein Booru-Client für Android; Unterstützung für Danbooru, Moebooru, Gelbooru, Sankaku, etc.
     </string>
     <string name="title_posts">Beiträge</string>
-    <string name="title_search">Search</string>
+    <string name="title_search">Suche</string>
     <string name="title_popular">Beliebt</string>
     <string name="title_manage_boorus">Boorus verwalten</string>
     <string name="title_settings">Einstellungen</string>
@@ -35,8 +35,8 @@
     <string name="title_tag_blacklist">Tag-Blacklist</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Welcher Anime</string>
-    <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
+    <string name="title_history">Geschichte</string>
+    <string name="history_clear_all">Alles löschen</string>
     <string name="history_clear_all_content">All history will be cleared.</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Diese App bewerten</string>
@@ -123,7 +123,7 @@
     <string name="browse_save_as">Save as…</string>
     <string name="browse_share_link">Link teilen</string>
     <string name="browse_open_in_browser">Im Browser öffnen</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">Nicht unterstütztes Format: %s</string>
     <string name="browse_tags">Tags</string>
     <string name="browse_info">Info</string>
     <string name="browse_recommended">Empfohlen</string>
@@ -164,9 +164,9 @@
     <string name="settings_night_theme">Night theme</string>
     <string name="settings_night_theme_dark">Dark</string>
     <string name="settings_night_theme_black">Black</string>
-    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_dns_over_https">DNS über HTTPS</string>
     <string name="settings_dns_over_https_summary">Restart takes effect</string>
-    <string name="settings_dns_over_https_dns">DNS Provider</string>
+    <string name="settings_dns_over_https_dns">DNS-Provider</string>
     <string name="settings_safe_mode">Sicherer Modus</string>
     <string name="settings_page_limit">Seitenlimit</string>
     <string name="settings_muzei_limit">Muzei Limit</string>
