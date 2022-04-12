@@ -40,7 +40,6 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
@@ -244,9 +243,12 @@ class PostFragment : SearchBarFragment() {
                 }
             } else {
                 action?.let {
+                    val retry = it.booru.type == booru.type && it.booru.host != booru.host
                     it.booru = booru
                     postViewModel.show(it)
-                    retry()
+                    if (retry) {
+                        retry()
+                    }
                 }
             }
             if (isPopularPage()) {
