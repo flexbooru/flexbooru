@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -163,7 +163,7 @@
     <string name="settings_night_theme">夜間主題</string>
     <string name="settings_night_theme_dark">深色</string>
     <string name="settings_night_theme_black">黑色</string>
-    <string name="settings_dns_over_https">安全化的域名解析 (DoH)</string>
+    <string name="settings_dns_over_https">安全化的網域名稱解析 (DoH)</string>
     <string name="settings_dns_over_https_summary">重新啟動以生效</string>
     <string name="settings_dns_over_https_dns">DNS 提供者</string>
     <string name="settings_safe_mode">安全模式</string>
