@@ -27,11 +27,11 @@ import androidx.core.view.*
 
 
 fun Window.showSystemBars() {
-    ViewCompat.getWindowInsetsController(decorView)?.show(WindowInsetsCompat.Type.systemBars())
+    WindowCompat.getInsetsController(this, decorView).show(WindowInsetsCompat.Type.systemBars())
 }
 
 fun Window.hideSystemBars() {
-    ViewCompat.getWindowInsetsController(decorView)?.apply {
+    WindowCompat.getInsetsController(this, decorView).apply {
         hide(WindowInsetsCompat.Type.systemBars())
         systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
