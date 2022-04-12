@@ -60,7 +60,7 @@ data class ActionPost(
             val monthStringEnd = if (realMonthEnd < 10) "0$realMonthEnd" else realMonthEnd.toString()
             val dayStringEnd = if (dayEnd < 10) "0$dayEnd" else dayEnd.toString()
 
-            return "$dayStringStart.$monthStringStart.$yearStart..$dayStringEnd.$monthStringEnd.$yearEnd"
+            return "$yearStart-$monthStringStart-${dayStringStart}T16:00..$yearEnd-$monthStringEnd-${dayStringEnd}T16:00"
         }
     }
 
