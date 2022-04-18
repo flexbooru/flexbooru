@@ -20,7 +20,7 @@ nav_order: 2
 
 * [gelbooru](booru://R2VsYm9vcnVAQEBodHRwc0BAQGdlbGJvb3J1LmNvbUBAQDNAQEA)
 
-* [hypnohub](booru://aHlwbm9odWJAQEBodHRwc0BAQGh5cG5vaHViLm5ldEBAQDFAQEAtLXlvdXItcGFzc3dvcmQtLQ)
+* [hypnohub](booru://aHlwbm9odWJAQEBodHRwc0BAQGh5cG5vaHViLm5ldEBAQDZAQEA)
 
 * [e621](booru://ZTYyMS5uZXRAQEBodHRwc0BAQGU2MjEubmV0QEBAMEBAQA)
 
