@@ -107,7 +107,7 @@
     <string name="booru_config_hash_salt">散列值</string>
     <string name="booru_config_name_cant_empty">名稱不可為空白。</string>
     <string name="booru_config_host_cant_empty">主機不可為空白。</string>
-    <string name="booru_config_host_invalid">無效的主機</string>
+    <string name="booru_config_host_invalid">無效的主機。</string>
     <string name="booru_config_hash_salt_cant_empty">散列值不可為空白。</string>
     <string name="booru_config_dialog_title_delete">你確定要移除這個 Booru 嗎？</string>
     <string name="booru_config_hash_salt_must_contain_yp">散列值必須包含字元：「your-password」</string>
@@ -191,11 +191,11 @@
     <string name="settings_auto_hide_bottom_bar">自動隱藏底部列</string>
     <string name="settings_auto_refresh">自動重新整理</string>
     <string name="settings_clear_cache">清除快取</string>
-    <string name="settings_clear_cache_summery">移除所有已快取的檔案</string>
+    <string name="settings_clear_cache_summery">移除所有已快取的檔案。</string>
     <string name="settings_clear_cache_dialog_content">快取檔案將被清除。</string>
     <string name="settings_clear_history">清除搜尋記錄</string>
     <string name="settings_clear_history_summery">移除所有搜尋記錄。</string>
-    <string name="settings_clear_history_dialog_content">將會清除所有搜尋記錄</string>
+    <string name="settings_clear_history_dialog_content">將會清除所有搜尋記錄。</string>
     <string name="settings_muzei">Muzei</string>
     <string name="settings_display">顯示</string>
     <string name="settings_options">設定</string>
@@ -278,9 +278,9 @@
     <string name="sauce_nao_change_api_key">變更 Api 金鑰</string>
     <string name="sauce_nao_get_api_key">取得 Api 金鑰</string>
     <string name="sauce_nao_remaining_times_today">今日剩餘次數：%01$d</string>
-    <string name="sauce_nao_api_key_unset">未設定 SauceNao 之 Api 金鑰</string>
+    <string name="sauce_nao_api_key_unset">未設定 SauceNao 之 Api 金鑰。</string>
     <string name="sauce_nao_image_url">圖檔網址</string>
-    <string name="sauce_nao_invalid_image_url">無效的圖檔網址</string>
+    <string name="sauce_nao_invalid_image_url">無效的圖檔網址。</string>
     <string name="sauce_nao_source">來源</string>
     <string name="sauce_nao_search_from_url">網址</string>
     <string name="sauce_nao_search_from_file">檔案</string>
