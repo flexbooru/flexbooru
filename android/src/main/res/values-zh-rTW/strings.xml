@@ -38,9 +38,9 @@
     <string name="history_clear_all">全部清除</string>
     <string name="history_clear_all_content">將會清除所有歷史記錄。</string>
     <string name="about_app_version">版本</string>
-    <string name="about_app_rate">評價這個 App</string>
+    <string name="about_app_rate">評價這個應用程式</string>
     <string name="about_app_translation">翻譯</string>
-    <string name="about_app_translation_summary">翻譯這個 App</string>
+    <string name="about_app_translation_summary">翻譯這個應用程式</string>
     <string name="about_author">作者</string>
     <string name="about_author_email">電子郵件</string>
     <string name="about_author_website">網站</string>
