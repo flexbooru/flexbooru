@@ -27,7 +27,7 @@ buildscript {
         set("exoplayer_version", "2.17.1")
         set("okhttp_version", "5.0.0-alpha.7")
         set("retrofit_version", "2.9.0")
-        set("xmlutil_version", "0.84.2")
+        set("xmlutil_version", "0.84.1")
         set("kodein_version", "7.11.0")
         set("coroutines_version", "1.6.1")
         set("serialization_version", "1.3.2")
