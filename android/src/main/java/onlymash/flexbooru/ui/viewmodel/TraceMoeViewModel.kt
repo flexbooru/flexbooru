@@ -34,13 +34,13 @@ class TraceMoeViewModel(private val traceMoeApi: TraceMoeApi) : ScopeViewModel()
     val isLoading = MutableLiveData(false)
     val error = MutableLiveData<String>()
 
-    fun fetch(base64ImageString: String) {
+    fun fetch(imageBlob: ByteArray) {
         viewModelScope.launch {
             mutex.withLock {
                 isLoading.postValue(true)
                 val result = withContext(Dispatchers.IO) {
                     try {
-                        val response = traceMoeApi.fetch(base64ImageString)
+                        val response = traceMoeApi.fetch(imageBlob)
                         NetResult.Success(response)
                     } catch (e: Exception) {
                         NetResult.Error(e.message.toString())

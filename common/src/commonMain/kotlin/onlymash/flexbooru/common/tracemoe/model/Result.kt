@@ -20,11 +20,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TraceResponse(
-    @SerialName("error")
-    val error: String,
-    @SerialName("frameCount")
-    val frameCount: Int,
-    @SerialName("result")
-    val results: List<Result> = emptyList()
+data class Result(
+    @SerialName("anilist")
+    val anilist: Int,
+    @SerialName("episode")
+    val episode: Int?,
+    @SerialName("filename")
+    val filename: String,
+    @SerialName("from")
+    val from: Float,
+    @SerialName("image")
+    val image: String,
+    @SerialName("similarity")
+    val similarity: Float,
+    @SerialName("to")
+    val to: Float,
+    @SerialName("video")
+    val video: String
 )

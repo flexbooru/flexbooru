@@ -18,5 +18,5 @@ package onlymash.flexbooru.common.tracemoe.api
 import onlymash.flexbooru.common.tracemoe.model.TraceResponse
 
 interface TraceMoeApi {
-    suspend fun fetch(base64Image: String): TraceResponse
+    suspend fun fetch(imageBlob: ByteArray): TraceResponse
 }

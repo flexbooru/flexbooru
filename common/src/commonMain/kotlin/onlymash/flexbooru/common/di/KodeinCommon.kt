@@ -46,7 +46,7 @@ val diCommon = DI.lazy {
             }
         }
         bind<String>("SauceNaoBaseUrl") with provider { "https://saucenao.com" }
-        bind<String>("TraceMoeBaseUrl") with provider { "https://trace.moe" }
+        bind<String>("TraceMoeBaseUrl") with provider { "https://api.trace.moe" }
         bind<SauceNaoApi>("SauceNaoApi") with provider {
             val client by di.instance<HttpClient>()
             val baseUrl by di.instance<String>("SauceNaoBaseUrl")

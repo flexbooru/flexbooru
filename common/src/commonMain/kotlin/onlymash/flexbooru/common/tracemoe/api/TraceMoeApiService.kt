@@ -17,11 +17,9 @@ package onlymash.flexbooru.common.tracemoe.api
 
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.forms.submitForm
-import io.ktor.http.HttpMethod
-import io.ktor.http.takeFrom
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
+import io.ktor.utils.io.core.*
 import onlymash.flexbooru.common.tracemoe.model.TraceResponse
 
 class TraceMoeApiService(
@@ -29,15 +27,25 @@ class TraceMoeApiService(
     private val baseUrl: String
 ) : TraceMoeApi {
 
-    override suspend fun fetch(base64Image: String): TraceResponse =
+    override suspend fun fetch(imageBlob: ByteArray): TraceResponse =
         client.submitForm {
             body = MultiPartFormDataContent(
                 formData {
-                    append("image", base64Image)
+                    append(FormPart("image", "image.jpg"))
+                    appendInput(
+                        "image",
+                        Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "filename=image.jpg"
+                            )
+                        }) {
+                        buildPacket { writeFully(imageBlob) }
+                    }
                 }
             )
             method = HttpMethod.Post
-            apiUrl(baseUrl, "api/search")
+            apiUrl(baseUrl, "search")
         }
 
     private fun HttpRequestBuilder.apiUrl(

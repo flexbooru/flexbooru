@@ -17,6 +17,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -24,7 +25,7 @@
             android:id="@+id/exoplayer_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H, 4:3"
             app:show_timeout="@integer/exoplayer_show_control_timeout_ms"
             app:controller_layout_id="@layout/exoplayer_controller"
             app:layout_constraintTop_toTopOf="parent"

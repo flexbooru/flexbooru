@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -42,7 +43,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.isOrderSuccess
-import onlymash.flexbooru.app.Settings.safeMode
 import onlymash.flexbooru.databinding.ActivityWhatAnimeBinding
 import onlymash.flexbooru.databinding.FragmentAnimePlayerBinding
 import onlymash.flexbooru.databinding.ItemWhatAnimeBinding
@@ -53,7 +53,7 @@ import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.toVisibility
 import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
-import onlymash.flexbooru.common.tracemoe.model.Doc
+import onlymash.flexbooru.common.tracemoe.model.Result
 import onlymash.flexbooru.ui.base.BaseBottomSheetDialog
 import onlymash.flexbooru.ui.viewmodel.TraceMoeViewModel
 import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
@@ -65,9 +65,10 @@ import java.io.ByteArrayOutputStream
 
 private const val PREVIEW_VIDEO_URL_KEY = "preview_video_url"
 
+@SuppressLint("NotifyDataSetChanged")
 class WhatAnimeActivity : BaseActivity() {
 
-    private val docs: MutableList<Doc> = mutableListOf()
+    private val results: MutableList<Result> = mutableListOf()
 
     private lateinit var whatAnimeAdapter: WhatAnimeAdapter
     private lateinit var traceMoeViewModel: TraceMoeViewModel
@@ -100,17 +101,9 @@ class WhatAnimeActivity : BaseActivity() {
         }
         traceMoeViewModel = getTraceMoeViewModel(api)
         traceMoeViewModel.data.observe(this) { response ->
-            docs.clear()
+            results.clear()
             if (response != null) {
-                if (safeMode) {
-                    response.docs.forEach {
-                        if (!it.isAdult) {
-                            docs.add(it)
-                        }
-                    }
-                } else {
-                    docs.addAll(response.docs)
-                }
+                results.addAll(response.results)
             }
             whatAnimeAdapter.notifyDataSetChanged()
         }
@@ -138,11 +131,10 @@ class WhatAnimeActivity : BaseActivity() {
     }
 
     private fun search(uri: Uri) {
-        docs.clear()
+        results.clear()
         whatAnimeAdapter.notifyDataSetChanged()
         progressBar.toVisibility(true)
         val ext = uri.toString().fileExt()
-        val head = "data:image/jpeg;base64,"
         if (ext == "gif" || ext == "GIF") {
             GlideApp.with(this)
                 .asGif()
@@ -155,17 +147,17 @@ class WhatAnimeActivity : BaseActivity() {
                         val bitmap = resource.firstFrame
                         if (bitmap != null) {
                             lifecycleScope.launch {
-                                val encodedImage = withContext(Dispatchers.IO) {
+                                val imageBlob = withContext(Dispatchers.IO) {
                                     try {
                                         val os = ByteArrayOutputStream()
                                         bitmap.compress(Bitmap.CompressFormat.JPEG, if (bitmap.width > 1000 || bitmap.height > 1000) 50 else 100, os)
-                                        Base64.encodeToString(os.toByteArray(), Base64.DEFAULT)
+                                        os.toByteArray()
                                     } catch (_: Exception) {
                                         null
                                     }
                                 }
-                                if (encodedImage != null) {
-                                    traceMoeViewModel.fetch(head + encodedImage)
+                                if (imageBlob != null) {
+                                    traceMoeViewModel.fetch(imageBlob)
                                 }
                             }
                         }
@@ -173,7 +165,7 @@ class WhatAnimeActivity : BaseActivity() {
                 })
         } else {
             lifecycleScope.launch {
-                val encodedImage = withContext(Dispatchers.IO) {
+                val imageBlob = withContext(Dispatchers.IO) {
                     try {
                         val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
@@ -183,13 +175,13 @@ class WhatAnimeActivity : BaseActivity() {
                         } ?: return@withContext null
                         val os = ByteArrayOutputStream()
                         bitmap.compress(Bitmap.CompressFormat.JPEG, if (bitmap.width > 1000 || bitmap.height > 1000) 50 else 100, os)
-                        Base64.encodeToString(os.toByteArray(), Base64.DEFAULT)
+                        os.toByteArray()
                     } catch (e: Exception) {
                         null
                     }
                 }
-                if (encodedImage != null) {
-                    traceMoeViewModel.fetch(head + encodedImage)
+                if (imageBlob != null) {
+                    traceMoeViewModel.fetch(imageBlob)
                 }
             }
         }
@@ -209,10 +201,10 @@ class WhatAnimeActivity : BaseActivity() {
             parent: ViewGroup,
             viewType: Int): RecyclerView.ViewHolder = WhatAnimeViewHolder(parent)
 
-        override fun getItemCount(): Int = docs.size
+        override fun getItemCount(): Int = results.size
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            (holder as WhatAnimeViewHolder).bind(docs[position])
+            (holder as WhatAnimeViewHolder).bind(results[position])
         }
 
         inner class WhatAnimeViewHolder(binding: ItemWhatAnimeBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -224,7 +216,7 @@ class WhatAnimeActivity : BaseActivity() {
             private val info1 = binding.info1
             private val info2 = binding.info2
 
-            private lateinit var data: Doc
+            private lateinit var data: Result
 
             init {
                 itemView.setOnClickListener {
@@ -242,23 +234,20 @@ class WhatAnimeActivity : BaseActivity() {
                 }
                 AnimePlayerDialog().apply {
                     arguments = Bundle().apply {
-                        putString(PREVIEW_VIDEO_URL_KEY, "https://media.trace.moe/video/${data.anilistId}/${Uri.encode(data.filename)}?t=${data.at}&token=${data.tokenthumb}")
+                        putString(PREVIEW_VIDEO_URL_KEY, data.video)
                     }
                     show(supportFragmentManager, "player")
                 }
             }
 
-            fun bind(data: Doc) {
+            fun bind(data: Result) {
                 this.data = data
-                val text = data.title ?: data.filename
-                title.text = text
-                info1.text = formatTime(data.at)
-                info2.text = data.anime
-                val previewUrl = "https://trace.moe/thumbnail.php?anilist_id=${data.anilistId}&file=${Uri.encode(data.filename)}&t=${data.at}&token=${data.tokenthumb}"
-                val placeholderId = if (data.isAdult) R.drawable.background_rating_e else R.drawable.background_rating_s
+                title.text = data.filename
+                info1.text = String.format("%s - %s", formatTime(data.from), formatTime(data.to))
+                info2.text = data.similarity.toString()
                 GlideApp.with(itemView.context)
-                    .load(previewUrl)
-                    .placeholder(ContextCompat.getDrawable(itemView.context, placeholderId))
+                    .load(data.image)
+                    .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.background_rating_s))
                     .fitCenter()
                     .into(preview)
             }
