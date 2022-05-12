@@ -18,7 +18,13 @@ Click the icon below to translate this app.
 [![Crowdin](https://badges.crowdin.net/flexbooru/localized.svg)](https://crowdin.com/project/flexbooru)
 
 ## Downlad
-<a href="https://play.google.com/store/apps/details?id=onlymash.flexbooru.play"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="48"></a>
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/onlymash.flexbooru.play/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=onlymash.flexbooru.play)
 
 ## Screenshot
 <img src="art/screenshot.webp" height="300" hspace="20">
