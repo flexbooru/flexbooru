@@ -191,7 +191,7 @@
     <string name="settings_auto_hide_bottom_bar">自動隱藏底部列</string>
     <string name="settings_auto_refresh">自動重新整理</string>
     <string name="settings_clear_cache">清除快取</string>
-    <string name="settings_clear_cache_summery">移除所有快取檔案。</string>
+    <string name="settings_clear_cache_summery">移除所有快取檔案</string>
     <string name="settings_clear_cache_dialog_content">將會清除快取檔案。</string>
     <string name="settings_clear_history">清除搜尋記錄</string>
     <string name="settings_clear_history_summery">移除所有搜尋記錄。</string>
