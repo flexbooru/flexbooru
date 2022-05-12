@@ -194,7 +194,7 @@
     <string name="settings_clear_cache_summery">移除所有快取檔案</string>
     <string name="settings_clear_cache_dialog_content">將會清除快取檔案。</string>
     <string name="settings_clear_history">清除搜尋記錄</string>
-    <string name="settings_clear_history_summery">移除所有搜尋記錄。</string>
+    <string name="settings_clear_history_summery">移除所有搜尋記錄</string>
     <string name="settings_clear_history_dialog_content">將會清除所有搜尋記錄。</string>
     <string name="settings_muzei">Muzei</string>
     <string name="settings_display">顯示</string>
