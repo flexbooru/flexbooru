@@ -232,10 +232,8 @@ class DownloadWorker(
         var `is`: InputStream? = null
         val os = applicationContext.contentResolver.openOutputStream(desUri)
         try {
-            `is` = OkHttp3Downloader(applicationContext)
-                .load(url)
-                .body?.source()?.inputStream()
-            `is`?.copyTo(os)
+            `is` = OkHttp3Downloader(applicationContext).load(url).body.source().inputStream()
+            `is`.copyTo(os)
         } catch (_: IOException) {
             return Result.failure()
         } finally {

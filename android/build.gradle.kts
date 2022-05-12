@@ -98,14 +98,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = freeCompilerArgs + listOf(
-            "-Xopt-in=kotlin.ExperimentalStdlibApi",
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.FlowPreview",
-            "-Xopt-in=androidx.paging.ExperimentalPagingApi",
-            "-Xopt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
-            "-Xjvm-default=compatibility"
+            "-opt-in=kotlin.ExperimentalStdlibApi",
+            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-opt-in=kotlinx.coroutines.DelicateCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
+            "-opt-in=androidx.paging.ExperimentalPagingApi",
+            "-opt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
+            "-Xjvm-default=all-compatibility"
         )
     }
     kapt {
@@ -126,6 +126,7 @@ android {
     lint {
         disable += setOf("DialogFragmentCallbacksDetector")
     }
+    namespace = "onlymash.flexbooru"
 }
 
 dependencies {
@@ -154,11 +155,11 @@ dependencies {
     implementation("org.kodein.di:kodein-di-framework-android-core:$kodeinVersion")
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
     implementation("androidx.annotation:annotation:1.4.0-alpha02")
-    implementation("androidx.appcompat:appcompat:1.6.0-alpha01")
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha01")
-    implementation("androidx.fragment:fragment-ktx:1.5.0-alpha05")
+    implementation("androidx.appcompat:appcompat:1.6.0-alpha03")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha03")
+    implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.core:core-ktx:1.9.0-alpha02")
+    implementation("androidx.core:core-ktx:1.9.0-alpha03")
     implementation("androidx.recyclerview:recyclerview:1.3.0-alpha02")
     implementation("androidx.viewpager2:viewpager2:1.1.0-beta01")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
@@ -188,29 +189,29 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.6.0-beta01")
+    implementation("com.google.android.material:material:1.7.0-alpha01")
     implementation("com.google.android:flexbox:2.0.1")
     implementation("com.google.android.apps.muzei:muzei-api:3.4.1")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("com.github.onlymash:subsampling-scale-image-view:3.10.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.onlymash:OMFM:1.1.4")
-    implementation("com.mikepenz:materialdrawer:9.0.0-rc01")
-    implementation("com.google.zxing:core:3.4.1")
+    implementation("com.mikepenz:materialdrawer:9.0.0")
+    implementation("com.google.zxing:core:3.5.0")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
-    implementation("com.google.firebase:firebase-analytics-ktx:20.1.2")
-    implementation("com.google.firebase:firebase-crashlytics:18.2.9")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.2.10")
     implementation("com.google.android.gms:play-services-ads:20.6.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.android.billingclient:billing-ktx:4.1.0")
+    implementation("com.android.billingclient:billing-ktx:5.0.0")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
-    implementation("com.squareup.okio:okio:3.0.0")
+    implementation("com.squareup.okio:okio:3.1.0")
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion")
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
@@ -219,10 +220,10 @@ dependencies {
     implementation("io.github.pdvrieze.xmlutil:core-android:$xmlutilVersion")
     implementation("io.github.pdvrieze.xmlutil:serialization-android:$xmlutilVersion")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.7.3")
+    testImplementation("org.robolectric:robolectric:4.8.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.4.1-alpha05")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4-alpha05")
-    androidTestImplementation("androidx.test:runner:1.5.0-alpha02")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-alpha05")
+    androidTestImplementation("androidx.test:core:1.4.1-alpha06")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4-alpha06")
+    androidTestImplementation("androidx.test:runner:1.5.0-alpha03")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-alpha06")
 }

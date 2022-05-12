@@ -121,12 +121,13 @@ class App : Application(), DIAware {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-                    billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP) { _, purchases ->
-                        isOrderSuccess = if (purchases.isNullOrEmpty()) {
+                    val queryPurchasesParams = QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build()
+                    billingClient.queryPurchasesAsync(queryPurchasesParams) { _, purchases ->
+                        isOrderSuccess = if (purchases.isEmpty()) {
                             false
                         } else {
                             val index = purchases.indexOfFirst {
-                                it.skus[0] == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
+                                it.products[0] == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
                             }
                             if (index >= 0) {
                                 val purchase = purchases[index]

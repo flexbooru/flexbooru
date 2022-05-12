@@ -63,7 +63,7 @@ class PurchaseActivity : BaseActivity() {
                 if (responseCode == BillingClient.BillingResponseCode.OK || responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                     Settings.isOrderSuccess = true
                     Settings.orderTime = System.currentTimeMillis()
-                    val index = purchases?.indexOfFirst { it.skus[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
+                    val index = purchases?.indexOfFirst { it.products[0] == SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED }
                     if (index != null && index >= 0) {
                         val purchase = purchases[index]
                         val ackParams = AcknowledgePurchaseParams.newBuilder()
@@ -117,22 +117,29 @@ class PurchaseActivity : BaseActivity() {
     private fun orderByGooglePlay() {
         val client = billingClient ?: return
         if (client.isReady) {
-            val params = SkuDetailsParams
-                .newBuilder()
-                .setSkusList(listOf(SKU))
-                .setType(BillingClient.SkuType.INAPP)
+            val params = QueryProductDetailsParams.newBuilder()
+                .setProductList(listOf(QueryProductDetailsParams.Product
+                    .newBuilder()
+                    .setProductId(SKU)
+                    .setProductType(BillingClient.ProductType.INAPP)
+                    .build())
+                )
                 .build()
-            client.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
-                    val index = skuDetailsList.indexOfFirst {
-                        it.sku == SKU
+            client.queryProductDetailsAsync(params) { billingResult, productDetails ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetails.isNotEmpty()) {
+                    val index = productDetails.indexOfFirst {
+                        it.productId == SKU
                     }
                     if (index >= 0) {
+                        val productDetailsParams = BillingFlowParams.ProductDetailsParams
+                            .newBuilder()
+                            .setProductDetails(productDetails[index])
+                            .build()
                         val billingFlowParams = BillingFlowParams
                             .newBuilder()
-                            .setSkuDetails(skuDetailsList[index])
+                            .setProductDetailsParamsList(listOf(productDetailsParams))
                             .build()
-                        val result = client.launchBillingFlow(this, billingFlowParams)
+                        val result = client.launchBillingFlow(this@PurchaseActivity, billingFlowParams)
                         if (result.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                             Settings.isOrderSuccess = true
                             Settings.orderTime = System.currentTimeMillis()
