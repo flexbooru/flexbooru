@@ -65,8 +65,8 @@
     <string name="post_add_to_fav">পছন্দের তালিকায় যোগ করুন</string>
     <string name="post_search_by_sauce_nao">SauceNao দ্বারা অনুসন্ধান করুন</string>
     <string name="msg_download_must_enable">ডাউনলো ম্যানেজার এর দরকার আছে.</string>
-    <string name="msg_path_denied">Save failed! No access to the current path.</string>
-    <string name="msg_download_failed">Download failed</string>
+    <string name="msg_path_denied">সংরক্ষণ ব্যর্থ! বর্তমান পাথে কোন অ্যাক্সেস নেই.</string>
+    <string name="msg_download_failed">ডাউনলোড ব্যর্থ</string>
     <string name="msg_download_complete">Download complete</string>
     <string name="msg_password_or_hash_salt_wrong">Password or Hash salt is wrong.</string>
     <string name="popular_day">Day</string>
