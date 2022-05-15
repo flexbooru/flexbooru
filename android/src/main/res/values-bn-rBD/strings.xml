@@ -14,16 +14,15 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.
-    </string>
-    <string name="title_posts">Posts</string>
-    <string name="title_search">Search</string>
-    <string name="title_popular">Popular</string>
-    <string name="title_manage_boorus">Manage boorus</string>
-    <string name="title_settings">Settings</string>
-    <string name="title_booru_config">Booru config</string>
-    <string name="title_account">Account</string>
-    <string name="title_account_and_booru">Account - %s</string>
+    <string name="app_description">অ্যান্ড্রয়েডের জন্য একটি বুরু ক্লায়েন্ট, ড্যানবুরু, মোইবুরু, গেলবুরু, সানকাকু ইত্যাদি সমর্থন করে.    </string>
+    <string name="title_posts">পোস্ট</string>
+    <string name="title_search">অনুসন্ধান</string>
+    <string name="title_popular">জনপ্রিয়</string>
+    <string name="title_manage_boorus">বুরাস পরিচালনা করুন</string>
+    <string name="title_settings">সেটিংস</string>
+    <string name="title_booru_config">বুরু কনফিগারেশন</string>
+    <string name="title_account">অ্যাকাউন্ট</string>
+    <string name="title_account_and_booru">অ্যাকাউন্ট নাম্বার - %s</string>
     <string name="title_artists">Artists</string>
     <string name="title_pools">Pools</string>
     <string name="title_tags">Tags</string>
