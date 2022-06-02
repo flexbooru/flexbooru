@@ -52,7 +52,7 @@
     <string name="about_feedback_email">E-mail</string>
     <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">Urheberrecht</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">App Copyright</string>
     <string name="about_licenses">Lizenz</string>
     <string name="about_open_source_licenses">Open Source Lizenz</string>
     <string name="snackbar_copy_text">` %s ` wurde in die Zwischenablage kopiert.</string>
@@ -161,7 +161,7 @@
     <string name="settings_night_mode_off">Aus</string>
     <string name="settings_night_mode_system">Follow system</string>
     <string name="settings_night_mode_battery">Batteriesparer folgen</string>
-    <string name="settings_night_theme">Night theme</string>
+    <string name="settings_night_theme">Dunkles Design</string>
     <string name="settings_night_theme_dark">Dunkel</string>
     <string name="settings_night_theme_black">Schwarz</string>
     <string name="settings_dns_over_https">DNS über HTTPS</string>
@@ -178,7 +178,7 @@
     <string name="settings_post_size_sample">Beispiel</string>
     <string name="settings_post_size_larger">Größer</string>
     <string name="settings_post_size_origin">Quelle</string>
-    <string name="settings_grid_mode">Grid mode</string>
+    <string name="settings_grid_mode">Raster-Ansicht</string>
     <string name="settings_grid_mode_fixed">Festes Seitenverhältnis</string>
     <string name="settings_grid_mode_staggered">Staggered</string>
     <string name="settings_grid_ratio">Grid ratio</string>
@@ -186,11 +186,11 @@
     <string name="settings_grid_width_small">Klein</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Groß</string>
-    <string name="settings_grid_rounded">Rounded grid</string>
+    <string name="settings_grid_rounded">Abgerundetes Raster</string>
     <string name="settings_show_info_bar">Infoleiste anzeigen</string>
     <string name="settings_show_all_tags">Tags für alle Seiten anzeigen</string>
     <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
-    <string name="settings_auto_refresh">Auto refresh</string>
+    <string name="settings_auto_refresh">Auto-Aktualisierung</string>
     <string name="settings_clear_cache">Cache leeren</string>
     <string name="settings_clear_cache_summery">Alle gecachten Dateien entfernen.</string>
     <string name="settings_clear_cache_dialog_content">Cache wird gelöscht</string>
@@ -214,12 +214,12 @@
     <string name="tag_type_general">Allgemein</string>
     <string name="tag_type_artist">Künstler</string>
     <string name="tag_type_copyright">Copyright</string>
-    <string name="tag_type_character">Character</string>
+    <string name="tag_type_character">Charakter</string>
     <string name="tag_type_circle">Kreis</string>
     <string name="tag_type_faults">Fehler</string>
     <string name="tag_type_meta">Meta</string>
     <string name="tag_type_model">Modell</string>
-    <string name="tag_type_photo_set">Photo set</string>
+    <string name="tag_type_photo_set">Foto Sammlung</string>
     <string name="tag_type_genre">Genre</string>
     <string name="tag_type_studio">Studio</string>
     <string name="tag_type_medium">Mittel</string>
