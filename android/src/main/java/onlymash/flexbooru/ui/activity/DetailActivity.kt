@@ -345,7 +345,7 @@ class DetailActivity : PathActivity(),
             }
             adView.apply {
                 visibility = View.VISIBLE
-                adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this@DetailActivity, adWidth)
+                setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this@DetailActivity, adWidth))
                 adUnitId = "ca-app-pub-1547571472841615/1729907816"
                 loadAd(AdRequest.Builder().build())
             }

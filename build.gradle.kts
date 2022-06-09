@@ -20,17 +20,17 @@ plugins {
 buildscript {
     extra.apply {
         set("nav_version", "2.5.0-rc01")
-        set("room_version", "2.5.0-alpha01")
+        set("room_version", "2.5.0-alpha02")
         set("work_version", "2.8.0-alpha02")
         set("glide_version", "4.13.2")
         set("lifecycle_version", "2.5.0-rc01")
         set("exoplayer_version", "2.17.1")
-        set("okhttp_version", "5.0.0-alpha.7")
+        set("okhttp_version", "5.0.0-alpha.8")
         set("retrofit_version", "2.9.0")
         set("xmlutil_version", "0.84.1")
-        set("kodein_version", "7.11.0")
-        set("coroutines_version", "1.6.1")
-        set("serialization_version", "1.3.2")
+        set("kodein_version", "7.12.0")
+        set("coroutines_version", "1.6.2")
+        set("serialization_version", "1.3.3")
         set("ktor_version", "1.6.7")
     }
     repositories {
@@ -40,10 +40,10 @@ buildscript {
         val kotlinVersion = "1.6.21"
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:7.2.0")
+        classpath("com.android.tools.build:gradle:7.2.1")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.5")
         classpath("com.google.gms:google-services:4.3.10")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.0")
     }
 }
 
