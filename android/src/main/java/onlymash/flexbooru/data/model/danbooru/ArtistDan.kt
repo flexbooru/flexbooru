@@ -47,8 +47,6 @@ data class ArtistDanUrl(
     val id: Int,
     @SerialName("is_active")
     val isActive: Boolean,
-    @SerialName("normalized_url")
-    val normalizedUrl: String,
     @SerialName("updated_at")
     val updatedAt: String,
     @SerialName("url")
