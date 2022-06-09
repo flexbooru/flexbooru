@@ -56,7 +56,7 @@ kotlin {
         compilations.all {
             kotlinOptions {
                 freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi",
+                    "-opt-in=kotlinx.coroutines.DelicateCoroutinesApi",
                 )
             }
         }
