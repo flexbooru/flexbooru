@@ -37,7 +37,7 @@ buildscript {
         google()
     }
     dependencies {
-        val kotlinVersion = "1.6.21"
+        val kotlinVersion = "1.7.0"
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(kotlin("serialization", kotlinVersion))
         classpath("com.android.tools.build:gradle:7.2.1")
