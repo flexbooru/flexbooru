@@ -16,9 +16,8 @@
 package onlymash.flexbooru.common.di
 
 import io.ktor.client.HttpClient
-import io.ktor.client.features.HttpCallValidator
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApiService
@@ -32,17 +31,14 @@ import org.kodein.di.provider
 val diCommon = DI.lazy {
         bind<HttpClient>() with provider {
             HttpClient {
-                install(JsonFeature) {
-                    serializer = KotlinxSerializer(
-                        Json {
-                            isLenient = true
-                            ignoreUnknownKeys = true
-                            allowSpecialFloatingPointValues = true
-                            useArrayPolymorphism = true
-                        }
-                    )
+                install(ContentNegotiation) {
+                    json(Json {
+                        isLenient = true
+                        ignoreUnknownKeys = true
+                        allowSpecialFloatingPointValues = true
+                        useArrayPolymorphism = true
+                    })
                 }
-                install(HttpCallValidator)
             }
         }
         bind<String>("SauceNaoBaseUrl") with provider { "https://saucenao.com" }

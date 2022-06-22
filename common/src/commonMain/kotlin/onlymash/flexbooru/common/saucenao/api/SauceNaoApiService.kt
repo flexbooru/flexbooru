@@ -16,12 +16,10 @@
 package onlymash.flexbooru.common.saucenao.api
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
-import io.ktor.http.Headers
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
-import io.ktor.http.takeFrom
+import io.ktor.http.*
 import onlymash.flexbooru.common.saucenao.model.SauceNaoResponse
 
 class SauceNaoApiService(
@@ -31,7 +29,6 @@ class SauceNaoApiService(
     override suspend fun searchByUrl(
         url: String,
         apiKey: String): SauceNaoResponse =
-
         client.get{
             apiUrl(
                 baseUrl = baseUrl,
@@ -39,7 +36,7 @@ class SauceNaoApiService(
                 apiKey = apiKey,
                 url = url
             )
-        }
+        }.body()
 
     override suspend fun searchByImage(
         apiKey: String,
@@ -47,7 +44,7 @@ class SauceNaoApiService(
         fileExt: String
     ): SauceNaoResponse =
         client.submitForm {
-            body = MultiPartFormDataContent(
+            val data = MultiPartFormDataContent(
                 formData {
                     append(
                         "file",
@@ -59,13 +56,14 @@ class SauceNaoApiService(
                     )
                 }
             )
+            setBody(data)
             method = HttpMethod.Post
             apiUrl(
                 baseUrl = baseUrl,
                 path = "search.php",
                 apiKey = apiKey
             )
-        }
+        }.body()
 
     private fun HttpRequestBuilder.apiUrl(
         baseUrl: String,
