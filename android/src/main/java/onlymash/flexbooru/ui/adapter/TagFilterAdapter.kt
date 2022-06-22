@@ -31,8 +31,7 @@ import onlymash.flexbooru.databinding.ItemTagFilterSubheadBinding
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.ui.base.BaseTagFilterViewHolder
 
-class TagFilterAdapter(private val ratings: Array<String>,
-                       private val deleteTagCallback: (TagFilter) -> Unit,
+class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
                        private val addSearchBarTextCallback: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -58,6 +57,7 @@ class TagFilterAdapter(private val ratings: Array<String>,
         }
     }
 
+    private var ratings: MutableList<String> = mutableListOf()
     private var orders: MutableList<String> = mutableListOf()
     private var thresholds: MutableList<String> = mutableListOf()
     private var booruType: Int = BOORU_TYPE_UNKNOWN
@@ -99,9 +99,19 @@ class TagFilterAdapter(private val ratings: Array<String>,
         }
     }
 
-    fun updateBooru(booruUid: Long, booruType: Int, orders: Array<String>, thresholds: Array<String>) {
+    fun updateBooru(
+        booruUid: Long,
+        booruType: Int,
+        ratings: Array<String>,
+        orders: Array<String>,
+        thresholds: Array<String>
+    ) {
         this.booruUid = booruUid
         this.booruType = booruType
+        this.ratings.apply {
+            clear()
+            addAll(ratings)
+        }
         this.orders.apply {
             clear()
             addAll(orders)

@@ -267,7 +267,7 @@ class PostFragment : SearchBarFragment() {
             updateTagsFilterBooru(booru.uid, booru.type)
         } else {
             action = null
-            tagFilterAdapter.updateBooru(-1L, BOORU_TYPE_UNKNOWN, arrayOf(), arrayOf())
+            tagFilterAdapter.updateBooru(-1L, BOORU_TYPE_UNKNOWN, arrayOf(), arrayOf(), arrayOf())
         }
     }
 
@@ -276,9 +276,7 @@ class PostFragment : SearchBarFragment() {
     }
 
     private fun initFilterList() {
-        val ratings = resources.getStringArray(R.array.filter_rating)
         tagFilterAdapter = TagFilterAdapter(
-            ratings = ratings,
             deleteTagCallback = { deleteTagFilter(it) },
             addSearchBarTextCallback = { createTagFilter() }
         )
@@ -302,17 +300,21 @@ class PostFragment : SearchBarFragment() {
     }
 
     private fun updateTagsFilterBooru(booruUid: Long, booruType: Int) {
+        val ratingsRes = if (booruType == BOORU_TYPE_DAN) R.array.filter_rating_danbooru else R.array.filter_rating
+        val ratings = resources.getStringArray(ratingsRes)
         val orders = resources.getStringArray(when(booruType) {
             BOORU_TYPE_DAN -> R.array.filter_order_danbooru
             BOORU_TYPE_SANKAKU -> R.array.filter_order_sankaku
             else -> R.array.filter_order
         })
-        val thresholds = if (booruType == BOORU_TYPE_SANKAKU) {
-            resources.getStringArray(R.array.filter_threshold)
-        } else {
-            arrayOf()
-        }
-        tagFilterAdapter.updateBooru(booruUid, booruType, orders, thresholds)
+        val thresholds = if (booruType == BOORU_TYPE_SANKAKU) resources.getStringArray(R.array.filter_threshold) else arrayOf()
+        tagFilterAdapter.updateBooru(
+            booruUid = booruUid,
+            booruType = booruType,
+            ratings = ratings,
+            orders = orders,
+            thresholds = thresholds
+        )
     }
 
     private fun createTagFilter() {

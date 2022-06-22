@@ -149,6 +149,8 @@
     <string name="browse_info_rating_safe">Safe</string>
     <string name="browse_info_rating_questionable">Questionable</string>
     <string name="browse_info_rating_explicit">Explicit</string>
+    <string name="browse_info_rating_general">General</string>
+    <string name="browse_info_rating_sensitive">Sensitive</string>
     <string name="browse_info_score">Score</string>
     <string name="browse_info_parent">Parent</string>
     <string name="browse_info_title">Information</string>

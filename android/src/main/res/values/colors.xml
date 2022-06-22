@@ -79,6 +79,7 @@
     <color name="rating_e">@color/brown_50</color>
     <color name="rating_q">@color/blue_grey_50</color>
     <color name="rating_s">@color/grey_100</color>
+    <color name="rating_g">@color/grey_200</color>
 
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_200">#EEEEEE</color>

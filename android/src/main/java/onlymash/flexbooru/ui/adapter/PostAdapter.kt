@@ -167,6 +167,7 @@ class PostAdapter(
                 when (post.rating) {
                     "s" -> R.drawable.background_rating_s
                     "q" -> R.drawable.background_rating_q
+                    "g" -> R.drawable.background_rating_g
                     else -> R.drawable.background_rating_e
                 }
             )

@@ -55,6 +55,7 @@
     <color name="rating_e">@color/brown_900</color>
     <color name="rating_q">@color/blue_grey_900</color>
     <color name="rating_s">@color/blue_grey_800</color>
+    <color name="rating_g">@color/grey_700</color>
     <color name="muzei">@color/dark_level_1</color>
 
 </resources>

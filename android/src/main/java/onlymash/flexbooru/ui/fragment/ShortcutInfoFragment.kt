@@ -134,13 +134,16 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
                 .into(binding.userAvatar)
         }
         binding.rating.text = when (post.rating) {
-            "s" -> getString(R.string.browse_info_rating_safe)
+            "s" -> getString(sRatingNameRes)
             "q" -> getString(R.string.browse_info_rating_questionable)
+            "g" -> getString(R.string.browse_info_rating_general)
             else -> getString(R.string.browse_info_rating_explicit)
         }
         binding.score.text = post.score.toString()
         binding.createdDate.text = binding.root.context.formatDate(post.time)
     }
+
+    val sRatingNameRes: Int get() = if (booru.type == Values.BOORU_TYPE_DAN) R.string.browse_info_rating_sensitive else R.string.browse_info_rating_safe
 
     private fun getSize(width: Int, height: Int, size: Int): String {
         return "$width x $height ${Formatter.formatFileSize(context, size.toLong())}"

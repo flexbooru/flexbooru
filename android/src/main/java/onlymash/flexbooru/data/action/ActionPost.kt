@@ -16,12 +16,12 @@
 package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
+import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POSTS
 import onlymash.flexbooru.data.model.common.Booru
 
-private const val SAFE_MODE_TAG = "rating:safe"
 
 data class ActionPost(
     var booru: Booru,
@@ -80,8 +80,8 @@ data class ActionPost(
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())
 
-        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-            builder.addQueryParameter("tags", "$query $SAFE_MODE_TAG ${booru.getBlacklistsString()}".trim())
+        if (isSafeMode && !query.contains(getSafeModeTag(booru.type))) {
+            builder.addQueryParameter("tags", "$query ${getSafeModeTag(booru.type)} ${booru.getBlacklistsString()}".trim())
         } else {
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
@@ -104,8 +104,8 @@ data class ActionPost(
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())
 
-        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-            builder.addQueryParameter("tags", "$query $SAFE_MODE_TAG ${booru.getBlacklistsString()}".trim())
+        if (isSafeMode && !query.contains(getSafeModeTag(booru.type))) {
+            builder.addQueryParameter("tags", "$query ${getSafeModeTag(booru.type)} ${booru.getBlacklistsString()}".trim())
         } else {
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
@@ -130,8 +130,8 @@ data class ActionPost(
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("pid", page.toString())
 
-        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-            builder.addQueryParameter("tags", "$query $SAFE_MODE_TAG ${booru.getBlacklistsString()}".trim())
+        if (isSafeMode && !query.contains(getSafeModeTag(booru.type))) {
+            builder.addQueryParameter("tags", "$query ${getSafeModeTag(booru.type)} ${booru.getBlacklistsString()}".trim())
         } else {
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
@@ -157,8 +157,8 @@ data class ActionPost(
             .addQueryParameter("limit", limit.toString())
             .addQueryParameter("page", page.toString())
 
-        if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-            builder.addQueryParameter("tags", "$query $SAFE_MODE_TAG ${booru.getBlacklistsString()}".trim())
+        if (isSafeMode && !query.contains(getSafeModeTag(booru.type))) {
+            builder.addQueryParameter("tags", "$query ${getSafeModeTag(booru.type)} ${booru.getBlacklistsString()}".trim())
         } else {
             builder.addQueryParameter("tags", "$query ${booru.getBlacklistsString()}".trim())
         }
@@ -187,8 +187,8 @@ data class ActionPost(
             } else {
                 "$query ${booru.getBlacklistsString()}".trim()
             }
-            if (isSafeMode && !query.contains(SAFE_MODE_TAG)) {
-                tags = "$tags $SAFE_MODE_TAG"
+            if (isSafeMode && !query.contains(getSafeModeTag(booru.type))) {
+                tags = "$tags ${getSafeModeTag(booru.type)}"
             }
             return builder.addQueryParameter("tags", tags)
         }
@@ -282,5 +282,9 @@ data class ActionPost(
             builder.addQueryParameter("tags", query)
         }
         return builder.build()
+    }
+
+    companion object {
+        fun getSafeModeTag(booruType: Int): String = if (booruType == BOORU_TYPE_DAN) "rating:general" else "rating:safe"
     }
 }

@@ -196,6 +196,12 @@
         <item>questionable</item>
         <item>explicit</item>
     </string-array>
+    <string-array name="filter_rating_danbooru">
+        <item>general</item>
+        <item>sensitive</item>
+        <item>questionable</item>
+        <item>explicit</item>
+    </string-array>
     <string-array name="filter_threshold">
         <item>1</item>
         <item>2</item>
