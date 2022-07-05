@@ -78,7 +78,7 @@ class PoolFragment : SearchBarFragment() {
                 }
         })
         mainList.apply {
-            layoutManager = LinearLayoutManager(this@PoolFragment.context, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@PoolFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = poolAdapter.withLoadStateFooter(StateAdapter(poolAdapter))
         }
         lifecycleScope.launchWhenCreated {

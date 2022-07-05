@@ -74,7 +74,7 @@ class TagFragment : SearchBarFragment() {
         setSearchBarTitle(getString(R.string.title_tags))
         tagAdapter = TagAdapter()
         mainList.apply {
-            layoutManager = LinearLayoutManager(this@TagFragment.context, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@TagFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = tagAdapter.withLoadStateFooter(StateAdapter(tagAdapter))
         }
         lifecycleScope.launchWhenCreated {

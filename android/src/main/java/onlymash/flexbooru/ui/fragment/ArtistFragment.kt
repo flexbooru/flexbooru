@@ -72,7 +72,7 @@ class ArtistFragment : SearchBarFragment() {
         setSearchBarTitle(getString(R.string.title_artists))
         artistAdapter = ArtistAdapter()
         mainList.apply {
-            layoutManager = LinearLayoutManager(this@ArtistFragment.context, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@ArtistFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = artistAdapter.withLoadStateFooter(StateAdapter(artistAdapter))
         }
         lifecycleScope.launchWhenCreated {

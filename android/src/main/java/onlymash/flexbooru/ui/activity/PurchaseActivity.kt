@@ -25,10 +25,13 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.*
+import com.google.common.collect.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.data.api.OrderApi
@@ -78,15 +81,22 @@ class PurchaseActivity : BaseActivity() {
             }
             billingClient = BillingClient
                 .newBuilder(this)
-                .enablePendingPurchases()
                 .setListener(purchasesUpdatedListener)
+                .enablePendingPurchases()
                 .build()
+            Toast.makeText(this@PurchaseActivity, "start connect", Toast.LENGTH_SHORT).show()
             billingClient?.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult) {}
-                override fun onBillingServiceDisconnected() { }
+                override fun onBillingSetupFinished(billingResult: BillingResult) {
+                    Toast.makeText(this@PurchaseActivity, billingResult.responseCode.toString() + ": "+ billingResult.debugMessage, Toast.LENGTH_LONG).show()
+                }
+                override fun onBillingServiceDisconnected() {
+                    Toast.makeText(this@PurchaseActivity, "onBillingServiceDisconnected", Toast.LENGTH_LONG).show()
+                }
             })
             binding.payGooglePlay.setOnClickListener {
-                orderByGooglePlay()
+                lifecycleScope.launch {
+                    processGooglePurchases()
+                }
             }
         } else {
             binding.payGooglePlay.visibility = View.GONE
@@ -114,37 +124,40 @@ class PurchaseActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun orderByGooglePlay() {
+    private suspend fun processGooglePurchases() {
         val client = billingClient ?: return
-        if (client.isReady) {
-            val params = QueryProductDetailsParams.newBuilder()
-                .setProductList(listOf(QueryProductDetailsParams.Product
-                    .newBuilder()
-                    .setProductId(SKU)
-                    .setProductType(BillingClient.ProductType.INAPP)
-                    .build())
+        if (!client.isReady) return
+        val params = QueryProductDetailsParams.newBuilder()
+            .setProductList(
+                ImmutableList.of(
+                    QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(SKU)
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build()
                 )
-                .build()
-            client.queryProductDetailsAsync(params) { billingResult, productDetails ->
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetails.isNotEmpty()) {
-                    val index = productDetails.indexOfFirst {
-                        it.productId == SKU
-                    }
-                    if (index >= 0) {
-                        val productDetailsParams = BillingFlowParams.ProductDetailsParams
-                            .newBuilder()
-                            .setProductDetails(productDetails[index])
-                            .build()
-                        val billingFlowParams = BillingFlowParams
-                            .newBuilder()
-                            .setProductDetailsParamsList(listOf(productDetailsParams))
-                            .build()
-                        val result = client.launchBillingFlow(this@PurchaseActivity, billingFlowParams)
-                        if (result.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                            Settings.isOrderSuccess = true
-                            Settings.orderTime = System.currentTimeMillis()
-                        }
-                    }
+            )
+        val productDetailsResult = withContext(Dispatchers.IO) {
+            client.queryProductDetails(params.build())
+        }
+        val billingResult = productDetailsResult.billingResult
+        val productDetails = productDetailsResult.productDetailsList ?: return
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetails.isNotEmpty()) {
+            val index = productDetails.indexOfFirst {
+                it.productId == SKU
+            }
+            if (index >= 0) {
+                val productDetailsParams = BillingFlowParams.ProductDetailsParams
+                    .newBuilder()
+                    .setProductDetails(productDetails[index])
+                    .build()
+                val billingFlowParams = BillingFlowParams
+                    .newBuilder()
+                    .setProductDetailsParamsList(listOf(productDetailsParams))
+                    .build()
+                val result = client.launchBillingFlow(this@PurchaseActivity, billingFlowParams)
+                if (result.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                    Settings.isOrderSuccess = true
+                    Settings.orderTime = System.currentTimeMillis()
                 }
             }
         }
