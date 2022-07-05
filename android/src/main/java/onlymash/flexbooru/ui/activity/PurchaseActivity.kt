@@ -84,14 +84,9 @@ class PurchaseActivity : BaseActivity() {
                 .setListener(purchasesUpdatedListener)
                 .enablePendingPurchases()
                 .build()
-            Toast.makeText(this@PurchaseActivity, "start connect", Toast.LENGTH_SHORT).show()
             billingClient?.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult) {
-                    Toast.makeText(this@PurchaseActivity, billingResult.responseCode.toString() + ": "+ billingResult.debugMessage, Toast.LENGTH_LONG).show()
-                }
-                override fun onBillingServiceDisconnected() {
-                    Toast.makeText(this@PurchaseActivity, "onBillingServiceDisconnected", Toast.LENGTH_LONG).show()
-                }
+                override fun onBillingSetupFinished(billingResult: BillingResult) {}
+                override fun onBillingServiceDisconnected() {}
             })
             binding.payGooglePlay.setOnClickListener {
                 lifecycleScope.launch {
