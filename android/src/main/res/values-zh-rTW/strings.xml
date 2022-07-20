@@ -212,11 +212,11 @@
     <string name="tag_type_all">所有類型</string>
     <string name="tag_type_general">一般</string>
     <string name="tag_type_artist">繪師</string>
-    <string name="tag_type_copyright">著作權</string>
+    <string name="tag_type_copyright">版權</string>
     <string name="tag_type_character">角色</string>
     <string name="tag_type_circle">圈子</string>
     <string name="tag_type_faults">錯誤</string>
-    <string name="tag_type_meta">中繼</string>
+    <string name="tag_type_meta">後設</string>
     <string name="tag_type_model">模特</string>
     <string name="tag_type_photo_set">圖集</string>
     <string name="tag_type_genre">文類</string>
