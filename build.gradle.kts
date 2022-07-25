@@ -24,12 +24,12 @@ buildscript {
         set("work_version", "2.8.0-alpha02")
         set("glide_version", "4.13.2")
         set("lifecycle_version", "2.5.0")
-        set("exoplayer_version", "2.18.0")
+        set("exoplayer_version", "2.18.1")
         set("okhttp_version", "5.0.0-alpha.10")
         set("retrofit_version", "2.9.0")
         set("xmlutil_version", "0.84.1")
-        set("kodein_version", "7.13.0")
-        set("coroutines_version", "1.6.3")
+        set("kodein_version", "7.14.0")
+        set("coroutines_version", "1.6.4")
         set("serialization_version", "1.3.3")
         set("ktor_version", "2.0.3")
     }
@@ -37,7 +37,7 @@ buildscript {
         google()
     }
     dependencies {
-        val kotlinVersion = "1.7.0"
+        val kotlinVersion = "1.7.10"
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(kotlin("serialization", kotlinVersion))
         classpath("com.android.tools.build:gradle:7.2.1")
