@@ -174,8 +174,8 @@
     <string name="settings_download_size">İndirme boyutu</string>
     <string name="settings_download_path">İndirme dizini</string>
     <string name="settings_download_path_not_set">Dizin ayarlanmamış</string>
-    <string name="settings_post_size_sample">Örnek</string>
-    <string name="settings_post_size_larger">Daha büyük</string>
+    <string name="settings_post_size_sample">Küçük</string>
+    <string name="settings_post_size_larger">Büyük</string>
     <string name="settings_post_size_origin">Orijinal</string>
     <string name="settings_grid_mode">Izgara modu</string>
     <string name="settings_grid_mode_fixed">Sabit oran</string>
