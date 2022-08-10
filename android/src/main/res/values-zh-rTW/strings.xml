@@ -62,7 +62,7 @@
     <string name="post_expand_or_clear">展開或清除</string>
     <string name="post_add_search_to_muzei">已將「%s」儲存至 Muzei。</string>
     <string name="post_download">下載貼圖</string>
-    <string name="post_add_to_fav">新增至收藏</string>
+    <string name="post_add_to_fav">新增至最愛</string>
     <string name="post_search_by_sauce_nao">透過 SauceNao 搜尋</string>
     <string name="msg_download_must_enable">需要下載管理器。</string>
     <string name="msg_path_denied">儲存失敗！沒有目前路徑的存取權。</string>
@@ -114,7 +114,7 @@
     <string name="scaner_scan_qr_code">掃描 QR Code</string>
     <string name="scaner_add_booru_permission_required">掃描 QR Code 需要相機權限。</string>
     <string name="browse_toolbar_title">貼圖</string>
-    <string name="browse_add_to_fav">新增至收藏</string>
+    <string name="browse_add_to_fav">新增至最愛</string>
     <string name="browse_download">下載</string>
     <string name="browse_set_as">設定為</string>
     <string name="browse_send_file">傳送檔案</string>
@@ -150,7 +150,7 @@
     <string name="account_user_id">ID：%d</string>
     <string name="account_user_remove">移除帳戶</string>
     <string name="account_user_dialog_title_remove">你確定要移除這個帳戶？</string>
-    <string name="account_favorites">收藏</string>
+    <string name="account_favorites">最愛</string>
     <string name="account_posts">貼圖</string>
     <string name="account_comments">留言</string>
     <string name="account_config_msg_tip_empty">使用者名稱或密碼/Api 金鑰不可為空白。</string>
