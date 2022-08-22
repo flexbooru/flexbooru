@@ -37,7 +37,7 @@
     <string name="title_history">Geçmiş</string>
     <string name="history_clear_all">Hepsini sil</string>
     <string name="history_clear_all_content">Tüm geçmiş silinecek.</string>
-    <string name="about_app_version">Versiyon</string>
+    <string name="about_app_version">Sürüm</string>
     <string name="about_app_rate">Bu uygulamayı değerlendirin</string>
     <string name="about_app_translation">Çeviri</string>
     <string name="about_app_translation_summary">Bu uygulamayı çevir</string>
