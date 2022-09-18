@@ -189,7 +189,7 @@
     <string name="settings_show_info_bar">Toon infobalk</string>
     <string name="settings_show_all_tags">Toon tags voor alle sites</string>
     <string name="settings_auto_hide_bottom_bar">Onderste balk automatisch verbergen</string>
-    <string name="settings_auto_refresh">Auto refresh</string>
+    <string name="settings_auto_refresh">Automatisch verversen</string>
     <string name="settings_clear_cache">Cache legen</string>
     <string name="settings_clear_cache_summery">Verwijder alle in cache opgeslagen bestanden.</string>
     <string name="settings_clear_cache_dialog_content">In cache opgeslagen bestanden zullen worden verwijderd.</string>
