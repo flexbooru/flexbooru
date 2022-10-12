@@ -109,7 +109,7 @@ class SearchBarMover(private val helper: Helper,
             val va = ValueAnimator.ofInt(0, offset)
             va.duration = ANIMATE_TIME
             va.addListener(object : SimpleAnimatorListener() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     searchBarMoveAnimator = null
                 }
             })
@@ -160,7 +160,7 @@ class SearchBarMover(private val helper: Helper,
             val va = ValueAnimator.ofInt(0, offset)
             va.duration = ANIMATE_TIME
             va.addListener(object : SimpleAnimatorListener() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
                     searchBarMoveAnimator = null
                 }

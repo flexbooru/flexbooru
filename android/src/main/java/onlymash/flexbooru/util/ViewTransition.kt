@@ -95,7 +95,7 @@ class ViewTransition(vararg views: View) {
         animator1 = ObjectAnimator.ofFloat(hiddenView, "alpha", 0f).apply {
             duration = ANIMATE_TIME
             addListener(object : SimpleAnimatorListener() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     hiddenView.visibility = View.GONE
                     animator1 = null
                 }
@@ -106,7 +106,7 @@ class ViewTransition(vararg views: View) {
         animator2 = ObjectAnimator.ofFloat(shownView, "alpha", 1f).apply {
             duration = ANIMATE_TIME
             addListener(object : SimpleAnimatorListener() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     animator2 = null
                 }
             })

@@ -18,6 +18,7 @@ package onlymash.flexbooru.widget.searchbar
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
@@ -326,7 +327,13 @@ class SearchBar @JvmOverloads constructor(
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is Bundle) {
-            super.onRestoreInstanceState(state.getParcelable(STATE_KEY_SUPER))
+            super.onRestoreInstanceState(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    state.getParcelable(STATE_KEY_SUPER, Parcelable::class.java)
+                else
+                    @Suppress("DEPRECATION")
+                    state.getParcelable(STATE_KEY_SUPER)
+            )
             updateState(state.getInt(STATE_KEY_STATE, STATE_NORMAL), animation = false)
         }
     }

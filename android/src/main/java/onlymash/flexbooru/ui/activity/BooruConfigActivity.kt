@@ -46,7 +46,7 @@ class BooruConfigActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item.itemId == android.R.id.home) {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             true
         } else {
             menuListener?.onMenuItemClick(item) ?: super.onOptionsItemSelected(item)

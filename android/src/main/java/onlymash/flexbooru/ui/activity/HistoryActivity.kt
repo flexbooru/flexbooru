@@ -76,7 +76,7 @@ class HistoryActivity : KodeinActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when {
             item.itemId == android.R.id.home -> {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
                 true
             }
             item.itemId == R.id.action_history_clear_all && historyAdapter.itemCount > 0 -> {
