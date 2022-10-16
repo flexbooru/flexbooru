@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -16,7 +16,7 @@
 <resources>
     <string name="app_description">Un client booru pour Android, supporte Danbooru, Moebooru, Gelbooru, Sankaku, etc.    </string>
     <string name="title_posts">Publications</string>
-    <string name="title_search">Search</string>
+    <string name="title_search">Chercher</string>
     <string name="title_popular">Populaire</string>
     <string name="title_manage_boorus">Gérer les boorus</string>
     <string name="title_settings">Paramètres</string>
@@ -34,9 +34,9 @@
     <string name="title_tag_blacklist">Liste noire de tags</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">Quel Anime</string>
-    <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="title_history">Historique</string>
+    <string name="history_clear_all">Effacer tout</string>
+    <string name="history_clear_all_content">Tout l\'historique sera effacé.</string>
     <string name="about_app_version">Version</string>
     <string name="about_app_rate">Notez cette app</string>
     <string name="about_app_translation">Traduction</string>
@@ -49,9 +49,9 @@
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
     <string name="about_feedback_email">Email</string>
-    <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
+    <string name="about_copyright_and_licenses">Droits d\'auteur &amp; licences</string>
     <string name="about_copyright">Copyright</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">Droit d\'auteur de l\'application</string>
     <string name="about_licenses">Licences</string>
     <string name="about_open_source_licenses">Licences Open Source</string>
     <string name="snackbar_copy_text">%s a été copié dans le presse-papiers.</string>
@@ -102,7 +102,7 @@
     <string name="booru_config_info">Infos sur le Booru</string>
     <string name="booru_config_scheme">Profil</string>
     <string name="booru_config_host">Hôte</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">Emplacement</string>
     <string name="booru_config_type">Type</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">Le nom ne peut pas être vide.</string>
@@ -119,10 +119,10 @@
     <string name="browse_set_as">Définir comme</string>
     <string name="browse_send_file">Envoyer le fichier</string>
     <string name="browse_save_file">Enregistrer le fichier</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">Enregistrer sous…</string>
     <string name="browse_share_link">Partager le lien</string>
     <string name="browse_open_in_browser">Ouvrir dans le navigateur</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">Format non pris en charge : %s</string>
     <string name="browse_tags">Tags</string>
     <string name="browse_info">Informations</string>
     <string name="browse_recommended">Recommandé</string>
@@ -155,17 +155,17 @@
     <string name="account_comments">Commentaires</string>
     <string name="account_config_msg_tip_empty">Le nom d\'utilisateur ou le mot de passe/clé Api ne peuvent pas être vides.</string>
     <string name="account_recommended">Recommandé</string>
-    <string name="settings_night_mode">Night mode</string>
-    <string name="settings_night_mode_on">On</string>
-    <string name="settings_night_mode_off">Off</string>
-    <string name="settings_night_mode_system">Follow system</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
-    <string name="settings_night_theme">Night theme</string>
-    <string name="settings_night_theme_dark">Dark</string>
-    <string name="settings_night_theme_black">Black</string>
-    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_night_mode">Mode nuit</string>
+    <string name="settings_night_mode_on">Activé</string>
+    <string name="settings_night_mode_off">Désactivé</string>
+    <string name="settings_night_mode_system">Selon le système</string>
+    <string name="settings_night_mode_battery">Suivre l\'économiseur d\'énergie</string>
+    <string name="settings_night_theme">Thème Nuit</string>
+    <string name="settings_night_theme_dark">Sombre</string>
+    <string name="settings_night_theme_black">Noir</string>
+    <string name="settings_dns_over_https">DNS par HTTPS</string>
     <string name="settings_dns_over_https_summary">Restart takes effect</string>
-    <string name="settings_dns_over_https_dns">DNS Provider</string>
+    <string name="settings_dns_over_https_dns">Fournisseur DNS</string>
     <string name="settings_safe_mode">Mode sécurisé</string>
     <string name="settings_page_limit">Limite de page</string>
     <string name="settings_muzei_limit">Limite du Muzei</string>
@@ -177,19 +177,19 @@
     <string name="settings_post_size_sample">Échantillon</string>
     <string name="settings_post_size_larger">Plus grand</string>
     <string name="settings_post_size_origin">Origine</string>
-    <string name="settings_grid_mode">Grid mode</string>
-    <string name="settings_grid_mode_fixed">Fixed ratio</string>
-    <string name="settings_grid_mode_staggered">Staggered</string>
-    <string name="settings_grid_ratio">Grid ratio</string>
+    <string name="settings_grid_mode">Mode grille</string>
+    <string name="settings_grid_mode_fixed">Proportions fixes</string>
+    <string name="settings_grid_mode_staggered">Échelonné</string>
+    <string name="settings_grid_ratio">Proportions de la grille</string>
     <string name="settings_grid_width">Largeur de la grille</string>
     <string name="settings_grid_width_small">Petit</string>
     <string name="settings_grid_width_normal">Normal</string>
     <string name="settings_grid_width_large">Grand</string>
-    <string name="settings_grid_rounded">Rounded grid</string>
+    <string name="settings_grid_rounded">Grille arrondie</string>
     <string name="settings_show_info_bar">Afficher la barre d\'informations</string>
     <string name="settings_show_all_tags">Afficher les tags pour tous les sites</string>
-    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
-    <string name="settings_auto_refresh">Auto refresh</string>
+    <string name="settings_auto_hide_bottom_bar">Masquer automatiquement la barre du bas</string>
+    <string name="settings_auto_refresh">Rafraîchissement automatique</string>
     <string name="settings_clear_cache">Vider le cache</string>
     <string name="settings_clear_cache_summery">Supprimer tous les fichiers mis en cache.</string>
     <string name="settings_clear_cache_dialog_content">Les fichiers mis en cache seront effacés.</string>
@@ -249,7 +249,7 @@
     <string name="muzei_copy">Copier</string>
     <string name="muzei_delete">Supprimer</string>
     <string name="muzei_search">Rechercher</string>
-    <string name="muzei_search_hint">Add tag…</string>
+    <string name="muzei_search_hint">Ajouter un tag…</string>
     <string name="muzei_fetch">Récupérer les illustrations</string>
     <string name="muzei_input_cant_be_empty">L\'entrée ne peut pas être vide.</string>
     <string name="muzei_action_view_post">Voir la publication sur Flexbooru</string>
@@ -286,5 +286,5 @@
     <string name="sauce_nao_source">Source</string>
     <string name="sauce_nao_search_from_url">URL</string>
     <string name="sauce_nao_search_from_file">Fichier</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="action_add_to_muzei">Ajouter à Muzei</string>
 </resources>
