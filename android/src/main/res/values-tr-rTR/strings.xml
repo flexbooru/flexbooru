@@ -37,18 +37,18 @@
     <string name="title_history">Geçmiş</string>
     <string name="history_clear_all">Hepsini sil</string>
     <string name="history_clear_all_content">Tüm geçmiş silinecek.</string>
-    <string name="about_app_version">Versiyon</string>
-    <string name="about_app_rate">Bu uygulamayı değerlendirin</string>
+    <string name="about_app_version">Sürüm</string>
+    <string name="about_app_rate">Bu uygulamaya puan verin</string>
     <string name="about_app_translation">Çeviri</string>
     <string name="about_app_translation_summary">Bu uygulamayı çevir</string>
     <string name="about_author">Geliştirici</string>
-    <string name="about_author_email">Eposta</string>
+    <string name="about_author_email">E-posta</string>
     <string name="about_author_website">Website</string>
     <string name="about_feedback">Geribildirim</string>
     <string name="about_feedback_github">Github</string>
     <string name="about_feedback_telegram">Telegram</string>
     <string name="about_feedback_discord">Discord</string>
-    <string name="about_feedback_email">Eposta</string>
+    <string name="about_feedback_email">E-posta</string>
     <string name="about_copyright_and_licenses">Telif hakkı ve Lisanslar</string>
     <string name="about_copyright">Telif hakkı</string>
     <string name="about_app_copyright">Uygulama telif hakkı</string>
@@ -81,7 +81,7 @@
     <string name="dialog_exit">Çıkış yap</string>
     <string name="dialog_update">Güncelle</string>
     <string name="update_found_update">Yeni bir güncelleme mevcut</string>
-    <string name="update_version">Versiyon: %s</string>
+    <string name="update_version">Sürüm: %s</string>
     <string name="booru_add">Booru ekle</string>
     <string name="booru_add_from_qr_code">QR kodu tarayın</string>
     <string name="booru_add_from_clipboard">Panodan içe aktar</string>
@@ -110,7 +110,7 @@
     <string name="booru_config_host_invalid">Geçersiz sunucu.</string>
     <string name="booru_config_hash_salt_cant_empty">Hash salt boş bırakılamaz.</string>
     <string name="booru_config_dialog_title_delete">Bu booru\'yu kaldırmak istediğinizden emin misiniz?</string>
-    <string name="booru_config_hash_salt_must_contain_yp">Hash sult şu metni içermeli: sizin-şifreniz</string>
+    <string name="booru_config_hash_salt_must_contain_yp">Hash salt şu metni içermeli: sizin-şifreniz</string>
     <string name="scaner_scan_qr_code">QR kodunu tara</string>
     <string name="scaner_add_booru_permission_required">QR kodunu taramak için Kamera izni gereklidir.</string>
     <string name="browse_toolbar_title">Gönderi</string>
@@ -174,8 +174,8 @@
     <string name="settings_download_size">İndirme boyutu</string>
     <string name="settings_download_path">İndirme dizini</string>
     <string name="settings_download_path_not_set">Dizin ayarlanmamış</string>
-    <string name="settings_post_size_sample">Örnek</string>
-    <string name="settings_post_size_larger">Daha büyük</string>
+    <string name="settings_post_size_sample">Küçük</string>
+    <string name="settings_post_size_larger">Büyük</string>
     <string name="settings_post_size_origin">Orijinal</string>
     <string name="settings_grid_mode">Izgara modu</string>
     <string name="settings_grid_mode_fixed">Sabit oran</string>
@@ -266,9 +266,9 @@
     <string name="comment_hint">Yorum girdisi</string>
     <string name="purchase_title">Reklamları kaldırın ve özelliklerin kilidini açın</string>
     <string name="purchase_info_title">Reklamları kaldırın ve tüm özelliklerin kilidini açın</string>
-    <string name="purchase_info_remove_ads">* Reklamları kaldırır</string>
+    <string name="purchase_info_remove_ads">* Reklamları kaldır</string>
     <string name="purchase_info_unlock_full_features">* Tüm özelliklerin kilidini aç</string>
-    <string name="purchase_info_features">1. Mevcut booru sınırını kaldırın.\n2. Moebooru\'nun havuzunu zip arşivini indirin. \n3. Booru\'ları dosyadan yedekleyin veya geri yükleyin.\n4. SauceNao ile tersine arama yapın.
+    <string name="purchase_info_features">1. Mevcut booru sınırını kaldırın.\n2. Moebooru\'nun havuzunun zip arşivini indirin. \n3. Booru\'ları dosyadan yedekleyin veya geri yükleyin.\n4. SauceNao ile tersine arama yapın.
     </string>
     <string name="purchase_pay_title">Ödemeyi yap/geri yükle</string>
     <string name="purchase_pay_google_play">Google Play</string>
