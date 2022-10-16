@@ -80,7 +80,7 @@ class App : Application(), DIAware {
         }
         AppCompatDelegate.setDefaultNightMode(nightMode)
         DrawerImageLoader.init(drawerImageLoader)
-        if (!Settings.isOrderSuccess) {
+        if (!isOrderSuccess) {
             MobileAds.initialize(this) {}
             MobileAds.setRequestConfiguration(RequestConfiguration.Builder()
                 .setTestDeviceIds(listOf("65DC68D21E774E5B6CAF511768A3E2D2")).build())
@@ -96,7 +96,7 @@ class App : Application(), DIAware {
         isGoogleSign = isPlayVersion
         if (isPlayVersion) {
             val time = System.currentTimeMillis()
-            if (!Settings.isOrderSuccess || time - Settings.orderTime > 7*24*60*60*1000) {
+            if (!isOrderSuccess || time - Settings.orderTime > 7*24*60*60*1000) {
                 Settings.orderTime = time
                 checkOrderFromCache()
             }

@@ -30,17 +30,17 @@ buildscript {
         set("xmlutil_version", "0.84.3")
         set("kodein_version", "7.15.0")
         set("coroutines_version", "1.6.4")
-        set("serialization_version", "1.3.3")
+        set("serialization_version", "1.4.1")
         set("ktor_version", "2.1.2")
     }
     repositories {
         google()
     }
     dependencies {
-        val kotlinVersion = "1.7.10"
+        val kotlinVersion = "1.7.20"
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.5")
         classpath("com.google.gms:google-services:4.3.14")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
@@ -64,4 +64,19 @@ allprojects {
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
+}
+
+subprojects {
+    afterEvaluate {
+        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()?.let { ext ->
+            ext.sourceSets.removeAll { sourceSet ->
+                setOf(
+                    "androidAndroidTestRelease",
+                    "androidTestFixtures",
+                    "androidTestFixturesDebug",
+                    "androidTestFixturesRelease",
+                ).contains(sourceSet.name)
+            }
+        }
+    }
 }
