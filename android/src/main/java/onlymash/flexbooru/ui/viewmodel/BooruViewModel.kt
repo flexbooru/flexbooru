@@ -19,12 +19,14 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 
 class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
 
     private val _boorus = MediatorLiveData<List<Booru>>()
+    val booruType get() = booru.value?.type ?: Values.BOORU_TYPE_UNKNOWN
 
     private val _uid = MutableLiveData<Long>(-1)
     val booru = MediatorLiveData<Booru>()

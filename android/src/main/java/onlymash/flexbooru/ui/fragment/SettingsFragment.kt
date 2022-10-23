@@ -20,10 +20,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.takisoft.preferencex.SimpleMenuPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
@@ -87,7 +87,7 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
     }
 
     private fun setupDnsPreference(changed: Boolean = false) {
-        findPreference<SimpleMenuPreference>(DNS_OVER_HTTPS_PROVIDER)?.isVisible = isDohEnable
+        findPreference<ListPreference>(DNS_OVER_HTTPS_PROVIDER)?.isVisible = isDohEnable
         if (changed) {
             findPreference<SwitchPreference>(DNS_OVER_HTTPS)?.apply {
                 val tipSummary = getString(R.string.settings_dns_over_https_summary)

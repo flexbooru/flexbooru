@@ -28,7 +28,7 @@
         app:key="booru_info"
         app:title="@string/booru_config_info">
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="booru_config_type"
             app:title="@string/booru_config_type"
             app:icon="@drawable/ic_class_24dp"
@@ -37,7 +37,7 @@
             app:defaultValue="danbooru"
             app:useSimpleSummaryProvider="true"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="booru_config_scheme"
             app:title="@string/booru_config_scheme"
             app:icon="@drawable/ic_https_24dp"

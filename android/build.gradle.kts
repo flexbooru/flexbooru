@@ -89,6 +89,16 @@ android {
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        getByName("debug") {
+            val config = try {
+                signingConfigs.getByName("release")
+            } catch (_: UnknownDomainObjectException) {
+                null
+            }
+            if (config != null) {
+                signingConfig = config
+            }
+        }
     }
     compileOptions {
 //        isCoreLibraryDesugaringEnabled = true
@@ -200,12 +210,11 @@ dependencies {
     implementation("com.google.zxing:core:3.5.0")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-analytics-ktx:21.2.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.3.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.3.1")
     implementation("com.google.android.gms:play-services-ads:21.3.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.android.billingclient:billing-ktx:5.0.0")
-    implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")

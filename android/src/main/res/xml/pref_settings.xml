@@ -23,7 +23,7 @@
         app:key="settings_display"
         app:title="@string/settings_display">
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:entries="@array/settings_night_mode_entries"
             app:entryValues="@array/settings_night_mode_entries_values"
             app:defaultValue="system"
@@ -32,7 +32,7 @@
             app:key="settings_night"
             app:useSimpleSummaryProvider="true"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:entries="@array/settings_night_theme_entries"
             app:entryValues="@array/settings_night_theme_entries_values"
             app:defaultValue="black"
@@ -40,14 +40,14 @@
             app:key="settings_night_theme"
             app:useSimpleSummaryProvider="true"/>
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_grid_rounded"
             app:title="@string/settings_grid_rounded"
             app:defaultValue="true"
             app:summaryOn="@string/switch_yes"
             app:summaryOff="@string/switch_no"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_grid_mode"
             app:entries="@array/settings_grid_mode_entries"
             app:entryValues="@array/settings_grid_mode_entries_values"
@@ -55,7 +55,7 @@
             app:title="@string/settings_grid_mode"
             app:useSimpleSummaryProvider="true" />
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_grid_ratio"
             app:entries="@array/settings_grid_ratio_entries"
             app:entryValues="@array/settings_grid_ratio_entries_values"
@@ -63,7 +63,7 @@
             app:title="@string/settings_grid_ratio"
             app:useSimpleSummaryProvider="true" />
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_grid_width"
             app:entries="@array/settings_grid_width_entries"
             app:entryValues="@array/settings_grid_width_entries_values"
@@ -71,28 +71,28 @@
             app:title="@string/settings_grid_width"
             app:useSimpleSummaryProvider="true" />
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_show_info_bar"
             app:title="@string/settings_show_info_bar"
             app:defaultValue="false"
             app:summaryOn="@string/switch_yes"
             app:summaryOff="@string/switch_no"/>
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_show_all_tags"
             app:title="@string/settings_show_all_tags"
             app:defaultValue="false"
             app:summaryOn="@string/switch_yes"
             app:summaryOff="@string/switch_no"/>
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_auto_hide_bottom_bar"
             app:title="@string/settings_auto_hide_bottom_bar"
             app:defaultValue="false"
             app:summaryOn="@string/switch_yes"
             app:summaryOff="@string/switch_no"/>
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_auto_refresh"
             app:title="@string/settings_auto_refresh"
             app:defaultValue="false"
@@ -104,14 +104,14 @@
         app:key="settings_options"
         app:title="@string/settings_options">
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_dns_over_https"
             app:title="@string/settings_dns_over_https"
             app:defaultValue="false"
             app:summaryOn="@string/switch_on"
             app:summaryOff="@string/switch_off"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_dns_over_https_dns"
             app:entries="@array/settings_dns_over_https_dns_entries"
             app:entryValues="@array/settings_dns_over_https_dns_entries_values"
@@ -119,14 +119,14 @@
             app:title="@string/settings_dns_over_https_dns"
             app:useSimpleSummaryProvider="true"/>
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             app:key="settings_safe_mode"
             app:title="@string/settings_safe_mode"
             app:defaultValue="true"
             app:summaryOn="@string/switch_on"
             app:summaryOff="@string/switch_off"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_page_limit"
             app:entries="@array/settings_page_limit_entries"
             app:entryValues="@array/settings_page_limit_entries_values"
@@ -134,7 +134,7 @@
             app:title="@string/settings_page_limit"
             app:useSimpleSummaryProvider="true"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_detail_size"
             app:entries="@array/settings_post_size_entries"
             app:entryValues="@array/settings_post_size_entries_values"
@@ -142,7 +142,7 @@
             app:title="@string/settings_detail_size"
             app:useSimpleSummaryProvider="true"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_download_size"
             app:entries="@array/settings_post_size_entries"
             app:entryValues="@array/settings_post_size_entries_values"
@@ -155,7 +155,7 @@
         app:key="settings_muzei"
         app:title="@string/settings_muzei">
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_muzei_limit"
             app:entries="@array/settings_muzei_limit_entries"
             app:entryValues="@array/settings_muzei_limit_entries_values"
@@ -163,7 +163,7 @@
             app:title="@string/settings_muzei_limit"
             app:useSimpleSummaryProvider="true"/>
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <ListPreference
             app:key="settings_muzei_size"
             app:entries="@array/settings_post_size_entries"
             app:entryValues="@array/settings_post_size_entries_values"

@@ -23,6 +23,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.annotation.NavigationRes
@@ -117,6 +118,16 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private val sp by instance<SharedPreferences>()
     private val booruDao by instance<BooruDao>()
 
+    private val requestNotificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
     private lateinit var booruViewModel: BooruViewModel
 
     private lateinit var navController: NavController
@@ -149,8 +160,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             }
             DRAWER_ITEM_ID_TAG_BLACKLIST -> {
-                if (booruViewModel.currentBooru?.type ?: BOORU_TYPE_UNKNOWN
-                    in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1, BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY)) {
+                if (booruViewModel.booruType in intArrayOf(BOORU_TYPE_MOE, BOORU_TYPE_DAN, BOORU_TYPE_DAN1, BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY)) {
                     toActivity(TagBlacklistActivity::class.java)
                 } else {
                     notSupportedToast()
@@ -226,6 +236,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             drawerSliderView.stickyFooterView?.updatePadding(bottom = bottom)
         }
         checkUpdate()
+        checkNotificationPermission()
     }
 
     private fun setupNavigationMenu(booruType: Int) {
