@@ -23,7 +23,6 @@ import onlymash.flexbooru.app.Keys.POST_QUERY
 import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.data.database.HistoryManager
 import onlymash.flexbooru.data.model.common.History
-import onlymash.flexbooru.ui.fragment.PostFragment
 import onlymash.flexbooru.extension.setupInsets
 import onlymash.flexbooru.ui.base.PathActivity
 
@@ -42,13 +41,5 @@ class SearchActivity : PathActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         setupInsets { }
-    }
-
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_post_container)
-        if (fragment is PostFragment && !fragment.onBackPressed()) {
-            return
-        }
-        super.onBackPressed()
     }
 }

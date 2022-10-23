@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.FloatRange
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -72,10 +73,20 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
     private lateinit var fabToListTop: FloatingActionButton
     private lateinit var networkStateContainer: LinearLayout
     private lateinit var errorMsg: TextView
-    private lateinit var retryButton: Button
 
     private var systemUiBottomSize = 0
     private var systemUiTopSize = 0
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            if(!isViewCreated) {
+                return
+            }
+            if (currentState == SearchBar.STATE_EXPAND) {
+                toNormalState()
+            }
+        }
+    }
 
     override fun onCreateBinding(
         inflater: LayoutInflater,
@@ -120,6 +131,17 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         }
         onSearchBarViewCreated(view, savedInstanceState)
         sp.registerOnSharedPreferenceChangeListener(this)
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        onBackPressedCallback.isEnabled = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onBackPressedCallback.isEnabled = currentState == SearchBar.STATE_EXPAND
     }
 
     fun updateState(loadState: LoadState?) {
@@ -250,6 +272,7 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         }
         forceShowNavBar()
         searchBar.toExpandState()
+        onBackPressedCallback.isEnabled = true
     }
 
     fun toNormalState() {
@@ -259,6 +282,7 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
         searchBar.toNormalState()
         forceShowSearchBar()
         forceShowNavBar()
+        onBackPressedCallback.isEnabled = false
     }
 
     fun clearSearchBarText() {
@@ -349,8 +373,6 @@ abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
 
     override fun isValidView(recyclerView: RecyclerView): Boolean =
         searchBar.currentState == SearchBar.STATE_NORMAL && recyclerView == mainList
-
-    open fun onBackPressed(): Boolean = true
 
     fun toListTop() {
         if (!isViewCreated) {

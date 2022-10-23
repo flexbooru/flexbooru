@@ -23,6 +23,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
@@ -33,6 +34,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -125,6 +127,14 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestNotificationPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
         }
     }
 
@@ -262,6 +272,17 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun setupDrawer(savedInstanceState: Bundle?) {
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) { }
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) { }
+            override fun onDrawerClosed(drawerView: View) {
+                onBackPressedCallback.isEnabled = false
+            }
+            override fun onDrawerOpened(drawerView: View) {
+                onBackPressedCallback.isEnabled = true
+            }
+        })
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         profileSettingDrawerItem = ProfileSettingDrawerItem().apply {
             name = StringHolder(R.string.title_manage_boorus)
             identifier = HEADER_ITEM_ID_BOORU_MANAGE
@@ -486,22 +507,6 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
             AUTO_HIDE_BOTTOM_BAR_KEY -> setupNavigationBarBehavior()
         }
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else if (isFragmentCanBack()) {
-            super.onBackPressed()
-        }
-    }
-
-    private fun isFragmentCanBack(): Boolean {
-        val currentFragment = getCurrentFragment()
-        if (currentFragment is SearchBarFragment) {
-            return currentFragment.onBackPressed()
-        }
-        return true
     }
 
     private fun toListTop() {

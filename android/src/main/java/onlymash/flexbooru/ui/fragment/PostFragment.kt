@@ -489,18 +489,6 @@ class PostFragment : SearchBarFragment() {
         }
     }
 
-    override fun onBackPressed(): Boolean {
-        if(!isViewCreated) {
-            return true
-        }
-        return if (currentState == SearchBar.STATE_EXPAND) {
-            toNormalState()
-            false
-        } else {
-            true
-        }
-    }
-
     private fun pickDate() {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
             set(Calendar.YEAR, date.yearEnd)
