@@ -15,32 +15,30 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/root_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.activity.SauceNaoActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.SauceNaoActivity">
 
     <include
         layout="@layout/common_list"
         android:id="@+id/common"/>
 
     <com.dekoservidoni.omfm.OneMoreFabMenu
-            android:id="@+id/sauce_nao_search_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/margin_normal"
-            app:color_main_button="@color/colorAccent"
-            app:color_secondary_buttons="@color/colorPrimary"
-            app:label_background_color="@color/colorCardBackground"
-            app:label_text_color="@color/colorPrimary"
-            app:content_options="@menu/sauce_nao_fab"
-            app:close_on_click="true"
-            app:rotate_main_button="true"
-            app:enable_main_as_action="false"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
+        android:id="@+id/sauce_nao_search_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        app:content_options="@menu/sauce_nao_fab"
+        app:color_main_button="?attr/colorPrimaryContainer"
+        app:color_secondary_buttons="?attr/colorSecondaryContainer"
+        app:close_on_click="true"
+        app:rotate_main_button="true"
+        app:enable_main_as_action="false"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

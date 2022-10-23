@@ -96,25 +96,28 @@ class SauceNaoActivity : BaseActivity() {
             adapter = sauceNaoAdapter
         }
         sauceNaoViewModel = getSauceNaoViewModel(api)
-        sauceNaoViewModel.data.observe(this, {
+        sauceNaoViewModel.data.observe(this) {
             response = it
-            supportActionBar?.subtitle = String.format(getString(R.string.sauce_nao_remaining_times_today), it.header.longRemaining)
+            supportActionBar?.subtitle = String.format(
+                getString(R.string.sauce_nao_remaining_times_today),
+                it.header.longRemaining
+            )
             sauceNaoAdapter.notifyDataSetChanged()
-        })
-        sauceNaoViewModel.isLoading.observe(this, {
+        }
+        sauceNaoViewModel.isLoading.observe(this) {
             progressBar.isVisible = it
             if (it && errorMsg.isVisible) {
                 errorMsg.isVisible = false
             }
-        })
-        sauceNaoViewModel.error.observe(this, {
+        }
+        sauceNaoViewModel.error.observe(this) {
             if (!it.isNullOrBlank()) {
                 errorMsg.isVisible = true
                 errorMsg.text = it
             } else {
                 errorMsg.isVisible = false
             }
-        })
+        }
         val url = intent?.getStringExtra(SAUCE_NAO_SEARCH_URL_KEY)
         if (!url.isNullOrEmpty()) {
             search(url)
@@ -196,14 +199,6 @@ class SauceNaoActivity : BaseActivity() {
 
     private fun searchByFile() {
         openFileObserver.openDocument("image/*")
-    }
-
-    override fun onBackPressed() {
-        if (fab.isExpanded()) {
-            fab.collapse()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     private fun search(imageUri: Uri) {
