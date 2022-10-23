@@ -114,10 +114,10 @@ class PostRemoteMediator(
 
     private suspend fun fetchPostsDan(page: Int, indexInNext: Int): List<Post> {
         val response = booruApis.danApi.getPosts(action.getDanPostsUrl(page))
-        val raw = response.body()?.toMutableList()
-        lastResponseSize = raw?.size ?: 0
-        raw?.removeIf { it.id == -1 }
-        return raw?.mapIndexed { index, postDan ->
+        val raw = response.body() ?: listOf()
+        lastResponseSize = raw.size
+        val posts = raw.filter { it.id != -1 }
+        return posts.mapIndexed { index, postDan ->
             postDan.toPost(
                 booruUid = action.booru.uid,
                 query = action.query,
@@ -126,21 +126,21 @@ class PostRemoteMediator(
                 index = indexInNext + index,
                 isFavored = isFavored
             )
-        } ?: listOf()
+        }
     }
 
     private suspend fun fetchPostsDanE621(page: Int, indexInNext: Int): List<Post> {
         val response = booruApis.danApi.getPostsE621(action.getDanPostsUrl(page))
-        val raw = response.body()?.posts?.toMutableList()
-        lastResponseSize = raw?.size ?: 0
-        raw?.removeIf { it.id == -1 }
-        return raw?.mapIndexed { index, post ->
+        val raw = response.body()?.posts ?: listOf()
+        lastResponseSize = raw.size
+        val posts = raw.filter { it.id != -1 }
+        return posts.mapIndexed { index, post ->
             post.toPost(
                 booruUid = action.booru.uid,
                 query = action.query,
                 index = indexInNext + index
             )
-        } ?: listOf()
+        }
     }
 
     private suspend fun fetchPostsDan1(page: Int, indexInNext: Int): List<Post> {

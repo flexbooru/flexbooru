@@ -153,7 +153,7 @@ class SauceNaoActivity : BaseActivity() {
                 true
             }
             android.R.id.home -> {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)

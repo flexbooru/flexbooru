@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.worker
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -274,6 +275,7 @@ class DownloadWorker(
         return ForegroundInfo(notificationId, notification)
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun getDownloadedNotification(title: String, channelId: String, desUri: Uri): Notification {
         val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
         intent.data = desUri
@@ -300,6 +302,7 @@ class DownloadWorker(
             .build()
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun getDownloadErrorNotification(title: String, channelId: String): Notification {
         val intent = Intent(applicationContext, DownloadNotificationClickReceiver::class.java)
         intent.putExtra(INPUT_DATA_KEY, inputData.toByteArray())
