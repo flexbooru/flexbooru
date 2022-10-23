@@ -26,6 +26,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.work.*
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Settings
@@ -263,6 +264,7 @@ class DownloadWorker(
         val cancelIntent = WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .setContentTitle(title)
             .setContentText(url)
@@ -294,6 +296,7 @@ class DownloadWorker(
         }
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_download_done)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
             .setContentTitle(title)
             .setContentText(applicationContext.getString(R.string.msg_download_complete))
             .setOngoing(false)
@@ -321,6 +324,7 @@ class DownloadWorker(
         }
         return NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.stat_sys_warning)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
             .setContentTitle(title)
             .setContentText(applicationContext.getString(R.string.msg_download_failed))
             .setOngoing(false)
