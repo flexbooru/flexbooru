@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">Klient booru dla Androida, obsługuje Danbooru, Moebooru, Gelbooru, Sankaku, itd.</string>
+    <string name="app_description">Klient booru dla Androida, obsługuje Danbooru, Moebooru, Gelbooru, Sankaku, itd.    </string>
     <string name="title_posts">Posty</string>
     <string name="title_search">Szukaj</string>
     <string name="title_popular">Popularne</string>
@@ -122,7 +122,7 @@
     <string name="browse_save_as">Zapisz jako…</string>
     <string name="browse_share_link">Udostępnij link</string>
     <string name="browse_open_in_browser">Otwórz w przeglądarce</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">Nieobsługiwany format: %s</string>
     <string name="browse_tags">Tagi</string>
     <string name="browse_info">Informacje</string>
     <string name="browse_recommended">Polecane</string>
@@ -134,8 +134,8 @@
     <string name="browse_info_rating_safe">Bezpieczne</string>
     <string name="browse_info_rating_questionable">Wątpliwe</string>
     <string name="browse_info_rating_explicit">Wulgarne</string>
-    <string name="browse_info_rating_general">General</string>
-    <string name="browse_info_rating_sensitive">Sensitive</string>
+    <string name="browse_info_rating_general">Ogólne</string>
+    <string name="browse_info_rating_sensitive">Wrażliwe</string>
     <string name="browse_info_score">Ocena</string>
     <string name="browse_info_parent">Rodzic</string>
     <string name="browse_info_title">Informacje</string>
@@ -165,9 +165,9 @@
     <string name="settings_night_theme">Motyw nocny</string>
     <string name="settings_night_theme_dark">Ciemny</string>
     <string name="settings_night_theme_black">Czarny</string>
-    <string name="settings_dns_over_https">DNS over HTTPS</string>
-    <string name="settings_dns_over_https_summary">Restart takes effect</string>
-    <string name="settings_dns_over_https_dns">DNS Provider</string>
+    <string name="settings_dns_over_https">DNS przez HTTPS</string>
+    <string name="settings_dns_over_https_summary">Uruchom ponownie, aby wprowadzić zmiany</string>
+    <string name="settings_dns_over_https_dns">Dostawca DNS</string>
     <string name="settings_safe_mode">Tryb bezpieczny</string>
     <string name="settings_page_limit">Limit strony</string>
     <string name="settings_muzei_limit">Limit Muzei</string>
@@ -187,11 +187,11 @@
     <string name="settings_grid_width_small">Mały</string>
     <string name="settings_grid_width_normal">Normalny</string>
     <string name="settings_grid_width_large">Duży</string>
-    <string name="settings_grid_rounded">Rounded grid</string>
+    <string name="settings_grid_rounded">Zaokrąglona siatka</string>
     <string name="settings_show_info_bar">Pokaż pasek informacyjny</string>
     <string name="settings_show_all_tags">Pokaż tagi dla wszystkich stron</string>
     <string name="settings_auto_hide_bottom_bar">Automatyczne ukryj dolny pasek</string>
-    <string name="settings_auto_refresh">Auto refresh</string>
+    <string name="settings_auto_refresh">Automatyczne odświeżanie</string>
     <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
     <string name="settings_clear_cache_summery">Usuń wszystkie zapisane grafiki.</string>
     <string name="settings_clear_cache_dialog_content">Pamięć podręczna zostanie wyczyszczona.</string>
