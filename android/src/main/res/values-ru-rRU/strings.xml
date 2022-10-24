@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -135,6 +135,8 @@
     <string name="browse_info_rating_safe">Безопасное</string>
     <string name="browse_info_rating_questionable">Под вопросом</string>
     <string name="browse_info_rating_explicit">Откровенное</string>
+    <string name="browse_info_rating_general">General</string>
+    <string name="browse_info_rating_sensitive">Sensitive</string>
     <string name="browse_info_score">Оценка</string>
     <string name="browse_info_parent">Родитель</string>
     <string name="browse_info_title">Информация</string>

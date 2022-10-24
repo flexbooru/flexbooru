@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -131,9 +131,11 @@
     <string name="browse_tag_include">包含</string>
     <string name="browse_info_source">來源</string>
     <string name="browse_info_rating">評級</string>
-    <string name="browse_info_rating_safe">安全的</string>
-    <string name="browse_info_rating_questionable">可疑的</string>
-    <string name="browse_info_rating_explicit">露骨的</string>
+    <string name="browse_info_rating_safe">安全</string>
+    <string name="browse_info_rating_questionable">可疑</string>
+    <string name="browse_info_rating_explicit">露骨</string>
+    <string name="browse_info_rating_general">一般</string>
+    <string name="browse_info_rating_sensitive">敏感</string>
     <string name="browse_info_score">評分</string>
     <string name="browse_info_parent">上層</string>
     <string name="browse_info_title">資訊</string>

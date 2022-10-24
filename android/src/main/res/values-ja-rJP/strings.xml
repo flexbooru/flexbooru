@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020. by onlymash <im@fiepi.me>, All rights reserved
+  ~ Copyright (C) 2020. by onlymash <fiepi.dev@gmail.com>, All rights reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify it under
   ~ the terms of the GNU General Public License as published by the Free Software
@@ -35,8 +35,8 @@
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">What Anime</string>
     <string name="title_history">History</string>
-    <string name="history_clear_all">Clear all</string>
-    <string name="history_clear_all_content">All history will be cleared.</string>
+    <string name="history_clear_all">全て消去</string>
+    <string name="history_clear_all_content">全ての履歴がクリアされます。</string>
     <string name="about_app_version">バージョン</string>
     <string name="about_app_rate">このアプリを評価</string>
     <string name="about_app_translation">翻訳</string>
@@ -51,7 +51,7 @@
     <string name="about_feedback_email">メールアドレス</string>
     <string name="about_copyright_and_licenses">Copyright &amp; Licenses</string>
     <string name="about_copyright">コピーライト</string>
-    <string name="about_app_copyright">App copyright</string>
+    <string name="about_app_copyright">アプリの著作権</string>
     <string name="about_licenses">ライセンス</string>
     <string name="about_open_source_licenses">オープンソースライセンス</string>
     <string name="snackbar_copy_text">` %s ` がクリップボードにコピーされました</string>
@@ -102,7 +102,7 @@
     <string name="booru_config_info">Booruインフォメーション</string>
     <string name="booru_config_scheme">スキーム</string>
     <string name="booru_config_host">ホスト</string>
-    <string name="booru_config_path">Path</string>
+    <string name="booru_config_path">パス</string>
     <string name="booru_config_type">タイプ</string>
     <string name="booru_config_hash_salt">Hash salt</string>
     <string name="booru_config_name_cant_empty">名前は空欄にできません。</string>
@@ -119,10 +119,10 @@
     <string name="browse_set_as">設定</string>
     <string name="browse_send_file">ファイルを送信</string>
     <string name="browse_save_file">ファイルを保存</string>
-    <string name="browse_save_as">Save as…</string>
+    <string name="browse_save_as">名前を付けて保存…</string>
     <string name="browse_share_link">リンクをシェア</string>
     <string name="browse_open_in_browser">ブラウザで開く</string>
-    <string name="browse_unsupported_format">Unsupported format: %s</string>
+    <string name="browse_unsupported_format">サポートされないフォーマット: %s</string>
     <string name="browse_tags">タグ</string>
     <string name="browse_info">情報</string>
     <string name="browse_recommended">おすすめ</string>
@@ -134,6 +134,8 @@
     <string name="browse_info_rating_safe">セーフ</string>
     <string name="browse_info_rating_questionable">Questionable</string>
     <string name="browse_info_rating_explicit">Explicit</string>
+    <string name="browse_info_rating_general">一般</string>
+    <string name="browse_info_rating_sensitive">センシティブ</string>
     <string name="browse_info_score">スコア</string>
     <string name="browse_info_parent">Parent</string>
     <string name="browse_info_title">情報</string>
@@ -155,22 +157,22 @@
     <string name="account_comments">コメント</string>
     <string name="account_config_msg_tip_empty">ユーザー名またはパスワード/Api Keyは空欄にできません</string>
     <string name="account_recommended">おすすめ</string>
-    <string name="settings_night_mode">Night mode</string>
-    <string name="settings_night_mode_on">On</string>
-    <string name="settings_night_mode_off">Off</string>
-    <string name="settings_night_mode_system">Follow system</string>
-    <string name="settings_night_mode_battery">Follow battery saver</string>
-    <string name="settings_night_theme">Night theme</string>
-    <string name="settings_night_theme_dark">Dark</string>
-    <string name="settings_night_theme_black">Black</string>
-    <string name="settings_dns_over_https">DNS over HTTPS</string>
+    <string name="settings_night_mode">夜間モード</string>
+    <string name="settings_night_mode_on">オン</string>
+    <string name="settings_night_mode_off">オフ</string>
+    <string name="settings_night_mode_system">システムに従う</string>
+    <string name="settings_night_mode_battery">省電力設定に従う</string>
+    <string name="settings_night_theme">夜間テーマ</string>
+    <string name="settings_night_theme_dark">ダーク</string>
+    <string name="settings_night_theme_black">黒</string>
+    <string name="settings_dns_over_https">HTTPS 経由の DNS</string>
     <string name="settings_dns_over_https_summary">Restart takes effect</string>
-    <string name="settings_dns_over_https_dns">DNS Provider</string>
+    <string name="settings_dns_over_https_dns">DNS プロバイダー</string>
     <string name="settings_safe_mode">セーフモード</string>
     <string name="settings_page_limit">ページ制限</string>
     <string name="settings_muzei_limit">Muzei制限</string>
     <string name="settings_muzei_size">Muzeiサイズ</string>
-    <string name="settings_detail_size">Detail size</string>
+    <string name="settings_detail_size">詳細サイズ</string>
     <string name="settings_download_size">ダウンロードサイズ</string>
     <string name="settings_download_path">ダウンロードパス</string>
     <string name="settings_download_path_not_set">パス未設定</string>
