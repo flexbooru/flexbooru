@@ -23,7 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
+import androidx.preference.SwitchPreferenceCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
@@ -89,7 +89,7 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
     private fun setupDnsPreference(changed: Boolean = false) {
         findPreference<ListPreference>(DNS_OVER_HTTPS_PROVIDER)?.isVisible = isDohEnable
         if (changed) {
-            findPreference<SwitchPreference>(DNS_OVER_HTTPS)?.apply {
+            findPreference<SwitchPreferenceCompat>(DNS_OVER_HTTPS)?.apply {
                 val tipSummary = getString(R.string.settings_dns_over_https_summary)
                 summaryOff = tipSummary
                 summaryOn = tipSummary
