@@ -28,8 +28,15 @@ data class ActionVote(
     fun getDan1RemoveFavUrl(): String =
         String.format("%s://%s/favorite/destroy.json", booru.scheme, booru.host)
 
-    fun getDanAddFavUrl(): String =
-        String.format("%s://%s/favorites.json", booru.scheme, booru.host)
+    fun getDanAddFavUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegment("favorites.json")
+            .addQueryParameter("login", booru.user?.name)
+            .addQueryParameter("api_key", booru.user?.token)
+            .build()
+    }
 
     fun getDanRemoveFavUrl(): HttpUrl {
         return HttpUrl.Builder()

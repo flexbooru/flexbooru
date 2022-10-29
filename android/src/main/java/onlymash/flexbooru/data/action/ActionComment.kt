@@ -121,14 +121,28 @@ data class ActionComment(
     /**
      * val builder = danbooru delete comment request url [HttpUrl]
      * */
-    fun getDanDeleteCommentUrl(): String =
-        String.format("%s://%s/comments/%d.json", booru.scheme, booru.host, commentId)
+    fun getDanDeleteCommentUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegments("comments/${commentId}.json")
+            .addQueryParameter("login", booru.user?.name)
+            .addQueryParameter("api_key", booru.user?.token)
+            .build()
+    }
 
     /**
-     * val builder = danbooru create comment request url [String]
+     * val builder = danbooru create comment request url [HttpUrl]
      * */
-    fun getDanCreateCommentUrl(): String =
-        String.format("%s://%s/comments.json", booru.scheme, booru.host)
+    fun getDanCreateCommentUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(booru.scheme)
+            .host(booru.host)
+            .addPathSegment("comments.json")
+            .addQueryParameter("login", booru.user?.name)
+            .addQueryParameter("api_key", booru.user?.token)
+            .build()
+    }
 
     fun getGelPostCommentUrl(page: Int): HttpUrl {
         return HttpUrl.Builder()

@@ -49,7 +49,7 @@ interface DanbooruApi {
 
     @FormUrlEncoded
     @POST
-    suspend fun favPost(@Url url: String,
+    suspend fun favPost(@Url url: HttpUrl,
                 @Field("post_id") id: Int,
                 @Field("login") username: String,
                 @Field("api_key") apiKey: String): Response<ResponseBody>
@@ -62,7 +62,7 @@ interface DanbooruApi {
 
     @FormUrlEncoded
     @POST
-    suspend fun createComment(@Url url: String,
+    suspend fun createComment(@Url url: HttpUrl,
                       @Field("comment[post_id]") postId: Int,
                       @Field("comment[body]") body: String,
                       @Field("comment[do_not_bump_post]") anonymous: Int,
@@ -71,7 +71,7 @@ interface DanbooruApi {
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", hasBody = true)
-    suspend fun deleteComment(@Url url: String,
+    suspend fun deleteComment(@Url url: HttpUrl,
                       @Field("login") username: String,
                       @Field("api_key") apiKey: String): Response<BoolResponse>
 }
