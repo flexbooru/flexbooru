@@ -2,12 +2,13 @@ package onlymash.flexbooru.extension
 
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.LoadState.NotLoading
-import androidx.paging.LoadState.Loading
 import androidx.paging.LoadStates
-import androidx.paging.PagingSource.LoadResult.Error
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.scan
+import androidx.paging.RemoteMediator
+import androidx.paging.PagingSource
+import androidx.paging.LoadType.REFRESH
+import androidx.paging.LoadType
 import onlymash.flexbooru.extension.MergedState.NOT_LOADING
 import onlymash.flexbooru.extension.MergedState.REMOTE_ERROR
 import onlymash.flexbooru.extension.MergedState.REMOTE_STARTED
@@ -43,11 +44,11 @@ fun Flow<CombinedLoadStates>.asMergedLoadStates(): Flow<LoadStates> {
  * is only set to [NotLoading] when [RemoteMediator] load is applied on presenter-side.
  */
 private class LoadStatesMerger {
-    var refresh: LoadState = NotLoading(endOfPaginationReached = false)
+    var refresh: LoadState = LoadState.NotLoading(endOfPaginationReached = false)
         private set
-    var prepend: LoadState = NotLoading(endOfPaginationReached = false)
+    var prepend: LoadState = LoadState.NotLoading(endOfPaginationReached = false)
         private set
-    var append: LoadState = NotLoading(endOfPaginationReached = false)
+    var append: LoadState = LoadState.NotLoading(endOfPaginationReached = false)
         private set
     var refreshState: MergedState = NOT_LOADING
         private set
@@ -110,29 +111,29 @@ private class LoadStatesMerger {
 
         return when (currentMergedState) {
             NOT_LOADING -> when (remoteState) {
-                is Loading -> Loading to REMOTE_STARTED
-                is Error<*, *> -> remoteState to REMOTE_ERROR
-                else -> NotLoading(remoteState.endOfPaginationReached) to NOT_LOADING
+                is LoadState.Loading -> LoadState.Loading to REMOTE_STARTED
+                is LoadState.Error -> remoteState to REMOTE_ERROR
+                else -> LoadState.NotLoading(remoteState.endOfPaginationReached) to NOT_LOADING
             }
             REMOTE_STARTED -> when {
-                remoteState is Error<*, *> -> remoteState to REMOTE_ERROR
-                sourceRefreshState is Loading -> Loading to SOURCE_LOADING
-                else -> Loading to REMOTE_STARTED
+                remoteState is LoadState.Error -> remoteState to REMOTE_ERROR
+                sourceRefreshState is LoadState.Loading -> LoadState.Loading to SOURCE_LOADING
+                else -> LoadState.Loading to REMOTE_STARTED
             }
             REMOTE_ERROR -> when (remoteState) {
-                is Error<*, *> -> remoteState to REMOTE_ERROR
-                else -> Loading to REMOTE_STARTED
+                is LoadState.Error -> remoteState to REMOTE_ERROR
+                else -> LoadState.Loading to REMOTE_STARTED
             }
             SOURCE_LOADING -> when {
-                sourceRefreshState is Error<*, *> -> sourceRefreshState to SOURCE_ERROR
-                remoteState is Error<*, *> -> remoteState to REMOTE_ERROR
-                sourceRefreshState is NotLoading -> {
-                    NotLoading(remoteState.endOfPaginationReached) to NOT_LOADING
+                sourceRefreshState is LoadState.Error -> sourceRefreshState to SOURCE_ERROR
+                remoteState is LoadState.Error -> remoteState to REMOTE_ERROR
+                sourceRefreshState is LoadState.NotLoading -> {
+                    LoadState.NotLoading(remoteState.endOfPaginationReached) to NOT_LOADING
                 }
-                else -> Loading to SOURCE_LOADING
+                else -> LoadState.Loading to SOURCE_LOADING
             }
             SOURCE_ERROR -> when (sourceRefreshState) {
-                is Error<*, *> -> sourceRefreshState to SOURCE_ERROR
+                is LoadState.Error -> sourceRefreshState to SOURCE_ERROR
                 else -> sourceRefreshState to SOURCE_LOADING
             }
         }

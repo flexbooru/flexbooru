@@ -19,11 +19,11 @@ plugins {
 
 buildscript {
     extra.apply {
-        set("nav_version", "2.6.0-alpha02")
+        set("nav_version", "2.6.0-alpha03")
         set("room_version", "2.5.0-beta01")
         set("work_version", "2.8.0-beta01")
         set("glide_version", "4.14.2")
-        set("lifecycle_version", "2.6.0-alpha02")
+        set("lifecycle_version", "2.6.0-alpha03")
         set("exoplayer_version", "2.18.1")
         set("okhttp_version", "5.0.0-alpha.10")
         set("retrofit_version", "2.9.0")
@@ -31,7 +31,7 @@ buildscript {
         set("kodein_version", "7.15.0")
         set("coroutines_version", "1.6.4")
         set("serialization_version", "1.4.1")
-        set("ktor_version", "2.1.2")
+        set("ktor_version", "2.1.3")
     }
     repositories {
         google()
