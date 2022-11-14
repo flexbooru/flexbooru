@@ -156,6 +156,7 @@ class OkHttp3Downloader : Downloader {
             val builder = OkHttpClient.Builder()
                 .cache(Cache(cacheDir, maxSize))
                 .addInterceptor(interceptor)
+                .addInterceptor(CloudflareInterceptor)
                 .addInterceptor(ProgressInterceptor())
             if (Settings.isDohEnable) {
                 builder.dns(Settings.doh)

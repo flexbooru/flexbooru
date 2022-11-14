@@ -26,6 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
+import onlymash.flexbooru.okhttp.CloudflareInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
@@ -44,6 +45,8 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     } else {
         builder.addInterceptor(ApiInterceptor())
     }
+
+    builder.addInterceptor(CloudflareInterceptor)
 
     if (BuildConfig.DEBUG) {
         val logger = HttpLoggingInterceptor { message -> Log.d("Api", message) }.apply {

@@ -28,20 +28,26 @@ import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class CloudflareInterceptor : Interceptor {
-
-    private val serverCheck = arrayOf("cloudflare-nginx", "cloudflare")
+object CloudflareInterceptor : Interceptor {
 
     private val handler = Handler(Looper.getMainLooper())
+    private val cookieStore = HashMap<String, String>()
 
     @Synchronized
     override fun intercept(chain: Interceptor.Chain): Response {
-        val response = chain.proceed(chain.request())
+        var request = chain.request()
+        val cookie = cookieStore[request.url.host]
+        if (cookie != null) {
+            request = request.newBuilder()
+                .header(HEADER_COOKIE, cookie)
+                .build()
+        }
+        val response = chain.proceed(request)
         // Check if Cloudflare anti-bot is on
-        if (response.code == 503 && response.header("Server") in serverCheck) {
+        if (response.header("CF-Chl-Bypass") == "1") {
             try {
                 response.close()
-                val solutionRequest = resolveWithWebView(chain.request())
+                val solutionRequest = resolveWithWebView(request)
                 return chain.proceed(solutionRequest)
             } catch (e: Exception) {
                 // Because OkHttp's enqueue only handles IOExceptions, wrap the exception so that
@@ -91,8 +97,7 @@ class CloudflareInterceptor : Interceptor {
             }
         }
 
-        //save cookie
-        //ignore
+        cookieStore[request.url.host] = cookie
 
         return request.newBuilder()
             .removeHeader(HEADER_COOKIE)
