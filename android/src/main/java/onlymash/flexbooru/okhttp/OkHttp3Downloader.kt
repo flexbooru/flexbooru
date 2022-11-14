@@ -26,7 +26,7 @@ import okhttp3.*
 import onlymash.flexbooru.app.Keys.HEADER_REFERER
 import onlymash.flexbooru.app.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.app.Settings
-import onlymash.flexbooru.extension.userAgent
+import onlymash.flexbooru.app.Values
 import kotlin.math.max
 import kotlin.math.min
 
@@ -148,9 +148,8 @@ class OkHttp3Downloader : Downloader {
                 val host = url.host
                 it.proceed(it.request()
                     .newBuilder()
-                    .removeHeader(HEADER_USER_AGENT)
-                    .addHeader(HEADER_USER_AGENT, userAgent)
-                    .addHeader(HEADER_REFERER, "$scheme://$host/post")
+                    .header(HEADER_USER_AGENT, Values.MOBILE_USER_AGENT)
+                    .header(HEADER_REFERER, "$scheme://$host/post")
                     .build())
             }
             val builder = OkHttpClient.Builder()

@@ -45,7 +45,8 @@ object Values {
     const val REQUEST_CODE_OPEN_DIRECTORY = 101
     const val REQUEST_CODE_SAVE_FILE = 102
 
-    const val PC_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
+    const val PC_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Safari/537.36"
+    const val MOBILE_USER_AGENT = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Safari/537.36"
     const val SANKAKU_REFERER = "https://sankaku.app/"
     const val SANKAKU_ORIGIN = "https://sankaku.app"
 

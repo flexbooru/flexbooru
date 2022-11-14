@@ -24,7 +24,6 @@ import com.bumptech.glide.load.model.ModelLoader
 import okhttp3.OkHttpClient
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.app.Values
-import onlymash.flexbooru.extension.userAgent
 import java.io.InputStream
 import java.net.URL
 
@@ -48,7 +47,7 @@ class MyOkHttpUrlLoader(client: OkHttpClient) : OkHttpUrlLoader(client) {
         val ua = if (host.contains("sankaku", ignoreCase = true)) {
             referer = Values.SANKAKU_REFERER
             Values.PC_USER_AGENT
-        } else userAgent
+        } else Values.MOBILE_USER_AGENT
         return LazyHeaders.Builder()
             .addHeader(Keys.HEADER_USER_AGENT, ua)
             .addHeader(Keys.HEADER_REFERER, referer)
