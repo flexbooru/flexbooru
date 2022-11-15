@@ -5,7 +5,7 @@ import onlymash.flexbooru.data.model.common.Cookie
 
 @Dao
 interface CookieDao {
-    @Query("SELECT * FROM `cookies` WHERE `host` = :host")
+    @Query("SELECT * FROM `cookies` WHERE :host LIKE '%.' || `host`")
     fun getCookie(host: String): Cookie?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
