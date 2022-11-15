@@ -12,6 +12,7 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.OkHttpClient
 import onlymash.flexbooru.app.Settings
+import onlymash.flexbooru.okhttp.CloudflareInterceptor
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.InputStream
 
@@ -26,7 +27,9 @@ class MyGlideModule : AppGlideModule() {
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        val builder = OkHttpClient.Builder().addInterceptor(ProgressInterceptor())
+        val builder = OkHttpClient.Builder()
+            .addInterceptor(CloudflareInterceptor)
+            .addInterceptor(ProgressInterceptor())
         if (Settings.isDohEnable) {
             builder.dns(Settings.doh)
         }
