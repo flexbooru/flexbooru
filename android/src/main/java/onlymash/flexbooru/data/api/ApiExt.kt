@@ -58,6 +58,11 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     return builder.build()
 }
 
+val defaultJson get() = Json {
+    ignoreUnknownKeys = true
+    isLenient = true
+}
+
 inline fun <reified T> createApi(): T {
     val classJava = T::class.java
     val baseUrl = when (classJava) {
@@ -72,10 +77,7 @@ inline fun <reified T> createApi(): T {
                 .asConverterFactory("application/xml".toMediaType())
         }
         else -> {
-            Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            }.asConverterFactory("application/json".toMediaType())
+            defaultJson.asConverterFactory("application/json".toMediaType())
         }
     }
     val isSankaku = classJava == SankakuApi::class.java

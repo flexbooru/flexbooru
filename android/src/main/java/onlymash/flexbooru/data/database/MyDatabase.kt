@@ -16,10 +16,7 @@
 package onlymash.flexbooru.data.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import onlymash.flexbooru.app.Values.DB_FILE_NAME
@@ -29,9 +26,15 @@ import onlymash.flexbooru.data.database.dao.*
 @Database(
     entities = [
         (Booru::class), (Post::class), (TagFilter::class),
-        (Muzei::class), (History::class), (Next::class)
+        (Muzei::class), (History::class), (Next::class), (Cookie::class)
     ],
-    version = 7,
+    version = 8,
+    autoMigrations = [
+        AutoMigration (
+            from = 7,
+            to = 8
+        )
+    ],
     exportSchema = true)
 @TypeConverters(MyConverters::class)
 abstract class MyDatabase : RoomDatabase() {
@@ -67,4 +70,5 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun muzeiDao(): MuzeiDao
     abstract fun historyDao(): HistoryDao
     abstract fun nextDao(): NextDao
+    abstract fun cookiesDao(): CookieDao
 }

@@ -24,6 +24,8 @@ import okhttp3.Request
 import okhttp3.Response
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Keys.HEADER_COOKIE
+import onlymash.flexbooru.data.database.MyCookieManager
+import onlymash.flexbooru.data.model.common.Cookie
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -31,15 +33,14 @@ import java.util.concurrent.TimeUnit
 object CloudflareInterceptor : Interceptor {
 
     private val handler = Handler(Looper.getMainLooper())
-    private val cookieStore = HashMap<String, String>()
 
     @Synchronized
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        val cookie = cookieStore[request.url.host]
+        val cookie = MyCookieManager.getCookieByHost(request.url.host)
         if (cookie != null) {
             request = request.newBuilder()
-                .header(HEADER_COOKIE, cookie)
+                .header(HEADER_COOKIE, cookie.cookie)
                 .build()
         }
         val response = chain.proceed(request)
@@ -97,7 +98,12 @@ object CloudflareInterceptor : Interceptor {
             }
         }
 
-        cookieStore[request.url.host] = cookie
+        if (cookie.isNotEmpty()) {
+            MyCookieManager.createCookie(Cookie(
+                host = request.url.host,
+                cookie = cookie
+            ))
+        }
 
         return request.newBuilder()
             .header(HEADER_COOKIE, cookie)
