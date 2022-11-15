@@ -95,8 +95,7 @@ class CloudflareInterceptor : Interceptor {
         //ignore
 
         return request.newBuilder()
-            .removeHeader(HEADER_COOKIE)
-            .addHeader(HEADER_COOKIE, cookie)
+            .header(HEADER_COOKIE, cookie)
             .build()
     }
 

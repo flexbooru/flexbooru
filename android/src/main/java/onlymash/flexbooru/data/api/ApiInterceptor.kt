@@ -19,13 +19,11 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.app.Values
-import onlymash.flexbooru.extension.userAgent
 
 class ApiInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val requests =  chain.request().newBuilder()
-            .removeHeader(Keys.HEADER_USER_AGENT)
-            .addHeader(Keys.HEADER_USER_AGENT, userAgent)
+            .header(Keys.HEADER_USER_AGENT, Values.MOBILE_USER_AGENT)
             .build()
         return chain.proceed(requests)
     }
@@ -34,10 +32,9 @@ class ApiInterceptor : Interceptor {
 class ApiSankakuInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val requests =  chain.request().newBuilder()
-            .removeHeader(Keys.HEADER_USER_AGENT)
-            .addHeader(Keys.HEADER_USER_AGENT, Values.PC_USER_AGENT)
-            .addHeader(Keys.HEADER_ORIGIN, Values.SANKAKU_ORIGIN)
-            .addHeader(Keys.HEADER_REFERER, Values.SANKAKU_REFERER)
+            .header(Keys.HEADER_USER_AGENT, Values.PC_USER_AGENT)
+            .header(Keys.HEADER_ORIGIN, Values.SANKAKU_ORIGIN)
+            .header(Keys.HEADER_REFERER, Values.SANKAKU_REFERER)
             .build()
         return chain.proceed(requests)
     }
