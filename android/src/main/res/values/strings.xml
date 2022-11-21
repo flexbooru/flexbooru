@@ -186,8 +186,10 @@
     <string name="settings_dns_over_https_dns">DNS Provider</string>
     <string name="settings_dns_over_https_google" translatable="false">dns.google</string>
     <string name="settings_dns_over_https_cloudflare" translatable="false">cloudflare-dns.com</string>
-    <string name="settings_dns_over_https_cleanbrowsing" translatable="false">doh.cleanbrowsing.org</string>
-    <string name="settings_dns_over_https_powerdns" translatable="false">doh.powerdns.org</string>
+    <string name="settings_dns_over_https_cleanbrowsing" translatable="false">cleanbrowsing.org</string>
+    <string name="settings_dns_over_https_dnssb" translatable="false">dns.sb</string>
+    <string name="settings_dns_over_https_opendns" translatable="false">opendns.com</string>
+    <string name="settings_dns_over_https_quad9" translatable="false">quad9.net</string>
     <string name="settings_safe_mode">Safe mode</string>
     <string name="settings_page_limit">Page limit</string>
     <string name="settings_muzei_limit">Muzei limit</string>

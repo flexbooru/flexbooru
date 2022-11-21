@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
 import onlymash.flexbooru.R
 import onlymash.flexbooru.okhttp.DohProviders
+import onlymash.flexbooru.okhttp.NoSniFactory
 import org.kodein.di.instance
 import java.util.*
 
@@ -283,11 +284,16 @@ object Settings {
 
     val doh: DnsOverHttps
         get() {
+            val client = OkHttpClient.Builder()
+                .sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
+                .build()
             return when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
-                "google" -> DohProviders.buildGoogle(OkHttpClient())
-                "powerdns" -> DohProviders.buildPowerDns(OkHttpClient())
-                "cleanbrowsing" -> DohProviders.buildCleanBrowsing(OkHttpClient())
-                else -> DohProviders.buildCloudflare(OkHttpClient())
+                "google" -> DohProviders.buildGoogle(client)
+                "dnssb" -> DohProviders.buildDnsSb(client)
+                "cleanbrowsing" -> DohProviders.buildCleanBrowsing(client)
+                "opendns" -> DohProviders.buildOpenDns(client)
+                "quad9" -> DohProviders.buildQuad9(client)
+                else -> DohProviders.buildCloudflare(client)
             }
         }
 
