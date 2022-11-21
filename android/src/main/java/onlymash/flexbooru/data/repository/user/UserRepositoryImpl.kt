@@ -29,6 +29,7 @@ import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.model.sankaku.LoginBody
 import onlymash.flexbooru.data.model.sankaku.RefreshTokenBody
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.okhttp.NoSniFactory
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
@@ -61,6 +62,9 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                     return cookiesStore[booru.host] ?: listOf()
                 }
             })
+        if (Settings.isSniDisable) {
+            builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
+        }
         if (Settings.isDohEnable) {
             builder.dns(Settings.doh)
         }

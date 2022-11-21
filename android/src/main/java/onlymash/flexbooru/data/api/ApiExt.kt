@@ -27,6 +27,7 @@ import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.okhttp.CloudflareInterceptor
+import onlymash.flexbooru.okhttp.NoSniFactory
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
@@ -36,6 +37,9 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
         .readTimeout(10, TimeUnit.SECONDS)
         .writeTimeout(10, TimeUnit.SECONDS)
 
+    if (Settings.isSniDisable) {
+        builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
+    }
     if (Settings.isDohEnable) {
         builder.dns(Settings.doh)
     }

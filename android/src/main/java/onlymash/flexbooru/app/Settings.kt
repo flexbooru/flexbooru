@@ -279,6 +279,8 @@ object Settings {
 
     val isDohEnable: Boolean get() = sp.getBoolean(DNS_OVER_HTTPS, true)
 
+    val isSniDisable: Boolean get() = true
+
     val doh: DnsOverHttps
         get() {
             return when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
