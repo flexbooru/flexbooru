@@ -29,8 +29,10 @@ class MyGlideModule : AppGlideModule() {
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         val builder = OkHttpClient.Builder()
-            .addInterceptor(CloudflareInterceptor)
             .addInterceptor(ProgressInterceptor())
+        if (Settings.isBypassWAF) {
+            builder.addInterceptor(CloudflareInterceptor)
+        }
         if (Settings.isSniDisable) {
             builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
         }

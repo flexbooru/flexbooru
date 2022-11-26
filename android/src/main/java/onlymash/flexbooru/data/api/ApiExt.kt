@@ -50,7 +50,9 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
         builder.addInterceptor(ApiInterceptor())
     }
 
-    builder.addInterceptor(CloudflareInterceptor)
+    if (Settings.isBypassWAF) {
+        builder.addInterceptor(CloudflareInterceptor)
+    }
 
     if (BuildConfig.DEBUG) {
         val logger = HttpLoggingInterceptor { message -> Log.d("Api", message) }.apply {

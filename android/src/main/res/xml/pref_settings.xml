@@ -108,8 +108,7 @@
             app:key="settings_dns_over_https"
             app:title="@string/settings_dns_over_https"
             app:defaultValue="false"
-            app:summaryOn="@string/switch_on"
-            app:summaryOff="@string/switch_off"/>
+            app:summary="@string/settings_dns_over_https_summary"/>
 
         <ListPreference
             app:key="settings_dns_over_https_dns"
@@ -118,6 +117,18 @@
             app:defaultValue="cloudflare"
             app:title="@string/settings_dns_over_https_dns"
             app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreferenceCompat
+            app:title="@string/settings_disable_sni"
+            app:key="settings_disable_sni"
+            app:defaultValue="false"
+            app:summary="@string/settings_disable_sni_summary"/>
+
+        <SwitchPreferenceCompat
+            app:title="@string/settings_bypass_waf"
+            app:key="settings_bypass_waf"
+            app:defaultValue="false"
+            app:summary="@string/settings_bypass_waf_summary"/>
 
         <SwitchPreferenceCompat
             app:key="settings_safe_mode"

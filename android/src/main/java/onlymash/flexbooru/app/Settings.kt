@@ -29,6 +29,8 @@ object Settings {
 
     const val DNS_OVER_HTTPS = "settings_dns_over_https"
     const val DNS_OVER_HTTPS_PROVIDER = "settings_dns_over_https_dns"
+    const val DISABLE_SNI_KEY = "settings_disable_sni"
+    const val BYPASS_WAF_KEY = "settings_bypass_waf"
     const val SAFE_MODE_KEY = "settings_safe_mode"
     const val PAGE_LIMIT_KEY = "settings_page_limit"
     const val MUZEI_LIMIT_KEY = "settings_muzei_limit"
@@ -280,7 +282,9 @@ object Settings {
 
     val isDohEnable: Boolean get() = sp.getBoolean(DNS_OVER_HTTPS, true)
 
-    val isSniDisable: Boolean get() = true
+    val isSniDisable: Boolean get() = sp.getBoolean(DISABLE_SNI_KEY, false)
+
+    val isBypassWAF: Boolean get() = sp.getBoolean(BYPASS_WAF_KEY, false)
 
     val doh: DnsOverHttps
         get() {
