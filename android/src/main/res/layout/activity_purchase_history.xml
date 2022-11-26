@@ -21,7 +21,7 @@
     android:padding="@dimen/spacing_large">
 
     <androidx.cardview.widget.CardView
-        android:id="@id/content_container"
+        android:id="@+id/content_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_middle"

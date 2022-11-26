@@ -76,7 +76,7 @@ class PurchaseHistoryActivity : BaseActivity() {
             if (result.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 val records = result.purchaseHistoryRecordList
                 binding.progress.progressBar.isVisible = false
-                binding.contentContainer.isVisible = true
+                binding.contentCard.isVisible = true
                 if (records.isNullOrEmpty()) {
                     binding.content.text = "Not history found"
                 } else {
@@ -100,7 +100,7 @@ class PurchaseHistoryActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     private fun connectFailed() {
         binding.progress.progressBar.isVisible = false
-        binding.contentContainer.isVisible = true
+        binding.contentCard.isVisible = true
         binding.content.text = "Connect failed"
     }
 
