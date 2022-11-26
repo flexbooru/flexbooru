@@ -331,7 +331,7 @@ class DownloadWorker(
             .setAutoCancel(true)
             .addAction(
                 android.R.drawable.stat_sys_download,
-                applicationContext.getString(R.string.retry),
+                applicationContext.getString(R.string.action_retry),
                 pendingIntent
             )
             .build()
