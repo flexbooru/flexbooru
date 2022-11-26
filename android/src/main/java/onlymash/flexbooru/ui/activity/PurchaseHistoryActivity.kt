@@ -15,11 +15,17 @@
 
 package onlymash.flexbooru.ui.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.*
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
+import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.databinding.ActivityPurchaseHistoryBinding
+import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
@@ -27,6 +33,7 @@ class PurchaseHistoryActivity : BaseActivity() {
 
     private val binding by viewBinding(ActivityPurchaseHistoryBinding::inflate)
 
+    private lateinit var billingClient: BillingClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +42,11 @@ class PurchaseHistoryActivity : BaseActivity() {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.purchase_history_title)
         }
-        checkOrderFromCache()
+        initBillingClient()
     }
 
-    private fun checkOrderFromCache() {
-        val billingClient = BillingClient
+    private fun initBillingClient() {
+        billingClient = BillingClient
             .newBuilder(this)
             .enablePendingPurchases()
             .setListener { _, _ ->  }
@@ -47,19 +54,54 @@ class PurchaseHistoryActivity : BaseActivity() {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-                    val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
-                        .setProductType(BillingClient.ProductType.INAPP)
-                        .build()
-                    billingClient.queryPurchaseHistoryAsync(queryPurchaseHistoryParams) { result, records ->
-                        binding.content.text = "responseCode: ${result.responseCode} \n $records"
-                    }
-                    billingClient.endConnection()
+                    queryPurchaseHistory()
+                } else {
+                    connectFailed()
                 }
             }
             override fun onBillingServiceDisconnected() {
+                connectFailed()
                 billingClient.endConnection()
             }
         })
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun queryPurchaseHistory() {
+        lifecycleScope.launch {
+            val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+            val result = billingClient.queryPurchaseHistory(queryPurchaseHistoryParams)
+            if (result.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                val records = result.purchaseHistoryRecordList
+                binding.progress.progressBar.isVisible = false
+                binding.contentContainer.isVisible = true
+                if (records.isNullOrEmpty()) {
+                    binding.content.text = "Not history found"
+                } else {
+                    val content = StringBuilder()
+                    val record = records[0]
+                    val products = record.products
+                    if (products.isNotEmpty()) {
+                        content.append("${products[0]}\n")
+                    }
+                    val date = record.purchaseTime.formatDate(Values.DATE_PATTERN)
+                    content.append("$date\n")
+                    content.append(record.purchaseToken)
+                    binding.content.text = content
+                }
+            } else {
+                connectFailed()
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun connectFailed() {
+        binding.progress.progressBar.isVisible = false
+        binding.contentContainer.isVisible = true
+        binding.content.text = "Connect failed"
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
