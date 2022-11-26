@@ -273,6 +273,7 @@
     <string name="comment_cancel">İptal et</string>
     <string name="comment_hint">Yorum girdisi</string>
     <string name="purchase_title">Reklamları kaldırın ve özelliklerin kilidini açın</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Reklamları kaldırın ve tüm özelliklerin kilidini açın</string>
     <string name="purchase_info_remove_ads">* Reklamları kaldır</string>
     <string name="purchase_info_unlock_full_features">* Tüm özelliklerin kilidini aç</string>
