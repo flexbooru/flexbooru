@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.*
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.databinding.ActivityPurchaseHistoryBinding
 import onlymash.flexbooru.extension.formatDate
@@ -75,20 +76,20 @@ class PurchaseHistoryActivity : BaseActivity() {
             val result = billingClient.queryPurchaseHistory(queryPurchaseHistoryParams)
             if (result.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 val records = result.purchaseHistoryRecordList
-                binding.progress.progressBar.isVisible = false
+                binding.progressBar.isVisible = false
                 binding.contentCard.isVisible = true
                 if (records.isNullOrEmpty()) {
                     binding.content.text = "Not history found"
                 } else {
+                    Settings.isOrderSuccess = true
                     val content = StringBuilder()
                     val record = records[0]
                     val products = record.products
                     if (products.isNotEmpty()) {
-                        content.append("${products[0]}\n")
+                        content.append("Name: ${products[0]}\n\n")
                     }
                     val date = record.purchaseTime.formatDate(Values.DATE_PATTERN)
-                    content.append("$date\n")
-                    content.append(record.purchaseToken)
+                    content.append("Date: $date")
                     binding.content.text = content
                 }
             } else {
@@ -99,7 +100,7 @@ class PurchaseHistoryActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun connectFailed() {
-        binding.progress.progressBar.isVisible = false
+        binding.progressBar.isVisible = false
         binding.contentCard.isVisible = true
         binding.content.text = "Connect failed"
     }

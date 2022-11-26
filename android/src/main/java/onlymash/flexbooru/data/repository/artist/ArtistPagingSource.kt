@@ -26,9 +26,6 @@ class ArtistPagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Artist>): Int {
-        state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)
-        }
          return 1
     }
 

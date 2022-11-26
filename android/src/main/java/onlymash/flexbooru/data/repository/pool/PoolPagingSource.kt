@@ -27,9 +27,6 @@ class PoolPagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Pool>): Int {
-        state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)
-        }
         return 1
     }
 

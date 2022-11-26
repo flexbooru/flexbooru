@@ -25,28 +25,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_middle"
-        android:layout_gravity="center"
-        android:visibility="gone"
+        android:padding="@dimen/spacing_large"
+        android:visibility="visible"
         style="@style/MyCardView">
-
-        <LinearLayout
-            android:paddingTop="@dimen/spacing_middle"
-            android:paddingBottom="@dimen/spacing_middle"
-            android:orientation="vertical"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/content"
-                android:padding="@dimen/spacing_middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBodySmall"/>
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody1"/>
     </androidx.cardview.widget.CardView>
 
-    <include
-        android:id="@+id/progress"
-        layout="@layout/progress_bar"/>
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        style="@style/Widget.Material3.CircularProgressIndicator"/>
 
 </FrameLayout>

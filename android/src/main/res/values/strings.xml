@@ -301,7 +301,7 @@
     <string name="comment_cancel">Cancel</string>
     <string name="comment_hint">Input comment</string>
     <string name="purchase_title">Remove ads &amp; feature unlock</string>
-    <string name="purchase_history_title">Purchase history</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Remove ads and unlock full features</string>
     <string name="purchase_info_remove_ads">* Remove ads</string>
     <string name="purchase_info_unlock_full_features">* Unlock full features</string>

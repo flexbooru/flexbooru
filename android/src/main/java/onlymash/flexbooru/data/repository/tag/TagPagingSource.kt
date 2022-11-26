@@ -28,9 +28,6 @@ class TagPagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Tag>): Int {
-        state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)
-        }
         return if (action.booru.type == Values.BOORU_TYPE_GEL) 0 else 1
     }
 

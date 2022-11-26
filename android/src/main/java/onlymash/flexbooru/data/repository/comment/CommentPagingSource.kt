@@ -29,9 +29,6 @@ class CommentPagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Comment>): Int {
-        state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)
-        }
         return if (action.booru.type == Values.BOORU_TYPE_GEL || action.booru.type == Values.BOORU_TYPE_GEL_LEGACY) 0 else 1
     }
 

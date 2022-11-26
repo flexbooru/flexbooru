@@ -46,8 +46,8 @@ import com.mikepenz.materialdrawer.holder.StringHolder
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
-import com.mikepenz.materialdrawer.util.addItemAtPosition
 import com.mikepenz.materialdrawer.util.addItems
+import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import kotlinx.coroutines.GlobalScope
@@ -102,8 +102,8 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private const val DRAWER_ITEM_ID_WHAT_ANIME = 7L
         private const val DRAWER_ITEM_ID_SETTINGS = 8L
         private const val DRAWER_ITEM_ID_ABOUT = 9L
-        private const val DRAWER_ITEM_ID_PURCHASE = 10L
-        private const val DRAWER_ITEM_ID_PURCHASE_POSITION = 8
+        private const val DRAWER_ITEM_ID_PURCHASE_HISTORY = 10L
+        private const val DRAWER_ITEM_ID_PURCHASE = 11L
     }
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -231,7 +231,6 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 setupNavigationMenu(BOORU_TYPE_UNKNOWN)
         }
         booruViewModel.loadBooru(activatedBooruUid)
-        addPurchaseItem()
         setupInsets { insets ->
             val bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
             drawerSliderView.recyclerView.updatePadding(bottom = bottom)
@@ -241,24 +240,16 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
         checkNotificationPermission()
     }
 
-    private fun addPurchaseItem() {
-        drawerSliderView.removeItems(DRAWER_ITEM_ID_PURCHASE)
-        if (!isOrderSuccess) {
-            drawerSliderView.addItemAtPosition(
-                DRAWER_ITEM_ID_PURCHASE_POSITION,
+    private fun initPurchaseItem() {
+        val item = drawerSliderView.getDrawerItem(DRAWER_ITEM_ID_PURCHASE)
+        if (isOrderSuccess) {
+            if (item != null) {
+                drawerSliderView.removeItems(DRAWER_ITEM_ID_PURCHASE)
+            }
+        } else if (item == null) {
+            drawerSliderView.addItems(
                 PrimaryDrawerItem().apply {
                     name = StringHolder(R.string.purchase_title)
-                    icon = createImageHolder(R.drawable.ic_payment_24dp)
-                    isSelectable = false
-                    isIconTinted = true
-                    identifier = DRAWER_ITEM_ID_PURCHASE
-                }
-            )
-        } else if (isGoogleSign) {
-            drawerSliderView.addItemAtPosition(
-                DRAWER_ITEM_ID_PURCHASE_POSITION,
-                PrimaryDrawerItem().apply {
-                    name = StringHolder(R.string.purchase_history_title)
                     icon = createImageHolder(R.drawable.ic_payment_24dp)
                     isSelectable = false
                     isIconTinted = true
@@ -394,6 +385,18 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             onDrawerItemClickListener = drawerItemClickListener
             tintNavigationBar = false
         }
+        if (isGoogleSign) {
+            drawerSliderView.addItems(
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.purchase_history_title)
+                    icon = createImageHolder(R.drawable.ic_payment_24dp)
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_PURCHASE_HISTORY
+                }
+            )
+        }
+        initPurchaseItem()
     }
 
     private fun createImageHolder(@DrawableRes resId: Int): ImageHolder =
@@ -504,7 +507,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 booruViewModel.loadBooru(uid)
             }
             ORDER_SUCCESS_KEY -> {
-                addPurchaseItem()
+                initPurchaseItem()
                 if (boorus.size > BOORUS_LIMIT) {
                     initDrawerHeader()
                 }

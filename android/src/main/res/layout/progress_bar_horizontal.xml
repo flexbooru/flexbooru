@@ -21,4 +21,5 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:indeterminate="true"
-    android:visibility="gone" />
+    android:visibility="gone"
+    style="@style/Widget.Material3.LinearProgressIndicator"/>
