@@ -59,6 +59,7 @@
     <string name="msg_not_supported">Desteklenmiyor</string>
     <string name="msg_file_save_success">Dosya %s olarak kaydedildi</string>
     <string name="msg_your_api_key_is_wrong">API anahtarınız (key) yanlış!</string>
+    <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
     <string name="post_expand_or_clear">Genişlet veya temizle</string>
     <string name="post_add_search_to_muzei">` %s ` Muzei\'ye kaydedildi.</string>
     <string name="post_download">Gönderiyi indir</string>
