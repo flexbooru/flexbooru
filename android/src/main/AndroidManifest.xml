@@ -45,6 +45,7 @@
         android:theme="@style/AppTheme"
         android:hasFragileUserData="true"
         android:localeConfig="@xml/locales_config"
+        android:enableOnBackInvokedCallback="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
             android:name=".ui.activity.HistoryActivity"
