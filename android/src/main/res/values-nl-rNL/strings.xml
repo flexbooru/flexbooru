@@ -273,6 +273,7 @@
     <string name="comment_cancel">Annuleren</string>
     <string name="comment_hint">Typ een reactie</string>
     <string name="purchase_title">Verwijder advertenties &amp; ontgrendel functies</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Verwijder advertenties en ontgrendel alle functies</string>
     <string name="purchase_info_remove_ads">* Verwijder advertenties</string>
     <string name="purchase_info_unlock_full_features">* Ontgrendel alle functies</string>
