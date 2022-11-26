@@ -59,6 +59,7 @@
     <string name="msg_not_supported">Tidak Didukung</string>
     <string name="msg_file_save_success">File telah disimpan dengan nama %s</string>
     <string name="msg_your_api_key_is_wrong">Api Key anda salah!</string>
+    <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
     <string name="post_expand_or_clear">Perluas atau hapus</string>
     <string name="post_add_search_to_muzei">` %s ` berhasil disimpan ke Muzei</string>
     <string name="post_download">Unduh postingan</string>
@@ -272,6 +273,7 @@
     <string name="comment_cancel">Batal</string>
     <string name="comment_hint">Masukkan komentar</string>
     <string name="purchase_title">Hapus iklan &amp; dapatkan fitur lebih</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Hapus iklan dan dapatkan fitur penuh</string>
     <string name="purchase_info_remove_ads">* Hapus iklan</string>
     <string name="purchase_info_unlock_full_features">* Buka semua fitur</string>

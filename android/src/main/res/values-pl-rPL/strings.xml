@@ -59,6 +59,7 @@
     <string name="msg_not_supported">Nieobsługiwany</string>
     <string name="msg_file_save_success">Plik został zapisany jako %s</string>
     <string name="msg_your_api_key_is_wrong">Podano niepoprawny klucz Api!</string>
+    <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
     <string name="post_expand_or_clear">Rozszerz lub wyczyść</string>
     <string name="post_add_search_to_muzei">` %s ` został zapisany do Muzei\'a.</string>
     <string name="post_download">Pobierz</string>
@@ -272,6 +273,7 @@
     <string name="comment_cancel">Anuluj</string>
     <string name="comment_hint">Wpisz komentarz</string>
     <string name="purchase_title">Usuń reklamy &amp; odblokuj możliwości</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Usuń wszystkie reklamy i odblokuj wszystkie funkcje</string>
     <string name="purchase_info_remove_ads">Usuń reklamy</string>
     <string name="purchase_info_unlock_full_features">Odblokuj wszystkie funkcje</string>

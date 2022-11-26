@@ -59,6 +59,7 @@
     <string name="msg_not_supported">Non supporté</string>
     <string name="msg_file_save_success">Le fichier a été sauvé en tant que %s</string>
     <string name="msg_your_api_key_is_wrong">Votre clé Api est erronée !</string>
+    <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
     <string name="post_expand_or_clear">Développer ou réduire</string>
     <string name="post_add_search_to_muzei">` %s ` ont été sauvegardés dans Muzei.</string>
     <string name="post_download">Télécharger la publication</string>
@@ -272,6 +273,7 @@
     <string name="comment_cancel">Annuler</string>
     <string name="comment_hint">Écrire un commentaire</string>
     <string name="purchase_title">Supprimer les publicités &amp; déverrouillage de fonctionnalité</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Supprimer les publicités et débloquer les fonctionnalités complètes</string>
     <string name="purchase_info_remove_ads">Supprimer les publicités</string>
     <string name="purchase_info_unlock_full_features">Débloquer toutes les fonctionnalités</string>
