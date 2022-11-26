@@ -166,9 +166,14 @@
     <string name="settings_night_theme">Tema nocturno</string>
     <string name="settings_night_theme_dark">Oscuro</string>
     <string name="settings_night_theme_black">Negro</string>
+    <string name="settings_summary_restart_required">Restart takes effect</string>
     <string name="settings_dns_over_https">DNS sobre HTTPS</string>
-    <string name="settings_dns_over_https_summary">Reiniciar para que tenga efecto</string>
+    <string name="settings_dns_over_https_summary">Encrypted DNS</string>
     <string name="settings_dns_over_https_dns">Proveedor DNS</string>
+    <string name="settings_disable_sni">Disable SNI</string>
+    <string name="settings_disable_sni_summary">Removing SNI from HTTPS</string>
+    <string name="settings_bypass_waf">Bypass WAF</string>
+    <string name="settings_bypass_waf_summary">Bypassing Cloudflare WAF</string>
     <string name="settings_safe_mode">Modo seguro</string>
     <string name="settings_page_limit">Límite de páginas</string>
     <string name="settings_muzei_limit">Límite Muzei</string>
