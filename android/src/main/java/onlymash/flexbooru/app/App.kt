@@ -19,6 +19,7 @@ import android.app.Application
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -121,7 +122,17 @@ class App : Application(), DIAware {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-                    val queryPurchasesParams = QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build()
+                    val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build()
+                    billingClient.queryPurchaseHistoryAsync(queryPurchaseHistoryParams) { result, records ->
+                        records?.forEach { record ->
+                            Log.e("PurchaseHistory", record.originalJson)
+                        }
+                    }
+                    val queryPurchasesParams = QueryPurchasesParams.newBuilder()
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build()
                     billingClient.queryPurchasesAsync(queryPurchasesParams) { _, purchases ->
                         isOrderSuccess = if (purchases.isEmpty()) {
                             false

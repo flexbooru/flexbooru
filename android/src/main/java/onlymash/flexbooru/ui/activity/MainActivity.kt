@@ -48,7 +48,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.mikepenz.materialdrawer.util.addItemAtPosition
 import com.mikepenz.materialdrawer.util.addItems
-import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import kotlinx.coroutines.GlobalScope
@@ -181,7 +180,11 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             DRAWER_ITEM_ID_SAUCE_NAO -> toActivity(SauceNaoActivity::class.java)
             DRAWER_ITEM_ID_WHAT_ANIME -> toActivity(WhatAnimeActivity::class.java)
             DRAWER_ITEM_ID_ABOUT -> toActivity(AboutActivity::class.java)
-            DRAWER_ITEM_ID_PURCHASE -> toActivity(PurchaseActivity::class.java)
+            DRAWER_ITEM_ID_PURCHASE -> if (isOrderSuccess) {
+                toActivity(PurchaseHistoryActivity::class.java)
+            } else {
+                toActivity(PurchaseActivity::class.java)
+            }
         }
         false
     }
@@ -228,6 +231,18 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 setupNavigationMenu(BOORU_TYPE_UNKNOWN)
         }
         booruViewModel.loadBooru(activatedBooruUid)
+        addPurchaseItem()
+        setupInsets { insets ->
+            val bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            drawerSliderView.recyclerView.updatePadding(bottom = bottom)
+            drawerSliderView.stickyFooterView?.updatePadding(bottom = bottom)
+        }
+        checkUpdate()
+        checkNotificationPermission()
+    }
+
+    private fun addPurchaseItem() {
+        drawerSliderView.removeItems(DRAWER_ITEM_ID_PURCHASE)
         if (!isOrderSuccess) {
             drawerSliderView.addItemAtPosition(
                 DRAWER_ITEM_ID_PURCHASE_POSITION,
@@ -239,14 +254,18 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     identifier = DRAWER_ITEM_ID_PURCHASE
                 }
             )
+        } else if (isGoogleSign) {
+            drawerSliderView.addItemAtPosition(
+                DRAWER_ITEM_ID_PURCHASE_POSITION,
+                PrimaryDrawerItem().apply {
+                    name = StringHolder(R.string.purchase_history_title)
+                    icon = createImageHolder(R.drawable.ic_payment_24dp)
+                    isSelectable = false
+                    isIconTinted = true
+                    identifier = DRAWER_ITEM_ID_PURCHASE
+                }
+            )
         }
-        setupInsets { insets ->
-            val bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
-            drawerSliderView.recyclerView.updatePadding(bottom = bottom)
-            drawerSliderView.stickyFooterView?.updatePadding(bottom = bottom)
-        }
-        checkUpdate()
-        checkNotificationPermission()
     }
 
     private fun setupNavigationMenu(booruType: Int) {
@@ -485,22 +504,7 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 booruViewModel.loadBooru(uid)
             }
             ORDER_SUCCESS_KEY -> {
-                if (isOrderSuccess) {
-                    drawerSliderView.removeItems(DRAWER_ITEM_ID_PURCHASE)
-                } else {
-                    if (drawerSliderView.getDrawerItem(DRAWER_ITEM_ID_PURCHASE) == null) {
-                        drawerSliderView.addItemAtPosition(
-                            DRAWER_ITEM_ID_PURCHASE_POSITION,
-                            PrimaryDrawerItem().apply {
-                                name = StringHolder(R.string.purchase_title)
-                                icon = createImageHolder(R.drawable.ic_payment_24dp)
-                                isSelectable = false
-                                isIconTinted = true
-                                identifier = DRAWER_ITEM_ID_PURCHASE
-                            }
-                        )
-                    }
-                }
+                addPurchaseItem()
                 if (boorus.size > BOORUS_LIMIT) {
                     initDrawerHeader()
                 }

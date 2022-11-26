@@ -63,6 +63,9 @@
             android:name=".ui.activity.PurchaseActivity"
             android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
         <activity
+            android:name=".ui.activity.PurchaseHistoryActivity"
+            android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
+        <activity
             android:name=".ui.activity.AboutActivity"
             android:theme="@style/AppTheme.ScrimNavBar.Animation"/>
         <activity
