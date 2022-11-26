@@ -51,9 +51,7 @@ class PurchaseHistoryActivity : BaseActivity() {
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build()
                     billingClient.queryPurchaseHistoryAsync(queryPurchaseHistoryParams) { result, records ->
-                        records?.forEach { record ->
-                            binding.content.text = record.originalJson
-                        }
+                        binding.content.text = "responseCode: ${result.responseCode} \n $records"
                     }
                     billingClient.endConnection()
                 }
