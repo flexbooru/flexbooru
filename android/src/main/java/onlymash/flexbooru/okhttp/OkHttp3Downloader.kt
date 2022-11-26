@@ -157,6 +157,9 @@ class OkHttp3Downloader : Downloader {
                 .addInterceptor(interceptor)
                 .addInterceptor(CloudflareInterceptor)
                 .addInterceptor(ProgressInterceptor())
+            if (Settings.isSniDisable) {
+                builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
+            }
             if (Settings.isDohEnable) {
                 builder.dns(Settings.doh)
             }

@@ -18,14 +18,18 @@
     <string-array name="settings_dns_over_https_dns_entries">
         <item>@string/settings_dns_over_https_cloudflare</item>
         <item>@string/settings_dns_over_https_google</item>
-        <item>@string/settings_dns_over_https_powerdns</item>
+        <item>@string/settings_dns_over_https_dnssb</item>
         <item>@string/settings_dns_over_https_cleanbrowsing</item>
+        <item>@string/settings_dns_over_https_opendns</item>
+        <item>@string/settings_dns_over_https_quad9</item>
     </string-array>
     <string-array name="settings_dns_over_https_dns_entries_values">
         <item>cloudflare</item>
         <item>google</item>
-        <item>powerdns</item>
+        <item>dnssb</item>
         <item>cleanbrowsing</item>
+        <item>opendns</item>
+        <item>quad9</item>
     </string-array>
     <string-array name="settings_night_mode_entries">
         <item>@string/settings_night_mode_on</item>
