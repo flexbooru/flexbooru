@@ -19,11 +19,15 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.webkit.*
+import android.widget.Toast
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import onlymash.flexbooru.R
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Keys.HEADER_COOKIE
+import onlymash.flexbooru.app.Keys.HEADER_USER_AGENT
+import onlymash.flexbooru.app.Values.MOBILE_USER_AGENT
 import onlymash.flexbooru.data.database.MyCookieManager
 import onlymash.flexbooru.data.model.common.Cookie
 import java.io.IOException
@@ -71,12 +75,12 @@ object CloudflareInterceptor : Interceptor {
         handler.post {
             webView = WebView(App.app).apply {
                 settings.javaScriptEnabled = true
-                settings.userAgentString = request.header("User-Agent")
+                settings.userAgentString = request.header(HEADER_USER_AGENT) ?: MOBILE_USER_AGENT
                 webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {
                         super.onPageFinished(view, url)
                         cookie = CookieManager.getInstance().getCookie(url) ?: ""
-                        if(cookie.contains("cf_clearance")) latch.countDown()
+                        if (cookie.contains("cf_clearance")) latch.countDown()
                     }
                 }
                 CookieManager.getInstance().apply {
@@ -89,18 +93,39 @@ object CloudflareInterceptor : Interceptor {
 
         // Wait a reasonable amount of time to retrieve the cookie. The minimum should be
         // around 4 seconds but it can take more due to slow networks or server issues.
-        latch.await(15, TimeUnit.SECONDS)
+        latch.await(20, TimeUnit.SECONDS)
+
+        // Find cookie value and domain
+        var testUrl = request.url
+        var host = testUrl.host
+        while (true) {
+            testUrl = testUrl.newBuilder()
+                .host(host.substringAfter('.', ""))
+                .build()
+            val testCookie = CookieManager.getInstance().getCookie(testUrl.toString()) ?: ""
+            if (testCookie.contains("cf_clearance")) {
+                host = testUrl.host
+                cookie = testCookie
+            } else break
+        }
+        cookie = cookie.split("; ").find {
+            it.startsWith("cf_clearance")
+        } ?: ""
 
         handler.post {
             webView?.apply {
                 stopLoading()
                 destroy()
             }
+            if (cookie.isEmpty()) {
+                Toast.makeText(App.app, R.string.msg_cloudflare_challenges, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         if (cookie.isNotEmpty()) {
             MyCookieManager.createCookie(Cookie(
-                host = request.url.host,
+                host = host,
                 cookie = cookie
             ))
         }
