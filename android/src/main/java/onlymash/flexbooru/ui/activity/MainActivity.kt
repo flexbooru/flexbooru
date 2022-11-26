@@ -180,11 +180,8 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
             DRAWER_ITEM_ID_SAUCE_NAO -> toActivity(SauceNaoActivity::class.java)
             DRAWER_ITEM_ID_WHAT_ANIME -> toActivity(WhatAnimeActivity::class.java)
             DRAWER_ITEM_ID_ABOUT -> toActivity(AboutActivity::class.java)
-            DRAWER_ITEM_ID_PURCHASE -> if (isOrderSuccess) {
-                toActivity(PurchaseHistoryActivity::class.java)
-            } else {
-                toActivity(PurchaseActivity::class.java)
-            }
+            DRAWER_ITEM_ID_PURCHASE -> toActivity(PurchaseActivity::class.java)
+            DRAWER_ITEM_ID_PURCHASE_HISTORY -> toActivity(PurchaseHistoryActivity::class.java)
         }
         false
     }
