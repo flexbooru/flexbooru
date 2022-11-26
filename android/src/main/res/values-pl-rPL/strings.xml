@@ -273,6 +273,7 @@
     <string name="comment_cancel">Anuluj</string>
     <string name="comment_hint">Wpisz komentarz</string>
     <string name="purchase_title">Usuń reklamy &amp; odblokuj możliwości</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Usuń wszystkie reklamy i odblokuj wszystkie funkcje</string>
     <string name="purchase_info_remove_ads">Usuń reklamy</string>
     <string name="purchase_info_unlock_full_features">Odblokuj wszystkie funkcje</string>
