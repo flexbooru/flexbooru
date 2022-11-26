@@ -273,6 +273,7 @@
     <string name="comment_cancel">取消</string>
     <string name="comment_hint">輸入留言</string>
     <string name="purchase_title">移除廣告 &amp; 解鎖功能</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">移除廣告並解鎖所有功能</string>
     <string name="purchase_info_remove_ads">移除廣告</string>
     <string name="purchase_info_unlock_full_features">解鎖所有功能</string>
