@@ -30,6 +30,7 @@ import com.google.android.material.color.DynamicColors
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
@@ -121,34 +122,56 @@ class App : Application(), DIAware {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-                    val queryPurchasesParams = QueryPurchasesParams.newBuilder()
-                        .setProductType(BillingClient.ProductType.INAPP)
-                        .build()
-                    billingClient.queryPurchasesAsync(queryPurchasesParams) { _, purchases ->
-                        isOrderSuccess = if (purchases.isEmpty()) {
-                            false
-                        } else {
-                            val index = purchases.indexOfFirst {
-                                it.products[0] == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
-                            }
-                            if (index >= 0) {
-                                val purchase = purchases[index]
-                                if (!purchase.isAcknowledged) {
-                                    val ackParams = AcknowledgePurchaseParams.newBuilder()
-                                        .setPurchaseToken(purchase.purchaseToken)
-                                        .build()
-                                    billingClient.acknowledgePurchase(ackParams){}
-                                }
-                                true
-                            } else false
-                        }
-                    }
-                    billingClient.endConnection()
+                    queryPurchases(billingClient)
                 }
             }
             override fun onBillingServiceDisconnected() {
                 billingClient.endConnection()
             }
         })
+    }
+
+    private fun queryPurchases(billingClient: BillingClient) {
+        val queryPurchasesParams = QueryPurchasesParams.newBuilder()
+            .setProductType(BillingClient.ProductType.INAPP)
+            .build()
+        billingClient.queryPurchasesAsync(queryPurchasesParams) { _, purchases ->
+            val success = if (purchases.isEmpty()) {
+                false
+            } else {
+                val index = purchases.indexOfFirst {
+                    it.products[0] == PurchaseActivity.SKU && it.purchaseState == Purchase.PurchaseState.PURCHASED
+                }
+                if (index >= 0) {
+                    val purchase = purchases[index]
+                    if (!purchase.isAcknowledged) {
+                        val ackParams = AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.purchaseToken)
+                            .build()
+                        billingClient.acknowledgePurchase(ackParams){}
+                    }
+                    true
+                } else false
+            }
+            if (success) {
+                isOrderSuccess = true
+            } else {
+                queryPurchasesHistory(billingClient)
+            }
+        }
+    }
+
+    private fun queryPurchasesHistory(billingClient: BillingClient) {
+        MainScope().launch {
+            val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+            val result = billingClient.queryPurchaseHistory(queryPurchaseHistoryParams)
+            isOrderSuccess = if (result.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                !result.purchaseHistoryRecordList.isNullOrEmpty()
+            } else {
+                false
+            }
+        }
     }
 }
