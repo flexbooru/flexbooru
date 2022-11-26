@@ -273,6 +273,7 @@
     <string name="comment_cancel">Cancelar</string>
     <string name="comment_hint">Inserir comentário</string>
     <string name="purchase_title">Remover propagandas &amp; Liberar funcionalidades</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Remover anúncios e desbloquear todas as funcionalidades</string>
     <string name="purchase_info_remove_ads">* Remover anúncios</string>
     <string name="purchase_info_unlock_full_features">Desbloquear todas as funcionalidades</string>
