@@ -274,6 +274,7 @@
     <string name="comment_cancel">Отмена</string>
     <string name="comment_hint">Введите комментарий</string>
     <string name="purchase_title">Удалить рекламу &amp; разблокировать новые возможности</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Удалить рекламу и разблокировать все возможности</string>
     <string name="purchase_info_remove_ads">* Удалить рекламу</string>
     <string name="purchase_info_unlock_full_features">* Разблокировать все возможности</string>
