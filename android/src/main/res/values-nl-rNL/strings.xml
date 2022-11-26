@@ -55,7 +55,7 @@
     <string name="about_licenses">Licenties</string>
     <string name="about_open_source_licenses">Open-sourcelicenties</string>
     <string name="snackbar_copy_text">` %s ` zijn gekopieerd naar het klembord.</string>
-    <string name="retry">Opnieuw proberen</string>
+    <string name="action_retry">Retry</string>
     <string name="msg_not_supported">Niet ondersteund</string>
     <string name="msg_file_save_success">Het bestand is opgeslagen als %s</string>
     <string name="msg_your_api_key_is_wrong">Je API-sleutel is verkeerd!</string>
