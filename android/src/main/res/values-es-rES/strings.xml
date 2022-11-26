@@ -274,6 +274,7 @@
     <string name="comment_cancel">Cancelar</string>
     <string name="comment_hint">Comentario de entrada</string>
     <string name="purchase_title">Quitar anuncios y desbloquear características</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Quitar anuncios y desbloquear características</string>
     <string name="purchase_info_remove_ads">* Quitar anuncios</string>
     <string name="purchase_info_unlock_full_features">* Desbloquear todas las características</string>
