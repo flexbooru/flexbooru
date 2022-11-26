@@ -166,9 +166,14 @@
     <string name="settings_night_theme">Ночная тема</string>
     <string name="settings_night_theme_dark">Тёмная</string>
     <string name="settings_night_theme_black">Черная</string>
+    <string name="settings_summary_restart_required">Restart takes effect</string>
     <string name="settings_dns_over_https">DNS по HTTPS</string>
-    <string name="settings_dns_over_https_summary">Необходим перезапуск</string>
+    <string name="settings_dns_over_https_summary">Encrypted DNS</string>
     <string name="settings_dns_over_https_dns">Поставщик DNS</string>
+    <string name="settings_disable_sni">Disable SNI</string>
+    <string name="settings_disable_sni_summary">Removing SNI from HTTPS</string>
+    <string name="settings_bypass_waf">Bypass WAF</string>
+    <string name="settings_bypass_waf_summary">Bypassing Cloudflare WAF</string>
     <string name="settings_safe_mode">Безопасный режим</string>
     <string name="settings_page_limit">Лимит страниц</string>
     <string name="settings_muzei_limit">Лимит Muzei</string>

@@ -165,9 +165,14 @@
     <string name="settings_night_theme">夜間テーマ</string>
     <string name="settings_night_theme_dark">ダーク</string>
     <string name="settings_night_theme_black">黒</string>
+    <string name="settings_summary_restart_required">Restart takes effect</string>
     <string name="settings_dns_over_https">HTTPS 経由の DNS</string>
-    <string name="settings_dns_over_https_summary">Restart takes effect</string>
+    <string name="settings_dns_over_https_summary">Encrypted DNS</string>
     <string name="settings_dns_over_https_dns">DNS プロバイダー</string>
+    <string name="settings_disable_sni">Disable SNI</string>
+    <string name="settings_disable_sni_summary">Removing SNI from HTTPS</string>
+    <string name="settings_bypass_waf">Bypass WAF</string>
+    <string name="settings_bypass_waf_summary">Bypassing Cloudflare WAF</string>
     <string name="settings_safe_mode">セーフモード</string>
     <string name="settings_page_limit">ページ制限</string>
     <string name="settings_muzei_limit">Muzei制限</string>
