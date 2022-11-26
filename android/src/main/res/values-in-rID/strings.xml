@@ -273,6 +273,7 @@
     <string name="comment_cancel">Batal</string>
     <string name="comment_hint">Masukkan komentar</string>
     <string name="purchase_title">Hapus iklan &amp; dapatkan fitur lebih</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">Hapus iklan dan dapatkan fitur penuh</string>
     <string name="purchase_info_remove_ads">* Hapus iklan</string>
     <string name="purchase_info_unlock_full_features">* Buka semua fitur</string>
