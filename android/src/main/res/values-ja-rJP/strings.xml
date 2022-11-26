@@ -273,6 +273,7 @@
     <string name="comment_cancel">キャンセル</string>
     <string name="comment_hint">コメントを入力</string>
     <string name="purchase_title">広告を削除 &amp; 機能をアンロックします</string>
+    <string name="purchase_history_title">Restore purchase</string>
     <string name="purchase_info_title">広告を削除してすべての機能をアンロックします</string>
     <string name="purchase_info_remove_ads">* 広告を削除</string>
     <string name="purchase_info_unlock_full_features">* すべての機能をアンロックします</string>
