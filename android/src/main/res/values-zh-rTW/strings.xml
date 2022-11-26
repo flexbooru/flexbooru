@@ -273,12 +273,12 @@
     <string name="comment_cancel">取消</string>
     <string name="comment_hint">輸入留言</string>
     <string name="purchase_title">移除廣告 &amp; 功能解鎖</string>
-    <string name="purchase_history_title">Restore purchase</string>
+    <string name="purchase_history_title">還原購買</string>
     <string name="purchase_info_title">移除廣告並解鎖完整功能</string>
     <string name="purchase_info_remove_ads">* 移除廣告</string>
     <string name="purchase_info_unlock_full_features">* 解鎖完整功能</string>
-    <string name="purchase_info_features">1. 移除可用 Booru 的數量限制。\n2. 可從 Moebooru 圖集下載 Zip 壓縮檔。\n3. 可於檔案中備份 &amp; 還原 Boorus 。\n4. 可透過 SauceNao 進行反向搜尋。    </string>
-    <string name="purchase_pay_title">支付/恢復購買</string>
+    <string name="purchase_info_features">1. 移除可用 Booru 的數量限制。\n2. 可從 Moebooru 圖集下載 Zip 壓縮檔。\n3. 可於檔案中備份 &amp; 還原 Booru 。\n4. 可透過 SauceNao 進行反向搜尋。    </string>
+    <string name="purchase_pay_title">支付/還原購買</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">支付寶</string>
     <string name="tab_start_date">起始日期</string>
