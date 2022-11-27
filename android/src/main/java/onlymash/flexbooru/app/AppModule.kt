@@ -32,6 +32,5 @@ fun appModule(applicationContext: Context) = DI.Module("AppModule") {
     bind { singleton { instance<MyDatabase>().postDao() } }
     bind { singleton { instance<MyDatabase>().historyDao() } }
     bind { singleton { instance<MyDatabase>().nextDao() } }
-    bind { singleton { instance<MyDatabase>().cookiesDao() } }
     bind { singleton { BooruApis() } }
 }

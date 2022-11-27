@@ -26,13 +26,18 @@ import onlymash.flexbooru.data.database.dao.*
 @Database(
     entities = [
         (Booru::class), (Post::class), (TagFilter::class),
-        (Muzei::class), (History::class), (Next::class), (Cookie::class)
+        (Muzei::class), (History::class), (Next::class)
     ],
-    version = 8,
+    version = 9,
     autoMigrations = [
         AutoMigration (
             from = 7,
             to = 8
+        ),
+        AutoMigration (
+            from = 8,
+            to = 9,
+            spec = MyMigration.DeleteCookiesMigrationSpec::class
         )
     ],
     exportSchema = true)
@@ -70,5 +75,4 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun muzeiDao(): MuzeiDao
     abstract fun historyDao(): HistoryDao
     abstract fun nextDao(): NextDao
-    abstract fun cookiesDao(): CookieDao
 }

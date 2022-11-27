@@ -23,6 +23,7 @@ import java.io.IOException
 import android.os.StatFs
 import androidx.annotation.VisibleForTesting
 import okhttp3.*
+import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Keys.HEADER_REFERER
 import onlymash.flexbooru.app.Keys.HEADER_USER_AGENT
 import onlymash.flexbooru.app.Settings
@@ -154,8 +155,9 @@ class OkHttp3Downloader : Downloader {
             }
             val builder = OkHttpClient.Builder()
                 .cache(Cache(cacheDir, maxSize))
+                .cookieJar(AndroidCookieJar())
                 .addInterceptor(interceptor)
-                .addInterceptor(CloudflareInterceptor)
+                .addInterceptor(CloudflareInterceptor(App.app))
                 .addInterceptor(ProgressInterceptor())
             if (Settings.isSniDisable) {
                 builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)

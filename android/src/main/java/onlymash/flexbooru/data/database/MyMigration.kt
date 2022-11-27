@@ -15,6 +15,8 @@
 
 package onlymash.flexbooru.data.database
 
+import androidx.room.DeleteTable
+import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
@@ -45,4 +47,7 @@ class MyMigration(startVersion: Int, endVersion: Int) : Migration(startVersion, 
             }
         }
     }
+
+    @DeleteTable(tableName = "cookies")
+    class DeleteCookiesMigrationSpec : AutoMigrationSpec
 }

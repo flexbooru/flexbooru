@@ -16,123 +16,126 @@
 package onlymash.flexbooru.okhttp
 
 import android.annotation.SuppressLint
-import android.os.Handler
-import android.os.Looper
-import android.webkit.*
-import android.widget.Toast
+import android.content.Context
+import android.webkit.WebView
+import androidx.core.content.ContextCompat
+import okhttp3.Cookie
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import okio.IOException
 import onlymash.flexbooru.R
-import onlymash.flexbooru.app.App
-import onlymash.flexbooru.app.Keys.HEADER_COOKIE
-import onlymash.flexbooru.app.Keys.HEADER_USER_AGENT
-import onlymash.flexbooru.app.Values.MOBILE_USER_AGENT
-import onlymash.flexbooru.data.database.MyCookieManager
-import onlymash.flexbooru.data.model.common.Cookie
-import java.io.IOException
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
-object CloudflareInterceptor : Interceptor {
 
-    private val handler = Handler(Looper.getMainLooper())
+//https://github.com/tachiyomiorg/tachiyomi/blob/master/core/src/main/java/eu/kanade/tachiyomi/network/interceptor/CloudflareInterceptor.kt
+class CloudflareInterceptor(private val context: Context) : WebViewInterceptor(context) {
 
-    @Synchronized
-    override fun intercept(chain: Interceptor.Chain): Response {
-        var request = chain.request()
-        val cookie = MyCookieManager.getCookieByHost(request.url.host)
-        if (cookie != null) {
-            request = request.newBuilder()
-                .header(HEADER_COOKIE, cookie.cookie)
-                .build()
+    private val executor = ContextCompat.getMainExecutor(context)
+
+    private val webCookieManager = AndroidCookieJar()
+
+    override fun shouldIntercept(response: Response): Boolean {
+        return response.code in ERROR_CODES && response.header("Server") in SERVER_CHECK
+    }
+
+    override fun intercept(
+        chain: Interceptor.Chain,
+        request: Request,
+        response: Response
+    ): Response {
+        try {
+            response.close()
+            webCookieManager.remove(request.url, COOKIE_NAMES, 0)
+            val oldCookie = webCookieManager.get(request.url)
+                .firstOrNull { it.name == "cf_clearance" }
+            resolveWithWebView(request, oldCookie)
+            return chain.proceed(request)
+        } catch (e: CloudflareBypassException) {
+            throw IOException(context.getString(R.string.msg_cloudflare_challenges))
+        } catch (e: Exception) {
+            throw IOException(e)
         }
-        val response = chain.proceed(request)
-        // Check if Cloudflare anti-bot is on
-        if (response.header("CF-Chl-Bypass") == "1") {
-            try {
-                response.close()
-                val solutionRequest = resolveWithWebView(request)
-                return chain.proceed(solutionRequest)
-            } catch (e: Exception) {
-                // Because OkHttp's enqueue only handles IOExceptions, wrap the exception so that
-                // we don't crash the entire app
-                throw IOException(e)
-            }
-        }
-
-        return response
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun resolveWithWebView(request: Request): Request {
-        // We need to lock this thread until the WebView finds the challenge cookie, because
+    private fun resolveWithWebView(originalRequest: Request, oldCookie: Cookie?) {
+        // We need to lock this thread until the WebView finds the challenge solution url, because
         // OkHttp doesn't support asynchronous interceptors.
         val latch = CountDownLatch(1)
-        var webView: WebView? = null
-        var cookie = ""
-        val headers = request.headers.toMultimap().mapValues { it.value.getOrNull(0) ?: "" }
-        handler.post {
-            webView = WebView(App.app).apply {
-                settings.javaScriptEnabled = true
-                settings.userAgentString = request.header(HEADER_USER_AGENT) ?: MOBILE_USER_AGENT
-                webViewClient = object : WebViewClient() {
-                    override fun onPageFinished(view: WebView?, url: String?) {
-                        super.onPageFinished(view, url)
-                        cookie = CookieManager.getInstance().getCookie(url) ?: ""
-                        if (cookie.contains("cf_clearance")) latch.countDown()
+
+        var webview: WebView? = null
+
+        var challengeFound = false
+        var cloudflareBypassed = false
+
+        val origRequestUrl = originalRequest.url.toString()
+        val headers = parseHeaders(originalRequest.headers)
+
+        executor.execute {
+            webview = createWebView(originalRequest)
+
+            webview?.webViewClient = object : WebViewClientCompat() {
+                override fun onPageFinished(view: WebView, url: String) {
+
+                    fun isCloudFlareBypassed(): Boolean {
+                        return webCookieManager.get(origRequestUrl.toHttpUrl())
+                            .firstOrNull { it.name == "cf_clearance" }
+                            .let { it != null && it != oldCookie }
+                    }
+
+                    if (isCloudFlareBypassed()) {
+                        cloudflareBypassed = true
+                        latch.countDown()
+                    }
+
+                    if (url == origRequestUrl && !challengeFound) {
+                        // The first request didn't return the challenge, abort.
+                        latch.countDown()
                     }
                 }
-                CookieManager.getInstance().apply {
-                    removeAllCookies {}
-                    flush()
+
+                override fun onReceivedErrorCompat(
+                    view: WebView,
+                    errorCode: Int,
+                    description: String?,
+                    failingUrl: String,
+                    isMainFrame: Boolean,
+                ) {
+                    if (isMainFrame) {
+                        if (errorCode in ERROR_CODES) {
+                            // Found the Cloudflare challenge page.
+                            challengeFound = true
+                        } else {
+                            // Unlock thread, the challenge wasn't found.
+                            latch.countDown()
+                        }
+                    }
                 }
-                loadUrl(request.url.toString(), headers)
             }
+
+            webview?.loadUrl(origRequestUrl, headers)
         }
 
-        // Wait a reasonable amount of time to retrieve the cookie. The minimum should be
-        // around 4 seconds but it can take more due to slow networks or server issues.
-        latch.await(20, TimeUnit.SECONDS)
+        latch.awaitFor30Seconds()
 
-        // Find cookie value and domain
-        var testUrl = request.url
-        var host = testUrl.host
-        while (true) {
-            testUrl = testUrl.newBuilder()
-                .host(host.substringAfter('.', ""))
-                .build()
-            val testCookie = CookieManager.getInstance().getCookie(testUrl.toString()) ?: ""
-            if (testCookie.contains("cf_clearance")) {
-                host = testUrl.host
-                cookie = testCookie
-            } else break
-        }
-        cookie = cookie.split("; ").find {
-            it.startsWith("cf_clearance")
-        } ?: ""
-
-        handler.post {
-            webView?.apply {
+        executor.execute {
+            webview?.run {
                 stopLoading()
                 destroy()
             }
-            if (cookie.isEmpty()) {
-                Toast.makeText(App.app, R.string.msg_cloudflare_challenges, Toast.LENGTH_SHORT)
-                    .show()
-            }
         }
 
-        if (cookie.isNotEmpty()) {
-            MyCookieManager.createCookie(Cookie(
-                host = host,
-                cookie = cookie
-            ))
+        // Throw exception if we failed to bypass Cloudflare
+        if (!cloudflareBypassed) {
+            throw CloudflareBypassException()
         }
-
-        return request.newBuilder()
-            .header(HEADER_COOKIE, cookie)
-            .build()
     }
-
 }
+
+private val ERROR_CODES = listOf(403, 503)
+private val SERVER_CHECK = arrayOf("cloudflare-nginx", "cloudflare")
+private val COOKIE_NAMES = listOf("cf_clearance")
+
+private class CloudflareBypassException : Exception()

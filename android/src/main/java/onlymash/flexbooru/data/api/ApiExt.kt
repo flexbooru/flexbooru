@@ -24,8 +24,10 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import onlymash.flexbooru.BuildConfig
+import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
+import onlymash.flexbooru.okhttp.AndroidCookieJar
 import onlymash.flexbooru.okhttp.CloudflareInterceptor
 import onlymash.flexbooru.okhttp.NoSniFactory
 import retrofit2.Retrofit
@@ -33,9 +35,10 @@ import java.util.concurrent.TimeUnit
 
 fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     val builder = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(10, TimeUnit.SECONDS)
+        .cookieJar(AndroidCookieJar())
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .writeTimeout(15, TimeUnit.SECONDS)
 
     if (Settings.isSniDisable) {
         builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
@@ -51,7 +54,7 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     }
 
     if (Settings.isBypassWAF) {
-        builder.addInterceptor(CloudflareInterceptor)
+        builder.addInterceptor(CloudflareInterceptor(App.app))
     }
 
     if (BuildConfig.DEBUG) {
