@@ -1,6 +1,6 @@
 package onlymash.flexbooru.okhttp
 
-import android.os.Build
+import okhttp3.ConnectionSpec
 import java.net.InetAddress
 import java.net.Socket
 import java.security.KeyManagementException
@@ -10,9 +10,18 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
+@Suppress("DEPRECATION")
 object NoSniFactory : SSLSocketFactory() {
     private val defaultFactory = getDefault() as SSLSocketFactory
+    private val openSSLSocket = android.net.SSLCertificateSocketFactory
+        .getDefault(1000) as android.net.SSLCertificateSocketFactory
+
     val defaultTrustManager = platformTrustManager()
+    val tls = listOf(
+        ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+            .supportsTlsExtensions(false)
+            .build()
+    )
 
     override fun createSocket(s: Socket?, host: String?, port: Int, autoClose: Boolean): Socket {
         val socket = defaultFactory.createSocket(s, host, port, autoClose)
@@ -64,11 +73,7 @@ object NoSniFactory : SSLSocketFactory() {
 
     private fun setParams(s: Socket) {
         val socket = s as SSLSocket
-        val params = socket.sslParameters
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            params.serverNames = null
-        }
-        socket.sslParameters = params
+        openSSLSocket.setHostname(socket, null)
     }
 
     private fun platformTrustManager(): X509TrustManager {

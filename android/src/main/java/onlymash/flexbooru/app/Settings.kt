@@ -286,20 +286,20 @@ object Settings {
 
     val isBypassWAF: Boolean get() = sp.getBoolean(BYPASS_WAF_KEY, false)
 
-    val doh: DnsOverHttps
-        get() {
-            val client = OkHttpClient.Builder()
-                .sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
-                .build()
-            return when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
-                "google" -> DohProviders.buildGoogle(client)
-                "dnssb" -> DohProviders.buildDnsSb(client)
-                "cleanbrowsing" -> DohProviders.buildCleanBrowsing(client)
-                "opendns" -> DohProviders.buildOpenDns(client)
-                "quad9" -> DohProviders.buildQuad9(client)
-                else -> DohProviders.buildCloudflare(client)
-            }
+    val doh: DnsOverHttps by lazy {
+        val client = OkHttpClient.Builder()
+            .connectionSpecs(NoSniFactory.tls)
+            .sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
+            .build()
+        when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
+            "google" -> DohProviders.buildGoogle(client)
+            "dnssb" -> DohProviders.buildDnsSb(client)
+            "cleanbrowsing" -> DohProviders.buildCleanBrowsing(client)
+            "opendns" -> DohProviders.buildOpenDns(client)
+            "quad9" -> DohProviders.buildQuad9(client)
+            else -> DohProviders.buildCloudflare(client)
         }
+    }
 
     var orderCheckTime: Long
         get() = sp.getLong(ORDER_CHECK_TIME, 0)

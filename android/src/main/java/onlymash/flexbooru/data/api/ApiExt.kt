@@ -41,6 +41,7 @@ fun createHttpClient(isSankaku: Boolean): OkHttpClient {
         .writeTimeout(15, TimeUnit.SECONDS)
 
     if (Settings.isSniDisable) {
+        builder.connectionSpecs(NoSniFactory.tls)
         builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
     }
     if (Settings.isDohEnable) {
