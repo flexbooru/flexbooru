@@ -4,7 +4,7 @@ import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 
-class AndroidCookieJar : CookieJar {
+object AndroidCookieJar : CookieJar {
 
     private val manager = CookieManager.getInstance()
 

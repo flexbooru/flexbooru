@@ -29,21 +29,16 @@ import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.okhttp.AndroidCookieJar
 import onlymash.flexbooru.okhttp.CloudflareInterceptor
-import onlymash.flexbooru.okhttp.NoSniFactory
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     val builder = OkHttpClient.Builder()
-        .cookieJar(AndroidCookieJar())
+        .cookieJar(AndroidCookieJar)
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(15, TimeUnit.SECONDS)
         .writeTimeout(15, TimeUnit.SECONDS)
 
-    if (Settings.isSniDisable) {
-        builder.connectionSpecs(NoSniFactory.tls)
-        builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
-    }
     if (Settings.isDohEnable) {
         builder.dns(Settings.doh)
     }

@@ -58,11 +58,17 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
     private val sp by instance<SharedPreferences>()
 
     private var gridRatioPreference: Preference? = null
+    private var dohPreference: SwitchPreferenceCompat? = null
+    private var dohProviderPreference: Preference? = null
+    private var disableSniPreference: SwitchPreferenceCompat? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_settings)
         gridRatioPreference = findPreference(GRID_RATIO_KEY)
         gridRatioPreference?.isVisible = gridMode == "fixed"
+        dohPreference = findPreference(DNS_OVER_HTTPS)
+        dohProviderPreference = findPreference(DNS_OVER_HTTPS_PROVIDER)
+        disableSniPreference = findPreference(DISABLE_SNI_KEY)
         findPreference<Preference>(NIGHT_THEME_KEY)?.isVisible = resources.configuration.isNightEnable()
         downloadDirPath = context?.contentResolver?.getTreeUri()?.toDecodedString()
         initPathSummary()
@@ -80,13 +86,16 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.
             DOWNLOAD_PATH_KEY -> initPathSummary()
             NIGHT_MODE_KEY -> AppCompatDelegate.setDefaultNightMode(nightMode)
             GRID_MODE_KEY -> gridRatioPreference?.isVisible = gridMode == "fixed"
-            DISABLE_SNI_KEY -> findPreference<SwitchPreferenceCompat>(DISABLE_SNI_KEY)?.setSummary(R.string.settings_summary_restart_required)
+            DISABLE_SNI_KEY -> disableSniPreference?.setSummary(R.string.settings_summary_restart_required)
             BYPASS_WAF_KEY -> findPreference<SwitchPreferenceCompat>(BYPASS_WAF_KEY)?.setSummary(R.string.settings_summary_restart_required)
-            DNS_OVER_HTTPS,
-            DNS_OVER_HTTPS_PROVIDER -> {
-                findPreference<ListPreference>(DNS_OVER_HTTPS_PROVIDER)?.isVisible = isDohEnable
-                findPreference<SwitchPreferenceCompat>(DNS_OVER_HTTPS)?.setSummary(R.string.settings_summary_restart_required)
+            DNS_OVER_HTTPS -> {
+                dohPreference?.setSummary(R.string.settings_summary_restart_required)
+                with(isDohEnable) {
+                    dohProviderPreference?.isVisible = this
+                    disableSniPreference?.isVisible = this
+                }
             }
+            DNS_OVER_HTTPS_PROVIDER -> dohPreference?.setSummary(R.string.settings_summary_restart_required)
         }
     }
 

@@ -34,8 +34,6 @@ class CloudflareInterceptor(private val context: Context) : WebViewInterceptor(c
 
     private val executor = ContextCompat.getMainExecutor(context)
 
-    private val webCookieManager = AndroidCookieJar()
-
     override fun shouldIntercept(response: Response): Boolean {
         return response.code in ERROR_CODES && response.header("Server") in SERVER_CHECK
     }
@@ -47,8 +45,8 @@ class CloudflareInterceptor(private val context: Context) : WebViewInterceptor(c
     ): Response {
         try {
             response.close()
-            webCookieManager.remove(request.url, COOKIE_NAMES, 0)
-            val oldCookie = webCookieManager.get(request.url)
+            AndroidCookieJar.remove(request.url, COOKIE_NAMES, 0)
+            val oldCookie = AndroidCookieJar.get(request.url)
                 .firstOrNull { it.name == "cf_clearance" }
             resolveWithWebView(request, oldCookie)
             return chain.proceed(request)
@@ -80,7 +78,7 @@ class CloudflareInterceptor(private val context: Context) : WebViewInterceptor(c
                 override fun onPageFinished(view: WebView, url: String) {
 
                     fun isCloudFlareBypassed(): Boolean {
-                        return webCookieManager.get(origRequestUrl.toHttpUrl())
+                        return AndroidCookieJar.get(origRequestUrl.toHttpUrl())
                             .firstOrNull { it.name == "cf_clearance" }
                             .let { it != null && it != oldCookie }
                     }

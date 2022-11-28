@@ -155,14 +155,10 @@ class OkHttp3Downloader : Downloader {
             }
             val builder = OkHttpClient.Builder()
                 .cache(Cache(cacheDir, maxSize))
-                .cookieJar(AndroidCookieJar())
+                .cookieJar(AndroidCookieJar)
                 .addInterceptor(interceptor)
                 .addInterceptor(CloudflareInterceptor(App.app))
                 .addInterceptor(ProgressInterceptor())
-            if (Settings.isSniDisable) {
-                builder.connectionSpecs(NoSniFactory.tls)
-                builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
-            }
             if (Settings.isDohEnable) {
                 builder.dns(Settings.doh)
             }

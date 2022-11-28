@@ -62,10 +62,10 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                     return cookiesStore[booru.host] ?: listOf()
                 }
             })
-        if (Settings.isSniDisable) {
-            builder.connectionSpecs(NoSniFactory.tls)
-            builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
-        }
+//        if (Settings.isSniDisable) {
+//            builder.connectionSpecs(NoSniFactory.tls)
+//            builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
+//        }
         if (Settings.isDohEnable) {
             builder.dns(Settings.doh)
         }

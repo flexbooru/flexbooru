@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.okhttp.AndroidCookieJar
 import onlymash.flexbooru.okhttp.CloudflareInterceptor
-import onlymash.flexbooru.okhttp.NoSniFactory
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.InputStream
 
@@ -30,14 +29,10 @@ class MyGlideModule : AppGlideModule() {
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         val builder = OkHttpClient.Builder()
-            .cookieJar(AndroidCookieJar())
+            .cookieJar(AndroidCookieJar)
             .addInterceptor(ProgressInterceptor())
         if (Settings.isBypassWAF) {
             builder.addInterceptor(CloudflareInterceptor(context))
-        }
-        if (Settings.isSniDisable) {
-            builder.connectionSpecs(NoSniFactory.tls)
-            builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
         }
         if (Settings.isDohEnable) {
             builder.dns(Settings.doh)
