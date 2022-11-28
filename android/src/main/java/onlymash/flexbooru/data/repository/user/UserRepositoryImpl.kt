@@ -63,6 +63,7 @@ class UserRepositoryImpl(private val booruApis: BooruApis) : UserRepository {
                 }
             })
         if (Settings.isSniDisable) {
+            builder.connectionSpecs(NoSniFactory.tls)
             builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
         }
         if (Settings.isDohEnable) {

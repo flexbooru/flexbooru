@@ -36,6 +36,7 @@ class MyGlideModule : AppGlideModule() {
             builder.addInterceptor(CloudflareInterceptor(context))
         }
         if (Settings.isSniDisable) {
+            builder.connectionSpecs(NoSniFactory.tls)
             builder.sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
         }
         if (Settings.isDohEnable) {
