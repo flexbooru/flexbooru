@@ -25,10 +25,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.pageLimit
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
@@ -75,7 +75,7 @@ class ArtistFragment : SearchBarFragment() {
             layoutManager = LinearLayoutManager(this@ArtistFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = artistAdapter.withLoadStateFooter(StateAdapter(artistAdapter))
         }
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             artistViewModel.artists.collectLatest {
                 artistAdapter.submitData(it)
             }
@@ -85,7 +85,7 @@ class ArtistFragment : SearchBarFragment() {
             progressBarHorizontal.isVisible = loadStates.source.append is LoadState.Loading
             updateState(loadStates.source.refresh)
         }
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             artistAdapter.loadStateFlow
                 .asMergedLoadStates()
                 .distinctUntilChangedBy { it.refresh }

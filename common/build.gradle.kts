@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
+@file:Suppress("UnstableApiUsage")
 
 plugins {
     id("com.android.library")
@@ -32,7 +32,6 @@ android {
     buildToolsVersion = "33.0.0"
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -64,7 +63,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.kodein.di:kodein-di:$kodeinVersion")
@@ -74,7 +72,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.kodein.di:kodein-di-jvm:$kodeinVersion")

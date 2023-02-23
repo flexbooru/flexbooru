@@ -13,9 +13,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("UnstableApiUsage")
+
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import org.apache.commons.io.output.ByteArrayOutputStream
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -157,17 +158,16 @@ dependencies {
 //    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":common"))
-    implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
     implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
     implementation("org.kodein.di:kodein-di-framework-android-core:$kodeinVersion")
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
-    implementation("androidx.annotation:annotation:1.5.0")
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
-    implementation("androidx.activity:activity-ktx:1.7.0-alpha02")
-    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha03")
+    implementation("androidx.annotation:annotation:1.6.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.activity:activity-ktx:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.recyclerview:recyclerview:1.3.0-rc01")
@@ -175,8 +175,8 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     implementation("androidx.documentfile:documentfile:1.1.0-alpha01")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.browser:browser:1.5.0-alpha01")
-    implementation("androidx.drawerlayout:drawerlayout:1.2.0-alpha01")
+    implementation("androidx.browser:browser:1.5.0")
+    implementation("androidx.drawerlayout:drawerlayout:1.2.0-beta01")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
@@ -184,7 +184,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-paging:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha04")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     // Lifecycles only (without ViewModel or LiveData)
@@ -199,7 +199,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.8.0-alpha03")
+    implementation("com.google.android.material:material:1.9.0-alpha02")
     implementation("com.google.android:flexbox:2.0.1")
     implementation("com.google.android.apps.muzei:muzei-api:3.4.1")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -210,8 +210,8 @@ dependencies {
     implementation("com.google.zxing:core:3.5.1")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
     implementation("com.google.firebase:firebase-analytics-ktx:21.2.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
-    implementation("com.google.android.gms:play-services-ads:21.3.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.3.5")
+    implementation("com.google.android.gms:play-services-ads:21.5.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.android.billingclient:billing-ktx:5.1.0")
@@ -220,7 +220,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
-    implementation("com.squareup.okio:okio:3.2.0")
+    implementation("com.squareup.okio:okio:3.3.0")
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion")
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
@@ -229,10 +229,10 @@ dependencies {
     implementation("io.github.pdvrieze.xmlutil:core-android:$xmlutilVersion")
     implementation("io.github.pdvrieze.xmlutil:serialization-android:$xmlutilVersion")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.9")
+    testImplementation("org.robolectric:robolectric:4.9.2")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
     androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test:runner:1.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

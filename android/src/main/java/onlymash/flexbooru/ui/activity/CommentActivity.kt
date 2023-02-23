@@ -34,6 +34,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Settings.pageLimit
@@ -186,7 +187,7 @@ class CommentActivity : KodeinActivity() {
 
     private fun initViewModel() {
         commentViewModel = getCommentViewModel(CommentRepositoryImpl(booruApis))
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             commentViewModel.comments.collectLatest {
                 commentAdapter.submitData(it)
             }

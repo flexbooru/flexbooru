@@ -203,12 +203,12 @@ class PostFragment : SearchBarFragment() {
             progressBarHorizontal.isVisible = loadStates.mediator?.append is LoadState.Loading
             updateState(loadStates.mediator?.refresh)
         }
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             postViewModel.posts.collectLatest {
                 postAdapter.submitData(it)
             }
         }
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             postAdapter.loadStateFlow
                 .asMergedLoadStates()
                 .distinctUntilChangedBy { it.refresh }
