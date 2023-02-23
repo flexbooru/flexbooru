@@ -14,8 +14,8 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">A booru client for Android, support Danbooru, Moebooru, Gelbooru, Sankaku, etc.</string>
-    <string name="title_posts">Posts</string>
+    <string name="app_description">Danbooru、Moebooru、Gelbooru、Sankakuなどに対応したAndroid向けbooruクライアントです。    </string>
+    <string name="title_posts">ポスト</string>
     <string name="title_search">検索</string>
     <string name="title_popular">人気な作品</string>
     <string name="title_manage_boorus">Boorus管理</string>
@@ -34,7 +34,7 @@
     <string name="title_tag_blacklist">タグブラックリスト</string>
     <string name="title_sauce_nao">SauceNao</string>
     <string name="title_what_anime">What Anime</string>
-    <string name="title_history">History</string>
+    <string name="title_history">履歴</string>
     <string name="history_clear_all">全て消去</string>
     <string name="history_clear_all_content">全ての履歴がクリアされます。</string>
     <string name="about_app_version">バージョン</string>
@@ -55,11 +55,11 @@
     <string name="about_licenses">ライセンス</string>
     <string name="about_open_source_licenses">オープンソースライセンス</string>
     <string name="snackbar_copy_text">` %s ` がクリップボードにコピーされました</string>
-    <string name="action_retry">Retry</string>
+    <string name="action_retry">リトライ</string>
     <string name="msg_not_supported">サポートされていません。</string>
     <string name="msg_file_save_success">このファイルが%sとして保存されました。</string>
     <string name="msg_your_api_key_is_wrong">Api Keyが違います</string>
-    <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
+    <string name="msg_cloudflare_challenges">読み込みに失敗しました、後でもう一度試してください。</string>
     <string name="post_expand_or_clear">展開またはクリア</string>
     <string name="post_add_search_to_muzei">` %s ` がMuzeiに保存されました</string>
     <string name="post_download">Postをダウンロード</string>
@@ -166,14 +166,14 @@
     <string name="settings_night_theme">夜間テーマ</string>
     <string name="settings_night_theme_dark">ダーク</string>
     <string name="settings_night_theme_black">黒</string>
-    <string name="settings_summary_restart_required">Restart takes effect</string>
+    <string name="settings_summary_restart_required">リスタートが有効になります</string>
     <string name="settings_dns_over_https">HTTPS 経由の DNS</string>
-    <string name="settings_dns_over_https_summary">Encrypted DNS</string>
+    <string name="settings_dns_over_https_summary">暗号化DNS</string>
     <string name="settings_dns_over_https_dns">DNS プロバイダー</string>
-    <string name="settings_disable_sni">Disable SNI</string>
-    <string name="settings_disable_sni_summary">Removing SNI from HTTPS</string>
-    <string name="settings_bypass_waf">Bypass WAF</string>
-    <string name="settings_bypass_waf_summary">Bypassing Cloudflare WAF</string>
+    <string name="settings_disable_sni">SNIを無効にする</string>
+    <string name="settings_disable_sni_summary">HTTPSからSNIを削除する</string>
+    <string name="settings_bypass_waf">WAFを回避する</string>
+    <string name="settings_bypass_waf_summary">CloudflareのWAFを回避する</string>
     <string name="settings_safe_mode">セーフモード</string>
     <string name="settings_page_limit">ページ制限</string>
     <string name="settings_muzei_limit">Muzei制限</string>
@@ -185,19 +185,19 @@
     <string name="settings_post_size_sample">Sample</string>
     <string name="settings_post_size_larger">大きく</string>
     <string name="settings_post_size_origin">オリジン</string>
-    <string name="settings_grid_mode">Grid mode</string>
-    <string name="settings_grid_mode_fixed">Fixed ratio</string>
-    <string name="settings_grid_mode_staggered">Staggered</string>
-    <string name="settings_grid_ratio">Grid ratio</string>
+    <string name="settings_grid_mode">グリッドモード</string>
+    <string name="settings_grid_mode_fixed">固定比率</string>
+    <string name="settings_grid_mode_staggered">気絶</string>
+    <string name="settings_grid_ratio">グリッド比率</string>
     <string name="settings_grid_width">グリッド幅</string>
     <string name="settings_grid_width_small">小さく</string>
     <string name="settings_grid_width_normal">ノーマル</string>
     <string name="settings_grid_width_large">大</string>
-    <string name="settings_grid_rounded">Rounded grid</string>
+    <string name="settings_grid_rounded">丸みを帯びたグリッド</string>
     <string name="settings_show_info_bar">情報バーを表示:</string>
     <string name="settings_show_all_tags">すべてのサイトにタグを表示</string>
-    <string name="settings_auto_hide_bottom_bar">Auto hide bottom bar</string>
-    <string name="settings_auto_refresh">Auto refresh</string>
+    <string name="settings_auto_hide_bottom_bar">下部バーを自動的に隠す</string>
+    <string name="settings_auto_refresh">自動更新</string>
     <string name="settings_clear_cache">キャッシュを削除</string>
     <string name="settings_clear_cache_summery">キャッシュされたすべてのファイルを削除する</string>
     <string name="settings_clear_cache_dialog_content">キャッシュされたファイルがクリアされます</string>
@@ -257,7 +257,7 @@
     <string name="muzei_copy">コピー</string>
     <string name="muzei_delete">削除</string>
     <string name="muzei_search">検索</string>
-    <string name="muzei_search_hint">Add tag…</string>
+    <string name="muzei_search_hint">タグを追加する…</string>
     <string name="muzei_fetch">アートワークを取得する</string>
     <string name="muzei_input_cant_be_empty">内容を入力してください。</string>
     <string name="muzei_action_view_post">Flexbooruでpostを見ます</string>
@@ -273,27 +273,25 @@
     <string name="comment_cancel">キャンセル</string>
     <string name="comment_hint">コメントを入力</string>
     <string name="purchase_title">広告を削除 &amp; 機能をアンロックします</string>
-    <string name="purchase_history_title">Restore purchase</string>
+    <string name="purchase_history_title">購入履歴を復元する</string>
     <string name="purchase_info_title">広告を削除してすべての機能をアンロックします</string>
     <string name="purchase_info_remove_ads">* 広告を削除</string>
     <string name="purchase_info_unlock_full_features">* すべての機能をアンロックします</string>
-    <string name="purchase_info_features">1. Remove the limit of the available booru.\n2. Download pool\'s zip archive of
-        moebooru.\n3. Backup &amp; Restore boorus from file.\n4. Reverse search by SauceNao.
-    </string>
+    <string name="purchase_info_features">1. 使用可能なブールの制限を解除する。\n2. poolのzipアーカイブをダウンロードする moebooru。\n3. ファイルからboorusをバックアップ&amp;リストアする。\n4. SauceNaoで逆検索。</string>
     <string name="purchase_pay_title">購入を復元します。</string>
     <string name="purchase_pay_google_play">Google Play</string>
     <string name="purchase_pay_alipay">Alipay</string>
     <string name="tab_start_date">開始日</string>
     <string name="tab_end_date">終了日</string>
-    <string name="sauce_nao_help">Help</string>
-    <string name="sauce_nao_change_api_key">Change api key</string>
-    <string name="sauce_nao_get_api_key">Get api key</string>
-    <string name="sauce_nao_remaining_times_today">Remaining times today: %01$d</string>
-    <string name="sauce_nao_api_key_unset">SauceNao\'s Api key is not set.</string>
-    <string name="sauce_nao_image_url">Image url</string>
-    <string name="sauce_nao_invalid_image_url">Invalid image url.</string>
-    <string name="sauce_nao_source">Source</string>
+    <string name="sauce_nao_help">ヘルプ</string>
+    <string name="sauce_nao_change_api_key">APIキーを変更する</string>
+    <string name="sauce_nao_get_api_key">APIキーを取得する</string>
+    <string name="sauce_nao_remaining_times_today">本日の残り時間: %01$d</string>
+    <string name="sauce_nao_api_key_unset">SauceNaoのApiキーが設定されていない。</string>
+    <string name="sauce_nao_image_url">画像URL</string>
+    <string name="sauce_nao_invalid_image_url">無効な画像URLです。</string>
+    <string name="sauce_nao_source">出典</string>
     <string name="sauce_nao_search_from_url">Url</string>
-    <string name="sauce_nao_search_from_file">File</string>
-    <string name="action_add_to_muzei">Add to Muzei</string>
+    <string name="sauce_nao_search_from_file">ファイル</string>
+    <string name="action_add_to_muzei">Muzeiに追加する</string>
 </resources>
