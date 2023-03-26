@@ -286,16 +286,18 @@ object Settings {
 
     val isBypassWAF: Boolean get() = sp.getBoolean(BYPASS_WAF_KEY, false)
 
-    val doh: DnsOverHttps by lazy {
+    val doh: DnsOverHttps by lazy { createDoh() }
+
+    private fun createDoh(): DnsOverHttps {
         val clientBuilder = OkHttpClient.Builder()
-            if (isSniDisable) {
-                clientBuilder.apply {
-                    connectionSpecs(NoSniFactory.tls)
-                    sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
-                }
+        if (isSniDisable) {
+            clientBuilder.apply {
+                connectionSpecs(NoSniFactory.tls)
+                sslSocketFactory(NoSniFactory, NoSniFactory.defaultTrustManager)
             }
+        }
         val client = clientBuilder.build()
-        when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
+        return when (sp.getString(DNS_OVER_HTTPS_PROVIDER, "cloudflare")) {
             "google" -> DohProviders.buildGoogle(client)
             "dnssb" -> DohProviders.buildDnsSb(client)
             "cleanbrowsing" -> DohProviders.buildCleanBrowsing(client)
