@@ -151,4 +151,3 @@
 -keep, allowobfuscation, allowoptimization class * extends org.kodein.type.JVMAbstractTypeToken$Companion$WrappingTest
 
 -dontwarn com.google.android.datatransport.runtime.ForcedSender
--dontwarn org.slf4j.impl.StaticLoggerBinder
