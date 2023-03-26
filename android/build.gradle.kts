@@ -61,7 +61,7 @@ android {
         minSdk = 21
         targetSdk = 33
         versionCode = verCode
-        versionName = "3.1.3"
+        versionName = "3.1.4"
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
