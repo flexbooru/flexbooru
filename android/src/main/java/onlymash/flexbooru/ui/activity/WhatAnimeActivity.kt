@@ -33,6 +33,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -51,7 +52,6 @@ import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.toVisibility
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.common.tracemoe.api.TraceMoeApi
 import onlymash.flexbooru.common.tracemoe.model.Result
 import onlymash.flexbooru.ui.base.BaseBottomSheetDialog
@@ -136,7 +136,7 @@ class WhatAnimeActivity : BaseActivity() {
         progressBar.toVisibility(true)
         val ext = uri.toString().fileExt()
         if (ext == "gif" || ext == "GIF") {
-            GlideApp.with(this)
+            Glide.with(this)
                 .asGif()
                 .load(uri)
                 .into(object : CustomTarget<GifDrawable>() {
@@ -245,7 +245,7 @@ class WhatAnimeActivity : BaseActivity() {
                 title.text = data.filename
                 info1.text = String.format("%s - %s", formatTime(data.from), formatTime(data.to))
                 info2.text = data.similarity.toString()
-                GlideApp.with(itemView.context)
+                Glide.with(itemView.context)
                     .load(data.image)
                     .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.background_rating_s))
                     .fitCenter()

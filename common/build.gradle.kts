@@ -29,13 +29,12 @@ val serializationVersion = ext.get("serialization_version") as String
 
 android {
     compileSdk = 33
-    buildToolsVersion = "33.0.0"
     defaultConfig {
         minSdk = 21
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     namespace = "onlymash.flexbooru.common"
 }
@@ -43,12 +42,12 @@ android {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+            kotlinOptions.jvmTarget = "17"
         }
     }
     android {
         compilations.all {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+            kotlinOptions.jvmTarget = "17"
         }
     }
     targets.all {

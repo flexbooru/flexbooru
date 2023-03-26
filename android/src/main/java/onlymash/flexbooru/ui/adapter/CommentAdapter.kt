@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
@@ -31,13 +32,12 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Comment
 import onlymash.flexbooru.databinding.ItemCommentBinding
 import onlymash.flexbooru.extension.formatDate
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 class CommentAdapter(
-    private val glide: GlideRequests,
+    private val glide: RequestManager,
     private val booru: Booru,
     private val replyCallback: (Int) -> Unit,
     private val quoteCallback: (Int, String) -> Unit,

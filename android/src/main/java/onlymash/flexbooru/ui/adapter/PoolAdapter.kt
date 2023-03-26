@@ -23,6 +23,7 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
@@ -30,7 +31,6 @@ import onlymash.flexbooru.data.model.common.Pool
 import onlymash.flexbooru.databinding.ItemPoolBinding
 import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.toggleArrow
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
@@ -38,7 +38,7 @@ import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class PoolAdapter(
-    private val glide: GlideRequests,
+    private val glide: RequestManager,
     private val downloadPoolCallback: (Int) -> Unit
 ) : PagingDataAdapter<Pool, PoolAdapter.PoolViewHolder>(POOL_COMPARATOR) {
 

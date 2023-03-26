@@ -36,6 +36,7 @@ import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -71,7 +72,6 @@ import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.databinding.ActivityDetailBinding
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.*
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.adapter.DetailAdapter
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.fragment.InfoDialog
@@ -262,7 +262,7 @@ class DetailActivity : PathActivity(),
         if (detailViewModel.currentPosition < 0) {
             detailViewModel.currentPosition = intent?.getIntExtra(POST_POSITION, -1) ?: -1
         }
-        val glide = GlideApp.with(this)
+        val glide = Glide.with(this)
         detailAdapter = DetailAdapter(
             glide = glide,
             dismissListener = this,
@@ -563,7 +563,7 @@ class DetailActivity : PathActivity(),
     private suspend fun loadFile(url: String): File? =
         withContext(Dispatchers.IO) {
             try {
-                GlideApp.with(this@DetailActivity)
+                Glide.with(this@DetailActivity)
                     .downloadOnly()
                     .load(url)
                     .submit()

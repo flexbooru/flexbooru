@@ -54,7 +54,8 @@ class TagBlacklistActivity : KodeinActivity() {
         }
         tagBlacklistAdapter = TagBlacklistAdapter { tag ->
             booru?.apply {
-                if (blacklists.remove(tag)) {
+                if (blacklists.contains(tag)) {
+                    blacklists = blacklists.filter { it != tag }
                     booruViewModel.updateBooru(this)
                 }
             }
@@ -65,10 +66,10 @@ class TagBlacklistActivity : KodeinActivity() {
             adapter = tagBlacklistAdapter
         }
         booruViewModel = getBooruViewModel(booruDao)
-        booruViewModel.booru.observe(this, {
+        booruViewModel.booru.observe(this) {
             booru = it
             tagBlacklistAdapter.updateData(it.blacklists)
-        })
+        }
         booruViewModel.loadBooru(activatedBooruUid)
         binding.fab.setOnClickListener {
             createInputDialog()
@@ -95,7 +96,9 @@ class TagBlacklistActivity : KodeinActivity() {
             .setPositiveButton(R.string.dialog_yes) { _, _ ->
                 val text = (editText.text ?: "").toString().trim()
                 if (text.isNotBlank()) {
-                    if (booru.blacklists.add(text)) {
+                    val blacks = booru.blacklists.toMutableList()
+                    if (blacks.add(text)) {
+                        booru.blacklists = blacks
                         booruViewModel.updateBooru(booru)
                     }
                 } else {

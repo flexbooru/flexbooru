@@ -25,6 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.app.Values
@@ -34,7 +35,6 @@ import onlymash.flexbooru.databinding.FragmentShortcutInfoBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.formatDate
 import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.base.ShortcutFragment
@@ -123,12 +123,12 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
             }
         }
         if (booru.type == Values.BOORU_TYPE_MOE && post.uploader.id > 0) {
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, post.uploader.id))
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
                 .into(binding.userAvatar)
         } else if (booru.type == Values.BOORU_TYPE_SANKAKU && !post.uploader.avatar.isNullOrBlank()) {
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(post.uploader.avatar)
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
                 .into(binding.userAvatar)

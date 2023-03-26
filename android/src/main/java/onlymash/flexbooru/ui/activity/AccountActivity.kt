@@ -22,6 +22,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
@@ -34,7 +35,6 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.BooruManager
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.extension.NetResult
@@ -164,12 +164,12 @@ class AccountActivity : PathActivity() {
         binding.username.text = user.name
         binding.userId.text = String.format(getString(R.string.account_user_id), user.id)
         if (booru.type == BOORU_TYPE_MOE) {
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
                 .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
                 .into(binding.userAvatar)
         } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatar.isNullOrEmpty()) {
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(user.avatar)
                 .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
                 .into(binding.userAvatar)

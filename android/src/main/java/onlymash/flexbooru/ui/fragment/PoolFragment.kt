@@ -26,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
@@ -41,7 +42,6 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.repository.pool.PoolRepositoryImpl
 import onlymash.flexbooru.extension.asMergedLoadStates
 import onlymash.flexbooru.extension.launchUrl
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.AccountConfigActivity
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import onlymash.flexbooru.ui.adapter.PoolAdapter
@@ -72,7 +72,8 @@ class PoolFragment : SearchBarFragment() {
 
     override fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_pools))
-        poolAdapter = PoolAdapter(GlideApp.with(this),
+        poolAdapter = PoolAdapter(
+            Glide.with(this),
             downloadPoolCallback = { poolId ->
                 action?.booru?.let {
                     handlePoolDownload(poolId, it)

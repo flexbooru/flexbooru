@@ -21,12 +21,13 @@ import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("com.android.application")
+    kotlin("android")
+    kotlin("plugin.serialization")
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("kapt")
 }
 
 val releaseStoreFile = file("../.gradle/flexbooru_play.jks")
@@ -55,7 +56,6 @@ android {
         }
     }
     compileSdk = 33
-    buildToolsVersion = "33.0.0"
     defaultConfig {
         applicationId = "onlymash.flexbooru.play"
         minSdk = 21
@@ -103,11 +103,11 @@ android {
     }
     compileOptions {
 //        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "17"
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-opt-in=kotlin.ExperimentalStdlibApi",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
@@ -119,11 +119,8 @@ android {
             "-Xjvm-default=all-compatibility"
         )
     }
-    kapt {
-        useBuildCache = true
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
     packagingOptions {
         resources.excludes.add("META-INF/*.kotlin_module")
@@ -133,6 +130,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     lint {
         disable += setOf("DialogFragmentCallbacksDetector")
@@ -158,33 +156,36 @@ dependencies {
 //    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":common"))
-    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
     implementation("org.kodein.di:kodein-di-framework-android-core:$kodeinVersion")
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
+
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.6.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.activity:activity-ktx:1.7.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.0-rc01")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0-beta01")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     implementation("androidx.documentfile:documentfile:1.1.0-alpha01")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.browser:browser:1.5.0")
-    implementation("androidx.drawerlayout:drawerlayout:1.2.0-beta01")
+    implementation("androidx.drawerlayout:drawerlayout:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-paging:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha09")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     // Lifecycles only (without ViewModel or LiveData)
@@ -199,7 +200,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.9.0-alpha02")
+    implementation("com.google.android.material:material:1.9.0-beta01")
     implementation("com.google.android:flexbox:2.0.1")
     implementation("com.google.android.apps.muzei:muzei-api:3.4.1")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -209,11 +210,15 @@ dependencies {
     implementation("com.mikepenz:materialdrawer:9.0.1")
     implementation("com.google.zxing:core:3.5.1")
     implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
-    implementation("com.google.firebase:firebase-analytics-ktx:21.2.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.3.5")
+
+    implementation(platform("com.google.firebase:firebase-bom:31.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics")
+
     implementation("com.google.android.gms:play-services-ads:21.5.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+
     implementation("com.android.billingclient:billing-ktx:5.1.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
@@ -223,7 +228,7 @@ dependencies {
     implementation("com.squareup.okio:okio:3.3.0")
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion")
-    kapt("com.github.bumptech.glide:compiler:$glideVersion")
+    ksp("com.github.bumptech.glide:compiler:$glideVersion")
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
     implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion")
     implementation("io.github.pdvrieze.xmlutil:core-android:$xmlutilVersion")

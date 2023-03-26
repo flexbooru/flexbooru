@@ -28,9 +28,9 @@ import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.work.*
+import com.bumptech.glide.Glide
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Settings
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.okhttp.ProgressInterceptor
 import java.io.FileInputStream
 import java.io.IOException
@@ -171,7 +171,7 @@ class DownloadWorker(
             setForegroundAsync(createDownloadingInfo(title, url, channelId, id, progress))
         }
         val file = try {
-            GlideApp.with(applicationContext)
+            Glide.with(applicationContext)
                 .downloadOnly()
                 .load(url)
                 .submit()

@@ -18,10 +18,10 @@ package onlymash.flexbooru.decoder
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import com.bumptech.glide.RequestManager
 import com.davemorrissey.labs.subscaleview.decoder.ImageDecoder
-import onlymash.flexbooru.glide.GlideRequests
 
-class CustomDecoder(private val glide: GlideRequests) : ImageDecoder {
+class CustomDecoder(private val glide: RequestManager) : ImageDecoder {
     override fun decode(context: Context?, uri: Uri): Bitmap {
         return glide.asBitmap()
             .load(uri)

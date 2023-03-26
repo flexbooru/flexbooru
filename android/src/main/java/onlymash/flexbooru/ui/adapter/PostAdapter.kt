@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.gridMode
@@ -44,14 +45,13 @@ import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.databinding.ItemPostBinding
 import onlymash.flexbooru.databinding.ItemPostRoundedBinding
 import onlymash.flexbooru.extension.isStillImage
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 
 private const val MAX_ASPECT_RATIO = 21.0 / 9.0
 private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 
 class PostAdapter(
-    private val glide: GlideRequests,
+    private val glide: RequestManager,
     private val clickItemCallback: (View, Int, String) -> Unit,
     private val longClickItemCallback: (Post) -> Unit
 ) : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(POST_COMPARATOR) {

@@ -27,6 +27,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.google.android.material.snackbar.Snackbar
@@ -40,7 +41,6 @@ import onlymash.flexbooru.databinding.ActivitySauceNaoBinding
 import onlymash.flexbooru.databinding.ItemSauceNaoBinding
 import onlymash.flexbooru.common.di.diCommon
 import onlymash.flexbooru.extension.*
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.common.saucenao.model.Result
 import onlymash.flexbooru.common.saucenao.model.SauceNaoResponse
@@ -330,7 +330,7 @@ class SauceNaoActivity : BaseActivity() {
                         info2.text = String.format("Jp name: %s", result.data.jpName ?: "")
                     }
                 }
-                GlideApp.with(itemView.context)
+                Glide.with(itemView.context)
                     .load(result.header.thumbnail)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(thumbnail)

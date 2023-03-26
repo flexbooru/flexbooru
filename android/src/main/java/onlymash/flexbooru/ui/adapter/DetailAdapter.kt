@@ -30,6 +30,7 @@ import androidx.core.net.toUri
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -53,13 +54,12 @@ import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.isGifImage
 import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.extension.isVideo
-import onlymash.flexbooru.glide.GlideRequests
 import onlymash.flexbooru.widget.DismissFrameLayout
 import java.io.File
 import java.util.concurrent.Executor
 
 class DetailAdapter(
-    private val glide: GlideRequests,
+    private val glide: RequestManager,
     private val dismissListener: DismissFrameLayout.OnDismissListener,
     private val ioExecutor: Executor,
     private val clickCallback: () -> Unit,

@@ -41,7 +41,6 @@ import onlymash.flexbooru.app.Settings.orderDeviceId
 import onlymash.flexbooru.app.Settings.orderId
 import onlymash.flexbooru.data.api.OrderApi
 import onlymash.flexbooru.extension.getSignMd5
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -58,7 +57,7 @@ class App : Application(), DIAware {
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-            GlideApp.with(imageView.context)
+            Glide.with(imageView.context)
                 .load(uri)
                 .centerCrop()
                 .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.avatar_account))

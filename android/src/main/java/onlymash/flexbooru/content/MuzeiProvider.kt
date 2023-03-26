@@ -15,9 +15,9 @@
 
 package onlymash.flexbooru.content
 
+import com.bumptech.glide.Glide
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
-import onlymash.flexbooru.glide.GlideApp
 import onlymash.flexbooru.worker.MuzeiArtWorker
 import java.io.FileInputStream
 import java.io.IOException
@@ -35,7 +35,7 @@ class MuzeiProvider : MuzeiArtProvider() {
         val context = context
         return if (context != null && uri != null && (uri.scheme == "http" || uri.scheme == "https")) {
             val file =
-                GlideApp.with(context)
+                Glide.with(context)
                     .downloadOnly()
                     .load(uri)
                     .submit()
