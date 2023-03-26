@@ -8,7 +8,7 @@ jobs:
         - gh-pages
     working_directory: ~/code
     docker:
-      - image: cimg/android:2021.10.2-node
+      - image: 2023.03.1-node
     environment:
       GRADLE_OPTS: -Dorg.gradle.workers.max=1 -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy="in-process" -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport
     steps:
