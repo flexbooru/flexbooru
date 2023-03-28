@@ -27,8 +27,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import coil.load
 import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -330,10 +329,7 @@ class SauceNaoActivity : BaseActivity() {
                         info2.text = String.format("Jp name: %s", result.data.jpName ?: "")
                     }
                 }
-                Glide.with(itemView.context)
-                    .load(result.header.thumbnail)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(thumbnail)
+                thumbnail.load(result.header.thumbnail)
                 urls = result.data.extUrls?.toTypedArray()
             }
         }

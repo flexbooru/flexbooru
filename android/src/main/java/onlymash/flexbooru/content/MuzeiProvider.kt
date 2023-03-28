@@ -15,7 +15,9 @@
 
 package onlymash.flexbooru.content
 
-import com.bumptech.glide.Glide
+import coil.executeBlocking
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.worker.MuzeiArtWorker
@@ -34,12 +36,14 @@ class MuzeiProvider : MuzeiArtProvider() {
         val uri = artwork.persistentUri
         val context = context
         return if (context != null && uri != null && (uri.scheme == "http" || uri.scheme == "https")) {
-            val file =
-                Glide.with(context)
-                    .downloadOnly()
-                    .load(uri)
-                    .submit()
-                    .get()
+            val key = uri.toString()
+            val request = ImageRequest.Builder(context)
+                .data(uri)
+                .memoryCacheKey(key)
+                .diskCacheKey(key)
+                .build()
+            context.imageLoader.executeBlocking(request)
+            val file = context.imageLoader.diskCache?.get(key)?.data?.toFile()
             if (file != null && file.exists()) FileInputStream(file) else super.openFile(artwork)
         } else {
             super.openFile(artwork)

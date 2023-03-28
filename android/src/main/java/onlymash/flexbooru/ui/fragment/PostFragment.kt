@@ -32,7 +32,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bumptech.glide.Glide
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -182,9 +181,7 @@ class PostFragment : SearchBarFragment() {
     }
 
     private fun initPostsList() {
-        val glide = Glide.with(this)
         postAdapter = PostAdapter(
-            glide = glide,
             clickItemCallback = { view, position, tranName ->
                 activity?.let {
                     sharedElement = view

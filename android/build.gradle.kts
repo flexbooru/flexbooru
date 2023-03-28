@@ -61,7 +61,7 @@ android {
         minSdk = 21
         targetSdk = 33
         versionCode = verCode
-        versionName = "3.1.4"
+        versionName = "3.1.5"
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -116,6 +116,7 @@ android {
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=androidx.paging.ExperimentalPagingApi",
             "-opt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
+            "-opt-in=coil.annotation.ExperimentalCoilApi",
             "-Xjvm-default=all-compatibility"
         )
     }
@@ -152,6 +153,7 @@ dependencies {
     val okhttpVersion = ext.get("okhttp_version") as String
     val retrofitVersion = ext.get("retrofit_version") as String
     val xmlutilVersion = ext.get("xmlutil_version") as String
+    val coilVersion = ext.get("coil_version") as String
 
 //    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -226,9 +228,11 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
     implementation("com.squareup.okio:okio:3.3.0")
-    implementation("com.github.bumptech.glide:glide:$glideVersion")
-    implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion")
-    ksp("com.github.bumptech.glide:compiler:$glideVersion")
+
+    implementation("io.coil-kt:coil:$coilVersion")
+    implementation("io.coil-kt:coil-gif:$coilVersion")
+//    implementation("io.coil-kt:coil-svg:$coilVersion")
+
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
     implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion")
     implementation("io.github.pdvrieze.xmlutil:core-android:$xmlutilVersion")

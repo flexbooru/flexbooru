@@ -22,7 +22,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
+import coil.load
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import onlymash.flexbooru.R
@@ -164,15 +164,25 @@ class AccountActivity : PathActivity() {
         binding.username.text = user.name
         binding.userId.text = String.format(getString(R.string.account_user_id), user.id)
         if (booru.type == BOORU_TYPE_MOE) {
-            Glide.with(this)
-                .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id))
-                .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
-                .into(binding.userAvatar)
+            binding.userAvatar.load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, user.id)) {
+                placeholder(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.avatar_account,
+                        theme
+                    )
+                )
+            }
         } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatar.isNullOrEmpty()) {
-            Glide.with(this)
-                .load(user.avatar)
-                .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.avatar_account, theme))
-                .into(binding.userAvatar)
+            binding.userAvatar.load(user.avatar) {
+                placeholder(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.avatar_account,
+                        theme
+                    )
+                )
+            }
         }
         binding.favActionButton.setOnClickListener {
             if (booru.type == BOORU_TYPE_GEL || booru.type == BOORU_TYPE_GEL_LEGACY) {

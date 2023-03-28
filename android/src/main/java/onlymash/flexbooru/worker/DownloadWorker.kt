@@ -28,7 +28,9 @@ import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.work.*
-import com.bumptech.glide.Glide
+import coil.executeBlocking
+import coil.imageLoader
+import coil.request.ImageRequest
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.okhttp.ProgressInterceptor
@@ -171,11 +173,13 @@ class DownloadWorker(
             setForegroundAsync(createDownloadingInfo(title, url, channelId, id, progress))
         }
         val file = try {
-            Glide.with(applicationContext)
-                .downloadOnly()
-                .load(url)
-                .submit()
-                .get()
+            val request = ImageRequest.Builder(applicationContext)
+                .data(url)
+                .memoryCacheKey(url)
+                .diskCacheKey(url)
+                .build()
+            applicationContext.imageLoader.executeBlocking(request)
+            applicationContext.imageLoader.diskCache?.get(url)?.data?.toFile()
         } catch (_: Exception) {
             null
         }

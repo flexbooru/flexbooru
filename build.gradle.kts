@@ -34,6 +34,7 @@ buildscript {
         set("coroutines_version", "1.6.4")
         set("serialization_version", "1.4.1")
         set("ktor_version", "2.2.4")
+        set("coil_version", "2.3.0")
     }
     repositories {
         google()

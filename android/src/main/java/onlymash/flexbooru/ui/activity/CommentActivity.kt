@@ -33,7 +33,6 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import onlymash.flexbooru.R
@@ -123,7 +122,6 @@ class CommentActivity : KodeinActivity() {
             }
         }
         commentAdapter = CommentAdapter(
-            glide = Glide.with(this),
             booru = action.booru,
             replyCallback = { postId ->
                 reply(postId)

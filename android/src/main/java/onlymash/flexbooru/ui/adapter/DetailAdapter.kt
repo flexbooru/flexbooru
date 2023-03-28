@@ -18,7 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.annotation.SuppressLint
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,18 +26,15 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.net.toUri
+import androidx.core.graphics.drawable.toBitmap
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.gif.GifDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.imageLoader
+import coil.load
+import coil.request.ImageRequest
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
@@ -55,11 +52,9 @@ import onlymash.flexbooru.extension.isGifImage
 import onlymash.flexbooru.extension.isImage
 import onlymash.flexbooru.extension.isVideo
 import onlymash.flexbooru.widget.DismissFrameLayout
-import java.io.File
 import java.util.concurrent.Executor
 
 class DetailAdapter(
-    private val glide: RequestManager,
     private val dismissListener: DismissFrameLayout.OnDismissListener,
     private val ioExecutor: Executor,
     private val clickCallback: () -> Unit,
@@ -160,7 +155,7 @@ class DetailAdapter(
                 false
             }
             setExecutor(ioExecutor)
-            setBitmapDecoderFactory { CustomDecoder(glide) }
+            setBitmapDecoderFactory { CustomDecoder() }
             setRegionDecoderFactory { CustomRegionDecoder() }
             transitionName = String.format("post_%d", postId)
         }
@@ -185,15 +180,13 @@ class DetailAdapter(
             override fun onImageLoadError(e: Exception?) {}
             override fun onPreviewLoadError(e: Exception?) {}
         })
-        glide.downloadOnly().load(url)
-            .into(object : CustomTarget<File>() {
-                override fun onLoadCleared(placeholder: Drawable?) {}
-                override fun onResourceReady(
-                    resource: File,
-                    transition: Transition<in File>?) {
-                    stillView.setImage(ImageSource.uri(resource.toUri()))
-                }
-            })
+        val request = ImageRequest.Builder(stillView.context)
+            .data(url)
+            .target {
+                stillView.setImage(ImageSource.bitmap(it.toBitmap()))
+            }
+            .build()
+        stillView.context.imageLoader.enqueue(request)
     }
 
     private fun loadSampleOrGifImage(layout: FrameLayout, post: Post, url: String, isGif: Boolean) {
@@ -225,63 +218,39 @@ class DetailAdapter(
             addView(progressBar, 1)
         }
         if (isGif) {
-            val gifListener = object : RequestListener<GifDrawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<GifDrawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    layout.removeView(progressBar)
-                    return false
-                }
-                override fun onResourceReady(
-                    resource: GifDrawable?,
-                    model: Any?,
-                    target: Target<GifDrawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    layout.removeView(progressBar)
-                    return false
-                }
-            }
-            glide.load(post.preview)
-                .into(object : CustomTarget<Drawable>() {
-                    override fun onLoadCleared(placeholder: Drawable?) {}
-                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                        glide.asGif()
-                            .load(url)
-                            .placeholder(resource)
-                            .addListener(gifListener)
-                            .into(photoView)
+            val imageLoader = photoView.context.imageLoader.newBuilder()
+                .components {
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        add(ImageDecoderDecoder.Factory())
+                    } else {
+                        add(GifDecoder.Factory())
                     }
-                })
+                }
+                .build()
+            val request = ImageRequest.Builder(photoView.context)
+                .data(url)
+                .target(photoView)
+                .listener(
+                    onError = { _, _ ->
+                        layout.removeView(progressBar)
+                    },
+                    onSuccess = {  _, _ ->
+                        layout.removeView(progressBar)
+                    }
+                )
+                .build()
+            imageLoader.enqueue(request)
         } else {
-            val stillListener = object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    layout.removeView(progressBar)
-                    return false
-                }
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    layout.removeView(progressBar)
-                    return false
-                }
+            photoView.load(url) {
+                listener(
+                    onError = { _, _ ->
+                        layout.removeView(progressBar)
+                    },
+                    onSuccess = {  _, _ ->
+                        layout.removeView(progressBar)
+                    }
+                )
             }
-            glide.load(url)
-                .addListener(stillListener)
-                .into(photoView)
         }
     }
 }

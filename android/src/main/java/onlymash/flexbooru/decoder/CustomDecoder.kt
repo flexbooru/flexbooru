@@ -17,15 +17,22 @@ package onlymash.flexbooru.decoder
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import com.bumptech.glide.RequestManager
+import coil.executeBlocking
+import coil.imageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.davemorrissey.labs.subscaleview.decoder.ImageDecoder
 
-class CustomDecoder(private val glide: RequestManager) : ImageDecoder {
-    override fun decode(context: Context?, uri: Uri): Bitmap {
-        return glide.asBitmap()
-            .load(uri)
-            .submit()
-            .get()
+class CustomDecoder : ImageDecoder {
+    override fun decode(context: Context, uri: Uri): Bitmap {
+        val request = ImageRequest.Builder(context)
+            .data(uri)
+            .allowConversionToBitmap(true)
+            .allowHardware(false)
+            .build()
+        val result = context.imageLoader.executeBlocking(request) as SuccessResult
+        return (result.drawable as BitmapDrawable).bitmap
     }
 }

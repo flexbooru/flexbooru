@@ -20,23 +20,23 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.gif.GifDrawable
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.imageLoader
+import coil.load
+import coil.request.ImageRequest
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.Dispatchers
@@ -136,33 +136,35 @@ class WhatAnimeActivity : BaseActivity() {
         progressBar.toVisibility(true)
         val ext = uri.toString().fileExt()
         if (ext == "gif" || ext == "GIF") {
-            Glide.with(this)
-                .asGif()
-                .load(uri)
-                .into(object : CustomTarget<GifDrawable>() {
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        progressBar.toVisibility(false)
-                    }
-                    override fun onResourceReady(resource: GifDrawable, transition: Transition<in GifDrawable>?) {
-                        val bitmap = resource.firstFrame
-                        if (bitmap != null) {
-                            lifecycleScope.launch {
-                                val imageBlob = withContext(Dispatchers.IO) {
-                                    try {
-                                        val os = ByteArrayOutputStream()
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, if (bitmap.width > 1000 || bitmap.height > 1000) 50 else 100, os)
-                                        os.toByteArray()
-                                    } catch (_: Exception) {
-                                        null
-                                    }
-                                }
-                                if (imageBlob != null) {
-                                    traceMoeViewModel.fetch(imageBlob)
-                                }
+            val request = ImageRequest.Builder(this)
+                .data(uri)
+                .target {
+                    val bitmap = it.toBitmap()
+                    lifecycleScope.launch {
+                        val imageBlob = withContext(Dispatchers.IO) {
+                            try {
+                                val os = ByteArrayOutputStream()
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, if (bitmap.width > 1000 || bitmap.height > 1000) 50 else 100, os)
+                                os.toByteArray()
+                            } catch (_: Exception) {
+                                null
                             }
                         }
+                        if (imageBlob != null) {
+                            traceMoeViewModel.fetch(imageBlob)
+                        }
                     }
-                })
+                }
+                .build()
+            imageLoader.newBuilder()
+                .components {
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        add(ImageDecoderDecoder.Factory())
+                    } else {
+                        add(GifDecoder.Factory())
+                    }
+                }
+            imageLoader.enqueue(request)
         } else {
             lifecycleScope.launch {
                 val imageBlob = withContext(Dispatchers.IO) {
@@ -245,11 +247,9 @@ class WhatAnimeActivity : BaseActivity() {
                 title.text = data.filename
                 info1.text = String.format("%s - %s", formatTime(data.from), formatTime(data.to))
                 info2.text = data.similarity.toString()
-                Glide.with(itemView.context)
-                    .load(data.image)
-                    .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.background_rating_s))
-                    .fitCenter()
-                    .into(preview)
+                preview.load(data.image) {
+                    placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.background_rating_s))
+                }
             }
 
             private fun formatTime(time: Float): String {

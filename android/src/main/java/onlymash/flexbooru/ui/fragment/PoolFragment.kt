@@ -26,7 +26,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
@@ -72,13 +71,11 @@ class PoolFragment : SearchBarFragment() {
 
     override fun onSearchBarViewCreated(view: View, savedInstanceState: Bundle?) {
         setSearchBarTitle(getString(R.string.title_pools))
-        poolAdapter = PoolAdapter(
-            Glide.with(this),
-            downloadPoolCallback = { poolId ->
+        poolAdapter = PoolAdapter { poolId ->
                 action?.booru?.let {
                     handlePoolDownload(poolId, it)
                 }
-        })
+        }
         mainList.apply {
             layoutManager = LinearLayoutManager(this@PoolFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = poolAdapter.withLoadStateFooter(StateAdapter(poolAdapter))

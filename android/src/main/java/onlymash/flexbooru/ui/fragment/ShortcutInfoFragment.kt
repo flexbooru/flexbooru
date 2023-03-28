@@ -25,7 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
+import coil.load
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.app.Values
@@ -123,15 +123,13 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
             }
         }
         if (booru.type == Values.BOORU_TYPE_MOE && post.uploader.id > 0) {
-            Glide.with(this)
-                .load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, post.uploader.id))
-                .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
-                .into(binding.userAvatar)
+            binding.userAvatar.load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, post.uploader.id)) {
+                placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+            }
         } else if (booru.type == Values.BOORU_TYPE_SANKAKU && !post.uploader.avatar.isNullOrBlank()) {
-            Glide.with(this)
-                .load(post.uploader.avatar)
-                .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
-                .into(binding.userAvatar)
+            binding.userAvatar.load(post.uploader.avatar) {
+                placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+            }
         }
         binding.rating.text = when (post.rating) {
             "s" -> getString(sRatingNameRes)

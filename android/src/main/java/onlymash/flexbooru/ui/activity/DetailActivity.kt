@@ -36,7 +36,9 @@ import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
+import coil.executeBlocking
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -262,9 +264,7 @@ class DetailActivity : PathActivity(),
         if (detailViewModel.currentPosition < 0) {
             detailViewModel.currentPosition = intent?.getIntExtra(POST_POSITION, -1) ?: -1
         }
-        val glide = Glide.with(this)
         detailAdapter = DetailAdapter(
-            glide = glide,
             dismissListener = this,
             ioExecutor = Dispatchers.IO.asExecutor(),
             clickCallback = { setupBarVisable() },
@@ -563,11 +563,13 @@ class DetailActivity : PathActivity(),
     private suspend fun loadFile(url: String): File? =
         withContext(Dispatchers.IO) {
             try {
-                Glide.with(this@DetailActivity)
-                    .downloadOnly()
-                    .load(url)
-                    .submit()
-                    .get()
+                val request = ImageRequest.Builder(this@DetailActivity)
+                    .data(url)
+                    .memoryCacheKey(url)
+                    .diskCacheKey(url)
+                    .build()
+                imageLoader.executeBlocking(request)
+                imageLoader.diskCache?.get(url)?.data?.toFile()
             } catch (_: Exception) {
                 null
             }

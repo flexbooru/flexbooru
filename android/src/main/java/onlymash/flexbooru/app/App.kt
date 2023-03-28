@@ -22,8 +22,15 @@ import android.os.Build
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.disk.DiskCache
+import coil.dispose
+import coil.load
+import coil.size.Scale
 import com.android.billingclient.api.*
-import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.material.color.DynamicColors
@@ -32,6 +39,7 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.isGoogleSign
@@ -41,11 +49,15 @@ import onlymash.flexbooru.app.Settings.orderDeviceId
 import onlymash.flexbooru.app.Settings.orderId
 import onlymash.flexbooru.data.api.OrderApi
 import onlymash.flexbooru.extension.getSignMd5
+import onlymash.flexbooru.okhttp.AndroidCookieJar
+import onlymash.flexbooru.okhttp.CloudflareInterceptor
+import onlymash.flexbooru.okhttp.ProgressInterceptor
+import onlymash.flexbooru.okhttp.RequestHeaderInterceptor
 import onlymash.flexbooru.ui.activity.PurchaseActivity
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 
-class App : Application(), DIAware {
+class App : Application(), DIAware, ImageLoaderFactory {
 
     companion object {
         lateinit var app: App
@@ -57,14 +69,13 @@ class App : Application(), DIAware {
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-            Glide.with(imageView.context)
-                .load(uri)
-                .centerCrop()
-                .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.avatar_account))
-                .into(imageView)
+            imageView.load(uri) {
+                scale(Scale.FILL)
+                placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.avatar_account))
+            }
         }
         override fun cancel(imageView: ImageView) {
-            Glide.with(imageView.context).clear(imageView)
+            imageView.dispose()
         }
     }
 
@@ -172,5 +183,28 @@ class App : Application(), DIAware {
                 false
             }
         }
+    }
+
+    override fun newImageLoader(): ImageLoader {
+        val builder = OkHttpClient.Builder()
+            .cookieJar(AndroidCookieJar)
+            .addNetworkInterceptor(RequestHeaderInterceptor())
+            .addInterceptor(ProgressInterceptor())
+        if (Settings.isBypassWAF) {
+            builder.addInterceptor(CloudflareInterceptor(this))
+        }
+        if (Settings.isDohEnable) {
+            builder.dns(Settings.doh)
+        }
+        return ImageLoader.Builder(this)
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(cacheDir.resolve("image_cache"))
+                    .build()
+            }
+            .allowHardware(false)
+            .okHttpClient(builder.build())
+            .crossfade(true)
+            .build()
     }
 }

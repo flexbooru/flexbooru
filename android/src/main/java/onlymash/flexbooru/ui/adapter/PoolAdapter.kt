@@ -23,7 +23,7 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import coil.load
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SANKAKU
@@ -38,7 +38,6 @@ import onlymash.flexbooru.util.ViewAnimation
 import onlymash.flexbooru.widget.LinkTransformationMethod
 
 class PoolAdapter(
-    private val glide: RequestManager,
     private val downloadPoolCallback: (Int) -> Unit
 ) : PagingDataAdapter<Pool, PoolAdapter.PoolViewHolder>(POOL_COMPARATOR) {
 
@@ -122,14 +121,14 @@ class PoolAdapter(
             poolDate.text = itemView.context.formatDate(pool.time)
             when (pool.booruType) {
                 BOORU_TYPE_MOE -> {
-                    glide.load(String.format(context.getString(R.string.account_user_avatars), pool.scheme, pool.host, pool.creatorId))
-                        .placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
-                        .into(userAvatar)
+                    userAvatar.load(String.format(context.getString(R.string.account_user_avatars), pool.scheme, pool.host, pool.creatorId)) {
+                        placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
+                    }
                 }
                 BOORU_TYPE_SANKAKU -> {
-                    glide.load(pool.creatorAvatar)
-                        .placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
-                        .into(userAvatar)
+                    userAvatar.load(pool.creatorAvatar) {
+                        placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
+                    }
                 }
             }
         }

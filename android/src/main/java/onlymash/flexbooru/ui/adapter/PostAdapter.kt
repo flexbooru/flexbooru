@@ -34,8 +34,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import coil.load
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.gridMode
 import onlymash.flexbooru.app.Settings.gridRatio
@@ -53,7 +52,6 @@ private const val MIN_ASPECT_RATIO = 9.0 / 21.0
 
 @SuppressLint("NotifyDataSetChanged")
 class PostAdapter(
-    private val glide: RequestManager,
     private val clickItemCallback: (View, Int, String) -> Unit,
     private val longClickItemCallback: (Post) -> Unit
 ) : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(POST_COMPARATOR) {
@@ -191,10 +189,9 @@ class PostAdapter(
                 post.sample
             else
                 post.preview
-            glide.load(url)
-                .placeholder(placeholderDrawable)
-                .transition(withCrossFade())
-                .into(preview)
+            preview.load(url) {
+                placeholder(placeholderDrawable)
+            }
         }
     }
 }
