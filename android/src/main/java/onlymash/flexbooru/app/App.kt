@@ -24,8 +24,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
 import coil.disk.DiskCache
 import coil.dispose
 import coil.load
@@ -61,6 +59,7 @@ class App : Application(), DIAware, ImageLoaderFactory {
 
     companion object {
         lateinit var app: App
+        private const val CACHE_MAX_PERCENT = 0.2
     }
 
     override val di by DI.lazy {
@@ -200,6 +199,7 @@ class App : Application(), DIAware, ImageLoaderFactory {
             .diskCache {
                 DiskCache.Builder()
                     .directory(cacheDir.resolve("image_cache"))
+                    .maxSizePercent(CACHE_MAX_PERCENT)
                     .build()
             }
             .allowHardware(false)
