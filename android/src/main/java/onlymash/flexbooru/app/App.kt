@@ -68,8 +68,8 @@ class App : Application(), DIAware, ImageLoaderFactory {
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {
         override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             imageView.load(uri) {
-                scale(Scale.FILL)
                 placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.avatar_account))
             }
         }
