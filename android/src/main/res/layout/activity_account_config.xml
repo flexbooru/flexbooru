@@ -138,12 +138,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/account_set"
                 style="@style/Widget.Button.OutlinedButton"/>
-            <com.google.android.material.progressindicator.CircularProgressIndicator
+            <ProgressBar
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/progress_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                style="@style/Widget.AppCompat.ProgressBar"/>
         </FrameLayout>
         <androidx.appcompat.widget.AppCompatTextView
             android:paddingTop="15dp"
