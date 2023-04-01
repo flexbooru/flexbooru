@@ -121,7 +121,6 @@
     </style>
 
     <style name="Widget.Account.FloatingActionButton" parent="@style/Widget.FloatingActionButton">
-        <item name="backgroundTint">@color/background_tint_account_action</item>
         <item name="android:padding">5dp</item>
     </style>
 
@@ -164,4 +163,9 @@
     <style name="TextAppearance.FilterChip.Selectable" parent="TextAppearance.Material3.BodyMedium"/>
 
     <style name="MaterialCalendarTheme" parent="ThemeOverlay.Material3.MaterialCalendar"/>
+
+    <style name="CircleShapeImageViewStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

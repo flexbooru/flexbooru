@@ -125,10 +125,12 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
         if (booru.type == Values.BOORU_TYPE_MOE && post.uploader.id > 0) {
             binding.userAvatar.load(String.format(getString(R.string.account_user_avatars), booru.scheme, booru.host, post.uploader.id)) {
                 placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+                error(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
             }
         } else if (booru.type == Values.BOORU_TYPE_SANKAKU && !post.uploader.avatar.isNullOrBlank()) {
             binding.userAvatar.load(post.uploader.avatar) {
                 placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
+                error(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_account))
             }
         }
         binding.rating.text = when (post.rating) {

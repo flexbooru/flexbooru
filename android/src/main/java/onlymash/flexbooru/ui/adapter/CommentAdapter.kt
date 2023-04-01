@@ -19,6 +19,7 @@ import android.content.Intent
 import android.view.MenuInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -133,10 +134,12 @@ class CommentAdapter(
             if (data.booruType == BOORU_TYPE_MOE) {
                 avatar.load(String.format(itemView.resources.getString(R.string.account_user_avatars), booru.scheme, booru.host, data.creatorId)) {
                     placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
+                    error(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                 }
             } else if (data.booruType == BOORU_TYPE_SANKAKU) {
                 avatar.load(data.creatorAvatar) {
                     placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
+                    error(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                 }
             }
         }

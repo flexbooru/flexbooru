@@ -52,7 +52,6 @@
     <color name="system_bar_black">@color/black</color>
     <color name="system_bar_light_scrim">#ccffffff</color>
     <color name="system_bar_dark_scrim">#55000000</color>
-    <color name="background_tint_account_action">@color/colorPrimary</color>
 
     <color name="background_card_light">@color/white</color>
     <color name="background_card_dark">@color/grey_900</color>

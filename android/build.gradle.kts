@@ -140,108 +140,90 @@ android {
 }
 
 dependencies {
-    val ext = rootProject.extra
-    val kodeinVersion = ext.get("kodein_version") as String
-    val coroutinesVersion = ext.get("coroutines_version") as String
-    val serializationVersion = ext.get("serialization_version") as String
-    val navVersion = ext.get("nav_version") as String
-    val roomVersion = ext.get("room_version") as String
-    val workVersion = ext.get("work_version") as String
-    val glideVersion = ext.get("glide_version") as String
-    val lifecycleVersion = ext.get("lifecycle_version") as String
-    val exoplayerVersion = ext.get("exoplayer_version") as String
-    val okhttpVersion = ext.get("okhttp_version") as String
-    val retrofitVersion = ext.get("retrofit_version") as String
-    val xmlutilVersion = ext.get("xmlutil_version") as String
-    val coilVersion = ext.get("coil_version") as String
 
-//    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
+//    coreLibraryDesugaring(Libs.desugarJdkLibs)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":common"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+    implementation(Libs.kotlinxMetadataJvm)
+    implementation(Libs.kotlinxCoroutinesAndroid)
+    implementation(Libs.kotlinxSerializationJson)
 
-    implementation("org.kodein.di:kodein-di-framework-android-core:$kodeinVersion")
-    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
+    implementation(Libs.kodeinCore)
+    implementation(Libs.kodeinAndroidX)
 
-    implementation("androidx.annotation:annotation:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.7.0")
-    implementation("androidx.fragment:fragment-ktx:1.5.6")
-    implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
-    implementation("androidx.viewpager2:viewpager2:1.1.0-beta01")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
-    implementation("androidx.documentfile:documentfile:1.1.0-alpha01")
-    implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.browser:browser:1.5.0")
-    implementation("androidx.drawerlayout:drawerlayout:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha09")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    // Lifecycles only (without ViewModel or LiveData)
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    // Saved state module for ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion")
-    // alternately - if using Java8, use the following instead of lifecycle-compiler
-    implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
-    // optional - helpers for implementing LifecycleOwner in a Service
-    implementation("androidx.lifecycle:lifecycle-service:$lifecycleVersion")
-    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
-    implementation("androidx.lifecycle:lifecycle-process:$lifecycleVersion")
-    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
-    implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.google.android.material:material:1.9.0-beta01")
-    implementation("com.google.android:flexbox:2.0.1")
-    implementation("com.google.android.apps.muzei:muzei-api:3.4.1")
-    implementation("com.github.chrisbanes:PhotoView:2.3.0")
-    implementation("com.github.onlymash:subsampling-scale-image-view:3.10.3")
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("com.github.onlymash:OMFM:1.1.4")
-    implementation("com.mikepenz:materialdrawer:9.0.1")
-    implementation("com.google.zxing:core:3.5.1")
-    implementation("xyz.belvi.mobilevision:barcodescanner:2.0.3")
+    implementation(Libs.annotation)
+    implementation(Libs.appcompat)
+    implementation(Libs.activityKtx)
+    implementation(Libs.fragment)
+    implementation(Libs.fragmentKtx)
+    implementation(Libs.preferenceKtx)
+    implementation(Libs.coreKtx)
+    implementation(Libs.recyclerview)
 
-    implementation(platform("com.google.firebase:firebase-bom:31.2.3"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics")
+    implementation(Libs.material)
+    implementation(Libs.constraintLayout)
+    implementation(Libs.swipeRefreshLayout)
+    implementation(Libs.drawerLayout)
+    implementation(Libs.viewPager2)
+    implementation(Libs.flexboxLayout)
 
-    implementation("com.google.android.gms:play-services-ads:21.5.0")
-    implementation("com.google.android.gms:play-services-vision:20.1.3")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+    implementation(Libs.multidex)
+    implementation(Libs.browser)
+    implementation(Libs.documentFile)
 
-    implementation("com.android.billingclient:billing-ktx:5.1.0")
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
-    implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
-    implementation("com.squareup.okio:okio:3.3.0")
+    implementation(Libs.navigationFragmentKtx)
+    implementation(Libs.navigationUiKtx)
+    implementation(Libs.navigationDynamicFeaturesFragment)
 
-    implementation("io.coil-kt:coil:$coilVersion")
-    implementation("io.coil-kt:coil-gif:$coilVersion")
-//    implementation("io.coil-kt:coil-svg:$coilVersion")
+    implementation(Libs.roomKtx)
+    implementation(Libs.roomRuntime)
+    implementation(Libs.roomPaging)
+    ksp(Libs.roomCompiler)
 
-    implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
-    implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion")
-    implementation("io.github.pdvrieze.xmlutil:core-android:$xmlutilVersion")
-    implementation("io.github.pdvrieze.xmlutil:serialization-android:$xmlutilVersion")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.9.2")
-    androidTestImplementation("androidx.work:work-testing:$workVersion")
-    androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation(Libs.lifecycleRuntimeKtx)
+    implementation(Libs.lifecycleViewModelKtx)
+    implementation(Libs.lifecycleLivedataKtx)
+    implementation(Libs.lifecycleViewModelSavedState)
+
+    implementation(Libs.pagingRuntimeKtx)
+    implementation(Libs.workRuntimeKtx)
+    implementation(Libs.muzeiApi)
+    implementation(Libs.photoView)
+    implementation(Libs.subsamplingScaleImageView)
+    implementation(Libs.omfm)
+    implementation(Libs.materialDrawer)
+    implementation(Libs.zxingCore)
+    implementation(Libs.barCodeScanner)
+
+    implementation(platform(Libs.firebaseBom))
+    implementation(Libs.firebaseAnalyticsKtx)
+    implementation(Libs.firebaseCrashlytics)
+
+    implementation(Libs.playServicesAds)
+    implementation(Libs.playServicesVision)
+    implementation(Libs.playServicesOssLicenses)
+    implementation(Libs.billingKtx)
+
+    implementation(Libs.retrofit)
+    implementation(Libs.retrofitKotlinxSerializationConverter)
+    implementation(Libs.okhttp)
+    implementation(Libs.okhttpLoggingInterceptor)
+    implementation(Libs.okhttpDoH)
+    implementation(Libs.okio)
+
+    implementation(Libs.coil)
+    implementation(Libs.coilGif)
+
+    implementation(Libs.xmlutilAndroidCore)
+    implementation(Libs.xmlutilAndroidSerialization)
+
+    implementation(Libs.exoplayerCore)
+    implementation(Libs.exoplayerUi)
+
+    testImplementation(Libs.junit)
+    testImplementation(Libs.robolectric)
+    androidTestImplementation(Libs.androidxJunit)
+    androidTestImplementation(Libs.espressoCore)
 }

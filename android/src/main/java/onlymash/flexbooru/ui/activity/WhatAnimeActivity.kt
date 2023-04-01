@@ -249,6 +249,7 @@ class WhatAnimeActivity : BaseActivity() {
                 info2.text = data.similarity.toString()
                 preview.load(data.image) {
                     placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.background_rating_s))
+                    error(ContextCompat.getDrawable(itemView.context, R.drawable.background_rating_s))
                 }
             }
 

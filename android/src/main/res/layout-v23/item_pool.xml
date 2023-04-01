@@ -31,14 +31,16 @@
         android:padding="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/user_avatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/avatar_account"
-            app:civ_border_color="@color/grey_10"
-            app:civ_border_width="2dp"/>
+            android:padding="2dp"
+            app:srcCompat="@drawable/avatar_account"
+            app:strokeColor="@color/grey_10"
+            app:strokeWidth="2dp"
+            app:shapeAppearanceOverlay="@style/CircleShapeImageViewStyle"/>
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatTextView

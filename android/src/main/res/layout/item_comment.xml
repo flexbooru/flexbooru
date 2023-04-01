@@ -15,87 +15,89 @@
   -->
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="?android:attr/selectableItemBackground">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/listPreferredItemHeight">
+        android:layout_width="match_parent"
+        android:layout_height="?attr/listPreferredItemHeight">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_avatar"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="@dimen/spacing_normal"
-                android:src="@drawable/avatar_account"
-                app:civ_border_color="@color/grey_10"
-                app:civ_border_width="2dp"
-                app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/spacing_normal"
+            android:padding="2dp"
+            app:srcCompat="@drawable/avatar_account"
+            app:strokeColor="@color/grey_10"
+            app:strokeWidth="2dp"
+            app:shapeAppearanceOverlay="@style/CircleShapeImageViewStyle"
+            app:layout_constraintDimensionRatio="H, 1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/user_name"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="bottom"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:layout_marginStart="@dimen/spacing_middle"
-                android:layout_marginEnd="@dimen/spacing_middle"
-                app:layout_constraintStart_toEndOf="@id/user_avatar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/menu_view"
-                app:layout_constraintBottom_toTopOf="@+id/post_id"/>
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="bottom"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:layout_marginStart="@dimen/spacing_middle"
+            android:layout_marginEnd="@dimen/spacing_middle"
+            app:layout_constraintStart_toEndOf="@id/user_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/menu_view"
+            app:layout_constraintBottom_toTopOf="@+id/post_id"/>
 
         <androidx.appcompat.widget.ActionMenuView
-                android:id="@+id/menu_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/menu_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/post_id"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/spacing_middle"
-                android:gravity="bottom"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintStart_toEndOf="@id/user_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/user_name"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            android:id="@+id/post_id"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing_middle"
+            android:gravity="bottom"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintStart_toEndOf="@id/user_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/comment_date"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/spacing_middle"
-                android:gravity="bottom|end"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintTop_toBottomOf="@+id/user_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/post_id"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            android:id="@+id/comment_date"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/spacing_middle"
+            android:gravity="bottom|end"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/post_id"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <onlymash.flexbooru.widget.CommentView
-            android:id="@+id/comment_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/background_comment"/>
+        android:id="@+id/comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/background_comment"/>
 
     <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorDividerItem"/>
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDividerItem"/>
 </LinearLayout>

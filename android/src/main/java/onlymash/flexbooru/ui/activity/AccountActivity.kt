@@ -172,10 +172,24 @@ class AccountActivity : PathActivity() {
                         theme
                     )
                 )
+                error(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.avatar_account,
+                        theme
+                    )
+                )
             }
         } else if (booru.type == BOORU_TYPE_SANKAKU && !user.avatar.isNullOrEmpty()) {
             binding.userAvatar.load(user.avatar) {
                 placeholder(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.avatar_account,
+                        theme
+                    )
+                )
+                error(
                     ResourcesCompat.getDrawable(
                         resources,
                         R.drawable.avatar_account,

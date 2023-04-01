@@ -18,6 +18,7 @@ package onlymash.flexbooru.ui.adapter
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
@@ -123,11 +124,13 @@ class PoolAdapter(
                 BOORU_TYPE_MOE -> {
                     userAvatar.load(String.format(context.getString(R.string.account_user_avatars), pool.scheme, pool.host, pool.creatorId)) {
                         placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
+                        error(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                     }
                 }
                 BOORU_TYPE_SANKAKU -> {
                     userAvatar.load(pool.creatorAvatar) {
                         placeholder(ResourcesCompat.getDrawable(context.resources, R.drawable.avatar_account, context.theme))
+                        error(ContextCompat.getDrawable(itemView.context, R.drawable.avatar_account))
                     }
                 }
             }

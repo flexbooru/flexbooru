@@ -20,31 +20,21 @@ plugins {
 }
 
 buildscript {
-    extra.apply {
-        set("nav_version", "2.5.3")
-        set("room_version", "2.5.1")
-        set("work_version", "2.8.1")
-        set("glide_version", "4.15.1")
-        set("lifecycle_version", "2.6.1")
-        set("exoplayer_version", "2.18.5")
-        set("okhttp_version", "5.0.0-alpha.11")
-        set("retrofit_version", "2.9.0")
-        set("xmlutil_version", "0.85.0")
-        set("kodein_version", "7.18.0")
-        set("coroutines_version", "1.6.4")
-        set("serialization_version", "1.4.1")
-        set("ktor_version", "2.2.4")
-        set("coil_version", "2.3.0")
-    }
+    apply(from = "repositories.gradle.kts")
     repositories {
+        gradlePluginPortal()
         google()
+        mavenCentral()
+        maven(url = "https://jitpack.io")
+        maven(url = "https://plugins.gradle.org/m2/")
     }
     dependencies {
-        val kotlinVersion = "1.8.10"
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        val navigationVersion = "2.5.3"
+        val kotlinVersion = rootProject.extra["kotlin_version"].toString()
+        classpath(rootProject.extra["android_gradle_plugin"].toString())
+        classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(kotlin("serialization", kotlinVersion))
-        classpath("com.android.tools.build:gradle:7.4.2")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion")
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.6")
         classpath("com.google.gms:google-services:4.3.15")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.4")
