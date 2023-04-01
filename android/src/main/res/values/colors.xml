@@ -32,7 +32,6 @@
     <color name="colorOnSurface">@color/color_light_on_surface</color>
     <color name="scrimBackground">@color/color_light_scrim</color>
 
-    <color name="colorIconTint">@color/grey_600</color>
     <color name="colorIconTintToolbar">@color/black</color>
     <color name="colorFastScrollBar">@color/grey_300</color>
     <color name="colorDividerItem">@color/grey_300</color>
