@@ -170,14 +170,21 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
     }
 
     fun getSelectedTagsString(): String {
+        // `tagsSelected` may contains removed tags
+        val removedTags = tagsSelected.toSet() - allTags.toSet()
+        tagsSelected.removeAll(removedTags)
+
+        // only tags of the current booru should be selected
         val currentBooruTagsSelected = if (isShowAll) {
             tagsSelected
         } else {
             tagsSelected.filter { it.booruUid == booruUid }
         }
 
-        val result: MutableList<String> = currentBooruTagsSelected.map { it.name }.toMutableList()
+        // convert tag objects to tag strings and remove duplications
+        val result: MutableList<String> = currentBooruTagsSelected.map { it.name }.toSet().toMutableList()
 
+        // append special tags
         if (orderSelected.isNotEmpty()) {
             if (booruType == BOORU_TYPE_GEL || booruType == BOORU_TYPE_GEL_LEGACY) {
                 result.add("sort:$orderSelected")
@@ -341,7 +348,6 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
         if (tag == null) {
             return
         }
-        tagsSelected.remove(tag)
         deleteTagCallback.invoke(tag)
     }
 
