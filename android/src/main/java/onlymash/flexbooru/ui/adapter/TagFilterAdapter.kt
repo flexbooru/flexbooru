@@ -64,7 +64,7 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
     private var orderSelected = ""
     private var ratingSelected = ""
     private var thresholdSelected = ""
-    private val tagsSelected: MutableList<String> = mutableListOf()
+    private val tagsSelected: MutableList<TagFilter> = mutableListOf()
     private var booruUid: Long = -1
     var isShowAll = isShowAllTags
         set(value) {
@@ -170,26 +170,31 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
     }
 
     fun getSelectedTagsString(): String {
-        var str = ""
-        tagsSelected.forEach {
-            str = String.format("%s %s", it, str)
+        val currentBooruTagsSelected = if (isShowAll) {
+            tagsSelected
+        } else {
+            tagsSelected.filter { it.booruUid == booruUid }
         }
-        str = str.trim()
+
+        val result: MutableList<String> = currentBooruTagsSelected.map { it.name }.toMutableList()
+
         if (orderSelected.isNotEmpty()) {
-            str = if (booruType == BOORU_TYPE_GEL || booruType == BOORU_TYPE_GEL_LEGACY) {
-                "$str sort:$orderSelected"
+            if (booruType == BOORU_TYPE_GEL || booruType == BOORU_TYPE_GEL_LEGACY) {
+                result.add("sort:$orderSelected")
             } else {
-                "$str order:$orderSelected"
+                result.add("order:$orderSelected")
             }
         }
         if (ratingSelected.isNotEmpty()) {
-            str = "$str rating:$ratingSelected"
+            result.add("rating:$ratingSelected")
         }
         if (thresholdSelected.isNotEmpty()) {
-            str = "$str threshold:$thresholdSelected"
+            result.add("threshold:$thresholdSelected")
         }
-        return str.trim()
+
+        return result.joinToString(" ").trim()
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             VIEW_TYPE_ADD -> TagFilterAddViewHolder(parent)
@@ -336,7 +341,7 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
         if (tag == null) {
             return
         }
-        tagsSelected.remove(tag.name)
+        tagsSelected.remove(tag)
         deleteTagCallback.invoke(tag)
     }
 
@@ -345,7 +350,7 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
         init {
             tagFilterView.apply {
                 setOnClickListener {
-                    tagFilter?.name?.let {
+                    tagFilter?.let {
                         if (isChecked) {
                             tagsSelected.add(it)
                         } else {
@@ -365,7 +370,7 @@ class TagFilterAdapter(private val deleteTagCallback: (TagFilter) -> Unit,
             val name = tag.name
             tagFilterView.apply {
                 text = name
-                isChecked = tagsSelected.contains(name)
+                isChecked = tagsSelected.contains(tag)
             }
         }
     }
