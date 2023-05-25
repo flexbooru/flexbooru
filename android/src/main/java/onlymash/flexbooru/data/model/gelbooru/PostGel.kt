@@ -95,7 +95,7 @@ data class PostGel(
 
     private fun getIntScore(): Int = if (score.isEmpty()) 0 else score.trim().toInt()
 
-    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int): Post {
+    fun toPost(booruUid: Long, query: String, scheme: String, host: String, index: Int, isFavored: Boolean): Post {
         return Post(
             booruUid = booruUid,
             query = query,
@@ -113,7 +113,8 @@ data class PostGel(
             medium = mediumUrl(scheme, host),
             origin = originUrl(scheme, host),
             source = source,
-            uploader = User(id = creatorId, name = "")
+            uploader = User(id = creatorId, name = ""),
+            isFavored = isFavored
         )
     }
 }

@@ -227,7 +227,8 @@ class PostRemoteMediator(
                 query = action.query,
                 scheme = action.booru.scheme,
                 host = action.booru.host,
-                index = indexInNext + index
+                index = indexInNext + index,
+                isFavored = isFavored
             )
         } ?: listOf()
     }
