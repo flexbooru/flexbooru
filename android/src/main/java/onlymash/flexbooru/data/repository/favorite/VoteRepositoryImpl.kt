@@ -50,7 +50,7 @@ class VoteRepositoryImpl(
             BOORU_TYPE_DAN -> removeDanFav(action)
             BOORU_TYPE_DAN1 -> removeDan1Fav(action)
             BOORU_TYPE_MOE -> voteMoePost(action, 0)
-            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY)-> removeGelFav()
+            in arrayOf(BOORU_TYPE_GEL, BOORU_TYPE_GEL_LEGACY)-> removeGelFav(action)
             else -> removeSankakuFav(action)
         }
     }
@@ -74,8 +74,23 @@ class VoteRepositoryImpl(
         }
     }
 
-    private fun removeGelFav(): NetResult<Boolean> {
-        return NetResult.Error("Not supported")
+    private suspend fun removeGelFav(action: ActionVote): NetResult<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = booruApis.gelApi.favPost(
+                    cookie = action.booru.user?.gelCookie,
+                    httpUrl = action.getGelRemoveFavUrl()
+                )
+                if (response.code() == 302) {
+                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = false)
+                    NetResult.Success(true)
+                } else {
+                    NetResult.Error("code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                NetResult.Error(e.message.toString())
+            }
+        }
     }
 
     private suspend fun voteMoePost(action: ActionVote, score: Int): NetResult<Boolean> {
