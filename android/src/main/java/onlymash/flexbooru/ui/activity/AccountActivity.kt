@@ -199,7 +199,7 @@ class AccountActivity : PathActivity() {
             }
         }
         binding.favActionButton.setOnClickListener {
-            if (booru.type == BOORU_TYPE_GEL || booru.type == BOORU_TYPE_GEL_LEGACY) {
+            if (booru.type == BOORU_TYPE_GEL_LEGACY) {
                 val url = "${booru.scheme}://${booru.host}/index.php?page=favorites&s=view&id=${user.id}"
                 launchUrl(url)
             } else {
@@ -208,6 +208,7 @@ class AccountActivity : PathActivity() {
                     BOORU_TYPE_DAN1,
                     BOORU_TYPE_SANKAKU -> String.format("fav:%s", user.name)
                     BOORU_TYPE_MOE -> String.format("vote:3:%s order:vote", user.name)
+                    BOORU_TYPE_GEL -> "fav:${user.id}"
                     else -> null
                 }
                 searchPost(query)
