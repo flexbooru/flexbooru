@@ -17,6 +17,7 @@ package onlymash.flexbooru.data.action
 
 import okhttp3.HttpUrl
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
+import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
 import onlymash.flexbooru.app.Values.BOORU_TYPE_MOE
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POPULAR
 import onlymash.flexbooru.app.Values.PAGE_TYPE_POSTS
@@ -65,10 +66,11 @@ data class ActionPost(
     }
 
     fun isFavoredQuery(): Boolean {
-        val username = booru.user?.name ?: return false
+        val user = booru.user ?: return false
         return when (booru.type) {
-            BOORU_TYPE_MOE -> query.contains("vote:3:${username}")
-            else -> query.contains("fav:${username}")
+            BOORU_TYPE_MOE -> query.contains("vote:3:${user.name}")
+            BOORU_TYPE_GEL -> query.contains("fav:${user.id}")
+            else -> query.contains("fav:${user.name}")
         }
     }
 
