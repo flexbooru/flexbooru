@@ -324,9 +324,7 @@ class DetailActivity : PathActivity(),
         TooltipCompat.setTooltipText(saveButton, saveButton.contentDescription)
         infoButton.setOnClickListener { createInfoDialog() }
         downloadButton.setOnClickListener {
-            currentPost?.let {
-                download(it)
-            }
+            currentPost?.let(this::download)
         }
         saveButton.setOnClickListener {
             currentPost?.let {
@@ -431,7 +429,11 @@ class DetailActivity : PathActivity(),
     }
 
     private fun download(post: Post) {
-        DownloadWorker.downloadPost(post, booru.host, this)
+        if (post.origin.isVideo()) {
+            downloadByAdm(post.origin)
+        } else {
+            DownloadWorker.downloadPost(post, booru.host, this)
+        }
     }
 
     private fun openBrowser(post: Post) {

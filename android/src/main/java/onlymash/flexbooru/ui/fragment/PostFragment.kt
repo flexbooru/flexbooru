@@ -85,7 +85,9 @@ import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.data.repository.post.PostRepositoryImpl
 import onlymash.flexbooru.data.repository.tagfilter.TagFilterRepositoryImpl
 import onlymash.flexbooru.extension.asMergedLoadStates
+import onlymash.flexbooru.extension.downloadByAdm
 import onlymash.flexbooru.extension.getScreenWidthPixels
+import onlymash.flexbooru.extension.isVideo
 import onlymash.flexbooru.extension.rotate
 import onlymash.flexbooru.ui.activity.DetailActivity
 import onlymash.flexbooru.ui.activity.SauceNaoActivity
@@ -391,7 +393,11 @@ class PostFragment : SearchBarFragment() {
                 when (which) {
                     0 -> {
                         action?.apply {
-                            DownloadWorker.downloadPost(post, booru.host, activity)
+                            if (post.origin.isVideo()) {
+                                context?.downloadByAdm(post.origin)
+                            } else {
+                                DownloadWorker.downloadPost(post, booru.host, activity)
+                            }
                         }
                     }
                     1 -> {

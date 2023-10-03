@@ -165,7 +165,12 @@ fun String.isImage(): Boolean {
 fun String.isVideo(): Boolean {
     val ext = fileExt()
     return ext.equals("mp4", ignoreCase = true) ||
-            ext.equals("webm", ignoreCase = true)
+            ext.equals("webm", ignoreCase = true) ||
+            ext.equals("mkv", ignoreCase = true) ||
+            ext.equals("avi", ignoreCase = true) ||
+            ext.equals("mov", ignoreCase = true) ||
+            ext.equals("wmv", ignoreCase = true) ||
+            ext.equals("flv", ignoreCase = true)
 }
 
 fun String.isStillImage(): Boolean {
