@@ -20,6 +20,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
+import androidx.core.view.children
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayoutMediator
@@ -78,6 +80,14 @@ class InfoDialog : BaseBottomSheetDialog() {
             binding.root.layoutParams.height = height
         }
         binding.infoPager.adapter = InfoAdapter(postId, this)
+        binding.infoPager.registerOnPageChangeCallback(object :
+            androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.infoPager.children.find { it is RecyclerView }?.let {
+                    (it as RecyclerView).isNestedScrollingEnabled = position != 0
+                }
+            }
+        })
         TabLayoutMediator(binding.tabs, binding.infoPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.browse_info) else getString(R.string.browse_tags)
         }.attach()
