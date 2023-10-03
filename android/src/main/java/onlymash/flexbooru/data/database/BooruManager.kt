@@ -19,13 +19,13 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.sql.SQLException
 
 object BooruManager {
 
-    private val booruDao by App.app.instance<BooruDao>()
+    private val booruDao by App.app.inject<BooruDao>()
 
     @Throws(SQLException::class)
     fun createBooru(booru: Booru): Booru {

@@ -27,11 +27,11 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-abstract class BooruFragment<T: ViewBinding> : KodeinFragment<T>(), SharedPreferences.OnSharedPreferenceChangeListener {
+abstract class BooruFragment<T: ViewBinding> : BindingFragment<T>(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private val booruDao by instance<BooruDao>()
+    private val booruDao by inject<BooruDao>()
 
     private lateinit var booruViewModel: BooruViewModel
 

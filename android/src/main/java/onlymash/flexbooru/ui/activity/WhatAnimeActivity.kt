@@ -47,7 +47,6 @@ import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.databinding.ActivityWhatAnimeBinding
 import onlymash.flexbooru.databinding.FragmentAnimePlayerBinding
 import onlymash.flexbooru.databinding.ItemWhatAnimeBinding
-import onlymash.flexbooru.common.di.diCommon
 import onlymash.flexbooru.exoplayer.PlayerHolder
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.fileExt
@@ -60,7 +59,7 @@ import onlymash.flexbooru.ui.viewmodel.getTraceMoeViewModel
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.ByteArrayOutputStream
 
 private const val PREVIEW_VIDEO_URL_KEY = "preview_video_url"
@@ -74,7 +73,7 @@ class WhatAnimeActivity : BaseActivity() {
     private lateinit var traceMoeViewModel: TraceMoeViewModel
     private lateinit var openFileObserver: OpenFileLifecycleObserver
 
-    private val api by diCommon.instance<TraceMoeApi>("TraceMoeApi")
+    private val api by inject<TraceMoeApi>()
 
     private val binding by viewBinding(ActivityWhatAnimeBinding::inflate)
     private val progressBar get() = binding.common.progress.progressBar

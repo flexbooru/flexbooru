@@ -15,22 +15,20 @@
 
 package onlymash.flexbooru.app
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.MyDatabase
-import org.kodein.di.*
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
 
-fun appModule(applicationContext: Context) = DI.Module("AppModule") {
-    bind<Context>() with singleton { applicationContext }
-    bind<SharedPreferences>() with provider { PreferenceManager.getDefaultSharedPreferences(instance()) }
-    bind { singleton { MyDatabase(instance()) } }
-    bind { singleton { instance<MyDatabase>().booruDao() } }
-    bind { singleton { instance<MyDatabase>().tagFilterDao() } }
-    bind { singleton { instance<MyDatabase>().muzeiDao() } }
-    bind { singleton { instance<MyDatabase>().postDao() } }
-    bind { singleton { instance<MyDatabase>().historyDao() } }
-    bind { singleton { instance<MyDatabase>().nextDao() } }
-    bind { singleton { BooruApis() } }
+
+val appModules = module {
+    single { PreferenceManager.getDefaultSharedPreferences(androidApplication()) }
+    single { MyDatabase(androidApplication()) }
+    single { get<MyDatabase>().booruDao() }
+    single { get<MyDatabase>().tagFilterDao() }
+    single { get<MyDatabase>().muzeiDao() }
+    single { get<MyDatabase>().historyDao() }
+    single { get<MyDatabase>().nextDao() }
+    single { BooruApis() }
 }

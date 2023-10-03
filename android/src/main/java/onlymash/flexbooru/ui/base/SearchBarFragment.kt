@@ -51,13 +51,13 @@ import onlymash.flexbooru.ui.activity.SearchActivity
 import onlymash.flexbooru.ui.viewmodel.*
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.widget.searchbar.SearchBarMover
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
 abstract class SearchBarFragment : BooruFragment<FragmentSearchbarBinding>(),
     SearchBar.Helper, SearchBar.StateListener, SearchBarMover.Helper, ActionMode.Callback {
 
-    private val sp by instance<SharedPreferences>()
-    val booruApis by instance<BooruApis>()
+    private val sp by inject<SharedPreferences>()
+    val booruApis by inject<BooruApis>()
 
     private var actionTag: ActionTag? = null
 

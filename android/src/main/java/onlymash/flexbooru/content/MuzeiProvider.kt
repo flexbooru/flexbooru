@@ -43,7 +43,7 @@ class MuzeiProvider : MuzeiArtProvider() {
                 .diskCacheKey(key)
                 .build()
             context.imageLoader.executeBlocking(request)
-            val file = context.imageLoader.diskCache?.get(key)?.data?.toFile()
+            val file = context.imageLoader.diskCache?.openSnapshot(key)?.data?.toFile()
             if (file != null && file.exists()) FileInputStream(file) else super.openFile(artwork)
         } else {
             super.openFile(artwork)

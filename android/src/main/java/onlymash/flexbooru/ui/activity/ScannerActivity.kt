@@ -15,81 +15,113 @@
 
 package onlymash.flexbooru.ui.activity
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
+import android.Manifest
 import android.content.pm.ShortcutManager
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.SparseArray
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.content.getSystemService
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture
-import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic
-import com.google.android.gms.vision.barcode.Barcode
-import com.google.android.gms.vision.barcode.BarcodeDetector
-import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
+import androidx.lifecycle.lifecycleScope
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import onlymash.flexbooru.R
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.ui.base.BaseActivity
 
 //https://github.com/shadowsocks/shadowsocks-android/blob/master/mobile/src/main/java/com/github/shadowsocks/ScannerActivity.kt
-class ScannerActivity : BaseActivity(), BarcodeRetriever {
-    companion object {
-        private const val TAG = "ScannerActivity"
-        private const val REQUEST_GOOGLE_API = 4
+class ScannerActivity : BaseActivity(), ImageAnalysis.Analyzer {
+
+    private val scanner = BarcodeScanning.getClient(BarcodeScannerOptions.Builder().apply {
+        setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+    }.build())
+    private val imageAnalysis by lazy {
+        ImageAnalysis.Builder().apply {
+            setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            setBackgroundExecutor(Dispatchers.Default.asExecutor())
+        }.build().also { it.setAnalyzer(Dispatchers.Main.immediate.asExecutor(), this) }
     }
 
-    private lateinit var detector: BarcodeDetector
-
-    private fun fallback() {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://com.github.sumimakito.awesomeqrsample")))
-        } catch (_: ActivityNotFoundException) { }
-        finish()
+   override fun analyze(image: ImageProxy) {
+        val mediaImage = image.image ?: return
+        lifecycleScope.launch {
+            val result = try {
+                process { InputImage.fromMediaImage(mediaImage, image.imageInfo.rotationDegrees) }.also {
+                    if (it) imageAnalysis.clearAnalyzer()
+                }
+            } catch (_: Exception) {
+                return@launch
+            } finally {
+                image.close()
+            }
+            if (result) onSupportNavigateUp()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        detector = BarcodeDetector.Builder(this)
-            .setBarcodeFormats(Barcode.QR_CODE)
-            .build()
-        if (!detector.isOperational) {
-            val availability = GoogleApiAvailability.getInstance()
-            val dialog = availability.getErrorDialog(this, availability.isGooglePlayServicesAvailable(this),
-                REQUEST_GOOGLE_API
-            )
-            if (dialog == null) {
-                Toast.makeText(this, R.string.common_google_play_services_notification_ticker, Toast.LENGTH_SHORT)
-                    .show()
-                fallback()
-            } else {
-                dialog.setOnDismissListener { fallback() }
-                dialog.show()
-            }
-            return
-        }
-        if (Build.VERSION.SDK_INT >= 25) getSystemService<ShortcutManager>()?.reportShortcutUsed("scan")
-        if (try {
-                getSystemService<CameraManager>()?.cameraIdList?.isEmpty()
-            } catch (_: CameraAccessException) {
-                true
-            } != false) {
-            return
+        if (Build.VERSION.SDK_INT >= 25) {
+            getSystemService<ShortcutManager>()?.reportShortcutUsed("scan")
         }
         setContentView(R.layout.activity_scanner)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.scaner_scan_qr_code)
         }
-        val capture = supportFragmentManager.findFragmentById(R.id.barcode) as BarcodeCapture
-        capture.setCustomDetector(detector)
-        capture.setRetrieval(this)
+        lifecycle.addObserver(scanner)
+        requestCamera.launch(Manifest.permission.CAMERA)
+    }
+
+    private val requestCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            lifecycleScope.launch {
+                val cameraProvider = try {
+                    ProcessCameraProvider.getInstance(this@ScannerActivity).get()
+                } catch (_: Exception) {
+                    null
+                }
+                if (cameraProvider != null) {
+                    val selector =
+                        if (cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA)) {
+                            CameraSelector.DEFAULT_BACK_CAMERA
+                        } else CameraSelector.DEFAULT_FRONT_CAMERA
+                    val preview = Preview.Builder().build()
+                    preview.setSurfaceProvider(findViewById<PreviewView>(R.id.barcode).surfaceProvider)
+                    try {
+                        cameraProvider.bindToLifecycle(
+                            this@ScannerActivity,
+                            selector,
+                            preview,
+                            imageAnalysis
+                        )
+                    } catch (_: IllegalArgumentException) {
+
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(
+                this,
+                R.string.scaner_add_booru_permission_required,
+                Toast.LENGTH_SHORT
+            ).show()
+            onSupportNavigateUp()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -100,21 +132,13 @@ class ScannerActivity : BaseActivity(), BarcodeRetriever {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onStop() {
-        super.onStop()
-        detector.release()
-    }
-
-    override fun onRetrieved(barcode: Barcode) = runOnUiThread {
-        Booru.url2Booru(barcode.rawValue)?.let {
-            BooruManager.createBooru(it)
+    private suspend inline fun process(crossinline image: () -> InputImage): Boolean {
+        val barcodes = withContext(Dispatchers.Default) { scanner.process(image()).await() }
+        var result = false
+        barcodes.mapNotNull { it.rawValue }.forEach { url ->
+            Booru.url2Booru(url)?.let(BooruManager::createBooru)
+            result = true
         }
-        finish()
-    }
-    override fun onRetrievedMultiple(closetToClick: Barcode?, barcode: MutableList<BarcodeGraphic>?) = check(false)
-    override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) { }
-    override fun onRetrievedFailed(reason: String?) { }
-    override fun onPermissionRequestDenied() {
-        Toast.makeText(this, R.string.scaner_add_booru_permission_required, Toast.LENGTH_SHORT).show()
+        return result
     }
 }

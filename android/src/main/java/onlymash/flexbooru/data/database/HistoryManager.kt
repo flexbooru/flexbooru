@@ -18,13 +18,13 @@ package onlymash.flexbooru.data.database
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.HistoryDao
 import onlymash.flexbooru.data.model.common.History
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.sql.SQLException
 
 object HistoryManager {
 
-    private val historyDao by App.app.instance<HistoryDao>()
+    private val historyDao by App.app.inject<HistoryDao>()
     /**
      * Create a [History]
      * */

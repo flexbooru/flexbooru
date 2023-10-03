@@ -26,11 +26,11 @@ import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.ui.viewmodel.ShortcutViewModel
 import onlymash.flexbooru.ui.viewmodel.getShortcutViewModel
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
 abstract class ShortcutFragment<T: ViewBinding> : BooruFragment<T>() {
 
-    private val postDao by instance<PostDao>()
+    private val postDao by inject<PostDao>()
 
     private var postId = -1
 

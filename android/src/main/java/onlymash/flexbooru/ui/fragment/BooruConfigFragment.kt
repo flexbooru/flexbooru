@@ -37,9 +37,7 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.extension.isHost
 import onlymash.flexbooru.ui.activity.BooruConfigActivity
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
 private const val CONFIG_NAME_KEY = "booru_config_name"
 private const val CONFIG_TYPE_KEY = "booru_config_type"
@@ -56,12 +54,10 @@ private const val CONFIG_TYPE_GEL_LEGACY = "gelbooru_legacy"
 private const val CONFIG_TYPE_SANKAKU = "sankaku"
 private const val CONFIG_TYPE_SHIMMIE = "shimmie"
 
-class BooruConfigFragment : PreferenceFragmentCompat(), DIAware,
-    SharedPreferences.OnSharedPreferenceChangeListener, BooruConfigActivity.MenuListener {
+class BooruConfigFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener, BooruConfigActivity.MenuListener {
 
-    override val di by closestDI()
-    private val booruDao by instance<BooruDao>()
-    private val sp by instance<SharedPreferences>()
+    private val booruDao by inject<BooruDao>()
+    private val sp by inject<SharedPreferences>()
 
     private var booru: Booru? = null
 

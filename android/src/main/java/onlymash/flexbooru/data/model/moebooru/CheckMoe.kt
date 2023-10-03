@@ -3,7 +3,6 @@ import kotlinx.serialization.Serializable
 
 import kotlinx.serialization.SerialName
 import onlymash.flexbooru.data.model.common.User
-import org.kodein.type.typeToken
 
 
 @Serializable

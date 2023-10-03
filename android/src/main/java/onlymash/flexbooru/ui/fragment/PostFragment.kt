@@ -101,7 +101,7 @@ import onlymash.flexbooru.ui.viewmodel.getTagFilterViewModel
 import onlymash.flexbooru.util.ViewTransition
 import onlymash.flexbooru.widget.searchbar.SearchBar
 import onlymash.flexbooru.worker.DownloadWorker
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -117,7 +117,7 @@ private const val ROTATION_DEGREE = 135f
 
 class PostFragment : SearchBarFragment() {
 
-    private val db by instance<MyDatabase>()
+    private val db by inject<MyDatabase>()
 
     private val voteRepository by lazy { VoteRepositoryImpl(booruApis, db.postDao()) }
 

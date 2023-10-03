@@ -19,13 +19,13 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.TagFilterDao
 import onlymash.flexbooru.data.model.common.TagFilter
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.sql.SQLException
 
 object TagFilterManager {
 
-    private val tagFilterDao by App.app.instance<TagFilterDao>()
+    private val tagFilterDao by App.app.inject<TagFilterDao>()
 
     @Throws(SQLException::class)
     fun createTagFilter(tag: TagFilter): TagFilter {

@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -38,7 +39,6 @@ import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.app.Settings.sauceNaoApiKey
 import onlymash.flexbooru.databinding.ActivitySauceNaoBinding
 import onlymash.flexbooru.databinding.ItemSauceNaoBinding
-import onlymash.flexbooru.common.di.diCommon
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.common.saucenao.api.SauceNaoApi
 import onlymash.flexbooru.common.saucenao.model.Result
@@ -48,14 +48,13 @@ import onlymash.flexbooru.ui.viewmodel.getSauceNaoViewModel
 import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.IOException
-
-const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
 
 class SauceNaoActivity : BaseActivity() {
 
     companion object {
+        const val SAUCE_NAO_SEARCH_URL_KEY = "sauce_nao_search_url"
         fun startSearch(context: Context, url: String) {
             context.startActivity(
                 Intent(context, SauceNaoActivity::class.java).apply {
@@ -65,7 +64,7 @@ class SauceNaoActivity : BaseActivity() {
         }
     }
 
-    private val api by diCommon.instance<SauceNaoApi>("SauceNaoApi")
+    private val api by inject<SauceNaoApi>()
     private val binding by viewBinding(ActivitySauceNaoBinding::inflate)
     private val fab get() = binding.sauceNaoSearchFab
     private val errorMsg get() = binding.common.errorMsg
@@ -75,6 +74,7 @@ class SauceNaoActivity : BaseActivity() {
     private lateinit var sauceNaoAdapter: SauceNaoAdapter
     private lateinit var openFileObserver: OpenFileLifecycleObserver
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!isOrderSuccess) {

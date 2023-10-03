@@ -43,21 +43,21 @@ import onlymash.flexbooru.data.repository.suggestion.SuggestionRepositoryImpl
 import onlymash.flexbooru.databinding.ActivityMuzeiBinding
 import onlymash.flexbooru.extension.openAppInMarket
 import onlymash.flexbooru.ui.adapter.MuzeiAdapter
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.ItemTouchCallback
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.MuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.SuggestionViewModel
 import onlymash.flexbooru.ui.viewmodel.getMuzeiViewModel
 import onlymash.flexbooru.ui.viewmodel.getSuggestionViewModel
-import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
 import onlymash.flexbooru.worker.MuzeiArtWorker
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-class MuzeiActivity : KodeinActivity() {
+class MuzeiActivity : BaseActivity() {
 
-    private val muzeiDao by instance<MuzeiDao>()
-    private val booruApis by instance<BooruApis>()
+    private val muzeiDao by inject<MuzeiDao>()
+    private val booruApis by inject<BooruApis>()
 
     private val binding by viewBinding(ActivityMuzeiBinding::inflate)
 

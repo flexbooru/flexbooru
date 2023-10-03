@@ -29,17 +29,17 @@ import onlymash.flexbooru.data.database.dao.HistoryDao
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.databinding.ActivityListCommonBinding
 import onlymash.flexbooru.ui.adapter.HistoryAdapter
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.HistoryViewModel
 import onlymash.flexbooru.ui.viewmodel.getHistoryViewModel
-import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-class HistoryActivity : KodeinActivity() {
+class HistoryActivity : BaseActivity() {
 
-    private val historyDao by instance<HistoryDao>()
-    private val postDao by instance<PostDao>()
+    private val historyDao by inject<HistoryDao>()
+    private val postDao by inject<PostDao>()
 
     private val binding by viewBinding(ActivityListCommonBinding::inflate)
 

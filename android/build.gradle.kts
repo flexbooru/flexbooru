@@ -20,14 +20,14 @@ import org.apache.commons.io.output.ByteArrayOutputStream
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.android.gms.oss-licenses-plugin")
+    id(libs.plugins.android.application.get().pluginId)
+    id(libs.plugins.kotlin.android.get().pluginId)
+    alias(libs.plugins.kotlin.serialization)
+    id(libs.plugins.kotlin.parcelize.get().pluginId)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.gms)
+    id(libs.plugins.gms.oss.licenses.get().pluginId)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val releaseStoreFile = file("../.gradle/flexbooru_play.jks")
@@ -55,18 +55,18 @@ android {
             }
         }
     }
-    compileSdk = 33
+    compileSdk = Configs.SDK_VERSION
     defaultConfig {
-        applicationId = "onlymash.flexbooru.play"
-        minSdk = 21
-        targetSdk = 33
+        applicationId = Configs.APP_ID
+        minSdk = Configs.MIN_SDK_VERSION
+        //noinspection EditedTargetSdkVersion
+        targetSdk = Configs.SDK_VERSION
         versionCode = verCode
-        versionName = "3.1.6"
+        versionName = Configs.APP_VERSION_NAME
         versionNameSuffix = ".c$verCode"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        resourceConfigurations.addAll(listOf("en", "zh-rCN", "zh-rHK", "zh-rTW", "nl-rNL", "pt-rBR", "es-rES",
-                "pl-rPL", "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP", "in-rID", "de-rDE", "tr-rTR"))
+        resourceConfigurations.addAll(Configs.LANGUAGES)
     }
     applicationVariants.all {
         outputs.map {
@@ -102,7 +102,6 @@ android {
         }
     }
     compileOptions {
-//        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -117,14 +116,12 @@ android {
             "-opt-in=androidx.paging.ExperimentalPagingApi",
             "-opt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
             "-opt-in=coil.annotation.ExperimentalCoilApi",
+            "-opt-in=androidx.camera.core.ExperimentalGetImage",
             "-Xjvm-default=all-compatibility"
         )
     }
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
-    }
-    packagingOptions {
-        resources.excludes.add("META-INF/*.kotlin_module")
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -133,97 +130,97 @@ android {
         viewBinding = true
         buildConfig = true
     }
-    lint {
-        disable += setOf("DialogFragmentCallbacksDetector")
-    }
+//    lint {
+//        disable += setOf("DialogFragmentCallbacksDetector")
+//    }
     namespace = "onlymash.flexbooru"
 }
 
 dependencies {
 
-//    coreLibraryDesugaring(Libs.desugarJdkLibs)
+//    coreLibraryDesugaring(libs.desugarJdkLibs)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(project(":common"))
 
-    implementation(Libs.kotlinxMetadataJvm)
-    implementation(Libs.kotlinxCoroutinesAndroid)
-    implementation(Libs.kotlinxSerializationJson)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.navigation)
+    implementation(libs.koin.androidx.workmanager)
 
-    implementation(Libs.kodeinCore)
-    implementation(Libs.kodeinAndroidX)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
 
-    implementation(Libs.annotation)
-    implementation(Libs.appcompat)
-    implementation(Libs.activityKtx)
-    implementation(Libs.fragment)
-    implementation(Libs.fragmentKtx)
-    implementation(Libs.preferenceKtx)
-    implementation(Libs.coreKtx)
-    implementation(Libs.recyclerview)
+    implementation(libs.material.material)
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.preference.ktk)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.drawerlayout)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.flexbox.layout)
 
-    implementation(Libs.material)
-    implementation(Libs.constraintLayout)
-    implementation(Libs.swipeRefreshLayout)
-    implementation(Libs.drawerLayout)
-    implementation(Libs.viewPager2)
-    implementation(Libs.flexboxLayout)
+    implementation(libs.androidx.browser)
+    implementation(libs.androidx.documentfile)
 
-    implementation(Libs.multidex)
-    implementation(Libs.browser)
-    implementation(Libs.documentFile)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.runtime.ktx)
 
-    implementation(Libs.navigationFragmentKtx)
-    implementation(Libs.navigationUiKtx)
-    implementation(Libs.navigationDynamicFeaturesFragment)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.paging)
+    ksp(libs.androidx.room.compiler)
 
-    implementation(Libs.roomKtx)
-    implementation(Libs.roomRuntime)
-    implementation(Libs.roomPaging)
-    ksp(Libs.roomCompiler)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.muzei.api)
+    implementation(libs.photoview)
+    implementation(libs.subsampling.scale.image.view)
+    implementation(libs.omfm)
+    implementation(libs.materialdrawer)
 
-    implementation(Libs.lifecycleRuntimeKtx)
-    implementation(Libs.lifecycleViewModelKtx)
-    implementation(Libs.lifecycleLivedataKtx)
-    implementation(Libs.lifecycleViewModelSavedState)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.zxing.core)
+    implementation(libs.barcode.scanning)
 
-    implementation(Libs.pagingRuntimeKtx)
-    implementation(Libs.workRuntimeKtx)
-    implementation(Libs.muzeiApi)
-    implementation(Libs.photoView)
-    implementation(Libs.subsamplingScaleImageView)
-    implementation(Libs.omfm)
-    implementation(Libs.materialDrawer)
-    implementation(Libs.zxingCore)
-    implementation(Libs.barCodeScanner)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
-    implementation(platform(Libs.firebaseBom))
-    implementation(Libs.firebaseAnalyticsKtx)
-    implementation(Libs.firebaseCrashlytics)
+    implementation(libs.gms.ads)
+    implementation(libs.gms.oss.licenses)
+    implementation(libs.billing.ktx)
 
-    implementation(Libs.playServicesAds)
-    implementation(Libs.playServicesVision)
-    implementation(Libs.playServicesOssLicenses)
-    implementation(Libs.billingKtx)
+    implementation(libs.retrofit.retrofit)
+    implementation(libs.retrofit.converter.kotlinx)
+    implementation(libs.okhttp.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.okhttp.dnsoverhttps)
+    implementation(libs.okio)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
-    implementation(Libs.retrofit)
-    implementation(Libs.retrofitKotlinxSerializationConverter)
-    implementation(Libs.okhttp)
-    implementation(Libs.okhttpLoggingInterceptor)
-    implementation(Libs.okhttpDoH)
-    implementation(Libs.okio)
+    implementation(libs.coil.coil)
+    implementation(libs.coil.gif)
 
-    implementation(Libs.coil)
-    implementation(Libs.coilGif)
+    implementation(libs.xmlutil.android.core)
+    implementation(libs.xmlutil.android.serialization)
 
-    implementation(Libs.xmlutilAndroidCore)
-    implementation(Libs.xmlutilAndroidSerialization)
+    implementation(libs.exoplayer)
 
-    implementation(Libs.exoplayerCore)
-    implementation(Libs.exoplayerUi)
-
-    testImplementation(Libs.junit)
-    testImplementation(Libs.robolectric)
-    androidTestImplementation(Libs.androidxJunit)
-    androidTestImplementation(Libs.espressoCore)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.robolectric)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

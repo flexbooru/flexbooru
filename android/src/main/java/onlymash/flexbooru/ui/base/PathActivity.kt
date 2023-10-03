@@ -21,7 +21,7 @@ import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.ui.helper.StorageFolderLifecycleObserver
 
-abstract class PathActivity : KodeinActivity() {
+abstract class PathActivity : BaseActivity() {
 
     private lateinit var observer: StorageFolderLifecycleObserver
 

@@ -14,14 +14,12 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<fragment
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/barcode"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
-    app:gvb_auto_focus="true"
-    tools:viewBindingIgnore="true"
-    tools:ignore="FragmentTagUsage" />
+    android:layout_height="match_parent">
+    <androidx.camera.view.PreviewView
+        android:id="@+id/barcode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

@@ -83,7 +83,7 @@ import onlymash.flexbooru.ui.viewmodel.DetailViewModel
 import onlymash.flexbooru.ui.viewmodel.getDetailViewModel
 import onlymash.flexbooru.widget.DismissFrameLayout
 import onlymash.flexbooru.worker.DownloadWorker
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.*
 
 private const val ALPHA_MAX = 0xFF
@@ -118,8 +118,8 @@ class DetailActivity : PathActivity(),
         }
     }
 
-    private val postDao by instance<PostDao>()
-    private val booruApis by instance<BooruApis>()
+    private val postDao by inject<PostDao>()
+    private val booruApis by inject<BooruApis>()
     private val voteRepository: VoteRepository by lazy { VoteRepositoryImpl(booruApis, postDao) }
 
     private val binding by viewBinding(ActivityDetailBinding::inflate)

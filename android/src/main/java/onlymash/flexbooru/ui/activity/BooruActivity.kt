@@ -47,22 +47,22 @@ import onlymash.flexbooru.databinding.ActivityBooruBinding
 import onlymash.flexbooru.extension.getScreenWidthDp
 import onlymash.flexbooru.extension.safeCloseQuietly
 import onlymash.flexbooru.ui.adapter.BooruAdapter
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.helper.ItemTouchCallback
 import onlymash.flexbooru.ui.helper.ItemTouchHelperCallback
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.fragment.QRCodeDialog
 import onlymash.flexbooru.ui.helper.CreateFileLifecycleObserver
 import onlymash.flexbooru.ui.helper.OpenFileLifecycleObserver
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.io.InputStream
 
-class BooruActivity : KodeinActivity() {
+class BooruActivity : BaseActivity() {
 
-    private val booruDao by instance<BooruDao>()
+    private val booruDao by inject<BooruDao>()
 
     private val binding by viewBinding(ActivityBooruBinding::inflate)
     private val list get() = binding.list

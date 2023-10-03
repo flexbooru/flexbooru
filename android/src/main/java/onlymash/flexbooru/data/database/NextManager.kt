@@ -3,11 +3,11 @@ package onlymash.flexbooru.data.database
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.NextDao
 import onlymash.flexbooru.data.model.common.Next
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
 object NextManager {
 
-    private val nextDao by App.app.instance<NextDao>()
+    private val nextDao by App.app.inject<NextDao>()
 
     fun create(next: Next) {
         nextDao.insert(next)

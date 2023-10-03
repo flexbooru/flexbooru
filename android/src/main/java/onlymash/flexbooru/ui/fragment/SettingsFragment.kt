@@ -47,15 +47,12 @@ import onlymash.flexbooru.extension.toDecodedString
 import onlymash.flexbooru.extension.trim
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-class SettingsFragment : PreferenceFragmentCompat(), DIAware, SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    override val di by closestDI()
-    private val postDao by instance<PostDao>()
-    private val sp by instance<SharedPreferences>()
+    private val postDao by inject<PostDao>()
+    private val sp by inject<SharedPreferences>()
 
     private var gridRatioPreference: Preference? = null
     private var dohPreference: SwitchPreferenceCompat? = null

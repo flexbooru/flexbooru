@@ -22,7 +22,7 @@ import okhttp3.dnsoverhttps.DnsOverHttps
 import onlymash.flexbooru.R
 import onlymash.flexbooru.okhttp.DohProviders
 import onlymash.flexbooru.okhttp.NoSniFactory
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.util.*
 
 object Settings {
@@ -80,7 +80,7 @@ object Settings {
 
     const val BOORU_UID_ACTIVATED_KEY = "booru_uid_activated"
 
-    private val sp by App.app.instance<SharedPreferences>()
+    private val sp by App.app.inject<SharedPreferences>()
 
     var activatedBooruUid: Long
         get() = sp.getLong(BOORU_UID_ACTIVATED_KEY, -1L)
@@ -237,8 +237,8 @@ object Settings {
         set(value) = sp.edit().putBoolean(
             IS_AVAILABLE_STORE, value).apply()
 
-    var orderId: String
-        get() = sp.getString(ORDER_ID_KEY, "") ?: ""
+    var orderId: String?
+        get() = sp.getString(ORDER_ID_KEY, null)
         set(value) = sp.edit().putString(
             ORDER_ID_KEY, value).apply()
 

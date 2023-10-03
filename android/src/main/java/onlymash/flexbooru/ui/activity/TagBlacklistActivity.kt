@@ -31,15 +31,15 @@ import onlymash.flexbooru.data.database.dao.BooruDao
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.databinding.ActivityTagBlacklistBinding
 import onlymash.flexbooru.ui.adapter.TagBlacklistAdapter
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.viewmodel.BooruViewModel
 import onlymash.flexbooru.ui.viewmodel.getBooruViewModel
-import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-class TagBlacklistActivity : KodeinActivity() {
+class TagBlacklistActivity : BaseActivity() {
 
-    private val booruDao by instance<BooruDao>()
+    private val booruDao by inject<BooruDao>()
     private val binding by viewBinding(ActivityTagBlacklistBinding::inflate)
     private lateinit var booruViewModel: BooruViewModel
     private lateinit var tagBlacklistAdapter: TagBlacklistAdapter

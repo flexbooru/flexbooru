@@ -42,13 +42,13 @@ import onlymash.flexbooru.extension.sha1
 import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import onlymash.flexbooru.data.repository.user.UserRepository
 import onlymash.flexbooru.databinding.ActivityAccountConfigBinding
-import onlymash.flexbooru.ui.base.KodeinActivity
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-class AccountConfigActivity : KodeinActivity() {
+class AccountConfigActivity : BaseActivity() {
 
-    private val booruApis by instance<BooruApis>()
+    private val booruApis by inject<BooruApis>()
 
     private val binding by viewBinding(ActivityAccountConfigBinding::inflate)
 

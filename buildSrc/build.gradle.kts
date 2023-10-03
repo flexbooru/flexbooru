@@ -2,10 +2,9 @@ plugins {
     `kotlin-dsl`
 }
 
-apply(from = "../repositories.gradle.kts")
-
 dependencies {
-    implementation(rootProject.extra["android_gradle_plugin"].toString())
-    implementation(kotlin("gradle-plugin", rootProject.extra["kotlin_version"].toString()))
-    implementation("com.squareup:javapoet:1.13.0")
+    implementation(libs.plugin.agp)
+    implementation(libs.plugin.kotlin)
+    implementation(libs.plugin.oss.licenses)
+    implementation(libs.javapoet)
 }

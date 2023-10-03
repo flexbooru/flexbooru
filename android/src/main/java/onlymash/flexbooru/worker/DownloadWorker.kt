@@ -179,7 +179,7 @@ class DownloadWorker(
                 .diskCacheKey(url)
                 .build()
             applicationContext.imageLoader.executeBlocking(request)
-            applicationContext.imageLoader.diskCache?.get(url)?.data?.toFile()
+            applicationContext.imageLoader.diskCache?.openSnapshot(url)?.data?.toFile()
         } catch (_: Exception) {
             null
         }

@@ -86,7 +86,7 @@ import onlymash.flexbooru.extension.setupInsets
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.helper.isNightEnable
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
 class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -116,8 +116,8 @@ class MainActivity : PathActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var headerView: AccountHeaderView
     private lateinit var profileSettingDrawerItem: ProfileSettingDrawerItem
 
-    private val sp by instance<SharedPreferences>()
-    private val booruDao by instance<BooruDao>()
+    private val sp by inject<SharedPreferences>()
+    private val booruDao by inject<BooruDao>()
 
     private val requestNotificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
 

@@ -18,7 +18,7 @@ package onlymash.flexbooru.data.database
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.data.database.dao.MuzeiDao
 import onlymash.flexbooru.data.model.common.Muzei
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.sql.SQLException
 
@@ -27,7 +27,7 @@ import java.sql.SQLException
  * */
 object MuzeiManager {
 
-    private val muzeiDao by App.app.instance<MuzeiDao>()
+    private val muzeiDao by App.app.inject<MuzeiDao>()
     /**
      * Create a [Muzei]
      * */

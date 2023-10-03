@@ -51,13 +51,13 @@ import onlymash.flexbooru.databinding.ActivityCommentBinding
 import onlymash.flexbooru.extension.NetResult
 import onlymash.flexbooru.ui.adapter.CommentAdapter
 import onlymash.flexbooru.ui.adapter.StateAdapter
+import onlymash.flexbooru.ui.base.BaseActivity
 import onlymash.flexbooru.ui.viewmodel.CommentViewModel
 import onlymash.flexbooru.ui.viewmodel.getCommentViewModel
-import onlymash.flexbooru.ui.base.KodeinActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
-class CommentActivity : KodeinActivity() {
+class CommentActivity : BaseActivity() {
 
     companion object {
         private const val POST_ID_KEY = "post_id"
@@ -70,7 +70,7 @@ class CommentActivity : KodeinActivity() {
         }
     }
 
-    private val booruApis by instance<BooruApis>()
+    private val booruApis by inject<BooruApis>()
     private val binding by viewBinding(ActivityCommentBinding::inflate)
     private val list get() = binding.refreshableList.list
     private val refresh get() = binding.refreshableList.swipeRefresh

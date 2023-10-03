@@ -43,7 +43,7 @@ import onlymash.flexbooru.data.repository.user.UserRepositoryImpl
 import onlymash.flexbooru.databinding.ActivityAccountBinding
 import onlymash.flexbooru.ui.base.PathActivity
 import onlymash.flexbooru.ui.viewbinding.viewBinding
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
 
 class AccountActivity : PathActivity() {
 
@@ -53,7 +53,7 @@ class AccountActivity : PathActivity() {
         const val USER_AVATAR_KEY = "user_avatar"
     }
 
-    private val booruApis by instance<BooruApis>()
+    private val booruApis by inject<BooruApis>()
 
     private val binding by viewBinding(ActivityAccountBinding::inflate)
 
