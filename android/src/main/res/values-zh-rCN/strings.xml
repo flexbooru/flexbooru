@@ -15,8 +15,8 @@
   -->
 <resources>
     <string name="app_description">一个 Booru 客户端，支持 Danbooru、Moebooru、Gelbooru、Sankaku 等图版引擎。</string>
-    <string name="title_posts">投稿</string>
-    <string name="title_search">搜索</string>
+    <string name="title_posts">Posts</string>
+    <string name="title_search">瑞吉儿</string>
     <string name="title_popular">人气</string>
     <string name="title_manage_boorus">管理 Booru 网站</string>
     <string name="title_settings">设置</string>
