@@ -37,7 +37,7 @@
         android:id="@+id/progress"
         android:visibility="gone"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/error_msg"
         android:textAppearance="?textAppearanceBodyLarge"
         android:layout_gravity="center"

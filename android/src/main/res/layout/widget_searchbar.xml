@@ -54,7 +54,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/search_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

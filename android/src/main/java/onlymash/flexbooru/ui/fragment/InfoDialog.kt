@@ -16,9 +16,7 @@
 package onlymash.flexbooru.ui.fragment
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.Window
 import android.widget.FrameLayout

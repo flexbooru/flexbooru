@@ -29,7 +29,7 @@
             android:padding="?attr/listPreferredItemPaddingStart"
             android:contentDescription="@null"
             app:srcCompat="@drawable/tag_dot"/>
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tag_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -22,7 +22,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
+import com.google.android.material.textview.MaterialTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -123,8 +123,8 @@ class PostAdapter(
 
         private val preview: AppCompatImageView
         private val infoContainer: LinearLayout
-        private val postId: AppCompatTextView
-        private val postSize: AppCompatTextView
+        private val postId: MaterialTextView
+        private val postSize: MaterialTextView
 
         private var post: Post? = null
 

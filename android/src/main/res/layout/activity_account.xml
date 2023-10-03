@@ -45,13 +45,13 @@
             app:strokeColor="@color/grey_10"
             app:strokeWidth="2dp"
             app:shapeAppearanceOverlay="@style/CircleShapeImageViewStyle"/>
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_middle"
             android:textAppearance="?attr/textAppearanceHeadline6"/>
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                     app:srcCompat="@drawable/ic_favorite_24dp"
                     style="@style/Widget.Account.FloatingActionButton"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
@@ -110,7 +110,7 @@
                     app:srcCompat="@drawable/ic_photo_24dp"
                     style="@style/Widget.Account.FloatingActionButton"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
@@ -136,7 +136,7 @@
                     app:srcCompat="@drawable/ic_comment_24dp"
                     style="@style/Widget.Account.FloatingActionButton"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
@@ -167,7 +167,7 @@
                 app:srcCompat="@drawable/ic_sentiment_very_satisfied_24dp"
                 style="@style/Widget.Account.FloatingActionButton"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_medium"

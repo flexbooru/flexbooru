@@ -58,7 +58,7 @@ class App : Application(), ImageLoaderFactory {
 
     companion object {
         lateinit var app: App
-        private const val CACHE_MAX_PERCENT = 0.2
+        private const val CACHE_MAX_PERCENT = 1.0
     }
 
     private val drawerImageLoader = object : AbstractDrawerImageLoader() {

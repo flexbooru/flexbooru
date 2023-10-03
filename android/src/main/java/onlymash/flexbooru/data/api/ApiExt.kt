@@ -18,7 +18,6 @@ package onlymash.flexbooru.data.api
 import android.util.Log
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
-import nl.adaptivity.xmlutil.serialization.DefaultXmlSerializationPolicy
 import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlConfig
 import okhttp3.MediaType.Companion.toMediaType
@@ -85,11 +84,11 @@ inline fun <reified T> createApi(): T {
         GelbooruApi::class,
         ShimmieApi::class-> {
             XML {
-                policy = DefaultXmlSerializationPolicy(
-                    pedantic = false,
-                    autoPolymorphic = true,
+                defaultPolicy {
+                    pedantic = false
+                    autoPolymorphic = true
                     unknownChildHandler = XmlConfig.IGNORING_UNKNOWN_CHILD_HANDLER
-                )
+                }
             }.asConverterFactory("application/xml".toMediaType())
         }
         else -> {

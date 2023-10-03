@@ -17,6 +17,7 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -42,7 +43,7 @@
                 app:shapeAppearanceOverlay="@style/CircleShapeImageViewStyle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/user_name"
                 android:gravity="center_vertical|start"
                 android:layout_width="0dp"
@@ -55,7 +56,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/user_id"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/user_id"
                 android:gravity="center_vertical|start"
                 android:layout_width="wrap_content"
@@ -67,7 +68,7 @@
                 app:layout_constraintStart_toEndOf="@id/user_avatar"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/created_date"
                 android:gravity="center_vertical|end"
                 android:layout_width="0dp"
@@ -90,14 +91,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/browse_info_source"
                 android:layout_marginStart="10dp"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/source_url"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -117,14 +118,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/browse_info_rating"
                 android:layout_marginStart="10dp"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/rating"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -142,14 +143,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/browse_info_score"
                 android:layout_marginStart="10dp"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="@color/secondary_text_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/score"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -167,7 +168,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight">
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/url_sample_size"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
@@ -206,7 +207,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/url_larger_size"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
@@ -245,7 +246,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/url_origin_size"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"

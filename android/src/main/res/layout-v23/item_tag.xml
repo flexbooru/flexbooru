@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tag_name"
             android:maxLines="2"
             android:layout_marginStart="15dp"
@@ -45,7 +45,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tag_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tag_type"
                 android:layout_gravity="end"
                 android:gravity="center_vertical|end"
@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:textAppearance="?attr/textAppearanceBodySmall"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/post_count"
                 android:layout_gravity="end"
                 android:gravity="center_vertical|end"

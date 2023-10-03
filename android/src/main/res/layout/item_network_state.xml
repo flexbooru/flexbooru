@@ -21,7 +21,7 @@
     android:layout_gravity="center"
     android:padding="@dimen/spacing_normal"
     android:id="@+id/network_state_container">
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/error_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:paddingVertical="@dimen/spacing_normal"
         android:gravity="center_horizontal"
         android:textAppearance="?attr/textAppearanceBodyMedium"/>
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

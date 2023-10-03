@@ -31,7 +31,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="@dimen/spacing_xlarge" />
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/account_config_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="@dimen/spacing_middle" />
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/forgot_auth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 android:visibility="invisible"
                 style="@style/Widget.AppCompat.ProgressBar"/>
         </FrameLayout>
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:paddingTop="15dp"
             android:paddingStart="40dp"
             android:paddingEnd="40dp"

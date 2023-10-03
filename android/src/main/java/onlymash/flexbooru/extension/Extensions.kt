@@ -17,6 +17,7 @@ package onlymash.flexbooru.extension
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -25,6 +26,7 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.postDelayed
 import onlymash.flexbooru.R
 
@@ -90,11 +92,33 @@ fun Context.redirectToDownloadManagerSettings() {
     }
 }
 
-fun Activity.openAppInMarket(packageName: String) {
+fun Context.openAppInMarket(packageName: String) {
+    openUri("market://details?id=$packageName".toUri())
+}
+
+fun Context.openUrl(url: String) {
+    openUri(url.toUri())
+}
+
+fun Context.openUri(uri: Uri) {
     try {
-        startActivity(
-            Intent.createChooser(
-                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")),
-                getString(R.string.share_via)))
-    } catch (_: ActivityNotFoundException) { }
+        startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, uri), getString(R.string.share_via)))
+    } catch (_: ActivityNotFoundException) {
+        Toast.makeText(this, getString(R.string.msg_no_app_to_open_url), Toast.LENGTH_LONG).show()
+    }
+}
+
+fun Context.downloadByAdm(url: String) {
+    val intent = Intent().apply {
+        action = Intent.ACTION_MAIN
+        setPackage("com.dv.adm")
+        component = ComponentName("com.dv.adm", "com.dv.get.AEditor")
+        putExtra(Intent.EXTRA_TEXT, url)
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+    try {
+        startActivity(intent)
+    } catch (_: ActivityNotFoundException) {
+        openUrl(url)
+    }
 }

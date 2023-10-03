@@ -26,6 +26,7 @@ val appModules = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidApplication()) }
     single { MyDatabase(androidApplication()) }
     single { get<MyDatabase>().booruDao() }
+    single { get<MyDatabase>().postDao() }
     single { get<MyDatabase>().tagFilterDao() }
     single { get<MyDatabase>().muzeiDao() }
     single { get<MyDatabase>().historyDao() }

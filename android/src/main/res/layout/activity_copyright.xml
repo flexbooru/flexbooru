@@ -22,7 +22,7 @@
     android:clipToPadding="false"
     android:scrollbars="vertical" >
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/copyright"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

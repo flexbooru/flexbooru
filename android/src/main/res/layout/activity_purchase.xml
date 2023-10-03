@@ -35,25 +35,25 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/purchase_info_title"
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodySmall"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/purchase_info_remove_ads"
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyLarge"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/purchase_info_unlock_full_features"
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyLarge"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/purchase_info_features"
                 android:paddingStart="@dimen/spacing_large"
                 android:paddingEnd="@dimen/spacing_middle"
@@ -76,13 +76,13 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/purchase_pay_title"
                 android:padding="@dimen/spacing_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodySmall"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/pay_google_play"
                 android:text="@string/purchase_pay_google_play"
                 android:padding="@dimen/spacing_middle"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:textAppearance="?attr/textAppearanceBodyLarge"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/pay_alipay"
                 android:text="@string/purchase_pay_alipay"
                 android:padding="@dimen/spacing_middle"
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:textAppearance="?attr/textAppearanceBodyLarge"/>
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/pay_redeem_code"
                 android:text="@string/purchase_pay_order_code"
                 android:padding="@dimen/spacing_middle"
