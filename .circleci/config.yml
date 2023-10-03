@@ -13,9 +13,16 @@ jobs:
       GRADLE_OPTS: -Dorg.gradle.workers.max=1 -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy="in-process" -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport
     steps:
       - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle.kts" }}
       - run:
           name: Run Lint
           command: ./gradlew lint --warning-mode all
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/.android/build-cache
+          key: jars-{{ checksum "build.gradle.kts" }}
       - store_artifacts:
           path: android/build/reports
           destination: reports
