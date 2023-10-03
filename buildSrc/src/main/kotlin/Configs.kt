@@ -1,5 +1,5 @@
 object Configs {
-    const val APP_VERSION_NAME = "3.1.6"
+    const val APP_VERSION_NAME = "3.2.0"
     const val APP_ID = "onlymash.flexbooru.play"
     const val SDK_VERSION = 34
     const val MIN_SDK_VERSION = 21
