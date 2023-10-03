@@ -57,6 +57,7 @@
     <string name="snackbar_copy_text">` %s ` panoya kopyalandı.</string>
     <string name="action_retry">Tekrar dene</string>
     <string name="msg_not_supported">Desteklenmiyor</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">Dosya %s olarak kaydedildi</string>
     <string name="msg_your_api_key_is_wrong">API anahtarınız (key) yanlış!</string>
     <string name="msg_cloudflare_challenges">Yükleme başarısız oldu, lütfen daha sonra tekrar deneyin</string>
