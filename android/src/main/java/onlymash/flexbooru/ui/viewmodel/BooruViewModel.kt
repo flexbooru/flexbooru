@@ -57,9 +57,7 @@ class BooruViewModel(private val booruDao: BooruDao) : ScopeViewModel() {
                 booruDao.getBooruByUidLiveData(uid)
             }
             booru.addSource(result) { data ->
-                if (data != null) {
-                    booru.postValue(data)
-                }
+                data?.let(booru::postValue)
             }
         }
         return true

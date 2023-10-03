@@ -13,8 +13,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.exoplayer
+package onlymash.flexbooru.player
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.media3.common.MediaItem
@@ -35,6 +36,7 @@ import java.io.File
 /**
  * [ExoPlayer] holder
  * */
+@SuppressLint("UnsafeOptInUsageError")
 class PlayerHolder {
 
     companion object {

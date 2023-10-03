@@ -48,6 +48,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Keys.POST_POSITION
 import onlymash.flexbooru.app.Keys.POST_QUERY
@@ -72,7 +73,7 @@ import onlymash.flexbooru.data.model.common.Post
 import onlymash.flexbooru.data.repository.favorite.VoteRepository
 import onlymash.flexbooru.data.repository.favorite.VoteRepositoryImpl
 import onlymash.flexbooru.databinding.ActivityDetailBinding
-import onlymash.flexbooru.exoplayer.PlayerHolder
+import onlymash.flexbooru.player.PlayerHolder
 import onlymash.flexbooru.extension.*
 import onlymash.flexbooru.ui.adapter.DetailAdapter
 import onlymash.flexbooru.ui.base.PathActivity
@@ -177,6 +178,7 @@ class DetailActivity : PathActivity(),
         val intent = Intent(ACTION_DETAIL_POST_POSITION).apply {
             putExtra(POST_QUERY, post.query)
             putExtra(POST_POSITION, position)
+            setPackage(BuildConfig.APPLICATION_ID)
         }
         sendBroadcast(intent)
         if (post.origin.isVideo()) {
@@ -569,7 +571,7 @@ class DetailActivity : PathActivity(),
                     .diskCacheKey(url)
                     .build()
                 imageLoader.executeBlocking(request)
-                imageLoader.diskCache?.get(url)?.data?.toFile()
+                imageLoader.diskCache?.openSnapshot(url)?.data?.toFile()
             } catch (_: Exception) {
                 null
             }

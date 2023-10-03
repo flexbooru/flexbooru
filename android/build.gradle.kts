@@ -116,8 +116,6 @@ android {
             "-opt-in=androidx.paging.ExperimentalPagingApi",
             "-opt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
             "-opt-in=coil.annotation.ExperimentalCoilApi",
-            "-opt-in=androidx.camera.core.ExperimentalGetImage",
-            "-opt-in=androidx.media3.common.util.UnstableApi",
             "-Xjvm-default=all-compatibility"
         )
     }

@@ -47,7 +47,7 @@ import onlymash.flexbooru.app.Settings.isOrderSuccess
 import onlymash.flexbooru.databinding.ActivityWhatAnimeBinding
 import onlymash.flexbooru.databinding.FragmentAnimePlayerBinding
 import onlymash.flexbooru.databinding.ItemWhatAnimeBinding
-import onlymash.flexbooru.exoplayer.PlayerHolder
+import onlymash.flexbooru.player.PlayerHolder
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.fileExt
 import onlymash.flexbooru.extension.toVisibility

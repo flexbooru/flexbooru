@@ -155,7 +155,8 @@
                 android:resource="@xml/file_provider_paths"/>
         </provider>
 
-        <receiver android:name=".receiver.DownloadNotificationClickReceiver"/>
+        <receiver android:name=".receiver.DownloadNotificationClickReceiver"
+            android:exported="false"/>
 
         <meta-data
             android:name="com.google.android.backup.api_key"

@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package onlymash.flexbooru.exoplayer
+package onlymash.flexbooru.player
 
 import android.net.Uri
 

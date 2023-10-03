@@ -15,6 +15,7 @@
 
 package onlymash.flexbooru.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.SharedElementCallback
 import android.content.*
@@ -636,13 +637,21 @@ class PostFragment : SearchBarFragment() {
         }
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onStart() {
         super.onStart()
         setActivityExitSharedElementCallback(sharedElementCallback)
-        context?.registerReceiver(
-            broadcastReceiver,
-            IntentFilter(DetailActivity.ACTION_DETAIL_POST_POSITION)
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context?.registerReceiver(
+                broadcastReceiver,
+                IntentFilter(DetailActivity.ACTION_DETAIL_POST_POSITION), Context.RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            context?.registerReceiver(
+                broadcastReceiver,
+                IntentFilter(DetailActivity.ACTION_DETAIL_POST_POSITION)
+            )
+        }
     }
 
     override fun onStop() {
