@@ -129,9 +129,6 @@ android {
         viewBinding = true
         buildConfig = true
     }
-//    lint {
-//        disable += setOf("DialogFragmentCallbacksDetector")
-//    }
     namespace = "onlymash.flexbooru"
 }
 

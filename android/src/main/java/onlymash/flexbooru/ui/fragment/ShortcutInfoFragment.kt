@@ -33,6 +33,7 @@ import onlymash.flexbooru.databinding.FragmentShortcutInfoBinding
 import onlymash.flexbooru.extension.copyText
 import onlymash.flexbooru.extension.downloadByAdm
 import onlymash.flexbooru.extension.formatDate
+import onlymash.flexbooru.extension.isVideo
 import onlymash.flexbooru.extension.launchUrl
 import onlymash.flexbooru.ui.activity.AccountActivity
 import onlymash.flexbooru.ui.base.PathActivity
@@ -177,12 +178,16 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
         val post = post ?: return
         val activity = activity as? PathActivity ?: return
         val url = getUrl(post, type)
-        DownloadWorker.download(
-            url = url,
-            postId = post.id,
-            host = booru.host,
-            activity = activity
-        )
+        if (url.isVideo()) {
+            context?.downloadByAdm(url)
+        } else {
+            DownloadWorker.download(
+                url = url,
+                postId = post.id,
+                host = booru.host,
+                activity = activity
+            )
+        }
     }
 
     private fun openUrl(type: UrlType) {

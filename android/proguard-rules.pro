@@ -143,11 +143,5 @@
 
 -keep public enum nl.adaptivity.xmlutil.EventType {*;}
 
-# Kodein
--keep, allowobfuscation, allowoptimization class org.kodein.type.TypeReference
--keep, allowobfuscation, allowoptimization class org.kodein.type.JVMAbstractTypeToken$Companion$WrappingTest
-
--keep, allowobfuscation, allowoptimization class * extends org.kodein.type.TypeReference
--keep, allowobfuscation, allowoptimization class * extends org.kodein.type.JVMAbstractTypeToken$Companion$WrappingTest
-
 -dontwarn com.google.android.datatransport.runtime.ForcedSender
+-dontwarn org.slf4j.**
