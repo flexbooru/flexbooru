@@ -57,6 +57,7 @@
     <string name="snackbar_copy_text">`%s` foi copiado para a área de transferência.</string>
     <string name="action_retry">Retry</string>
     <string name="msg_not_supported">Não suportado</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">O arquivo foi salvo como %s</string>
     <string name="msg_your_api_key_is_wrong">Sua chave Api está errada!</string>
     <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
