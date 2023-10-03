@@ -57,6 +57,7 @@
     <string name="snackbar_copy_text">` %s ` がクリップボードにコピーされました</string>
     <string name="action_retry">リトライ</string>
     <string name="msg_not_supported">サポートされていません。</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">このファイルが%sとして保存されました。</string>
     <string name="msg_your_api_key_is_wrong">Api Keyが違います</string>
     <string name="msg_cloudflare_challenges">読み込みに失敗しました、後でもう一度試してください。</string>
