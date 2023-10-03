@@ -22,7 +22,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
@@ -57,6 +59,7 @@ class ScannerActivity : BaseActivity(), ImageAnalysis.Analyzer {
         }.build().also { it.setAnalyzer(Dispatchers.Main.immediate.asExecutor(), this) }
     }
 
+   @OptIn(ExperimentalGetImage::class)
    override fun analyze(image: ImageProxy) {
         val mediaImage = image.image ?: return
         lifecycleScope.launch {

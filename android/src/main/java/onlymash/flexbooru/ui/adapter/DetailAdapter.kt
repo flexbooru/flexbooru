@@ -27,6 +27,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.media3.ui.PlayerView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +39,6 @@ import coil.request.ImageRequest
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.github.chrisbanes.photoview.PhotoView
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Settings.POST_SIZE_LARGER
 import onlymash.flexbooru.app.Settings.POST_SIZE_ORIGIN
@@ -123,7 +123,7 @@ class DetailAdapter(
                 }
             }
             url.isVideo() -> {
-                val playerView = LayoutInflater.from(layout.context).inflate(R.layout.item_exoplayer, null) as StyledPlayerView
+                val playerView = LayoutInflater.from(layout.context).inflate(R.layout.item_exoplayer, null) as PlayerView
                 playerView.apply {
                     tag = String.format("player_%d", position)
                     transitionName = String.format("post_%d", post.id)

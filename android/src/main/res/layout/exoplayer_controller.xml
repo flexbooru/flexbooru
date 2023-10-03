@@ -82,12 +82,12 @@
         android:padding="24dp"
         android:clipToPadding="false">
 
-        <include layout="@layout/exo_styled_player_control_rewind_button" />
+        <include layout="@layout/exo_player_control_rewind_button" />
 
         <ImageButton android:id="@id/exo_play_pause"
             style="@style/ExoStyledControls.Button.Center.PlayPause"/>
 
-        <include layout="@layout/exo_styled_player_control_ffwd_button" />
+        <include layout="@layout/exo_player_control_ffwd_button" />
 
     </LinearLayout>
 

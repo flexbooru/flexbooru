@@ -34,12 +34,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.ui.PlayerView
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.ViewPager2
 import coil.executeBlocking
 import coil.imageLoader
 import coil.request.ImageRequest
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -148,9 +148,9 @@ class DetailActivity : PathActivity(),
     private val currentPost: Post?
         get() = detailAdapter.getPost(detailPager.currentItem)
 
-    private var oldPlayerView: StyledPlayerView? = null
+    private var oldPlayerView: PlayerView? = null
 
-    private val playerView: StyledPlayerView?
+    private val playerView: PlayerView?
         get() = detailPager.findViewWithTag(String.format("player_%d", detailPager.currentItem))
 
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {

@@ -17,18 +17,17 @@ package onlymash.flexbooru.exoplayer
 
 import android.content.Context
 import android.net.Uri
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.ui.PlayerView
 import onlymash.flexbooru.app.App.Companion.app
 import onlymash.flexbooru.app.Values.PC_USER_AGENT
 import java.io.File
@@ -68,7 +67,7 @@ class PlayerHolder {
     }
 
     //start play
-    fun start(context: Context, uri: Uri, playerView: StyledPlayerView) {
+    fun start(context: Context, uri: Uri, playerView: PlayerView) {
         playerView.player = player
         val mediaSource = createExtractorMediaSource(context, uri)
         val index = playerStates.indexOfFirst { it.uri == uri }

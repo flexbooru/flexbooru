@@ -18,7 +18,7 @@ package onlymash.flexbooru.exoplayer
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.google.android.exoplayer2.database.DatabaseProvider
+import androidx.media3.database.DatabaseProvider
 import onlymash.flexbooru.app.App
 
 class DefaultDatabaseProvider(context: Context) : SQLiteOpenHelper(context, "ExoPlayer", null, 1), DatabaseProvider {
@@ -39,18 +39,5 @@ class DefaultDatabaseProvider(context: Context) : SQLiteOpenHelper(context, "Exo
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
 
-    }
-
-    @Synchronized
-    override fun close() {
-        super.close()
-    }
-
-    override fun getReadableDatabase(): SQLiteDatabase {
-        return super.getReadableDatabase()
-    }
-
-    override fun getWritableDatabase(): SQLiteDatabase {
-        return super.getWritableDatabase()
     }
 }

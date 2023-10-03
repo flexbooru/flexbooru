@@ -117,6 +117,7 @@ android {
             "-opt-in=nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
             "-opt-in=coil.annotation.ExperimentalCoilApi",
             "-opt-in=androidx.camera.core.ExperimentalGetImage",
+            "-opt-in=androidx.media3.common.util.UnstableApi",
             "-Xjvm-default=all-compatibility"
         )
     }
@@ -217,7 +218,9 @@ dependencies {
     implementation(libs.xmlutil.android.core)
     implementation(libs.xmlutil.android.serialization)
 
-    implementation(libs.exoplayer)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.media3.ui)
 
     testImplementation(libs.test.junit)
     testImplementation(libs.test.robolectric)

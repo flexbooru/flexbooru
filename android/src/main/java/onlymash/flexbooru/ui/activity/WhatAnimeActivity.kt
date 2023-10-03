@@ -30,6 +30,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.decode.GifDecoder
@@ -37,7 +38,6 @@ import coil.decode.ImageDecoderDecoder
 import coil.imageLoader
 import coil.load
 import coil.request.ImageRequest
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -267,7 +267,7 @@ class WhatAnimeActivity : BaseActivity() {
 
     class AnimePlayerDialog : BaseBottomSheetDialog() {
 
-        private var playerView: StyledPlayerView? = null
+        private var playerView: PlayerView? = null
         private lateinit var behavior: BottomSheetBehavior<View>
         private lateinit var binding: FragmentAnimePlayerBinding
 
