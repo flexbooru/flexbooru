@@ -36,6 +36,7 @@ import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL_LEGACY
 import onlymash.flexbooru.app.Values.BOORU_TYPE_SHIMMIE
 import onlymash.flexbooru.data.database.BooruManager
 import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.extension.isStillImage
 import org.koin.android.ext.android.inject
 
 
@@ -59,7 +60,7 @@ class MuzeiArtWorker(
         val muzei = MuzeiManager.getMuzeiByUid(uid) ?: return Result.failure()
         val booru = BooruManager.getBooruByUid(muzei.booruUid) ?: return Result.failure()
         val postDao by App.app.inject<PostDao>()
-        val posts = postDao.getPostsRaw(booruUid = muzei.booruUid, query = muzei.query, limit = muzeiLimit)
+        val posts = postDao.getPostsRaw(booruUid = muzei.booruUid, query = muzei.query, limit = muzeiLimit).filter { it.origin.isStillImage() }
         val providerClient = ProviderContract.getProviderClient(
             applicationContext, applicationContext.packageName + ".muzei")
         val attributionString = applicationContext.getString(R.string.muzei_attribution)

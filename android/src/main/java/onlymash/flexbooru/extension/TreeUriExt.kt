@@ -154,12 +154,7 @@ fun String.fileName(): String {
 }
 
 fun String.isImage(): Boolean {
-    val ext = fileExt()
-    return ext.equals("jpg", ignoreCase = true) ||
-            ext.equals("png", ignoreCase = true) ||
-            ext.equals("gif", ignoreCase = true) ||
-            ext.equals("jpeg", ignoreCase = true) ||
-            ext.equals("webp", ignoreCase = true)
+    return isGifImage() || isStillImage()
 }
 
 fun String.isVideo(): Boolean {

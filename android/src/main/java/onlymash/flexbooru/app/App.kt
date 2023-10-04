@@ -27,7 +27,6 @@ import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.dispose
 import coil.load
-import coil.memory.MemoryCache
 import com.android.billingclient.api.*
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
@@ -195,18 +194,12 @@ class App : Application(), ImageLoaderFactory {
         if (Settings.isDohEnable) {
             builder.dns(Settings.doh)
         }
+        val diskCache = DiskCache.Builder()
+            .directory(cacheDir.resolve("image_cache"))
+            .maxSizePercent(CACHE_MAX_PERCENT)
+            .build()
         return ImageLoader.Builder(this)
-            .diskCache {
-                DiskCache.Builder()
-                    .directory(cacheDir.resolve("image_cache"))
-                    .maxSizePercent(CACHE_MAX_PERCENT)
-                    .build()
-            }
-            .memoryCache {
-                MemoryCache.Builder(this)
-                    .maxSizePercent(1.0)
-                    .build()
-            }
+            .diskCache(diskCache)
             .allowHardware(false)
             .okHttpClient(builder.build())
             .crossfade(true)

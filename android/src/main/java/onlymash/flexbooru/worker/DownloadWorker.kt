@@ -22,15 +22,24 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.work.*
+import coil.decode.DecodeResult
+import coil.decode.Decoder
+import coil.disk.DiskCache
 import coil.executeBlocking
 import coil.imageLoader
+import coil.request.CachePolicy
 import coil.request.ImageRequest
+import okhttp3.internal.closeQuietly
+import onlymash.flexbooru.BuildConfig
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.okhttp.ProgressInterceptor
@@ -172,14 +181,30 @@ class DownloadWorker(
         ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
             setForegroundAsync(createDownloadingInfo(title, url, channelId, id, progress))
         }
+        var snapshot: DiskCache.Snapshot? = null
         val file = try {
             val request = ImageRequest.Builder(applicationContext)
                 .data(url)
-                .memoryCacheKey(url)
+                .memoryCachePolicy(CachePolicy.DISABLED)
                 .diskCacheKey(url)
+                .allowConversionToBitmap(false)
+                .decoderFactory { _, _, _ ->
+                    Decoder { DecodeResult(ColorDrawable(Color.BLACK), false) }
+                }
                 .build()
-            applicationContext.imageLoader.executeBlocking(request)
-            applicationContext.imageLoader.diskCache?.openSnapshot(url)?.data?.toFile()
+            when (val result = applicationContext.imageLoader.executeBlocking(request)) {
+                is coil.request.SuccessResult -> {
+                    snapshot = applicationContext.imageLoader.diskCache?.openSnapshot(url)
+                    snapshot?.data?.toFile()
+                }
+                is coil.request.ErrorResult -> {
+                    if (BuildConfig.DEBUG) {
+                        Log.e("DownloadWorker", "downloadPost: ", result.throwable)
+                    }
+                    null
+                }
+                else -> null
+            }
         } catch (_: Exception) {
             null
         }
@@ -198,6 +223,7 @@ class DownloadWorker(
             `is`.safeCloseQuietly()
             os?.safeCloseQuietly()
         }
+        snapshot?.closeQuietly()
         notificationManager.notify(id + 1000000, getDownloadedNotification(title = title, channelId = channelId, desUri = desUri))
         return Result.success()
     }

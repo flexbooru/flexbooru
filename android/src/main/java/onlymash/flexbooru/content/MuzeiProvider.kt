@@ -15,9 +15,15 @@
 
 package onlymash.flexbooru.content
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import coil.decode.DecodeResult
+import coil.decode.Decoder
 import coil.executeBlocking
 import coil.imageLoader
+import coil.request.CachePolicy
 import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import onlymash.flexbooru.worker.MuzeiArtWorker
@@ -39,12 +45,20 @@ class MuzeiProvider : MuzeiArtProvider() {
             val key = uri.toString()
             val request = ImageRequest.Builder(context)
                 .data(uri)
-                .memoryCacheKey(key)
+                .memoryCachePolicy(CachePolicy.DISABLED)
                 .diskCacheKey(key)
+                .allowConversionToBitmap(false)
+                .decoderFactory { _, _, _ ->
+                    Decoder { DecodeResult(ColorDrawable(Color.BLACK), false) }
+                }
                 .build()
-            context.imageLoader.executeBlocking(request)
-            val file = context.imageLoader.diskCache?.openSnapshot(key)?.data?.toFile()
-            if (file != null && file.exists()) FileInputStream(file) else super.openFile(artwork)
+            val result = context.imageLoader.executeBlocking(request)
+            if (result is SuccessResult) {
+                val file = context.imageLoader.diskCache?.openSnapshot(key)?.data?.toFile()
+                if (file != null && file.exists()) FileInputStream(file) else super.openFile(artwork)
+            } else {
+                super.openFile(artwork)
+            }
         } else {
             super.openFile(artwork)
         }
