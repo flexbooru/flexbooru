@@ -21,29 +21,29 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 class MyMigration(startVersion: Int, endVersion: Int) : Migration(startVersion, endVersion) {
-    override fun migrate(database: SupportSQLiteDatabase) {
+    override fun migrate(db: SupportSQLiteDatabase) {
         when {
             startVersion == 1 && endVersion == 2 -> {
-                database.execSQL("ALTER TABLE  `boorus` ADD COLUMN `path` TEXT")
+                db.execSQL("ALTER TABLE  `boorus` ADD COLUMN `path` TEXT")
             }
             startVersion == 2 && endVersion == 3 -> {
-                database.execSQL("CREATE TABLE IF NOT EXISTS `history` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_history_booru_uid_query` ON `history` (`booru_uid`, `query`)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `history` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_history_booru_uid_query` ON `history` (`booru_uid`, `query`)")
             }
             startVersion == 3 && endVersion == 4 -> {
-                database.execSQL("DROP TABLE IF EXISTS `posts`")
-                database.execSQL("CREATE TABLE IF NOT EXISTS `posts` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `index` INTEGER NOT NULL, `query` TEXT NOT NULL, `id` INTEGER NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `size` INTEGER NOT NULL, `score` INTEGER NOT NULL, `rating` TEXT NOT NULL, `is_favored` INTEGER NOT NULL, `time` INTEGER, `tags` TEXT NOT NULL, `preview` TEXT NOT NULL, `sample` TEXT NOT NULL, `medium` TEXT NOT NULL, `origin` TEXT NOT NULL, `pixiv_id` INTEGER, `source` TEXT, `uploader` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_posts_booru_uid_query_id` ON `posts` (`booru_uid`, `query`, `id`)")
+                db.execSQL("DROP TABLE IF EXISTS `posts`")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `posts` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `index` INTEGER NOT NULL, `query` TEXT NOT NULL, `id` INTEGER NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `size` INTEGER NOT NULL, `score` INTEGER NOT NULL, `rating` TEXT NOT NULL, `is_favored` INTEGER NOT NULL, `time` INTEGER, `tags` TEXT NOT NULL, `preview` TEXT NOT NULL, `sample` TEXT NOT NULL, `medium` TEXT NOT NULL, `origin` TEXT NOT NULL, `pixiv_id` INTEGER, `source` TEXT, `uploader` TEXT NOT NULL, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_posts_booru_uid_query_id` ON `posts` (`booru_uid`, `query`, `id`)")
             }
             startVersion == 4 && endVersion == 5 -> {
-                database.execSQL("DROP TABLE IF EXISTS `cookies`")
+                db.execSQL("DROP TABLE IF EXISTS `cookies`")
             }
             startVersion == 5 && endVersion == 6 -> {
-                database.execSQL("CREATE TABLE IF NOT EXISTS `next` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, `next` TEXT, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_next_booru_uid_query` ON `next` (`booru_uid`, `query`)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `next` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `booru_uid` INTEGER NOT NULL, `query` TEXT NOT NULL, `next` TEXT, FOREIGN KEY(`booru_uid`) REFERENCES `boorus`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_next_booru_uid_query` ON `next` (`booru_uid`, `query`)")
             }
             startVersion == 6 && endVersion == 7 -> {
-                database.execSQL("ALTER TABLE `boorus` ADD COLUMN `auth` TEXT")
+                db.execSQL("ALTER TABLE `boorus` ADD COLUMN `auth` TEXT")
             }
         }
     }
