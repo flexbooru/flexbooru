@@ -58,6 +58,7 @@
     <string name="snackbar_copy_text">` %s ` han sido copiados al portapapeles.</string>
     <string name="action_retry">Retry</string>
     <string name="msg_not_supported">No soportado</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">El archivo se ha guardado como %s</string>
     <string name="msg_your_api_key_is_wrong">Tu Clave Api es incorrecta!</string>
     <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>

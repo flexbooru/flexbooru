@@ -58,6 +58,7 @@
     <string name="snackbar_copy_text">` %s ` have been copied to clipboard.</string>
     <string name="action_retry">Retry</string>
     <string name="msg_not_supported">Not supported</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">The file has been saved as %s</string>
     <string name="msg_your_api_key_is_wrong">Your Api Key is wrong!</string>
     <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>

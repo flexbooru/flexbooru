@@ -57,6 +57,7 @@
     <string name="snackbar_copy_text">` %s ` zostało skopiowane do schowka.</string>
     <string name="action_retry">Spróbuj ponownie</string>
     <string name="msg_not_supported">Nieobsługiwany</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">Plik został zapisany jako %s</string>
     <string name="msg_your_api_key_is_wrong">Podano niepoprawny klucz Api!</string>
     <string name="msg_cloudflare_challenges">Ładowanie nie powiodło się, spróbuj ponownie później</string>

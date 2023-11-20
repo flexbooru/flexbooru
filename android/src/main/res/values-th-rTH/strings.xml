@@ -57,6 +57,7 @@
     <string name="snackbar_copy_text">` %s ` ได้คัดลอกไปยังคลิปบอร์ดแล้ว</string>
     <string name="action_retry">ลองอีกครั้ง</string>
     <string name="msg_not_supported">ไม่รองรับ</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">ไฟล์ถูกบันทึกเป็น %s</string>
     <string name="msg_your_api_key_is_wrong">คีย์ Api ของคุณผิด!</string>
     <string name="msg_cloudflare_challenges">การโหลดล้มเหลว, กรุณาลองใหม่ภายหลัง</string>

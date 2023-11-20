@@ -57,6 +57,7 @@
     <string name="snackbar_copy_text">\'%s\' এটা কপি হয়ে গেছে.</string>
     <string name="action_retry">Retry</string>
     <string name="msg_not_supported">সমর্থিত নয়</string>
+    <string name="msg_no_app_to_open_url">Not app to open url</string>
     <string name="msg_file_save_success">এই ফাইল টি %s নামে সেভ হয়েছে</string>
     <string name="msg_your_api_key_is_wrong">আপনার api কী টি ভুল!</string>
     <string name="msg_cloudflare_challenges">Loading failed, please try again later</string>
