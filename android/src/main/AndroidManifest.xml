@@ -22,6 +22,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.touchscreen"
@@ -157,6 +159,11 @@
 
         <receiver android:name=".receiver.DownloadNotificationClickReceiver"
             android:exported="false"/>
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="specialUse"
+            tools:node="merge"/>
 
         <meta-data
             android:name="com.google.android.backup.api_key"

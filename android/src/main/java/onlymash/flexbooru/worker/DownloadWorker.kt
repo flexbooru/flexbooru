@@ -22,6 +22,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -304,7 +305,11 @@ class DownloadWorker(
             .addAction(android.R.drawable.ic_delete, applicationContext.getString(R.string.dialog_cancel), cancelIntent)
             .setProgress(100, progress, false)
             .build()
-        return ForegroundInfo(notificationId, notification)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            ForegroundInfo(notificationId, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+        } else {
+            ForegroundInfo(notificationId, notification)
+        }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
