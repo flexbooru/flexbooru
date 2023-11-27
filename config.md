@@ -28,7 +28,7 @@ nav_order: 2
 
 * [lolibooru](booru://bG9saWJvb3J1Lm1vZUBAQGh0dHBzQEBAbG9saWJvb3J1Lm1vZUBAQDFAQEAtLXlvdXItcGFzc3dvcmQtLQ)
 
-* [rule34.xxx](booru://cnVsZTM0Lnh4eEBAQGh0dHBzQEBAcnVsZTM0Lnh4eEBAQDZAQEA)
+* [rule34.xxx](booru://cnVsZTM0Lnh4eEBAQGh0dHBzQEBAYXBpLnJ1bGUzNC54eHhAQEA2QEBA)
 
 * [sankaku](booru://U2Fua2FrdUBAQGh0dHBzQEBAY2FwaS12Mi5zYW5rYWt1Y29tcGxleC5jb21AQEA0QEBA)
 
