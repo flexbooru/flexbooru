@@ -20,14 +20,14 @@ import org.apache.commons.io.output.ByteArrayOutputStream
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    id(libs.plugins.android.application.get().pluginId)
-    id(libs.plugins.kotlin.android.get().pluginId)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id(libs.plugins.kotlin.parcelize.get().pluginId)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.gms)
-    id(libs.plugins.gms.oss.licenses.get().pluginId)
     alias(libs.plugins.firebase.crashlytics)
+    id(libs.plugins.gms.oss.licenses.get().pluginId)
 }
 
 val releaseStoreFile = file("../.gradle/flexbooru_play.jks")
@@ -43,6 +43,20 @@ exec {
     standardOutput = byteOut
 }
 val verCode = String(byteOut.toByteArray()).trim().toInt()
+
+object Configs {
+    const val APP_VERSION_NAME = "3.2.2"
+    const val APP_ID = "onlymash.flexbooru.play"
+    const val SDK_VERSION = 34
+    const val MIN_SDK_VERSION = 21
+
+    val LANGUAGES = listOf(
+        "en", "zh-rCN", "zh-rHK", "zh-rTW",
+        "nl-rNL", "pt-rBR", "es-rES", "pl-rPL",
+        "fr-rFR", "hu-rHU", "ru-rRU", "ja-rJP",
+        "in-rID", "de-rDE", "tr-rTR"
+    )
+}
 
 android {
     signingConfigs {

@@ -262,17 +262,17 @@ class DownloadWorker(
         ProgressInterceptor.bindUrlWithInterval(url, 500L) { progress ->
             setForegroundAsync(createDownloadingInfo(title, url, channelId, id, progress))
         }
-        var `is`: InputStream? = null
-        val os = applicationContext.contentResolver.openOutputStream(desUri)
+        var inputStream: InputStream? = null
+        val outputStream = applicationContext.contentResolver.openOutputStream(desUri)
         try {
-            `is` = OkHttp3Downloader(applicationContext).load(url).body.source().inputStream()
-            `is`.copyTo(os)
+            inputStream = OkHttp3Downloader(applicationContext).load(url).body?.source()?.inputStream()
+            inputStream?.copyTo(outputStream)
         } catch (_: IOException) {
             return Result.failure()
         } finally {
             ProgressInterceptor.removeListener(url)
-            `is`?.safeCloseQuietly()
-            os?.safeCloseQuietly()
+            inputStream?.safeCloseQuietly()
+            outputStream?.safeCloseQuietly()
         }
         notificationManager.notify(id + 1000000, getDownloadedNotification(title = title, channelId = channelId, desUri = desUri))
         return Result.success()

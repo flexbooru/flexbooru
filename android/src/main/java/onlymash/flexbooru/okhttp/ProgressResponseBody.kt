@@ -21,7 +21,7 @@ import okio.*
 import java.io.IOException
 
 class ProgressResponseBody(
-    private val responseBody: ResponseBody,
+    private val responseBody: ResponseBody?,
     private val progressListener: ProgressListener
 ) : ResponseBody() {
 
@@ -29,20 +29,20 @@ class ProgressResponseBody(
     private var bufferedSource: BufferedSource? = null
 
     override fun contentType(): MediaType? {
-        return responseBody.contentType()
+        return responseBody?.contentType()
     }
 
     @Throws(IOException::class)
     override fun contentLength(): Long {
-        return responseBody.contentLength()
+        return responseBody?.contentLength() ?: 1L
     }
 
     @Throws(IOException::class)
     override fun source(): BufferedSource {
         if (bufferedSource == null) {
-            bufferedSource = source(responseBody.source()).buffer()
+            bufferedSource = responseBody?.let { source(it.source()).buffer() }
         }
-        return bufferedSource!!
+        return bufferedSource ?: throw IllegalStateException("source is null")
     }
 
     private fun source(source: Source): Source {
@@ -53,11 +53,13 @@ class ProgressResponseBody(
                 val bytesRead = super.read(sink, byteCount)
                 // read() returns the number of bytes read, or -1 if this source is exhausted.
                 totalBytesRead += if (bytesRead != -1L) bytesRead else 0
-                progressListener.onUpdate(
-                    totalBytesRead,
-                    responseBody.contentLength(),
-                    bytesRead == -1L
-                )
+                responseBody?.let {
+                    progressListener.onUpdate(
+                        totalBytesRead,
+                        it.contentLength(),
+                        bytesRead == -1L
+                    )
+                }
                 return bytesRead
             }
         }

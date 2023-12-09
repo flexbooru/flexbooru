@@ -1,10 +1,10 @@
 [versions]
-agp = "8.2.0-rc03"
-kotlin = "1.9.10"
-ksp = "1.9.10-1.0.13"
+agp = "8.2.0"
+kotlin = "1.9.20"
+ksp = "1.9.20-1.0.14"
 gms = "4.4.0"
-ben-versions = "0.49.0"
-ktor = "2.3.5"
+ben-versions = "0.50.0"
+ktor = "2.3.7"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.6.0"
 compose-bom = "2023.10.01"
@@ -12,11 +12,11 @@ accompanist = "0.32.0"
 lifecycle = "2.6.2"
 fragment = "1.6.2"
 activity = "1.8.1"
-room = "2.6.0"
+room = "2.6.1"
 navigation = "2.7.5"
 camera = "1.3.0"
-okhttp = "5.0.0-alpha.11"
-coil = "2.4.0"
+okhttp = "4.12.0"
+coil = "2.5.0"
 glide = "4.16.0"
 retrofit = "2.9.0"
 koin = "3.5.0"
@@ -26,7 +26,6 @@ oss-licenses = "0.10.6"
 espresso = "3.5.1"
 lottie = "6.1.0"
 paging = "3.2.1"
-games-activity = "2.0.2"
 preference = "1.2.1"
 media3 = "1.2.0"
 xmlutil = "0.86.2"
@@ -120,7 +119,7 @@ androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.
 androidx-recyclerview-selection = "androidx.recyclerview:recyclerview-selection:1.1.0"
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 androidx-preference-ktk = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
-androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.1.0-alpha06"
+androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.1.0-alpha07"
 androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 androidx-constraintlayout-compose = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
@@ -148,16 +147,15 @@ androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.r
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera" }
 androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camera" }
-androidx-games-activity = { group = "androidx.games", name = "games-activity", version.ref = "games-activity" }
-androidx-media = "androidx.media:media:1.6.0"
+androidx-media = "androidx.media:media:1.7.0"
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3" }
-androidx-webkit = "androidx.webkit:webkit:1.8.0"
+androidx-webkit = "androidx.webkit:webkit:1.9.0"
 androidx-gridlayout = { module = "androidx.gridlayout:gridlayout", version = "1.0.0" }
 androidx-palette-ktx = "androidx.palette:palette-ktx:1.0.0"
 androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.1.0-beta02"
-androidx-work-runtime-ktx = "androidx.work:work-runtime-ktx:2.8.1"
+androidx-work-runtime-ktx = "androidx.work:work-runtime-ktx:2.9.0"
 
 androidx-test-runner = "androidx.test:runner:1.5.2"
 androidx-test-rules = "androidx.test:rules:1.5.0"
@@ -167,7 +165,7 @@ androidx-test-espresso-contrib = { module = "androidx.test.espresso:espresso-con
 androidx-test-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espresso" }
 
 test-junit = "junit:junit:4.13.2"
-test-robolectric = "org.robolectric:robolectric:4.10.3"
+test-robolectric = "org.robolectric:robolectric:4.11.1"
 
 material-material = "com.google.android.material:material:1.10.0"
 
@@ -182,14 +180,14 @@ moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "mosh
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 
-firebase-bom = "com.google.firebase:firebase-bom:32.6.0"
+firebase-bom = "com.google.firebase:firebase-bom:32.7.0"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics" }
 firebase-protolite-well-known-types = "com.google.firebase:protolite-well-known-types:18.0.0"
 installreferrer = "com.android.installreferrer:installreferrer:2.2"
 gms-ads-identifier = "com.google.android.gms:play-services-ads-identifier:18.0.1"
-gms-ads = { module = "com.google.android.gms:play-services-ads", version="22.4.0" }
+gms-ads = { module = "com.google.android.gms:play-services-ads", version="22.6.0" }
 gms-vision = { module = "com.google.android.gms:play-services-vision" }
 gms-oss-licenses = "com.google.android.gms:play-services-oss-licenses:17.0.1"
 billing-ktx = "com.android.billingclient:billing-ktx:6.1.0"
@@ -213,10 +211,6 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 
 lottie-lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
-
-javapoet = "com.squareup:javapoet:1.13.0"
-
-exoplayer = "com.google.android.exoplayer:exoplayer:2.19.1"
 
 xmlutil-android-core = { module = "io.github.pdvrieze.xmlutil:core-android", version.ref="xmlutil"}
 xmlutil-android-serialization = { module = "io.github.pdvrieze.xmlutil:serialization-android", version.ref="xmlutil" }
