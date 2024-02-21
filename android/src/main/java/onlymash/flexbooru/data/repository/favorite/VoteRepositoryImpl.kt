@@ -15,8 +15,10 @@
 
 package onlymash.flexbooru.data.repository.favorite
 
+import android.webkit.CookieManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.HttpUrl
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
@@ -55,13 +57,22 @@ class VoteRepositoryImpl(
         }
     }
 
+    private fun setGelCookie(url: HttpUrl, user_id: Int, pass_hash: String) {
+        val manager = CookieManager.getInstance()
+        manager.setCookie(url.toString(), "user_id=${user_id}")
+        manager.setCookie(url.toString(), "pass_hash=${pass_hash}")
+    }
+
     private suspend fun addGelFav(action: ActionVote): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.gelApi.favPost(
-                    cookie = action.booru.user?.gelCookie,
-                    httpUrl = action.getGelAddFavUrl()
+                setGelCookie(
+                    action.getGelRemoveFavUrl(), // NOTICE: Here is GelRemoveFavUrl, GelAddFavUrl is in subdir
+                    action.booru.user!!.id,
+                    action.booru.user!!.token
                 )
+                val response = booruApis.gelApi.favPost(action.getGelAddFavUrl())
+
                 if (response.isSuccessful) {
                     val content = response.body()!!.string()
                     when (content) {
@@ -92,11 +103,14 @@ class VoteRepositoryImpl(
     private suspend fun removeGelFav(action: ActionVote): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = booruApis.gelApi.favPost(
-                    cookie = action.booru.user?.gelCookie,
-                    httpUrl = action.getGelRemoveFavUrl()
+                setGelCookie(
+                    action.getGelRemoveFavUrl(),
+                    action.booru.user!!.id,
+                    action.booru.user!!.token
                 )
-                if (response.code() == 302) {
+                val response = booruApis.gelApi.favPost(action.getGelRemoveFavUrl())
+
+                if (response.isSuccessful) {
                     postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = false)
                     NetResult.Success(true)
                 } else {
