@@ -63,8 +63,23 @@ class VoteRepositoryImpl(
                     httpUrl = action.getGelAddFavUrl()
                 )
                 if (response.isSuccessful) {
-                    postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
-                    NetResult.Success(true)
+                    val content = response.body()!!.string()
+                    when (content) {
+                        // Success (3) or already in favorites (1)
+                        "3", "1" -> {
+                            postDao.updateFav(booruUid = action.booru.uid, postId = action.postId, isFavored = true)
+                            NetResult.Success(true)
+                        }
+
+                        // Failed
+                        "2" -> {
+                            NetResult.Error("Add to favorites failed")
+                        }
+
+                        else -> {
+                            NetResult.Error("Unknown result")
+                        }
+                    }
                 } else {
                     NetResult.Error("code: ${response.code()}")
                 }
