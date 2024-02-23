@@ -17,11 +17,9 @@ package onlymash.flexbooru.data.api
 
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
-import onlymash.flexbooru.app.Keys
 import onlymash.flexbooru.data.model.gelbooru.*
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Url
 
 interface GelbooruApi {
@@ -42,8 +40,5 @@ interface GelbooruApi {
     suspend fun getComments(@Url httpUrl: HttpUrl): Response<CommentGelResponse>
 
     @GET
-    suspend fun favPost(
-        @Header(Keys.HEADER_COOKIE) cookie: String? = null,
-        @Url httpUrl: HttpUrl
-    ): Response<ResponseBody>
+    suspend fun favPost(@Url httpUrl: HttpUrl): Response<ResponseBody>
 }
