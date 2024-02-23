@@ -28,6 +28,10 @@ object AndroidCookieJar : CookieJar {
         }
     }
 
+    fun set(url: String, cookies: List<String>) {
+        cookies.forEach { manager.setCookie(url, it) }
+    }
+
     fun remove(url: HttpUrl, cookieNames: List<String>? = null, maxAge: Int = -1): Int {
         val urlString = url.toString()
         val cookies = manager.getCookie(urlString) ?: return 0

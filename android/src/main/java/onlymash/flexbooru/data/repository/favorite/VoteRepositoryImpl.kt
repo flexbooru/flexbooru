@@ -15,10 +15,8 @@
 
 package onlymash.flexbooru.data.repository.favorite
 
-import android.webkit.CookieManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.HttpUrl
 import onlymash.flexbooru.app.App
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
@@ -30,6 +28,7 @@ import onlymash.flexbooru.data.action.ActionVote
 import onlymash.flexbooru.data.api.BooruApis
 import onlymash.flexbooru.data.database.dao.PostDao
 import onlymash.flexbooru.extension.NetResult
+import onlymash.flexbooru.okhttp.AndroidCookieJar
 import retrofit2.HttpException
 
 class VoteRepositoryImpl(
@@ -57,19 +56,12 @@ class VoteRepositoryImpl(
         }
     }
 
-    private fun setGelCookie(url: HttpUrl, user_id: Int, pass_hash: String) {
-        val manager = CookieManager.getInstance()
-        manager.setCookie(url.toString(), "user_id=${user_id}")
-        manager.setCookie(url.toString(), "pass_hash=${pass_hash}")
-    }
-
     private suspend fun addGelFav(action: ActionVote): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                setGelCookie(
-                    action.getGelRemoveFavUrl(), // NOTICE: Here is GelRemoveFavUrl, GelAddFavUrl is in subdir
-                    action.booru.user!!.id,
-                    action.booru.user!!.token
+                AndroidCookieJar.set(
+                    action.getGelRemoveFavUrl().toString(), // NOTICE: Here is GelRemoveFavUrl, GelAddFavUrl is in subdir
+                    arrayListOf("user_id=${action.booru.user!!.id}", "pass_hash=${action.booru.user!!.token}")
                 )
                 val response = booruApis.gelApi.favPost(action.getGelAddFavUrl())
 
@@ -103,10 +95,9 @@ class VoteRepositoryImpl(
     private suspend fun removeGelFav(action: ActionVote): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                setGelCookie(
-                    action.getGelRemoveFavUrl(),
-                    action.booru.user!!.id,
-                    action.booru.user!!.token
+                AndroidCookieJar.set(
+                    action.getGelRemoveFavUrl().toString(),
+                    arrayListOf("user_id=${action.booru.user!!.id}", "pass_hash=${action.booru.user!!.token}")
                 )
                 val response = booruApis.gelApi.favPost(action.getGelRemoveFavUrl())
 
@@ -125,6 +116,12 @@ class VoteRepositoryImpl(
     private suspend fun voteMoePost(action: ActionVote, score: Int): NetResult<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
+                if (action.booru.host == "lolibooru.moe") {
+                    AndroidCookieJar.set(
+                        action.getMoeVoteUrl(),
+                        arrayListOf("login=${action.booru.user!!.name}", "pass_hash=${action.booru.user!!.token}")
+                    )
+                }
                 val response = booruApis.moeApi.votePost(
                     url = action.getMoeVoteUrl(),
                     id = action.postId,

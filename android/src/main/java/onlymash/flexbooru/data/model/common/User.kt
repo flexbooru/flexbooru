@@ -35,9 +35,6 @@ data class User(
     @SerialName("token_type")
     val tokenType: String = ""
 ) {
-    val gelCookie: String
-        get() = "user_id=$id; pass_hash=$token"
-
     val getAuth: String
         get() = "Bearer $accessToken"
 }
