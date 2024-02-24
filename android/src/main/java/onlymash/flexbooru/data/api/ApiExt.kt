@@ -32,7 +32,7 @@ import onlymash.flexbooru.okhttp.CloudflareInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
-fun createHttpClient(isSankaku: Boolean, isGelbooru: Boolean): OkHttpClient {
+fun createHttpClient(isSankaku: Boolean): OkHttpClient {
     val builder = OkHttpClient.Builder()
         .cookieJar(AndroidCookieJar)
         .connectTimeout(15, TimeUnit.SECONDS)
@@ -47,11 +47,6 @@ fun createHttpClient(isSankaku: Boolean, isGelbooru: Boolean): OkHttpClient {
         builder.addInterceptor(ApiSankakuInterceptor())
     } else {
         builder.addInterceptor(ApiInterceptor())
-    }
-
-    if (isGelbooru) {
-        // Gelbooru will return some 302. Do not waste bandwidth to follow it
-        builder.followRedirects(false)
     }
 
     if (Settings.isBypassWAF) {
@@ -96,10 +91,9 @@ inline fun <reified T> createApi(): T {
         }
     }
     val isSankaku = classJava == SankakuApi::class
-    val isGelbooru = classJava == GelbooruApi::class
     return Retrofit.Builder()
         .baseUrl(baseUrl)
-        .client(createHttpClient(isSankaku, isGelbooru))
+        .client(createHttpClient(isSankaku))
         .addConverterFactory(converterFactory)
         .build()
         .create(classJava.java)
