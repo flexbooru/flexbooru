@@ -19,7 +19,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import androidx.media3.common.util.UnstableApi
 import androidx.media3.database.DatabaseProvider
 import onlymash.flexbooru.app.App
 

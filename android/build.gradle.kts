@@ -91,7 +91,7 @@ android {
             }
     }
     buildTypes {
-        getByName("release") {
+        release {
             isShrinkResources = true
             isMinifyEnabled = true
             val config = try {
@@ -104,7 +104,7 @@ android {
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-        getByName("debug") {
+        debug {
             val config = try {
                 signingConfigs.getByName("release")
             } catch (_: UnknownDomainObjectException) {

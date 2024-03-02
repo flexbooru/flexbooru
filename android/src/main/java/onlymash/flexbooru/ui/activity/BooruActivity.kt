@@ -34,7 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import onlymash.flexbooru.R
@@ -265,18 +264,20 @@ class BooruActivity : BaseActivity() {
         }
     }
 
+    private val json get() = Json {
+        ignoreUnknownKeys = true
+        prettyPrint = true
+    }
+
     private fun saveFile(uri: Uri) {
         GlobalScope.launch(Dispatchers.Main) {
             val success = withContext(Dispatchers.IO) {
                 val boorus = booruAdapter.getBoorus()
-                if (boorus.isNullOrEmpty()) return@withContext false
+                if (boorus.isEmpty()) return@withContext false
                 val outputStream = contentResolver.openOutputStream(uri) ?: return@withContext false
                 var inputStream: InputStream? = null
                 try {
-                    inputStream = Json {
-                        ignoreUnknownKeys = true
-                        prettyPrint = true
-                    }.encodeToString(boorus).byteInputStream()
+                    inputStream = json.encodeToString(boorus).byteInputStream()
                     inputStream.copyTo(outputStream)
                 } catch (_:IOException) {
                     return@withContext false
@@ -299,9 +300,7 @@ class BooruActivity : BaseActivity() {
         var boorus: List<Booru>? = null
         try {
             val jsonString = inputStream.readBytes().toString(Charsets.UTF_8)
-            boorus = Json {
-                ignoreUnknownKeys = true
-            }.decodeFromString(jsonString)
+            boorus = json.decodeFromString(jsonString)
         } catch (_: Exception) {
 
         } finally {

@@ -56,9 +56,9 @@ abstract class ShortcutFragment<T: ViewBinding> : BooruFragment<T>() {
         if (booru == null) {
             return
         }
-        shortcutViewModel.loadPost(booru.uid, postId).observe(viewLifecycleOwner, {
+        shortcutViewModel.loadPost(booru.uid, postId).observe(viewLifecycleOwner) {
             onPostLoaded(it)
-        })
+        }
     }
 
     abstract fun onPostLoaded(post: Post?)

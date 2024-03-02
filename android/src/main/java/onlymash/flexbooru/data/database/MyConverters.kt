@@ -16,7 +16,6 @@
 package onlymash.flexbooru.data.database
 
 import androidx.room.TypeConverter
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import onlymash.flexbooru.data.model.common.TagBase

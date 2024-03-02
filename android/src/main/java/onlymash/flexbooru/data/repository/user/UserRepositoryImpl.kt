@@ -29,7 +29,6 @@ import onlymash.flexbooru.data.model.common.User
 import onlymash.flexbooru.data.model.sankaku.LoginBody
 import onlymash.flexbooru.data.model.sankaku.RefreshTokenBody
 import onlymash.flexbooru.extension.NetResult
-import onlymash.flexbooru.okhttp.NoSniFactory
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
 

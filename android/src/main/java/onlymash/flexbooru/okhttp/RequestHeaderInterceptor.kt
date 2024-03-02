@@ -1,6 +1,5 @@
 package onlymash.flexbooru.okhttp
 
-import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import onlymash.flexbooru.app.Keys

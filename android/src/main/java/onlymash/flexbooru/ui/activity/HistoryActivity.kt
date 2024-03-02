@@ -63,9 +63,9 @@ class HistoryActivity : BaseActivity() {
             adapter = historyAdapter
             ItemTouchHelper(ItemTouchHelperCallback(historyAdapter)).attachToRecyclerView(this)
         }
-        historyViewModel.loadHistory(activatedBooruUid).observe(this, {
+        historyViewModel.loadHistory(activatedBooruUid).observe(this) {
             historyAdapter.updateData(it)
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

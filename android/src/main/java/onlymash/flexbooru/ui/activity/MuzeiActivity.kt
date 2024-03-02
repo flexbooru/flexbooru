@@ -100,15 +100,15 @@ class MuzeiActivity : BaseActivity() {
         )
         initView()
         muzeiViewModel = getMuzeiViewModel(muzeiDao)
-        muzeiViewModel.loadMuzei(booru.uid).observe(this, {
+        muzeiViewModel.loadMuzei(booru.uid).observe(this) {
             muzeiAdapter.updateData(it)
-        })
+        }
         suggestionViewModel = getSuggestionViewModel(SuggestionRepositoryImpl(booruApis))
-        suggestionViewModel.suggestions.observe(this, {
+        suggestionViewModel.suggestions.observe(this) {
             suggestions.clear()
             suggestions.addAll(it)
             handleSuggestions(it)
-        })
+        }
     }
 
     private fun initView() {

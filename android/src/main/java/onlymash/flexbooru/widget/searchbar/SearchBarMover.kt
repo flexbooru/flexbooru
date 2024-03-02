@@ -57,7 +57,7 @@ class SearchBarMover(private val helper: Helper,
             val ty = searchBar.translationY.toInt()
             val offsetYStep = MathUtils.clamp(-dy, -y2, -ty)
             if (offsetYStep != 0) {
-                searchBar.translationY = searchBar.translationY + offsetYStep
+                searchBar.translationY += offsetYStep
             }
         }
     }
@@ -119,14 +119,14 @@ class SearchBarMover(private val helper: Helper,
                     val value = animation.animatedValue as Int
                     val offsetStep = value - lastValue
                     lastValue = value
-                    searchBar.translationY = searchBar.translationY + offsetStep
+                    searchBar.translationY += offsetStep
                 }
             })
             searchBarMoveAnimator = va
             va.start()
         } else {
             searchBarMoveAnimator?.cancel()
-            searchBar.translationY = searchBar.translationY + offset
+            searchBar.translationY += offset
         }
     }
 
@@ -151,7 +151,7 @@ class SearchBarMover(private val helper: Helper,
                     return
                 } else {
                     // Cancel it
-                    searchBarMoveAnimator!!.cancel()
+                    searchBarMoveAnimator?.cancel()
                     searchBarMoveAnimator = null
                 }
             }
@@ -171,16 +171,14 @@ class SearchBarMover(private val helper: Helper,
                     val value = animation.animatedValue as Int
                     val offsetStep = value - lastValue
                     lastValue = value
-                    searchBar.translationY = searchBar.translationY + offsetStep
+                    searchBar.translationY += offsetStep
                 }
             })
             searchBarMoveAnimator = va
             va.start()
         } else {
-            if (searchBarMoveAnimator != null) {
-                searchBarMoveAnimator!!.cancel()
-            }
-            searchBar.translationY = searchBar.translationY + offset
+            searchBarMoveAnimator?.cancel()
+            searchBar.translationY += offset
         }
     }
 

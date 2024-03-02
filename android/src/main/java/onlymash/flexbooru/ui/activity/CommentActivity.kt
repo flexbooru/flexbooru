@@ -196,16 +196,17 @@ class CommentActivity : BaseActivity() {
         if (commentViewModel.show(action)) {
             commentAdapter.refresh()
         }
-        commentViewModel.commentState.observe(this, {
+        commentViewModel.commentState.observe(this) {
             when (it) {
                 is NetResult.Success -> {
                     commentAdapter.refresh()
                 }
+
                 is NetResult.Error -> {
                     Toast.makeText(this, it.errorMsg, Toast.LENGTH_LONG).show()
                 }
             }
-        })
+        }
     }
 
     private fun updateStates(loadStates: CombinedLoadStates) {
