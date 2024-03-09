@@ -62,6 +62,9 @@
     <color name="background_quote">@color/grey_300</color>
     <color name="background_comment">@color/grey_200</color>
 
+    <color name="background_placeholder_error">#dbe2f9</color>
+    <color name="placeholder_error">#715573</color>
+
     <color name="blue">#FF33B5E5</color>
     <color name="purple">#FFAA66CC</color>
     <color name="green">#FF99CC00</color>

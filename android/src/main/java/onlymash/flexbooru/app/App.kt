@@ -203,6 +203,7 @@ class App : Application(), ImageLoaderFactory {
             .allowHardware(false)
             .okHttpClient(builder.build())
             .crossfade(true)
+            .error(R.drawable.ic_placeholder_error)
             .build()
     }
 }

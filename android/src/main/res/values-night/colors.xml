@@ -56,4 +56,6 @@
     <color name="rating_g">@color/grey_700</color>
     <color name="muzei">@color/dark_level_1</color>
 
+    <color name="background_placeholder_error">#4a4458</color>
+    <color name="placeholder_error">#efb8c8</color>
 </resources>
