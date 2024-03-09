@@ -21,23 +21,30 @@ import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import onlymash.flexbooru.app.App.Companion.app
-import onlymash.flexbooru.app.Values.PC_USER_AGENT
+import onlymash.flexbooru.app.Keys
+import onlymash.flexbooru.app.Values
+import onlymash.flexbooru.data.model.common.Booru
+import onlymash.flexbooru.okhttp.AndroidCookieJar
 import java.io.File
 
 /**
  * [ExoPlayer] holder
  * */
 @SuppressLint("UnsafeOptInUsageError")
-class PlayerHolder {
+class PlayerHolder(
+    private val booru: Booru? = null
+) {
 
     companion object {
         private var cache: SimpleCache? = null
@@ -59,7 +66,28 @@ class PlayerHolder {
     private var player: ExoPlayer? = null
 
     private fun createExtractorMediaSource(context: Context, uri: Uri): MediaSource {
-        val sourceFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory().setUserAgent(PC_USER_AGENT).setAllowCrossProtocolRedirects(true))
+        val booru = booru
+        var interceptor: Interceptor? = null
+        if (booru != null) {
+            val referer = when (booru.type) {
+                Values.BOORU_TYPE_DAN1, Values.BOORU_TYPE_MOE -> "${booru.scheme}://${booru.host}/post/"
+                Values.BOORU_TYPE_SANKAKU -> Values.SANKAKU_REFERER
+                else -> "${booru.scheme}://${booru.host}/"
+            }
+            interceptor = Interceptor {
+                val request = it.request()
+                it.proceed(request.newBuilder().addHeader(Keys.HEADER_REFERER, referer).build())
+            }
+        }
+        val okHttpClientBuilder = OkHttpClient.Builder()
+            .cookieJar(AndroidCookieJar)
+        if (interceptor != null) {
+            okHttpClientBuilder.addInterceptor(interceptor)
+        }
+        val okHttpClient = okHttpClientBuilder.build()
+        val okHttpFactory = OkHttpDataSource.Factory(okHttpClient)
+            .setUserAgent(Values.PC_USER_AGENT)
+        val sourceFactory = DefaultDataSource.Factory(context, okHttpFactory)
         val cacheSourceFactory = CacheDataSource.Factory().apply {
             setCache(cache())
             setUpstreamDataSourceFactory(sourceFactory)

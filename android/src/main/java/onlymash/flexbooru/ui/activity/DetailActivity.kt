@@ -124,7 +124,7 @@ class DetailActivity : PathActivity(),
     private val voteRepository: VoteRepository by lazy { VoteRepositoryImpl(booruApis, postDao) }
 
     private val binding by viewBinding(ActivityDetailBinding::inflate)
-    private val playerHolder by lazy { PlayerHolder() }
+    private val playerHolder by lazy { PlayerHolder(booru) }
     private val detailPager get() = binding.detailPager
     private val toolbar get() = binding.toolbar.toolbarTransparent
     private val toolbarContainer get() = binding.toolbarContainer
