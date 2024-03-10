@@ -14,7 +14,7 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_description">Booru-клиент для Android с поддержкой Danbooru, Moebooru, Gelbooru, Sankaku и др.
+    <string name="app_description">Клиент booru для Android, поддержка Danbooru, Moebooru, Gelbooru, Sankaku и т. д.
     </string>
     <string name="title_posts">Посты</string>
     <string name="title_search">Поиск</string>
