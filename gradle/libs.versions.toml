@@ -1,24 +1,24 @@
 [versions]
-agp = "8.3.0"
-kotlin = "1.9.22"
-ksp = "1.9.22-1.0.17"
+agp = "8.3.1"
+kotlin = "1.9.23"
+ksp = "1.9.23-1.0.19"
 gms = "4.4.1"
 ben-versions = "0.51.0"
 ktor = "2.3.8"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization = "1.6.3"
-compose-bom = "2024.02.01"
+compose-bom = "2024.04.00"
 accompanist = "0.32.0"
 lifecycle = "2.7.0"
 fragment = "1.6.2"
 activity = "1.8.2"
 room = "2.6.1"
 navigation = "2.7.7"
-camera = "1.3.1"
+camera = "1.3.2"
 okhttp = "4.12.0"
 coil = "2.6.0"
 glide = "4.16.0"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 koin = "3.5.3"
 koin-compose = "3.4.6"
 moshi = "1.15.0"
@@ -119,7 +119,7 @@ androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.
 androidx-recyclerview-selection = "androidx.recyclerview:recyclerview-selection:1.1.0"
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 androidx-preference-ktk = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
-androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.1.0-beta01"
+androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.1.0-beta02"
 androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 androidx-constraintlayout-compose = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
@@ -181,7 +181,7 @@ moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "mosh
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 
-firebase-bom = "com.google.firebase:firebase-bom:32.7.4"
+firebase-bom = "com.google.firebase:firebase-bom:32.8.0"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics" }
