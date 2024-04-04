@@ -45,7 +45,7 @@ data class CurrentUser(
     @SerialName("artist_update_count")
     val artistUpdateCount: Int, // 0
     @SerialName("avatar_rating")
-    val avatarRating: String, // q
+    val avatarRating: String? = null, // q
     @SerialName("avatar_url")
     val avatarUrl: String? = null,
     @SerialName("blacklist_is_hidden")
@@ -91,7 +91,7 @@ data class CurrentUser(
     @SerialName("mfa_method")
     val mfaMethod: Int, // 0
     @SerialName("name")
-    val name: String,
+    val name: String = "",
     @SerialName("note_update_count")
     val noteUpdateCount: Int, // 0
     @SerialName("pool_favorite_count")
