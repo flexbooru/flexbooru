@@ -176,6 +176,7 @@
     <string name="settings_bypass_waf">略過 WAF</string>
     <string name="settings_bypass_waf_summary">略過 Cloudflare WAF</string>
     <string name="settings_safe_mode">安全模式</string>
+    <string name="settings_download_videos_by_adm">Download videos by ADM</string>
     <string name="settings_page_limit">每頁限制</string>
     <string name="settings_muzei_limit">Muzei 限制</string>
     <string name="settings_muzei_size">Muzei 大小</string>
