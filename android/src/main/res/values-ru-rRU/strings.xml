@@ -177,6 +177,7 @@
     <string name="settings_bypass_waf">Обход WAF</string>
     <string name="settings_bypass_waf_summary">Обходит Cloudflare WAF</string>
     <string name="settings_safe_mode">Безопасный режим</string>
+    <string name="settings_download_videos_by_adm">Скачивать видео через ADM</string>
     <string name="settings_page_limit">Лимит страниц</string>
     <string name="settings_muzei_limit">Лимит Muzei</string>
     <string name="settings_muzei_size">Размер музея</string>
