@@ -137,6 +137,13 @@
             app:summaryOn="@string/switch_on"
             app:summaryOff="@string/switch_off"/>
 
+        <SwitchPreferenceCompat
+            app:key="settings_download_videos_by_adm"
+            app:title="@string/settings_download_videos_by_adm"
+            app:defaultValue="true"
+            app:summaryOn="@string/switch_on"
+            app:summaryOff="@string/switch_off"/>
+
         <ListPreference
             app:key="settings_page_limit"
             app:entries="@array/settings_page_limit_entries"

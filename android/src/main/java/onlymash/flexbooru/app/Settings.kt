@@ -32,6 +32,7 @@ object Settings {
     const val DISABLE_SNI_KEY = "settings_disable_sni"
     const val BYPASS_WAF_KEY = "settings_bypass_waf"
     const val SAFE_MODE_KEY = "settings_safe_mode"
+    const val DOWNLOAD_VIDEOS_BY_ADM = "settings_download_videos_by_adm"
     const val PAGE_LIMIT_KEY = "settings_page_limit"
     const val MUZEI_LIMIT_KEY = "settings_muzei_limit"
     const val DETAIL_SIZE_KEY = "settings_detail_size"
@@ -91,6 +92,11 @@ object Settings {
         get() = sp.getBoolean(SAFE_MODE_KEY, true)
         set(value) = sp.edit().putBoolean(
             SAFE_MODE_KEY, value).apply()
+
+    var downloadVideosByADM: Boolean
+        get() = sp.getBoolean(DOWNLOAD_VIDEOS_BY_ADM, true)
+        set(value) = sp.edit().putBoolean(
+            DOWNLOAD_VIDEOS_BY_ADM, value).apply()
 
     var pageLimit: Int
         get() = sp.getString(PAGE_LIMIT_KEY, "30")!!.toInt()

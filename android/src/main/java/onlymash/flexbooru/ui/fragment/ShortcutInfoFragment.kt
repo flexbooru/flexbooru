@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import coil.load
 import onlymash.flexbooru.R
 import onlymash.flexbooru.app.Keys
+import onlymash.flexbooru.app.Settings
 import onlymash.flexbooru.app.Values
 import onlymash.flexbooru.data.model.common.Booru
 import onlymash.flexbooru.data.model.common.Post
@@ -178,7 +179,7 @@ class ShortcutInfoFragment : ShortcutFragment<FragmentShortcutInfoBinding>() {
         val post = post ?: return
         val activity = activity as? PathActivity ?: return
         val url = getUrl(post, type)
-        if (url.isVideo()) {
+        if (url.isVideo() && Settings.downloadVideosByADM) {
             context?.downloadByAdm(url)
         } else {
             DownloadWorker.download(
