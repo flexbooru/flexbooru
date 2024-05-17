@@ -45,7 +45,7 @@ exec {
 val verCode = String(byteOut.toByteArray()).trim().toInt()
 
 object Configs {
-    const val APP_VERSION_NAME = "3.2.4"
+    const val APP_VERSION_NAME = "3.2.5"
     const val APP_ID = "onlymash.flexbooru.play"
     const val SDK_VERSION = 34
     const val MIN_SDK_VERSION = 21
