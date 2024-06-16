@@ -1,3 +1,5 @@
+Deprecated, replace with [BooruHub](https://play.google.com/store/apps/details?id=onlymash.flexbooru.play)
+
 # Flexbooru
 A booru client for Android, support [Danbooru](https://github.com/r888888888/danbooru), [Moebooru](https://github.com/moebooru/moebooru), Gelbooru, Shimmie, etc.
 
