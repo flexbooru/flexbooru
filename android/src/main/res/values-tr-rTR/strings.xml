@@ -176,6 +176,7 @@
     <string name="settings_bypass_waf">WAF\'ı bypass et</string>
     <string name="settings_bypass_waf_summary">Cloudflare WAF\'ı bypass etme</string>
     <string name="settings_safe_mode">Güvenli mod</string>
+    <string name="settings_download_videos_by_adm">Download videos by ADM</string>
     <string name="settings_page_limit">Sayfa sınırı</string>
     <string name="settings_muzei_limit">Muzei sınırı</string>
     <string name="settings_muzei_size">Muzei boyutu</string>

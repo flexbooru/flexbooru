@@ -58,6 +58,7 @@ import onlymash.flexbooru.app.Settings.PAGE_LIMIT_KEY
 import onlymash.flexbooru.app.Settings.SAFE_MODE_KEY
 import onlymash.flexbooru.app.Settings.SHOW_ALL_TAGS_KEY
 import onlymash.flexbooru.app.Settings.SHOW_INFO_BAR_KEY
+import onlymash.flexbooru.app.Settings.downloadVideosByADM
 import onlymash.flexbooru.app.Settings.gridMode
 import onlymash.flexbooru.app.Settings.gridRatio
 import onlymash.flexbooru.app.Settings.gridWidthResId
@@ -393,7 +394,7 @@ class PostFragment : SearchBarFragment() {
                 when (which) {
                     0 -> {
                         action?.apply {
-                            if (post.origin.isVideo()) {
+                            if (post.origin.isVideo() && downloadVideosByADM) {
                                 context?.downloadByAdm(post.origin)
                             } else {
                                 DownloadWorker.downloadPost(post, booru.host, activity)

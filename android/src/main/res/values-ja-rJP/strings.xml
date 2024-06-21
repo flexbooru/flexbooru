@@ -176,6 +176,7 @@
     <string name="settings_bypass_waf">WAFを回避する</string>
     <string name="settings_bypass_waf_summary">CloudflareのWAFを回避する</string>
     <string name="settings_safe_mode">セーフモード</string>
+    <string name="settings_download_videos_by_adm">Download videos by ADM</string>
     <string name="settings_page_limit">ページ制限</string>
     <string name="settings_muzei_limit">Muzei制限</string>
     <string name="settings_muzei_size">Muzeiサイズ</string>

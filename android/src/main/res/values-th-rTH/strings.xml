@@ -176,6 +176,7 @@
     <string name="settings_bypass_waf">Bypass WAF</string>
     <string name="settings_bypass_waf_summary">Bypassing Cloudflare WAF</string>
     <string name="settings_safe_mode">Safe mode</string>
+    <string name="settings_download_videos_by_adm">Download videos by ADM</string>
     <string name="settings_page_limit">Page limit</string>
     <string name="settings_muzei_limit">Muzei limit</string>
     <string name="settings_muzei_size">Muzei size</string>

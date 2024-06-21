@@ -57,6 +57,7 @@ import onlymash.flexbooru.app.Settings.POST_SIZE_LARGER
 import onlymash.flexbooru.app.Settings.POST_SIZE_SAMPLE
 import onlymash.flexbooru.app.Settings.activatedBooruUid
 import onlymash.flexbooru.app.Settings.detailSize
+import onlymash.flexbooru.app.Settings.downloadVideosByADM
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN
 import onlymash.flexbooru.app.Values.BOORU_TYPE_DAN1
 import onlymash.flexbooru.app.Values.BOORU_TYPE_GEL
@@ -429,7 +430,7 @@ class DetailActivity : PathActivity(),
     }
 
     private fun download(post: Post) {
-        if (post.origin.isVideo()) {
+        if (post.origin.isVideo() && downloadVideosByADM) {
             downloadByAdm(post.origin)
         } else {
             DownloadWorker.downloadPost(post, booru.host, this)
